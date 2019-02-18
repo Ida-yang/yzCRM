@@ -616,7 +616,7 @@
                 this.$store.state.addOrUpdateData = addOrUpdateData;
                 axios({
                     method: 'post',
-                    url: _this.$store.state.defaultHttp+'clueJurisdiction/insert.do',
+                    url: _this.$store.state.defaultHttp+'clueJurisdiction/insert.do',//新增线索
                 }).then(function(res){
                     // console.log(res.data.msg)
                     if(res.data.msg && res.data.msg == 'error'){
@@ -698,7 +698,7 @@
                 this.$store.state.addOrUpdateData = addOrUpdateData;
                 axios({
                     method: 'post',
-                    url: _this.$store.state.defaultHttp+'clueJurisdiction/update.do',
+                    url: _this.$store.state.defaultHttp+'clueJurisdiction/update.do',//修改线索
                 }).then(function(res){
                     // console.log(res)
                     if(res.data.msg && res.data.msg == 'error'){
@@ -733,7 +733,7 @@
                             type: 'success'
                         });
                         _this.$options.methods.reloadTable.bind(_this)(true);
-                    }else if(res.data.msg && res.data.msg == 'error'){
+                    }else if(res.data.msg && res.data.msg == 'error'){//转移至线索池
                         _this.$message({
                             message: '对不起，您没有该权限，请联系管理员开通',
                             type: 'error'
@@ -767,7 +767,7 @@
                             type: 'success'
                         });
                         _this.$options.methods.reloadTable.bind(_this)(true);
-                    }else if(res.data.msg && res.data.msg == 'error'){
+                    }else if(res.data.msg && res.data.msg == 'error'){//转移至客户
                         _this.$message({
                             message: '对不起，您没有该权限，请联系管理员开通',
                             type: 'error'
@@ -813,13 +813,13 @@
                 const _this = this
                 const qs = require('querystring')
                 if(this.searchList.label == 0 ){
-                    this.authorityInterface = 'clueJurisdiction/all.do'
+                    this.authorityInterface = 'clueJurisdiction/all.do'//全部线索
                 }else if(this.searchList.label == 1 ){
-                    this.authorityInterface = 'clueJurisdiction/my.do'
+                    this.authorityInterface = 'clueJurisdiction/my.do'//我的线索
                 }else if(this.searchList.label == 2){
-                    this.authorityInterface = 'clueJurisdiction/second.do'
+                    this.authorityInterface = 'clueJurisdiction/second.do'//本组线索
                 }else if(this.searchList.label == 3){
-                    this.authorityInterface = 'clueJurisdiction/dept.do'
+                    this.authorityInterface = 'clueJurisdiction/dept.do'//本机构线索
                 }
 
                 axios({

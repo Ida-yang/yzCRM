@@ -629,7 +629,7 @@
                 this.$store.state.addOrUpdateData = addOrUpdateData;
                 axios({
                     method: 'post',
-                    url: _this.$store.state.defaultHttp+'customerJurisdiction/insert.do',
+                    url: _this.$store.state.defaultHttp+'customerJurisdiction/insert.do',//新增客户
                 }).then(function(res){
                     // console.log(res.data.msg)
                     if(res.data.msg && res.data.msg == 'error'){
@@ -715,7 +715,7 @@
                 this.$store.state.addOrUpdateData = addOrUpdateData;
                 axios({
                     method: 'post',
-                    url: _this.$store.state.defaultHttp+'customerJurisdiction/update.do',
+                    url: _this.$store.state.defaultHttp+'customerJurisdiction/update.do',//编辑客户
                 }).then(function(res){
                     // console.log(res.data.msg)
                     if(res.data.msg && res.data.msg == 'error'){
@@ -740,46 +740,14 @@
                     url:  _this.$store.state.defaultHttp+ 'customerpool/updateTo.do?cId='+_this.$store.state.iscId,
                     data:qs.stringify(idArr),
                 }).then(function(res){
-                    // console.log(res)
-                    if(res.status && res.status == 200) {
+                    console.log(res)
+                    if(res.data.msg && res.data.msg == 'success') {
                         _this.$message({
                             message: '转移成功',
                             type: 'success'
                         });
                         _this.$options.methods.reloadTable.bind(_this)(true);
-                    }else if(res.data.msg && res.data.msg == 'error'){
-                        _this.$message({
-                            message: '对不起，您没有该权限，请联系管理员开通',
-                            type: 'error'
-                        })
-                    } else {
-                        _this.$message({
-                            message: res.data,
-                            type: 'error'
-                        });
-                    }
-                }).catch(function(err){
-                    console.log(err);
-                });
-            },
-            customerSwitching(){
-                let _this = this;
-                let qs =require('querystring')
-                let idArr = [];
-                idArr.id = this.idArr.id
-                axios({
-                    method: 'post',
-                    url:  _this.$store.state.defaultHttp+ 'customerTwo/insert.do?cId='+_this.$store.state.iscId,
-                    data:qs.stringify(idArr),
-                }).then(function(res){
-                    // console.log(res)
-                    if(res.status && res.status == 200) {
-                        _this.$message({
-                            message: '转换成功',
-                            type: 'success'
-                        });
-                        _this.$options.methods.reloadTable.bind(_this)(true);
-                    }else if(res.data.msg && res.data.msg == 'error'){
+                    }else if(res.data.msg && res.data.msg == 'error'){//转移至客户池
                         _this.$message({
                             message: '对不起，您没有该权限，请联系管理员开通',
                             type: 'error'
@@ -825,13 +793,13 @@
                 const _this = this
                 const qs = require('querystring')
                 if(this.searchList.label == 0 ){
-                    this.authorityInterface = 'customerJurisdiction/all.do'
+                    this.authorityInterface = 'customerJurisdiction/all.do'//全部客户
                 }else if(this.searchList.label == 1 ){
-                    this.authorityInterface = 'customerJurisdiction/my.do'
+                    this.authorityInterface = 'customerJurisdiction/my.do'//我的客户
                 }else if(this.searchList.label == 2){
-                    this.authorityInterface = 'customerJurisdiction/second.do'
+                    this.authorityInterface = 'customerJurisdiction/second.do'//本组客户
                 }else if(this.searchList.label == 3){
-                    this.authorityInterface = 'customerJurisdiction/dept.do'
+                    this.authorityInterface = 'customerJurisdiction/dept.do'//本机构客户
                 }
 
                 axios({

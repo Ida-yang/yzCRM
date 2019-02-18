@@ -406,7 +406,7 @@
                                 type: 'success'
                             });
                             _this.$options.methods.reloadTable.bind(_this)(true);
-                        }else if(res.data.msg && res.data.msg == 'error'){
+                        }else if(res.data.msg && res.data.msg == 'error'){//删除合同
                             _this.$message({
                                 message: '对不起，您没有该权限，请联系管理员开通',
                                 type: 'error'
@@ -460,7 +460,7 @@
                 // this.$router.push({ path: '/agreementaddorupdate' });
                 axios({
                     method: 'post',
-                    url: _this.$store.state.defaultHttp+'contractJurisdiction/insert.do',
+                    url: _this.$store.state.defaultHttp+'contractJurisdiction/insert.do',//新增合同
                 }).then(function(res){
                     // console.log(res)
                     if(res.data.msg && res.data.msg == 'error'){
@@ -518,7 +518,7 @@
                 // this.$router.push({ path: '/agreementaddorupdate' });
                 axios({
                     method: 'post',
-                    url: _this.$store.state.defaultHttp+'contractJurisdiction/update.do',
+                    url: _this.$store.state.defaultHttp+'contractJurisdiction/update.do',//编辑合同
                 }).then(function(res){
                     // console.log(res)
                     if(res.data.msg && res.data.msg == 'error'){
@@ -553,7 +553,7 @@
                                 type: 'success'
                             });
                             _this.$options.methods.reloadTable.bind(_this)(true);
-                        }else if(res.data.msg && res.data.msg == 'error'){
+                        }else if(res.data.msg && res.data.msg == 'error'){//删除合同
                             _this.$message({
                                 message: '对不起，您没有该权限，请联系管理员开通',
                                 type: 'error'
@@ -605,13 +605,13 @@
                 const _this = this
                 const qs = require('querystring')
                 if(this.searchList.label == 0 ){
-                    this.authorityInterface = 'contactsJurisdiction/all.do'
+                    this.authorityInterface = 'contractJurisdiction/all.do'//全部合同
                 }else if(this.searchList.label == 1 ){
-                    this.authorityInterface = 'contactsJurisdiction/my.do'
+                    this.authorityInterface = 'contractJurisdiction/my.do'//我的合同
                 }else if(this.searchList.label == 2){
-                    this.authorityInterface = 'contactsJurisdiction/second.do'
+                    this.authorityInterface = 'contractJurisdiction/second.do'//本组合同
                 }else if(this.searchList.label == 3){
-                    this.authorityInterface = 'contactsJurisdiction/dept.do'
+                    this.authorityInterface = 'contractJurisdiction/dept.do'//本机构合同
                 }
 
                 axios({

@@ -1,6 +1,12 @@
 <template>
     <!-- 线索池 -->
     <div>
+        <div class="radioList">
+            <el-radio-group v-model="searchList.label">
+                <span class="nameList">客户分类：</span>
+                <el-radio v-for="item in pIdData" :key="item.label" :label="item.label" @change="search()">{{item.value}}</el-radio>
+            </el-radio-group>
+        </div>
         <div class="searchList" style="width:100%;">
             <el-input v-model="searchList.searchName" placeholder="公司名称" style="width:300px;"></el-input>
             &nbsp;&nbsp;
@@ -395,17 +401,28 @@
             return {
                 searchList:{
                     searchName:null,
+                    label:null,
                     page:null,
                     limit:null,
                 },
                 searchListNew:{
                     searchName:null,
+                    label:null,
+                    page:null,
+                    limit:null,
                 },
                 page:1,//默认第一页
                 limit:20,//默认20条
                 idArr:{
                     id:null,
                 },
+
+                pIdData:[
+                    {label:'0',value:'全部客户'},
+                    {label:'1',value:'我的客户'},
+                    {label:'2',value:'本组'},
+                    {label:'3',value:'本机构'},],
+
                 useroptions:null,
                 userData:{
                     pId:null,
@@ -421,9 +438,11 @@
         },
         activated(){
             this.reloadTable()
+            this.reloadData()
         },
         mounted(){
             this.reloadTable()
+            this.reloadData()
         },
         beforeCreate(){
             let _this = this;
@@ -445,14 +464,20 @@
                 let qs =require('querystring')
                 let searchList = {}
                 searchList.searchName = this.searchList.searchName;
+                if(this.searchList.label == 0 ){
+                    searchList.pId = _this.nullvalue
+                }else if(this.searchList.label == 1 ){
+                    searchList.pId = _this.$store.state.ispId
+                }else if(this.searchList.label == 2){
+                    searchList.secondid = _this.$store.state.deptid
+                }else if(this.searchList.label == 3){
+                    searchList.deptid = _this.$store.state.insid
+                }else{
+                    searchList.pId = _this.$store.state.ispId
+                }
                 searchList.page = this.page;
                 searchList.limit = this.limit;
                 // console.log(searchList)
-                let filterList = {}
-                filterList.type = '线索池'
-                let data = {}
-                data.type = '线索池'
-                data.state = 1
 
                 axios({
                     method: 'post',
@@ -465,6 +490,16 @@
                 }).catch(function(err){
                     console.log(err);
                 });
+            },
+            reloadData() {
+                let _this = this;
+                let qs =require('querystring')
+                let filterList = {}
+                filterList.type = '线索池'
+                let data = {}
+                data.type = '线索池'
+                data.state = 1
+
                 axios({
                     method: 'post',
                     url: _this.$store.state.defaultHttp+'userPageInfo/getAllUserPage.do?cId='+_this.$store.state.iscId+'&pId='+_this.$store.state.ispId,
@@ -527,7 +562,7 @@
                                 type: 'success'
                             });
                             _this.$options.methods.reloadTable.bind(_this)(true);
-                        }else if(res.data.msg && res.data.msg == 'error'){
+                        }else if(res.data.msg && res.data.msg == 'error'){//删除线索池
                             _this.$message({
                                 message: '对不起，您没有该权限，请联系管理员开通',
                                 type: 'error'
@@ -564,7 +599,7 @@
                                 type: 'success'
                             });
                             _this.$options.methods.reloadTable.bind(_this)(true);
-                        }else if(res.data.msg && res.data.msg == 'error'){
+                        }else if(res.data.msg && res.data.msg == 'error'){//删除线索池
                             _this.$message({
                                 message: '对不起，您没有该权限，请联系管理员开通',
                                 type: 'error'
@@ -598,7 +633,7 @@
                     url: _this.$store.state.defaultHttp+'cluePoolJurisdiction/receive.do',
                 }).then(function(res){
                     // console.log(res)
-                    if(res.data.msg && res.data.msg == 'error'){
+                    if(res.data.msg && res.data.msg == 'error'){//领取线索池
                         _this.$message({
                             message:'对不起，您没有该权限，请联系管理员开通',
                             type:'error'
@@ -643,7 +678,7 @@
                     url: _this.$store.state.defaultHttp+'cluePoolJurisdiction/receive.do',
                 }).then(function(res){
                     // console.log(res)
-                    if(res.data.msg && res.data.msg == 'error'){
+                    if(res.data.msg && res.data.msg == 'error'){//领取线索池
                         _this.$message({
                             message:'对不起，您没有该权限，请联系管理员开通',
                             type:'error'
@@ -689,7 +724,7 @@
                     url: _this.$store.state.defaultHttp+'cluePoolJurisdiction/distribution.do',
                 }).then(function(res){
                     // console.log(res)
-                    if(res.data.msg && res.data.msg == 'error'){
+                    if(res.data.msg && res.data.msg == 'error'){//分配线索池
                         _this.$message({
                             message:'对不起，您没有该权限，请联系管理员开通',
                             type:'error'
@@ -743,7 +778,7 @@
                 }).then(function(res){
                     // console.log(res)
                     if(res.data && res.data =="success"){
-                        _this.$options.methods.reloadTable.bind(_this)(true);
+                        _this.$options.methods.reloadData.bind(_this)(true);
                     }else{
                         console.log(err)
                     }
@@ -753,12 +788,21 @@
             },
 
             search() {
-                let _this = this
-                let qs = require('querystring')
+                const _this = this
+                const qs = require('querystring')
+                if(this.searchList.label == 0 ){
+                    this.authorityInterface = 'cluePoolJurisdiction/all.do'//全部线索池
+                }else if(this.searchList.label == 1 ){
+                    this.authorityInterface = 'cluePoolJurisdiction/my.do'//我的线索池
+                }else if(this.searchList.label == 2){
+                    this.authorityInterface = 'cluePoolJurisdiction/second.do'//本组线索池
+                }else if(this.searchList.label == 3){
+                    this.authorityInterface = 'cluePoolJurisdiction/dept.do'//本机构线索池
+                }
 
                 axios({
                     method: 'post',
-                    url: _this.$store.state.defaultHttp+'cluePoolJurisdiction/select.do',
+                    url: _this.$store.state.defaultHttp+_this.authorityInterface,
                 }).then(function(res){
                     // console.log(res)
                     if(res.data.msg && res.data.msg == 'error'){

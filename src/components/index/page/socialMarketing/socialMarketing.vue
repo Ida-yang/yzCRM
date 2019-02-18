@@ -415,7 +415,7 @@
                                 type: 'success'
                             });
                             _this.$options.methods.reloadTable.bind(_this)(true);
-                        }else if(res.data.msg && res.data.msg == 'error'){
+                        }else if(res.data.msg && res.data.msg == 'error'){//删除活动
                             _this.$message({
                                 message: '对不起，您没有该权限，请联系管理员开通',
                                 type: 'error'
@@ -447,7 +447,7 @@
                 }else{
                     axios({
                         method: 'post',
-                        url: _this.$store.state.defaultHttp+'activityJurisdiction/insert.do',
+                        url: _this.$store.state.defaultHttp+'activityJurisdiction/insert.do',//新增活动
                     }).then(function(res){
                         // console.log(res)
                         if(res.data.msg && res.data.msg == 'error'){

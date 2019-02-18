@@ -393,6 +393,11 @@
                             type: 'success'
                         });
                         _this.closeTag();
+                    } else if(res.data.msg && res.data.msg == 'error'){//转移至线索池
+                        _this.$message({
+                            message: '对不起，您没有该权限，请联系管理员开通',
+                            type: 'error'
+                        })
                     } else {
                         _this.$message({
                             message: res.data,
@@ -422,7 +427,7 @@
                             type: 'success'
                         });
                     _this.closeTag();
-                    } else if(res.data.msg && res.data.msg == 'error'){
+                    } else if(res.data.msg && res.data.msg == 'error'){//转移至客户
                         _this.$message({
                             message: '对不起，您没有该权限，请联系管理员开通',
                             type: 'error'
@@ -517,11 +522,6 @@
                         _this.$store.state.detailsData.submitData = {"id":_this.detailData.id}
                         _this.$options.methods.loadData.bind(_this)(true);
                         // _this.closeTag()
-                    } else if(res.data.msg && res.data.msg == 'error'){
-                        _this.$message({
-                            message: '对不起，您没有该权限，请联系管理员开通',
-                            type: 'error'
-                        })
                     } else {
                         _this.$message({
                             message: res.data.msg,

@@ -606,7 +606,7 @@
                             type: 'success'
                         });
                         _this.closeTag();
-                    }else if(res.data.msg && res.data.msg == 'error'){
+                    }else if(res.data.msg && res.data.msg == 'error'){//转移至客户池
                         _this.$message({
                             message: '对不起，您没有该权限，请联系管理员开通',
                             type: 'error'

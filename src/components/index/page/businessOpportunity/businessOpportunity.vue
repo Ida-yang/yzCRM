@@ -389,7 +389,7 @@
                 // this.$router.push({ path: '/Opportunityaddorupdate' });
                 axios({
                     method: 'post',
-                    url: _this.$store.state.defaultHttp+'opportunityJurisdiction/insert.do',
+                    url: _this.$store.state.defaultHttp+'opportunityJurisdiction/insert.do',//新增商机
                 }).then(function(res){
                     // console.log(res)
                     if(res.data.msg && res.data.msg == 'error'){
@@ -436,7 +436,7 @@
                 // this.$router.push({ path: '/Opportunityaddorupdate' });
                 axios({
                     method: 'post',
-                    url: _this.$store.state.defaultHttp+'opportunityJurisdiction/update.do',
+                    url: _this.$store.state.defaultHttp+'opportunityJurisdiction/update.do',//编辑商机
                 }).then(function(res){
                     // console.log(res)
                     if(res.data.msg && res.data.msg == 'error'){
@@ -473,7 +473,7 @@
                                 type: 'success'
                             });
                             _this.$options.methods.reloadTable.bind(_this)(true);
-                        }else if(res.data.msg && res.data.msg == 'error'){
+                        }else if(res.data.msg && res.data.msg == 'error'){//删除商机
                             _this.$message({
                                 message: '对不起，您没有该权限，请联系管理员开通',
                                 type: 'error'
@@ -511,7 +511,7 @@
                                 type: 'success'
                             });
                             _this.$options.methods.reloadTable.bind(_this)(true);
-                        }else if(res.data.msg && res.data.msg == 'error'){
+                        }else if(res.data.msg && res.data.msg == 'error'){//删除商机
                             _this.$message({
                                 message: '对不起，您没有该权限，请联系管理员开通',
                                 type: 'error'
@@ -564,13 +564,13 @@
                 const _this = this
                 const qs = require('querystring')
                 if(this.searchList.label == 0 ){
-                    this.authorityInterface = 'contactsJurisdiction/all.do'
+                    this.authorityInterface = 'opportunityJurisdiction/all.do'//全部商机
                 }else if(this.searchList.label == 1 ){
-                    this.authorityInterface = 'contactsJurisdiction/my.do'
+                    this.authorityInterface = 'opportunityJurisdiction/my.do'//我的商机
                 }else if(this.searchList.label == 2){
-                    this.authorityInterface = 'contactsJurisdiction/second.do'
+                    this.authorityInterface = 'opportunityJurisdiction/second.do'//本组商机
                 }else if(this.searchList.label == 3){
-                    this.authorityInterface = 'contactsJurisdiction/dept.do'
+                    this.authorityInterface = 'opportunityJurisdiction/dept.do'//本机构商机
                 }
 
                 axios({

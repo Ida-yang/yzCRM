@@ -206,7 +206,7 @@
 
                 axios({
                     method: 'post',
-                    url: _this.$store.state.defaultHttp+'typeInfoJurisdiction/insert.do',
+                    url: _this.$store.state.defaultHttp+'typeInfoJurisdiction/insert.do',//新增状态
                 }).then(function(res){
                     // console.log(res)
                     if(res.data.msg && res.data.msg == 'error'){
@@ -286,7 +286,7 @@
 
                 axios({
                     method: 'post',
-                    url: _this.$store.state.defaultHttp+'typeInfoJurisdiction/update.do',
+                    url: _this.$store.state.defaultHttp+'typeInfoJurisdiction/update.do',//编辑状态
                 }).then(function(res){
                     // console.log(res)
                     if(res.data.msg && res.data.msg == 'error'){
@@ -383,7 +383,7 @@
                                 type: 'success'
                             });
                             _this.$options.methods.reloadTable.bind(_this)(true);
-                        } else if(res.data.msg && res.data.msg == 'error'){
+                        } else if(res.data.msg && res.data.msg == 'error'){//删除状态
                             _this.$message({
                                 message: '对不起，您没有该权限，请联系管理员开通',
                                 type: 'error'

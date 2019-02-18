@@ -360,7 +360,7 @@
                 // console.log(data)
                 axios({
                     method: 'post',
-                    url: _this.$store.state.defaultHttp+'deptJurisdiction/insert.do',
+                    url: _this.$store.state.defaultHttp+'deptJurisdiction/insert.do',//新增部门
                 }).then(function(res){
                     // console.log(res)
                     if(res.data.msg && res.data.msg == 'error'){
@@ -418,7 +418,7 @@
                 let _this = this;
                 axios({
                     method: 'post',
-                    url: _this.$store.state.defaultHttp+'deptJurisdiction/update.do',
+                    url: _this.$store.state.defaultHttp+'deptJurisdiction/update.do',//编辑部门
                 }).then(function(res){
                     // console.log(res)
                     if(res.data.msg && res.data.msg == 'error'){
@@ -492,7 +492,7 @@
                                 message: '删除成功',
                                 type: 'success'
                             });
-                        }else if(res.data.msg && res.data.msg == 'error'){
+                        }else if(res.data.msg && res.data.msg == 'error'){//删除部门
                             _this.$message({
                                 message: '对不起，您没有该权限，请联系管理员开通',
                                 type: 'error'
@@ -524,8 +524,24 @@
                         type:'info'
                     })
                 }else{
-                    this.roleform.deptname = this.clickdata.deptname
-                    this.dialogVisible3 = true
+                    axios({
+                        method: 'post',
+                        url: _this.$store.state.defaultHttp+'deptJurisdiction/insert.do',//新增角色
+                    }).then(function(res){
+                        // console.log(res)
+                        if(res.data.msg && res.data.msg == 'error'){
+                            _this.$message({
+                                message:'对不起，您没有该权限，请联系管理员开通',
+                                type:'error'
+                            })
+                        }else{
+                            _this.roleform.deptname = _this.clickdata.deptname
+                            _this.dialogVisible3 = true
+                        }
+                    }).catch(function(err){
+                        console.log(err);
+                    });
+                    
                 }
                 // console.log(this.roleform)
             },
@@ -561,34 +577,51 @@
                 })
             },
             handleEdit(e,val){
-                this.roleform.ids = []
-                this.checkedroleclues = []
-                this.checkedrolecustomers = []
-                this.checkedrolecontacts = []
-                this.checkedroleopportunitys = []
-                this.checkedroleagreements = []
-                this.checkedroleactivitys = []
-                this.checkedrolesets = []
-                let ids = val.resources
-                ids.forEach(el => {
-                    if(el.id){
-                        // console.log(el.id)
-                        this.roleform.ids.push(el.id)
-                        this.checkedroleclues.push(el.id)
-                        this.checkedrolecustomers.push(el.id)
-                        this.checkedrolecontacts.push(el.id)
-                        this.checkedroleopportunitys.push(el.id)
-                        this.checkedroleagreements.push(el.id)
-                        this.checkedroleactivitys.push(el.id)
-                        this.checkedrolesets.push(el.id)
+                let _this = this
+                axios({
+                    method: 'post',
+                    url: _this.$store.state.defaultHttp+'deptJurisdiction/insert.do',//编辑角色
+                }).then(function(res){
+                    // console.log(res)
+                    if(res.data.msg && res.data.msg == 'error'){
+                        _this.$message({
+                            message:'对不起，您没有该权限，请联系管理员开通',
+                            type:'error'
+                        })
+                    }else{
+                        _this.roleform.ids = []
+                        _this.checkedroleclues = []
+                        _this.checkedrolecustomers = []
+                        _this.checkedrolecontacts = []
+                        _this.checkedroleopportunitys = []
+                        _this.checkedroleagreements = []
+                        _this.checkedroleactivitys = []
+                        _this.checkedrolesets = []
+                        let ids = val.resources
+                        ids.forEach(el => {
+                            if(el.id){
+                                // console.log(el.id)
+                                _this.roleform.ids.push(el.id)
+                                _this.checkedroleclues.push(el.id)
+                                _this.checkedrolecustomers.push(el.id)
+                                _this.checkedrolecontacts.push(el.id)
+                                _this.checkedroleopportunitys.push(el.id)
+                                _this.checkedroleagreements.push(el.id)
+                                _this.checkedroleactivitys.push(el.id)
+                                _this.checkedrolesets.push(el.id)
+                            }
+                        });
+                        // console.log(_this.roleform.ids)
+                        _this.roleform.id = val.id
+                        _this.roleform.name = val.name
+                        _this.roleform.deptid = val.deptid
+                        _this.roleform.deptname = val.deptname
+                        _this.dialogVisible4 = true
                     }
+                }).catch(function(err){
+                    console.log(err);
                 });
-                // console.log(this.roleform.ids)
-                this.roleform.id = val.id
-                this.roleform.name = val.name
-                this.roleform.deptid = val.deptid
-                this.roleform.deptname = val.deptname
-                this.dialogVisible4 = true
+                
             },
             updaterole(){
                 let _this = this
@@ -644,6 +677,11 @@
                                 type: 'success'
                             });
                             _this.$options.methods.reloadData.bind(_this)(true);
+                        }else if(res.data.msg && res.data.msg == 'error'){//删除角色
+                            _this.$message({
+                                message: '对不起，您没有该权限，请联系管理员开通',
+                                type: 'error'
+                            })
                         } else {
                             _this.$message({
                                 message: res.data.msg,
