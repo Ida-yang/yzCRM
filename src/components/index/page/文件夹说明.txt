@@ -1,0 +1,8 @@
+BasicData  //���������ļ���
+Outbound  //������ҵ�ļ���
+PutInStorage  //�����ҵ�ļ���
+TechnologyRoute//����·���ļ���
+ProductionOperation  //������ҵ�ļ���
+Organization // ��֯�����ļ���
+SystemSettings //ϵͳ�����ļ���
+QualityOfWork //品质作业
