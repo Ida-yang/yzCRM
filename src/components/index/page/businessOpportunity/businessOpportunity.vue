@@ -3,12 +3,12 @@
     <div>
         <div class="radioList">
             <el-radio-group v-model="searchList.label">
-                <span class="nameList">商机：</span>
+                <span class="nameList">商机分类：</span>
                 <el-radio v-for="item in businessData" :key="item.label" :label="item.label" @change="search()">{{item.value}}</el-radio>
             </el-radio-group>
         </div>
         <div class="searchList" style="width:100%;">
-            <span class="nameList">商机名称：</span>
+            <span class="nameList">公司名称：</span>
             <el-input v-model="searchList.searchName" placeholder="公司名称" style="width:300px;"></el-input>
             &nbsp;&nbsp;
             <el-button icon="el-icon-search" class="searchbutton" size="mini" @click="search()">查询</el-button>
@@ -467,7 +467,7 @@
                         data:qs.stringify(idArr),
                     }).then(function(res){
                         // console.log(res)
-                        if(res.status && res.status == 200) {
+                        if(res.data.success && res.data.success == true) {
                             _this.$message({
                                 message: '删除成功',
                                 type: 'success'
@@ -505,7 +505,7 @@
                         data:qs.stringify(idArr),
                     }).then(function(res){
                         // console.log(res)
-                        if(res.status && res.status == 200) {
+                        if(res.data.success && res.data.success == true) {
                             _this.$message({
                                 message: '删除成功',
                                 type: 'success'

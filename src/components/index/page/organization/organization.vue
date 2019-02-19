@@ -334,7 +334,7 @@
                     method: 'get',
                     url: _this.$store.state.defaultHttp+'resource/getResources.do',
                 }).then(function(res){
-                    console.log(res.data)
+                    // console.log(res.data)
                     _this.cluerole = res.data.name1
                     _this.customerole = res.data.name2
                     _this.contactrole = res.data.name3
@@ -342,6 +342,27 @@
                     _this.agreementrole = res.data.name5
                     _this.activityrole = res.data.name6
                     _this.setrole = res.data.name7
+                    if(_this.cluerole == res.data.name1){
+                        _this.checkAllclue = true
+                    }
+                    if(_this.customerole == res.data.name2){
+                        _this.checkAllcustomer = true
+                    }
+                    if(_this.contactrole == res.data.name3){
+                        _this.checkAllcontact = true
+                    }
+                    if(_this.opportunityrole == res.data.name4){
+                        _this.checkAllopportunity = true
+                    }
+                    if(_this.agreementrole == res.data.name5){
+                        _this.checkAllagreement = true
+                    }
+                    if(_this.activityrole == res.data.name6){
+                        _this.checkAllactivity = true
+                    }
+                    if(_this.setrole == res.data.name7){
+                        _this.checkAllset = true
+                    }
                 }).catch(function(err){
                     console.log(err);
                 });
@@ -580,7 +601,7 @@
                 let _this = this
                 axios({
                     method: 'post',
-                    url: _this.$store.state.defaultHttp+'deptJurisdiction/insert.do',//编辑角色
+                    url: _this.$store.state.defaultHttp+'roleJurisdiction/update.do',//编辑角色
                 }).then(function(res){
                     // console.log(res)
                     if(res.data.msg && res.data.msg == 'error'){

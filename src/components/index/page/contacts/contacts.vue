@@ -3,7 +3,7 @@
     <div>
         <div class="radioList">
             <el-radio-group v-model="searchList.label">
-                <span class="nameList">联系人：</span>
+                <span class="nameList">联系人分类：</span>
                 <el-radio v-for="item in contactData" :key="item.label" :label="item.label" @change="search()">{{item.value}}</el-radio>
             </el-radio-group>
         </div>

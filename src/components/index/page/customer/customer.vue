@@ -717,7 +717,7 @@
                     method: 'post',
                     url: _this.$store.state.defaultHttp+'customerJurisdiction/update.do',//编辑客户
                 }).then(function(res){
-                    // console.log(res.data.msg)
+                    // console.log(res)
                     if(res.data.msg && res.data.msg == 'error'){
                         _this.$message({
                             message:'对不起，您没有该权限，请联系管理员开通',
@@ -740,8 +740,8 @@
                     url:  _this.$store.state.defaultHttp+ 'customerpool/updateTo.do?cId='+_this.$store.state.iscId,
                     data:qs.stringify(idArr),
                 }).then(function(res){
-                    console.log(res)
-                    if(res.data.msg && res.data.msg == 'success') {
+                    // console.log(res)
+                    if(res.data.code && res.data.code == 200) {
                         _this.$message({
                             message: '转移成功',
                             type: 'success'

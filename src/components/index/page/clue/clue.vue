@@ -726,7 +726,7 @@
                     url:  _this.$store.state.defaultHttp+ 'customerTwo/updateState.do?cId='+_this.$store.state.iscId,
                     data:qs.stringify(idArr),
                 }).then(function(res){
-                    console.log(res)
+                    // console.log(res)
                     if(res.data && res.data == 'success') {
                         _this.$message({
                             message: '转移成功',
@@ -761,7 +761,7 @@
                     data:qs.stringify(idArr),
                 }).then(function(res){
                     // console.log(res)
-                    if(res.status && res.status == 200) {
+                    if(res.data.msg && res.data.msg == 'success') {
                         _this.$message({
                             message: '转换成功',
                             type: 'success'

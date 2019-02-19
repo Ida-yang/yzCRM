@@ -3,7 +3,7 @@
     <div class="contentall">
         <div class="setleftcontent">
             <ul class="namecontent">
-                <li v-for="item in nameList" :key="item.index" :value="item.name" @click="showTableval(item)">{{item.name}}</li>
+                <li v-for="item in nameList" :key="item.index" :value="item.name" :class="{actived:item.isActive}" @click="showTableval(item)">{{item.name}}</li>
             </ul>
         </div>
         <div class="centercontent"></div>
@@ -144,10 +144,10 @@
             return {
                 dataList:null,
                 nameList:[
-                    {index:1,name:'线索状态'},
-                    {index:2,name:'客户状态'},
-                    {index:3,name:'客户来源'},
-                    {index:4,name:'客户级别'}
+                    {index:1,name:'线索状态',isActive:true},
+                    {index:2,name:'客户状态',isActive:false},
+                    {index:3,name:'客户来源',isActive:false},
+                    {index:4,name:'客户级别',isActive:false}
                 ],
                 newform:{
                     type:'线索状态',
@@ -198,6 +198,10 @@
             showTableval(val){
                 let _this = this
                 this.newform.type = val.name
+                this.nameList.forEach(function(obj){
+                    obj.isActive = false;
+                });
+                val.isActive = !val.isActive;
                 _this.$options.methods.reloadTable.bind(_this)(true);
             },
             //状态添加
@@ -343,7 +347,7 @@
                     url: _this.$store.state.defaultHttp+'typeInfo/saveOrUpdate.do?cId='+_this.$store.state.iscId,
                     data:qs.stringify(data)
                 }).then(function(res){
-                    console.log(res)
+                    // console.log(res)
                     if(res.data.code && res.data.code == 200){
                         _this.$message({
                             message:'修改状态成功',
@@ -435,8 +439,9 @@
         padding-left: 40px;
         /* text-align: center; */
     }
-    .namecontent li:hover{
+    .namecontent li.actived{
         background-color: #f0f0f0;
+        color: #409EFF
     }
     .centercontent{
         display: block;

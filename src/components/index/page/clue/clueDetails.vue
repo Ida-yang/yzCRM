@@ -387,7 +387,7 @@
                     data:qs.stringify(idArr),
                 }).then(function(res){
                     // console.log(res)
-                    if(res.status && res.status == 200) {
+                    if(res.data && res.data == 'success') {
                         _this.$message({
                             message: '转移成功',
                             type: 'success'

@@ -418,13 +418,13 @@
             return {
                 searchList:{
                     searchName:null,
-                    label:null,
+                    label:'1',
                     page:null,
                     limit:null,
                 },
                 searchListNew:{
                     searchName:null,
-                    label:null,
+                    label:'1',
                     page:null,
                     limit:null,
                 },

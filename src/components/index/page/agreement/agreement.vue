@@ -3,12 +3,12 @@
     <div>
         <div class="radioList">
             <el-radio-group v-model="searchList.label">
-                <span class="nameList">合同：</span>
+                <span class="nameList">合同分类：</span>
                 <el-radio v-for="item in agreementData" :key="item.label" :label="item.label" @change="search()">{{item.value}}</el-radio>
             </el-radio-group>
         </div>
         <div class="searchList" style="width:100%;">
-            <span class="nameList">合同名称：</span>
+            <span class="nameList">公司名称：</span>
             <el-input v-model="searchList.searchName" placeholder="公司名称" style="width:300px;"></el-input>
             &nbsp;&nbsp;
             <el-button icon="el-icon-search" class="searchbutton" size="mini" @click="search()">查询</el-button>
@@ -400,7 +400,7 @@
                         data:qs.stringify(idArr),
                     }).then(function(res){
                         // console.log(res)
-                        if(res.status && res.status == 200) {
+                        if(res.data && res.data == 'success') {
                             _this.$message({
                                 message: '删除成功',
                                 type: 'success'
@@ -547,7 +547,8 @@
                         url: _this.$store.state.defaultHttp+'delContract.do?cId='+_this.$store.state.iscId,
                         data:qs.stringify(idArr),
                     }).then(function(res){
-                        if(res.status && res.status == 200) {
+                        // console.log(res)
+                        if(res.data && res.data == 'success') {
                             _this.$message({
                                 message: '删除成功',
                                 type: 'success'

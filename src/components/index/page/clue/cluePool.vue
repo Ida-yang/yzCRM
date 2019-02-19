@@ -401,13 +401,13 @@
             return {
                 searchList:{
                     searchName:null,
-                    label:null,
+                    label:'1',
                     page:null,
                     limit:null,
                 },
                 searchListNew:{
                     searchName:null,
-                    label:null,
+                    label:'1',
                     page:null,
                     limit:null,
                 },
@@ -418,8 +418,8 @@
                 },
 
                 pIdData:[
-                    {label:'0',value:'全部客户'},
-                    {label:'1',value:'我的客户'},
+                    {label:'0',value:'全部线索'},
+                    {label:'1',value:'我的线索'},
                     {label:'2',value:'本组'},
                     {label:'3',value:'本机构'},],
 
@@ -556,7 +556,7 @@
                         data:qs.stringify(idArr),
                     }).then(function(res){
                         // console.log(res)
-                        if(res.status && res.status == 200) {
+                        if(res.data.success && res.data.success == true) {
                             _this.$message({
                                 message: '删除成功',
                                 type: 'success'
@@ -593,7 +593,7 @@
                         data:qs.stringify(idArr),
                     }).then(function(res){
                         // console.log(res)
-                        if(res.status && res.status == 200) {
+                        if(res.data.success && res.data.success == true) {
                             _this.$message({
                                 message: '删除成功',
                                 type: 'success'

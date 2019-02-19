@@ -325,7 +325,7 @@
                                 data:qs.stringify(data),
                             }).then(function(res){
                                 // console.log(res)
-                                if(res.status && res.status == 200) {
+                                if(res.data.code && res.data.code == 200) {
                                     _this.$message({
                                         message: '修改成功',
                                         type: 'success'
@@ -364,7 +364,7 @@
                         data:qs.stringify(data),
                     }).then(function(res){
                         // console.log(res)
-                        if(res.status && res.status == 200) {
+                        if(res.data.code && res.data.code == 200) {
                             _this.$message({
                                 message: '关闭成功',
                                 type: 'success'

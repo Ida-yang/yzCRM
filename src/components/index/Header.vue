@@ -201,8 +201,12 @@
                     //     method: 'get',
                     //     url: this.$store.state.defaultHttp+this.$store.state.userUrl+'logout',
                     // }).then(function(res){}).catch(function(err){});
-                    // localStorage.removeItem('ms_username');
-                    // localStorage.removeItem('userData');
+                    localStorage.removeItem('iscId');
+                    localStorage.removeItem('ispId');
+                    localStorage.removeItem('user');
+                    localStorage.removeItem('deptid');
+                    localStorage.removeItem('roleid');
+                    localStorage.removeItem('insid');
                     this.$router.push('/login');
                 }
                 if(e == 'resPassWord'){
