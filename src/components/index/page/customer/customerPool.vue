@@ -648,7 +648,7 @@
                 idArr.deptid = _this.$store.state.insid
 
                 axios({
-                    method: 'post',
+                    method: 'get',
                     url: _this.$store.state.defaultHttp+'customerPoolJurisdiction/receive.do',
                 }).then(function(res){
                     // console.log(res)
@@ -694,7 +694,7 @@
                 idArr.deptid = _this.$store.state.insid
 
                 axios({
-                    method: 'post',
+                    method: 'get',
                     url: _this.$store.state.defaultHttp+'customerPoolJurisdiction/receive.do',
                 }).then(function(res){
                     // console.log(res)
@@ -741,7 +741,7 @@
                 idArr.deptid = ''
 
                 axios({
-                    method: 'post',
+                    method: 'get',
                     url: _this.$store.state.defaultHttp+'customerPoolJurisdiction/distribution.do',
                 }).then(function(res){
                     // console.log(res)
@@ -822,7 +822,7 @@
                 }
 
                 axios({
-                    method: 'post',
+                    method: 'get',
                     url: _this.$store.state.defaultHttp+_this.authorityInterface,
                 }).then(function(res){
                     // console.log(res)

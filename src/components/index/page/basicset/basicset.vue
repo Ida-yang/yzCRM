@@ -209,7 +209,7 @@
                 let _this = this
 
                 axios({
-                    method: 'post',
+                    method: 'get',
                     url: _this.$store.state.defaultHttp+'typeInfoJurisdiction/insert.do',//新增状态
                 }).then(function(res){
                     // console.log(res)
@@ -289,7 +289,7 @@
                 // console.log(row.sort)
 
                 axios({
-                    method: 'post',
+                    method: 'get',
                     url: _this.$store.state.defaultHttp+'typeInfoJurisdiction/update.do',//编辑状态
                 }).then(function(res){
                     // console.log(res)

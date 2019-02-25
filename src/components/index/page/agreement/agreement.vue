@@ -459,7 +459,7 @@
                 this.$store.state.addOrUpdateData = addOrUpdateData;
                 // this.$router.push({ path: '/agreementaddorupdate' });
                 axios({
-                    method: 'post',
+                    method: 'get',
                     url: _this.$store.state.defaultHttp+'contractJurisdiction/insert.do',//新增合同
                 }).then(function(res){
                     // console.log(res)
@@ -517,7 +517,7 @@
                 // console.log(addOrUpdateData)
                 // this.$router.push({ path: '/agreementaddorupdate' });
                 axios({
-                    method: 'post',
+                    method: 'get',
                     url: _this.$store.state.defaultHttp+'contractJurisdiction/update.do',//编辑合同
                 }).then(function(res){
                     // console.log(res)
@@ -616,7 +616,7 @@
                 }
 
                 axios({
-                    method: 'post',
+                    method: 'get',
                     url: _this.$store.state.defaultHttp+_this.authorityInterface,
                 }).then(function(res){
                     // console.log(res)

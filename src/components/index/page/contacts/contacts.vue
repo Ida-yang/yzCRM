@@ -397,7 +397,7 @@
                 this.$store.state.addOrUpdateData = addOrUpdateData;
                 // this.$router.push({ path: '/contactsaddorupdate' });
                 axios({
-                    method: 'post',
+                    method: 'get',
                     url: _this.$store.state.defaultHttp+'contactsJurisdiction/insert.do',//新增联系人
                 }).then(function(res){
                     // console.log(res)
@@ -454,7 +454,7 @@
                 this.$store.state.addOrUpdateData = addOrUpdateData;
                 // this.$router.push({ path: '/contactsaddorupdate' });
                 axios({
-                    method: 'post',
+                    method: 'get',
                     url: _this.$store.state.defaultHttp+'contactsJurisdiction/update.do',//编辑联系人
                 }).then(function(res){
                     // console.log(res)
@@ -592,7 +592,7 @@
                 }
 
                 axios({
-                    method: 'post',
+                    method: 'get',
                     url: _this.$store.state.defaultHttp+_this.authorityInterface,
                 }).then(function(res){
                     // console.log(res)

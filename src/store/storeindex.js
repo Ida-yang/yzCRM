@@ -211,56 +211,56 @@ const mutations = {
   },
   
 }
-const actions = {
-  loginForm (context,userInput){
-    state.selection = userInput[1];
-    axios({
-      method: 'post',
-      url: context.state.defaultHttp+'/user/login',
-      data:JSON.stringify(userInput[0])
-    }).then(function(res){
-      if(res.data && res.data.code == 200) {
-        localStorage.setItem('userData', JSON.stringify(res.data.result));
-        localStorage.setItem('Isusername', res.data.result.username);
-        localStorage.setItem('orgId',userInput[0].orgId);
-        localStorage.setItem('userNameis',res.data.result.username)
-        if(state.selection.userNamechecked === "true"){
-          localStorage.setItem('userName',userInput[0].user);
-          localStorage.setItem('userNameChecked',true);
-        }else{
-          localStorage.removeItem('userName');
-          localStorage.removeItem('userNameChecked');
-        }
-        if(state.selection.userPasschecked === "true"){
-          localStorage.setItem('userPass',userInput[0].password);
-          localStorage.setItem('userPasschecked',true);
-        }else{
-          localStorage.removeItem('userPass');
-          localStorage.removeItem('userPasschecked');
-        }
-        state.token = res.headers['wmsnet-token']
-        userInput[2].$store.state.userData = res.data.result;
-        sessionStorage.setItem("token",res.headers['wmsnet-token']) ;
-        userInput[2].$router.push('/index')
-        state.configThis = userInput[2];
-        state.configThis.$message({
-          message: '登录成功',
-          type: 'success'
-        })
-      } else {
-        state.configThis = userInput[2];
-        state.configThis.$message({
-          message: res.data.message,
-          type: 'error'
-        })
-      }
-    })
-    .catch(function(err){
-      // console.log(err)
-    })
-  },
+// const actions = {
+//   loginForm (context,userInput){
+//     state.selection = userInput[1];
+//     axios({
+//       method: 'post',
+//       url: context.state.defaultHttp+'/user/login',
+//       data:JSON.stringify(userInput[0])
+//     }).then(function(res){
+//       if(res.data && res.data.code == 200) {
+//         localStorage.setItem('userData', JSON.stringify(res.data.result));
+//         localStorage.setItem('Isusername', res.data.result.username);
+//         localStorage.setItem('orgId',userInput[0].orgId);
+//         localStorage.setItem('userNameis',res.data.result.username)
+//         if(state.selection.userNamechecked === "true"){
+//           localStorage.setItem('userName',userInput[0].user);
+//           localStorage.setItem('userNameChecked',true);
+//         }else{
+//           localStorage.removeItem('userName');
+//           localStorage.removeItem('userNameChecked');
+//         }
+//         if(state.selection.userPasschecked === "true"){
+//           localStorage.setItem('userPass',userInput[0].password);
+//           localStorage.setItem('userPasschecked',true);
+//         }else{
+//           localStorage.removeItem('userPass');
+//           localStorage.removeItem('userPasschecked');
+//         }
+//         state.token = res.headers['wmsnet-token']
+//         userInput[2].$store.state.userData = res.data.result;
+//         sessionStorage.setItem("token",res.headers['wmsnet-token']) ;
+//         userInput[2].$router.push('/index')
+//         state.configThis = userInput[2];
+//         state.configThis.$message({
+//           message: '登录成功',
+//           type: 'success'
+//         })
+//       } else {
+//         state.configThis = userInput[2];
+//         state.configThis.$message({
+//           message: res.data.message,
+//           type: 'error'
+//         })
+//       }
+//     })
+//     .catch(function(err){
+//       // console.log(err)
+//     })
+//   },
 
-}
+// }
 /*将store导出*/
 const store = new Vuex.Store({
   state: state,

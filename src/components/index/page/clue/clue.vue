@@ -615,7 +615,7 @@
                 addOrUpdateData.submitURL = this.$store.state.defaultHttp+ 'customerTwo/saveClue.do?cId='+this.$store.state.iscId+'&pId='+this.$store.state.ispId,
                 this.$store.state.addOrUpdateData = addOrUpdateData;
                 axios({
-                    method: 'post',
+                    method: 'get',
                     url: _this.$store.state.defaultHttp+'clueJurisdiction/insert.do',//新增线索
                 }).then(function(res){
                     // console.log(res.data.msg)
@@ -697,7 +697,7 @@
                 // console.log(addOrUpdateData)
                 this.$store.state.addOrUpdateData = addOrUpdateData;
                 axios({
-                    method: 'post',
+                    method: 'get',
                     url: _this.$store.state.defaultHttp+'clueJurisdiction/update.do',//修改线索
                 }).then(function(res){
                     // console.log(res)
@@ -823,7 +823,7 @@
                 }
 
                 axios({
-                    method: 'post',
+                    method: 'get',
                     url: _this.$store.state.defaultHttp+_this.authorityInterface,
                 }).then(function(res){
                     // console.log(res)

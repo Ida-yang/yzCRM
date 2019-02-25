@@ -507,30 +507,39 @@
                 // console.log(data)
 
                 axios({
-                    method: 'post',
-                    url:  _this.$store.state.defaultHttp+ 'addFollow.do?cId='+_this.$store.state.iscId+'&pId='+this.$store.state.ispId,
-                    data:qs.stringify(data,this),
+                    method: 'get',
+                    url: _this.$store.state.defaultHttp+'clueJurisdiction/follow.do',//新增部门
                 }).then(function(res){
                     // console.log(res)
-                    if(res.data.msg && res.data.msg == 'success' ) {
-                        _this.$message({
-                            message: '提交成功',
-                            type: 'success'
-                        });
-                        _this.followform.contactTime = ''
-                        _this.followform.followContent = ''
-                        _this.$store.state.detailsData.submitData = {"id":_this.detailData.id}
-                        _this.$options.methods.loadData.bind(_this)(true);
-                        // _this.closeTag()
-                    } else {
-                        _this.$message({
-                            message: res.data.msg,
-                            type: 'error'
-                        });
-                    }
+                    axios({
+                        method: 'post',
+                        url:  _this.$store.state.defaultHttp+ 'addFollow.do?cId='+_this.$store.state.iscId+'&pId='+this.$store.state.ispId,
+                        data:qs.stringify(data,this),
+                    }).then(function(res){
+                        // console.log(res)
+                        if(res.data.msg && res.data.msg == 'success' ) {
+                            _this.$message({
+                                message: '提交成功',
+                                type: 'success'
+                            });
+                            _this.followform.contactTime = ''
+                            _this.followform.followContent = ''
+                            _this.$store.state.detailsData.submitData = {"id":_this.detailData.id}
+                            _this.$options.methods.loadData.bind(_this)(true);
+                            // _this.closeTag()
+                        } else {
+                            _this.$message({
+                                message: res.data.msg,
+                                type: 'error'
+                            });
+                        }
+                    }).catch(function(err){
+                        console.log(err);
+                    });
                 }).catch(function(err){
                     console.log(err);
                 });
+                
             },
             closeTag() {
                 let tagsList = this.$store.state.tagsList;

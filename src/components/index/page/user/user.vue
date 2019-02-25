@@ -464,7 +464,7 @@
                     })
                 }else{
                     axios({
-                        method: 'post',
+                        method: 'get',
                         url: _this.$store.state.defaultHttp+'deptJurisdiction/insert.do',//新增用户
                     }).then(function(res){
                         // console.log(res)
@@ -581,7 +581,7 @@
                 let data = {}
 
                 axios({
-                        method: 'post',
+                        method: 'get',
                         url: _this.$store.state.defaultHttp+'deptJurisdiction/insert.do',//编辑用户
                     }).then(function(res){
                         // console.log(res)

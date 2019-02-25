@@ -447,7 +447,7 @@
                 });
                 //加载快捷方式
                 axios({
-                    method:'post',
+                    method:'get',
                     url:_this.$store.state.defaultHttp+'getNameSelected.do?cId='+_this.$store.state.iscId,
                 }).then(function(res){
                     // console.log(res.data)
@@ -469,7 +469,7 @@
                 });
                 //加载跟进记录
                 axios({
-                    method:'post',
+                    method:'get',
                     url:_this.$store.state.defaultHttp+'customerpool/getFollowStaffAndpool.do?cId='+_this.$store.state.iscId+'&pId='+_this.$store.state.ispId+'&customerpool_id='+_this.detailData.id,
                 }).then(function(res){
                     // console.log(res.data.map.success)
@@ -482,7 +482,7 @@
                 });
                 //加载客户详情
                 axios({
-                    method:'post',
+                    method:'get',
                     url:_this.$store.state.defaultHttp+'customerpool/getPoolById.do?cId='+_this.$store.state.iscId+'&id='+this.detailData.id,
                 }).then(function(res){
                     // console.log(res.data.map.success)
@@ -686,30 +686,40 @@
                 // console.log(data)
 
                 axios({
-                    method: 'post',
-                    url:  _this.$store.state.defaultHttp+ 'addFollow.do?cId='+_this.$store.state.iscId+'&pId='+_this.$store.state.ispId,
-                    data:qs.stringify(data,this),
+                    method: 'get',
+                    url: _this.$store.state.defaultHttp+'customerJurisdiction/follow.do',//编辑部门
                 }).then(function(res){
                     // console.log(res)
-                    if(res.data.msg && res.data.msg == 'success' ) {
-                        _this.$message({
-                            message: '提交成功',
-                            type: 'success'
-                        });
-                        _this.followform.contactTime = ''
-                        _this.followform.followContent = ''
-                        _this.$store.state.detailsData.submitData = {"id":_this.detailData.id}
-                        _this.$options.methods.loadData.bind(_this)(true);
-                        // _this.closeTag()
-                    } else {
-                        _this.$message({
-                            message: res.data.msg,
-                            type: 'error'
-                        });
-                    }
+                    axios({
+                        method: 'post',
+                        url:  _this.$store.state.defaultHttp+ 'addFollow.do?cId='+_this.$store.state.iscId+'&pId='+_this.$store.state.ispId,
+                        data:qs.stringify(data,this),
+                    }).then(function(res){
+                        // console.log(res)
+                        if(res.data.msg && res.data.msg == 'success' ) {
+                            _this.$message({
+                                message: '提交成功',
+                                type: 'success'
+                            });
+                            _this.followform.contactTime = ''
+                            _this.followform.followContent = ''
+                            _this.$store.state.detailsData.submitData = {"id":_this.detailData.id}
+                            _this.$options.methods.loadData.bind(_this)(true);
+                            // _this.closeTag()
+                        } else {
+                            _this.$message({
+                                message: res.data.msg,
+                                type: 'error'
+                            });
+                        }
+                    }).catch(function(err){
+                        console.log(err);
+                    });
                 }).catch(function(err){
                     console.log(err);
                 });
+
+                
             },
             closeTag() {
                 let tagsList = this.$store.state.tagsList;

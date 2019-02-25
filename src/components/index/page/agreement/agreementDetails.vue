@@ -180,7 +180,7 @@
                 });
                 //加载合同详情
                 axios({
-                    method:'post',
+                    method:'get',
                     url:_this.$store.state.defaultHttp+'getContractById.do?cId='+_this.$store.state.iscId+'&contractId='+this.detailData.id,
                 }).then(function(res){
                     // console.log(res.data)

@@ -110,14 +110,14 @@ export default {
                       message: '登录成功',
                       type: 'success'
                     })
-                let userData = res.data.map.success
-                _this.$store.commit('iscId',userData.cId)
-                _this.$store.commit('ispId',userData.pId)
-                _this.$store.commit('user',userData.name)
-                _this.$store.commit('deptid',userData.second_id)
-                _this.$store.commit('roleid',userData.roleid)
-                _this.$store.commit('insid',userData.private_deptid)
-                _this.$router.push({path:'/index'})
+                    let userData = res.data.map.success
+                    _this.$store.commit('iscId',userData.cId)
+                    _this.$store.commit('ispId',userData.pId)
+                    _this.$store.commit('user',userData.name)
+                    _this.$store.commit('deptid',userData.second_id)
+                    _this.$store.commit('roleid',userData.roleid)
+                    _this.$store.commit('insid',userData.private_deptid)
+                    _this.$router.push({path:'/index'})
                 }else {
                     _this.$message({
                         message: res.data.msg,

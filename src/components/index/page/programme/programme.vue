@@ -382,7 +382,7 @@
                     })
                 }else if(this.clickdata.next == ''){
                     axios({
-                        method: 'post',
+                        method: 'get',
                         url: _this.$store.state.defaultHttp+'projectJurisdiction/insert.do',//新增方案
                     }).then(function(res){
                         // console.log(res)
@@ -470,7 +470,7 @@
                 let data = {}
 
                 axios({
-                    method: 'post',
+                    method: 'get',
                     url: _this.$store.state.defaultHttp+'projectJurisdiction/update.do',//编辑方案
                 }).then(function(res){
                     // console.log(res)

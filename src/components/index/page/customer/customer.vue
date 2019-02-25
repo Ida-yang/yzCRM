@@ -628,7 +628,7 @@
                 addOrUpdateData.submitURL = this.$store.state.defaultHttp+ 'customerpool/savePool.do?cId='+this.$store.state.iscId+'&pId='+this.$store.state.ispId,
                 this.$store.state.addOrUpdateData = addOrUpdateData;
                 axios({
-                    method: 'post',
+                    method: 'get',
                     url: _this.$store.state.defaultHttp+'customerJurisdiction/insert.do',//新增客户
                 }).then(function(res){
                     // console.log(res.data.msg)
@@ -714,7 +714,7 @@
                 // console.log(addOrUpdateData)
                 this.$store.state.addOrUpdateData = addOrUpdateData;
                 axios({
-                    method: 'post',
+                    method: 'get',
                     url: _this.$store.state.defaultHttp+'customerJurisdiction/update.do',//编辑客户
                 }).then(function(res){
                     // console.log(res)
@@ -803,7 +803,7 @@
                 }
 
                 axios({
-                    method: 'post',
+                    method: 'get',
                     url: _this.$store.state.defaultHttp+_this.authorityInterface,
                 }).then(function(res){
                     // console.log(res)

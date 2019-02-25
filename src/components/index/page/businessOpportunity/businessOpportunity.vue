@@ -388,7 +388,7 @@
                 this.$store.state.addOrUpdateData = addOrUpdateData;
                 // this.$router.push({ path: '/Opportunityaddorupdate' });
                 axios({
-                    method: 'post',
+                    method: 'get',
                     url: _this.$store.state.defaultHttp+'opportunityJurisdiction/insert.do',//新增商机
                 }).then(function(res){
                     // console.log(res)
@@ -435,7 +435,7 @@
                 this.$store.state.addOrUpdateData = addOrUpdateData;
                 // this.$router.push({ path: '/Opportunityaddorupdate' });
                 axios({
-                    method: 'post',
+                    method: 'get',
                     url: _this.$store.state.defaultHttp+'opportunityJurisdiction/update.do',//编辑商机
                 }).then(function(res){
                     // console.log(res)
@@ -574,7 +574,7 @@
                 }
 
                 axios({
-                    method: 'post',
+                    method: 'get',
                     url: _this.$store.state.defaultHttp+_this.authorityInterface,
                 }).then(function(res){
                     // console.log(res)

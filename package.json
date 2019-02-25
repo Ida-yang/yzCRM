@@ -21,7 +21,6 @@
     "mavon-editor": "^2.5.4",
     "npm": "^6.8.0",
     "vue": "^2.5.16",
-    "vue-area-linkage": "^5.1.0",
     "vue-cropperjs": "^2.2.0",
     "vue-quill-editor": "3.0.6",
     "vue-resource": "^1.5.1",
