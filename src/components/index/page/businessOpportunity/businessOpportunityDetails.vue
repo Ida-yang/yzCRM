@@ -309,6 +309,8 @@
                     let qs =require('querystring')
                     let data = {}
                     data.previousTime = this.steptime + ':00'
+                    data.deptid = this.$store.state.deptid
+                    data.secondid = this.$store.state.insid
                     if(_this.active == i){
                         data.progress_name = this.stepList[i].step_name
                         data.progress_probability = this.stepList[i].step_probability

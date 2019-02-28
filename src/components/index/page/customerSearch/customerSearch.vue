@@ -640,7 +640,8 @@
                             type: 'success'
                         });
                         _this.$options.methods.reloadTable.bind(_this)(true);
-                    } else if(res.data.msg && res.data.msg == 'error'){//删除联系人
+                    } else if(res.data.msg && res.data.msg == 'error'){//转移至线索
+                        _this.Loading = false
                         _this.$message({
                             message: '对不起，您没有该权限，请联系管理员开通',
                             type: 'error'

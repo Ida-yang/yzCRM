@@ -504,6 +504,8 @@
                 data.contactsId = this.followform.contactsId;
                 data.follow_state = this.followform.state;
                 data.customertwo_id = this.detailData.id;
+                data.deptid = this.$store.state.deptid
+                data.secondid = this.$store.state.insid
                 // console.log(data)
 
                 axios({

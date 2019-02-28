@@ -498,6 +498,7 @@
                 let arr = [this.newform]
                 let flag = false;
                 arr.forEach(item => {
+                    const myreg = /^[1][3,4,5,6,7,8][0-9]{9}$/;
                     if(!item.private_state){
                         _this.$message({
                             message: "请选择用户状态",
@@ -536,6 +537,13 @@
                     if(!item.private_password){
                         _this.$message({
                             message: "用户密码不能为空",
+                            type: 'error'
+                        });
+                        flag = true;
+                    }
+                    if(!myreg.test(item.private_phone)){
+                        _this.$message({
+                            message: "请输入11位手机号码",
                             type: 'error'
                         });
                         flag = true;
