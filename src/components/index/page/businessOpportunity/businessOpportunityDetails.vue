@@ -311,6 +311,7 @@
                     data.previousTime = this.steptime + ':00'
                     data.deptid = this.$store.state.deptid
                     data.secondid = this.$store.state.insid
+                    data.oy_id = this.detailData.id
                     if(_this.active == i){
                         data.progress_name = this.stepList[i].step_name
                         data.progress_probability = this.stepList[i].step_probability
@@ -323,7 +324,7 @@
                         }).then(({value}) =>{
                             axios({
                                 method:'post',
-                                url:_this.$store.state.defaultHttp+ 'saveOpportunityProgress.do?cId='+_this.$store.state.iscId+'&oy_id='+_this.detailData.id,
+                                url:_this.$store.state.defaultHttp+ 'saveOpportunityProgress.do?cId='+_this.$store.state.iscId+'&pId='+_this.$store.state.pId,
                                 data:qs.stringify(data),
                             }).then(function(res){
                                 // console.log(res)
@@ -354,6 +355,9 @@
                 let qs = require('querystring')
                 let data = {}
                 data.previousTime = this.steptime + ':00'
+                data.deptid = this.$store.state.deptid
+                data.secondid = this.$store.state.insid
+                data.oy_id = this.detailData.id
                 data.progress_name = '失败关闭'
                 data.progress_probability = '0%'
                 _this.$confirm('确认关闭商机进度吗？一旦确定将不可撤回','提示',{
@@ -362,7 +366,7 @@
                 }).then(({value}) =>{
                     axios({
                         method:'post',
-                        url:_this.$store.state.defaultHttp+ 'saveOpportunityProgress.do?cId='+_this.$store.state.iscId+'&oy_id='+_this.detailData.id,
+                        url:_this.$store.state.defaultHttp+ 'saveOpportunityProgress.do?cId='+_this.$store.state.iscId+'&pId='+_this.$store.state.pId,
                         data:qs.stringify(data),
                     }).then(function(res){
                         // console.log(res)

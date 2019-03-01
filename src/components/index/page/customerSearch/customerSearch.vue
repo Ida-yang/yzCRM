@@ -315,14 +315,16 @@
             </div>
         </el-table>
         <div class="block numberPage">
+            <div class="totalnum">共 {{tableNumber}} 条</div>
             <el-pagination
+            class="pagination"
             @size-change="handleSizeChange"
             @current-change="handleCurrentChange"
             :current-page="page"
             :page-sizes="[15, 30, 50, 100]"
             :page-size="15"
-            layout="total, sizes, prev, pager, next, jumper"
-            :total="tableNumber">
+            layout="sizes, prev, pager, next, jumper"
+            :total="tablesize">
             </el-pagination>
         </div>
     </div>
@@ -403,6 +405,8 @@
                 },
                 page:1,//默认第一页
                 limit:15,//默认10条
+                tablesize: 0,
+
                 idArr:{
                     id:null,
                 },
@@ -568,9 +572,16 @@
                     url: _this.$store.state.defaultHttp+'customerOne/query.do',
                     data: qs.stringify(searchList),
                 }).then(function(res){
-                    // console.log(res.data.rows)
+                    console.log(res.data)
                     _this.$store.state.customerList = res.data.rows
                     _this.$store.state.customerListnumber = res.data.total;
+                    if(!res.data.size){
+                        console.log('不超过那个页数')
+                        _this.tablesize = res.data.total
+                    }else{
+                        console.log('超过了那个页数，换种方式显示')
+                        _this.tablesize = res.data.size
+                    }
                 }).catch(function(err){
                     console.log(err);
                 });
@@ -751,12 +762,12 @@
             handleSizeChange(val) {
                 let _this = this;
                 _this.limit = val;
-                _this.$options.methods.reloadTable.bind(_this)(false);
+                _this.$options.methods.reloadTable.bind(_this)(true);
             },
             handleCurrentChange(val) {
                 let _this = this;
                 _this.page = val;
-                _this.$options.methods.reloadTable.bind(_this)(false);
+                _this.$options.methods.reloadTable.bind(_this)(true);
             },
         },
     }
@@ -814,6 +825,16 @@
         height: 30px;
         border-left: 0;
         border-right: 0;
+    }
+    .pagination{
+        float: left;
+    }
+    .totalnum{
+        font-size: 14px;
+        line-height: 32px;
+        color: #2c2c2c;
+        float: left;
+        margin: 20px 0;
     }
     /* .country{
         display: flex;

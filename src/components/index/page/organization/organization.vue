@@ -334,7 +334,7 @@
                     method: 'get',
                     url: _this.$store.state.defaultHttp+'resource/getResources.do',
                 }).then(function(res){
-                    console.log(res.data)
+                    // console.log(res.data)
                     _this.cluerole = res.data.name1
                     _this.customerole = res.data.name2
                     _this.contactrole = res.data.name3
@@ -654,7 +654,7 @@
                 data.ids = this.roleform.ids
                 // console.log(data.ids)
                 axios({
-                    method: 'get',
+                    method: 'post',
                     url:  _this.$store.state.defaultHttp+ 'role/saveOrUpdate.do?cId='+_this.$store.state.iscId,
                     data:qs.stringify(data),
                 }).then(function(res){

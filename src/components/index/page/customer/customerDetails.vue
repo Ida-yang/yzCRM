@@ -692,31 +692,39 @@
                     url: _this.$store.state.defaultHttp+'customerJurisdiction/follow.do',//编辑部门
                 }).then(function(res){
                     // console.log(res)
-                    axios({
-                        method: 'post',
-                        url:  _this.$store.state.defaultHttp+ 'addFollow.do?cId='+_this.$store.state.iscId+'&pId='+_this.$store.state.ispId,
-                        data:qs.stringify(data,this),
-                    }).then(function(res){
-                        // console.log(res)
-                        if(res.data.msg && res.data.msg == 'success' ) {
-                            _this.$message({
-                                message: '提交成功',
-                                type: 'success'
-                            });
-                            _this.followform.contactTime = ''
-                            _this.followform.followContent = ''
-                            _this.$store.state.detailsData.submitData = {"id":_this.detailData.id}
-                            _this.$options.methods.loadData.bind(_this)(true);
-                            // _this.closeTag()
-                        } else {
-                            _this.$message({
-                                message: res.data.msg,
-                                type: 'error'
-                            });
-                        }
-                    }).catch(function(err){
-                        console.log(err);
-                    });
+                    if(res.data.msg && res.data.msg == 'error'){
+                        _this.$message({
+                            message:'对不起，您没有该权限，请联系管理员开通',
+                            type:'error'
+                        })
+                    }else{
+                        axios({
+                            method: 'post',
+                            url:  _this.$store.state.defaultHttp+ 'addFollow.do?cId='+_this.$store.state.iscId+'&pId='+_this.$store.state.ispId,
+                            data:qs.stringify(data,this),
+                        }).then(function(res){
+                            // console.log(res)
+                            if(res.data.msg && res.data.msg == 'success' ) {
+                                _this.$message({
+                                    message: '提交成功',
+                                    type: 'success'
+                                });
+                                _this.followform.contactTime = ''
+                                _this.followform.followContent = ''
+                                _this.$store.state.detailsData.submitData = {"id":_this.detailData.id}
+                                _this.$options.methods.loadData.bind(_this)(true);
+                                // _this.closeTag()
+                            } else {
+                                _this.$message({
+                                    message: res.data.msg,
+                                    type: 'error'
+                                });
+                            }
+                        }).catch(function(err){
+                            console.log(err);
+                        });
+                    }
+                    
                 }).catch(function(err){
                     console.log(err);
                 });
