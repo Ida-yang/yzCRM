@@ -1,32 +1,49 @@
 <template>
     <div class="innerspace">
+        <div class="header-head">
+            <div class="radioList">
+                <el-radio-group v-model="searchList.label">
+                    <el-radio v-for="item in pIdData" :key="item.label" :label="item.label" @change="search()">{{item.value}}</el-radio>
+                </el-radio-group>
+            </div>
+        </div>
         <div class="head">
             <ul>
-                <li><p>总线索</p><p>1000</p></li>
-                <li><p>今日新增线索</p><p>100</p></li>
-                <li><p>今日更新线索</p><p>100</p></li>
+                <li><p>总线索</p><p>{{amountList.totalClue}}</p></li>
+                <li><p>今日新增线索</p><p>{{amountList.todayAddClue}}</p></li>
+                <li><p>今日更新线索</p><p>{{amountList.todayRenewClue}}</p></li>
             </ul>
             <ul>
-                <li><p>总客户</p><p>1000</p></li>
-                <li><p>今日新增客户</p><p>100</p></li>
-                <li><p>今日更新客户</p><p>100</p></li>
+                <li><p>总客户</p><p>{{amountList.totalCustomer}}</p></li>
+                <li><p>今日新增客户</p><p>{{amountList.todayAddCustomer}}</p></li>
+                <li><p>今日更新客户</p><p>{{amountList.todayRenewCustomer}}</p></li>
             </ul>
             <ul>
-                <li><p>总商机</p><p>1000</p></li>
-                <li><p>今日新增商机</p><p>100</p></li>
-                <li><p>今日推荐商机</p><p>100</p></li>
+                <li><p>总商机</p><p>{{amountList.totalOpportunity}}</p></li>
+                <li><p>今日新增商机</p><p>{{amountList.todayAddOpportunity}}</p></li>
+                <li><p>今日推荐商机</p><p>{{amountList.todayRecommendOpportunity}}</p></li>
             </ul>
             <ul>
-                <li><p>总合同</p><p>1000</p></li>
-                <li><p>今日新增合同</p><p>100</p></li>
+                <li><p>总合同</p><p>{{amountList.totalContract}}</p></li>
+                <li><p>今日新增合同</p><p>{{amountList.todayAddContract}}</p></li>
             </ul>
         </div>
         <div class="middles">
             <div class="middlebody">
                 <div id="chart1" :style="{width: '400px', height: '400px'}"></div>
             </div>
+            <div class="middleline"></div>
             <div class="middlebody">
-                <div id="chart2" :style="{width: '400px', height: '400px'}"></div>
+                <div class="dropdown">
+                    <el-date-picker
+                        v-model="searchList.date"
+                        type="month"
+                        placeholder="选择日期"
+                        value-format="yyyy-MM"
+                        @change="search">
+                    </el-date-picker>
+                </div>
+                <div id="chart2" :style="{width: '500px', height: '400px'}"></div>
             </div>
         </div>
         <div class="foot">
@@ -111,16 +128,87 @@
         },
         data(){
             return {
-                msg:"首页"
+                msg:"首页",
+
+                amountList:{},
+                funnelList:{},
+                barList:{},
+                barData:{},
+
+                searchList:{
+                    label:'1',
+                    date: ''
+                },
+                nullvalue:null,
+
+                pIdData:[
+                    {label:'0',value:'全部'},
+                    {label:'1',value:'我的'},
+                    {label:'2',value:'本组'},
+                    {label:'3',value:'本机构'},],
             }
         },
         mounted(){
+            this.getMonth()
             this.loadData()
-            this.drawLine();
         },
         methods:{
             loadData(){
                 let _this = this;
+                let searchList = {}
+                if(this.searchList.label == 0 ){
+                    searchList.pId = _this.nullvalue
+                }else if(this.searchList.label == 1){
+                    searchList.pId = _this.$store.state.ispId
+                }else if(this.searchList.label == 2){
+                    searchList.secondid = _this.$store.state.deptid
+                }else if(this.searchList.label == 3){
+                    searchList.deptid = _this.$store.state.insid
+                }else{
+                    searchList.pId = _this.$store.state.ispId
+                }
+                let monthData = {}
+                monthData.month = this.searchList.date
+
+                //获取首页头部报表数据
+                axios({
+                    method: 'post',
+                    url: _this.$store.state.defaultHttp+'homePageHeader/getHomePageHeader.do?cId=' + _this.$store.state.iscId,
+                    data:qs.stringify(searchList),
+                }).then(function(res){
+                    // console.log(res.data)
+                    _this.amountList = res.data
+                }).catch(function(err){
+                    console.log(err)
+                })
+
+                //获取首页商机进度漏斗
+                axios({
+                    method: 'post',
+                    url: _this.$store.state.defaultHttp+'getMonthCountByExample.do?cId=' + _this.$store.state.iscId,
+                    data:qs.stringify(searchList),
+                }).then(function(res){
+                    // console.log(res.data)
+                    _this.funnelList = res.data
+                    // console.log(_this.funnelList)
+                    _this.$options.methods.drawfunnel.bind(_this)(true);
+                }).catch(function(err){
+                    console.log(err)
+                })
+                //获取首页合同金额排行榜
+                axios({
+                    method: 'post',
+                    url: _this.$store.state.defaultHttp+'getContractamount.do?cId=' + _this.$store.state.iscId,
+                    data:qs.stringify(monthData),
+                }).then(function(res){
+                    console.log(res.data)
+                    _this.barData = res.data.name
+                    _this.barList = res.data.value
+                    // console.log(_this.funnelList)
+                    _this.$options.methods.drawbar.bind(_this)(true);
+                }).catch(function(err){
+                    console.log(err)
+                })
                 _this.$store.state.welcomeData = [
                     {name:'项目名称',start_time:'2019-01-01',end_deal:'2019-03-31',state:'启动',user:'销售'},
                     {name:'项目名称',start_time:'2019-01-01',end_deal:'2019-03-31',state:'启动',user:'销售'},
@@ -134,13 +222,25 @@
                     {name:'项目名称',start_time:'2019-01-01',end_deal:'2019-03-31',state:'启动',user:'销售'},
                 ]
             },
-            drawLine(){
+            getMonth(){
+                let date=new Date;
+                let year=date.getFullYear(); 
+                let month=date.getMonth()+1;
+                month =(month<10 ? "0"+month:month); 
+                let mydate = (year.toString() + '-' + month.toString());
+                this.searchList.date = mydate
+            },
+            search(){
+                const _this = this
+                _this.$options.methods.loadData.bind(_this)(true);
+            },
+            drawfunnel(){
                 // 基于准备好的dom，初始化echarts实例
                 let chart1 = echarts.init(document.getElementById('chart1'))
-                let chart2 = echarts.init(document.getElementById('chart2'))
+                console.log(this.funnelList)
                 // 绘制图表
                 chart1.setOption({
-                    title : { text: '销售漏斗' },
+                    title : { text: '商机漏斗' },
                     tooltip : {},
                     legend: {
                         data : ['展现','点击','访问','咨询','订单']
@@ -153,32 +253,47 @@
                     },
                     series : [
                         {
-                            name:'销售漏斗',
+                            name:'商机漏斗',
                             type:'funnel',
                             // width: '40%',
                             minSize: '10%',
                             sort: 'none',
-                            data:[
-                                {value:0, name:'访问'},
-                                {value:0, name:'咨询'},
-                                {value:0, name:'订单'},
-                                {value:0, name:'点击'},
-                                {value:0, name:'展现'}
-                            ]
+                            data:this.funnelList
                         }
                     ]
                 });
+            },
+            drawbar(){
+                // 基于准备好的dom，初始化echarts实例
+                let chart2 = echarts.init(document.getElementById('chart2'))
+                // 绘制图表
                 chart2.setOption({
-                    title: { text: '销售排行' },
+                    title: { text: '合同金额排行' },
                     tooltip: {},
                     xAxis: {
-                        data: ["张三", "李四", "王五", "赵六"]
+                        data: this.barData
                     },
-                    yAxis: {},
+                    yAxis: {
+                        type: 'value',
+                        axisLabel: {
+                            margin: 8,
+                            // formatter(value, index) {
+                            //     if (value >= 10000 && value < 10000000) {
+                            //         value = value / 10000 + "万";
+                            //     } else if (value >= 10000000) {
+                            //         value = value / 10000000 + "千万";
+                            //     }
+                            //     return value;
+                            // }
+                        }
+                    },
+                    grid: {
+                        left: 120
+                    },
                     series: [{
-                        name: '销售排行',
+                        name: '合同金额排行',
                         type: 'bar',
-                        data: [5, 20, 36, 10]
+                        data: this.barList
                     }]
                 });
             }
@@ -193,6 +308,13 @@
         padding: 0;
         background-color: #f0f0f0;
     }
+    .header-head{
+        width: 100%;
+        height: 30px;
+        background-color: #ffffff;
+        padding-left: 50%;
+        box-sizing: border-box;
+    }
     .head{
         width: 100%;
         height: 100px;
@@ -201,6 +323,7 @@
         display: -webkit-flex; /* Safari */
         justify-content: center;   /*水平居中*/
         align-items: center;
+        margin-top: 20px;
     }
     .head ul{
         height: 100%;
@@ -226,7 +349,7 @@
     }
     .middles{
         width: 100%;
-        height: 400px;
+        height: 500px;
         background-color: #ffffff;
         margin-top: 20px;
         display: flex;
@@ -237,10 +360,24 @@
     .middles .middlebody{
         flex: 1;
         padding: 10px;
+        width: 500px;
     }
-    .middles .middlebody:first-child{
+    .middleline{
+        width: 10px;
+        height: 500px;
+        background-color: #f0f0f0;
+        padding: 0;
+    }
+    .dropdown{
+        width: 500px;
+        height: 40px;
+        padding-left: 230px;
+        box-sizing: border-box;
+        /* background-color: #000; */
+    }
+    /* .middles .middlebody:first-child{
         border-right: 10px solid #f0f0f0;
-    }
+    } */
     .foot{
         width: 100%;
         height: auto;
