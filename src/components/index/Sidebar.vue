@@ -148,6 +148,21 @@
                             },
                         ]
                     },
+                    {
+                        icon: 'el-icon-new-quanxianguanli',
+                        index: '5',
+                        title: '导入',
+                        subs: [
+                            {
+                                index: 'name',
+                                title: '导入',
+                            },
+                            {
+                                index: 'name2',
+                                title: '导入2',
+                            },
+                        ]
+                    },
                 ],
                 
                 itemlast: [

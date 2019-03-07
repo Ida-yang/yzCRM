@@ -137,7 +137,8 @@
 
                 searchList:{
                     label:'1',
-                    date: ''
+                    date: '',
+                    oppdate: '',
                 },
                 nullvalue:null,
 
@@ -167,6 +168,10 @@
                 }else{
                     searchList.pId = _this.$store.state.ispId
                 }
+                let oppData = searchList
+                oppData.yearMonth = this.searchList.oppdate
+                console.log(oppData)
+
                 let monthData = {}
                 monthData.month = this.searchList.date
 
@@ -186,7 +191,7 @@
                 axios({
                     method: 'post',
                     url: _this.$store.state.defaultHttp+'getMonthCountByExample.do?cId=' + _this.$store.state.iscId,
-                    data:qs.stringify(searchList),
+                    data:qs.stringify(oppData),
                 }).then(function(res){
                     // console.log(res.data)
                     _this.funnelList = res.data
@@ -228,6 +233,7 @@
                 month =(month<10 ? "0"+month:month); 
                 let mydate = (year.toString() + '-' + month.toString());
                 this.searchList.date = mydate
+                this.searchList.oppdate = mydate
             },
             search(){
                 const _this = this

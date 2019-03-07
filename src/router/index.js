@@ -166,6 +166,16 @@ const router =new Router({
           component: resolve => require(['../components/index/page/programme/programmeDetails.vue'], resolve),
           meta: { title: '方案/目标详情',requireAuth:true}
         },
+        {
+          path: '/name',
+          component: resolve => require(['../components/index/page/name/name.vue'], resolve),
+          meta: { title: '导入',requireAuth:true}
+        },
+        {
+          path: '/name2',
+          component: resolve => require(['../components/index/page/name/name2.vue'], resolve),
+          meta: { title: '导入2',requireAuth:true}
+        },
       ]
     },
         
