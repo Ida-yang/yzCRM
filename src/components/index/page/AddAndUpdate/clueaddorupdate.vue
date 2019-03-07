@@ -507,8 +507,8 @@
             },
             handleoninput(val,key){
                 let _this = this
-                this.myForm[key] = val
-                // console.log(this.myForm[key])
+                // this.myForm[key] = val
+                console.log(val)
                 let qs =require('querystring')
                 let pageInfo = {}
                 pageInfo.page = this.page;
@@ -520,7 +520,7 @@
                     url: _this.$store.state.defaultHttp+'customerOne/query.do',
                     data: qs.stringify(pageInfo),
                 }).then(function(res){
-                    // console.log(res.data.rows)
+                    console.log(res.data.rows)
                     _this.tableData = res.data.rows
                     _this.tableNumber = res.data.total;
                 }).catch(function(err){

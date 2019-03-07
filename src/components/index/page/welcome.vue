@@ -131,9 +131,9 @@
                 msg:"首页",
 
                 amountList:{},
-                funnelList:{},
-                barList:{},
-                barData:{},
+                funnelList:[],
+                barList:[],
+                barData:[],
 
                 searchList:{
                     label:'1',
@@ -190,7 +190,6 @@
                 }).then(function(res){
                     // console.log(res.data)
                     _this.funnelList = res.data
-                    // console.log(_this.funnelList)
                     _this.$options.methods.drawfunnel.bind(_this)(true);
                 }).catch(function(err){
                     console.log(err)
@@ -237,13 +236,13 @@
             drawfunnel(){
                 // 基于准备好的dom，初始化echarts实例
                 let chart1 = echarts.init(document.getElementById('chart1'))
-                console.log(this.funnelList)
+                // console.log(this.funnelList)
                 // 绘制图表
                 chart1.setOption({
                     title : { text: '商机漏斗' },
-                    tooltip : {},
-                    legend: {
-                        data : ['展现','点击','访问','咨询','订单']
+                    tooltip : {
+                        trigger: 'item',
+                        formatter: "{b}<br>{a}：{c}"
                     },
                     calculable : true,
                     emphasis: {
@@ -253,7 +252,7 @@
                     },
                     series : [
                         {
-                            name:'商机漏斗',
+                            name:'数量',
                             type:'funnel',
                             // width: '40%',
                             minSize: '10%',
@@ -291,7 +290,7 @@
                         left: 120
                     },
                     series: [{
-                        name: '合同金额排行',
+                        name: '合同金额总数',
                         type: 'bar',
                         data: this.barList
                     }]
@@ -313,7 +312,6 @@
         height: 30px;
         background-color: #ffffff;
         padding-left: 50%;
-        box-sizing: border-box;
     }
     .head{
         width: 100%;
@@ -339,9 +337,6 @@
         border-right: 10px solid #f0f0f0;
     }
     .head ul li{
-        /* width: 50%;
-        height: 50px;
-        float: left; */
         font-size: 14px;
         flex: 1;
         text-align: center;
@@ -365,8 +360,7 @@
     .middleline{
         width: 10px;
         height: 500px;
-        background-color: #f0f0f0;
-        padding: 0;
+        border-right: 10px solid #f0f0f0
     }
     .dropdown{
         width: 500px;

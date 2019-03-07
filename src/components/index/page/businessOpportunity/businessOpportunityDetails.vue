@@ -309,8 +309,8 @@
                     let qs =require('querystring')
                     let data = {}
                     data.previousTime = this.steptime + ':00'
-                    data.deptid = this.$store.state.deptid
-                    data.secondid = this.$store.state.insid
+                    data.deptid = this.$store.state.insid
+                    data.secondid = this.$store.state.deptid
                     data.oy_id = this.detailData.id
                     if(_this.active == i){
                         data.progress_name = this.stepList[i].step_name
@@ -324,7 +324,7 @@
                         }).then(({value}) =>{
                             axios({
                                 method:'post',
-                                url:_this.$store.state.defaultHttp+ 'saveOpportunityProgress.do?cId='+_this.$store.state.iscId+'&pId='+_this.$store.state.pId,
+                                url:_this.$store.state.defaultHttp+ 'saveOpportunityProgress.do?cId='+_this.$store.state.iscId+'&pId='+_this.$store.state.ispId,
                                 data:qs.stringify(data),
                             }).then(function(res){
                                 // console.log(res)
@@ -355,8 +355,8 @@
                 let qs = require('querystring')
                 let data = {}
                 data.previousTime = this.steptime + ':00'
-                data.deptid = this.$store.state.deptid
-                data.secondid = this.$store.state.insid
+                data.deptid = this.$store.state.insid
+                data.secondid = this.$store.state.deptid
                 data.oy_id = this.detailData.id
                 data.progress_name = '失败关闭'
                 data.progress_probability = '0%'
@@ -366,7 +366,7 @@
                 }).then(({value}) =>{
                     axios({
                         method:'post',
-                        url:_this.$store.state.defaultHttp+ 'saveOpportunityProgress.do?cId='+_this.$store.state.iscId+'&pId='+_this.$store.state.pId,
+                        url:_this.$store.state.defaultHttp+ 'saveOpportunityProgress.do?cId='+_this.$store.state.iscId+'&pId='+_this.$store.state.ispId,
                         data:qs.stringify(data),
                     }).then(function(res){
                         // console.log(res)

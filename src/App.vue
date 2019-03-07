@@ -58,9 +58,7 @@ body,
     width: 0;
 }
 .radioList{
-    margin-left: 8px;
-}
-.radioList{
+    padding-left: 8px;
     width: 100%;
     display: flex;
     flex-direction: column;

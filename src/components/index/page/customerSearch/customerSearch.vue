@@ -700,6 +700,7 @@
                 });
             },
             search() {
+                this.page = 1
                 this.$options.methods.reloadTable.bind(this)(true);
                 // this.searchList.code = null;
                 // this.searchList.name = null;

@@ -760,10 +760,10 @@
                     url:  _this.$store.state.defaultHttp+ 'customerTwo/insert.do?cId='+_this.$store.state.iscId+"&pId="+_this.$store.state.ispId,
                     data:qs.stringify(idArr),
                 }).then(function(res){
-                    // console.log(res)
-                    if(res.data.msg && res.data.msg == 'success') {
+                    console.log(res)
+                    if(res.data && res.data == 'success') {
                         _this.$message({
-                            message: '转换成功',
+                            message: '转移成功',
                             type: 'success'
                         });
                         _this.$options.methods.reloadTable.bind(_this)(true);
