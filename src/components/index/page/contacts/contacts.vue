@@ -368,8 +368,8 @@
                 addOrUpdateData.createForm = [
                     {"label":"联系人","inputModel":"name"},
                     {"label":"公司名称","inputModel":"poolName","type":"require"},
-                    {"label":"电话","inputModel":"telephone","type":"number"},
                     {"label":"手机","inputModel":"phone","type":"number"},
+                    {"label":"电话","inputModel":"telephone","type":"number"},
                     {"label":"QQ","inputModel":"qq","type":"number"},
                     {"label":"性别","inputModel":"sex","type":"radio"},
                     {"label":"生日","inputModel":"birthday","type":"date"},
@@ -420,8 +420,8 @@
                 addOrUpdateData.createForm = [
                     {"label":"联系人","inputModel":"name"},
                     {"label":"客户名称","inputModel":"poolName","type":"require"},
-                    {"label":"电话","inputModel":"telephone","type":"number"},
                     {"label":"手机","inputModel":"phone","type":"number"},
+                    {"label":"电话","inputModel":"telephone","type":"number"},
                     {"label":"QQ","inputModel":"qq","type":"number"},
                     {"label":"性别","inputModel":"sex","type":"radio"},
                     {"label":"生日","inputModel":"birthday","type":"date"},

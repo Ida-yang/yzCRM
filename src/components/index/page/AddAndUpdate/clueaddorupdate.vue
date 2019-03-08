@@ -282,7 +282,7 @@
                 rules: {
                     poolName : [{ required: true, message: '公司名称不能为空', trigger: 'blur' },],
                     contactsName : [{ required: true, message: '联系人名称不能为空', trigger: 'blur' },],
-                    telphone : [{ required: true, message: '电话不能为空', trigger: 'blur' },],
+                    phone : [{ required: true, message: '电话不能为空', trigger: 'blur' },],
                     cuesid : [{ required: true, message: '线索来源不能为空', trigger: 'blur' },],
                 },
             }
@@ -556,9 +556,9 @@
                         });
                         flag = true;
                     }
-                    if(item.inputModel == "telphone" && !subData[item.inputModel]) {//手机号码或电话号码至少一个不能为空
+                    if(item.inputModel == "phone" && !subData[item.inputModel]) {//手机号码或电话号码至少一个不能为空
                         _this.$message({
-                            message: "电话号码不能为空",
+                            message: "手机号码不能为空",
                             type: 'error'
                         });
                         flag = true;
