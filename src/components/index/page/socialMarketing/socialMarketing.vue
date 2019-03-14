@@ -273,7 +273,7 @@
             }
         },
         beforeCreate(){
-            let _this = this
+            const _this = this
             axios({
                 method: 'get',
                 url: _this.$store.state.defaultHttp+'dept/getDeptNodeTree.do?cId='+_this.$store.state.iscId,
@@ -294,7 +294,7 @@
         },
         methods:{
             reloadTable(){
-                let _this = this
+                const _this = this
                 let qs = require('querystring')
                 let pageInfo = {}
                 pageInfo.page = this.page
@@ -349,7 +349,7 @@
                 });
             },
             loadcues(){
-                let _this = this
+                const _this = this
                 let qs = require('querystring')
                 let data = {}
                 data.type = '客户来源'
@@ -394,7 +394,7 @@
                 // console.log(row)
             },
             handledelete(index,row){
-                let _this = this;
+                const _this = this;
                 let qs =require('querystring')
                 let idArr = {};
                 idArr.id = row.id
@@ -433,7 +433,7 @@
             },
             //活动添加
             handleAdd(){
-                let _this = this
+                const _this = this
                 this.newform.resourceid = null
                 this.newform.name = null
                 this.newform.remarks = null
@@ -466,7 +466,7 @@
             },
             //活动添加提交按钮
             adduser(){
-                let _this = this;
+                const _this = this;
                 let qs = require('querystring')
                 let data = {}
                 data.resourceid = this.newform.resourceid
@@ -520,7 +520,7 @@
             },
             hangleChange(e,val){
                 // console.log(e)
-                let _this = this
+                const _this = this
                 let qs = require('querystring')
                 let data = {}
                 data.pageInfoId = val.pageInfoId
@@ -549,12 +549,12 @@
                 this.$options.methods.reloadTable.bind(this)(true);
             },
             handleSizeChange(val) {
-                let _this = this;
+                const _this = this;
                 _this.limit = val;
                 _this.$options.methods.reloadTable.bind(_this)(false);
             },
             handleCurrentChange(val) {
-                let _this = this;
+                const _this = this;
                 _this.page = val;
                 _this.$options.methods.reloadTable.bind(_this)(false);
             },

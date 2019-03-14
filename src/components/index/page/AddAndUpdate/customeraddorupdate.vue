@@ -4,11 +4,11 @@
         <el-tabs class="formtabs" v-model="activeName" type="card" @tab-click="handleClick">
             <el-tab-pane label="主要数据" name="first">
                 <el-form :model="myForm" ref="myForm" class="clueForm" :rules="rules">
-                    <!-- <h3>{{addOrUpdateData.title}}</h3> -->
+                    <!-- <h3>{{cusaddOrUpdateData.title}}</h3> -->
                     <el-form-item
                         class="formitemcus"
                         label-width="100px"
-                        v-for="item in addOrUpdateData.createForm"
+                        v-for="item in cusaddOrUpdateData.createForm"
                         :label="item.label"
                         :key="item.inputModel"
                         :prop="item.inputModel">
@@ -95,10 +95,10 @@
             </el-tab-pane>
             <el-tab-pane label="辅助资料" name="second">
                 <el-form :model="myForm" ref="myForm" class="auxForm" :rules="rules">
-                    <!-- <h3>{{addOrUpdateData.title}}</h3> -->
+                    <!-- <h3>{{cusaddOrUpdateData.title}}</h3> -->
                     <el-form-item
                         label-width="130px"
-                        v-for="item in addOrUpdateData.assistForm"
+                        v-for="item in cusaddOrUpdateData.assistForm"
                         :label="item.label"
                         :key="item.inputModel"
                         :prop="item.inputModel">
@@ -258,7 +258,7 @@
             return {
                 activeName: 'first',
                 tableData:null,
-                addOrUpdateData: {},
+                cusaddOrUpdateData: {},
                 myForm: {
                     poolName:null,
                     address:null,
@@ -298,7 +298,7 @@
             }
         },
         beforeCreate(){
-            let _this = this
+            const _this = this
             let qs = require('querystring')
 
             let industryTypeList = {} 
@@ -393,7 +393,7 @@
         },
         methods:{
             loadCountry(){
-                let _this = this
+                const _this = this
                 let qs =require('querystring')
                 let country = {}
                 if(this.cityid){
@@ -439,7 +439,7 @@
             },
             //获取右边表格、客户来源和客户级别
             loadTable(){
-                let _this = this
+                const _this = this
                 let qs =require('querystring')
                 let pageInfo = {}
                 pageInfo.page = this.page;
@@ -470,16 +470,16 @@
             },
             //加载或重载页面
             loadData() {
-                this.addOrUpdateData = this.$store.state.addOrUpdateData;
-                this.countryid = this.addOrUpdateData.setForm.country
-                this.cityid = this.addOrUpdateData.setForm.city
-                this.areaid = this.addOrUpdateData.setForm.area
-                // console.log(this.addOrUpdateData)
+                this.cusaddOrUpdateData = this.$store.state.cusaddOrUpdateData;
+                this.countryid = this.cusaddOrUpdateData.setForm.country
+                this.cityid = this.cusaddOrUpdateData.setForm.city
+                this.areaid = this.cusaddOrUpdateData.setForm.area
+                // console.log(this.cusaddOrUpdateData)
 
                 // 设置默认值
-                let createForm = this.addOrUpdateData.createForm;
-                let assistForm = this.addOrUpdateData.assistForm;
-                let setForm = this.addOrUpdateData.setForm;
+                let createForm = this.cusaddOrUpdateData.createForm;
+                let assistForm = this.cusaddOrUpdateData.assistForm;
+                let setForm = this.cusaddOrUpdateData.setForm;
                 if(setForm) {
                     createForm.forEach((item, index) => {
                         if(item.type && item.type == 'select') {
@@ -502,11 +502,11 @@
                         }
                     });
                     // console.log(this.myForm);
-                    this.myForm.levelsid = this.addOrUpdateData.setForm.levels
-                    this.myForm.countryid = this.addOrUpdateData.setForm.country
-                    this.myForm.cityid = this.addOrUpdateData.setForm.city
-                    this.myForm.areaid = this.addOrUpdateData.setForm.area
-                    // this.myForm.customerStateid = this.addOrUpdateData.setForm.customerState
+                    this.myForm.levelsid = this.cusaddOrUpdateData.setForm.levels
+                    this.myForm.countryid = this.cusaddOrUpdateData.setForm.country
+                    this.myForm.cityid = this.cusaddOrUpdateData.setForm.city
+                    this.myForm.areaid = this.cusaddOrUpdateData.setForm.area
+                    // this.myForm.customerStateid = this.cusaddOrUpdateData.setForm.customerState
                     this.$emit('input', this.myForm);
                 }
             },
@@ -515,7 +515,7 @@
                 // console.log(val)
             },
             handleoninput(val,key){
-                let _this = this
+                const _this = this
                 this.myForm[key] = val
                 // console.log(this.myForm[key])
                 let qs =require('querystring')
@@ -538,15 +538,15 @@
             },
             //提交或修改
             submit() {
-                let _this = this;
+                const _this = this;
                 let qs =require('querystring')
                 let subData = {};
-                if(_this.addOrUpdateData.submitData) {
-                    subData.id = _this.addOrUpdateData.submitData.id;
-                    subData.csId = _this.addOrUpdateData.submitData.csId;
+                if(_this.cusaddOrUpdateData.submitData) {
+                    subData.id = _this.cusaddOrUpdateData.submitData.id;
+                    subData.csId = _this.cusaddOrUpdateData.submitData.csId;
                 }
-                let createForm = _this.addOrUpdateData.createForm;
-                let assistForm = _this.addOrUpdateData.assistForm;
+                let createForm = _this.cusaddOrUpdateData.createForm;
+                let assistForm = _this.cusaddOrUpdateData.assistForm;
                 let flag = false;
                 assistForm.forEach(item => {
                     subData[item.inputModel] = _this.myForm[item.inputModel]
@@ -598,7 +598,7 @@
 
                 axios({
                     method: 'post',
-                    url: _this.addOrUpdateData.submitURL,
+                    url: _this.cusaddOrUpdateData.submitURL,
                     data: qs.stringify(subData)
                 }).then(function(res){
                     // console.log(res)
@@ -655,7 +655,7 @@
             
             // 选省
             choseProvince(e) {
-                let _this = this
+                const _this = this
                 this.myForm.cityid = ''
                 this.myForm.areaid = ''
                 this.countryid = e
@@ -663,7 +663,7 @@
             },
             // 选市
             choseCity(e) {
-                let _this = this
+                const _this = this
                 this.myForm.areaid = ''
                 this.cityid = e
                 _this.$options.methods.loadCountry.bind(_this)(true);
@@ -679,12 +679,12 @@
             },
 
             handleSizeChange(val) {
-                let _this = this;
+                const _this = this;
                 _this.limit = val;
                 _this.$options.methods.loadTable.bind(_this)(true);
             },
             handleCurrentChange(val) {
-                let _this = this;
+                const _this = this;
                 _this.page = val;
                 _this.$options.methods.loadTable.bind(_this)(true);
             },
@@ -709,17 +709,6 @@
     }
     .formitemcus:nth-child(11),.formitemcus:nth-child(12){
         margin: 0;
-    }
-    .line{
-        float: left;
-        height: 95%;
-        border-left: 1px solid #000;
-        margin-right: 5px;
-    }
-    .formlist{
-        width: 57%;
-        height: auto;
-        float: left;
     }
     .cityseat{
         position: absolute;

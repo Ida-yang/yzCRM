@@ -1,13 +1,13 @@
 <template>
     <div class="innerspace">
-        <div class="header-head">
+        <div class="header-welhead">
             <div class="radioList">
                 <el-radio-group v-model="searchList.label">
                     <el-radio v-for="item in pIdData" :key="item.label" :label="item.label" @change="search()">{{item.value}}</el-radio>
                 </el-radio-group>
             </div>
         </div>
-        <div class="head">
+        <div class="welhead">
             <ul>
                 <li><p>总线索</p><p>{{amountList.totalClue}}</p></li>
                 <li><p>今日新增线索</p><p>{{amountList.todayAddClue}}</p></li>
@@ -28,13 +28,13 @@
                 <li><p>今日新增合同</p><p>{{amountList.todayAddContract}}</p></li>
             </ul>
         </div>
-        <div class="middles">
-            <div class="middlebody">
-                <div id="chart1" :style="{width: '400px', height: '400px'}"></div>
+        <div class="welmiddles">
+            <div class="welmiddlebody">
+                <div id="chart1" class="funnelwidth"></div>
             </div>
             <div class="middleline"></div>
-            <div class="middlebody">
-                <div class="dropdown">
+            <div class="welmiddlebody">
+                <div class="weldropdown">
                     <el-date-picker
                         v-model="searchList.date"
                         type="month"
@@ -43,10 +43,10 @@
                         @change="search">
                     </el-date-picker>
                 </div>
-                <div id="chart2" :style="{width: '500px', height: '400px'}"></div>
+                <div id="chart2" class="barwidth"></div>
             </div>
         </div>
-        <div class="foot">
+        <div class="welfoot">
             <el-table
             :data="tableData"
             ref="multipleTable"
@@ -146,7 +146,8 @@
                     {label:'0',value:'全部'},
                     {label:'1',value:'我的'},
                     {label:'2',value:'本组'},
-                    {label:'3',value:'本机构'},],
+                    {label:'3',value:'本机构'},
+                ],
             }
         },
         mounted(){
@@ -155,7 +156,7 @@
         },
         methods:{
             loadData(){
-                let _this = this;
+                const _this = this;
                 let searchList = {}
                 if(this.searchList.label == 0 ){
                     searchList.pId = _this.nullvalue
@@ -205,10 +206,11 @@
                     url: _this.$store.state.defaultHttp+'getContractamount.do?cId=' + _this.$store.state.iscId,
                     data:qs.stringify(monthData),
                 }).then(function(res){
-                    console.log(res.data)
+                    // console.log(res.data)
                     _this.barData = res.data.name
                     _this.barList = res.data.value
-                    // console.log(_this.funnelList)
+                    console.log(_this.barData)
+                    console.log(_this.barList)
                     _this.$options.methods.drawbar.bind(_this)(true);
                 }).catch(function(err){
                     console.log(err)
@@ -275,10 +277,15 @@
                 chart2.setOption({
                     title: { text: '合同金额排行' },
                     tooltip: {},
-                    xAxis: {
-                        data: this.barData
-                    },
-                    yAxis: {
+                    xAxis: [{
+                        type: 'category',
+                        data: this.barData,
+                        axisLabel:{
+                            interval:0,
+                            rotate:30 
+                        }
+                    }],
+                    yAxis: [{
                         type: 'value',
                         axisLabel: {
                             margin: 8,
@@ -291,9 +298,10 @@
                             //     return value;
                             // }
                         }
-                    },
+                    }],
                     grid: {
-                        left: 120
+                        left: 60,
+                        containLabel: true
                     },
                     series: [{
                         name: '合同金额总数',
@@ -313,13 +321,13 @@
         padding: 0;
         background-color: #f0f0f0;
     }
-    .header-head{
+    .header-welhead{
         width: 100%;
         height: 30px;
         background-color: #ffffff;
         padding-left: 50%;
     }
-    .head{
+    .welhead{
         width: 100%;
         height: 100px;
         background-color: #ffffff;
@@ -329,7 +337,7 @@
         align-items: center;
         margin-top: 20px;
     }
-    .head ul{
+    .welhead ul{
         height: 100%;
         flex: 1;
         text-align: center;
@@ -339,16 +347,16 @@
         justify-content: center;   /*水平居中*/
         align-items: center;
     }
-    .head ul:not(:last-child){
+    .welhead ul:not(:last-child){
         border-right: 10px solid #f0f0f0;
     }
-    .head ul li{
+    .welhead ul li{
         font-size: 14px;
         flex: 1;
         text-align: center;
         line-height: 24px;
     }
-    .middles{
+    .welmiddles{
         width: 100%;
         height: 500px;
         background-color: #ffffff;
@@ -358,7 +366,7 @@
         justify-content: center;   /*水平居中*/
         align-items: center;
     }
-    .middles .middlebody{
+    .welmiddles .welmiddlebody{
         flex: 1;
         padding: 10px;
         width: 500px;
@@ -368,20 +376,26 @@
         height: 500px;
         border-right: 10px solid #f0f0f0
     }
-    .dropdown{
+    .weldropdown{
         width: 500px;
         height: 40px;
         padding-left: 230px;
         box-sizing: border-box;
-        /* background-color: #000; */
     }
-    /* .middles .middlebody:first-child{
-        border-right: 10px solid #f0f0f0;
-    } */
-    .foot{
+    .welfoot{
         width: 100%;
         height: auto;
         margin-top: 20px;
         background-color: #ffffff;
+    }
+    .funnelwidth{
+        width: 400px;
+        height: 400px;
+        margin: 0 auto
+    }
+    .barwidth{
+        width: 500px;
+        height: 400px;
+        margin: 0 auto
     }
 </style>

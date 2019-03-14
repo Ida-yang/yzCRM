@@ -90,7 +90,7 @@ export default {
         },
     methods: {
         submitForm(){
-            let _this = this;
+            const _this = this;
             let loginInfo={};
             loginInfo.public_username = this.loginFrom.public_username;
             loginInfo.public_password = this.loginFrom.public_password;

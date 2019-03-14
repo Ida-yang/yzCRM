@@ -78,6 +78,7 @@
                                 format="yyyy-MM-dd HH:mm:ss"
                                 value-format="yyyy-MM-dd HH:mm:ss"
                                 default-time="12:00:00"
+                                :picker-options="pickerOptions"
                                 placeholder="选择日期时间" style="width:200px;">
                                 </el-date-picker>
                             </el-form-item>
@@ -96,9 +97,11 @@
                         </el-form>
                         <ul class="followrecord" v-for="(item,index) in record" :key="item.followId">
                             <li class="recordicon">
-                                <i class="el-icon-delete delico" @click="deletefollow(index)"></i>
+                                <i class="el-icon-delete delico" v-show="item.showdelico" @click="deletefollow(index)"></i>
+                                <i class="nodelico" v-show="!item.showdelico"></i>
                             </li>
-                            <li class="verticalline"></li>
+                            <li class="verticalline" v-show="item.showdelico"></li>
+                            <li class="noverticalline" v-show="!item.showdelico"></li>
                             <li class="recordcontent">
                                 <div>
                                     <p>{{item.private_employee}}于{{item.createTime}}&nbsp;&nbsp;&nbsp;通过{{item.followType}}更新了一条记录&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;客户联系人为：&nbsp;{{item.contacts[0].name}}
@@ -111,6 +114,17 @@
                         </ul>
                     </el-tab-pane>
                     <el-tab-pane label="联系人" name="second">
+                        <div class="pricon">
+                            <span>首要联系人</span>
+                            <el-select class="pricon_sel" v-model="contacts_id" placeholder="请选择" @change="choosePri">
+                                <el-option
+                                    v-for="item in priconList"
+                                    :key="item.id"
+                                    :label="item.name"
+                                    :value="item.id">
+                                </el-option>
+                            </el-select>
+                        </div>
                         <el-table
                         :data="clueDetails"
                         border
@@ -147,7 +161,7 @@
                             label="微信">
                             </el-table-column>
                             <el-table-column
-                            prop="address"
+                            prop="contactsAddress"
                             header-align="center"
                             label="地址">
                             </el-table-column>
@@ -228,6 +242,13 @@
         data(){
             return {
                 detailData:null,
+
+                pickerOptions:{
+                    disabledDate(time) {
+                        return time.getTime() < Date.now() - 8.64e7;
+                    },
+                },
+
                 followform:{
                     followType:'电话',
                     contactTime:'',
@@ -240,7 +261,6 @@
                     contactsId : [{ required: true, message: '请选择联系人', trigger: 'blur' },],
                     followType : [{ required: true, message: '请选择联系方式', trigger: 'blur' },],
                     // contactTime : [{ required: true, message: '请选择下次联系时间', trigger: 'blur' },],
-                    
                 },
                 followTypes:[
                     {label:'电话',value:'1'},
@@ -270,6 +290,9 @@
                 },
 
                 retracts:true,
+
+                priconList:null,
+                contacts_id:null,
             }
         },
         activated(){
@@ -280,17 +303,16 @@
         // },
         methods: {
             loadData() {
-                this.detailData = this.$store.state.detailsData.submitData;
-                this.idArr.id = this.$store.state.detailsData.submitData.id
+                this.detailData = this.$store.state.cluedetailsData.submitData;
+                this.idArr.id = this.$store.state.cluedetailsData.submitData.id
                 // console.log(this.detailData)
-                let _this = this
-                let qs =require('querystring')
+                const _this = this
+                let qs = require('querystring')
                 let data = {}
                 data.type = '线索状态'
                 let pageInfo = {}
                 pageInfo.page = this.page
                 pageInfo.limit = this.limit
-                // console.log(this);
                 //详情页联系人
                 axios({
                     method:'post',
@@ -300,6 +322,8 @@
                     // console.log(res)
                     _this.$store.state.clueDetailsList = res.data.map.success
                     _this.contactList = res.data.map.success
+                    _this.priconList = res.data.map.success
+                    // console.log(_this.priconList)
                     _this.followform.contactsId = res.data.map.success[0].id
                 }).catch(function(err){
                     console.log(err);
@@ -344,9 +368,22 @@
                 }).then(function(res){
                     // console.log(res.data.map.success)
                     _this.record = res.data.map.success
-                    // if(_this.record !== ''){
-                    //     _this.followform.state = _this.record[0].state
-                    // }
+                    _this.record.forEach(el => {
+                        el.showdelico = false
+                        console.log(el.showdelico)
+                        // console.log(el.createTime + 10000000)
+                        let startTime = Date.parse(el.createTime); // 开始时间
+                        // console.log(startTime)
+                        let endTime = new Date().getTime(); // 结束时间
+                        // console.log(endTime)
+                        let usedTime = endTime - startTime; // 相差的毫秒数
+                        // console.log(usedTime)
+                        if(usedTime < 7200000){
+                            el.showdelico = true
+                        }else{
+                            el.showdelico = false
+                        }
+                    });
                 }).catch(function(err){
                     console.log(err);
                 });
@@ -363,21 +400,47 @@
                     console.log(err);
                 });
             },
+            choosePri(val){
+                // console.log(val)
+                const _this = this
+                let qs = require('querystring')
+                let data = {}
+                data.contacts_id = val
+
+                //详情页联系人
+                axios({
+                    method:'post',
+                    url:_this.$store.state.defaultHttp+'contacts/updateFirst.do?cId='+_this.$store.state.iscId+'&customeroneId='+this.detailData.id,
+                    data:qs.stringify(data)
+                }).then(function(res){
+                    console.log(res)
+                    if(res.data.msg && res.data.msg == 'success'){
+                        _this.$options.methods.loadData.bind(_this)();
+                    }else{
+                        _this.$message({
+                            message: '可能出了点什么问题，再看看',
+                            type: 'error'
+                        })
+                    }
+                }).catch(function(err){
+                    console.log(err);
+                });
+            },
             retract(){
                 this.thisshow = !this.thisshow
                 this.retracts = !this.retracts
             },
             getRow(index,row){
                 // console.log(row.id)
-                this.$store.state.detailsData.submitData = {"id":row.id}
+                this.$store.state.cluedetailsData.submitData = {"id":row.id}
                 this.idArr.id = row.id
                 
                 // this.detailData.id = row.id
                 this.$options.methods.loadData.bind(this)(true);
             },
             cluePool(){
-                let _this = this;
-                let qs =require('querystring')
+                const _this = this;
+                let qs = require('querystring')
                 let idArr = [];
                 idArr.id = this.idArr.id
                 // console.log(idArr)
@@ -409,8 +472,8 @@
                 });
             },
             customerSwitching(){
-                let _this = this;
-                let qs =require('querystring')
+                const _this = this;
+                let qs = require('querystring')
                 let idArr = [];
                 idArr.id = this.idArr.id
                 idArr.shift()
@@ -443,11 +506,11 @@
                 });
             },
             deletefollow(index){
-                let _this = this
+                const _this = this
+                let qs = require('querystring')
                 let followData = {}
                 followData.followId = this.record[index].followId
                 // console.log(this.record[index].followId)
-                let qs =require('querystring')
                 axios({
                     method:'post',
                     url:_this.$store.state.defaultHttp+'delFollow.do?cId='+_this.$store.state.iscId,
@@ -459,7 +522,7 @@
                             message: '删除成功',
                             type: 'success'
                         });
-                        _this.$store.state.detailsData.submitData = {"id":_this.detailData.id}
+                        _this.$store.state.cluedetailsData.submitData = {"id":_this.detailData.id}
                         _this.$options.methods.loadData.bind(_this)(true);
                         
                     } else {
@@ -476,8 +539,8 @@
                 // console.log(tab, event);
             },
             search(){
-                let _this = this;
-                let qs =require('querystring')
+                const _this = this;
+                let qs = require('querystring')
                 let searchList = {}
                 searchList.searchName = this.searchList.keyword;
                 searchList.page = this.page;
@@ -496,7 +559,8 @@
                 });
             },
             Submitfollowform(){
-                let _this = this
+                const _this = this
+                let qs = require('querystring')
                 let data = {}
                 data.followType = this.followform.followType
                 data.contactTime = this.followform.contactTime
@@ -532,7 +596,7 @@
                                 });
                                 _this.followform.contactTime = ''
                                 _this.followform.followContent = ''
-                                _this.$store.state.detailsData.submitData = {"id":_this.detailData.id}
+                                _this.$store.state.cluedetailsData.submitData = {"id":_this.detailData.id}
                                 _this.$options.methods.loadData.bind(_this)(true);
                                 // _this.closeTag()
                             } else {
@@ -568,12 +632,12 @@
                 }
             },
             handleSizeChange(val) {
-                let _this = this;
+                const _this = this;
                 _this.limit = val;
                 _this.$options.methods.loadData.bind(_this)();
             },
             handleCurrentChange(val) {
-                let _this = this;
+                const _this = this;
                 _this.page = val;
                 _this.$options.methods.loadData.bind(_this)();
             },

@@ -180,10 +180,10 @@
         },
         methods: {
             loadData() {
-                this.detailData = this.$store.state.detailsData.submitData;
-                this.idArr.opportunity_id = this.$store.state.detailsData.submitData.id
+                this.detailData = this.$store.state.oppdetailsData.submitData;
+                this.idArr.opportunity_id = this.$store.state.oppdetailsData.submitData.id
                 // console.log(this.detailData)
-                let _this = this
+                const _this = this
                 let qs =require('querystring')
                 let pageInfo = {}
                 pageInfo.page = this.page
@@ -267,7 +267,7 @@
                 });
             },
             addStep(){
-                let _this = this
+                const _this = this
                 let qs = require('querystring')
                 let data = {}
                 data.progress_name = this.addstepList.progress_name
@@ -305,7 +305,7 @@
             },
             nextStep(){
                 for(var i = 0,length = this.stepList.length;i < length;i++){
-                    let _this = this;
+                    const _this = this;
                     let qs =require('querystring')
                     let data = {}
                     data.previousTime = this.steptime + ':00'
@@ -351,7 +351,7 @@
                 }
             },
             endStep(){
-                let _this = this
+                const _this = this
                 let qs = require('querystring')
                 let data = {}
                 data.previousTime = this.steptime + ':00'
@@ -396,7 +396,7 @@
             },
             getRow(index,row){
                 // console.log(row.opportunity_id)
-                this.$store.state.detailsData.submitData = {"id":row.opportunity_id}
+                this.$store.state.oppdetailsData.submitData = {"id":row.opportunity_id}
                 this.idArr.opportunity_id = row.opportunity_id
                 
                 // this.detailData.opportunity_id = row.opportunity_id
@@ -406,7 +406,7 @@
                 // console.log(tab, event);
             },
             search(){
-                let _this = this;
+                const _this = this;
                 let qs =require('querystring')
                 let searchList = {}
                 searchList.searchName = this.searchList.keyword;
@@ -426,12 +426,12 @@
                 });
             },
             handleSizeChange(val) {
-                let _this = this;
+                const _this = this;
                 _this.limit = val;
                 _this.$options.methods.loadData.bind(_this)();
             },
             handleCurrentChange(val) {
-                let _this = this;
+                const _this = this;
                 _this.page = val;
                 _this.$options.methods.loadData.bind(_this)();
             },

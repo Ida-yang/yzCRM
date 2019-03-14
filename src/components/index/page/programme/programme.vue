@@ -280,7 +280,7 @@
         },
         //获取机构部门树型结构
         beforeCreate(){
-            let _this = this
+            const _this = this
             axios({
                 method: 'get',
                 url: _this.$store.state.defaultHttp+'dept/getDeptNodeTree.do?cId='+_this.$store.state.iscId,
@@ -299,7 +299,7 @@
         },
         methods:{
             reloadTable(){
-                let _this = this
+                const _this = this
                 let qs = require('querystring')
                 let pageInfo = {}
                 pageInfo.page = this.page
@@ -372,7 +372,7 @@
             },
             //方案添加
             handleAdd(){
-                let _this = this
+                const _this = this
                 // console.log(this.clickdata.next)
 
                 if(!this.clickdata){
@@ -410,7 +410,7 @@
             },
             //方案添加提交按钮
             addprogramme(){
-                let _this = this;
+                const _this = this;
                 let qs = require('querystring')
                 let data = {}
                 // data.deptid = this.newform.deptid
@@ -465,7 +465,7 @@
             },
             //方案修改
             handleEdit(index,row){
-                let _this = this
+                const _this = this
                 // console.log(row)
                 let data = {}
 
@@ -498,7 +498,7 @@
             },
             //方案修改提交按钮
             updateprogramme(){
-                let _this = this;
+                const _this = this;
                 let qs = require('querystring')
                 let data = {}
                 data.id = this.newform.id
@@ -553,14 +553,14 @@
                 });
             },
             openDetails(index,row){
-                let detailsData = {};
-                detailsData.submitData = {"id": row.id};
-                // console.log(detailsData)
-                this.$store.state.detailsData = detailsData;
+                let prodetailsData = {};
+                prodetailsData.submitData = {"id": row.id};
+                // console.log(prodetailsData)
+                this.$store.state.prodetailsData = prodetailsData;
                 this.$router.push({ path: '/programmeDetails' });
             },
             handledeletes(){
-                let _this = this;
+                const _this = this;
                 let qs =require('querystring')
                 let idArr = [];
                 idArr.id = this.idArr.id
@@ -599,7 +599,7 @@
                 });
             },
             handledelete(index,row){
-                let _this = this;
+                const _this = this;
                 let qs =require('querystring')
                 let idArr = [];
                 idArr.id = row.id
@@ -638,7 +638,7 @@
             },
             hangleChange(e,val){
                 // console.log(e)
-                let _this = this
+                const _this = this
                 let qs = require('querystring')
                 let data = {}
                 data.pageInfoId = val.pageInfoId
@@ -667,12 +667,12 @@
                 this.$options.methods.reloadTable.bind(this)(true);
             },
             handleSizeChange(val) {
-                let _this = this;
+                const _this = this;
                 _this.limit = val;
                 _this.$options.methods.reloadTable.bind(_this)(false);
             },
             handleCurrentChange(val) {
-                let _this = this;
+                const _this = this;
                 _this.page = val;
                 _this.$options.methods.reloadTable.bind(_this)(false);
             },

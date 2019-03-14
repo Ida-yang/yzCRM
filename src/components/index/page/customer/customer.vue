@@ -459,7 +459,7 @@
             }
         },
         beforeCreate(){
-            let _this = this
+            const _this = this
             axios({
                 method: 'get',
                 url: _this.$store.state.defaultHttp+'typeInfo/getTypeInfoByType.do?cId='+_this.$store.state.iscId,
@@ -483,7 +483,7 @@
 
         methods: {
             reloadTable() {
-                let _this = this;
+                const _this = this;
                 let qs =require('querystring')
                 let searchList = {}
                 searchList.searchName = this.searchList.searchName;
@@ -518,7 +518,7 @@
                 });
             },
             reloadData(){
-                let _this = this;
+                const _this = this;
                 let qs =require('querystring')
                 let filterList = {}
                 filterList.type = '客户'
@@ -561,16 +561,16 @@
                 
             },
             openDetails(index,row){
-                let detailsData = {};
-                detailsData.submitData = {"id": row.id};
-                this.$store.state.detailsData = detailsData;
+                let cusdetailsData = {};
+                cusdetailsData.submitData = {"id": row.id};
+                this.$store.state.cusdetailsData = cusdetailsData;
                 this.$router.push({ path: '/customerDetails' });
             },
             handleAdd(){
                 const _this = this
-                let addOrUpdateData = {};
-                // addOrUpdateData.title = "添加客户";
-                addOrUpdateData.createForm = [
+                let cusaddOrUpdateData = {};
+                // cusaddOrUpdateData.title = "添加客户";
+                cusaddOrUpdateData.createForm = [
                     {"label":"客户来源","inputModel":"customerStateid","type":"select"},
                     {"label":"客户名称","inputModel":"poolName","type":"require"},
                     {"label":"客户级别","inputModel":"levelsid","type":"select"},
@@ -585,7 +585,7 @@
                     {"label":"","inputModel":"areaid","type":"select","placeholder":"请选择区"},
                     {"label":"地址","inputModel":"address"},
                     {"label":"备注","inputModel":"remark"}];
-                addOrUpdateData.assistForm = [
+                cusaddOrUpdateData.assistForm = [
                     {"label":"法人代表","inputModel":"representative"},
                     {"label":"登记机关","inputModel":"registrationAuthority"},
                     {"label":"统一社会信用代码","inputModel":"creditCode"},
@@ -598,7 +598,7 @@
                     {"label":"行业","inputModel":"industryType","type":"select"},
                     {"label":"公司类型","inputModel":"companyType","type":"select"},
                     {"label":"经营状态","inputModel":"operatingState","type":"select"},]
-                addOrUpdateData.setForm = {
+                cusaddOrUpdateData.setForm = {
                     "customerStateid": '',
                     "poolName": '',
                     "levelsid": '',
@@ -625,8 +625,8 @@
                     "industryType": '',
                     "companyType": '',
                     "operatingState": ''};
-                addOrUpdateData.submitURL = this.$store.state.defaultHttp+ 'customerpool/savePool.do?cId='+this.$store.state.iscId+'&pId='+this.$store.state.ispId,
-                this.$store.state.addOrUpdateData = addOrUpdateData;
+                cusaddOrUpdateData.submitURL = this.$store.state.defaultHttp+ 'customerpool/savePool.do?cId='+this.$store.state.iscId+'&pId='+this.$store.state.ispId,
+                this.$store.state.cusaddOrUpdateData = cusaddOrUpdateData;
                 axios({
                     method: 'get',
                     url: _this.$store.state.defaultHttp+'customerJurisdiction/insert.do',//新增客户
@@ -647,9 +647,9 @@
             handleEdit(index,row){
                 // console.log(row)
                 const _this = this
-                let addOrUpdateData = {};
-                // addOrUpdateData.title = "修改客户";
-                addOrUpdateData.createForm = [
+                let cusaddOrUpdateData = {};
+                // cusaddOrUpdateData.title = "修改客户";
+                cusaddOrUpdateData.createForm = [
                     {"label":"客户来源","inputModel":"customerStateid","type":"select"},
                     {"label":"客户名称","inputModel":"poolName","type":"require"},
                     {"label":"客户级别","inputModel":"levelsid","type":"select"},
@@ -664,7 +664,7 @@
                     {"label":"","inputModel":"areaid","type":"select","placeholder":"请选择区"},
                     {"label":"地址","inputModel":"address"},
                     {"label":"备注","inputModel":"remark"}];
-                addOrUpdateData.assistForm = [
+                cusaddOrUpdateData.assistForm = [
                     {"label":"法人代表","inputModel":"representative"},
                     {"label":"登记机关","inputModel":"registrationAuthority"},
                     {"label":"统一社会信用代码","inputModel":"creditCode"},
@@ -677,7 +677,7 @@
                     {"label":"行业","inputModel":"industryType","type":"select"},
                     {"label":"公司类型","inputModel":"companyType","type":"select"},
                     {"label":"经营状态","inputModel":"operatingState","type":"select"},]
-                addOrUpdateData.setForm = {
+                cusaddOrUpdateData.setForm = {
                     "customerStateid": row.sourceid,
                     // "customerState":row.sourceid,
                     "poolName": row.pName,
@@ -709,10 +709,10 @@
                     "industryType": row.industryType,
                     "companyType": row.companyType,
                     "operatingState": row.operatingState};
-                addOrUpdateData.submitData = {"id": row.id,'csId':row.contacts[0].csId};
-                addOrUpdateData.submitURL = this.$store.state.defaultHttp+ 'customerpool/updatepool.do?cId='+this.$store.state.iscId+'&pId='+this.$store.state.ispId,
-                // console.log(addOrUpdateData)
-                this.$store.state.addOrUpdateData = addOrUpdateData;
+                cusaddOrUpdateData.submitData = {"id": row.id,'csId':row.contacts[0].csId};
+                cusaddOrUpdateData.submitURL = this.$store.state.defaultHttp+ 'customerpool/updatepool.do?cId='+this.$store.state.iscId+'&pId='+this.$store.state.ispId,
+                // console.log(cusaddOrUpdateData)
+                this.$store.state.cusaddOrUpdateData = cusaddOrUpdateData;
                 axios({
                     method: 'get',
                     url: _this.$store.state.defaultHttp+'customerJurisdiction/update.do',//编辑客户
@@ -731,7 +731,7 @@
                 });
             },
             TocustomerPool(){
-                let _this = this;
+                const _this = this;
                 let qs =require('querystring')
                 let idArr = [];
                 idArr.id = this.idArr.id
@@ -764,7 +764,7 @@
             },
             hangleChange(e,val){
                 // console.log(e)
-                let _this = this
+                const _this = this
                 let qs = require('querystring')
                 let data = {}
                 data.pageInfoId = val.pageInfoId
@@ -825,12 +825,12 @@
             },
 
             handleSizeChange(val) {
-                let _this = this;
+                const _this = this;
                 _this.limit = val;
                 _this.$options.methods.reloadTable.bind(_this)(false);
             },
             handleCurrentChange(val) {
-                let _this = this;
+                const _this = this;
                 _this.page = val;
                 _this.$options.methods.reloadTable.bind(_this)(false);
             },

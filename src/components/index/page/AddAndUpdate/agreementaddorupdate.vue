@@ -2,10 +2,10 @@
     <!-- 合同新增修改 -->
     <div class="content">
         <el-form :model="myForm" ref="myForm" class="myForm" :rules="rules">
-            <!-- <h3>{{addOrUpdateData.title}}</h3> -->
+            <!-- <h3>{{agreeaddOrUpdateData.title}}</h3> -->
             <el-form-item
                 label-width="100px"
-                v-for="item in addOrUpdateData.createForm"
+                v-for="item in agreeaddOrUpdateData.createForm"
                 :label="item.label"
                 :key="item.inputModel"
                 :prop="item.inputModel">
@@ -27,16 +27,13 @@
                     style="width:90%;" 
                     auto-complete="off">
                 </el-input>
-                <el-select 
-                    v-else-if="item.inputModel == 'customerpool_id'"
-                    :multiple="item.multiple"
-                    :collapse-tags="item.multiple"
-                    v-model="myForm[item.inputModel]"
-                    @change="handleChange($event, item.inputModel)"
-                    :placeholder="item.placeholder"
-                    style="width:90%;">
-                    <el-option v-for="item in cusoptions" :key="item.id" :label="item.name" :value="item.id"></el-option>
-                </el-select>
+                <el-input 
+                    v-else-if="item.type && item.type == 'require' && item.inputModel == 'customerpool_id'"
+                    :value="myForm[item.inputModel]"
+                    @input="handleoninput($event, item.inputModel)"
+                    style="width:90%;" 
+                    auto-complete="off">
+                </el-input>
                 <el-select 
                     v-else-if="item.inputModel == 'opportunity_id'"
                     filterable
@@ -90,6 +87,49 @@
                 <el-button @click="closeTag">取消</el-button>
             </div>
         </el-form>
+        <div class="line"></div>
+        <div class="formlist">
+            <el-table
+                :data="tableData"
+                border
+                stripe
+                :default-sort = "{order: 'ascending'}"
+                max-height="580"
+                style="text-align:center">
+                <el-table-column
+                    header-align="center"
+                    align="center"
+                    width="35">
+                    <template slot-scope="scope">
+                        <el-button style="width:15px;height:15px;padding:0;border-radius:50%;" @click="getRow(scope.$index,scope.row)">&nbsp;</el-button>
+                    </template>
+                </el-table-column>
+                <el-table-column
+                    prop="name"
+                    header-align="left"
+                    align="left"
+                    min-width="80"
+                    label="公司名称"
+                    sortable>
+                </el-table-column>
+                <el-table-column
+                    prop="address"
+                    header-align="left"
+                    align="left"
+                    min-width="130"
+                    label="公司地址"
+                    sortable>
+                </el-table-column>
+                <el-table-column
+                    prop="representative"
+                    header-align="left"
+                    align="left"
+                    min-width="40"
+                    label="法人"
+                    sortable>
+                </el-table-column>
+            </el-table>
+        </div>
     </div>
 </template>
 
@@ -112,18 +152,17 @@
         name:'agreementaddOrUpdate',
         data(){
             return {
-                addOrUpdateData: {},
+                agreeaddOrUpdateData: {},
                 myForm: {
                     start_date:null,
                     end_date:null,
+                    customerpool_id:null,
                 },
                 subData: {},
-                cusoptions:null,
                 oppoptions:null,
                 contactslist:null,
                 page: 1,//默认第一页
                 limit: 15,//默认10条
-                selectData: null,
                 customerId:null,
                 rules: {
                     our_signatories : [{ required: true, message: '我方签约人不能为空', trigger: 'blur' },],
@@ -136,20 +175,11 @@
                     contract_name : [{ required: true, message: '合同名称不能为空', trigger: 'blur' },],
                     contract_number : [{ required: true, message: '合同编号不能为空', trigger: 'blur' },],
                 },
+
+                tableData:null,
+
+                formid:null,
             }
-        },
-        //获取该用户的客户
-        beforeCreate(){
-            let _this = this
-            axios({
-                method:'get',
-                url: _this.$store.state.defaultHttp+'customerpool/getPool.do?cId='+_this.$store.state.iscId+'&pId='+_this.$store.state.ispId,
-            }).then(function(res){
-                // console.log(res.data)
-                _this.cusoptions = res.data
-            }).catch(function(err){
-                console.log(err)
-            });
         },
         // mounted() {
         //     this.loadData();
@@ -158,23 +188,25 @@
         activated() {
             this.loadData();
             this.loadOpp()
+            this.loadTable()
         },
         methods:{
             //加载或重载页面
             loadData() {
-                this.addOrUpdateData = this.$store.state.addOrUpdateData;
-                this.oppoptions = this.$store.state.addOrUpdateData.customerpool_id
-                // console.log(this.addOrUpdateData)
+                this.agreeaddOrUpdateData = this.$store.state.agreeaddOrUpdateData;
+                this.oppoptions = this.$store.state.agreeaddOrUpdateData.customerpool_id
+                // console.log(this.agreeaddOrUpdateData)
 
                 // 设置默认值
-                let createForm = this.addOrUpdateData.createForm;
-                let setForm = this.addOrUpdateData.setForm;
+                let createForm = this.agreeaddOrUpdateData.createForm;
+                let setForm = this.agreeaddOrUpdateData.setForm;
+                console.log(setForm)
                 if(setForm) {
                     createForm.forEach((item, index) => {
                         if(item.type && item.type == 'select') {
                             this.$set(this.myForm, item.inputModel, setForm[item.inputModel]);
                             // let selectList = item.selectList;
-                            // this.addOrUpdateData.createForm[index].options = selectList;
+                            // this.agreeaddOrUpdateData.createForm[index].options = selectList;
                         } else if(item.type && item.type == 'radio') {
                             this.$set(this.myForm, item.inputModel, setForm[item.inputModel]);
                         } else {
@@ -182,8 +214,9 @@
                         }
                     });
                     // console.log(this.myForm);
-                    this.myForm.customerpool_id = this.addOrUpdateData.setForm.poolName
-                    this.myForm.opportunity_id = this.addOrUpdateData.setForm.opportunity_name
+                    this.myForm.customerpool_id = this.agreeaddOrUpdateData.setForm.poolName
+                    this.formid = this.agreeaddOrUpdateData.setForm.customerpool_id
+                    this.myForm.opportunity_id = this.agreeaddOrUpdateData.setForm.opportunity_name
                     this.$emit('input', this.myForm);
                 }
             },
@@ -192,19 +225,21 @@
                 // console.log(val)
                 // this.$emit('input', { ...this.myForm });
             },
-            handleChange(val, key){
-                // console.log(val)
-                this.myForm[key] = val
-                this.customerId = val
+            //获取table的索引和行数据，当该行被点击时，将公司名称地址填充到表单（会刷新当前页面，之前填写的信息会被覆盖）
+            getRow(index,row){
+                console.log(row)
+                this.formid = row.id
+                this.myForm.customerpool_id = row.name
+                this.customerId = row.id
                 this.loadOpp()
             },
             //加载已选择客户下的商机和联系人（客户决策人）
             loadOpp(){
-                let _this = this
+                const _this = this
                 let qs = require('querystring')
                 let data = {}
                 if(this.myForm.customerpool_id){
-                    data.customerpool_id = this.myForm.customerpool_id
+                    data.customerpool_id = this.formid
                 }else{
                     data.customerpool_id = this.customerId
                 }
@@ -229,19 +264,61 @@
                     console.log(err);
                 });
             },
+            //获取右边表格
+            loadTable(){
+                const _this = this
+                let qs =require('querystring')
+                let pageInfo = {}
+                pageInfo.page = this.page;
+                pageInfo.limit = this.limit;
+                pageInfo.pId = this.$store.state.ispId;
+                // console.log(pageInfo)
+                axios({
+                    method: 'post',
+                    url: _this.$store.state.defaultHttp+'rightPoolName.do?cId='+_this.$store.state.iscId,
+                    data: qs.stringify(pageInfo),
+                }).then(function(res){
+                    // console.log(res.data.map.success)
+                    _this.tableData = res.data.map.success.customerpools
+                }).catch(function(err){
+                    console.log(err);
+                });
+            },
+            handleoninput(val,key){
+                const _this = this
+                this.myForm[key] = val
+                // console.log(this.myForm[key])
+                let qs =require('querystring')
+                let pageInfo = {}
+                pageInfo.page = this.page;
+                pageInfo.limit = this.limit;
+                pageInfo.searchName = val
+                // console.log(pageInfo)
+                axios({
+                    method: 'post',
+                    url: _this.$store.state.defaultHttp+'rightPoolName.do?cId='+_this.$store.state.iscId,
+                    data: qs.stringify(pageInfo),
+                }).then(function(res){
+                    // console.log(res.data)
+                    _this.tableData = res.data.map.success.customerpools
+                }).catch(function(err){
+                    console.log(err);
+                });
+            },
             //提交或修改
             submit() {
-                let _this = this;
+                const _this = this;
                 let qs =require('querystring')
                 let subData = {};
-                if(_this.addOrUpdateData.submitData) {
-                    subData.contract_id = _this.addOrUpdateData.submitData.id;
-                    subData.csId = _this.addOrUpdateData.submitData.csId;
+                if(_this.agreeaddOrUpdateData.submitData) {
+                    subData.contract_id = _this.agreeaddOrUpdateData.submitData.id;
+                    subData.csId = _this.agreeaddOrUpdateData.submitData.csId;
                 }
-                let createForm = _this.addOrUpdateData.createForm;
+                let createForm = _this.agreeaddOrUpdateData.createForm;
                 let flag = false;
                 createForm.forEach(item => {
                     subData[item.inputModel] = _this.myForm[item.inputModel];
+                    subData.customerpool_id = this.formid
                     // console.log(_this.myForm)
                     if(item.inputModel == "our_signatories" && !subData[item.inputModel]) {//手机号码或电话号码至少一个不能为空
                         _this.$message({
@@ -315,7 +392,7 @@
 
                 axios({
                     method: 'post',
-                    url: _this.addOrUpdateData.submitURL,
+                    url: _this.agreeaddOrUpdateData.submitURL,
                     data: qs.stringify(subData)
                 }).then(function(res){
                     // console.log(res)
@@ -351,12 +428,6 @@
                 }else{
                     this.$router.push('/welcome');
                 }
-            },
-            //获取table的索引和行数据，当该行被点击时，将公司名称地址填充到表单（会刷新当前页面，之前填写的信息会被覆盖）
-            getRow(index,row){
-                // console.log(row.address)
-                this.myForm.poolName = row.name
-                this.myForm.address = row.address
             },
         }
         

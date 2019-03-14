@@ -443,7 +443,7 @@
             }
         },
         beforeCreate(){
-            let _this = this
+            const _this = this
             axios({
                 method: 'get',
                 url: _this.$store.state.defaultHttp+'typeInfo/getTypeInfoByType.do?cId='+_this.$store.state.iscId,
@@ -467,7 +467,7 @@
         methods: {
             //获取/查询线索列表
             reloadTable() {
-                let _this = this;
+                const _this = this;
                 let qs =require('querystring')
                 let searchList = {}
                 searchList.searchName = this.searchList.searchName;
@@ -502,7 +502,7 @@
             },
             //获取筛选列表
             reloadData() {
-                let _this = this;
+                const _this = this;
                 let qs =require('querystring')
                 let filterList = {}
                 filterList.type = '线索'
@@ -532,7 +532,6 @@
                 });
             },
             selectInfo(val){
-                this.multipleSelection = val;
                 // console.log(val)
                 let arr = val;
                 let newArr = [new Array()];
@@ -549,22 +548,22 @@
                 
             },
             openDetails(index,row){
-                let detailsData = {};
-                detailsData.submitData = {"id": row.id};
-                // console.log(detailsData)
-                this.$store.state.detailsData = detailsData;
+                let cluedetailsData = {};
+                cluedetailsData.submitData = {"id": row.id};
+                // console.log(cluedetailsData)
+                this.$store.state.cluedetailsData = cluedetailsData;
                 this.$router.push({ path: '/clueDetails' });
             },
             handleAdd(){
-                let _this = this
-                let addOrUpdateData = {};
-                // addOrUpdateData.title = "添加线索";
-                addOrUpdateData.createForm = [
+                const _this = this
+                let clueaddOrUpdateData = {};
+                // clueaddOrUpdateData.title = "添加线索";
+                clueaddOrUpdateData.createForm = [
                     {"label":"线索来源","inputModel":"cuesid","type":"select"},
                     {"label":"公司名称","inputModel":"poolName","type":"require"},
                     {"label":"联系人","inputModel":"contactsName",},
                     {"label":"手机","inputModel":"phone","type":"number"},
-                    {"label":"电话","inputModel":"telphone","type":"number"},
+                    {"label":"电话","inputModel":"telphone"},
                     {"label":"QQ","inputModel":"qq","type":"number"},
                     {"label":"性别","inputModel":"sex","type":"radio"},
                     {"label":"职务","inputModel":"identity"},
@@ -573,7 +572,7 @@
                     {"label":"","inputModel":"areaid","type":"select","placeholder":"请选择区"},
                     {"label":"地址","inputModel":"address"},
                     {"label":"备注","inputModel":"remark"}];
-                addOrUpdateData.assistForm = [
+                clueaddOrUpdateData.assistForm = [
                     {"label":"法人代表","inputModel":"representative"},
                     {"label":"登记机关","inputModel":"registrationAuthority"},
                     {"label":"统一社会信用代码","inputModel":"creditCode"},
@@ -586,7 +585,7 @@
                     {"label":"行业","inputModel":"industryType","type":"select"},
                     {"label":"公司类型","inputModel":"companyType","type":"select"},
                     {"label":"经营状态","inputModel":"operatingState","type":"select"},]
-                addOrUpdateData.setForm = {
+                clueaddOrUpdateData.setForm = {
                     "cuesid": '',
                     "poolName": '',
                     "contactsName": '',
@@ -612,8 +611,8 @@
                     "industryType": '',
                     "companyType": '',
                     "operatingState": ''};
-                addOrUpdateData.submitURL = this.$store.state.defaultHttp+ 'customerTwo/saveClue.do?cId='+this.$store.state.iscId+'&pId='+this.$store.state.ispId,
-                this.$store.state.addOrUpdateData = addOrUpdateData;
+                clueaddOrUpdateData.submitURL = this.$store.state.defaultHttp+ 'customerTwo/saveClue.do?cId='+this.$store.state.iscId+'&pId='+this.$store.state.ispId,
+                this.$store.state.clueaddOrUpdateData = clueaddOrUpdateData;
                 axios({
                     method: 'get',
                     url: _this.$store.state.defaultHttp+'clueJurisdiction/insert.do',//新增线索
@@ -633,10 +632,10 @@
             },
             handleEdit(index,row){
                 // console.log(row)
-                let _this = this
-                let addOrUpdateData = {};
-                // addOrUpdateData.title = "修改线索";
-                addOrUpdateData.createForm = [
+                const _this = this
+                let clueaddOrUpdateData = {};
+                // clueaddOrUpdateData.title = "修改线索";
+                clueaddOrUpdateData.createForm = [
                     {"label":"线索来源","inputModel":"cuesid","type":"select"},
                     {"label":"客户名称","inputModel":"poolName","type":"require"},
                     {"label":"联系人","inputModel":"contactsName",},
@@ -650,7 +649,7 @@
                     {"label":"","inputModel":"areaid","type":"select","placeholder":"请选择区"},
                     {"label":"地址","inputModel":"address"},
                     {"label":"备注","inputModel":"remark"}];
-                addOrUpdateData.assistForm = [
+                clueaddOrUpdateData.assistForm = [
                     {"label":"法人代表","inputModel":"representative"},
                     {"label":"登记机关","inputModel":"registrationAuthority"},
                     {"label":"统一社会信用代码","inputModel":"creditCode"},
@@ -663,7 +662,7 @@
                     {"label":"行业","inputModel":"industryType","type":"select"},
                     {"label":"公司类型","inputModel":"companyType","type":"select"},
                     {"label":"经营状态","inputModel":"operatingState","type":"select"},]
-                addOrUpdateData.setForm = {
+                clueaddOrUpdateData.setForm = {
                     "cuesid": row.cuesid,
                     "poolName": row.name,
                     "contactsName": row.contacts[0].coName,
@@ -692,10 +691,10 @@
                     "industryType": row.industryType,
                     "companyType": row.companyType,
                     "operatingState": row.operatingState};
-                addOrUpdateData.submitData = {"id": row.id,'csId':row.contacts[0].csId};
-                addOrUpdateData.submitURL = this.$store.state.defaultHttp+ 'customerTwo/updateClue.do?cId='+this.$store.state.iscId+'&pId='+this.$store.state.ispId,
-                // console.log(addOrUpdateData)
-                this.$store.state.addOrUpdateData = addOrUpdateData;
+                clueaddOrUpdateData.submitData = {"id": row.id,'csId':row.contacts[0].csId};
+                clueaddOrUpdateData.submitURL = this.$store.state.defaultHttp+ 'customerTwo/updateClue.do?cId='+this.$store.state.iscId+'&pId='+this.$store.state.ispId,
+                // console.log(clueaddOrUpdateData)
+                this.$store.state.clueaddOrUpdateData = clueaddOrUpdateData;
                 axios({
                     method: 'get',
                     url: _this.$store.state.defaultHttp+'clueJurisdiction/update.do',//修改线索
@@ -715,7 +714,7 @@
                 // this.$router.push({ path: '/clueaddorupdate' });
             },
             cluePool(){
-                let _this = this;
+                const _this = this;
                 let qs =require('querystring')
                 let idArr = [];
                 idArr.id = this.idArr.id
@@ -749,7 +748,7 @@
                 });
             },
             customerSwitching(){
-                let _this = this;
+                const _this = this;
                 let qs =require('querystring')
                 let idArr = [];
                 idArr.id = this.idArr.id
@@ -784,7 +783,7 @@
             },
             hangleChange(e,val){
                 // console.log(e)
-                let _this = this
+                const _this = this
                 let qs = require('querystring')
                 let data = {}
                 data.pageInfoId = val.pageInfoId
@@ -846,12 +845,12 @@
             },
 
             handleSizeChange(val) {
-                let _this = this;
+                const _this = this;
                 _this.limit = val;
                 _this.$options.methods.reloadTable.bind(_this)(false);
             },
             handleCurrentChange(val) {
-                let _this = this;
+                const _this = this;
                 _this.page = val;
                 _this.$options.methods.reloadTable.bind(_this)(false);
             },

@@ -156,10 +156,10 @@
         // },
         methods: {
             loadData() {
-                this.detailData = this.$store.state.detailsData.submitData;
-                this.idArr.id = this.$store.state.detailsData.submitData.id
+                this.detailData = this.$store.state.agreedetailsData.submitData;
+                this.idArr.id = this.$store.state.agreedetailsData.submitData.id
                 // console.log(this.detailData)
-                let _this = this
+                const _this = this
                 let qs =require('querystring')
                 let pageInfo = {}
                 pageInfo.page = this.page
@@ -191,7 +191,7 @@
                 });
             },
             loadIMG(){
-                let _this = this
+                const _this = this
                 _this.fileList = []
                 let qs = require('querystring')
                 let data = {}
@@ -221,7 +221,7 @@
                 });
             },
             tirggerFile (event) {
-                let _this = this;
+                const _this = this;
                 let file = event.target.files[0]
                 let param = new FormData() // 创建form对象
                 param.append('file', file, file.name) // 通过append向form对象添加数据
@@ -254,7 +254,7 @@
             },
             delImg(e,val){
                 // console.log(val.id)
-                let _this = this;
+                const _this = this;
                 let qs = require('querystring')
                 let idArr = [];
                 idArr.id = val.id
@@ -302,7 +302,7 @@
             },
             getRow(index,row){
                 // console.log(row)
-                this.$store.state.detailsData.submitData = {"id":row.contract_id}
+                this.$store.state.agreedetailsData.submitData = {"id":row.contract_id}
                 this.idArr.contractId = row.contract_id
                 
                 // this.detailData.contractId = row.contractId
@@ -312,7 +312,7 @@
                 // console.log(tab, event);
             },
             search(){
-                let _this = this;
+                const _this = this;
                 let qs =require('querystring')
                 let searchList = {}
                 searchList.searchName = this.searchList.keyword;
@@ -332,12 +332,12 @@
                 });
             },
             handleSizeChange(val) {
-                let _this = this;
+                const _this = this;
                 _this.limit = val;
                 _this.$options.methods.loadData.bind(_this)();
             },
             handleCurrentChange(val) {
-                let _this = this;
+                const _this = this;
                 _this.page = val;
                 _this.$options.methods.loadData.bind(_this)();
             },

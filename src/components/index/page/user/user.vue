@@ -343,7 +343,7 @@
             }
         },
         beforeCreate(){
-            let _this = this
+            const _this = this
             axios({
                 method: 'get',
                 url: _this.$store.state.defaultHttp+'dept/getDeptNodeTree.do?cId='+_this.$store.state.iscId,
@@ -362,7 +362,7 @@
         },
         methods:{
             reloadTable(){
-                let _this = this
+                const _this = this
                 let qs = require('querystring')
                 let pageInfo = {}
                 pageInfo.page = this.page
@@ -446,7 +446,7 @@
             },
             //用户添加
             handleAdd(){
-                let _this = this
+                const _this = this
                 // console.log(this.clickdata.next)
                 this.newform.role_id = null
                 this.newform.private_phone = null
@@ -483,7 +483,7 @@
             },
             //用户添加提交按钮
             adduser(){
-                let _this = this;
+                const _this = this;
                 let qs = require('querystring')
                 let data = {}
                 data.second_id = this.newform.second_id
@@ -584,7 +584,7 @@
             },
             //用户修改
             handleEdit(index,row){
-                let _this = this
+                const _this = this
                 // console.log(row)
                 let data = {}
 
@@ -630,7 +630,7 @@
             },
             //用户修改提交按钮
             updateuser(){
-                let _this = this;
+                const _this = this;
                 let qs = require('querystring')
                 let data = {}
                 data.second_id = this.newform.second_id
@@ -716,7 +716,7 @@
             },
             //同步用户
             handlesynchros(){
-                let _this = this;
+                const _this = this;
                 let qs =require('querystring')
                 let idArr = [];
                 idArr.privateId = this.idArr.private_id
@@ -754,7 +754,7 @@
                 });
             },
             handlesynchro(index,row){
-                let _this = this;
+                const _this = this;
                 let qs =require('querystring')
                 let idArr = [];
                 idArr.privateId = row.private_id
@@ -793,7 +793,7 @@
             },
             hangleChange(e,val){
                 // console.log(e)
-                let _this = this
+                const _this = this
                 let qs = require('querystring')
                 let data = {}
                 data.pageInfoId = val.pageInfoId
@@ -822,12 +822,12 @@
                 this.$options.methods.reloadTable.bind(this)(true);
             },
             handleSizeChange(val) {
-                let _this = this;
+                const _this = this;
                 _this.limit = val;
                 _this.$options.methods.reloadTable.bind(_this)(false);
             },
             handleCurrentChange(val) {
-                let _this = this;
+                const _this = this;
                 _this.page = val;
                 _this.$options.methods.reloadTable.bind(_this)(false);
             },

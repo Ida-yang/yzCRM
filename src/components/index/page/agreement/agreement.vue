@@ -6,6 +6,10 @@
                 <span class="nameList">合同分类：</span>
                 <el-radio v-for="item in agreementData" :key="item.label" :label="item.label" @change="search()">{{item.value}}</el-radio>
             </el-radio-group>
+            <el-radio-group v-model="searchList.example">
+                <span class="nameList">到期合同：</span>
+                <el-radio v-for="(item,index) in agreementTime" :key="index" :label="item.id" @change="search()">{{item.name}}</el-radio>
+            </el-radio-group>
         </div>
         <div class="searchList" style="width:100%;">
             <span class="nameList">公司名称：</span>
@@ -27,15 +31,16 @@
             <el-button slot="reference" icon="el-icon-more" class="info-btn screen" type="mini"></el-button>
             </el-popover>
         </div>
+            <!-- :summary-method="getSummaries" -->
         <el-table
             :data="tableData"
             :default-sort = "{prop:'contract_id',order: 'descending'}"
             ref="multipleTable"
             border
             stripe
+            show-summary
             style="width:100%;text-align:center"
-            @selection-change="selectInfo"
-            >
+            @selection-change="selectInfo">
             <el-table-column
                 fixed
                 header-align="center"
@@ -130,6 +135,15 @@
                     align="left"
                     min-width="130"
                     label="合同到期日期"
+                    sortable>
+                </el-table-column>
+                <el-table-column
+                    prop="expireDay"
+                    v-else-if="item.prop == 'expireDay' && item.state == 1"
+                    header-align="left"
+                    align="left"
+                    min-width="130"
+                    label="过期天数"
                     sortable>
                 </el-table-column>
                 <el-table-column
@@ -272,7 +286,8 @@
             return {
                 searchList:{
                     searchName:null,
-                    label:'1'
+                    label:'1',
+                    example:''
                 },
                 searchListNew:{
                     searchName:null,
@@ -284,6 +299,13 @@
                     {label:'1',value:'我的合同'},
                     {label:'2',value:'本组'},
                     {label:'3',value:'本机构'}
+                ],
+
+                agreementTime:[
+                    {id:'',name:'全部合同'},
+                    {id:'1',name:'本月合同'},
+                    {id:'2',name:'近一个月到期合同'},
+                    {id:'3',name:'已过期合同'}
                 ],
 
                 page:1,//默认第一页
@@ -312,11 +334,22 @@
         methods: {
             //加载所有合同
             reloadTable() {
-                let _this = this;
+                const _this = this;
                 let qs =require('querystring')
                 let searchList = {}
+                if(this.searchList.label == 0 ){
+                    searchList.pId = _this.nullvalue
+                }else if(this.searchList.label == 1){
+                    searchList.pId = _this.$store.state.ispId
+                }else if(this.searchList.label == 2){
+                    searchList.secondid = _this.$store.state.deptid
+                }else if(this.searchList.label == 3){
+                    searchList.deptid = _this.$store.state.insid
+                }else{
+                    searchList.pId = _this.$store.state.ispId
+                }
                 searchList.searchName = this.searchList.searchName
-                // searchList.pId = this.$store.state.ispId
+                searchList.example = this.searchList.example
                 searchList.page = this.page
                 searchList.limit = this.limit
                 // console.log(searchList)
@@ -334,7 +367,7 @@
                 });
             },
             reloadData() {
-                let _this = this;
+                const _this = this;
                 let qs =require('querystring')
                 
                 let filterList = {}
@@ -380,13 +413,13 @@
                 
             },
             openDetails(index,row){
-                let detailsData = {};
-                detailsData.submitData = {"id": row.contract_id};
-                this.$store.state.detailsData = detailsData;
+                let agreedetailsData = {};
+                agreedetailsData.submitData = {"id": row.contract_id};
+                this.$store.state.agreedetailsData = agreedetailsData;
                 this.$router.push({ path: '/agreementDetails' });
             },
             handleDeletes(){
-                let _this = this;
+                const _this = this;
                 let qs =require('querystring')
                 let idArr = [];
                 idArr.ids = this.idArr.ids
@@ -423,10 +456,10 @@
                 })
             },
             handleAdd(){
-                let addOrUpdateData = {};
+                let agreeaddOrUpdateData = {};
                 const _this = this
-                // addOrUpdateData.title = "添加线索";
-                addOrUpdateData.createForm = [
+                // agreeaddOrUpdateData.title = "添加线索";
+                agreeaddOrUpdateData.createForm = [
                     {"label":"合同类型","inputModel":"contract_type","type":"select","options":[
                         {"okey":'0',"olabel":"销售合同","ovalue":"销售合同"},
                         {"okey":'2',"olabel":"服务合同","ovalue":"服务合同"},
@@ -435,7 +468,7 @@
                     ]},
                     {"label":"合同编号","inputModel":"contract_number",},
                     {"label":"合同名称","inputModel":"contract_name",},
-                    {"label":"客户","inputModel":"customerpool_id","type":"select"},
+                    {"label":"客户","inputModel":"customerpool_id","type":"require"},
                     {"label":"对应商机","inputModel":"opportunity_id","type":"select"},
                     {"label":"合同金额","inputModel":"amount","type":"number"},
                     {"label":"开始时间","inputModel":"start_date","type":"date"},
@@ -443,7 +476,7 @@
                     {"label":"客户签约人","inputModel":"signatories","type":"select"},
                     {"label":"我方签约人","inputModel":"our_signatories","disabled":true},
                     {"label":"备注","inputModel":"remarks"}];
-                addOrUpdateData.setForm = {
+                agreeaddOrUpdateData.setForm = {
                     "contract_type": '',
                     "contract_number": '',
                     "contract_name": '',
@@ -455,8 +488,8 @@
                     "signatories": '',
                     "our_signatories": this.$store.state.user,
                     "remarks": ''};
-                addOrUpdateData.submitURL = this.$store.state.defaultHttp+ 'insertContract.do?cId='+this.$store.state.iscId+'&pId='+this.$store.state.ispId,
-                this.$store.state.addOrUpdateData = addOrUpdateData;
+                agreeaddOrUpdateData.submitURL = this.$store.state.defaultHttp+ 'insertContract.do?cId='+this.$store.state.iscId+'&pId='+this.$store.state.ispId,
+                this.$store.state.agreeaddOrUpdateData = agreeaddOrUpdateData;
                 // this.$router.push({ path: '/agreementaddorupdate' });
                 axios({
                     method: 'get',
@@ -478,9 +511,9 @@
             handleEdit(index,row){
                 // console.log(row)
                 const _this = this
-                let addOrUpdateData = {};
-                // addOrUpdateData.title = "修改线索";
-                addOrUpdateData.createForm = [
+                let agreeaddOrUpdateData = {};
+                // agreeaddOrUpdateData.title = "修改线索";
+                agreeaddOrUpdateData.createForm = [
                     {"label":"合同类型","inputModel":"contract_type","type":"select","options":[
                         {"okey":'0',"olabel":"销售合同","ovalue":"销售合同"},
                         {"okey":'2',"olabel":"服务合同","ovalue":"服务合同"},
@@ -489,7 +522,7 @@
                     ]},
                     {"label":"合同编号","inputModel":"contract_number","prop":"contract_number",},
                     {"label":"合同名称","inputModel":"contract_name",},
-                    {"label":"客户","inputModel":"customerpool_id","type":"select"},
+                    {"label":"客户","inputModel":"customerpool_id","type":"require"},
                     {"label":"对应商机","inputModel":"opportunity_id","type":"select"},
                     {"label":"合同金额","inputModel":"amount","type":"number"},
                     {"label":"开始时间","inputModel":"start_date","type":"date"},
@@ -497,12 +530,12 @@
                     {"label":"客户签约人","inputModel":"signatories","type":"select"},
                     {"label":"我方签约人","inputModel":"our_signatories","disabled":true},
                     {"label":"备注","inputModel":"remarks"}];
-                addOrUpdateData.setForm = {
+                agreeaddOrUpdateData.setForm = {
                     "contract_type": row.contract_type,
                     "contract_number": row.contract_number,
                     "contract_name": row.contract_name,
-                    "customerpool_id": row.poolName,
-                    "poolName": row.customerpool_id,
+                    "customerpool_id": row.customerpool_id,
+                    "poolName": row.poolName,
                     "opportunity_id": row.opportunity_name,
                     "opportunity_name":row.opportunity_id,
                     "amount": row.amount,
@@ -511,10 +544,10 @@
                     "signatories": row.signatories,
                     "our_signatories": row.our_signatories,
                     "remarks": row.remarks};
-                addOrUpdateData.submitData = {"id": row.contract_id};
-                addOrUpdateData.submitURL = this.$store.state.defaultHttp+ 'updateContract.do?cId='+this.$store.state.iscId,
-                this.$store.state.addOrUpdateData = addOrUpdateData;
-                // console.log(addOrUpdateData)
+                agreeaddOrUpdateData.submitData = {"id": row.contract_id};
+                agreeaddOrUpdateData.submitURL = this.$store.state.defaultHttp+ 'updateContract.do?cId='+this.$store.state.iscId,
+                this.$store.state.agreeaddOrUpdateData = agreeaddOrUpdateData;
+                // console.log(agreeaddOrUpdateData)
                 // this.$router.push({ path: '/agreementaddorupdate' });
                 axios({
                     method: 'get',
@@ -534,7 +567,7 @@
                 });
             },
             handleDelete(index,row){
-                let _this = this;
+                const _this = this;
                 let qs =require('querystring')
                 let idArr = [];
                 idArr.ids = row.contract_id
@@ -577,7 +610,7 @@
             },
             hangleChange(e,val){
                 // console.log(e)
-                let _this = this
+                const _this = this
                 let qs = require('querystring')
                 let data = {}
                 data.pageInfoId = val.pageInfoId
@@ -601,6 +634,32 @@
                 }).catch(function(err){
                     console.log(err);
                 });
+            },
+            getSummaries(param){
+                const { columns, data } = param;
+                const sums = [];
+                columns.forEach((column, index) => {
+                    if (index === 0) {
+                        sums[index] = '总价';
+                        return;
+                    }
+                    const values = data.map(item => Number(item[column.property]));
+                    if (!values.every(value => isNaN(value))) {
+                        sums[index] = values.reduce((prev, curr) => {
+                            const value = Number(curr);
+                            if (!isNaN(value)) {
+                                return prev + curr;
+                            } else {
+                                return prev;
+                            }
+                        }, 0);
+                        sums[index] += ' 元';
+                    } else {
+                        sums[index] = 'N/A';
+                    }
+                });
+
+                return sums;
             },
             search() {
                 const _this = this
@@ -639,12 +698,12 @@
             },
 
             handleSizeChange(val) {
-                let _this = this;
+                const _this = this;
                 _this.limit = val;
                 _this.$options.methods.reloadTable.bind(_this)(false);
             },
             handleCurrentChange(val) {
-                let _this = this;
+                const _this = this;
                 _this.page = val;
                 _this.$options.methods.reloadTable.bind(_this)(false);
             },

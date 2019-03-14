@@ -339,7 +339,7 @@
         },
         methods:{
             loadData(){
-                let _this = this;
+                const _this = this;
                 _this.$store.state.reportFormList = [
                     {name:'化妆品行业',city:'广州',years:'1-3年',scale:'50-99人',capital:'200-500万',ensure:'1000万客户',sort:'1',financing:'100',list:'100',telephone:'100'},
                     {name:'化妆品行业',city:'广州',years:'1-3年',scale:'50-99人',capital:'200-500万',ensure:'1000万客户',sort:'2',financing:'100',list:'100',telephone:'100'},

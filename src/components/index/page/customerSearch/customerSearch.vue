@@ -438,7 +438,7 @@
 
         methods: {
             loadData(){
-                let _this = this
+                const _this = this
                 let qs =require('querystring')
                 // console.log(pageInfo)
                 let industryTypeList = {} 
@@ -537,7 +537,7 @@
             //获取/查询大数据列表
             reloadTable() {
                 // console.log(this.$store.state)
-                let _this = this;
+                const _this = this;
                 let qs =require('querystring')
                 let searchList = {}
                 searchList.keyword = this.searchList.keyword; //公司名称
@@ -629,7 +629,7 @@
                 this.text = !this.text;
             },
             transfer(){
-                let _this = this;
+                const _this = this;
                 let qs =require('querystring')
                 // console.log(this.idArr)
                 let idArr = [];
@@ -674,7 +674,7 @@
             
             hangleChange(e,val){
                 // console.log(e)
-                let _this = this
+                const _this = this
                 let qs = require('querystring')
                 let data = {}
                 data.pageInfoId = val.pageInfoId
@@ -714,7 +714,7 @@
 
             // 选省
             choseProvince(e) {
-                let _this = this
+                const _this = this
                 this.searchList.city = ''
                 this.searchList.area = ''
                 let qs =require('querystring')
@@ -736,7 +736,7 @@
             // 选市
             choseCity(e) {
                 // console.log(e)
-                let _this = this
+                const _this = this
                 this.searchList.area = ''
                 let qs =require('querystring')
                 let data = {}
@@ -761,12 +761,12 @@
             },
 
             handleSizeChange(val) {
-                let _this = this;
+                const _this = this;
                 _this.limit = val;
                 _this.$options.methods.reloadTable.bind(_this)(true);
             },
             handleCurrentChange(val) {
-                let _this = this;
+                const _this = this;
                 _this.page = val;
                 _this.$options.methods.reloadTable.bind(_this)(true);
             },

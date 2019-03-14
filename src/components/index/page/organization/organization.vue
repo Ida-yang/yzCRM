@@ -299,7 +299,7 @@
         methods:{
             //加载机构部门树结构
             loadData(){
-                let _this = this
+                const _this = this
                 axios({
                     method: 'get',
                     url: _this.$store.state.defaultHttp+'dept/getDeptNodeTree.do?cId='+_this.$store.state.iscId,
@@ -311,7 +311,7 @@
                 });
             },
             reloadData(){
-                let _this = this
+                const _this = this
                 let qs = require('querystring')
                 let searchInfo = {}
                 searchInfo.deptid = this.searchList.deptid
@@ -329,7 +329,7 @@
                 });
             },
             getresource(){
-                let _this = this
+                const _this = this
                 axios({
                     method: 'get',
                     url: _this.$store.state.defaultHttp+'resource/getResources.do',
@@ -377,7 +377,7 @@
             },
             //上级部门添加
             handleappend(data){
-                let _this = this
+                const _this = this
                 // console.log(data)
                 axios({
                     method: 'get',
@@ -401,7 +401,7 @@
             },
             //上级部门添加提交按钮
             appenddept(){
-                let _this = this;
+                const _this = this;
                 let qs = require('querystring')
                 let data = {}
                 data.parentid = this.newform.parentid
@@ -436,7 +436,7 @@
             //上级部门修改
             handleUpdate(data){
                 // console.log(data)
-                let _this = this;
+                const _this = this;
                 axios({
                     method: 'get',
                     url: _this.$store.state.defaultHttp+'deptJurisdiction/update.do',//编辑部门
@@ -460,7 +460,7 @@
             },
             //上级部门修改提交按钮
             updatedept(){
-                let _this = this;
+                const _this = this;
                 let qs = require('querystring')
                 let data = {}
                 data.deptid = this.newform.deptid
@@ -493,7 +493,7 @@
             },
             //上级部门删除提交按钮
             deletedept(node,data){
-                let _this = this;
+                const _this = this;
                 let qs =require('querystring')
                 let idData = {}
                 idData.deptid = data.deptid
@@ -536,7 +536,7 @@
                 // console.log(tab, event);
             },
             handleAdd(){
-                let _this = this
+                const _this = this
                 this.roleform.name = ''
                 this.roleform.ids = []
                 if(!this.clickdata){
@@ -567,7 +567,7 @@
                 // console.log(this.roleform)
             },
             addrole(){
-                let _this = this
+                const _this = this
                 let qs = require('querystring')
                 let data = {}
                 data.deptid = this.roleform.deptid
@@ -598,7 +598,7 @@
                 })
             },
             handleEdit(e,val){
-                let _this = this
+                const _this = this
                 axios({
                     method: 'get',
                     url: _this.$store.state.defaultHttp+'roleJurisdiction/update.do',//编辑角色
@@ -645,7 +645,7 @@
                 
             },
             updaterole(){
-                let _this = this
+                const _this = this
                 let qs = require('querystring')
                 let data = {}
                 data.id = this.roleform.id
@@ -678,7 +678,7 @@
             },
             handledelete(val){
                 // console.log(val)
-                let _this = this
+                const _this = this
                 let data = {}
                 let qs = require('querystring')
                 data.id = val

@@ -167,6 +167,11 @@ const router =new Router({
           meta: { title: '方案/目标详情',requireAuth:true}
         },
         {
+          path: '/visitplan',
+          component: resolve => require(['../components/index/page/work/visitplan.vue'], resolve),
+          meta: { title: '拜访计划',name:'visitplan', requireAuth:true}
+        },
+        {
           path: '/name',
           component: resolve => require(['../components/index/page/name/name.vue'], resolve),
           meta: { title: '导入',requireAuth:true}
@@ -175,6 +180,11 @@ const router =new Router({
           path: '/name2',
           component: resolve => require(['../components/index/page/name/name2.vue'], resolve),
           meta: { title: '导入2',requireAuth:true}
+        },
+        {
+          path: '/visitplanaddorupdate',
+          component: resolve => require(['../components/index/page/AddAndUpdate/visitplanaddorupdate.vue'], resolve),
+          meta: { title: '编辑拜访计划' ,requireAuth:true}
         },
       ]
     },

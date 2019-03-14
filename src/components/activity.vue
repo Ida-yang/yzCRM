@@ -85,7 +85,7 @@
             },
             addactivity(){
                 // console.log(this.newform)
-                let _this = this;
+                const _this = this;
                 let qs = require('querystring')
                 let data = {}
                 data.poolName = this.newform.poolName

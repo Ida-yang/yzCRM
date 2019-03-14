@@ -274,7 +274,7 @@
 
         methods: {
             reloadTable() {
-                let _this = this;
+                const _this = this;
                 let qs =require('querystring')
                 let searchList = {}
                 searchList.searchName = this.searchList.searchName;
@@ -306,7 +306,7 @@
                 });
             },
             reloadData() {
-                let _this = this;
+                const _this = this;
                 let qs =require('querystring')
                 
                 let filterList = {}
@@ -354,26 +354,26 @@
                 
             },
             openDetails(index,row){
-                let detailsData = {};
-                detailsData.submitData = {"id": row.opportunity_id};
-                // console.log(detailsData)
-                this.$store.state.detailsData = detailsData;
+                let oppdetailsData = {};
+                oppdetailsData.submitData = {"id": row.opportunity_id};
+                // console.log(oppdetailsData)
+                this.$store.state.oppdetailsData = oppdetailsData;
                 this.$router.push({ path: '/businessOpportunityDetails' });
             },
             handleAdd(){
-                let addOrUpdateData = {};
+                let oppaddOrUpdateData = {};
                 const _this = this
-                // addOrUpdateData.title = "添加商机";
-                addOrUpdateData.createForm = [
+                // oppaddOrUpdateData.title = "添加商机";
+                oppaddOrUpdateData.createForm = [
                     {"label":"商机编号","inputModel":"opportunity_number",},
                     {"label":"商机名称","inputModel":"opportunity_name"},
-                    {"label":"公司名称","inputModel":"customerpool_id","type":"select"},
+                    {"label":"公司名称","inputModel":"customerpool_id","type":"require"},
                     {"label":"客户决策人","inputModel":"contacts_id","type":"select"},
                     {"label":"预计成绩金额","inputModel":"opportunity_achievement","type":"number"},
                     {"label":"预计成交时间","inputModel":"opportunity_deal","type":"date"},
                     {"label":"负责人","inputModel":"user_id","disabled":true},
                     {"label":"备注","inputModel":"opportunity_remarks"}];
-                addOrUpdateData.setForm = {
+                oppaddOrUpdateData.setForm = {
                     "opportunity_number": '',
                     "opportunity_name": '',
                     "customerpool_id": '',
@@ -384,8 +384,8 @@
                     "opportunity_deal":'',
                     "user_id":this.$store.state.user,
                     "opportunity_remarks": ''};
-                addOrUpdateData.submitURL = this.$store.state.defaultHttp+ 'opportunity/saveOrUpdate.do?cId='+this.$store.state.iscId,
-                this.$store.state.addOrUpdateData = addOrUpdateData;
+                oppaddOrUpdateData.submitURL = this.$store.state.defaultHttp+ 'opportunity/saveOrUpdate.do?cId='+this.$store.state.iscId,
+                this.$store.state.oppaddOrUpdateData = oppaddOrUpdateData;
                 // this.$router.push({ path: '/Opportunityaddorupdate' });
                 axios({
                     method: 'get',
@@ -407,32 +407,32 @@
             handleEdit(index,row){
                 // console.log(row)
                 const _this = this
-                let addOrUpdateData = {};
-                // addOrUpdateData.title = "修改商机";
-                addOrUpdateData.createForm = [
+                let oppaddOrUpdateData = {};
+                // oppaddOrUpdateData.title = "修改商机";
+                oppaddOrUpdateData.createForm = [
                     {"label":"商机编号","inputModel":"opportunity_number",},
                     {"label":"商机名称","inputModel":"opportunity_name"},
-                    {"label":"公司名称","inputModel":"customerpool_id","type":"select"},
+                    {"label":"公司名称","inputModel":"customerpool_id","type":"require"},
                     {"label":"客户决策人","inputModel":"contacts_id","type":"select"},
                     {"label":"预计成绩金额","inputModel":"opportunity_achievement","type":"number"},
                     {"label":"预计成交时间","inputModel":"opportunity_deal","type":"date"},
                     {"label":"负责人","inputModel":"user_id","disabled":true},
                     {"label":"备注","inputModel":"opportunity_remarks"}];
-                addOrUpdateData.setForm = {
+                oppaddOrUpdateData.setForm = {
                     "opportunity_number": row.opportunity_number,
                     "opportunity_name": row.opportunity_name,
-                    "customerpool_id": row.customerpool[0].name,
-                    "customerpool_name": row.customerpool[0].id,
+                    "customerpool_id": row.customerpool[0].id,
+                    "customerpool_name": row.customerpool[0].name,
                     "contacts_id": row.contacts[0].coName,
                     "contacts_name": row.contacts[0].csId,
                     "opportunity_achievement":row.opportunity_achievement,
                     "opportunity_deal":row.opportunity_deal,
                     "user_id":row.private_employee,
                     "opportunity_remarks": row.opportunity_remarks};
-                addOrUpdateData.submitData = {"id":row.opportunity_id};
-                addOrUpdateData.submitURL = this.$store.state.defaultHttp+ 'opportunity/saveOrUpdate.do?cId='+this.$store.state.iscId,
-                // console.log(addOrUpdateData)
-                this.$store.state.addOrUpdateData = addOrUpdateData;
+                oppaddOrUpdateData.submitData = {"id":row.opportunity_id};
+                oppaddOrUpdateData.submitURL = this.$store.state.defaultHttp+ 'opportunity/saveOrUpdate.do?cId='+this.$store.state.iscId,
+                // console.log(oppaddOrUpdateData)
+                this.$store.state.oppaddOrUpdateData = oppaddOrUpdateData;
                 // this.$router.push({ path: '/Opportunityaddorupdate' });
                 axios({
                     method: 'get',
@@ -452,7 +452,7 @@
                 });
             },
             handleDeletes(){
-                let _this = this;
+                const _this = this;
                 let qs =require('querystring')
                 let idArr = [];
                 idArr.id = this.idArr.id
@@ -490,7 +490,7 @@
                 });
             },
             handleDelete(index,row){
-                let _this = this;
+                const _this = this;
                 let qs =require('querystring')
                 let idArr = [];
                 idArr.id = row.opportunity_id
@@ -535,7 +535,7 @@
             
             hangleChange(e,val){
                 // console.log(e)
-                let _this = this
+                const _this = this
                 let qs = require('querystring')
                 let data = {}
                 data.pageInfoId = val.pageInfoId
@@ -597,12 +597,12 @@
             },
 
             handleSizeChange(val) {
-                let _this = this;
+                const _this = this;
                 _this.limit = val;
                 _this.$options.methods.reloadTable.bind(_this)(false);
             },
             handleCurrentChange(val) {
-                let _this = this;
+                const _this = this;
                 _this.page = val;
                 _this.$options.methods.reloadTable.bind(_this)(false);
             },

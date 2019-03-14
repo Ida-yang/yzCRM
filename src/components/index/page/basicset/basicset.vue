@@ -179,7 +179,7 @@
         },
         methods:{
             reloadTable(){
-                let _this = this
+                const _this = this
                 let qs = require('querystring')
                 let data = {}
                 data.type = this.newform.type
@@ -196,7 +196,7 @@
             },
             //显示对应状态数表格数据
             showTableval(val){
-                let _this = this
+                const _this = this
                 this.newform.type = val.name
                 this.nameList.forEach(function(obj){
                     obj.isActive = false;
@@ -206,7 +206,7 @@
             },
             //状态添加
             handleAdd(){
-                let _this = this
+                const _this = this
 
                 axios({
                     method: 'get',
@@ -231,7 +231,7 @@
             },
             //状态添加提交按钮
             addbasicset(){
-                let _this = this;
+                const _this = this;
                 let qs = require('querystring')
                 let data = {}
                 data.type = this.newform.type
@@ -285,7 +285,7 @@
             },
             //状态修改
             handleEdit(index,row){
-                let _this = this
+                const _this = this
                 // console.log(row.sort)
 
                 axios({
@@ -313,7 +313,7 @@
             },
             //状态修改提交按钮
             updatebasicset(){
-                let _this = this;
+                const _this = this;
                 let qs = require('querystring')
                 let data = {}
                 data.id = this.newform.id
@@ -366,7 +366,7 @@
                 });
             },
             handledelete(index,row){
-                let _this = this;
+                const _this = this;
                 let qs =require('querystring')
                 let idArr = [];
                 idArr.id = row.id

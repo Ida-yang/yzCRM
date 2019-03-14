@@ -149,8 +149,19 @@
                         ]
                     },
                     {
-                        icon: 'el-icon-new-quanxianguanli',
+                        icon: 'el-icon-new-chuku',
                         index: '5',
+                        title: '办公',
+                        subs: [
+                            {
+                                index: 'visitplan',
+                                title: '拜访计划',
+                            },
+                        ]
+                    },
+                    {
+                        icon: 'el-icon-new-quanxianguanli',
+                        index: '6',
                         title: '导入',
                         subs: [
                             {

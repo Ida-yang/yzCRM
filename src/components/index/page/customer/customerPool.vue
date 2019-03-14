@@ -463,7 +463,7 @@
             this.reloadData()
         },
         beforeCreate(){
-            let _this = this;
+            const _this = this;
                 let qs =require('querystring')
             axios({
                 method: 'get',
@@ -478,7 +478,7 @@
 
         methods: {
             reloadTable() {
-                let _this = this;
+                const _this = this;
                 let qs =require('querystring')
                 let searchList = {}
                 searchList.searchName = this.searchList.searchName;
@@ -510,7 +510,7 @@
                 });
             },
             reloadData() {
-                let _this = this;
+                const _this = this;
                 let qs =require('querystring')
                 let filterList = {}
                 filterList.type = '客户池'
@@ -559,7 +559,7 @@
                 
             },
             handleDeletes(){
-                let _this = this;
+                const _this = this;
                 let qs =require('querystring')
                 let idArr = [];
                 idArr.id = this.idArr.id
@@ -597,7 +597,7 @@
                 });
             },
             handleDelete(index,row){
-                let _this = this;
+                const _this = this;
                 let qs =require('querystring')
                 let idArr = [];
                 idArr.id = row.id
@@ -639,7 +639,7 @@
                 });
             },
             handleReceives(){
-                let _this = this;
+                const _this = this;
                 let qs =require('querystring')
                 let idArr = [];
                 idArr.ids = this.idArr.id
@@ -686,7 +686,7 @@
                 
             },
             handleReceive(index,row){
-                let _this = this;
+                const _this = this;
                 let qs =require('querystring')
                 let idArr = [];
                 idArr.ids = row.id
@@ -732,7 +732,7 @@
                 
             },
             handleDistribution(){
-                let _this = this;
+                const _this = this;
                 let qs =require('querystring')
                 let idArr = [];
                 idArr.ids = this.idArr.id
@@ -783,7 +783,7 @@
             
             hangleChange(e,val){
                 // console.log(e)
-                let _this = this
+                const _this = this
                 let qs = require('querystring')
                 let data = {}
                 data.pageInfoId = val.pageInfoId
@@ -844,12 +844,12 @@
             },
 
             handleSizeChange(val) {
-                let _this = this;
+                const _this = this;
                 _this.limit = val;
                 _this.$options.methods.reloadTable.bind(_this)(false);
             },
             handleCurrentChange(val) {
-                let _this = this;
+                const _this = this;
                 _this.page = val;
                 _this.$options.methods.reloadTable.bind(_this)(false);
             },

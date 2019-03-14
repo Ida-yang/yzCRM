@@ -2,11 +2,11 @@
     <!-- 联系人新增修改 -->
     <div class="content">
         <el-form :model="myForm" ref="myForm" class="myForm" :rules="rules">
-            <!-- <h3>{{addOrUpdateData.title}}</h3> -->
+            <!-- <h3>{{contaddOrUpdateData.title}}</h3> -->
             <el-form-item
                 class="formitemcont"
                 label-width="100px"
-                v-for="item in addOrUpdateData.createForm"
+                v-for="item in contaddOrUpdateData.createForm"
                 :label="item.label"
                 :key="item.inputModel"
                 :prop="item.inputModel">
@@ -134,17 +134,6 @@
                     sortable>
                 </el-table-column>
             </el-table>
-            <div class="block numberPage">
-                <el-pagination
-                @size-change="handleSizeChange"
-                @current-change="handleCurrentChange"
-                :current-page="page"
-                :page-sizes="[15, 30, 50, 100]"
-                :page-size="15"
-                layout="total, sizes, prev, pager, next, jumper"
-                :total="tableNumber">
-                </el-pagination>
-            </div>
         </div>
     </div>
 </template>
@@ -157,11 +146,15 @@
         name:'contactsaddOrUpdate',
         data(){
             return {
+                clueList:[],
+                customerList:[],
                 tableData:null,
-                addOrUpdateData: {},
+                contaddOrUpdateData: {},
                 myForm: {
                     poolName:null,
-                    address:null,},
+                    address:null,
+                },
+                formid:null,
 
                 subData: {},
                 mapJson:'../../../../dist/static/map.json',
@@ -177,12 +170,14 @@
                 page: 1,//默认第一页
                 limit: 15,//默认10条
                 selectData: null,
-                tableNumber: null,
+                
                 rules: {
                     poolName : [{ required: true, message: '公司名称不能为空', trigger: 'blur' },],
                     name : [{ required: true, message: '联系人名称不能为空', trigger: 'blur' },],
                     phone : [{ required: true, message: '电话不能为空', trigger: 'blur' },],
                 },
+
+                searchvalue:null,
             }
         },
         // mounted() {
@@ -197,7 +192,7 @@
         },
         methods:{
             loadCountry(){
-                let _this = this
+                const _this = this
                 let qs =require('querystring')
                 let country = {}
                 if(this.cityid){
@@ -243,11 +238,13 @@
             },
             //获取右边表格
             loadTable(){
-                let _this = this
+                const _this = this
                 let qs =require('querystring')
                 let pageInfo = {}
                 pageInfo.page = this.page;
                 pageInfo.limit = this.limit;
+                pageInfo.pId = this.$store.state.ispId;
+                pageInfo.searchName = this.searchvalue
                 // console.log(pageInfo)
                 axios({
                     method: 'post',
@@ -255,23 +252,24 @@
                     data: qs.stringify(pageInfo),
                 }).then(function(res){
                     // console.log(res.data.map.success)
-                    _this.tableData = res.data.map.success
-                    _this.tableNumber = res.data.count;
+                    _this.clueList = res.data.map.success.customerTwos
+                    _this.customerList = res.data.map.success.customerpools
+                    _this.tableData = _this.clueList.concat(_this.customerList)
                 }).catch(function(err){
                     console.log(err);
                 });
             },
             //加载或重载页面
             loadData() {
-                this.addOrUpdateData = this.$store.state.addOrUpdateData;
-                this.countryid = this.addOrUpdateData.setForm.country
-                this.cityid = this.addOrUpdateData.setForm.city
-                this.areaid = this.addOrUpdateData.setForm.area
-                // console.log(this.addOrUpdateData)
+                this.contaddOrUpdateData = this.$store.state.contaddOrUpdateData;
+                this.countryid = this.contaddOrUpdateData.setForm.country
+                this.cityid = this.contaddOrUpdateData.setForm.city
+                this.areaid = this.contaddOrUpdateData.setForm.area
+                // console.log(this.contaddOrUpdateData)
 
                 // 设置默认值
-                let createForm = this.addOrUpdateData.createForm;
-                let setForm = this.addOrUpdateData.setForm;
+                let createForm = this.contaddOrUpdateData.createForm;
+                let setForm = this.contaddOrUpdateData.setForm;
                 if(setForm) {
                     createForm.forEach((item, index) => {
                         if(item.type && item.type == 'select') {
@@ -284,9 +282,9 @@
                             this.myForm[item.inputModel] = setForm[item.inputModel];
                         }
                     });
-                    this.myForm.countryid = this.addOrUpdateData.setForm.country
-                    this.myForm.cityid = this.addOrUpdateData.setForm.city
-                    this.myForm.areaid = this.addOrUpdateData.setForm.area
+                    this.myForm.countryid = this.contaddOrUpdateData.setForm.country
+                    this.myForm.cityid = this.contaddOrUpdateData.setForm.city
+                    this.myForm.areaid = this.contaddOrUpdateData.setForm.area
                     // console.log(this.myForm);
                     this.$emit('input', this.myForm);
                 }
@@ -296,36 +294,21 @@
                 // console.log(val)
             },
             handleoninput(val,key){
-                let _this = this
+                // const _this = this
                 this.myForm[key] = val
                 // console.log(this.myForm[key])
-                let qs =require('querystring')
-                let pageInfo = {}
-                pageInfo.page = this.page;
-                pageInfo.limit = this.limit;
-                pageInfo.searchName = val
-                // console.log(pageInfo)
-                axios({
-                    method: 'post',
-                    url: _this.$store.state.defaultHttp+'rightPoolName.do?cId='+_this.$store.state.iscId,
-                    data: qs.stringify(pageInfo),
-                }).then(function(res){
-                    // console.log(res.data)
-                    _this.tableData = res.data.map.success
-                    _this.tableNumber = res.data.count;
-                }).catch(function(err){
-                    console.log(err);
-                });
+                this.searchvalue = val
+                this.$options.methods.loadTable.bind(this)(true);
             },
             //提交或修改
             submit() {
-                let _this = this;
+                const _this = this;
                 let qs =require('querystring')
                 let subData = {};
-                if(_this.addOrUpdateData.submitData) {
-                    subData.id = _this.addOrUpdateData.submitData.id;
+                if(_this.contaddOrUpdateData.submitData) {
+                    subData.id = _this.contaddOrUpdateData.submitData.id;
                 }
-                let createForm = _this.addOrUpdateData.createForm;
+                let createForm = _this.contaddOrUpdateData.createForm;
                 let flag = false;
                 createForm.forEach(item => {
                     subData[item.inputModel] = _this.myForm[item.inputModel];
@@ -355,12 +338,14 @@
                 if(flag) return;
                 subData.secondid = this.$store.state.deptid
                 subData.deptid = this.$store.state.insid
+                subData.customeroneId = this.myForm.customeroneId
+                subData.customerpool_id = this.myForm.customerpool_id
                 // console.log(_this.myForm)
                 // console.log(subData)
 
                 axios({
                     method: 'post',
-                    url: _this.addOrUpdateData.submitURL,
+                    url: _this.contaddOrUpdateData.submitURL,
                     data: qs.stringify(subData)
                 }).then(function(res){
                     // console.log(res)
@@ -401,11 +386,27 @@
             getRow(index,row){
                 this.myForm.poolName = row.name
                 this.myForm.address = row.address
+                this.formid = row.id
+                this.clueList.forEach(el => {
+                    if(this.formid == el.id){
+                        console.log('这是线索的',el.id)
+                        this.myForm.customeroneId = el.id
+                        this.myForm.customerpool_id = null
+                    }
+                });
+                this.customerList.forEach(item => {
+                    if(this.formid == item.id){
+                        console.log('这是客户的',item.id)
+                        this.myForm.customerpool_id = item.id
+                        this.myForm.customeroneId = null
+                    }
+                });
+                console.log(this.myForm)
             },
             
             // 选省
             choseProvince(e) {
-                let _this = this
+                const _this = this
                 this.myForm.cityid = ''
                 this.myForm.areaid = ''
                 this.countryid = e
@@ -413,7 +414,7 @@
             },
             // 选市
             choseCity(e) {
-                let _this = this
+                const _this = this
                 this.myForm.areaid = ''
                 this.cityid = e
                 _this.$options.methods.loadCountry.bind(_this)(true);
@@ -422,17 +423,7 @@
             choseBlock(e) {
                 this.E=e;
                 this.areaid = e
-            },
-            handleSizeChange(val) {
-                let _this = this;
-                _this.limit = val;
-                _this.$options.methods.loadTable.bind(_this)(true);
-            },
-            handleCurrentChange(val) {
-                let _this = this;
-                _this.page = val;
-                _this.$options.methods.loadTable.bind(_this)(true);
-            },
+            }
         }
         
     }
@@ -453,18 +444,6 @@
     }
     .formitemcont:nth-child(11),.formitemcont:nth-child(10){
         margin: 0;
-    }
-    .line{
-        float: left;
-        height: 95%;
-        border-left: 1px solid #000;
-        margin-right: 5px;
-    }
-    .formlist{
-        width: 57%;
-        height: auto;
-        /* background-color: pink; */
-        float: left;
     }
     .cityseat{
         position: absolute;

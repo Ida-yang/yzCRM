@@ -365,10 +365,10 @@
         // },
         methods: {
             loadData() {
-                this.detailData = this.$store.state.detailsData.submitData;
-                this.idArr.id = this.$store.state.detailsData.submitData.id
+                this.detailData = this.$store.state.prodetailsData.submitData;
+                this.idArr.id = this.$store.state.prodetailsData.submitData.id
                 // console.log(this.detailData)
-                let _this = this
+                const _this = this
                 let qs =require('querystring')
                 let pageInfo = {}
                 pageInfo.page = this.page
@@ -407,7 +407,7 @@
             },
             getRow(index,row){
                 // console.log(row.id)
-                this.$store.state.detailsData.submitData = {"id":row.id}
+                this.$store.state.prodetailsData.submitData = {"id":row.id}
                 this.idArr.id = row.id
                 
                 // this.detailData.id = row.id
@@ -424,7 +424,7 @@
                 this.dialogVisible = true
             },
             addcLue(){
-                let _this = this
+                const _this = this
                 let qs = require('querystring')
                 let data = {}
                 data.id = this.updateList.id
@@ -447,7 +447,7 @@
                             type: 'success'
                         });
                         _this.dialogVisible = false
-                        _this.$store.state.detailsData.submitData = {'id':data.projectid}
+                        _this.$store.state.prodetailsData.submitData = {'id':data.projectid}
                         _this.$options.methods.loadData.bind(_this)(true);
                     } else {
                         _this.$message({
@@ -468,7 +468,7 @@
                 this.dialogVisible2 = true
             },
             addvisit(){
-                let _this = this
+                const _this = this
                 let qs = require('querystring')
                 let data = {}
                 data.id = this.updateList.id
@@ -489,7 +489,7 @@
                             type: 'success'
                         });
                         _this.dialogVisible2 = false
-                        _this.$store.state.detailsData.submitData = {'id':data.projectid}
+                        _this.$store.state.prodetailsData.submitData = {'id':data.projectid}
                         _this.$options.methods.loadData.bind(_this)(true);
                     } else {
                         _this.$message({
@@ -509,7 +509,7 @@
                 this.dialogVisible3 = true
             },
             addopportunity(){
-                let _this = this
+                const _this = this
                 let qs = require('querystring')
                 let data = {}
                 data.id = this.updateList.id
@@ -529,7 +529,7 @@
                             type: 'success'
                         });
                         _this.dialogVisible3 = false
-                        _this.$store.state.detailsData.submitData = {'id':data.projectid}
+                        _this.$store.state.prodetailsData.submitData = {'id':data.projectid}
                         _this.$options.methods.loadData.bind(_this)(true);
                     } else {
                         _this.$message({
@@ -550,7 +550,7 @@
                 this.dialogVisible4 = true
             },
             addcontract(){
-                let _this = this
+                const _this = this
                 let qs = require('querystring')
                 let data = {}
                 data.id = this.updateList.id
@@ -571,7 +571,7 @@
                             type: 'success'
                         });
                         _this.dialogVisible4 = false
-                        _this.$store.state.detailsData.submitData = {'id':data.projectid}
+                        _this.$store.state.prodetailsData.submitData = {'id':data.projectid}
                         _this.$options.methods.loadData.bind(_this)(true);
                     } else {
                         _this.$message({
@@ -584,7 +584,7 @@
                 });
             },
             search(){
-                let _this = this;
+                const _this = this;
                 let qs =require('querystring')
                 let searchList = {}
                 searchList.searchName = this.searchList.keyword;
@@ -604,12 +604,12 @@
                 });
             },
             handleSizeChange(val) {
-                let _this = this;
+                const _this = this;
                 _this.limit = val;
                 _this.$options.methods.loadData.bind(_this)();
             },
             handleCurrentChange(val) {
-                let _this = this;
+                const _this = this;
                 _this.page = val;
                 _this.$options.methods.loadData.bind(_this)();
             },

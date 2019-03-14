@@ -283,7 +283,7 @@
 
         methods: {
             reloadTable() {
-                let _this = this;
+                const _this = this;
                 let qs =require('querystring')
                 let searchList = {}
                 searchList.searchName = this.searchList.searchName;
@@ -315,7 +315,7 @@
                 });
             },
             reloadData() {
-                let _this = this;
+                const _this = this;
                 let qs =require('querystring')
                 let filterList = {}
                 filterList.type = '联系人'
@@ -357,15 +357,15 @@
                 
             },
             openDetails(index,row){
-                let detailsData = {};
-                detailsData.submitData = {"id": row.id};
-                this.$store.state.detailsData = detailsData;
+                let contdetailsData = {};
+                contdetailsData.submitData = {"id": row.id};
+                this.$store.state.contdetailsData = contdetailsData;
                 this.$router.push({ path: '/clueDetails' });
             },
             handleAdd(){
                 const _this = this
-                let addOrUpdateData = {};
-                addOrUpdateData.createForm = [
+                let contaddOrUpdateData = {};
+                contaddOrUpdateData.createForm = [
                     {"label":"联系人","inputModel":"name"},
                     {"label":"公司名称","inputModel":"poolName","type":"require"},
                     {"label":"手机","inputModel":"phone","type":"number"},
@@ -379,7 +379,7 @@
                     {"label":"","inputModel":"areaid","type":"select","placeholder":"请选择区"},
                     {"label":"地址","inputModel":"address"},
                     {"label":"备注","inputModel":"remark"}];
-                addOrUpdateData.setForm = {
+                contaddOrUpdateData.setForm = {
                     "name": '',
                     "poolName": '',
                     "telephone": '',
@@ -393,8 +393,8 @@
                     "identity": '',
                     "address": '',
                     "remark": ''};
-                addOrUpdateData.submitURL = this.$store.state.defaultHttp+ 'insertContacts.do?cId='+this.$store.state.iscId+'&pId='+this.$store.state.ispId,
-                this.$store.state.addOrUpdateData = addOrUpdateData;
+                contaddOrUpdateData.submitURL = this.$store.state.defaultHttp+ 'insertContacts.do?cId='+this.$store.state.iscId+'&pId='+this.$store.state.ispId,
+                this.$store.state.contaddOrUpdateData = contaddOrUpdateData;
                 // this.$router.push({ path: '/contactsaddorupdate' });
                 axios({
                     method: 'get',
@@ -416,8 +416,8 @@
             handleEdit(index,row){
                 // console.log(row)
                 const _this = this
-                let addOrUpdateData = {};
-                addOrUpdateData.createForm = [
+                let contaddOrUpdateData = {};
+                contaddOrUpdateData.createForm = [
                     {"label":"联系人","inputModel":"name"},
                     {"label":"客户名称","inputModel":"poolName","type":"require"},
                     {"label":"手机","inputModel":"phone","type":"number"},
@@ -431,7 +431,7 @@
                     {"label":"","inputModel":"areaid","type":"select"},
                     {"label":"地址","inputModel":"address"},
                     {"label":"备注","inputModel":"remark"}];
-                addOrUpdateData.setForm = {
+                contaddOrUpdateData.setForm = {
                     "name": row.name,
                     "poolName": row.poolname,
                     "telephone": row.telephone,
@@ -448,10 +448,10 @@
                     "identity": row.identity,
                     "address": row.address,
                     "remark": row.remark};
-                addOrUpdateData.submitData = {"id": row.csId};
-                addOrUpdateData.submitURL = this.$store.state.defaultHttp+ 'updateContacts.do?cId='+this.$store.state.iscId,
-                // console.log(addOrUpdateData)
-                this.$store.state.addOrUpdateData = addOrUpdateData;
+                contaddOrUpdateData.submitData = {"id": row.csId};
+                contaddOrUpdateData.submitURL = this.$store.state.defaultHttp+ 'updateContacts.do?cId='+this.$store.state.iscId,
+                // console.log(contaddOrUpdateData)
+                this.$store.state.contaddOrUpdateData = contaddOrUpdateData;
                 // this.$router.push({ path: '/contactsaddorupdate' });
                 axios({
                     method: 'get',
@@ -471,7 +471,7 @@
                 });
             },
             handleDeletes(){
-                let _this = this;
+                const _this = this;
                 let qs =require('querystring')
                 let idArr = [];
                 idArr.id = this.idArr.id
@@ -509,7 +509,7 @@
                 });
             },
             handleDelete(index,row){
-                let _this = this;
+                const _this = this;
                 let qs =require('querystring')
                 let idArr = [];
                 idArr.id = row.csId
@@ -553,7 +553,7 @@
             },
             hangleChange(e,val){
                 // console.log(e)
-                let _this = this
+                const _this = this
                 let qs = require('querystring')
                 let data = {}
                 data.pageInfoId = val.pageInfoId
@@ -615,12 +615,12 @@
             },
 
             handleSizeChange(val) {
-                let _this = this;
+                const _this = this;
                 _this.limit = val;
                 _this.$options.methods.reloadTable.bind(_this)(false);
             },
             handleCurrentChange(val) {
-                let _this = this;
+                const _this = this;
                 _this.page = val;
                 _this.$options.methods.reloadTable.bind(_this)(false);
             },

@@ -90,26 +90,18 @@ new Vue({
     // if(this.$store.state.userData == null){
     //   this.$store.state.userData = JSON.parse(localStorage.getItem('userData'))
     // }
-  },
-  mounted() {
-    this.loadHandler()
-  },
-  methods:{
-    loadHandler(){
-      // console.log(localStorage)
-      if(!localStorage.ispId){
-        this.$router.push('/login')
-      }
-    }
   }
 });
 
 router.beforeEach((to, from, next) => {
   // console.log(localStorage)
+  // console.log(to)
   if (to.matched.some(record => record.meta.requireAuth)){ // 判断该路由是否需要登录权限
     // console.log('需要登录');
     if(localStorage.ispId) { // 判断当前的ispId是否存在 ； 登录存入的ispId
       next();
+    }else if(to.path === '/activity'){//判断是否为活动页面
+      next()
     }else {
       next({
         path: '/login',

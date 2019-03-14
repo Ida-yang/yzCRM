@@ -25,9 +25,20 @@ const state = {
   welcomeData:null,
 
   //添加或修改列表数据
-  addOrUpdateData:null,
+  clueaddOrUpdateData:null,
+  cusaddOrUpdateData:null,
+  agreeaddOrUpdateData:null,
+  oppaddOrUpdateData:null,
+  contaddOrUpdateData:null,
+  visitaddOrUpdateData:null,
   //跳转详情页列表
-  detailsData:null,
+  cluedetailsData:null,
+  cusdetailsData:null,
+  agreedetailsData:null,
+  oppdetailsData:null,
+  contdetailsData:null,
+  prodetailsData:null,
+  visitdetailsData:null,
 
 
   //搜索客户列表
@@ -104,6 +115,11 @@ const state = {
   reportFormList:[],
   //报表列表总数
   reportFormListnumber:0,
+
+  //报表列表
+  visitplanList:[],
+  //报表列表总数
+  visitplanListnumber:0,
   
 
 }
