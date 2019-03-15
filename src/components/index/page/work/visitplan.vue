@@ -24,6 +24,7 @@
         </div>
         <div class="entry">
             <el-button class="btn info-btn" size="mini" @click="handleAdd()">新增</el-button>
+            <div class="totalnum_head">共 <span style="font-weight:bold">{{tableNumber}}</span> 条</div>
         </div>
         <el-table
             :data="tableData"
@@ -46,7 +47,6 @@
             </el-table-column>
             <el-table-column
                 prop="id"
-                fixed
                 header-align="left"
                 align="left"
                 min-width="400"
@@ -109,9 +109,9 @@
                 sortable>
                 <template slot-scope="scope">
                     <el-button-group>
-                        <el-button size="mini" :type="progress" @click="hmatch($event, scope.row)">未完成</el-button>
-                        <el-button size="mini" :type="completed" @click="hsuccess($event, scope.row)">已完成</el-button>
-                        <el-button size="mini" :type="nullify" @click="herror($event, scope.row)">作废</el-button>
+                        <el-button size="mini" :type="scope.row.progress" @click="changeState($event, scope.row)">未完成</el-button>
+                        <el-button size="mini" :type="scope.row.completed" @click="changeState($event, scope.row)">已完成</el-button>
+                        <el-button size="mini" :type="scope.row.nullify" @click="changeState($event, scope.row)">作废</el-button>
                     </el-button-group>
                 </template>
             </el-table-column>
@@ -270,24 +270,24 @@ export default {
                 url: _this.$store.state.defaultHttp+'visit/selectVisit.do?cId='+_this.$store.state.iscId,
                 data: qs.stringify(searchList),
             }).then(function(res){
-                console.log(res.data.map.success)
+                // console.log(res.data.map.success)
                 let data = res.data.map.success
                 _this.$store.state.visitplanList = data
                 _this.$store.state.visitplanListListnumber = res.data.count
                 data.forEach(el => {
-                    console.log(el.state)
-                    if(el.state == '未完成'){
-                        _this.progress = 'primary'
-                        _this.completed = ''
-                        _this.nullify = ''
+                    // console.log(el.state)
+                    if(el.state == '未完成' || el.state == '申请拜访'){
+                        el.progress = 'primary'
+                        el.completed = ''
+                        el.nullify = ''
                     }else if(el.state == '已完成'){
-                        _this.progress = ''
-                        _this.completed = 'success'
-                        _this.nullify = ''
+                        el.progress = ''
+                        el.completed = 'success'
+                        el.nullify = ''
                     }else{
-                        _this.progress = ''
-                        _this.completed = ''
-                        _this.nullify = 'danger'
+                        el.progress = ''
+                        el.completed = ''
+                        el.nullify = 'danger'
                     }
                 });
             }).catch(function(err){
@@ -308,16 +308,38 @@ export default {
             this.idArr.id = newArr;
         },
         openDetails(index,row){
-            console.log(row.id)
+            const _this = this
+            _this.$router.push({ path: '/visitplandetails' });
         },
-        hmatch(e,row){
-            console.log(e.target.innerText,row.id)
-        },
-        hsuccess(e,row){
-            console.log(e.target.innerText,row.id)
-        },
-        herror(e,row){
-            console.log(e.target.innerText,row.id)
+        changeState(e,row){
+            const _this = this
+            let qs =require('querystring')
+            let data = {}
+            data.id = row.id
+            data.state = e.target.innerText
+            // console.log(data)
+
+            axios({
+                method: 'post',
+                url: _this.$store.state.defaultHttp+'visit/updateVisit.do?cId='+_this.$store.state.iscId,
+                data: qs.stringify(data),
+            }).then(function(res){
+                // console.log(res.data)
+                if(res.data.code && res.data.code == 200) {
+                    _this.$message({
+                        message: '修改成功',
+                        type: 'success'
+                    });
+                    _this.$options.methods.reloadTable.bind(_this)(true)
+                } else {
+                    _this.$message({
+                        message: res.data.msg,
+                        type: 'error'
+                    });
+                }
+            }).catch(function(err){
+                console.log(err);
+            });
         },
         handleAdd(){
             const _this = this;
@@ -329,10 +351,10 @@ export default {
                 {"label":"结束时间","inputModel":"endTime","type":"date"},
                 {"label":"拜访对象","inputModel":"contactsid","type":"select"},
                 {"label":"拜访主题","inputModel":"visitTheme"},
-                {"label":"拜访目的","inputModel":"visitObjective"},
-                {"label":"协助人员","inputModel":"assistantsid","type":"select"},
+                {"label":"拜访目的","inputModel":"visitObjective","type":"textarea"},
+                {"label":"协助人员","inputModel":"assistantsid","type":"select","multiple":true},
                 {"label":"审批人员","inputModel":"approverid","type":"select"},
-                {"label":"备注","inputModel":"remark"}];
+                {"label":"备注","inputModel":"remarks","type":"textarea"}];
             visitaddOrUpdateData.setForm = {
                 "customerpoolid": '',
                 "visitTime": '',
@@ -342,16 +364,74 @@ export default {
                 "visitObjective":'',
                 "assistantsid":'',
                 "approverid":'',
-                "remark": '',};
-            visitaddOrUpdateData.submitURL = this.$store.state.defaultHttp+ 'visit/insertVisit.do?cId='+this.$store.state.iscId,
+                "remarks": ''};
+            visitaddOrUpdateData.submitURL = this.$store.state.defaultHttp+ 'visit/insertVisit.do?cId='+this.$store.state.iscId+'&pId='+this.$store.state.ispId,
             this.$store.state.visitaddOrUpdateData = visitaddOrUpdateData;
             _this.$router.push({ path: '/visitplanaddorupdate' });
         },
         handleEdit(index,row){
-            console.log(row.id)
+            // console.log(row.id)
+            const _this = this;
+            let visitaddOrUpdateData = {};
+            // visitaddOrUpdateData.title = "添加拜访计划";
+            visitaddOrUpdateData.createForm = [
+                {"label":"拜访公司","inputModel":"customerpoolid","type":"require"},
+                {"label":"拜访时间","inputModel":"visitTime","type":"date"},
+                {"label":"结束时间","inputModel":"endTime","type":"date"},
+                {"label":"拜访对象","inputModel":"contactsid","type":"select"},
+                {"label":"拜访主题","inputModel":"visitTheme"},
+                {"label":"拜访目的","inputModel":"visitObjective","type":"textarea"},
+                {"label":"协助人员","inputModel":"assistantsid","type":"select","multiple":true},
+                {"label":"审批人员","inputModel":"approverid","type":"select"},
+                {"label":"备注","inputModel":"remarks","type":"textarea"}];
+            visitaddOrUpdateData.setForm = {
+                "customerpoolid": row.customerpoolid,
+                "visitTime": row.visitTime,
+                "endTime": row.endTime,
+                "contactsid": row.contactsid,
+                "visitTheme": row.visitTheme,
+                "visitObjective":row.visitObjective,
+                "assistantsid":row.assistantsid,
+                "approverid":row.approverid,
+                "remarks": row.remarks};
+            visitaddOrUpdateData.submitData = {"id": row.id};
+            visitaddOrUpdateData.submitURL = this.$store.state.defaultHttp+ 'visit/insertVisit.do?cId='+this.$store.state.iscId,
+            this.$store.state.visitaddOrUpdateData = visitaddOrUpdateData;
+            _this.$router.push({ path: '/visitplanaddorupdate' });
         },
         handledelete(index,row){
             console.log(row.id)
+            const _this = this
+            let qs = require('querystring')
+            let idArr = []
+            idArr.id = row.id
+
+            _this.$confirm('是否确认删除[' + row.visitTheme + ']？', '提示', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+            }).then(({ value }) => {
+                axios({
+                    method: 'post',
+                    url: _this.$store.state.defaultHttp+'visit/deleteVisit.do?cId='+_this.$store.state.iscId,
+                    data: qs.stringify(idArr),
+                }).then(function(res){
+                    console.log(res.data)
+                    if(res.data.code && res.data.code == 200) {
+                        _this.$message({
+                            message: '删除成功',
+                            type: 'success'
+                        });
+                        _this.$options.methods.reloadTable.bind(_this)(true)
+                    } else {
+                        _this.$message({
+                            message: res.data.msg,
+                            type: 'error'
+                        });
+                    }
+                }).catch(function(err){
+                    console.log(err);
+                });
+            })
         },
         search(){
             console.log(this.searchList)

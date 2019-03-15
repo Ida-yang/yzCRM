@@ -31,6 +31,7 @@
                     v-else-if="item.type && item.type == 'require' && item.inputModel == 'customerpool_id'"
                     :value="myForm[item.inputModel]"
                     @input="handleoninput($event, item.inputModel)"
+                    @blur="handleblur($event, item.inputModel)"
                     style="width:90%;" 
                     auto-complete="off">
                 </el-input>
@@ -163,7 +164,7 @@
                 contactslist:null,
                 page: 1,//默认第一页
                 limit: 15,//默认10条
-                customerId:null,
+
                 rules: {
                     our_signatories : [{ required: true, message: '我方签约人不能为空', trigger: 'blur' },],
                     signatories : [{ required: true, message: '客户签约人不能为空', trigger: 'blur' },],
@@ -179,6 +180,7 @@
                 tableData:null,
 
                 formid:null,
+                searchvalue:null,
             }
         },
         // mounted() {
@@ -220,29 +222,13 @@
                     this.$emit('input', this.myForm);
                 }
             },
-            handleInput(val, key) {
-                this.myForm[key] = val;
-                // console.log(val)
-                // this.$emit('input', { ...this.myForm });
-            },
-            //获取table的索引和行数据，当该行被点击时，将公司名称地址填充到表单（会刷新当前页面，之前填写的信息会被覆盖）
-            getRow(index,row){
-                console.log(row)
-                this.formid = row.id
-                this.myForm.customerpool_id = row.name
-                this.customerId = row.id
-                this.loadOpp()
-            },
             //加载已选择客户下的商机和联系人（客户决策人）
             loadOpp(){
                 const _this = this
                 let qs = require('querystring')
                 let data = {}
-                if(this.myForm.customerpool_id){
-                    data.customerpool_id = this.formid
-                }else{
-                    data.customerpool_id = this.customerId
-                }
+                data.customerpool_id = this.formid
+
                 axios({
                     method:'post',
                     url: _this.$store.state.defaultHttp+'opportunity/getOpportunityAll.do?cId='+_this.$store.state.iscId,
@@ -272,6 +258,7 @@
                 pageInfo.page = this.page;
                 pageInfo.limit = this.limit;
                 pageInfo.pId = this.$store.state.ispId;
+                pageInfo.searchName = this.searchvalue
                 // console.log(pageInfo)
                 axios({
                     method: 'post',
@@ -284,25 +271,34 @@
                     console.log(err);
                 });
             },
+            handleInput(val, key) {
+                this.myForm[key] = val;
+                // console.log(val)
+            },
+            //获取table的索引和行数据，当该行被点击时，将公司名称地址填充到表单（会刷新当前页面，之前填写的信息会被覆盖）
+            getRow(index,row){
+                console.log(row)
+                this.formid = row.id
+                this.myForm.customerpool_id = row.name
+                this.loadOpp()
+            },
             handleoninput(val,key){
                 const _this = this
                 this.myForm[key] = val
                 // console.log(this.myForm[key])
-                let qs =require('querystring')
-                let pageInfo = {}
-                pageInfo.page = this.page;
-                pageInfo.limit = this.limit;
-                pageInfo.searchName = val
-                // console.log(pageInfo)
-                axios({
-                    method: 'post',
-                    url: _this.$store.state.defaultHttp+'rightPoolName.do?cId='+_this.$store.state.iscId,
-                    data: qs.stringify(pageInfo),
-                }).then(function(res){
-                    // console.log(res.data)
-                    _this.tableData = res.data.map.success.customerpools
-                }).catch(function(err){
-                    console.log(err);
+                this.searchvalue = val
+                this.loadTable()
+            },
+            handleblur(e,key){
+                // console.log(e.target.value,key)
+                let val = e.target.value
+                this.tableData.forEach(el => {
+                    if(val == el.name){
+                        // console.log(el.id,el.name)
+                        // this.myForm.customerpool_id = el.name
+                        this.formid = el.id
+                        this.loadOpp()
+                    }
                 });
             },
             //提交或修改
@@ -314,55 +310,56 @@
                     subData.contract_id = _this.agreeaddOrUpdateData.submitData.id;
                     subData.csId = _this.agreeaddOrUpdateData.submitData.csId;
                 }
+                subData.secondid = this.$store.state.deptid
+                subData.deptid = this.$store.state.insid
                 let createForm = _this.agreeaddOrUpdateData.createForm;
                 let flag = false;
                 createForm.forEach(item => {
                     subData[item.inputModel] = _this.myForm[item.inputModel];
-                    subData.customerpool_id = this.formid
                     // console.log(_this.myForm)
-                    if(item.inputModel == "our_signatories" && !subData[item.inputModel]) {//手机号码或电话号码至少一个不能为空
+                    if(item.inputModel == "our_signatories" && !subData[item.inputModel]) {
                         _this.$message({
                             message: "我方签约人不能为空",
                             type: 'error'
                         });
                         flag = true;
                     }
-                    if(item.inputModel == "signatories" && !subData[item.inputModel]) {//手机号码或电话号码至少一个不能为空
+                    if(item.inputModel == "signatories" && !subData[item.inputModel]) {
                         _this.$message({
                             message: "客户签约人不能为空",
                             type: 'error'
                         });
                         flag = true;
                     }
-                    if(item.inputModel == "end_date" && !subData[item.inputModel]) {//手机号码或电话号码至少一个不能为空
+                    if(item.inputModel == "end_date" && !subData[item.inputModel]) {
                         _this.$message({
                             message: "合同结束日期不能为空",
                             type: 'error'
                         });
                         flag = true;
                     }
-                    if(item.inputModel == "start_date" && !subData[item.inputModel]) {//手机号码或电话号码至少一个不能为空
+                    if(item.inputModel == "start_date" && !subData[item.inputModel]) {
                         _this.$message({
                             message: "合同开始日期不能为空",
                             type: 'error'
                         });
                         flag = true;
                     }
-                    if(item.inputModel == "amount" && !subData[item.inputModel]) {//手机号码或电话号码至少一个不能为空
+                    if(item.inputModel == "amount" && !subData[item.inputModel]) {
                         _this.$message({
                             message: "合同金额不能为空",
                             type: 'error'
                         });
                         flag = true;
                     }
-                    if(item.inputModel == "customerpool_id" && !subData[item.inputModel]) {//手机号码或电话号码至少一个不能为空
+                    if(item.inputModel == "customerpool_id" && !subData[item.inputModel]) {
                         _this.$message({
                             message: "客户不能为空",
                             type: 'error'
                         });
                         flag = true;
                     }
-                    if(item.inputModel == "contract_number" && !subData[item.inputModel]) {//手机号码或电话号码至少一个不能为空
+                    if(item.inputModel == "contract_number" && !subData[item.inputModel]) {
                         _this.$message({
                             message: "合同编号不能为空",
                             type: 'error'
@@ -385,8 +382,7 @@
                     }
                 });
                 if(flag) return;
-                subData.secondid = this.$store.state.deptid
-                subData.deptid = this.$store.state.insid
+                subData.customerpool_id = this.formid
                 // console.log(_this.myForm)
                 // console.log(subData)
 

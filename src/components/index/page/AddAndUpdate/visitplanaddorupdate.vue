@@ -19,6 +19,15 @@
                     @keyup.enter.native="submit">
                 </el-input>
                 <el-input 
+                    v-else-if="item.type && item.type == 'textarea'"
+                    type="textarea"
+                    rows="5"
+                    :value="myForm[item.inputModel]"
+                    @input="handleInput($event, item.inputModel)"
+                    style="width:90%;" 
+                    auto-complete="off">
+                </el-input>
+                <el-input 
                     v-else-if="item.type && item.type == 'require' && item.inputModel == 'customerpoolid'"
                     :value="myForm[item.inputModel]"
                     @input="handleoninput($event, item.inputModel)"
@@ -30,19 +39,28 @@
                     :multiple="item.multiple"
                     :collapse-tags="item.multiple"
                     v-model="myForm[item.inputModel]"
-                    @select="handleInput($event, item.inputModel)"
+                    @change="handleInput($event, item.inputModel)"
                     :placeholder="item.placeholder"
                     style="width:90%;">
-                    <el-option v-for="o in item.options" :key="o[item.okey]" :label="o[item.olabel]" :value="o[item.ovalue]"></el-option>
+                    <el-option v-for="o in contactsList" :key="o.id" :label="o.name" :value="o.id"></el-option>
+                </el-select>
+                <el-select 
+                    v-else-if="item.type && item.type == 'select'"
+                    :multiple="item.multiple"
+                    :collapse-tags="item.multiple"
+                    v-model="myForm[item.inputModel]"
+                    @change="handleInput($event, item.inputModel)"
+                    :placeholder="item.placeholder"
+                    style="width:90%;">
+                    <el-option v-for="item in assistAudit" :key="item.private_id" :label="item.private_employee" :value="item.private_id"></el-option>
                 </el-select>
                 <el-date-picker
                     v-else-if="item.type && item.type == 'date'"
                     v-model="myForm[item.inputModel]"
-                    type="date"
+                    type="datetime"
                     @change="handleInput($event, item.inputModel)"
                     :placeholder="item.placeholder"
-                    format="yyyy-MM-dd" value-format="yyyy-MM-dd"
-                    default-value="1985-06-15"
+                    format="yyyy-MM-dd HH:mm:ss" value-format="yyyy-MM-dd HH:mm:ss"
                     style="width:90%;" 
                     auto-complete="off">
                 </el-date-picker>
@@ -110,16 +128,24 @@ export default {
         return{
             visitaddOrUpdateData:{},
 
-            myForm:{},
+            myForm:{
+                customerpoolid:null,
+            },
 
             rules:{},
 
             tableData:null,
+            assistAudit:null,
+            contactsList:null,
+
             searchvalue:null,
+            formid:null,
         }
     },
     activated(){
         this.loadData()
+        this.loadTable()
+        this.loadpId()
     },
     methods:{
         //获取右边表格
@@ -165,8 +191,43 @@ export default {
                 this.$emit('input', this.myForm);
             }
         },
+        //加载已选择客户下的联系人（拜访对象）
+        loadContacts(){
+            const _this = this
+            let qs = require('querystring')
+            let data = {}
+            data.customerpool_id = this.formid
+
+            axios({
+                method: 'post',
+                url: _this.$store.state.defaultHttp+'getPoolContactsName.do?cId='+_this.$store.state.iscId,
+                data: qs.stringify(data)
+            }).then(function(res){
+                // console.log(res.data.map.success)
+                _this.contactsList = res.data.map.success
+                // console.log(_this.contactsList)
+            }).catch(function(err){
+                console.log(err);
+            });
+        },
+        loadpId(){
+            const _this = this;
+                let qs =require('querystring')
+            axios({
+                method: 'get',
+                url: _this.$store.state.defaultHttp+'getNameAndId.do?cId='+_this.$store.state.iscId,
+            }).then(function(res){
+                // console.log(res.data)
+                _this.assistAudit = res.data
+            }).catch(function(err){
+                console.log(err);
+            });
+        },
         getRow(index,row){
-            console.log(row)
+            // console.log(row)
+            this.myForm.customerpoolid = row.name
+            this.formid = row.id
+            this.loadContacts()
         },
         handleInput(val, key) {
             this.myForm[key] = val;
@@ -180,10 +241,106 @@ export default {
             this.$options.methods.loadTable.bind(this)(true);
         },
         submit(){
-            console.log(this.myForm)
+            // console.log(this.myForm)
+            const _this = this;
+            let qs =require('querystring')
+            let subData = {};
+            if(_this.visitaddOrUpdateData.submitData) {
+                subData.contract_id = _this.visitaddOrUpdateData.submitData.id;
+                subData.csId = _this.visitaddOrUpdateData.submitData.csId;
+            }
+            subData.secondid = this.$store.state.deptid
+            subData.deptid = this.$store.state.insid
+            let createForm = _this.visitaddOrUpdateData.createForm;
+            let flag = false;
+            createForm.forEach(item => {
+                subData[item.inputModel] = _this.myForm[item.inputModel];
+                // console.log(_this.myForm)
+                if(item.inputModel == "visitObjective" && !subData[item.inputModel]) {
+                    _this.$message({
+                        message: "拜访目的不能为空",
+                        type: 'error'
+                    });
+                    flag = true;
+                }
+                if(item.inputModel == "visitTheme" && !subData[item.inputModel]) {
+                    _this.$message({
+                        message: "拜访主题不能为空",
+                        type: 'error'
+                    });
+                    flag = true;
+                }
+                if(item.inputModel == "contactsid" && !subData[item.inputModel]) {
+                    _this.$message({
+                        message: "拜访对象不能为空",
+                        type: 'error'
+                    });
+                    flag = true;
+                }
+                if(item.inputModel == "endTime" && !subData[item.inputModel]) {
+                    _this.$message({
+                        message: "结束时间不能为空",
+                        type: 'error'
+                    });
+                    flag = true;
+                }
+                if(item.inputModel == "visitTime" && !subData[item.inputModel]) {//拜访时间不能为空
+                    _this.$message({
+                        message: "拜访时间不能为空",
+                        type: 'error'
+                    });
+                    flag = true;
+                }
+                if(item.inputModel == "customerpoolid" && !subData[item.inputModel]) {//拜访客户不能为空
+                    _this.$message({
+                        message: "拜访客户不能为空",
+                        type: 'error'
+                    });
+                    flag = true;
+                }
+            });
+            if(flag) return;
+            subData.customerpoolid = this.formid
+            // console.log(_this.myForm)
+            console.log(subData)
+
+            axios({
+                method: 'post',
+                url: _this.visitaddOrUpdateData.submitURL,
+                data: qs.stringify(subData)
+            }).then(function(res){
+                // console.log(res)
+                if(res.data.code && res.data.code == 200) {
+                    _this.$message({
+                        message: '成功',
+                        type: 'success'
+                    });
+                    _this.closeTag();
+                } else {
+                    _this.$message({
+                        message: res.data.msg,
+                        type: 'error'
+                    });
+                }
+            }).catch(function(err){
+                console.log(err);
+            }); 
         },
         closeTag(){
-            console.log('我点击取消了')
+            let tagsList = this.$store.state.tagsList;
+            let index;
+            tagsList.forEach((element, i) => {
+                if(element.name == this.$options.name) {
+                    index = i;
+                }
+            });
+            const delItem = this.$store.state.tagsList.splice(index, 1)[0];
+            const item = this.$store.state.tagsList[index] ? this.$store.state.tagsList[index] : this.$store.state.tagsList[index - 1];
+            if (item) {
+                delItem.path === this.$route.fullPath && this.$router.push('/visitplan');
+            }else{
+                this.$router.push('/welcome');
+            }
         },
     },
 }

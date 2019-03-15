@@ -30,6 +30,7 @@
                     v-else-if="item.type && item.type == 'require' && item.inputModel == 'customerpool_id'"
                     :value="myForm[item.inputModel]"
                     @input="handleoninput($event, item.inputModel)"
+                    @blur="handleblur($event, item.inputModel)"
                     style="width:90%;" 
                     auto-complete="off">
                 </el-input>
@@ -172,6 +173,7 @@
                 tableData:null,
 
                 formid:null,
+                searchvalue:null,
             }
         },
         // mounted(){
@@ -240,6 +242,7 @@
                 pageInfo.page = this.page;
                 pageInfo.limit = this.limit;
                 pageInfo.pId = this.$store.state.ispId;
+                pageInfo.searchName = this.searchvalue
                 // console.log(pageInfo)
                 axios({
                     method: 'post',
@@ -256,21 +259,20 @@
                 const _this = this
                 this.myForm[key] = val
                 // console.log(this.myForm[key])
-                let qs =require('querystring')
-                let pageInfo = {}
-                pageInfo.page = this.page;
-                pageInfo.limit = this.limit;
-                pageInfo.searchName = val
-                // console.log(pageInfo)
-                axios({
-                    method: 'post',
-                    url: _this.$store.state.defaultHttp+'rightPoolName.do?cId='+_this.$store.state.iscId,
-                    data: qs.stringify(pageInfo),
-                }).then(function(res){
-                    // console.log(res.data)
-                    _this.tableData = res.data.map.success.customerpools
-                }).catch(function(err){
-                    console.log(err);
+                this.searchvalue = val
+                // this.$options.methods.loadTable.bind(this)(true);
+                this.loadTable()
+            },
+            handleblur(e,key){
+                console.log(e.target.value,key)
+                let val = e.target.value
+                this.tableData.forEach(el => {
+                    if(val == el.name){
+                        console.log(el.id,el.name)
+                        this.formid = el.id
+                        this.myForm.customerpool_id = el.name
+                        this.loadcustomer()
+                    }
                 });
             },
             getRow(index,row){

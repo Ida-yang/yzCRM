@@ -214,8 +214,8 @@
     }
 
     .tags-li.active {
-        border: 1px solid #ff5722;
-        background-color: #ff5722;
+        border: 1px solid #ff6b3e;
+        background-color: #ff6333;
         color: #fff;
     }
 

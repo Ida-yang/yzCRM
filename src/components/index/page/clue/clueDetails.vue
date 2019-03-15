@@ -368,16 +368,12 @@
                 }).then(function(res){
                     // console.log(res.data.map.success)
                     _this.record = res.data.map.success
+                    _this.followform.state = _this.record[0].state
                     _this.record.forEach(el => {
                         el.showdelico = false
-                        console.log(el.showdelico)
-                        // console.log(el.createTime + 10000000)
                         let startTime = Date.parse(el.createTime); // 开始时间
-                        // console.log(startTime)
                         let endTime = new Date().getTime(); // 结束时间
-                        // console.log(endTime)
                         let usedTime = endTime - startTime; // 相差的毫秒数
-                        // console.log(usedTime)
                         if(usedTime < 7200000){
                             el.showdelico = true
                         }else{

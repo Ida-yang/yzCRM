@@ -21,6 +21,7 @@
             <el-button class="btn info-btn" size="mini" @click="handleAdd()">新增</el-button>
             <el-button class="btn" size="mini" @click="handleDeletes()">删除</el-button>
             <el-button class="btn info-btn" size="mini" @click="Receivables()">收款</el-button>
+            <div class="totalnum_head">共 <span style="font-weight:bold">{{tableNumber}}</span> 条</div>
             <el-popover
             placement="bottom"
             width="100"
@@ -38,6 +39,7 @@
             ref="multipleTable"
             border
             stripe
+            :summary-method="getSummaries"
             show-summary
             style="width:100%;text-align:center"
             @selection-change="selectInfo">
@@ -109,7 +111,7 @@
                     v-else-if="item.prop == 'amount' && item.state == 1"
                     header-align="left"
                     align="left"
-                    min-width="110"
+                    min-width="125"
                     label="合同金额"
                     sortable>
                     <template slot-scope="scope">
@@ -279,7 +281,22 @@
         },
         filters: {
             rounding (value) {
-                return value.toFixed(2)
+                value = value.toFixed(2)
+                let intPart = Math.trunc(value) //获取整数部分
+                let intPartFormat = intPart.toString().replace(/(\d)(?=(?:\d{3})+$)/g, '$1,') // 将整数部分逢三一断
+                let floatPart = '.00' // 预定义小数部分
+                let valArray = intPartFormat.split('.')
+                // console.log(valArray)
+                if(valArray.length === 2) {
+                    floatPart = valArray[1].toString() // 拿到小数部分
+                    if(floatPart.length === 1) { // 补0,实际上用不着
+                        return intPartFormat + '.' + floatPart + '0'
+                    }else{
+                        return intPartFormat + '.' + floatPart
+                    }
+                } else {
+                    return intPartFormat + floatPart
+                }
             }
         },
         data(){
@@ -636,28 +653,41 @@
                 });
             },
             getSummaries(param){
+                // console.log(param)
                 const { columns, data } = param;
                 const sums = [];
                 columns.forEach((column, index) => {
                     if (index === 0) {
-                        sums[index] = '总价';
+                        sums[index] = '合计';
                         return;
                     }
                     const values = data.map(item => Number(item[column.property]));
-                    if (!values.every(value => isNaN(value))) {
-                        sums[index] = values.reduce((prev, curr) => {
-                            const value = Number(curr);
-                            if (!isNaN(value)) {
-                                return prev + curr;
-                            } else {
-                                return prev;
+                    // console.log(column.label,column.property)
+                    if(column.property == 'amount' || column.property == 'already' || column.property == 'surplus'){
+                        sums[index] = values.reduce((acc, cur) => (cur + acc), 0)
+                        sums[index] = sums[index].toFixed(2)
+                        let intPart = Math.trunc(sums[index])
+                        let intPartFormat = intPart.toString().replace(/(\d)(?=(?:\d{3})+$)/g, '$1,')
+                        // console.log(intPartFormat)
+                        let floatPart = '.00' // 预定义小数部分
+                        let valArray = intPartFormat.split('.')
+                        // console.log(valArray)
+                        if(valArray.length === 2) {
+                            floatPart = valArray[1].toString() // 拿到小数部分
+                            if(floatPart.length === 1) { // 补0,实际上用不着
+                                sums[index] = intPartFormat + '.' + floatPart + '0'
+                            }else{
+                                sums[index] = intPartFormat + '.' + floatPart
                             }
-                        }, 0);
+                        } else {
+                            sums[index] = intPartFormat + floatPart
+                        }
                         sums[index] += ' 元';
-                    } else {
-                        sums[index] = 'N/A';
+                    }else{
+                        sums[index] = '';
                     }
                 });
+                // console.log(sums)
 
                 return sums;
             },

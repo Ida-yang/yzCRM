@@ -16,6 +16,7 @@
         <div class="entry">
             <el-button class="btn info-btn" size="mini" @click="handleAdd()">新增</el-button>
             <el-button class="btn" size="mini" @click="handleDeletes()">删除</el-button>
+            <div class="totalnum_head">共 <span style="font-weight:bold">{{tableNumber}}</span> 条</div>
             <el-popover
             placement="bottom"
             width="100"
@@ -31,6 +32,8 @@
             ref="multipleTable"
             border
             stripe
+            :summary-method="getSummaries"
+            show-summary
             :default-sort = "{prop:'opportunity_id',order: 'descending'}"
             style="width:100%;text-align:center"
             @selection-change="selectInfo"
@@ -226,8 +229,22 @@
         },
         filters: {
             rounding (value) {
-                // console.log(value)
-                return value
+                // value = value.toFixed(2)
+                let intPart = Math.trunc(value) //获取整数部分
+                let intPartFormat = intPart.toString().replace(/(\d)(?=(?:\d{3})+$)/g, '$1,') // 将整数部分逢三一断
+                let floatPart = '.00' // 预定义小数部分
+                let valArray = intPartFormat.split('.')
+                // console.log(valArray)
+                if(valArray.length === 2) {
+                    floatPart = valArray[1].toString() // 拿到小数部分
+                    if(floatPart.length === 1) { // 补0,实际上用不着
+                        return intPartFormat + '.' + floatPart + '0'
+                    }else{
+                        return intPartFormat + '.' + floatPart
+                    }
+                } else {
+                    return intPartFormat + floatPart
+                }
             }
         },
         data(){
@@ -341,12 +358,9 @@
                 // console.log(val)
                 let arr = val;
                 let newArr = [new Array()];
-                // console.log(arr)
                 arr.forEach((item) => {
                     if(item.opportunity_id != 0){
-                        // console.log(item.id)
                         newArr.push(item.opportunity_id)
-                        // console.log(newArr)
                     }
                 });
                 // console.log(newArr)
@@ -559,6 +573,43 @@
                 }).catch(function(err){
                     console.log(err);
                 });
+            },
+            getSummaries(param){
+                const { columns, data } = param;
+                const sums = [];
+                columns.forEach((column, index) => {
+                    if (index === 0) {
+                        sums[index] = '总价';
+                        return;
+                    }
+                    const values = data.map(item => Number(item[column.property]));
+                    // console.log(column.label,column.property)
+                    if(column.property == 'opportunity_achievement'){
+                        sums[index] = values.reduce((acc, cur) => (cur + acc), 0)
+                        sums[index] = sums[index].toFixed(2)
+                        let intPart = Math.trunc(sums[index])
+                        let intPartFormat = intPart.toString().replace(/(\d)(?=(?:\d{3})+$)/g, '$1,')
+                        // console.log(intPartFormat)
+                        let floatPart = '.00' // 预定义小数部分
+                        let valArray = intPartFormat.split('.')
+                        // console.log(valArray)
+                        if(valArray.length === 2) {
+                            floatPart = valArray[1].toString() // 拿到小数部分
+                            if(floatPart.length === 1) { // 补0,实际上用不着
+                                sums[index] = intPartFormat + '.' + floatPart + '0'
+                            }else{
+                                sums[index] = intPartFormat + '.' + floatPart
+                            }
+                        } else {
+                            sums[index] = intPartFormat + floatPart
+                        }
+                        sums[index] += ' 元';
+                    }else{
+                        sums[index] = '';
+                    }
+                });
+
+                return sums;
             },
             search() {
                 const _this = this

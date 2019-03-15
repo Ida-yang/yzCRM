@@ -22,15 +22,16 @@
             <div class="entry">
                 <el-button class="btn" size="mini" @click="handlesynchros()">同步</el-button>
                 <el-button class="btn info-btn" size="mini" @click="handleAdd()">新增</el-button>
+                <div class="totalnum_head">共 <span style="font-weight:bold">{{tableNumber}}</span> 条</div>
                 <el-popover
-                placement="bottom"
-                width="100"
-                trigger="click">
-                <el-checkbox-group class="checklist" v-model="checklist">
-                    <el-checkbox class="checkone" v-for="item in filterList" :key="item.id" :label="item.name" :value="item.state" @change="hangleChange($event,item)"></el-checkbox>
-                </el-checkbox-group>
-                <!-- <el-button slot="reference" icon="el-icon-more-outline" type="mini">筛选列表</el-button> -->
-                <el-button slot="reference" icon="el-icon-more" class="info-btn screen" type="mini"></el-button>
+                    placement="bottom"
+                    width="100"
+                    trigger="click">
+                    <el-checkbox-group class="checklist" v-model="checklist">
+                        <el-checkbox class="checkone" v-for="item in filterList" :key="item.id" :label="item.name" :value="item.state" @change="hangleChange($event,item)"></el-checkbox>
+                    </el-checkbox-group>
+                    <!-- <el-button slot="reference" icon="el-icon-more-outline" type="mini">筛选列表</el-button> -->
+                    <el-button slot="reference" icon="el-icon-more" class="info-btn screen" type="mini"></el-button>
                 </el-popover>
             </div>
             <el-table

@@ -11,15 +11,15 @@
             <div class="entry">
                 <el-button class="btn info-btn" size="mini" @click="handleAdd()">新增</el-button>
                 <el-popover
-                placement="bottom"
-                width="100"
-                trigger="click">
-                <el-checkbox-group class="checklist" v-model="checklist">
-                    <el-checkbox class="checkone" @change="showsort()" label="顺序"></el-checkbox>
-                    <el-checkbox class="checkone" @change="showname()" label="名称"></el-checkbox>
-                    <el-checkbox class="checkone" @change="showremark()" label="备注"></el-checkbox>
-                </el-checkbox-group>
-                <el-button slot="reference" icon="el-icon-more" class="info-btn screen" type="mini"></el-button>
+                    placement="bottom"
+                    width="100"
+                    trigger="click">
+                    <el-checkbox-group class="checklist" v-model="checklist">
+                        <el-checkbox class="checkone" @change="showsort()" label="顺序"></el-checkbox>
+                        <el-checkbox class="checkone" @change="showname()" label="名称"></el-checkbox>
+                        <el-checkbox class="checkone" @change="showremark()" label="备注"></el-checkbox>
+                    </el-checkbox-group>
+                    <el-button slot="reference" icon="el-icon-more" class="info-btn screen" type="mini"></el-button>
                 </el-popover>
             </div>
             <el-table

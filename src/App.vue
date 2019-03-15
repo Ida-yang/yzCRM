@@ -204,7 +204,7 @@ export default {
     .screen{
         position: absolute;
         right: 10px;
-        top: 4px;
+        top: 12px;
     }
     .btn{
         margin-top:15px;
@@ -215,7 +215,7 @@ export default {
         color: #222222;
     }
     .info-btn:hover,.info-btn:focus{
-        background: #ff5722;
+        background: #ff6333;
         color: #ffffff;
     }
     .checklist .checkone{
@@ -321,7 +321,7 @@ export default {
         cursor: default;
     }
     .el-pager li.active {
-        color: #ff5722 !important;
+        color: #ff6333 !important;
         cursor: default;
     }
 
@@ -331,22 +331,22 @@ export default {
     }
 
     .searchbutton{
-        background-color: #ff5722;
+        background-color: #ff6333;
         color: #ffffff;
     }
     .el-button--primary{
         color:#ffffff;
-        background-color:#ff5722;
-        border-color:#e64d1f
+        background-color:#ff6333;
+        border-color:#ff6b3e
     }
     .el-button--primary:focus,.el-button--primary:hover{
-        background:#ff5722;
-        border-color:#e64d1f;
+        background:#ff6333;
+        border-color:#ff6b3e;
         color:#ffffff
     }
     .el-button--primary.is-active,.el-button--primary:active{
         background:#ff511c;
-        border-color:#e64d1f;
+        border-color:#ff6b3e;
         color:#ffffff
     }
     .followform{
@@ -513,5 +513,12 @@ export default {
         width: 57%;
         height: auto;
         float: left;
+    }
+    .totalnum_head{
+        float: right;
+        margin-right: 100px;
+        font-size: 14px;
+        line-height: 50px;
+        padding: 0 10px;
     }
 </style>

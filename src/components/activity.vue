@@ -187,7 +187,7 @@
     }
     .entryform{
         text-align: center;
-        color: #ff5722;
+        color: #ff6333;
         font-weight: bold;
         font-size: 24px;
         padding-top: 10px;
