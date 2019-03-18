@@ -153,7 +153,7 @@
                     type:'线索状态',
                     id:null,
                     sort:null,
-                    typrName:null,
+                    typeName:null,
                     notes:null,
                 },
                 checklist:['顺序','名称','备注'],
@@ -386,8 +386,11 @@
                                 type: 'error'
                             });
                         }
-                    }).catch(function(err){
-                        console.log(err);
+                    }).catch(() => {
+                        this.$message({
+                            type: 'info',
+                            message: '取消删除[' + row.typeName + ']'
+                        });       
                     });
                 });
             },

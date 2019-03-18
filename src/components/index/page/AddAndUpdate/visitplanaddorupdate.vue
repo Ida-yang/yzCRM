@@ -193,9 +193,9 @@ export default {
                 this.assisid = setForm.assistantsid
                 this.apprid = setForm.approverid
                 this.myForm.customerpoolid = setForm.customerName
-                this.myForm.contactsid = setForm.contactsName
-                this.myForm.assistantsid = setForm.assistants
-                this.myForm.approverid = setForm.approver
+                this.myForm.contactsid = setForm.contactsid
+                this.myForm.assistantsid = setForm.assistantsid
+                this.myForm.approverid = setForm.approverid
                 this.$emit('input', this.myForm);
             }
         },
@@ -299,34 +299,15 @@ export default {
             });
             if(flag) return;
             subData.customerpoolid = this.formid
-            
-            if(this.myForm.contactsid !== this.conid && !isNaN(this.myForm.contactsid)){
-                subData.contactsid = this.myForm.contactsid
-                console.log(subData.contactsid,111)
-            }else{
-                subData.contactsid = this.conid
-                console.log(subData.contactsid,222)
-            }
-            if(this.myForm.approverid !== this.apprid && !isNaN(this.myForm.approverid)){
-                subData.approverid = this.myForm.approverid
-                console.log(subData.approverid,333)
-            }else{
-                subData.approverid = this.apprid
-                console.log(subData.approverid,444)
-            }
-            // if(this.myForm.assistantsid !== this.assisid){
-            //     subData.assistantsid = this.myForm.assistantsid
-            //     console.log(subData.assistantsid,555)
-            // }
-            // console.log(_this.myForm)
-            console.log(subData)
+            subData.contactsid = this.myForm.contactsid
+            subData.approverid = this.myForm.approverid
+            subData.assistantsid = this.myForm.assistantsid
 
             axios({
                 method: 'post',
                 url: _this.visitaddOrUpdateData.submitURL,
                 data: qs.stringify(subData)
             }).then(function(res){
-                // console.log(res)
                 if(res.data.code && res.data.code == 200) {
                     _this.$message({
                         message: '成功',

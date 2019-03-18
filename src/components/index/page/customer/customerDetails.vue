@@ -1,6 +1,6 @@
 <template>
     <!-- 客户详情页 -->
-    <el-row class="content1" :gutter="10">
+    <el-row class="cusdetcontent" :gutter="10">
         <el-col :span="18">
             <div class="top">
                 <el-card class="box-card">
@@ -624,6 +624,7 @@
             getRow(index,row){
                 this.$store.state.cusdetailsData.submitData = {"id":row.id}
                 this.idArr.id = row.id
+                this.countryId = null
                 this.$options.methods.loadData.bind(this)(true);
             },
             TocustomerPool(){
@@ -863,7 +864,7 @@
 </script>
 
 <style>
-    .content1{
+    .cusdetcontent{
         background-color: #f7f7f7;
         height: auto;
     }

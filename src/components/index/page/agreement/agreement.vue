@@ -459,8 +459,11 @@
                                 type: 'error'
                             });
                         }
-                    }).catch(function(err){
-                        console.log(err);
+                    }).catch(() => {
+                        this.$message({
+                            type: 'info',
+                            message: '取消删除'
+                        });       
                     });
                 })
             },

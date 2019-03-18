@@ -14,7 +14,7 @@
             <el-radio-group v-model="searchList.state">
                 <span class="nameList">计划状态：</span>
                 <el-radio :label="nullvalue" @change="search()">全部</el-radio>
-                <el-radio v-for="item in stateData" :key="item.id" :label="item.id" @change="search()">{{item.name}}</el-radio>
+                <el-radio v-for="item in stateData" :key="item.id" :label="item.name" @change="search()">{{item.name}}</el-radio>
             </el-radio-group>
             <el-radio-group v-model="searchList.exa">
                 <span class="nameList">计划审核：</span>
@@ -77,6 +77,11 @@
                 label="协助人"
                 min-width="95"
                 sortable>
+                <template slot-scope="scope">
+                    <div>
+                        <span v-for="(item,index) in scope.row.assistants" :key="index" :label="item">{{item}} , </span>
+                    </div>
+                </template>
             </el-table-column>
             <el-table-column
                 prop="approver"
@@ -87,7 +92,7 @@
                 sortable>
             </el-table-column>
             <el-table-column
-                prop="privateUser[0].private_employee"
+                prop="visitTime"
                 header-align="left"
                 align="left"
                 min-width="140"
@@ -212,13 +217,13 @@ export default {
                 {id:'3',name:'本机构计划'},
             ],
             timeData:[
-                {id:'1',name:'今天'},
-                {id:'2',name:'昨天'},
-                {id:'3',name:'明天'},
-                {id:'4',name:'本周'},
-                {id:'5',name:'本月'},
-                {id:'6',name:'上月'},
-                {id:'7',name:'下月'},
+                {id:'2',name:'今天'},
+                {id:'1',name:'昨天'},
+                {id:'5',name:'明天'},
+                {id:'3',name:'本周'},
+                {id:'6',name:'本月'},
+                {id:'7',name:'上月'},
+                {id:'8',name:'下月'},
             ],
             stateData:[
                 {id:'1',name:'未完成'},
@@ -226,9 +231,9 @@ export default {
                 {id:'3',name:'作废'},
             ],
             exaData:[
-                {id:'1',name:'独自'},
-                {id:'2',name:'协助'},
-                {id:'3',name:'审核'},
+                {id:'9',name:'独自'},
+                {id:'10',name:'协助'},
+                {id:'11',name:'审核'},
             ],
 
             nullvalue:null,
@@ -248,34 +253,34 @@ export default {
             const _this = this;
             let qs =require('querystring')
             let searchList = {}
-            // searchList.searchName = this.searchList.searchName;
-            // if(this.searchList.label == 0 ){
-            //     searchList.pId = _this.nullvalue
-            // }else if(this.searchList.label == 1){
-            //     searchList.pId = _this.$store.state.ispId
-            // }else if(this.searchList.label == 2){
-            //     searchList.secondid = _this.$store.state.deptid
-            // }else if(this.searchList.label == 3){
-            //     searchList.deptid = _this.$store.state.insid
-            // }else{
-            //     searchList.pId = _this.$store.state.ispId
-            // }
-            // searchList.page = this.page
-            // searchList.limit = this.limit
+            if(this.searchList.label == 0 ){
+                searchList.pId = _this.nullvalue
+            }else if(this.searchList.label == 1){
+                searchList.pId = _this.$store.state.ispId
+            }else if(this.searchList.label == 2){
+                searchList.secondid = _this.$store.state.deptid
+            }else if(this.searchList.label == 3){
+                searchList.deptid = _this.$store.state.insid
+            }else{
+                searchList.pId = _this.$store.state.ispId
+            }
+            if(this.searchList.state !== this.nullvalue){
+                searchList.state = this.searchList.state
+            }
+            searchList.page = this.page
+            searchList.limit = this.limit
             searchList.example = this.searchList.time
-            // console.log(searchList)
+            searchList.keyWord = this.searchList.exa
             
             axios({
                 method: 'post',
                 url: _this.$store.state.defaultHttp+'visit/selectVisit.do?cId='+_this.$store.state.iscId,
                 data: qs.stringify(searchList),
             }).then(function(res){
-                // console.log(res.data.map.success)
                 let data = res.data.map.success
                 _this.$store.state.visitplanList = data
                 _this.$store.state.visitplanListListnumber = res.data.count
                 data.forEach(el => {
-                    // console.log(el.state)
                     if(el.state == '未完成' || el.state == '申请拜访'){
                         el.progress = 'primary'
                         el.completed = ''
@@ -289,28 +294,32 @@ export default {
                         el.completed = ''
                         el.nullify = 'danger'
                     }
+                    el.assistants = []
+                    el.assistantsid = []
+                    if(el.privateUser !== []){
+                        el.privateUser.forEach(item => {
+                            el.assistants.push(item.private_name)
+                            el.assistantsid.push(item.private_id)
+                        });
+                    }
                 });
             }).catch(function(err){
                 console.log(err);
             });
         },
         selectInfo(val){
-            // console.log(val)
             let arr = val;
             let newArr = [new Array()];
-            // console.log(arr)
             arr.forEach((item) => {
                 if(item.id != 0){
                     newArr.push(item.id)
                 }
             });
-            // console.log(newArr)
             this.idArr.id = newArr;
         },
         openDetails(index,row){
             let visitdetailsData = {};
             visitdetailsData.submitData = {"id": row.id};
-            // console.log(visitdetailsData)
             this.$store.state.visitdetailsData = visitdetailsData;
             this.$router.push({ path: '/visitplandetails' });
         },
@@ -320,14 +329,12 @@ export default {
             let data = {}
             data.id = row.id
             data.state = e.target.innerText
-            // console.log(data)
 
             axios({
                 method: 'post',
                 url: _this.$store.state.defaultHttp+'visit/updateVisit.do?cId='+_this.$store.state.iscId,
                 data: qs.stringify(data),
             }).then(function(res){
-                // console.log(res.data)
                 if(res.data.code && res.data.code == 200) {
                     _this.$message({
                         message: '修改成功',
@@ -347,7 +354,6 @@ export default {
         handleAdd(){
             const _this = this;
             let visitaddOrUpdateData = {};
-            // visitaddOrUpdateData.title = "添加拜访计划";
             visitaddOrUpdateData.createForm = [
                 {"label":"拜访公司","inputModel":"customerpoolid","type":"require"},
                 {"label":"拜访时间","inputModel":"visitTime","type":"date"},
@@ -373,10 +379,8 @@ export default {
             _this.$router.push({ path: '/visitplanaddorupdate' });
         },
         handleEdit(index,row){
-            console.log(row)
             const _this = this;
             let visitaddOrUpdateData = {};
-            // visitaddOrUpdateData.title = "添加拜访计划";
             visitaddOrUpdateData.createForm = [
                 {"label":"拜访公司","inputModel":"customerpoolid","type":"require"},
                 {"label":"拜访时间","inputModel":"visitTime","type":"date"},
@@ -407,7 +411,6 @@ export default {
             _this.$router.push({ path: '/visitplanaddorupdate' });
         },
         handledelete(index,row){
-            console.log(row.id)
             const _this = this
             let qs = require('querystring')
             let idArr = []
@@ -422,7 +425,6 @@ export default {
                     url: _this.$store.state.defaultHttp+'visit/deleteVisit.do?cId='+_this.$store.state.iscId,
                     data: qs.stringify(idArr),
                 }).then(function(res){
-                    console.log(res.data)
                     if(res.data.code && res.data.code == 200) {
                         _this.$message({
                             message: '删除成功',
@@ -438,10 +440,14 @@ export default {
                 }).catch(function(err){
                     console.log(err);
                 });
-            })
+            }).catch(() => {
+                this.$message({
+                    type: 'info',
+                    message: '取消删除[' + row.visitTheme + ']'
+                });       
+            });
         },
         search(){
-            console.log(this.searchList)
             this.$options.methods.reloadTable.bind(this)(true);
         },
         handleSizeChange(val) {

@@ -1,6 +1,6 @@
 <template>
     <!-- 商机详情页 -->
-    <el-row class="content1" :gutter="10">
+    <el-row class="oppdetcontent" :gutter="10">
         <!-- <p>商机详情页</p> -->
         <el-col :span="18">
             <div class="top">
@@ -415,7 +415,7 @@
 </script>
 
 <style>
-    .content1{
+    .oppdetcontent{
         background-color: #f7f7f7;
         height: auto;
     }

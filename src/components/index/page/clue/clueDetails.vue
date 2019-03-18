@@ -1,6 +1,6 @@
 <template>
     <!-- 线索详情页 -->
-    <el-row class="content1" :gutter="10">
+    <el-row class="cluedetcontent" :gutter="10">
         <!-- <p>线索详情页</p> -->
         <el-col :span="18">
             <div class="top">
@@ -408,7 +408,6 @@
                     _this.cluedetail = res.data
                     _this.contacts = res.data.contacts[0]
                     _this.showbusiness = false
-                    _this.countryId = null
                 }).catch(function(err){
                     console.log(err);
                 });
@@ -458,6 +457,7 @@
             getRow(index,row){
                 this.$store.state.cluedetailsData.submitData = {"id":row.id}
                 this.idArr.id = row.id
+                this.countryId = null
                 this.$options.methods.loadData.bind(this)(true);
             },
             cluePool(){
@@ -730,7 +730,7 @@
 </script>
 
 <style>
-    .content1{
+    .cluedetcontent{
         background-color: #f7f7f7;
         height: auto;
     }

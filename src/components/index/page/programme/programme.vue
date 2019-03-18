@@ -577,6 +577,11 @@
                     }).catch(function(err){
                         console.log(err);
                     });
+                }).catch(() => {
+                    this.$message({
+                        type: 'info',
+                        message: '取消删除'
+                    });       
                 });
             },
             handledelete(index,row){
@@ -614,6 +619,11 @@
                     }).catch(function(err){
                         console.log(err);
                     });
+                }).catch(() => {
+                    this.$message({
+                        type: 'info',
+                        message: '取消删除[' + row.projectName + ']'
+                    });       
                 });
             },
             hangleChange(e,val){
