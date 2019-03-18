@@ -308,8 +308,11 @@ export default {
             this.idArr.id = newArr;
         },
         openDetails(index,row){
-            const _this = this
-            _this.$router.push({ path: '/visitplandetails' });
+            let visitdetailsData = {};
+            visitdetailsData.submitData = {"id": row.id};
+            // console.log(visitdetailsData)
+            this.$store.state.visitdetailsData = visitdetailsData;
+            this.$router.push({ path: '/visitplandetails' });
         },
         changeState(e,row){
             const _this = this
@@ -370,7 +373,7 @@ export default {
             _this.$router.push({ path: '/visitplanaddorupdate' });
         },
         handleEdit(index,row){
-            // console.log(row.id)
+            console.log(row)
             const _this = this;
             let visitaddOrUpdateData = {};
             // visitaddOrUpdateData.title = "添加拜访计划";
@@ -386,16 +389,20 @@ export default {
                 {"label":"备注","inputModel":"remarks","type":"textarea"}];
             visitaddOrUpdateData.setForm = {
                 "customerpoolid": row.customerpoolid,
+                "customerName": row.customerName,
                 "visitTime": row.visitTime,
                 "endTime": row.endTime,
                 "contactsid": row.contactsid,
+                "contactsName": row.contactsName,
                 "visitTheme": row.visitTheme,
                 "visitObjective":row.visitObjective,
                 "assistantsid":row.assistantsid,
+                "assistants": row.assistants,
                 "approverid":row.approverid,
+                "approver": row.approver,
                 "remarks": row.remarks};
             visitaddOrUpdateData.submitData = {"id": row.id};
-            visitaddOrUpdateData.submitURL = this.$store.state.defaultHttp+ 'visit/insertVisit.do?cId='+this.$store.state.iscId,
+            visitaddOrUpdateData.submitURL = this.$store.state.defaultHttp+ 'visit/updateVisit.do?cId='+this.$store.state.iscId,
             this.$store.state.visitaddOrUpdateData = visitaddOrUpdateData;
             _this.$router.push({ path: '/visitplanaddorupdate' });
         },

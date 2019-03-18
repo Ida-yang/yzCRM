@@ -31,6 +31,24 @@
                 <el-card class="box-card" v-model="customerdetail" v-show="!thisshow">
                     <div slot="header" class="clearfix">
                         <span>辅助信息</span>
+                        <el-popover placement="left" width="350" trigger="click">
+                            <el-select v-model="countryId" @change="searchBusiness" style="width:90%">
+                                <el-option v-for="item in Provinces" :key="item.id" :label="item.name" :value="item.id" placeholder="请选择省份"></el-option>
+                            </el-select>
+                            <ul class="ul_business" v-if="showbusiness">
+                                <li><span>匹配公司：</span>{{businessList.screenName || '无'}}</li>
+                                <li><span>公司地址：</span>{{businessList.address || '无'}}</li>
+                                <li><span>法人代表：</span>{{businessList.legalRepresentative || '无'}}</li>
+                                <li><span>营业状态：</span>{{businessList.businessStatus || '无'}}</li>
+                                <li><span>登记机关：</span>{{businessList.aicBureau || '无'}}</li>
+                                <li><span>社会信用代码：</span>{{businessList.creditCode || '无'}}</li>
+                                <li><span>注册号：</span>{{businessList.licenseNo || '无'}}</li>
+                                <li><span>组织机构代码：</span>{{businessList.orgCode || '无'}}</li>
+                                <li><span>成立时间：</span>{{businessList.startupDate || '无'}}</li>
+                            </ul>
+                            <el-button type="primary" style="margin-left:10px;" size="mini" v-if="showbusiness" @click="clickRefresh">确定</el-button>
+                            <el-button class="btn_refresh" slot="reference" size="mini">智能补全</el-button>
+                        </el-popover>
                     </div>
                     <div class="text item">
                         <ul>
@@ -427,10 +445,16 @@
 
                 priconList:null,
                 contacts_id:null,
+
+                countryId:null,
+                Provinces:null,
+                businessList:null,
+                showbusiness:false,
             }
         },
         activated(){
             this.loadData();
+            this.loadCountry()
         },
         // mounted(){
         //     this.loadData();
@@ -439,6 +463,7 @@
             loadData() {
                 this.detailData = this.$store.state.cusdetailsData.submitData;
                 this.idArr.id = this.$store.state.cusdetailsData.submitData.id
+                
                 // console.log(this.detailData)
                 const _this = this
                 let data = {}
@@ -511,6 +536,7 @@
                     // console.log(res.data.map.success)
                     _this.customerdetail = res.data.map.success[0]
                     _this.contacts = res.data.map.success[0].contacts[0]
+                    _this.showbusiness = false
                     // console.log(_this.customerdetail)
                 }).catch(function(err){
                     console.log(err);
@@ -558,11 +584,28 @@
                     url:_this.$store.state.defaultHttp+'customerpool/getPoolNameAndNumber.do?cId='+_this.$store.state.iscId+'&customerpool_id='+this.detailData.id,
                     data:qs.stringify(pageInfo)
                 }).then(function(res){
-                    // console.log(res.data.map.success)
+                    console.log(res.data.map.success)
                     _this.$store.state.InvoiceDetailsList = res.data.map.success
                 }).catch(function(err){
                     console.log(err);
                 });
+            },
+            
+            loadCountry(){
+                const _this = this
+                let qs =require('querystring')
+
+                //省/市/区
+                axios({
+                    method: 'get',
+                    url: _this.$store.state.defaultHttp+'address/getAddress.do?id=',
+                }).then(function(res){
+                    console.log(res.data)
+                    _this.Provinces=res.data;
+                }).catch(function(err){
+                    console.log(err);
+                });
+                
             },
             choosePri(val){
                 // console.log(val)
@@ -667,6 +710,82 @@
             },
             handleClick(tab, event) {
                 // console.log(tab, event);
+            },
+            
+            searchBusiness(val){
+                console.log(val,this.customerdetail.pName)
+                const _this = this
+                let qs = require('querystring')
+                let freshList = {}
+                freshList.name = this.customerdetail.pName
+                freshList.countryId = this.countryId
+
+                axios({
+                    method: 'post',
+                    url: _this.$store.state.defaultHttp+'businessData/getBusinessData.do',
+                    data: qs.stringify(freshList),
+                }).then(function(res){
+                    // console.log(res.data.map.businessDatas)
+                    if(res.data.code && res.data.code == '200' && res.data.map.businessDatas){
+                        _this.businessList = res.data.map.businessDatas[0]
+                        _this.showbusiness = true
+                        // console.log(_this.businessList,111111)
+                        axios({
+                            method: 'post',
+                            url: _this.$store.state.defaultHttp+'businessData/insertBusinessData.do',
+                            data: qs.stringify(freshList),
+                        }).then(function(res){
+                            // console.log(res)
+                        }).catch(function(err){
+                            console.log(err);
+                        });
+                    }else{
+                        // console.log(_this.businessList,22222222)
+                        _this.$message({
+                            message:'没有匹配的信息',
+                            type:'error'
+                        })
+                    }
+                }).catch(function(err){
+                    console.log(err);
+                });
+            },
+            clickRefresh(){
+                const _this = this
+                let qs = require('querystring')
+                let data = {}
+                data.id = this.businessList.id
+                data.customerpoolId = this.detailData.id
+                data.countryId = this.countryId
+
+                if(this.customerdetail.pName == this.businessList.screenName){
+                    axios({
+                        method: 'post',
+                        url: _this.$store.state.defaultHttp+'customerpool/updateBusinessData.do?cId='+_this.$store.state.iscId,
+                        data: qs.stringify(data),
+                    }).then(function(res){
+                        console.log(res)
+                        if(res.data.code && res.data.code == '200'){
+                            _this.$message({
+                                message:'更新成功',
+                                type:'success'
+                            })
+                            _this.$options.methods.loadData.bind(_this)(true);
+                        }else{
+                            _this.$message({
+                                message:res.data.msg,
+                                type:'error'
+                            })
+                        }
+                    }).catch(function(err){
+                        console.log(err);
+                    });
+                }else{
+                    _this.$message({
+                        message:'该公司与匹配的公司名称不一致，无法更新',
+                        type:'error'
+                    })
+                }
             },
             search(){
                 const _this = this;

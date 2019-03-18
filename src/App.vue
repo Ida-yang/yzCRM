@@ -521,4 +521,17 @@ export default {
         line-height: 50px;
         padding: 0 10px;
     }
+    .btn_refresh{
+        /* width: 50px; */
+        float: right;
+    }
+    .ul_business{
+        list-style: none;
+        padding: 10px;
+        line-height: 30px;
+    }
+    .ul_business span{
+        display: inline-block;
+        width: 100px;
+    }
 </style>

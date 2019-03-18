@@ -33,6 +33,24 @@
                 <el-card class="box-card" v-model="cluedetail" v-show="!thisshow">
                     <div slot="header" class="clearfix">
                         <span>辅助信息</span>
+                        <el-popover placement="left" width="350" trigger="click">
+                            <el-select v-model="countryId" @change="searchBusiness" style="width:90%">
+                                <el-option v-for="item in Provinces" :key="item.id" :label="item.name" :value="item.id" placeholder="请选择省份"></el-option>
+                            </el-select>
+                            <ul class="ul_business" v-if="showbusiness">
+                                <li><span>匹配公司：</span>{{businessList.screenName || '无'}}</li>
+                                <li><span>公司地址：</span>{{businessList.address || '无'}}</li>
+                                <li><span>法人代表：</span>{{businessList.legalRepresentative || '无'}}</li>
+                                <li><span>营业状态：</span>{{businessList.businessStatus || '无'}}</li>
+                                <li><span>登记机关：</span>{{businessList.aicBureau || '无'}}</li>
+                                <li><span>社会信用代码：</span>{{businessList.creditCode || '无'}}</li>
+                                <li><span>注册号：</span>{{businessList.licenseNo || '无'}}</li>
+                                <li><span>组织机构代码：</span>{{businessList.orgCode || '无'}}</li>
+                                <li><span>成立时间：</span>{{businessList.startupDate || '无'}}</li>
+                            </ul>
+                            <el-button type="primary" style="margin-left:10px;" size="mini" v-if="showbusiness" @click="clickRefresh">确定</el-button>
+                            <el-button class="btn_refresh" slot="reference" size="mini">智能补全</el-button>
+                        </el-popover>
                     </div>
                     <div class="text item">
                         <ul>
@@ -126,10 +144,10 @@
                             </el-select>
                         </div>
                         <el-table
-                        :data="clueDetails"
-                        border
-                        stripe
-                        style="width: 100%">
+                            :data="clueDetails"
+                            border
+                            stripe
+                            style="width: 100%">
                             <el-table-column
                             prop="name"
                             header-align="center"
@@ -293,10 +311,16 @@
 
                 priconList:null,
                 contacts_id:null,
+
+                countryId:null,
+                Provinces:null,
+                businessList:null,
+                showbusiness:false,
             }
         },
         activated(){
             this.loadData();
+            this.loadCountry()
         },
         // mounted(){
         //     this.loadData();
@@ -391,10 +415,28 @@
                     // console.log(res.data)
                     _this.cluedetail = res.data
                     _this.contacts = res.data.contacts[0]
+                    _this.showbusiness = false
+                    _this.countryId = null
                     // console.log(_this.cluedetail)
                 }).catch(function(err){
                     console.log(err);
                 });
+            },
+            loadCountry(){
+                const _this = this
+                let qs =require('querystring')
+
+                //省/市/区
+                axios({
+                    method: 'get',
+                    url: _this.$store.state.defaultHttp+'address/getAddress.do?id=',
+                }).then(function(res){
+                    console.log(res.data)
+                    _this.Provinces=res.data;
+                }).catch(function(err){
+                    console.log(err);
+                });
+                
             },
             choosePri(val){
                 // console.log(val)
@@ -533,6 +575,81 @@
             },
             handleClick(tab, event) {
                 // console.log(tab, event);
+            },
+            searchBusiness(val){
+                console.log(val,this.cluedetail.name)
+                const _this = this
+                let qs = require('querystring')
+                let freshList = {}
+                freshList.name = this.cluedetail.name
+                freshList.countryId = this.countryId
+
+                axios({
+                    method: 'post',
+                    url: _this.$store.state.defaultHttp+'businessData/getBusinessData.do',
+                    data: qs.stringify(freshList),
+                }).then(function(res){
+                    // console.log(res.data.map.businessDatas)
+                    if(res.data.code && res.data.code == '200' && res.data.map.businessDatas){
+                        _this.businessList = res.data.map.businessDatas[0]
+                        _this.showbusiness = true
+                        console.log(_this.businessList,111111)
+                        axios({
+                            method: 'post',
+                            url: _this.$store.state.defaultHttp+'businessData/insertBusinessData.do',
+                            data: qs.stringify(freshList),
+                        }).then(function(res){
+                            // console.log(res)
+                        }).catch(function(err){
+                            console.log(err);
+                        });
+                    }else{
+                        console.log(_this.businessList,22222222)
+                        _this.$message({
+                            message:'没有匹配的信息',
+                            type:'error'
+                        })
+                    }
+                }).catch(function(err){
+                    console.log(err);
+                });
+            },
+            clickRefresh(){
+                const _this = this
+                let qs = require('querystring')
+                let data = {}
+                data.id = this.businessList.id
+                data.customeroneId = this.detailData.id
+                data.countryId = this.countryId
+
+                if(this.cluedetail.name == this.businessList.screenName){
+                    axios({
+                        method: 'post',
+                        url: _this.$store.state.defaultHttp+'customerTwo/updateBusinessData.do?cId='+_this.$store.state.iscId,
+                        data: qs.stringify(data),
+                    }).then(function(res){
+                        console.log(res)
+                        if(res.data.code && res.data.code == '200'){
+                            _this.$message({
+                                message:'更新成功',
+                                type:'success'
+                            })
+                            _this.$options.methods.loadData.bind(_this)(true);
+                        }else{
+                            _this.$message({
+                                message:res.data.msg,
+                                type:'error'
+                            })
+                        }
+                    }).catch(function(err){
+                        console.log(err);
+                    });
+                }else{
+                    _this.$message({
+                        message:'该公司与匹配的公司名称不一致，无法更新',
+                        type:'error'
+                    })
+                }
             },
             search(){
                 const _this = this;

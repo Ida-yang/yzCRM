@@ -140,12 +140,16 @@ export default {
 
             searchvalue:null,
             formid:null,
+            conid:null,
+            assisid:null,
+            apprid:null,
         }
     },
     activated(){
         this.loadData()
         this.loadTable()
         this.loadpId()
+        this.loadContacts()
     },
     methods:{
         //获取右边表格
@@ -188,6 +192,14 @@ export default {
                     }
                 });
                 // console.log(this.myForm);
+                this.formid = setForm.customerpoolid
+                this.conid = setForm.contactsid
+                this.assisid = setForm.assistantsid
+                this.apprid = setForm.approverid
+                this.myForm.customerpoolid = setForm.customerName
+                this.myForm.contactsid = setForm.contactsName
+                this.myForm.assistantsid = setForm.assistants
+                this.myForm.approverid = setForm.approver
                 this.$emit('input', this.myForm);
             }
         },
@@ -212,7 +224,7 @@ export default {
         },
         loadpId(){
             const _this = this;
-                let qs =require('querystring')
+            let qs =require('querystring')
             axios({
                 method: 'get',
                 url: _this.$store.state.defaultHttp+'getNameAndId.do?cId='+_this.$store.state.iscId,
@@ -246,8 +258,8 @@ export default {
             let qs =require('querystring')
             let subData = {};
             if(_this.visitaddOrUpdateData.submitData) {
-                subData.contract_id = _this.visitaddOrUpdateData.submitData.id;
-                subData.csId = _this.visitaddOrUpdateData.submitData.csId;
+                subData.id = this.visitaddOrUpdateData.submitData.id;
+                // subData.csId = _this.visitaddOrUpdateData.submitData.csId;
             }
             subData.secondid = this.$store.state.deptid
             subData.deptid = this.$store.state.insid
@@ -256,30 +268,9 @@ export default {
             createForm.forEach(item => {
                 subData[item.inputModel] = _this.myForm[item.inputModel];
                 // console.log(_this.myForm)
-                if(item.inputModel == "visitObjective" && !subData[item.inputModel]) {
+                if(item.inputModel == "customerpoolid" && !subData[item.inputModel]) {//拜访客户不能为空
                     _this.$message({
-                        message: "拜访目的不能为空",
-                        type: 'error'
-                    });
-                    flag = true;
-                }
-                if(item.inputModel == "visitTheme" && !subData[item.inputModel]) {
-                    _this.$message({
-                        message: "拜访主题不能为空",
-                        type: 'error'
-                    });
-                    flag = true;
-                }
-                if(item.inputModel == "contactsid" && !subData[item.inputModel]) {
-                    _this.$message({
-                        message: "拜访对象不能为空",
-                        type: 'error'
-                    });
-                    flag = true;
-                }
-                if(item.inputModel == "endTime" && !subData[item.inputModel]) {
-                    _this.$message({
-                        message: "结束时间不能为空",
+                        message: "拜访客户不能为空",
                         type: 'error'
                     });
                     flag = true;
@@ -291,9 +282,30 @@ export default {
                     });
                     flag = true;
                 }
-                if(item.inputModel == "customerpoolid" && !subData[item.inputModel]) {//拜访客户不能为空
+                if(item.inputModel == "endTime" && !subData[item.inputModel]) {
                     _this.$message({
-                        message: "拜访客户不能为空",
+                        message: "结束时间不能为空",
+                        type: 'error'
+                    });
+                    flag = true;
+                }
+                if(item.inputModel == "contactsid" && !subData[item.inputModel]) {
+                    _this.$message({
+                        message: "拜访对象不能为空",
+                        type: 'error'
+                    });
+                    flag = true;
+                }
+                if(item.inputModel == "visitTheme" && !subData[item.inputModel]) {
+                    _this.$message({
+                        message: "拜访主题不能为空",
+                        type: 'error'
+                    });
+                    flag = true;
+                }
+                if(item.inputModel == "visitObjective" && !subData[item.inputModel]) {
+                    _this.$message({
+                        message: "拜访目的不能为空",
                         type: 'error'
                     });
                     flag = true;
@@ -301,6 +313,25 @@ export default {
             });
             if(flag) return;
             subData.customerpoolid = this.formid
+            
+            if(this.myForm.contactsid !== this.conid && !isNaN(this.myForm.contactsid)){
+                subData.contactsid = this.myForm.contactsid
+                console.log(subData.contactsid,111)
+            }else{
+                subData.contactsid = this.conid
+                console.log(subData.contactsid,222)
+            }
+            if(this.myForm.approverid !== this.apprid && !isNaN(this.myForm.approverid)){
+                subData.approverid = this.myForm.approverid
+                console.log(subData.approverid,333)
+            }else{
+                subData.approverid = this.apprid
+                console.log(subData.approverid,444)
+            }
+            // if(this.myForm.assistantsid !== this.assisid){
+            //     subData.assistantsid = this.myForm.assistantsid
+            //     console.log(subData.assistantsid,555)
+            // }
             // console.log(_this.myForm)
             console.log(subData)
 

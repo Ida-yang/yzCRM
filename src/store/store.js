@@ -70,7 +70,7 @@ const state = {
   //客户详情页合同列表
   agreementDetailsList:null,
   //客户详情页开票列表
-  InvoiceDetailsLis:null,
+  InvoiceDetailsList:null,
   //客户列表数据
   customerData:null,
   //客户池列表
