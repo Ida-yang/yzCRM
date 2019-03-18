@@ -279,7 +279,6 @@
                 method: 'get',
                 url: _this.$store.state.defaultHttp+'dept/getDeptNodeTree.do?cId='+_this.$store.state.iscId,
             }).then(function(res){
-                // console.log(res.data.map.success)
                 _this.datalist = res.data.map.success
             }).catch(function(err){
                 console.log(err);
@@ -314,17 +313,13 @@
                     url: _this.$store.state.defaultHttp+'activity/getActivity.do?cId='+_this.$store.state.iscId,
                     data:qs.stringify(pageInfo)
                 }).then(function(res){
-                    // console.log(res.data.map.success)
                     _this.$store.state.activityList = res.data.map.success
                     _this.$store.state.activityListnumber = res.data.count
                     let arr = _this.$store.state.activityList
                     arr.forEach(el => {
-                        // console.log(el)
                         el.qrcode = '/weChat/'+_this.$store.state.iscId+'/'+el.url
                         el.codeURL = 'http://crm.yunzoe.com/#/activity?c='+_this.$store.state.iscId+'&p='+_this.$store.state.ispId+'&n='+el.name
                     });
-                    // console.log(arr)
-                    // console.log(_this.codeURL)
                 }).catch(function(err){
                     console.log(err);
                 });
@@ -333,7 +328,6 @@
                     url: _this.$store.state.defaultHttp+'userPageInfo/getAllUserPage.do?cId='+_this.$store.state.iscId+'&pId='+_this.$store.state.ispId,
                     data: qs.stringify(filterList)
                 }).then(function(res){
-                    // console.log(res.data)
                     _this.filterList = res.data
                 }).catch(function(err){
                     console.log(err);
@@ -343,7 +337,6 @@
                     url: _this.$store.state.defaultHttp+'userPageInfo/getUserPage.do?cId='+_this.$store.state.iscId+'&pId='+_this.$store.state.ispId,
                     data: qs.stringify(data)
                 }).then(function(res){
-                    // console.log(res.data)
                     _this.checklist = res.data
                 }).catch(function(err){
                     console.log(err);
@@ -360,18 +353,14 @@
                     url: _this.$store.state.defaultHttp+'typeInfo/getTypeInfoGroupByType.do?cId='+_this.$store.state.iscId,
                     data: qs.stringify(data),
                 }).then(function(res){
-                    // console.log(res.data.rows)
                     _this.typeData = res.data
                 }).catch(function(err){
                     console.log(err);
                 });
             },
             handleNodeClick(data){
-                // console.log(data)
                 this.searchList.secondid = data.deptid
-                // console.log(this.searchList)
                 this.clickdata = data
-                // console.log(this.clickdata)
                 this.newform.secondid = data.deptid
                 this.$options.methods.reloadTable.bind(this)(true);
             },
@@ -385,21 +374,13 @@
                     }
                 });
                 this.idArr.id = newArr;
-                // console.log(this.idArr.id)
                 
-            },
-            handleshow(row){
-                // console.log(row)
-            },
-            handleURL(row){
-                // console.log(row)
             },
             handledelete(index,row){
                 const _this = this;
                 let qs =require('querystring')
                 let idArr = {};
                 idArr.id = row.id
-                // console.log(idArr)
                 _this.$confirm('是否确认删除'+row.name+'吗？', '提示', {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',
@@ -409,7 +390,6 @@
                         url:  _this.$store.state.defaultHttp+ 'activity/delActivity.do?cId='+_this.$store.state.iscId,
                         data:qs.stringify(idArr),
                     }).then(function(res){
-                        // console.log(res)
                         if(res.data.code && res.data.code == 200) {
                             _this.$message({
                                 message: '删除成功',
@@ -438,7 +418,6 @@
                 this.newform.resourceid = null
                 this.newform.name = null
                 this.newform.remarks = null
-                // console.log(this.newform)
 
                 if(!this.clickdata){
                     _this.$message({
@@ -450,7 +429,6 @@
                         method: 'post',
                         url: _this.$store.state.defaultHttp+'activityJurisdiction/insert.do',//新增活动
                     }).then(function(res){
-                        // console.log(res)
                         if(res.data.msg && res.data.msg == 'error'){
                             _this.$message({
                                 message:'对不起，您没有该权限，请联系管理员开通',
@@ -474,7 +452,7 @@
                 data.name = this.newform.name
                 data.remarks = this.newform.remarks
                 data.secondid = this.newform.secondid
-                // console.log(data)
+
                 let arr = [this.newform]
                 let flag = false;
                 arr.forEach(item => {
@@ -500,7 +478,6 @@
                     url: _this.$store.state.defaultHttp+'activity/insertActivity.do?cId='+_this.$store.state.iscId+'&pId='+_this.$store.state.ispId,
                     data:qs.stringify(data)
                 }).then(function(res){
-                    // console.log(res)
                     if(res.data.code && res.data.code == 200){
                         _this.$message({
                             message:'添加活动成功',
@@ -517,10 +494,8 @@
                 }).catch(function(err){
                     console.log(err);
                 });
-                // alert('添加成功')
             },
             hangleChange(e,val){
-                // console.log(e)
                 const _this = this
                 let qs = require('querystring')
                 let data = {}
@@ -536,11 +511,8 @@
                     url:  _this.$store.state.defaultHttp+ 'userPageInfo/updateUserPageByid.do?cId='+_this.$store.state.iscId+'&pId='+_this.$store.state.ispId,
                     data:qs.stringify(data),
                 }).then(function(res){
-                    // console.log(res)
                     if(res.data && res.data =="success"){
                         _this.$options.methods.reloadTable.bind(_this)(true);
-                    }else{
-                        console.log(err)
                     }
                 }).catch(function(err){
                     console.log(err);

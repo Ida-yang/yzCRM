@@ -171,7 +171,6 @@
                 }
                 let oppData = searchList
                 oppData.yearMonth = this.searchList.oppdate
-                console.log(oppData)
 
                 let monthData = {}
                 monthData.month = this.searchList.date
@@ -182,7 +181,6 @@
                     url: _this.$store.state.defaultHttp+'homePageHeader/getHomePageHeader.do?cId=' + _this.$store.state.iscId,
                     data:qs.stringify(searchList),
                 }).then(function(res){
-                    // console.log(res.data)
                     _this.amountList = res.data
                 }).catch(function(err){
                     console.log(err)
@@ -194,7 +192,6 @@
                     url: _this.$store.state.defaultHttp+'getMonthCountByExample.do?cId=' + _this.$store.state.iscId,
                     data:qs.stringify(oppData),
                 }).then(function(res){
-                    // console.log(res.data)
                     _this.funnelList = res.data
                     _this.$options.methods.drawfunnel.bind(_this)(true);
                 }).catch(function(err){
@@ -206,11 +203,8 @@
                     url: _this.$store.state.defaultHttp+'getContractamount.do?cId=' + _this.$store.state.iscId,
                     data:qs.stringify(monthData),
                 }).then(function(res){
-                    // console.log(res.data)
                     _this.barData = res.data.name
                     _this.barList = res.data.value
-                    console.log(_this.barData)
-                    console.log(_this.barList)
                     _this.$options.methods.drawbar.bind(_this)(true);
                 }).catch(function(err){
                     console.log(err)
@@ -244,7 +238,6 @@
             drawfunnel(){
                 // 基于准备好的dom，初始化echarts实例
                 let chart1 = echarts.init(document.getElementById('chart1'))
-                // console.log(this.funnelList)
                 // 绘制图表
                 chart1.setOption({
                     title : { text: '商机漏斗' },

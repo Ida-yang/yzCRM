@@ -197,12 +197,10 @@
             loadData() {
                 this.agreeaddOrUpdateData = this.$store.state.agreeaddOrUpdateData;
                 this.oppoptions = this.$store.state.agreeaddOrUpdateData.customerpool_id
-                // console.log(this.agreeaddOrUpdateData)
 
                 // 设置默认值
                 let createForm = this.agreeaddOrUpdateData.createForm;
                 let setForm = this.agreeaddOrUpdateData.setForm;
-                console.log(setForm)
                 if(setForm) {
                     createForm.forEach((item, index) => {
                         if(item.type && item.type == 'select') {
@@ -215,7 +213,6 @@
                             this.myForm[item.inputModel] = setForm[item.inputModel];
                         }
                     });
-                    // console.log(this.myForm);
                     this.myForm.customerpool_id = this.agreeaddOrUpdateData.setForm.poolName
                     this.formid = this.agreeaddOrUpdateData.setForm.customerpool_id
                     this.myForm.opportunity_id = this.agreeaddOrUpdateData.setForm.opportunity_name
@@ -234,7 +231,6 @@
                     url: _this.$store.state.defaultHttp+'opportunity/getOpportunityAll.do?cId='+_this.$store.state.iscId,
                     data:qs.stringify(data)
                 }).then(function(res){
-                    // console.log(res.data)
                     _this.oppoptions = res.data
                 }).catch(function(err){
                     console.log(err)
@@ -244,7 +240,6 @@
                     url: _this.$store.state.defaultHttp+'getPoolContactsName.do?cId='+_this.$store.state.iscId,
                     data: qs.stringify(data)
                 }).then(function(res){
-                    // console.log(res.data.map.success)
                     _this.contactslist = res.data.map.success
                 }).catch(function(err){
                     console.log(err);
@@ -259,13 +254,12 @@
                 pageInfo.limit = this.limit;
                 pageInfo.pId = this.$store.state.ispId;
                 pageInfo.searchName = this.searchvalue
-                // console.log(pageInfo)
+                
                 axios({
                     method: 'post',
                     url: _this.$store.state.defaultHttp+'rightPoolName.do?cId='+_this.$store.state.iscId,
                     data: qs.stringify(pageInfo),
                 }).then(function(res){
-                    // console.log(res.data.map.success)
                     _this.tableData = res.data.map.success.customerpools
                 }).catch(function(err){
                     console.log(err);
@@ -273,11 +267,9 @@
             },
             handleInput(val, key) {
                 this.myForm[key] = val;
-                // console.log(val)
             },
             //获取table的索引和行数据，当该行被点击时，将公司名称地址填充到表单（会刷新当前页面，之前填写的信息会被覆盖）
             getRow(index,row){
-                console.log(row)
                 this.formid = row.id
                 this.myForm.customerpool_id = row.name
                 this.loadOpp()
@@ -285,17 +277,13 @@
             handleoninput(val,key){
                 const _this = this
                 this.myForm[key] = val
-                // console.log(this.myForm[key])
                 this.searchvalue = val
                 this.loadTable()
             },
             handleblur(e,key){
-                // console.log(e.target.value,key)
                 let val = e.target.value
                 this.tableData.forEach(el => {
                     if(val == el.name){
-                        // console.log(el.id,el.name)
-                        // this.myForm.customerpool_id = el.name
                         this.formid = el.id
                         this.loadOpp()
                     }
@@ -316,7 +304,6 @@
                 let flag = false;
                 createForm.forEach(item => {
                     subData[item.inputModel] = _this.myForm[item.inputModel];
-                    // console.log(_this.myForm)
                     if(item.inputModel == "our_signatories" && !subData[item.inputModel]) {
                         _this.$message({
                             message: "我方签约人不能为空",
@@ -383,15 +370,12 @@
                 });
                 if(flag) return;
                 subData.customerpool_id = this.formid
-                // console.log(_this.myForm)
-                // console.log(subData)
 
                 axios({
                     method: 'post',
                     url: _this.agreeaddOrUpdateData.submitURL,
                     data: qs.stringify(subData)
                 }).then(function(res){
-                    // console.log(res)
                     if(res.data && res.data == "success") {
                         _this.$message({
                             message: '成功',

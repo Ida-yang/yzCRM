@@ -188,7 +188,6 @@
                     url: _this.$store.state.defaultHttp+'typeInfo/getTypeInfoGroupByType.do?cId='+_this.$store.state.iscId,
                     data:qs.stringify(data)
                 }).then(function(res){
-                    // console.log(res.data)
                     _this.$store.state.stateList = res.data
                 }).catch(function(err){
                     console.log(err);
@@ -212,7 +211,6 @@
                     method: 'get',
                     url: _this.$store.state.defaultHttp+'typeInfoJurisdiction/insert.do',//新增状态
                 }).then(function(res){
-                    // console.log(res)
                     if(res.data.msg && res.data.msg == 'error'){
                         _this.$message({
                             message:'对不起，您没有该权限，请联系管理员开通',
@@ -238,7 +236,6 @@
                 data.sort = this.newform.sort
                 data.typeName = this.newform.typeName
                 data.notes = this.newform.notes
-                // console.log(data)
                 let arr = [this.newform]
                 let flag = false;
                 arr.forEach(item => {
@@ -264,7 +261,6 @@
                     url: _this.$store.state.defaultHttp+'typeInfo/saveOrUpdate.do?cId='+_this.$store.state.iscId,
                     data:qs.stringify(data)
                 }).then(function(res){
-                    // console.log(res)
                     if(res.data.code && res.data.code == 200){
                         _this.$message({
                             message:'添加状态成功',
@@ -281,18 +277,15 @@
                 }).catch(function(err){
                     console.log(err);
                 });
-                // alert('添加成功')
             },
             //状态修改
             handleEdit(index,row){
                 const _this = this
-                // console.log(row.sort)
 
                 axios({
                     method: 'get',
                     url: _this.$store.state.defaultHttp+'typeInfoJurisdiction/update.do',//编辑状态
                 }).then(function(res){
-                    // console.log(res)
                     if(res.data.msg && res.data.msg == 'error'){
                         _this.$message({
                             message:'对不起，您没有该权限，请联系管理员开通',
@@ -308,8 +301,6 @@
                 }).catch(function(err){
                     console.log(err);
                 });
-                
-                // console.log(this.newform)
             },
             //状态修改提交按钮
             updatebasicset(){
@@ -321,7 +312,6 @@
                 data.sort = this.newform.sort
                 data.typeName = this.newform.typeName
                 data.notes = this.newform.notes
-                console.log(data)
                 let arr = [this.newform]
                 let flag = false;
                 arr.forEach(item => {
@@ -347,7 +337,6 @@
                     url: _this.$store.state.defaultHttp+'typeInfo/saveOrUpdate.do?cId='+_this.$store.state.iscId,
                     data:qs.stringify(data)
                 }).then(function(res){
-                    // console.log(res)
                     if(res.data.code && res.data.code == 200){
                         _this.$message({
                             message:'修改状态成功',
@@ -370,7 +359,7 @@
                 let qs =require('querystring')
                 let idArr = [];
                 idArr.id = row.id
-                // console.log(idArr)
+
                 _this.$confirm('确认删除 ['+ row.typeName +'] 吗？', '提示', {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',
@@ -380,7 +369,6 @@
                         url:  _this.$store.state.defaultHttp+ 'typeInfo/deleteTypeInfoById.do?cId='+_this.$store.state.iscId,
                         data:qs.stringify(idArr),
                     }).then(function(res){
-                        // console.log(res)
                         if(res.data.code && res.data.code == 200) {
                             _this.$message({
                                 message: '删除成功',

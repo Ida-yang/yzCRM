@@ -329,7 +329,6 @@
             loadData() {
                 this.detailData = this.$store.state.cluedetailsData.submitData;
                 this.idArr.id = this.$store.state.cluedetailsData.submitData.id
-                // console.log(this.detailData)
                 const _this = this
                 let qs = require('querystring')
                 let data = {}
@@ -343,11 +342,9 @@
                     url:_this.$store.state.defaultHttp+'customerTwo/getClueContacts.do?cId='+_this.$store.state.iscId+'&customeroneId='+this.detailData.id,
                     data:qs.stringify(pageInfo)
                 }).then(function(res){
-                    // console.log(res)
                     _this.$store.state.clueDetailsList = res.data.map.success
                     _this.contactList = res.data.map.success
                     _this.priconList = res.data.map.success
-                    // console.log(_this.priconList)
                     _this.followform.contactsId = res.data.map.success[0].id
                 }).catch(function(err){
                     console.log(err);
@@ -358,7 +355,6 @@
                     url:_this.$store.state.defaultHttp+'typeInfo/getTypeInfoGroupByType.do?cId='+_this.$store.state.iscId,
                     data:qs.stringify(data)
                 }).then(function(res){
-                    // console.log(res.data)
                     _this.stateList = res.data.slice(1)
                 }).catch(function(err){
                     console.log(err);
@@ -368,7 +364,6 @@
                     method:'get',
                     url:_this.$store.state.defaultHttp+'getNameSelected.do?cId='+_this.$store.state.iscId,
                 }).then(function(res){
-                    // console.log(res.data)
                     _this.fastcontactList = res.data
                 }).catch(function(err){
                     console.log(err);
@@ -379,7 +374,6 @@
                     url:_this.$store.state.defaultHttp+'customerTwo/getUserByClue.do?cId='+_this.$store.state.iscId+'&pId='+_this.$store.state.ispId,
                     data:qs.stringify(pageInfo)
                 }).then(function(res){
-                    // console.log(res.data)
                     _this.tableData = res.data.map.success
                     _this.tableNumber = res.data.count
                 }).catch(function(err){
@@ -390,7 +384,6 @@
                     method:'get',
                     url:_this.$store.state.defaultHttp+'getFollowStaff.do?cId='+_this.$store.state.iscId+'&customertwoId='+this.detailData.id,
                 }).then(function(res){
-                    // console.log(res.data.map.success)
                     _this.record = res.data.map.success
                     _this.followform.state = _this.record[0].state
                     _this.record.forEach(el => {
@@ -412,26 +405,22 @@
                     method:'get',
                     url:_this.$store.state.defaultHttp+'customerTwo/selectByPrimaryKey.do?cId='+_this.$store.state.iscId+'&id='+this.detailData.id,
                 }).then(function(res){
-                    // console.log(res.data)
                     _this.cluedetail = res.data
                     _this.contacts = res.data.contacts[0]
                     _this.showbusiness = false
                     _this.countryId = null
-                    // console.log(_this.cluedetail)
                 }).catch(function(err){
                     console.log(err);
                 });
             },
             loadCountry(){
                 const _this = this
-                let qs =require('querystring')
 
                 //省/市/区
                 axios({
                     method: 'get',
                     url: _this.$store.state.defaultHttp+'address/getAddress.do?id=',
                 }).then(function(res){
-                    console.log(res.data)
                     _this.Provinces=res.data;
                 }).catch(function(err){
                     console.log(err);
@@ -439,7 +428,6 @@
                 
             },
             choosePri(val){
-                // console.log(val)
                 const _this = this
                 let qs = require('querystring')
                 let data = {}
@@ -451,7 +439,6 @@
                     url:_this.$store.state.defaultHttp+'contacts/updateFirst.do?cId='+_this.$store.state.iscId+'&customeroneId='+this.detailData.id,
                     data:qs.stringify(data)
                 }).then(function(res){
-                    console.log(res)
                     if(res.data.msg && res.data.msg == 'success'){
                         _this.$options.methods.loadData.bind(_this)();
                     }else{
@@ -469,11 +456,8 @@
                 this.retracts = !this.retracts
             },
             getRow(index,row){
-                // console.log(row.id)
                 this.$store.state.cluedetailsData.submitData = {"id":row.id}
                 this.idArr.id = row.id
-                
-                // this.detailData.id = row.id
                 this.$options.methods.loadData.bind(this)(true);
             },
             cluePool(){
@@ -481,13 +465,12 @@
                 let qs = require('querystring')
                 let idArr = [];
                 idArr.id = this.idArr.id
-                // console.log(idArr)
+
                 axios({
                     method: 'post',
                     url:  _this.$store.state.defaultHttp+ 'customerTwo/updateState.do?cId='+_this.$store.state.iscId,
                     data:qs.stringify(idArr),
                 }).then(function(res){
-                    // console.log(res)
                     if(res.data && res.data == 'success') {
                         _this.$message({
                             message: '转移成功',
@@ -515,13 +498,12 @@
                 let idArr = [];
                 idArr.id = this.idArr.id
                 idArr.shift()
-                // console.log(idArr)
+
                 axios({
                     method: 'post',
                     url:  _this.$store.state.defaultHttp+ 'customerTwo/insert.do?cId='+_this.$store.state.iscId+"&pId="+_this.$store.state.ispId,
                     data:qs.stringify(idArr),
                 }).then(function(res){
-                    // console.log(res)
                     if(res.data && res.data == 'success') {
                         _this.$message({
                             message: '转换成功',
@@ -548,13 +530,12 @@
                 let qs = require('querystring')
                 let followData = {}
                 followData.followId = this.record[index].followId
-                // console.log(this.record[index].followId)
+
                 axios({
                     method:'post',
                     url:_this.$store.state.defaultHttp+'delFollow.do?cId='+_this.$store.state.iscId,
                     data:qs.stringify(followData)
                 }).then(function(res){
-                    // console.log(res)
                     if(res.data && res.data == '1' ) {
                         _this.$message({
                             message: '删除成功',
@@ -577,7 +558,6 @@
                 // console.log(tab, event);
             },
             searchBusiness(val){
-                console.log(val,this.cluedetail.name)
                 const _this = this
                 let qs = require('querystring')
                 let freshList = {}
@@ -589,11 +569,9 @@
                     url: _this.$store.state.defaultHttp+'businessData/getBusinessData.do',
                     data: qs.stringify(freshList),
                 }).then(function(res){
-                    // console.log(res.data.map.businessDatas)
                     if(res.data.code && res.data.code == '200' && res.data.map.businessDatas){
                         _this.businessList = res.data.map.businessDatas[0]
                         _this.showbusiness = true
-                        console.log(_this.businessList,111111)
                         axios({
                             method: 'post',
                             url: _this.$store.state.defaultHttp+'businessData/insertBusinessData.do',
@@ -601,10 +579,9 @@
                         }).then(function(res){
                             // console.log(res)
                         }).catch(function(err){
-                            console.log(err);
+                            // console.log(err);
                         });
                     }else{
-                        console.log(_this.businessList,22222222)
                         _this.$message({
                             message:'没有匹配的信息',
                             type:'error'
@@ -628,7 +605,6 @@
                         url: _this.$store.state.defaultHttp+'customerTwo/updateBusinessData.do?cId='+_this.$store.state.iscId,
                         data: qs.stringify(data),
                     }).then(function(res){
-                        console.log(res)
                         if(res.data.code && res.data.code == '200'){
                             _this.$message({
                                 message:'更新成功',
@@ -658,13 +634,12 @@
                 searchList.searchName = this.searchList.keyword;
                 searchList.page = this.page;
                 searchList.limit = this.limit;
-                // console.log(searchList)
+
                 axios({
                     method: 'post',
                     url: _this.$store.state.defaultHttp+'customerTwo/getUserByClue.do?cId='+_this.$store.state.iscId+'&pId='+_this.$store.state.ispId,
                     data: qs.stringify(searchList),
                 }).then(function(res){
-                    // console.log(res)
                     _this.tableData = res.data.map.success
                     _this.tableNumber = res.data.count
                 }).catch(function(err){
@@ -683,13 +658,11 @@
                 data.customertwo_id = this.detailData.id;
                 data.deptid = this.$store.state.deptid
                 data.secondid = this.$store.state.insid
-                console.log(data)
 
                 axios({
                     method: 'get',
                     url: _this.$store.state.defaultHttp+'clueJurisdiction/follow.do',//新增部门
                 }).then(function(res){
-                    console.log(res)
                     if(res.data.msg && res.data.msg == 'error'){
                         _this.$message({
                             message:'对不起，您没有该权限，请联系管理员开通',
@@ -701,7 +674,6 @@
                             url:  _this.$store.state.defaultHttp+ 'addFollow.do?cId='+_this.$store.state.iscId+'&pId='+_this.$store.state.ispId,
                             data:qs.stringify(data,this),
                         }).then(function(res){
-                            // console.log(res)
                             if(res.data.msg && res.data.msg == 'success' ) {
                                 _this.$message({
                                     message: '提交成功',
@@ -711,7 +683,6 @@
                                 _this.followform.followContent = ''
                                 _this.$store.state.cluedetailsData.submitData = {"id":_this.detailData.id}
                                 _this.$options.methods.loadData.bind(_this)(true);
-                                // _this.closeTag()
                             } else {
                                 _this.$message({
                                     message: res.data.msg,

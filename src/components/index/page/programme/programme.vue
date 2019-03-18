@@ -286,7 +286,6 @@
                 method: 'get',
                 url: _this.$store.state.defaultHttp+'dept/getDeptNodeTree.do?cId='+_this.$store.state.iscId,
             }).then(function(res){
-                // console.log(res.data.map.success)
                 _this.datalist = res.data.map.success
             }).catch(function(err){
                 console.log(err);
@@ -307,7 +306,6 @@
                 pageInfo.limit = this.limit
                 pageInfo.state = this.searchList.state
                 pageInfo.secondid = this.searchList.secondid
-                // console.log(pageInfo)
                 let filterList = {}
                 filterList.type = '方案'
                 let data = {}
@@ -320,7 +318,6 @@
                     url: _this.$store.state.defaultHttp+'project/getProject.do?cId='+_this.$store.state.iscId,
                     data:qs.stringify(pageInfo)
                 }).then(function(res){
-                    console.log(res.data.map.success)
                     _this.$store.state.programmeList = res.data.map.success
                     _this.$store.state.programmeListnumber = res.data.count
                 }).catch(function(err){
@@ -331,7 +328,6 @@
                     url: _this.$store.state.defaultHttp+'userPageInfo/getAllUserPage.do?cId='+_this.$store.state.iscId+'&pId='+_this.$store.state.ispId,
                     data: qs.stringify(filterList)
                 }).then(function(res){
-                    // console.log(res.data)
                     _this.filterList = res.data
                 }).catch(function(err){
                     console.log(err);
@@ -341,21 +337,16 @@
                     url: _this.$store.state.defaultHttp+'userPageInfo/getUserPage.do?cId='+_this.$store.state.iscId+'&pId='+_this.$store.state.ispId,
                     data: qs.stringify(data)
                 }).then(function(res){
-                    // console.log(res.data)
                     _this.checklist = res.data
                 }).catch(function(err){
                     console.log(err);
                 });
             },
             handleNodeClick(data){
-                // console.log(data)
                 this.searchList.secondid = data.deptid
-                // console.log(this.searchList)
                 this.clickdata = data
-                // console.log(this.clickdata)
                 this.newform.second_id = data.deptid
                 this.newform.secondname = data.deptname
-                // this.newform.deptid = data.parentid
                 this.$options.methods.reloadTable.bind(this)(true);
             },
             selectInfo(val){
@@ -368,13 +359,11 @@
                     }
                 });
                 this.idArr.id = newArr;
-                // console.log(this.idArr.id)
                 
             },
             //方案添加
             handleAdd(){
                 const _this = this
-                // console.log(this.clickdata.next)
 
                 if(!this.clickdata){
                     _this.$message({
@@ -386,7 +375,6 @@
                         method: 'get',
                         url: _this.$store.state.defaultHttp+'projectJurisdiction/insert.do',//新增方案
                     }).then(function(res){
-                        // console.log(res)
                         if(res.data.msg && res.data.msg == 'error'){
                             _this.$message({
                                 message:'对不起，您没有该权限，请联系管理员开通',
@@ -396,7 +384,6 @@
                             _this.newform.projectName = null
                             _this.newform.time = null
                             _this.newform.private_employee = _this.$store.state.user
-                            // _this.newform.state = '启用'
                             _this.dialogVisible = true
                         }
                     }).catch(function(err){
@@ -414,12 +401,11 @@
                 const _this = this;
                 let qs = require('querystring')
                 let data = {}
-                // data.deptid = this.newform.deptid
                 data.secondid = this.newform.second_id
                 data.projectName = this.newform.projectName
                 data.time = this.newform.time+'-01-01'
                 data.state = this.newform.state
-                // console.log(data)
+
                 let arr = [this.newform]
                 let flag = false;
                 arr.forEach(item => {
@@ -445,7 +431,6 @@
                     url: _this.$store.state.defaultHttp+'project/insertProject.do?cId='+_this.$store.state.iscId+'&pId='+_this.$store.state.ispId,
                     data:qs.stringify(data)
                 }).then(function(res){
-                    // console.log(res)
                     if(res.data.code && res.data.code == 200){
                         _this.$message({
                             message:'添加方案成功',
@@ -467,14 +452,12 @@
             //方案修改
             handleEdit(index,row){
                 const _this = this
-                // console.log(row)
                 let data = {}
 
                 axios({
                     method: 'get',
                     url: _this.$store.state.defaultHttp+'projectJurisdiction/update.do',//编辑方案
                 }).then(function(res){
-                    // console.log(res)
                     if(res.data.msg && res.data.msg == 'error'){
                         _this.$message({
                             message:'对不起，您没有该权限，请联系管理员开通',
@@ -509,7 +492,7 @@
                 data.time = this.newform.time
                 data.state = this.newform.state
                 data.createTime = this.newform.createTime
-                // console.log(data)
+                
                 let arr = [this.newform]
                 let flag = false;
                 arr.forEach(item => {
@@ -535,7 +518,6 @@
                     url: _this.$store.state.defaultHttp+'project/updateProject.do?cId='+_this.$store.state.iscId+'&pId='+_this.$store.state.ispId,
                     data:qs.stringify(data)
                 }).then(function(res){
-                    // console.log(res)
                     if(res.data.code && res.data.code == 200){
                         _this.$message({
                             message:'修改方案成功',
@@ -556,7 +538,6 @@
             openDetails(index,row){
                 let prodetailsData = {};
                 prodetailsData.submitData = {"id": row.id};
-                // console.log(prodetailsData)
                 this.$store.state.prodetailsData = prodetailsData;
                 this.$router.push({ path: '/programmeDetails' });
             },
@@ -566,7 +547,7 @@
                 let idArr = [];
                 idArr.id = this.idArr.id
                 idArr.shift(0)
-                // console.log(idArr)
+                
                 _this.$confirm('确认删除吗？', '提示', {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',
@@ -576,7 +557,6 @@
                         url:  _this.$store.state.defaultHttp+ 'project/deleteProject.do?cId='+_this.$store.state.iscId,
                         data:qs.stringify(idArr),
                     }).then(function(res){
-                        // console.log(res.data)
                         if(res.data.code && res.data.code == 200) {
                             _this.$message({
                                 message: '删除成功',
@@ -604,7 +584,7 @@
                 let qs =require('querystring')
                 let idArr = [];
                 idArr.id = row.id
-                // console.log(idArr)
+
                 _this.$confirm('确认删除 ['+ row.projectName +'] 吗？', '提示', {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',
@@ -614,7 +594,6 @@
                         url:  _this.$store.state.defaultHttp+ 'project/deleteProject.do?cId='+_this.$store.state.iscId,
                         data:qs.stringify(idArr),
                     }).then(function(res){
-                        // console.log(res)
                         if(res.data.code && res.data.code == 200) {
                             _this.$message({
                                 message: '删除成功',
@@ -638,7 +617,6 @@
                 });
             },
             hangleChange(e,val){
-                // console.log(e)
                 const _this = this
                 let qs = require('querystring')
                 let data = {}
@@ -654,7 +632,6 @@
                     url:  _this.$store.state.defaultHttp+ 'userPageInfo/updateUserPageByid.do?cId='+_this.$store.state.iscId+'&pId='+_this.$store.state.ispId,
                     data:qs.stringify(data),
                 }).then(function(res){
-                    // console.log(res)
                     if(res.data && res.data =="success"){
                         _this.$options.methods.reloadTable.bind(_this)(true);
                     }else{

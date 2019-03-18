@@ -367,19 +367,16 @@
             loadData() {
                 this.detailData = this.$store.state.prodetailsData.submitData;
                 this.idArr.id = this.$store.state.prodetailsData.submitData.id
-                // console.log(this.detailData)
                 const _this = this
                 let qs =require('querystring')
                 let pageInfo = {}
                 pageInfo.page = this.page
                 pageInfo.limit = this.limit
-                // console.log(this);
                 //详情页联系人
                 axios({
                     method:'get',
                     url:_this.$store.state.defaultHttp+'project/getProjectById.do?cId='+_this.$store.state.iscId+'&id='+_this.detailData.id,
                 }).then(function(res){
-                    // console.log(res.data)
                     _this.programme = res.data
                     _this.cLueProjects = res.data.cLueProjects
                     _this.contractProjects = res.data.contractProjects
@@ -394,7 +391,6 @@
                     url: _this.$store.state.defaultHttp+'project/getProject.do?cId='+_this.$store.state.iscId,
                     data: qs.stringify(pageInfo),
                 }).then(function(res){
-                    // console.log(res)
                     _this.tableData = res.data.map.success
                     _this.tableNumber = res.data.count
                 }).catch(function(err){
@@ -406,15 +402,11 @@
                 this.retracts = !this.retracts
             },
             getRow(index,row){
-                // console.log(row.id)
                 this.$store.state.prodetailsData.submitData = {"id":row.id}
                 this.idArr.id = row.id
-                
-                // this.detailData.id = row.id
                 this.$options.methods.loadData.bind(this)(true);
             },
             handleclue(index,row){
-                // console.log(row)
                 this.updateList.id = row.id
                 this.updateList.projectid = row.projectid
                 this.updateList.addClue = null
@@ -433,14 +425,12 @@
                 data.toUpdate = this.updateList.toUpdate
                 data.monthNum = this.updateList.monthNum
                 data.weekNum = this.updateList.weekNum
-                // console.log(data)
 
                 axios({
                     method: 'post',
                     url:  _this.$store.state.defaultHttp+ 'cLueProject/updateClueProject.do?cId='+_this.$store.state.iscId,
                     data:qs.stringify(data),
                 }).then(function(res){
-                    // console.log(res)
                     if(res.data.code && res.data.code == 200) {
                         _this.$message({
                             message: '操作成功',
@@ -460,7 +450,6 @@
                 });
             },
             handlevisit(index,row){
-                // console.log(row)
                 this.updateList.id = row.id
                 this.updateList.projectid = row.projectid
                 this.updateList.visitNum = null
@@ -475,14 +464,12 @@
                 data.projectid = this.updateList.projectid
                 data.visitNum = this.updateList.visitNum
                 data.monthMinimum = this.updateList.monthMinimum
-                // console.log(data)
 
                 axios({
                     method: 'post',
                     url:  _this.$store.state.defaultHttp+ 'visitproject/updateVisitproject.do?cId='+_this.$store.state.iscId,
                     data:qs.stringify(data),
                 }).then(function(res){
-                    // console.log(res)
                     if(res.data.code && res.data.code == 200) {
                         _this.$message({
                             message: '操作成功',
@@ -502,7 +489,6 @@
                 });
             },
             handleopportunity(index,row){
-                // console.log(row)
                 this.updateList.id = row.id
                 this.updateList.projectid = row.projectid
                 this.updateList.opportunityNum = null
@@ -515,14 +501,12 @@
                 data.id = this.updateList.id
                 data.projectid = this.updateList.projectid
                 data.opportunityNum = this.updateList.opportunityNum
-                // console.log(data)
 
                 axios({
                     method: 'post',
                     url:  _this.$store.state.defaultHttp+ 'opportunityProject/updateOpportunityProject.do?cId='+_this.$store.state.iscId,
                     data:qs.stringify(data),
                 }).then(function(res){
-                    // console.log(res)
                     if(res.data.code && res.data.code == 200) {
                         _this.$message({
                             message: '操作成功',
@@ -542,7 +526,6 @@
                 });
             },
             handlecontract(index,row){
-                // console.log(row)
                 this.updateList.id = row.id
                 this.updateList.projectid = row.projectid
                 this.updateList.monthMoney = null
@@ -557,14 +540,12 @@
                 data.projectid = this.updateList.projectid
                 data.monthMoney = this.updateList.monthMoney
                 data.weekMoney = this.updateList.weekMoney
-                // console.log(data)
 
                 axios({
                     method: 'post',
                     url:  _this.$store.state.defaultHttp+ 'contractProject/updateContractProject.do?cId='+_this.$store.state.iscId,
                     data:qs.stringify(data),
                 }).then(function(res){
-                    // console.log(res)
                     if(res.data.code && res.data.code == 200) {
                         _this.$message({
                             message: '操作成功',
@@ -590,13 +571,12 @@
                 searchList.searchName = this.searchList.keyword;
                 searchList.page = this.page;
                 searchList.limit = this.limit;
-                // console.log(searchList)
+
                 axios({
                     method: 'post',
                     url: _this.$store.state.defaultHttp+'opportunity/query.do?cId='+_this.$store.state.iscId,
                     data: qs.stringify(searchList),
                 }).then(function(res){
-                    // console.log(res)
                     _this.tableData = res.data.map.success
                     _this.tableNumber = res.data.count
                 }).catch(function(err){

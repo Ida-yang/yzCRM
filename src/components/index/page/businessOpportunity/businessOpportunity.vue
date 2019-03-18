@@ -18,9 +18,9 @@
             <el-button class="btn" size="mini" @click="handleDeletes()">删除</el-button>
             <div class="totalnum_head">共 <span style="font-weight:bold">{{tableNumber}}</span> 条</div>
             <el-popover
-            placement="bottom"
-            width="100"
-            trigger="click">
+                placement="bottom"
+                width="100"
+                trigger="click">
             <el-checkbox-group class="checklist" v-model="checklist">
                 <el-checkbox class="checkone" v-for="item in filterList" :key="item.id" :label="item.name" :value="item.state" @change="hangleChange($event,item)"></el-checkbox>
             </el-checkbox-group>
@@ -234,7 +234,6 @@
                 let intPartFormat = intPart.toString().replace(/(\d)(?=(?:\d{3})+$)/g, '$1,') // 将整数部分逢三一断
                 let floatPart = '.00' // 预定义小数部分
                 let valArray = intPartFormat.split('.')
-                // console.log(valArray)
                 if(valArray.length === 2) {
                     floatPart = valArray[1].toString() // 拿到小数部分
                     if(floatPart.length === 1) { // 补0,实际上用不着
@@ -308,14 +307,12 @@
                 }
                 searchList.page = this.page;
                 searchList.limit = this.limit;
-                // console.log(searchList)
                 
                 axios({
                     method: 'post',
                     url: _this.$store.state.defaultHttp+'opportunity/query.do?cId='+_this.$store.state.iscId,
                     data: qs.stringify(searchList),
                 }).then(function(res){
-                    // console.log(res.data.map.success)
                     _this.$store.state.businessOpportunityList = res.data.map.success
                     _this.$store.state.businessOpportunityListnumber = res.data.count;
                 }).catch(function(err){
@@ -337,7 +334,6 @@
                     url: _this.$store.state.defaultHttp+'userPageInfo/getAllUserPage.do?cId='+_this.$store.state.iscId+'&pId='+_this.$store.state.ispId,
                     data: qs.stringify(filterList)
                 }).then(function(res){
-                    // console.log(res.data)
                     _this.filterList = res.data
                 }).catch(function(err){
                     console.log(err);
@@ -347,7 +343,6 @@
                     url: _this.$store.state.defaultHttp+'userPageInfo/getUserPage.do?cId='+_this.$store.state.iscId+'&pId='+_this.$store.state.ispId,
                     data: qs.stringify(data)
                 }).then(function(res){
-                    // console.log(res.data)
                     _this.checklist = res.data
                 }).catch(function(err){
                     console.log(err);
@@ -355,7 +350,6 @@
             },
             selectInfo(val){
                 this.multipleSelection = val;
-                // console.log(val)
                 let arr = val;
                 let newArr = [new Array()];
                 arr.forEach((item) => {
@@ -363,21 +357,18 @@
                         newArr.push(item.opportunity_id)
                     }
                 });
-                // console.log(newArr)
                 this.idArr.id = newArr;
                 
             },
             openDetails(index,row){
                 let oppdetailsData = {};
                 oppdetailsData.submitData = {"id": row.opportunity_id};
-                // console.log(oppdetailsData)
                 this.$store.state.oppdetailsData = oppdetailsData;
                 this.$router.push({ path: '/businessOpportunityDetails' });
             },
             handleAdd(){
                 let oppaddOrUpdateData = {};
                 const _this = this
-                // oppaddOrUpdateData.title = "添加商机";
                 oppaddOrUpdateData.createForm = [
                     {"label":"商机编号","inputModel":"opportunity_number",},
                     {"label":"商机名称","inputModel":"opportunity_name"},
@@ -400,12 +391,11 @@
                     "opportunity_remarks": ''};
                 oppaddOrUpdateData.submitURL = this.$store.state.defaultHttp+ 'opportunity/saveOrUpdate.do?cId='+this.$store.state.iscId,
                 this.$store.state.oppaddOrUpdateData = oppaddOrUpdateData;
-                // this.$router.push({ path: '/Opportunityaddorupdate' });
+
                 axios({
                     method: 'get',
                     url: _this.$store.state.defaultHttp+'opportunityJurisdiction/insert.do',//新增商机
                 }).then(function(res){
-                    // console.log(res)
                     if(res.data.msg && res.data.msg == 'error'){
                         _this.$message({
                             message:'对不起，您没有该权限，请联系管理员开通',
@@ -419,10 +409,8 @@
                 });
             },
             handleEdit(index,row){
-                // console.log(row)
                 const _this = this
                 let oppaddOrUpdateData = {};
-                // oppaddOrUpdateData.title = "修改商机";
                 oppaddOrUpdateData.createForm = [
                     {"label":"商机编号","inputModel":"opportunity_number",},
                     {"label":"商机名称","inputModel":"opportunity_name"},
@@ -445,14 +433,12 @@
                     "opportunity_remarks": row.opportunity_remarks};
                 oppaddOrUpdateData.submitData = {"id":row.opportunity_id};
                 oppaddOrUpdateData.submitURL = this.$store.state.defaultHttp+ 'opportunity/saveOrUpdate.do?cId='+this.$store.state.iscId,
-                // console.log(oppaddOrUpdateData)
                 this.$store.state.oppaddOrUpdateData = oppaddOrUpdateData;
-                // this.$router.push({ path: '/Opportunityaddorupdate' });
+
                 axios({
                     method: 'get',
                     url: _this.$store.state.defaultHttp+'opportunityJurisdiction/update.do',//编辑商机
                 }).then(function(res){
-                    // console.log(res)
                     if(res.data.msg && res.data.msg == 'error'){
                         _this.$message({
                             message:'对不起，您没有该权限，请联系管理员开通',
@@ -470,7 +456,7 @@
                 let qs =require('querystring')
                 let idArr = [];
                 idArr.id = this.idArr.id
-                // console.log(idArr.id)
+
                 _this.$confirm('是否确认删除吗？', '提示', {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',
@@ -480,7 +466,6 @@
                         url:  _this.$store.state.defaultHttp+ 'opportunity/delete.do?cId='+_this.$store.state.iscId,
                         data:qs.stringify(idArr),
                     }).then(function(res){
-                        // console.log(res)
                         if(res.data.success && res.data.success == true) {
                             _this.$message({
                                 message: '删除成功',
@@ -508,7 +493,6 @@
                 let qs =require('querystring')
                 let idArr = [];
                 idArr.id = row.opportunity_id
-                // console.log(idArr)
                 _this.$confirm('是否确认删除[' + row.opportunity_name + ']？', '提示', {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',
@@ -518,7 +502,6 @@
                         url: _this.$store.state.defaultHttp+'opportunity/delete.do?cId='+_this.$store.state.iscId,
                         data:qs.stringify(idArr),
                     }).then(function(res){
-                        // console.log(res)
                         if(res.data.success && res.data.success == true) {
                             _this.$message({
                                 message: '删除成功',
@@ -548,7 +531,6 @@
             },
             
             hangleChange(e,val){
-                // console.log(e)
                 const _this = this
                 let qs = require('querystring')
                 let data = {}
@@ -564,11 +546,8 @@
                     url:  _this.$store.state.defaultHttp+ 'userPageInfo/updateUserPageByid.do?cId='+_this.$store.state.iscId+'&pId='+_this.$store.state.ispId,
                     data:qs.stringify(data),
                 }).then(function(res){
-                    // console.log(res)
                     if(res.data && res.data =="success"){
                         _this.$options.methods.reloadData.bind(_this)(true);
-                    }else{
-                        console.log(err)
                     }
                 }).catch(function(err){
                     console.log(err);
@@ -583,16 +562,13 @@
                         return;
                     }
                     const values = data.map(item => Number(item[column.property]));
-                    // console.log(column.label,column.property)
                     if(column.property == 'opportunity_achievement'){
                         sums[index] = values.reduce((acc, cur) => (cur + acc), 0)
                         sums[index] = sums[index].toFixed(2)
                         let intPart = Math.trunc(sums[index])
                         let intPartFormat = intPart.toString().replace(/(\d)(?=(?:\d{3})+$)/g, '$1,')
-                        // console.log(intPartFormat)
                         let floatPart = '.00' // 预定义小数部分
                         let valArray = intPartFormat.split('.')
-                        // console.log(valArray)
                         if(valArray.length === 2) {
                             floatPart = valArray[1].toString() // 拿到小数部分
                             if(floatPart.length === 1) { // 补0,实际上用不着
@@ -628,7 +604,6 @@
                     method: 'get',
                     url: _this.$store.state.defaultHttp+_this.authorityInterface,
                 }).then(function(res){
-                    // console.log(res)
                     if(res.data.msg && res.data.msg == 'error'){
                         _this.$message({
                             message:'对不起，您没有该权限，请联系管理员开通',
@@ -640,7 +615,6 @@
                 }).catch(function(err){
                     console.log(err);
                 });
-                // this.$options.methods.reloadTable.bind(this)(true);
             },
             reset(){
                 this.searchList = Object.assign({}, this.searchListNew);

@@ -202,7 +202,6 @@
                         url: _this.$store.state.defaultHttp+'address/getAddress.do',
                         data: qs.stringify(country),
                     }).then(function(res){
-                        // console.log(res.data)
                         _this.areaList=res.data;
                     }).catch(function(err){
                         console.log(err);
@@ -215,7 +214,6 @@
                         url: _this.$store.state.defaultHttp+'address/getAddress.do',
                         data: qs.stringify(country),
                     }).then(function(res){
-                        // console.log(res.data)
                         _this.cityList=res.data;
                     }).catch(function(err){
                         console.log(err);
@@ -229,7 +227,6 @@
                     url: _this.$store.state.defaultHttp+'address/getAddress.do',
                     data: qs.stringify(country),
                 }).then(function(res){
-                    // console.log(res.data)
                     _this.Provinces=res.data;
                 }).catch(function(err){
                     console.log(err);
@@ -245,13 +242,12 @@
                 pageInfo.limit = this.limit;
                 pageInfo.pId = this.$store.state.ispId;
                 pageInfo.searchName = this.searchvalue
-                // console.log(pageInfo)
+
                 axios({
                     method: 'post',
                     url: _this.$store.state.defaultHttp+'rightPoolName.do?cId='+_this.$store.state.iscId,
                     data: qs.stringify(pageInfo),
                 }).then(function(res){
-                    // console.log(res.data.map.success)
                     _this.clueList = res.data.map.success.customerTwos
                     _this.customerList = res.data.map.success.customerpools
                     _this.tableData = _this.clueList.concat(_this.customerList)
@@ -265,7 +261,6 @@
                 this.countryid = this.contaddOrUpdateData.setForm.country
                 this.cityid = this.contaddOrUpdateData.setForm.city
                 this.areaid = this.contaddOrUpdateData.setForm.area
-                // console.log(this.contaddOrUpdateData)
 
                 // 设置默认值
                 let createForm = this.contaddOrUpdateData.createForm;
@@ -285,18 +280,14 @@
                     this.myForm.countryid = this.contaddOrUpdateData.setForm.country
                     this.myForm.cityid = this.contaddOrUpdateData.setForm.city
                     this.myForm.areaid = this.contaddOrUpdateData.setForm.area
-                    // console.log(this.myForm);
                     this.$emit('input', this.myForm);
                 }
             },
             handleInput(val, key) {
                 this.myForm[key] = val;
-                // console.log(val)
             },
             handleoninput(val,key){
-                // const _this = this
                 this.myForm[key] = val
-                // console.log(this.myForm[key])
                 this.searchvalue = val
                 this.$options.methods.loadTable.bind(this)(true);
             },
@@ -312,7 +303,6 @@
                 let flag = false;
                 createForm.forEach(item => {
                     subData[item.inputModel] = _this.myForm[item.inputModel];
-                    // console.log(_this.myForm)
                     if(item.inputModel == "name" && !subData[item.inputModel]) {//联系人名称不能为空
                         _this.$message({
                             message: "联系人名称不能为空",
@@ -340,15 +330,12 @@
                 subData.deptid = this.$store.state.insid
                 subData.customeroneId = this.myForm.customeroneId
                 subData.customerpool_id = this.myForm.customerpool_id
-                // console.log(_this.myForm)
-                // console.log(subData)
 
                 axios({
                     method: 'post',
                     url: _this.contaddOrUpdateData.submitURL,
                     data: qs.stringify(subData)
                 }).then(function(res){
-                    // console.log(res)
                     if(res.data.code && res.data.code == "200") {
                         _this.$message({
                             message: '成功',
@@ -389,19 +376,16 @@
                 this.formid = row.id
                 this.clueList.forEach(el => {
                     if(this.formid == el.id){
-                        console.log('这是线索的',el.id)
                         this.myForm.customeroneId = el.id
                         this.myForm.customerpool_id = null
                     }
                 });
                 this.customerList.forEach(item => {
                     if(this.formid == item.id){
-                        console.log('这是客户的',item.id)
                         this.myForm.customerpool_id = item.id
                         this.myForm.customeroneId = null
                     }
                 });
-                console.log(this.myForm)
             },
             
             // 选省

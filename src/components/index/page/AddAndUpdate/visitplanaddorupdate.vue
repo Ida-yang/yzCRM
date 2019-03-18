@@ -161,13 +161,11 @@ export default {
             pageInfo.limit = this.limit;
             pageInfo.pId = this.$store.state.ispId;
             pageInfo.searchName = this.searchvalue
-            // console.log(pageInfo)
             axios({
                 method: 'post',
                 url: _this.$store.state.defaultHttp+'rightPoolName.do?cId='+_this.$store.state.iscId,
                 data: qs.stringify(pageInfo),
             }).then(function(res){
-                // console.log(res.data.map.success)
                 _this.tableData = res.data.map.success.customerpools
             }).catch(function(err){
                 console.log(err);
@@ -176,7 +174,6 @@ export default {
         //加载或重载页面
         loadData() {
             this.visitaddOrUpdateData = this.$store.state.visitaddOrUpdateData;
-            console.log(this.visitaddOrUpdateData)
 
             // 设置默认值
             let createForm = this.visitaddOrUpdateData.createForm;
@@ -191,7 +188,6 @@ export default {
                         this.myForm[item.inputModel] = setForm[item.inputModel];
                     }
                 });
-                // console.log(this.myForm);
                 this.formid = setForm.customerpoolid
                 this.conid = setForm.contactsid
                 this.assisid = setForm.assistantsid
@@ -215,9 +211,7 @@ export default {
                 url: _this.$store.state.defaultHttp+'getPoolContactsName.do?cId='+_this.$store.state.iscId,
                 data: qs.stringify(data)
             }).then(function(res){
-                // console.log(res.data.map.success)
                 _this.contactsList = res.data.map.success
-                // console.log(_this.contactsList)
             }).catch(function(err){
                 console.log(err);
             });
@@ -229,37 +223,30 @@ export default {
                 method: 'get',
                 url: _this.$store.state.defaultHttp+'getNameAndId.do?cId='+_this.$store.state.iscId,
             }).then(function(res){
-                // console.log(res.data)
                 _this.assistAudit = res.data
             }).catch(function(err){
                 console.log(err);
             });
         },
         getRow(index,row){
-            // console.log(row)
             this.myForm.customerpoolid = row.name
             this.formid = row.id
             this.loadContacts()
         },
         handleInput(val, key) {
             this.myForm[key] = val;
-            // console.log(val)
         },
         handleoninput(val,key){
-            // const _this = this
             this.myForm[key] = val
-            // console.log(this.myForm[key])
             this.searchvalue = val
             this.$options.methods.loadTable.bind(this)(true);
         },
         submit(){
-            // console.log(this.myForm)
             const _this = this;
             let qs =require('querystring')
             let subData = {};
             if(_this.visitaddOrUpdateData.submitData) {
                 subData.id = this.visitaddOrUpdateData.submitData.id;
-                // subData.csId = _this.visitaddOrUpdateData.submitData.csId;
             }
             subData.secondid = this.$store.state.deptid
             subData.deptid = this.$store.state.insid
@@ -267,7 +254,6 @@ export default {
             let flag = false;
             createForm.forEach(item => {
                 subData[item.inputModel] = _this.myForm[item.inputModel];
-                // console.log(_this.myForm)
                 if(item.inputModel == "customerpoolid" && !subData[item.inputModel]) {//拜访客户不能为空
                     _this.$message({
                         message: "拜访客户不能为空",

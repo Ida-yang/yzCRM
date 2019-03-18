@@ -158,23 +158,19 @@
             loadData() {
                 this.detailData = this.$store.state.agreedetailsData.submitData;
                 this.idArr.id = this.$store.state.agreedetailsData.submitData.id
-                // console.log(this.detailData)
                 const _this = this
                 let qs =require('querystring')
                 let pageInfo = {}
                 pageInfo.page = this.page
                 pageInfo.limit = this.limit
-                // console.log(this);
                 //加载详情页右侧表格
                 axios({
                     method:'post',
                     url:_this.$store.state.defaultHttp+'getContractAll.do?cId='+_this.$store.state.iscId,
                     data:qs.stringify(pageInfo)
                 }).then(function(res){
-                    // console.log(res.data)
                     _this.tableData = res.data.map.success
                     _this.tableNumber = res.data.count
-                    // console.log(_this.tableData)
                 }).catch(function(err){
                     console.log(err);
                 });
@@ -183,9 +179,7 @@
                     method:'get',
                     url:_this.$store.state.defaultHttp+'getContractById.do?cId='+_this.$store.state.iscId+'&contractId='+this.detailData.id,
                 }).then(function(res){
-                    // console.log(res.data)
                     _this.agreementdetail = res.data
-                    // console.log(_this.agreementdetail)
                 }).catch(function(err){
                     console.log(err);
                 });
@@ -199,23 +193,19 @@
                 data.type = '合同'
                 data.pId = this.$store.state.ispId
                 data.cId = this.$store.state.iscId
-                // console.log(data)
 
                 axios({
                     method:'post',
                     url:_this.$store.state.defaultHttp+'imgInfo/getImgInfoByTypeid.do',
                     data:qs.stringify(data)
                 }).then(function(res){
-                    // console.log(res.data)
                     _this.dataList = res.data
                     let arr = _this.dataList
                     arr.forEach(el => {
-                        // console.log(el.id)
                         _this.imgid = el.id
                         _this.imgurl = '/upload/'+_this.$store.state.iscId+'/'+el.name
                         _this.fileList.push({id:_this.imgid,imgURL:_this.imgurl})
                     });
-                    // console.log(_this.fileList)
                 }).catch(function(err){
                     console.log(err);
                 });
@@ -232,7 +222,6 @@
                 // 添加请求头
                 axios.post(this.$store.state.defaultHttp+'contractUpload.do?cId='+this.$store.state.iscId+'&pId='+this.$store.state.ispId+'&contractid='+this.detailData.id, param, config)
                 .then(res => {
-                    // console.log(res)
                     if (res.data == 'success') {
                         _this.$message({
                             message:'上传成功',
@@ -250,10 +239,8 @@
             showImg(e,val){
                 this.dialogImageUrl = val.imgURL
                 this.dialogVisible = true
-                // console.log(this.dialogImageUrl)
             },
             delImg(e,val){
-                // console.log(val.id)
                 const _this = this;
                 let qs = require('querystring')
                 let idArr = [];
@@ -267,7 +254,6 @@
                         url: _this.$store.state.defaultHttp+'imgInfo/delImgInfoById.do?cId='+_this.$store.state.iscId,
                         data:qs.stringify(idArr),
                     }).then(function(res){
-                        // console.log(res)
                         if(res.data.code && res.data.code == '200') {
                             _this.$message({
                                 message: '删除成功',
@@ -301,11 +287,8 @@
                 this.retracts = !this.retracts
             },
             getRow(index,row){
-                // console.log(row)
                 this.$store.state.agreedetailsData.submitData = {"id":row.contract_id}
                 this.idArr.contractId = row.contract_id
-                
-                // this.detailData.contractId = row.contractId
                 this.$options.methods.loadData.bind(this)(true);
             },
             handleClick(tab, event) {
@@ -318,13 +301,12 @@
                 searchList.searchName = this.searchList.keyword;
                 searchList.page = this.page;
                 searchList.limit = this.limit;
-                // console.log(searchList)
+
                 axios({
                     method: 'post',
                     url: _this.$store.state.defaultHttp+'customerTwo/getUserByClue.do?cId='+_this.$store.state.iscId+'&pId='+_this.$store.state.ispId,
                     data: qs.stringify(searchList),
                 }).then(function(res){
-                    // console.log(res)
                     _this.tableData = res.data.map.success
                     _this.tableNumber = res.data.count
                 }).catch(function(err){

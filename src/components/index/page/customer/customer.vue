@@ -465,7 +465,6 @@
                 method: 'get',
                 url: _this.$store.state.defaultHttp+'typeInfo/getTypeInfoByType.do?cId='+_this.$store.state.iscId,
             }).then(function(res){
-                // console.log(res.data)
                 _this.stateData = res.data.name2001
                 _this.typeData = res.data.name3001
                 _this.labelData = res.data.name4001
@@ -504,14 +503,12 @@
                 searchList.customerStateid = this.searchList.keyWord //客户来源
                 searchList.page = this.page;
                 searchList.limit = this.limit;
-                // console.log(searchList)
 
                 axios({
                     method: 'post',
                     url: _this.$store.state.defaultHttp+'customerpool/query.do?cId='+_this.$store.state.iscId,
                     data: qs.stringify(searchList),
                 }).then(function(res){
-                    // console.log(res.data.map.success)
                     _this.$store.state.customerList = res.data.map.success
                     _this.$store.state.customerListnumber = res.data.count;
                 }).catch(function(err){
@@ -532,7 +529,6 @@
                     url: _this.$store.state.defaultHttp+'userPageInfo/getAllUserPage.do?cId='+_this.$store.state.iscId+'&pId='+_this.$store.state.ispId,
                     data: qs.stringify(filterList)
                 }).then(function(res){
-                    // console.log(res.data)
                     _this.filterList = res.data
                 }).catch(function(err){
                     console.log(err);
@@ -542,7 +538,6 @@
                     url: _this.$store.state.defaultHttp+'userPageInfo/getUserPage.do?cId='+_this.$store.state.iscId+'&pId='+_this.$store.state.ispId,
                     data: qs.stringify(data)
                 }).then(function(res){
-                    // console.log(res.data)
                     _this.checklist = res.data
                 }).catch(function(err){
                     console.log(err);
@@ -550,7 +545,6 @@
             },
             selectInfo(val){
                 this.multipleSelection = val;
-                // console.log(val)
                 let arr = val;
                 let newArr = [new Array()];
                 arr.forEach((item) => {
@@ -570,7 +564,6 @@
             handleAdd(){
                 const _this = this
                 let cusaddOrUpdateData = {};
-                // cusaddOrUpdateData.title = "添加客户";
                 cusaddOrUpdateData.createForm = [
                     {"label":"客户来源","inputModel":"customerStateid","type":"select"},
                     {"label":"客户名称","inputModel":"poolName","type":"require"},
@@ -627,12 +620,12 @@
                     "companyType": '',
                     "operatingState": ''};
                 cusaddOrUpdateData.submitURL = this.$store.state.defaultHttp+ 'customerpool/savePool.do?cId='+this.$store.state.iscId+'&pId='+this.$store.state.ispId,
-                this.$store.state.cusaddOrUpdateData = cusaddOrUpdateData;
+                this.$store.state.cusaddOrUpdateData = cusaddOrUpdateData
+
                 axios({
                     method: 'get',
                     url: _this.$store.state.defaultHttp+'customerJurisdiction/insert.do',//新增客户
                 }).then(function(res){
-                    // console.log(res.data.msg)
                     if(res.data.msg && res.data.msg == 'error'){
                         _this.$message({
                             message:'对不起，您没有该权限，请联系管理员开通',
@@ -646,10 +639,8 @@
                 });
             },
             handleEdit(index,row){
-                // console.log(row)
                 const _this = this
                 let cusaddOrUpdateData = {};
-                // cusaddOrUpdateData.title = "修改客户";
                 cusaddOrUpdateData.createForm = [
                     {"label":"客户来源","inputModel":"customerStateid","type":"select"},
                     {"label":"客户名称","inputModel":"poolName","type":"require"},
@@ -680,7 +671,6 @@
                     {"label":"经营状态","inputModel":"operatingState","type":"select"},]
                 cusaddOrUpdateData.setForm = {
                     "customerStateid": row.sourceid,
-                    // "customerState":row.sourceid,
                     "poolName": row.pName,
                     "levelsid": row.levels,
                     "levels": row.levelsid,
@@ -712,13 +702,12 @@
                     "operatingState": row.operatingState};
                 cusaddOrUpdateData.submitData = {"id": row.id,'csId':row.contacts[0].csId};
                 cusaddOrUpdateData.submitURL = this.$store.state.defaultHttp+ 'customerpool/updatepool.do?cId='+this.$store.state.iscId+'&pId='+this.$store.state.ispId,
-                // console.log(cusaddOrUpdateData)
-                this.$store.state.cusaddOrUpdateData = cusaddOrUpdateData;
+                this.$store.state.cusaddOrUpdateData = cusaddOrUpdateData
+
                 axios({
                     method: 'get',
                     url: _this.$store.state.defaultHttp+'customerJurisdiction/update.do',//编辑客户
                 }).then(function(res){
-                    // console.log(res)
                     if(res.data.msg && res.data.msg == 'error'){
                         _this.$message({
                             message:'对不起，您没有该权限，请联系管理员开通',
@@ -736,12 +725,12 @@
                 let qs =require('querystring')
                 let idArr = [];
                 idArr.id = this.idArr.id
+
                 axios({
                     method: 'post',
                     url:  _this.$store.state.defaultHttp+ 'customerpool/updateTo.do?cId='+_this.$store.state.iscId,
                     data:qs.stringify(idArr),
                 }).then(function(res){
-                    // console.log(res)
                     if(res.data.code && res.data.code == 200) {
                         _this.$message({
                             message: '转移成功',
@@ -764,7 +753,6 @@
                 });
             },
             hangleChange(e,val){
-                // console.log(e)
                 const _this = this
                 let qs = require('querystring')
                 let data = {}
@@ -780,11 +768,8 @@
                     url:  _this.$store.state.defaultHttp+ 'userPageInfo/updateUserPageByid.do?cId='+_this.$store.state.iscId+'&pId='+_this.$store.state.ispId,
                     data:qs.stringify(data),
                 }).then(function(res){
-                    // console.log(res)
                     if(res.data && res.data =="success"){
                         _this.$options.methods.reloadData.bind(_this)(true);
-                    }else{
-                        console.log(err)
                     }
                 }).catch(function(err){
                     console.log(err);
@@ -792,7 +777,6 @@
             },
             search() {
                 const _this = this
-                const qs = require('querystring')
                 if(this.searchList.label == 0 ){
                     this.authorityInterface = 'customerJurisdiction/all.do'//全部客户
                 }else if(this.searchList.label == 1 ){
@@ -807,7 +791,6 @@
                     method: 'get',
                     url: _this.$store.state.defaultHttp+_this.authorityInterface,
                 }).then(function(res){
-                    // console.log(res)
                     if(res.data.msg && res.data.msg == 'error'){
                         _this.$message({
                             message:'对不起，您没有该权限，请联系管理员开通',

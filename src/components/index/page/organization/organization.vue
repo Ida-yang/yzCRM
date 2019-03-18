@@ -84,7 +84,7 @@
                     <el-input v-model="roleform.name" style="200px;"></el-input>
                 </el-form-item>
             </el-form>
-            <el-tabs v-model="activeName" type="card" @tab-click="handleClick">
+            <el-tabs v-model="activeName" type="card">
                 <el-tab-pane label="线索" name="first">
                     <el-checkbox :indeterminate="checksomeclue" v-model="checkAllclue" @change="CheckAllclues">全选</el-checkbox>
                     <div style="margin: 15px 0;"></div>
@@ -152,7 +152,7 @@
                     <el-input v-model="roleform.name" style="200px;"></el-input>
                 </el-form-item>
             </el-form>
-            <el-tabs v-model="activeName" type="card" @tab-click="handleClick">
+            <el-tabs v-model="activeName" type="card">
                 <el-tab-pane label="线索" name="first">
                     <el-checkbox :indeterminate="checksomeclue" v-model="checkAllclue" @change="CheckAllclues">全选</el-checkbox>
                     <div style="margin: 15px 0;"></div>
@@ -304,7 +304,6 @@
                     method: 'get',
                     url: _this.$store.state.defaultHttp+'dept/getDeptNodeTree.do?cId='+_this.$store.state.iscId,
                 }).then(function(res){
-                    // console.log(res.data.map.success)
                     _this.datalist = res.data.map.success
                 }).catch(function(err){
                     console.log(err);
@@ -316,13 +315,12 @@
                 let searchInfo = {}
                 searchInfo.deptid = this.searchList.deptid
                 searchInfo.parentid = this.searchList.parentid
-                // console.log(searchInfo)
+
                 axios({
                     method: 'post',
                     url: _this.$store.state.defaultHttp+'role/selectRole.do?cId='+_this.$store.state.iscId,
                     data:qs.stringify(searchInfo)
                 }).then(function(res){
-                    // console.log(res.data)
                     _this.roleList = res.data
                 }).catch(function(err){
                     console.log(err);
@@ -334,7 +332,6 @@
                     method: 'get',
                     url: _this.$store.state.defaultHttp+'resource/getResources.do',
                 }).then(function(res){
-                    // console.log(res.data)
                     _this.cluerole = res.data.name1
                     _this.customerole = res.data.name2
                     _this.contactrole = res.data.name3
@@ -342,27 +339,6 @@
                     _this.agreementrole = res.data.name5
                     _this.activityrole = res.data.name6
                     _this.setrole = res.data.name7
-                    // if(_this.cluerole == res.data.name1){
-                    //     _this.checkAllclue = true
-                    // }
-                    // if(_this.customerole == res.data.name2){
-                    //     _this.checkAllcustomer = true
-                    // }
-                    // if(_this.contactrole == res.data.name3){
-                    //     _this.checkAllcontact = true
-                    // }
-                    // if(_this.opportunityrole == res.data.name4){
-                    //     _this.checkAllopportunity = true
-                    // }
-                    // if(_this.agreementrole == res.data.name5){
-                    //     _this.checkAllagreement = true
-                    // }
-                    // if(_this.activityrole == res.data.name6){
-                    //     _this.checkAllactivity = true
-                    // }
-                    // if(_this.setrole == res.data.name7){
-                    //     _this.checkAllset = true
-                    // }
                 }).catch(function(err){
                     console.log(err);
                 });
@@ -371,19 +347,15 @@
                 this.searchList.deptid = data.deptid
                 this.searchList.parentid = data.parentid
                 this.clickdata = data
-                this.roleform.deptid = data.deptid
-                // console.log(data.deptid)
-                this.$options.methods.reloadData.bind(this)(true);
+                this.roleform.deptid = data.deptidata.bind(this)(true);
             },
             //上级部门添加
             handleappend(data){
                 const _this = this
-                // console.log(data)
                 axios({
                     method: 'get',
                     url: _this.$store.state.defaultHttp+'deptJurisdiction/insert.do',//新增部门
                 }).then(function(res){
-                    // console.log(res)
                     if(res.data.msg && res.data.msg == 'error'){
                         _this.$message({
                             message:'对不起，您没有该权限，请联系管理员开通',
@@ -407,13 +379,12 @@
                 data.parentid = this.newform.parentid
                 data.parentname = this.newform.parentname
                 data.deptname = this.newform.deptname
-                // console.log(data)
+                
                 axios({
                     method: 'post',
                     url: _this.$store.state.defaultHttp+'dept/insertDept.do?cId='+_this.$store.state.iscId,
                     data:qs.stringify(data)
                 }).then(function(res){
-                    // console.log(res)
                     if(res.data.msg && res.data.msg == 'success'){
                         _this.$message({
                             message:'添加成功',
@@ -435,13 +406,12 @@
             },
             //上级部门修改
             handleUpdate(data){
-                // console.log(data)
                 const _this = this;
+
                 axios({
                     method: 'get',
                     url: _this.$store.state.defaultHttp+'deptJurisdiction/update.do',//编辑部门
                 }).then(function(res){
-                    // console.log(res)
                     if(res.data.msg && res.data.msg == 'error'){
                         _this.$message({
                             message:'对不起，您没有该权限，请联系管理员开通',
@@ -465,13 +435,12 @@
                 let data = {}
                 data.deptid = this.newform.deptid
                 data.deptname = this.newform.deptname
-                // console.log(data)
+
                 axios({
                     method: 'post',
                     url: _this.$store.state.defaultHttp+'dept/updateDeptById.do?cId='+_this.$store.state.iscId,
                     data:qs.stringify(data)
                 }).then(function(res){
-                    // console.log(res)
                     if(res.data.msg && res.data.msg == 'success'){
                         _this.$message({
                             message:'修改成功',
@@ -497,7 +466,6 @@
                 let qs =require('querystring')
                 let idData = {}
                 idData.deptid = data.deptid
-                // console.log(idData)
                 _this.$confirm('是否确认删除？', '提示', {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',
@@ -507,7 +475,6 @@
                         url:  _this.$store.state.defaultHttp+ 'dept/deleteDeptById.do?cId='+_this.$store.state.iscId,
                         data:qs.stringify(idData),
                     }).then(function(res){
-                        // console.log(res)
                         if(res.data.msg && res.data.msg == 'success') {
                             _this.$message({
                                 message: '删除成功',
@@ -532,9 +499,6 @@
                     });
                 });
             },
-            handleClick(tab, event){
-                // console.log(tab, event);
-            },
             handleAdd(){
                 const _this = this
                 this.roleform.name = ''
@@ -549,7 +513,6 @@
                         method: 'get',
                         url: _this.$store.state.defaultHttp+'deptJurisdiction/insert.do',//新增角色
                     }).then(function(res){
-                        // console.log(res)
                         if(res.data.msg && res.data.msg == 'error'){
                             _this.$message({
                                 message:'对不起，您没有该权限，请联系管理员开通',
@@ -564,7 +527,6 @@
                     });
                     
                 }
-                // console.log(this.roleform)
             },
             addrole(){
                 const _this = this
@@ -573,13 +535,12 @@
                 data.deptid = this.roleform.deptid
                 data.name = this.roleform.name
                 data.ids = this.roleform.ids
-                // console.log(data)
+
                 axios({
                     method:'post',
                     url:_this.$store.state.defaultHttp+'role/saveOrUpdate.do?cId='+_this.$store.state.iscId,
                     data:qs.stringify(data)
                 }).then(function(res){
-                    // console.log(res)
                     if(res.data.msg && res.data.msg == 'success'){
                         _this.$message({
                             message:'添加成功',
@@ -599,11 +560,11 @@
             },
             handleEdit(e,val){
                 const _this = this
+
                 axios({
                     method: 'get',
                     url: _this.$store.state.defaultHttp+'roleJurisdiction/update.do',//编辑角色
                 }).then(function(res){
-                    // console.log(res)
                     if(res.data.msg && res.data.msg == 'error'){
                         _this.$message({
                             message:'对不起，您没有该权限，请联系管理员开通',
@@ -621,7 +582,6 @@
                         let ids = val.resources
                         ids.forEach(el => {
                             if(el.id){
-                                // console.log(el.id)
                                 _this.roleform.ids.push(el.id)
                                 _this.checkedroleclues.push(el.id)
                                 _this.checkedrolecustomers.push(el.id)
@@ -632,7 +592,6 @@
                                 _this.checkedrolesets.push(el.id)
                             }
                         });
-                        // console.log(_this.roleform.ids)
                         _this.roleform.id = val.id
                         _this.roleform.name = val.name
                         _this.roleform.deptid = val.deptid
@@ -652,13 +611,12 @@
                 data.name = this.roleform.name
                 data.deptid = this.roleform.deptid
                 data.ids = this.roleform.ids
-                // console.log(data.ids)
+
                 axios({
                     method: 'post',
                     url:  _this.$store.state.defaultHttp+ 'role/saveOrUpdate.do?cId='+_this.$store.state.iscId,
                     data:qs.stringify(data),
                 }).then(function(res){
-                    // console.log(res)
                     if(res.data.msg && res.data.msg == 'success') {
                         _this.$message({
                             message: '修改成功',
@@ -677,7 +635,6 @@
                 });
             },
             handledelete(val){
-                // console.log(val)
                 const _this = this
                 let data = {}
                 let qs = require('querystring')
@@ -691,7 +648,6 @@
                         url:  _this.$store.state.defaultHttp+ 'role/delete.do?cId='+_this.$store.state.iscId,
                         data:qs.stringify(data),
                     }).then(function(res){
-                        // console.log(res)
                         if(res.data.msg && res.data.msg == 'success') {
                             _this.$message({
                                 message: '删除成功',
@@ -716,7 +672,6 @@
                 })
             },
             CheckAllclues(val) {
-                // console.log(val)
                 let data = this.cluerole
                 data.forEach(el => {
                     if(val == true){
@@ -727,7 +682,6 @@
                         this.roleform.ids.pop(el.id)
                     }
                 });
-                // console.log(this.roleform.ids)
             },
             CheckAllcustomers(val) {
                 let data = this.customerole
@@ -802,43 +756,36 @@
                 });
             },
             handleCheckedroleclue(e) {
-                // console.log(e)
                 let checkedCount = e.length;
                 this.checkAllclue = checkedCount === this.cluerole.length;
                 this.checksomeclue = checkedCount > 0 && checkedCount < this.cluerole.length;
             },
             handleCheckedrolecustomer(e) {
-                // console.log(e)
                 let checkedCount = e.length;
                 this.checkAllcustomer = checkedCount === this.customerole.length;
                 this.checksomecustomer = checkedCount > 0 && checkedCount < this.customerole.length;
             },
             handleCheckedrolecontact(e) {
-                // console.log(e)
                 let checkedCount = e.length;
                 this.checkAllcontact = checkedCount === this.contactrole.length;
                 this.checksomecontact = checkedCount > 0 && checkedCount < this.contactrole.length;
             },
             handleCheckedroleopportunity(e) {
-                // console.log(e)
                 let checkedCount = e.length;
                 this.checkAllopportunity = checkedCount === this.opportunityrole.length;
                 this.checksomeopportunity = checkedCount > 0 && checkedCount < this.opportunityrole.length;
             },
             handleCheckedroleagreement(e) {
-                // console.log(e)
                 let checkedCount = e.length;
                 this.checkAllagreement = checkedCount === this.agreementrole.length;
                 this.checksomeagreement = checkedCount > 0 && checkedCount < this.agreementrole.length;
             },
             handleCheckedroleactivity(e) {
-                // console.log(e)
                 let checkedCount = e.length;
                 this.checkAllactivity = checkedCount === this.activityrole.length;
                 this.checksomeactivity = checkedCount > 0 && checkedCount < this.activityrole.length;
             },
             handleCheckedroleset(e) {
-                // console.log(e)
                 let checkedCount = e.length;
                 this.checkAllset = checkedCount === this.setrole.length;
                 this.checksomeset = checkedCount > 0 && checkedCount < this.setrole.length;

@@ -320,7 +320,6 @@
                 url: _this.$store.state.defaultHttp+'search/find.do',
                 data: qs.stringify(industryTypeList,),
             }).then(function(res){
-                // console.log(res.data)
                 _this.industryTypeList=res.data;
             }).catch(function(err){
                 console.log(err);
@@ -331,7 +330,6 @@
                 url: _this.$store.state.defaultHttp+'search/find.do',
                 data: qs.stringify(enterpriseScaleList),
             }).then(function(res){
-                // console.log(res.data)
                 _this.enterpriseScaleList=res.data;
             }).catch(function(err){
                 console.log(err);
@@ -342,7 +340,6 @@
                 url: _this.$store.state.defaultHttp+'search/find.do',
                 data: qs.stringify(companyTypeList),
             }).then(function(res){
-                // console.log(res.data)
                 _this.companyTypeList=res.data;
             }).catch(function(err){
                 console.log(err);
@@ -353,7 +350,6 @@
                 url: _this.$store.state.defaultHttp+'search/find.do',
                 data: qs.stringify(operatingStateList),
             }).then(function(res){
-                // console.log(res.data)
                 _this.operatingStateList=res.data;
             }).catch(function(err){
                 console.log(err);
@@ -364,7 +360,6 @@
                 url: _this.$store.state.defaultHttp+'search/find.do',
                 data: qs.stringify(financingStateList),
             }).then(function(res){
-                // console.log(res.data)
                 _this.financingStateList=res.data;
             }).catch(function(err){
                 console.log(err);
@@ -375,7 +370,6 @@
                 url: _this.$store.state.defaultHttp+'search/find.do',
                 data: qs.stringify(listedList),
             }).then(function(res){
-                // console.log(res.data)
                 _this.listedList=res.data;
             }).catch(function(err){
                 console.log(err);
@@ -403,7 +397,7 @@
                         url: _this.$store.state.defaultHttp+'address/getAddress.do',
                         data: qs.stringify(country),
                     }).then(function(res){
-                        // console.log(res.data)
+    
                         _this.areaList=res.data;
                     }).catch(function(err){
                         console.log(err);
@@ -416,7 +410,7 @@
                         url: _this.$store.state.defaultHttp+'address/getAddress.do',
                         data: qs.stringify(country),
                     }).then(function(res){
-                        // console.log(res.data)
+    
                         _this.cityList=res.data;
                     }).catch(function(err){
                         console.log(err);
@@ -430,7 +424,7 @@
                     url: _this.$store.state.defaultHttp+'address/getAddress.do',
                     data: qs.stringify(country),
                 }).then(function(res){
-                    // console.log(res.data)
+
                     _this.Provinces=res.data;
                 }).catch(function(err){
                     console.log(err);
@@ -444,14 +438,12 @@
                 let pageInfo = {}
                 pageInfo.page = this.page;
                 pageInfo.limit = this.limit;
-                // console.log(pageInfo)
                 
                 axios({
                     method: 'post',
                     url: _this.$store.state.defaultHttp+'customerOne/query.do',
                     data: qs.stringify(pageInfo),
                 }).then(function(res){
-                    // console.log(res.data.rows)
                     _this.tableData = res.data.rows
                     _this.tableNumber = res.data.total;
                 }).catch(function(err){
@@ -461,7 +453,7 @@
                     method: 'get',
                     url: _this.$store.state.defaultHttp+'typeInfo/getTypeInfoByType.do?cId='+_this.$store.state.iscId,
                 }).then(function(res){
-                    // console.log(res.data)
+
                     _this.cuesList = res.data.name3001
                     _this.levelList = res.data.name4001
                 }).catch(function(err){
@@ -474,7 +466,6 @@
                 this.countryid = this.cusaddOrUpdateData.setForm.country
                 this.cityid = this.cusaddOrUpdateData.setForm.city
                 this.areaid = this.cusaddOrUpdateData.setForm.area
-                // console.log(this.cusaddOrUpdateData)
 
                 // 设置默认值
                 let createForm = this.cusaddOrUpdateData.createForm;
@@ -501,35 +492,29 @@
                             this.myForm[item.inputModel] = setForm[item.inputModel];
                         }
                     });
-                    // console.log(this.myForm);
                     this.myForm.levelsid = this.cusaddOrUpdateData.setForm.levels
                     this.myForm.countryid = this.cusaddOrUpdateData.setForm.country
                     this.myForm.cityid = this.cusaddOrUpdateData.setForm.city
                     this.myForm.areaid = this.cusaddOrUpdateData.setForm.area
-                    // this.myForm.customerStateid = this.cusaddOrUpdateData.setForm.customerState
                     this.$emit('input', this.myForm);
                 }
             },
             handleInput(val, key) {
                 this.myForm[key] = val;
-                // console.log(val)
             },
             handleoninput(val,key){
                 const _this = this
                 this.myForm[key] = val
-                // console.log(this.myForm[key])
                 let qs =require('querystring')
                 let pageInfo = {}
                 pageInfo.page = this.page;
                 pageInfo.limit = this.limit;
                 pageInfo.keyword = val;
-                // console.log(pageInfo)
                 axios({
                     method: 'post',
                     url: _this.$store.state.defaultHttp+'customerOne/query.do',
                     data: qs.stringify(pageInfo),
                 }).then(function(res){
-                    // console.log(res.data.rows)
                     _this.tableData = res.data.rows
                     _this.tableNumber = res.data.total;
                 }).catch(function(err){
@@ -553,7 +538,6 @@
                 });
                 createForm.forEach(item => {
                     subData[item.inputModel] = _this.myForm[item.inputModel];
-                    // console.log(_this.myForm)
                     if(item.inputModel == "contactsName" && !subData[item.inputModel]) {//联系人名称不能为空
                         _this.$message({
                             message: "联系人名称不能为空",
@@ -593,15 +577,12 @@
                 if(flag) return;
                 subData.secondid = this.$store.state.deptid
                 subData.deptid = this.$store.state.insid
-                // console.log(_this.myForm)
-                // console.log(subData)
 
                 axios({
                     method: 'post',
                     url: _this.cusaddOrUpdateData.submitURL,
                     data: qs.stringify(subData)
                 }).then(function(res){
-                    // console.log(res)
                     if(res.data.code && res.data.code == "200") {
                         _this.$message({
                             message: '成功',

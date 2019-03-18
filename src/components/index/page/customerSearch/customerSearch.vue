@@ -52,7 +52,7 @@
             </div>
             <div class="searchList">
                 <span class="searchtitle">行业：</span>
-                <el-select v-model="searchList.industryType" placeholder="行业" clearable class="filter-item" @change="showdetailindstry">
+                <el-select v-model="searchList.industryType" placeholder="行业" clearable class="filter-item">
                     <el-option v-for="item in industryTypeList" :key="item.id" :label="item.name" :value="item.id"/>
                 </el-select>
             </div>
@@ -441,7 +441,6 @@
             loadData(){
                 const _this = this
                 let qs =require('querystring')
-                // console.log(pageInfo)
                 let industryTypeList = {} 
                 industryTypeList.comboType = 'IndustryType'
                 let enterpriseScaleList = {}   
@@ -463,7 +462,6 @@
                     url: _this.$store.state.defaultHttp+'address/getAddress.do',
                     data: qs.stringify(data),
                 }).then(function(res){
-                    // console.log(res.data)
                     _this.Provinces=res.data;
                 }).catch(function(err){
                     console.log(err);
@@ -474,7 +472,6 @@
                     url: _this.$store.state.defaultHttp+'search/find.do',
                     data: qs.stringify(industryTypeList),
                 }).then(function(res){
-                    // console.log(res.data)
                     _this.industryTypeList=res.data;
                 }).catch(function(err){
                     console.log(err);
@@ -485,7 +482,6 @@
                     url: _this.$store.state.defaultHttp+'search/find.do',
                     data: qs.stringify(enterpriseScaleList),
                 }).then(function(res){
-                    // console.log(res.data)
                     _this.enterpriseScaleList=res.data;
                 }).catch(function(err){
                     console.log(err);
@@ -496,7 +492,6 @@
                     url: _this.$store.state.defaultHttp+'search/find.do',
                     data: qs.stringify(companyTypeList),
                 }).then(function(res){
-                    // console.log(res.data)
                     _this.companyTypeList=res.data;
                 }).catch(function(err){
                     console.log(err);
@@ -507,7 +502,6 @@
                     url: _this.$store.state.defaultHttp+'search/find.do',
                     data: qs.stringify(operatingStateList),
                 }).then(function(res){
-                    // console.log(res.data)
                     _this.operatingStateList=res.data;
                 }).catch(function(err){
                     console.log(err);
@@ -518,7 +512,6 @@
                     url: _this.$store.state.defaultHttp+'search/find.do',
                     data: qs.stringify(financingStateList),
                 }).then(function(res){
-                    // console.log(res.data)
                     _this.financingStateList=res.data;
                 }).catch(function(err){
                     console.log(err);
@@ -529,7 +522,6 @@
                     url: _this.$store.state.defaultHttp+'search/find.do',
                     data: qs.stringify(listedList),
                 }).then(function(res){
-                    // console.log(res.data)
                     _this.listedList=res.data;
                 }).catch(function(err){
                     console.log(err);
@@ -537,7 +529,6 @@
             },
             //获取/查询大数据列表
             reloadTable() {
-                // console.log(this.$store.state)
                 const _this = this;
                 let qs =require('querystring')
                 let searchList = {}
@@ -561,7 +552,6 @@
                 searchList.area_id = this.searchList.area; //区
                 searchList.page = this.page;
                 searchList.limit = this.limit;
-                // console.log(searchList)
                 let filterList = {}
                 filterList.type = '大数据客户搜索'
                 let data = {}
@@ -573,14 +563,11 @@
                     url: _this.$store.state.defaultHttp+'customerOne/query.do',
                     data: qs.stringify(searchList),
                 }).then(function(res){
-                    console.log(res.data)
                     _this.$store.state.customerList = res.data.rows
                     _this.$store.state.customerListnumber = res.data.total;
                     if(!res.data.size){
-                        console.log('不超过那个页数')
                         _this.tablesize = res.data.total
                     }else{
-                        console.log('超过了那个页数，换种方式显示')
                         _this.tablesize = res.data.size
                     }
                 }).catch(function(err){
@@ -591,7 +578,6 @@
                     url: _this.$store.state.defaultHttp+'userPageInfo/getAllUserPage.do?cId='+_this.$store.state.iscId+'&pId='+_this.$store.state.ispId,
                     data: qs.stringify(filterList)
                 }).then(function(res){
-                    // console.log(res.data)
                     _this.filterList = res.data
                 }).catch(function(err){
                     console.log(err);
@@ -601,7 +587,6 @@
                     url: _this.$store.state.defaultHttp+'userPageInfo/getUserPage.do?cId='+_this.$store.state.iscId+'&pId='+_this.$store.state.ispId,
                     data: qs.stringify(data)
                 }).then(function(res){
-                    // console.log(res.data)
                     _this.checklist = res.data
                 }).catch(function(err){
                     console.log(err);
@@ -609,20 +594,14 @@
             },
             selectInfo(val){
                 this.multipleSelection = val;
-                // console.log(val)
                 let arr = val;
                 let newArr = new Array()
-                // console.log(arr)
                 arr.forEach((item) => {
                     if(item.id != 0){
-                        // console.log(item.id)
                         newArr.push(item.id)
-                        // console.log(newArr)
                     }
                 });
-                // console.log(newArr)
                 this.idArr.id = newArr;
-                // console.log(this.idArr.id)
                 
             },
             showSearchList(){
@@ -632,19 +611,17 @@
             transfer(){
                 const _this = this;
                 let qs =require('querystring')
-                // console.log(this.idArr)
                 let idArr = [];
                 idArr.id = this.idArr.id
                 idArr.secondid = this.$store.state.deptid
                 idArr.deptid = this.$store.state.insid
-                // console.log(idArr)
                 _this.Loading = true
+
                 axios({
                     method: 'post',
                     url:  _this.$store.state.defaultHttp+ 'customerOne/insert.do?cId='+_this.$store.state.iscId+"&pId="+_this.$store.state.ispId,
                     data:qs.stringify(idArr),
                 }).then(function(res){
-                    console.log(res)
                     if(res.data.msg && res.data.msg == 'success') {
                         _this.Loading = false
                         _this.$message({
@@ -669,12 +646,8 @@
                     console.log(err);
                 });
             },
-            showdetailindstry(val){
-                // console.log(val)
-            },
             
             hangleChange(e,val){
-                // console.log(e)
                 const _this = this
                 let qs = require('querystring')
                 let data = {}
@@ -690,7 +663,6 @@
                     url:  _this.$store.state.defaultHttp+ 'userPageInfo/updateUserPageByid.do?cId='+_this.$store.state.iscId+'&pId='+_this.$store.state.ispId,
                     data:qs.stringify(data),
                 }).then(function(res){
-                    // console.log(res)
                     if(res.data && res.data =="success"){
                         _this.$options.methods.reloadTable.bind(_this)(true);
                     }else{
@@ -703,8 +675,6 @@
             search() {
                 this.page = 1
                 this.$options.methods.reloadTable.bind(this)(true);
-                // this.searchList.code = null;
-                // this.searchList.name = null;
             },
             reset(){
                 this.searchList = Object.assign({}, this.searchListNew);
@@ -728,7 +698,6 @@
                     url: _this.$store.state.defaultHttp+'address/getAddress.do',
                     data: qs.stringify(data),
                 }).then(function(res){
-                    // console.log(res.data)
                     _this.cityList=res.data;
                 }).catch(function(err){
                     console.log(err);
@@ -736,7 +705,6 @@
             },
             // 选市
             choseCity(e) {
-                // console.log(e)
                 const _this = this
                 this.searchList.area = ''
                 let qs =require('querystring')
@@ -749,7 +717,6 @@
                     url: _this.$store.state.defaultHttp+'address/getAddress.do',
                     data: qs.stringify(data),
                 }).then(function(res){
-                    // console.log(res.data)
                     _this.areaList=res.data;
                 }).catch(function(err){
                     console.log(err);
@@ -757,7 +724,6 @@
             },
             // 选区
             choseBlock(e) {
-                // console.log(e)
                 this.E=e;
             },
 

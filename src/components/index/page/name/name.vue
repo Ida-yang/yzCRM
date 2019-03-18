@@ -21,7 +21,6 @@ export default {
   },
   methods: {
     beforeUpload(file) {
-        console.log(file)
       const isLt1M = file.size / 1024 / 1024 < 1
 
       if (isLt1M) {

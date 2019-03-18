@@ -470,7 +470,6 @@
                 method: 'get',
                 url: _this.$store.state.defaultHttp+'getNameAndId.do?cId='+_this.$store.state.iscId,
             }).then(function(res){
-                // console.log(res.data)
                 _this.useroptions = res.data
             }).catch(function(err){
                 console.log(err);
@@ -496,14 +495,12 @@
                 }
                 searchList.page = this.page;
                 searchList.limit = this.limit;
-                // console.log(searchList)
                 
                 axios({
                     method: 'post',
                     url: _this.$store.state.defaultHttp+'customerpool/querypool.do?cId='+_this.$store.state.iscId,
                     data: qs.stringify(searchList),
                 }).then(function(res){
-                    // console.log(res.data.map.success)
                     _this.$store.state.customerPoolList = res.data.map.success
                     _this.$store.state.customerPoolListnumber = res.data.count;
                 }).catch(function(err){
@@ -524,7 +521,6 @@
                     url: _this.$store.state.defaultHttp+'userPageInfo/getAllUserPage.do?cId='+_this.$store.state.iscId+'&pId='+_this.$store.state.ispId,
                     data: qs.stringify(filterList)
                 }).then(function(res){
-                    // console.log(res.data)
                     _this.filterList = res.data
                 }).catch(function(err){
                     console.log(err);
@@ -534,29 +530,21 @@
                     url: _this.$store.state.defaultHttp+'userPageInfo/getUserPage.do?cId='+_this.$store.state.iscId+'&pId='+_this.$store.state.ispId,
                     data: qs.stringify(data)
                 }).then(function(res){
-                    // console.log(res.data)
                     _this.checklist = res.data
                 }).catch(function(err){
-                    console.log(err);
+                    console.log(err)
                 });
             },
             selectInfo(val){
                 this.multipleSelection = val;
-                // console.log(val)
                 let arr = val;
                 let newArr = [new Array()];
-                // console.log(arr)
                 arr.forEach((item) => {
                     if(item.id != 0){
-                        // console.log(item.id)
                         newArr.push(item.id)
-                        // newArr.shift(item.id)
-                        // console.log(newArr)
                     }
-                });
-                // console.log(newArr)
-                this.idArr.id = newArr;
-                // console.log(this.idArr.id)
+                })
+                this.idArr.id = newArr
                 
             },
             handleDeletes(){
@@ -564,7 +552,7 @@
                 let qs =require('querystring')
                 let idArr = [];
                 idArr.id = this.idArr.id
-                // console.log(idArr)
+
                 _this.$confirm('是否确认删除吗？', '提示', {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',
@@ -574,7 +562,6 @@
                         url:  _this.$store.state.defaultHttp+ 'customerpool/delete.do?cId='+_this.$store.state.iscId,
                         data:qs.stringify(idArr),
                     }).then(function(res){
-                        // console.log(res)
                         if(res.data.success && res.data.success == true) {
                             _this.$message({
                                 message: '删除成功',
@@ -611,7 +598,6 @@
                         url: _this.$store.state.defaultHttp+'customerpool/delete.do?cId='+_this.$store.state.iscId,
                         data:qs.stringify(idArr),
                     }).then(function(res){
-                        // console.log(res)
                         if(res.data.success && res.data.success == true) {
                             _this.$message({
                                 message: '删除成功',
@@ -652,7 +638,6 @@
                     method: 'get',
                     url: _this.$store.state.defaultHttp+'customerPoolJurisdiction/receive.do',
                 }).then(function(res){
-                    // console.log(res)
                     if(res.data.msg && res.data.msg == 'error'){//领取客户池
                         _this.$message({
                             message:'对不起，您没有该权限，请联系管理员开通',
@@ -664,7 +649,6 @@
                             url:  _this.$store.state.defaultHttp+ 'customerpool/receivepool.do?cId='+_this.$store.state.iscId,
                             data:qs.stringify(idArr),
                         }).then(function(res){
-                            // console.log(res)
                             if(res.data.code && res.data.code == 200) {
                                 _this.$message({
                                     message: '领取成功',
@@ -698,7 +682,6 @@
                     method: 'get',
                     url: _this.$store.state.defaultHttp+'customerPoolJurisdiction/receive.do',
                 }).then(function(res){
-                    // console.log(res)
                     if(res.data.msg && res.data.msg == 'error'){//领取客户池
                         _this.$message({
                             message:'对不起，您没有该权限，请联系管理员开通',
@@ -710,7 +693,6 @@
                             url: _this.$store.state.defaultHttp+'customerpool/receivepool.do?cId='+_this.$store.state.iscId+'&pId='+_this.$store.state.ispId,
                             data:qs.stringify(idArr),
                         }).then(function(res){
-                            // console.log(res)
                             if(res.data.code && res.data.code == 200) {
                                 _this.$message({
                                     message: '领取成功',
@@ -745,7 +727,6 @@
                     method: 'get',
                     url: _this.$store.state.defaultHttp+'customerPoolJurisdiction/distribution.do',
                 }).then(function(res){
-                    // console.log(res)
                     if(res.data.msg && res.data.msg == 'error'){//分配客户池
                         _this.$message({
                             message:'对不起，您没有该权限，请联系管理员开通',
@@ -757,7 +738,6 @@
                             url:  _this.$store.state.defaultHttp+ 'customerpool/receivepool.do?cId='+_this.$store.state.iscId,
                             data:qs.stringify(idArr),
                         }).then(function(res){
-                            // console.log(res)
                             if(res.data.code && res.data.code == 200) {
                                 _this.$message({
                                     message: '分配成功',
@@ -783,7 +763,6 @@
 
             
             hangleChange(e,val){
-                // console.log(e)
                 const _this = this
                 let qs = require('querystring')
                 let data = {}
@@ -799,11 +778,8 @@
                     url:  _this.$store.state.defaultHttp+ 'userPageInfo/updateUserPageByid.do?cId='+_this.$store.state.iscId+'&pId='+_this.$store.state.ispId,
                     data:qs.stringify(data),
                 }).then(function(res){
-                    // console.log(res)
                     if(res.data && res.data =="success"){
                         _this.$options.methods.reloadData.bind(_this)(true);
-                    }else{
-                        console.log(err)
                     }
                 }).catch(function(err){
                     console.log(err);
@@ -826,7 +802,6 @@
                     method: 'get',
                     url: _this.$store.state.defaultHttp+_this.authorityInterface,
                 }).then(function(res){
-                    // console.log(res)
                     if(res.data.msg && res.data.msg == 'error'){
                         _this.$message({
                             message:'对不起，您没有该权限，请联系管理员开通',

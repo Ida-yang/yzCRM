@@ -135,7 +135,6 @@
             getBread(){
                 this.breadsList.path=this.$route.path
                 this.breadsList.title=this.$route.meta.title
-                // console.log(this.breadsList)
             },
             //修改密码
              submitFormUser(formName){
@@ -156,14 +155,12 @@
                             url: _this.$store.state.defaultHttp+"updatePrivatePassword.do",
                             data:qs.stringify(dataForm),
                         }).then(function(res){
-                            // console.log(res)
                             if(res.data.code ==200){
                                 axios({
                                     method: 'post',
                                     url:  _this.$store.state.defaultHttp+ 'tbPrivateToPublicUser.do',
                                     data:qs.stringify(idArr),
                                 }).then(function(res){
-                                    // console.log(res)
                                     if(res.data.code && res.data.code == 200) {
                                         _this.$message({
                                             message: '密码修改成功',
@@ -186,7 +183,7 @@
                                 })
                             }
                         }).catch(function(err){
-                            // console.log(err);
+                            console.log(err);
                         });
                     } else {
                         _this.$message.error('提交错误，请检查您的网络');

@@ -182,19 +182,16 @@
             loadData() {
                 this.detailData = this.$store.state.oppdetailsData.submitData;
                 this.idArr.opportunity_id = this.$store.state.oppdetailsData.submitData.id
-                // console.log(this.detailData)
                 const _this = this
                 let qs =require('querystring')
                 let pageInfo = {}
                 pageInfo.page = this.page
                 pageInfo.limit = this.limit
-                // console.log(this);
                 //详情页联系人
                 axios({
                     method:'get',
                     url:_this.$store.state.defaultHttp+'opportunity/getopportunityById.do?cId='+_this.$store.state.iscId+'&opportunity_id='+_this.detailData.id,
                 }).then(function(res){
-                    // console.log(res.data.map.success)
                     _this.opportunitydetail = res.data.map.success[0]
                     _this.contacts = res.data.map.success[0].contacts[0]
                     _this.privateUser = res.data.map.success[0].privateUser[0]
@@ -202,16 +199,12 @@
                     _this.stepList = _this.opportunitydetail.addstep
                     _this.stepList.length = _this.opportunitydetail.addstep.length - 1
                     _this.addstep = _this.opportunitydetail.opportunityProgress
-                    // console.log(_this.addstep)
                     let addStep = _this.addstep
                     if(addStep){
                         for(var i = 0,length = addStep.length;i < length;i++){
-                            // console.log(i)
-                            // console.log(addStep[i].createTime)
                             _this.stepList[i].createTime = addStep[i].createTime
                             _this.steptime = addStep[i].createTime
                             if(addStep[i].progress_name == '失败关闭'){
-                                // _this.active = i+6
                                 _this.active = i
                                 _this.shownext = false
                                 _this.showfail = true
@@ -223,7 +216,6 @@
                                 _this.showfail = false
                                 _this.showsuccess = true
                                 _this.isprocess = 'wait'
-                                // console.log(_this.shownext)
                             }else{
                                 _this.active = i+1
                                 _this.shownext = true
@@ -233,24 +225,18 @@
                             }
                             if(i !== 0){
                                 let begintime = new Date(addStep[i].previousTime.replace(/-/g, "/"))
-                                // console.log(begintime)
                                 let endtime = new Date(addStep[i].createTime.replace(/-/g, "/"))
-                                // console.log(endtime)
                                 _this.showcreate = true
                                 _this.showdurate = true
                                 let dateDiff = endtime.getTime() - begintime.getTime();
-                                // console.log(dateDiff)
                                 let dayDiff = Math.floor(dateDiff / (24 * 3600 * 1000));
                                 _this.stepList[i].duration = '历时：' + dayDiff + '天'
-                                // console.log(dayDiff)
                             }else{
                                 _this.showdurate = false
                                 _this.showcreate = true
                             }
                         }
                     }
-                    // console.log(_this.stepList)
-                    // console.log(_this.steptime)
                 }).catch(function(err){
                     console.log(err);
                 });
@@ -259,7 +245,6 @@
                     url: _this.$store.state.defaultHttp+'opportunity/query.do?cId='+_this.$store.state.iscId,
                     data: qs.stringify(pageInfo),
                 }).then(function(res){
-                    // console.log(res)
                     _this.tableData = res.data.map.success
                     _this.tableNumber = res.data.count
                 }).catch(function(err){
@@ -272,7 +257,6 @@
                 let data = {}
                 data.progress_name = this.addstepList.progress_name
                 data.progress_probability = this.addstepList.progress_probability
-                // console.log(data)
                 _this.$confirm('是否确认添加该商机阶段？一旦添加将不可修改', '提示', {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',
@@ -282,7 +266,6 @@
                         url:_this.$store.state.defaultHttp+'insertStep.do?cId='+_this.$store.state.iscId+'&opportunity_id='+this.detailData.id,
                         data:qs.stringify(data)
                     }).then(function(res){
-                        // console.log(res)
                         if(res.data.code && res.data.code == '200'){
                             _this.$message({
                                 message:'添加成功',
@@ -294,7 +277,6 @@
                                 type:'error'
                             })
                         }
-                        // _this.dialogVisible = false
                         _this.addstepList.progress_name = ''
                         _this.addstepList.progress_probability = ''
                         _this.$options.methods.loadData.bind(_this)(true);
@@ -327,7 +309,6 @@
                                 url:_this.$store.state.defaultHttp+ 'saveOpportunityProgress.do?cId='+_this.$store.state.iscId+'&pId='+_this.$store.state.ispId,
                                 data:qs.stringify(data),
                             }).then(function(res){
-                                // console.log(res)
                                 if(res.data.code && res.data.code == 200) {
                                     _this.$message({
                                         message: '修改成功',
@@ -369,7 +350,6 @@
                         url:_this.$store.state.defaultHttp+ 'saveOpportunityProgress.do?cId='+_this.$store.state.iscId+'&pId='+_this.$store.state.ispId,
                         data:qs.stringify(data),
                     }).then(function(res){
-                        // console.log(res)
                         if(res.data.code && res.data.code == 200) {
                             _this.$message({
                                 message: '关闭成功',
@@ -395,11 +375,8 @@
                 this.retracts = !this.retracts
             },
             getRow(index,row){
-                // console.log(row.opportunity_id)
                 this.$store.state.oppdetailsData.submitData = {"id":row.opportunity_id}
                 this.idArr.opportunity_id = row.opportunity_id
-                
-                // this.detailData.opportunity_id = row.opportunity_id
                 this.$options.methods.loadData.bind(this)(true);
             },
             handleClick(tab, event) {
@@ -412,13 +389,11 @@
                 searchList.searchName = this.searchList.keyword;
                 searchList.page = this.page;
                 searchList.limit = this.limit;
-                // console.log(searchList)
                 axios({
                     method: 'post',
                     url: _this.$store.state.defaultHttp+'opportunity/query.do?cId='+_this.$store.state.iscId,
                     data: qs.stringify(searchList),
                 }).then(function(res){
-                    // console.log(res)
                     _this.tableData = res.data.map.success
                     _this.tableNumber = res.data.count
                 }).catch(function(err){

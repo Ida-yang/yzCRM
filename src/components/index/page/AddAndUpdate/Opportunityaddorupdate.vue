@@ -198,7 +198,6 @@
                     url: _this.$store.state.defaultHttp+'getPoolContactsName.do?cId='+_this.$store.state.iscId,
                     data: qs.stringify(data)
                 }).then(function(res){
-                    // console.log(res.data.map.success)
                     _this.contactslist = res.data.map.success
                 }).catch(function(err){
                     console.log(err);
@@ -208,7 +207,6 @@
             //加载或重载页面
             loadData() {
                 this.oppaddOrUpdateData = this.$store.state.oppaddOrUpdateData;
-                // console.log(this.oppaddOrUpdateData)
 
                 // 设置默认值
                 let createForm = this.oppaddOrUpdateData.createForm;
@@ -227,7 +225,6 @@
                             this.myForm[item.inputModel] = setForm[item.inputModel];
                         }
                     });
-                    // console.log(this.myForm);
                     this.myForm.customerpool_id = this.oppaddOrUpdateData.setForm.customerpool_name
                     this.formid = this.oppaddOrUpdateData.setForm.customerpool_id
                     this.myForm.contacts_id = this.oppaddOrUpdateData.setForm.contacts_name
@@ -243,13 +240,11 @@
                 pageInfo.limit = this.limit;
                 pageInfo.pId = this.$store.state.ispId;
                 pageInfo.searchName = this.searchvalue
-                // console.log(pageInfo)
                 axios({
                     method: 'post',
                     url: _this.$store.state.defaultHttp+'rightPoolName.do?cId='+_this.$store.state.iscId,
                     data: qs.stringify(pageInfo),
                 }).then(function(res){
-                    // console.log(res.data.map.success)
                     _this.tableData = res.data.map.success.customerpools
                 }).catch(function(err){
                     console.log(err);
@@ -258,17 +253,13 @@
             handleoninput(val,key){
                 const _this = this
                 this.myForm[key] = val
-                // console.log(this.myForm[key])
                 this.searchvalue = val
-                // this.$options.methods.loadTable.bind(this)(true);
                 this.loadTable()
             },
             handleblur(e,key){
-                console.log(e.target.value,key)
                 let val = e.target.value
                 this.tableData.forEach(el => {
                     if(val == el.name){
-                        console.log(el.id,el.name)
                         this.formid = el.id
                         this.myForm.customerpool_id = el.name
                         this.loadcustomer()
@@ -276,14 +267,12 @@
                 });
             },
             getRow(index,row){
-                console.log(row)
                 this.formid = row.id
                 this.myForm.customerpool_id = row.name
                 this.loadcustomer()
             },
             handleInput(val, key) {
                 this.myForm[key] = val;
-                // console.log(val)
             },
             //提交或修改
             submit() {
@@ -298,7 +287,6 @@
                 createForm.forEach(item => {
                     subData[item.inputModel] = _this.myForm[item.inputModel];
                     subData.customerpool_id = this.formid
-                    // console.log(_this.myForm)
                     if(item.inputModel == "opportunity_number" && !subData[item.inputModel]) {//商机编号不能为空
                         _this.$message({
                             message: "商机编号不能为空",
@@ -343,18 +331,15 @@
                     }
                 });
                 if(flag) return;
-                // console.log(_this.myForm)
                 subData.secondid = this.$store.state.deptid
                 subData.deptid = this.$store.state.insid
-                subData.user_id = _this.$store.state.ispId
-                // console.log(subData)
+                subData.user_id = this.$store.state.ispId
 
                 axios({
                     method: 'post',
                     url: _this.oppaddOrUpdateData.submitURL,
                     data: qs.stringify(subData)
                 }).then(function(res){
-                    // console.log(res)
                     if(res.data && res.data == "success") {
                         _this.$message({
                             message: '成功',

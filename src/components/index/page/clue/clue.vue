@@ -449,7 +449,6 @@
                 method: 'get',
                 url: _this.$store.state.defaultHttp+'typeInfo/getTypeInfoByType.do?cId='+_this.$store.state.iscId,
             }).then(function(res){
-                // console.log(res.data)
                 _this.stateData = res.data.name1001
                 _this.typeData = res.data.name3001
             }).catch(function(err){
@@ -487,14 +486,12 @@
                 searchList.cuesid = this.searchList.type
                 searchList.page = this.page;
                 searchList.limit = this.limit;
-                console.log(searchList)
                 
                 axios({
                     method: 'post',
                     url: _this.$store.state.defaultHttp+'customerTwo/query.do?cId='+_this.$store.state.iscId,
                     data: qs.stringify(searchList),
                 }).then(function(res){
-                    console.log(res.data.map.success)
                     _this.$store.state.clueList = res.data.map.success
                     _this.$store.state.clueListnumber = res.data.count;
                 }).catch(function(err){
@@ -516,7 +513,6 @@
                     url: _this.$store.state.defaultHttp+'userPageInfo/getAllUserPage.do?cId='+_this.$store.state.iscId+'&pId='+_this.$store.state.ispId,
                     data: qs.stringify(filterList)
                 }).then(function(res){
-                    // console.log(res.data)
                     _this.filterList = res.data
                 }).catch(function(err){
                     console.log(err);
@@ -526,39 +522,31 @@
                     url: _this.$store.state.defaultHttp+'userPageInfo/getUserPage.do?cId='+_this.$store.state.iscId+'&pId='+_this.$store.state.ispId,
                     data: qs.stringify(data)
                 }).then(function(res){
-                    // console.log(res.data)
                     _this.checklist = res.data
                 }).catch(function(err){
                     console.log(err);
                 });
             },
             selectInfo(val){
-                // console.log(val)
                 let arr = val;
                 let newArr = [new Array()];
-                // console.log(arr)
                 arr.forEach((item) => {
                     if(item.id != 0){
-                        // console.log(item.id)
                         newArr.push(item.id)
-                        // console.log(newArr)
                     }
                 });
-                // console.log(newArr)
                 this.idArr.id = newArr;
                 
             },
             openDetails(index,row){
                 let cluedetailsData = {};
                 cluedetailsData.submitData = {"id": row.id};
-                // console.log(cluedetailsData)
                 this.$store.state.cluedetailsData = cluedetailsData;
                 this.$router.push({ path: '/clueDetails' });
             },
             handleAdd(){
                 const _this = this
                 let clueaddOrUpdateData = {};
-                // clueaddOrUpdateData.title = "添加线索";
                 clueaddOrUpdateData.createForm = [
                     {"label":"线索来源","inputModel":"cuesid","type":"select"},
                     {"label":"公司名称","inputModel":"poolName","type":"require"},
@@ -618,7 +606,6 @@
                     method: 'get',
                     url: _this.$store.state.defaultHttp+'clueJurisdiction/insert.do',//新增线索
                 }).then(function(res){
-                    // console.log(res.data.msg)
                     if(res.data.msg && res.data.msg == 'error'){
                         _this.$message({
                             message:'对不起，您没有该权限，请联系管理员开通',
@@ -632,10 +619,8 @@
                 });
             },
             handleEdit(index,row){
-                // console.log(row)
                 const _this = this
                 let clueaddOrUpdateData = {};
-                // clueaddOrUpdateData.title = "修改线索";
                 clueaddOrUpdateData.createForm = [
                     {"label":"线索来源","inputModel":"cuesid","type":"select"},
                     {"label":"客户名称","inputModel":"poolName","type":"require"},
@@ -694,13 +679,11 @@
                     "operatingState": row.operatingState};
                 clueaddOrUpdateData.submitData = {"id": row.id,'csId':row.contacts[0].csId};
                 clueaddOrUpdateData.submitURL = this.$store.state.defaultHttp+ 'customerTwo/updateClue.do?cId='+this.$store.state.iscId+'&pId='+this.$store.state.ispId,
-                // console.log(clueaddOrUpdateData)
                 this.$store.state.clueaddOrUpdateData = clueaddOrUpdateData;
                 axios({
                     method: 'get',
                     url: _this.$store.state.defaultHttp+'clueJurisdiction/update.do',//修改线索
                 }).then(function(res){
-                    // console.log(res)
                     if(res.data.msg && res.data.msg == 'error'){
                         _this.$message({
                             message:'对不起，您没有该权限，请联系管理员开通',
@@ -712,21 +695,18 @@
                 }).catch(function(err){
                     console.log(err);
                 });
-                // this.$router.push({ path: '/clueaddorupdate' });
             },
             cluePool(){
                 const _this = this;
                 let qs =require('querystring')
                 let idArr = [];
                 idArr.id = this.idArr.id
-                // console.log(idArr)
                 
                 axios({
                     method: 'post',
                     url:  _this.$store.state.defaultHttp+ 'customerTwo/updateState.do?cId='+_this.$store.state.iscId,
                     data:qs.stringify(idArr),
                 }).then(function(res){
-                    // console.log(res)
                     if(res.data && res.data == 'success') {
                         _this.$message({
                             message: '转移成功',
@@ -754,13 +734,11 @@
                 let idArr = [];
                 idArr.id = this.idArr.id
                 idArr.id.shift()
-                // console.log(idArr.id)
                 axios({
                     method: 'post',
                     url:  _this.$store.state.defaultHttp+ 'customerTwo/insert.do?cId='+_this.$store.state.iscId+"&pId="+_this.$store.state.ispId,
                     data:qs.stringify(idArr),
                 }).then(function(res){
-                    console.log(res)
                     if(res.data && res.data == 'success') {
                         _this.$message({
                             message: '转移成功',
@@ -783,7 +761,6 @@
                 });
             },
             hangleChange(e,val){
-                // console.log(e)
                 const _this = this
                 let qs = require('querystring')
                 let data = {}
@@ -799,11 +776,8 @@
                     url:  _this.$store.state.defaultHttp+ 'userPageInfo/updateUserPageByid.do?cId='+_this.$store.state.iscId+'&pId='+_this.$store.state.ispId,
                     data:qs.stringify(data),
                 }).then(function(res){
-                    // console.log(res)
                     if(res.data && res.data =="success"){
                         _this.$options.methods.reloadData.bind(_this)(true);
-                    }else{
-                        console.log(err)
                     }
                 }).catch(function(err){
                     console.log(err);
@@ -826,7 +800,6 @@
                     method: 'get',
                     url: _this.$store.state.defaultHttp+_this.authorityInterface,
                 }).then(function(res){
-                    // console.log(res)
                     if(res.data.msg && res.data.msg == 'error'){
                         _this.$message({
                             message:'对不起，您没有该权限，请联系管理员开通',

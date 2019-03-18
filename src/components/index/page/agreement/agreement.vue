@@ -286,7 +286,6 @@
                 let intPartFormat = intPart.toString().replace(/(\d)(?=(?:\d{3})+$)/g, '$1,') // 将整数部分逢三一断
                 let floatPart = '.00' // 预定义小数部分
                 let valArray = intPartFormat.split('.')
-                // console.log(valArray)
                 if(valArray.length === 2) {
                     floatPart = valArray[1].toString() // 拿到小数部分
                     if(floatPart.length === 1) { // 补0,实际上用不着
@@ -369,14 +368,12 @@
                 searchList.example = this.searchList.example
                 searchList.page = this.page
                 searchList.limit = this.limit
-                // console.log(searchList)
                 
                 axios({
                     method: 'post',
                     url: _this.$store.state.defaultHttp+'getContractAll.do?cId='+_this.$store.state.iscId,
                     data: qs.stringify(searchList),
                 }).then(function(res){
-                    // console.log(res.data.map.success)
                     _this.$store.state.agreementList = res.data.map.success
                     _this.$store.state.agreementListnumber = res.data.count;
                 }).catch(function(err){
@@ -398,7 +395,6 @@
                     url: _this.$store.state.defaultHttp+'userPageInfo/getAllUserPage.do?cId='+_this.$store.state.iscId+'&pId='+_this.$store.state.ispId,
                     data: qs.stringify(filterList)
                 }).then(function(res){
-                    // console.log(res.data)
                     _this.filterList = res.data
                 }).catch(function(err){
                     console.log(err);
@@ -408,7 +404,6 @@
                     url: _this.$store.state.defaultHttp+'userPageInfo/getUserPage.do?cId='+_this.$store.state.iscId+'&pId='+_this.$store.state.ispId,
                     data: qs.stringify(data)
                 }).then(function(res){
-                    // console.log(res.data)
                     _this.checklist = res.data
                 }).catch(function(err){
                     console.log(err);
@@ -417,12 +412,10 @@
             //获取列表id
             selectInfo(val){
                 this.multipleSelection = val;
-                // console.log(val)
                 let arr = val;
                 let newArr = [new Array()];
                 arr.forEach((item) => {
                     if(item.contract_id != 0){
-                        // console.log(item.contract_id)
                         newArr.push(item.contract_id)
                     }
                 });
@@ -449,7 +442,6 @@
                         url:  _this.$store.state.defaultHttp+ 'delContract.do?cId='+_this.$store.state.iscId,
                         data:qs.stringify(idArr),
                     }).then(function(res){
-                        // console.log(res)
                         if(res.data && res.data == 'success') {
                             _this.$message({
                                 message: '删除成功',
@@ -475,7 +467,6 @@
             handleAdd(){
                 let agreeaddOrUpdateData = {};
                 const _this = this
-                // agreeaddOrUpdateData.title = "添加线索";
                 agreeaddOrUpdateData.createForm = [
                     {"label":"合同类型","inputModel":"contract_type","type":"select","options":[
                         {"okey":'0',"olabel":"销售合同","ovalue":"销售合同"},
@@ -512,7 +503,6 @@
                     method: 'get',
                     url: _this.$store.state.defaultHttp+'contractJurisdiction/insert.do',//新增合同
                 }).then(function(res){
-                    // console.log(res)
                     if(res.data.msg && res.data.msg == 'error'){
                         _this.$message({
                             message:'对不起，您没有该权限，请联系管理员开通',
@@ -526,10 +516,8 @@
                 });
             },
             handleEdit(index,row){
-                // console.log(row)
                 const _this = this
                 let agreeaddOrUpdateData = {};
-                // agreeaddOrUpdateData.title = "修改线索";
                 agreeaddOrUpdateData.createForm = [
                     {"label":"合同类型","inputModel":"contract_type","type":"select","options":[
                         {"okey":'0',"olabel":"销售合同","ovalue":"销售合同"},
@@ -564,13 +552,11 @@
                 agreeaddOrUpdateData.submitData = {"id": row.contract_id};
                 agreeaddOrUpdateData.submitURL = this.$store.state.defaultHttp+ 'updateContract.do?cId='+this.$store.state.iscId,
                 this.$store.state.agreeaddOrUpdateData = agreeaddOrUpdateData;
-                // console.log(agreeaddOrUpdateData)
-                // this.$router.push({ path: '/agreementaddorupdate' });
+                
                 axios({
                     method: 'get',
                     url: _this.$store.state.defaultHttp+'contractJurisdiction/update.do',//编辑合同
                 }).then(function(res){
-                    // console.log(res)
                     if(res.data.msg && res.data.msg == 'error'){
                         _this.$message({
                             message:'对不起，您没有该权限，请联系管理员开通',
@@ -597,7 +583,6 @@
                         url: _this.$store.state.defaultHttp+'delContract.do?cId='+_this.$store.state.iscId,
                         data:qs.stringify(idArr),
                     }).then(function(res){
-                        // console.log(res)
                         if(res.data && res.data == 'success') {
                             _this.$message({
                                 message: '删除成功',
@@ -626,7 +611,6 @@
                 });
             },
             hangleChange(e,val){
-                // console.log(e)
                 const _this = this
                 let qs = require('querystring')
                 let data = {}
@@ -642,7 +626,6 @@
                     url:  _this.$store.state.defaultHttp+ 'userPageInfo/updateUserPageByid.do?cId='+_this.$store.state.iscId+'&pId='+_this.$store.state.ispId,
                     data:qs.stringify(data),
                 }).then(function(res){
-                    // console.log(res)
                     if(res.data && res.data =="success"){
                         _this.$options.methods.reloadData.bind(_this)(true);
                     }else{
@@ -653,7 +636,6 @@
                 });
             },
             getSummaries(param){
-                // console.log(param)
                 const { columns, data } = param;
                 const sums = [];
                 columns.forEach((column, index) => {
@@ -662,16 +644,13 @@
                         return;
                     }
                     const values = data.map(item => Number(item[column.property]));
-                    // console.log(column.label,column.property)
                     if(column.property == 'amount' || column.property == 'already' || column.property == 'surplus'){
                         sums[index] = values.reduce((acc, cur) => (cur + acc), 0)
                         sums[index] = sums[index].toFixed(2)
                         let intPart = Math.trunc(sums[index])
                         let intPartFormat = intPart.toString().replace(/(\d)(?=(?:\d{3})+$)/g, '$1,')
-                        // console.log(intPartFormat)
                         let floatPart = '.00' // 预定义小数部分
                         let valArray = intPartFormat.split('.')
-                        // console.log(valArray)
                         if(valArray.length === 2) {
                             floatPart = valArray[1].toString() // 拿到小数部分
                             if(floatPart.length === 1) { // 补0,实际上用不着
@@ -687,7 +666,6 @@
                         sums[index] = '';
                     }
                 });
-                // console.log(sums)
 
                 return sums;
             },
@@ -708,7 +686,6 @@
                     method: 'get',
                     url: _this.$store.state.defaultHttp+_this.authorityInterface,
                 }).then(function(res){
-                    // console.log(res)
                     if(res.data.msg && res.data.msg == 'error'){
                         _this.$message({
                             message:'对不起，您没有该权限，请联系管理员开通',

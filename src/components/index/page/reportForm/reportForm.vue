@@ -346,20 +346,6 @@
                     {name:'化妆品行业',city:'广州',years:'1-3年',scale:'50-99人',capital:'200-500万',ensure:'1000万客户',sort:'3',financing:'100',list:'100',telephone:'100'},
                     {name:'化妆品行业',city:'广州',years:'1-3年',scale:'50-99人',capital:'200-500万',ensure:'1000万客户',sort:'4',financing:'100',list:'100',telephone:'100'},
                 ]
-                // let qs =require('querystring')
-                // let searchList = {}
-                // searchList.limit = 10;
-                // // console.log(searchList)
-                // axios({
-                //     method: 'post',
-                //     url: _this.$store.state.defaultHttp+'opportunity/query.do?cId='+_this.$store.state.iscId,
-                //     data: qs.stringify(searchList),
-                // }).then(function(res){
-                //     // console.log(res.data.map.success)
-                //     _this.$store.state.reportFormList = res.data.map.success
-                // }).catch(function(err){
-                //     console.log(err);
-                // });
             },
             drawLine(){
                 // 基于准备好的dom，初始化echarts实例
