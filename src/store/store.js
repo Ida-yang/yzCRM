@@ -31,6 +31,8 @@ const state = {
   oppaddOrUpdateData:null,
   contaddOrUpdateData:null,
   visitaddOrUpdateData:null,
+  missionaddOrUpdateData:null,
+  
   //跳转详情页列表
   cluedetailsData:null,
   cusdetailsData:null,
@@ -39,6 +41,7 @@ const state = {
   contdetailsData:null,
   prodetailsData:null,
   visitdetailsData:null,
+  missiondetailsData:null,
 
 
   //搜索客户列表
@@ -121,6 +124,10 @@ const state = {
   //报表列表总数
   visitplanListnumber:0,
   
+  //报表列表
+  missionplanList:[],
+  //报表列表总数
+  missionplanListnumber:0,
 
 }
 /*配置全局函数*/

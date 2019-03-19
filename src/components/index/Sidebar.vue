@@ -157,6 +157,10 @@
                                 index: 'visitplan',
                                 title: '拜访计划',
                             },
+                            {
+                                index: 'missionplan',
+                                title: '工作计划',
+                            },
                         ]
                     },
                     {

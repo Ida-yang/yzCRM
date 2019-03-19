@@ -9,9 +9,15 @@
                         <span style="margin-left:50px;">{{visitdetails.contactsName}}</span>
                         <el-button style="float:right;margin-left:10px;" class="info-btn" size="mini" @click="retract()" v-show="retracts">收起</el-button>
                         <el-button style="float:right;margin-left:10px;" class="info-btn" size="mini" @click="retract()" v-show="!retracts">显示</el-button>
+                        <el-button style="float:right;margin-left:10px;" class="info-btn" size="mini" @click="toexamine($event)" v-show="examines">审核</el-button>
+                        <el-button style="float:right;margin-left:10px;" class="info-btn" size="mini" @click="toexamine($event)" v-show="!examines">反审核</el-button>
                     </div>
-                    <div class="card_item">
-                        <div class="item_head">拜访主题：<span>{{visitdetails.visitTheme}}</span></div>
+                    <div class="text item">
+                        <ul>
+                            <li>拜访对象：<span>{{visitdetails.contactsName}}</span></li>
+                            <li>联系电话：<span>{{visitdetails.phone}}</span></li>
+                        </ul>
+                        <div class="item_body">拜访主题：<span>{{visitdetails.visitTheme}}</span></div>
                         <div class="item_body">拜访目的：<span>{{visitdetails.visitObjective}}</span></div>
                     </div>
                 </el-card>
@@ -66,23 +72,25 @@
             </div>
             <div class="bottom1">
                 <el-card class="box-card">
-                    <div slot="header" class="clearfix">
-                        <div class="block">
-                            <span class="rate_text">打分</span>
-                            <el-rate class="rate_star" v-model="ratevalue" @change="clickRates"></el-rate>
-                        </div>
+                    <div class="block">
+                        <span class="rate_text">打分</span>
+                        <el-rate class="rate_star" show-text :texts="ratetexts" v-model="visitdetails.score" @change="clickRates"></el-rate>
                     </div>
                 </el-card>
             </div>
         </el-col>
         
         <el-col :span="6" style="padding:10px;" class="right">
+            <div class="searchList" style="width:100%;">
+                <el-input  v-model="searchName" placeholder="请输入标题" style="width:80%;"></el-input>
+                <el-button icon="el-icon-search" class="searchbutton" size="mini" @click="search()"></el-button>
+            </div>
             <el-table
-            :data="tableData"
-            style="width: 100%">
+                :data="tableData"
+                style="width: 100%">
                 <el-table-column
-                prop="customerName"
-                label="公司名称">
+                    prop="customerName"
+                    label="公司名称">
                     <template slot-scope="scope">
                     <div @click="getRow(scope.$index, scope.row)">
                         {{scope.row.customerName}}
@@ -124,13 +132,17 @@ export default {
 
             tableData:null,
             tableNumber:0,
+            searchName:null,
             page:1,
             limit:20,
 
             thisshow:true,
             retracts:true,
+            examines:true,
+            thistime:null,
 
-            ratevalue: null,
+            // ratevalue: null,
+            ratetexts: ['2','4','6','8','10'],
 
             dialogVisible:false
         }
@@ -149,7 +161,7 @@ export default {
                 method: 'get',
                 url: _this.$store.state.defaultHttp+'visit/selectVisitById.do?cId='+_this.$store.state.iscId + '&id=' + this.visitId,
             }).then(function(res){
-                // console.log(res)
+                console.log(res)
                 _this.visitdetails = res.data.map.visit
                 _this.visitdetails.assistants = []
                 _this.visitdetails.assistantsid = []
@@ -159,6 +171,11 @@ export default {
                         _this.visitdetails.assistantsid.push(item.private_id)
                     });
                 }
+                if(_this.visitdetails.approverState == '已审核'){
+                    _this.examines = false
+                }else{
+                    _this.examines = true
+                }
             }).catch(function(err){
                 console.log(err);
             });
@@ -167,6 +184,7 @@ export default {
             const _this = this
             let qs = require('querystring')
             let searchList = {}
+            searchList.keyword = this.searchName
             searchList.page = this.page
             searchList.limit = this.limit
 
@@ -183,10 +201,66 @@ export default {
                 console.log(err);
             });
         },
+        getTime(){
+            let myDate = new Date()
+            let y = myDate.getFullYear() //获取完整的年份(4位,1970-????)
+            let m = myDate.getMonth() + 1 //获取当前月份(0-11,0代表1月)
+            let d = myDate.getDate() //获取当前日(1-31)
+            let h = myDate.getHours() //获取当前小时数(0-23)
+            let mm = myDate.getMinutes() //获取当前分钟数(0-59)
+            let s = myDate.getSeconds() //获取当前秒数(0-59)
+            m = (m < 10 ? "0" + m : m)
+            d = (d < 10 ? "0" + d : d)
+            h = (h < 10 ? "0" + h : h)
+            mm = (mm < 10 ? "0" + mm : mm)
+            s = (s < 10 ? "0" + s : s)
+            this.thistime = y + '-' + m + '-' + d + ' ' + h + ':' + mm + ':' + s
+            // console.log(this.thistime)
+        },
+        toexamine(e){
+            this.getTime()
+            console.log(e)
+            const _this = this
+            let qs = require('querystring')
+            let val = e.target.innerText
+            let data = {}
+            data.id = this.visitId
+            if(val == '审核'){
+                data.approverState = '已审核'
+            }else{
+                data.approverState = '未审核'
+            }
+            data.approverTime = this.thistime
+            data.customerpoolid = this.visitdetails.customerpoolid
+            data.customerName = this.visitdetails.customerName
+
+            axios({
+                method: 'post',
+                url: _this.$store.state.defaultHttp+'visit/updateVisit.do?cId='+_this.$store.state.iscId + '&pId=' + this.$store.state.ispId,
+                data: qs.stringify(data),
+            }).then(function(res){
+                console.log(res)
+                if(res.data.code && res.data.code == 200) {
+                    _this.$message({
+                        message: '操作成功',
+                        type: 'success'
+                    });
+                    _this.examines = !_this.examines
+                    _this.$options.methods.loadData.bind(_this)(true)
+                } else {
+                    _this.$message({
+                        message: res.data.msg,
+                        type: 'error'
+                    });
+                }
+            }).catch(function(err){
+                console.log(err)
+            });
+        },
         getRow(index,row){
             console.log(row.id)
             this.$store.state.visitdetailsData.submitData = {"id":row.id}
-            this.$options.methods.loadData.bind(this)(true);
+            this.$options.methods.loadData.bind(this)(true)
         },
         retract(){
             this.retracts = !this.retracts
@@ -194,6 +268,35 @@ export default {
         },
         clickRates(val){
             console.log(val)
+            const _this = this
+            let qs = require('querystring')
+            let data = {}
+            data.id = this.visitId
+            data.customerpoolid = this.visitdetails.customerpoolid
+            data.customerName = this.visitdetails.customerName
+            data.score = val
+
+            axios({
+                method: 'post',
+                url: _this.$store.state.defaultHttp+'visit/updateVisit.do?cId='+_this.$store.state.iscId + '&pId=' + this.$store.state.ispId,
+                data: qs.stringify(data),
+            }).then(function(res){
+                console.log(res)
+                if(res.data.code && res.data.code == 200) {
+                    _this.$message({
+                        message: '评分成功',
+                        type: 'success'
+                    });
+                    _this.$options.methods.loadData.bind(_this)(true)
+                } else {
+                    _this.$message({
+                        message: res.data.msg,
+                        type: 'error'
+                    });
+                }
+            }).catch(function(err){
+                console.log(err)
+            });
         },
         showImg(){
             this.dialogVisible = true
@@ -232,8 +335,8 @@ export default {
         margin-top: 20px;
         /* padding: 5px 20px; */
     }
-    .card_item,.item_body{
-        padding: 20px;
+    .item_body{
+        padding: 2px 20px;
         font-size: 14px;
         line-height: 1.5;
     }

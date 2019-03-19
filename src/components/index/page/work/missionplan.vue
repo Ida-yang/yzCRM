@@ -1,9 +1,9 @@
 <template>
-    <!-- 拜访计划 -->
+    <!-- 工作计划 -->
     <div>
         <div class="radioList">
             <el-radio-group v-model="searchList.label">
-                <span class="nameList">数据授权：</span>
+                <span class="nameList">计划分类：</span>
                 <el-radio v-for="item in pIdData" :key="item.id" :label="item.id" @change="search()">{{item.name}}</el-radio>
             </el-radio-group>
             <el-radio-group v-model="searchList.time">
@@ -16,12 +16,6 @@
                 <el-radio :label="nullvalue" @change="search()">全部</el-radio>
                 <el-radio v-for="item in stateData" :key="item.id" :label="item.name" @change="search()">{{item.name}}</el-radio>
             </el-radio-group>
-        </div>
-        <div class="searchList">
-            <span class="nameList">公司名称：</span>
-            <el-input v-model="searchList.searchName" placeholder="公司名称" style="width:300px;"></el-input>
-            &nbsp;&nbsp;
-            <el-button icon="el-icon-search" class="searchbutton" size="mini" @click="search()">查询</el-button>
         </div>
         <div class="entry">
             <el-button class="btn info-btn" size="mini" @click="handleAdd()">新增</el-button>
@@ -51,68 +45,44 @@
                 header-align="left"
                 align="left"
                 min-width="400"
-                label="主要信息"
+                label="主题"
                 sortable>
                 <template slot-scope="scope">
                     <div class="visit_info">
-                        <span @click="openDetails(scope.$index, scope.row)" class="visit_theme visit_customer hoverline">{{scope.row.customerName}}</span>
-                        <span class="visit_theme">{{scope.row.contactsName}}</span>
+                        <span @click="openDetails(scope.$index, scope.row)" class="visit_theme mission_customer hoverline">{{scope.row.planningTheme}}</span>
+                        <!-- <span class="visit_theme">{{scope.row.planningTheme}}</span> -->
+                        <!-- <span class="visit_theme">{{scope.row.describe}}</span> -->
                     </div>
-                    <div class="visit_info">{{scope.row.visitTheme}}</div>
+                    <div class="visit_info">{{scope.row.describe}}</div>
                 </template>
             </el-table-column>
             <el-table-column
-                prop="phone"
+                prop="startTime"
                 show-overflow-tooltip
                 header-align="left"
                 align="left"
-                label="电话"
-                min-width="95"
-                sortable>
-            </el-table-column>
-            <el-table-column
-                prop="visitTime"
-                header-align="left"
-                align="left"
-                min-width="140"
-                label="计划时间"
+                label="时间"
+                min-width="135"
                 sortable>
                 <template slot-scope="scope">
                     <div>
-                        <p>{{scope.row.visitTime}}</p>
+                        <p>{{scope.row.startTime}}</p>
                         <p>{{scope.row.endTime}}</p>
                     </div>
                 </template>
             </el-table-column>
             <el-table-column
-                prop="private_employee"
-                show-overflow-tooltip
+                prop="relationObject"
                 header-align="left"
                 align="left"
-                label="负责人"
-                min-width="95"
+                label="关联对象"
+                min-width="110"
                 sortable>
-            </el-table-column>
-            <el-table-column
-                prop="assistants"
-                header-align="left"
-                align="left"
-                label="协助人"
-                min-width="95"
-                sortable>
-                <template slot-scope="scope">
+                <!-- <template slot-scope="scope">
                     <div>
                         <span v-for="(item,index) in scope.row.assistants" :key="index" :label="item">{{item}} , </span>
                     </div>
-                </template>
-            </el-table-column>
-            <el-table-column
-                prop="approver"
-                header-align="left"
-                align="left"
-                min-width="95"
-                label="审批人"
-                sortable>
+                </template> -->
             </el-table-column>
             <el-table-column
                 prop="state"
@@ -128,6 +98,14 @@
                         <el-button size="mini" :type="scope.row.nullify" @click="changeState($event, scope.row)">作废</el-button>
                     </el-button-group>
                 </template>
+            </el-table-column>
+            <el-table-column
+                prop="private_employee"
+                header-align="left"
+                align="left"
+                min-width="100"
+                label="负责人"
+                sortable>
             </el-table-column>
             <el-table-column
                 prop="deptname"
@@ -183,19 +161,19 @@ import axios from 'axios'
 import qs from 'qs'
 
 export default {
-    name:'visitplan',
+    name:'missionplan',
     store,
     computed: {
         tableData(){
-            return store.state.visitplanList;
+            return store.state.missionplanList;
         },
         tableNumber(){
-           return store.state.visitplanListnumber;
+           return store.state.missionplanListnumber;
         },
     },
     data(){
         return{
-            msg:'拜访计划',
+            msg:'工作计划',
 
             btnList:[
                 {id:'1',name:'未完成'},
@@ -213,20 +191,16 @@ export default {
             state:'未完成',
 
             searchList:{
-                label:'1',
+                label:'0',
                 time:null,
                 state:null,
-                exa:null,
-                searchName:null,
             },
 
             pIdData:[
-                {id:'0',name:'全部'},
-                {id:'1',name:'我的'},
-                {id:'2',name:'本组'},
-                {id:'3',name:'本机构'},
-                {id:'10',name:'我协助'},
-                {id:'11',name:'我审核'},
+                {id:'0',name:'全部计划'},
+                {id:'1',name:'我的计划'},
+                {id:'2',name:'本组计划'},
+                {id:'3',name:'本机构计划'},
             ],
             timeData:[
                 {id:'2',name:'今天'},
@@ -268,12 +242,8 @@ export default {
                 searchList.secondid = _this.$store.state.deptid
             }else if(this.searchList.label == 3){
                 searchList.deptid = _this.$store.state.insid
-            }else if(this.searchList.label == 10){
+            }else{
                 searchList.pId = _this.$store.state.ispId
-                searchList.type = 1
-            }else if(this.searchList.label == 11){
-                searchList.pId = _this.$store.state.ispId
-                searchList.type = 2
             }
             if(this.searchList.state !== this.nullvalue){
                 searchList.state = this.searchList.state
@@ -281,16 +251,15 @@ export default {
             searchList.page = this.page
             searchList.limit = this.limit
             searchList.example = this.searchList.time
-            searchList.searchName = this.searchList.searchName
             
             axios({
                 method: 'post',
-                url: _this.$store.state.defaultHttp+'visit/selectVisit.do?cId='+_this.$store.state.iscId,
+                url: _this.$store.state.defaultHttp+'workPlan/selectWorkPlan.do?cId='+_this.$store.state.iscId,
                 data: qs.stringify(searchList),
             }).then(function(res){
                 let data = res.data.map.success
-                _this.$store.state.visitplanList = data
-                _this.$store.state.visitplanListnumber = res.data.count
+                _this.$store.state.missionplanList = data
+                _this.$store.state.missionplanListnumber = res.data.count
                 data.forEach(el => {
                     if(el.state == '未完成' || el.state == '申请拜访'){
                         el.progress = 'info'
@@ -298,21 +267,21 @@ export default {
                         el.nullify = ''
                     }else if(el.state == '已完成'){
                         el.progress = ''
-                        el.completed = 'warning'
+                        el.completed = 'success'
                         el.nullify = ''
                     }else{
                         el.progress = ''
                         el.completed = ''
                         el.nullify = 'danger'
                     }
-                    el.assistants = []
-                    el.assistantsid = []
-                    if(el.privateUser !== []){
-                        el.privateUser.forEach(item => {
-                            el.assistants.push(item.private_name)
-                            el.assistantsid.push(item.private_id)
-                        });
-                    }
+                    // el.assistants = []
+                    // el.assistantsid = []
+                    // if(el.privateUser !== []){
+                    //     el.privateUser.forEach(item => {
+                    //         el.assistants.push(item.private_name)
+                    //         el.assistantsid.push(item.private_id)
+                    //     });
+                    // }
                 });
             }).catch(function(err){
                 console.log(err);
@@ -329,10 +298,10 @@ export default {
             this.idArr.id = newArr;
         },
         openDetails(index,row){
-            let visitdetailsData = {};
-            visitdetailsData.submitData = {"id": row.id};
-            this.$store.state.visitdetailsData = visitdetailsData;
-            this.$router.push({ path: '/visitplandetails' });
+            let missiondetailsData = {};
+            missiondetailsData.submitData = {"id": row.id};
+            this.$store.state.missiondetailsData = missiondetailsData;
+            this.$router.push({ path: '/missionplandetails' });
         },
         changeState(e,row){
             const _this = this
@@ -343,7 +312,7 @@ export default {
 
             axios({
                 method: 'post',
-                url: _this.$store.state.defaultHttp+'visit/updateVisit.do?cId='+_this.$store.state.iscId,
+                url: _this.$store.state.defaultHttp+'workPlan/updateWorkPlan.do?cId='+_this.$store.state.iscId,
                 data: qs.stringify(data),
             }).then(function(res){
                 if(res.data.code && res.data.code == 200) {
@@ -366,7 +335,7 @@ export default {
             const _this = this;
             let visitaddOrUpdateData = {};
             visitaddOrUpdateData.createForm = [
-                {"label":"拜访公司","inputModel":"customerName","type":"require"},
+                {"label":"拜访公司","inputModel":"customerpoolid","type":"require"},
                 {"label":"拜访时间","inputModel":"visitTime","type":"date"},
                 {"label":"结束时间","inputModel":"endTime","type":"date"},
                 {"label":"拜访对象","inputModel":"contactsid","type":"select"},
@@ -376,7 +345,7 @@ export default {
                 {"label":"审批人员","inputModel":"approverid","type":"select"},
                 {"label":"备注","inputModel":"remarks","type":"textarea"}];
             visitaddOrUpdateData.setForm = {
-                "customerName": '',
+                "customerpoolid": '',
                 "visitTime": '',
                 "endTime": '',
                 "contactsid": '',
@@ -385,15 +354,15 @@ export default {
                 "assistantsid":'',
                 "approverid":'',
                 "remarks": ''};
-            visitaddOrUpdateData.submitURL = this.$store.state.defaultHttp+ 'visit/insertVisit.do?cId='+this.$store.state.iscId+'&pId='+this.$store.state.ispId,
+            visitaddOrUpdateData.submitURL = this.$store.state.defaultHttp+ 'workPlan/insertWorkPlan.do?cId='+this.$store.state.iscId+'&pId='+this.$store.state.ispId,
             this.$store.state.visitaddOrUpdateData = visitaddOrUpdateData;
-            _this.$router.push({ path: '/visitplanaddorupdate' });
+            _this.$router.push({ path: '/missionplanaddorupdate' });
         },
         handleEdit(index,row){
             const _this = this;
             let visitaddOrUpdateData = {};
             visitaddOrUpdateData.createForm = [
-                {"label":"拜访公司","inputModel":"customerName","type":"require"},
+                {"label":"拜访公司","inputModel":"customerpoolid","type":"require"},
                 {"label":"拜访时间","inputModel":"visitTime","type":"date"},
                 {"label":"结束时间","inputModel":"endTime","type":"date"},
                 {"label":"拜访对象","inputModel":"contactsid","type":"select"},
@@ -417,9 +386,9 @@ export default {
                 "approver": row.approver,
                 "remarks": row.remarks};
             visitaddOrUpdateData.submitData = {"id": row.id};
-            visitaddOrUpdateData.submitURL = this.$store.state.defaultHttp+ 'visit/updateVisit.do?cId='+this.$store.state.iscId,
+            visitaddOrUpdateData.submitURL = this.$store.state.defaultHttp+ 'workPlan/updateWorkPlan.do?cId='+this.$store.state.iscId,
             this.$store.state.visitaddOrUpdateData = visitaddOrUpdateData;
-            _this.$router.push({ path: '/visitplanaddorupdate' });
+            _this.$router.push({ path: '/missionplanaddorupdate' });
         },
         handledelete(index,row){
             const _this = this
@@ -433,7 +402,7 @@ export default {
             }).then(({ value }) => {
                 axios({
                     method: 'post',
-                    url: _this.$store.state.defaultHttp+'visit/deleteVisit.do?cId='+_this.$store.state.iscId,
+                    url: _this.$store.state.defaultHttp+'workPlan/deleteWorkPlan.do?cId='+_this.$store.state.iscId,
                     data: qs.stringify(idArr),
                 }).then(function(res){
                     if(res.data.code && res.data.code == 200) {
@@ -482,7 +451,7 @@ export default {
     .visit_theme{
         margin-right: 20px;
     }
-    .visit_customer{
+    .mission_customer{
         font-size: 13px;
     }
 

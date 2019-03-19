@@ -3,7 +3,7 @@
     <div>
         <div class="radioList">
             <el-radio-group v-model="searchList.label">
-                <span class="nameList">合同分类：</span>
+                <span class="nameList">数据授权：</span>
                 <el-radio v-for="item in agreementData" :key="item.label" :label="item.label" @change="search()">{{item.value}}</el-radio>
             </el-radio-group>
             <el-radio-group v-model="searchList.example">
@@ -311,8 +311,8 @@
                 },
 
                 agreementData:[
-                    {label:'0',value:'全部合同'},
-                    {label:'1',value:'我的合同'},
+                    {label:'0',value:'全部'},
+                    {label:'1',value:'我的'},
                     {label:'2',value:'本组'},
                     {label:'3',value:'本机构'}
                 ],

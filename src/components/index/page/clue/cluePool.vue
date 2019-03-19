@@ -3,7 +3,7 @@
     <div>
         <div class="radioList">
             <el-radio-group v-model="searchList.label">
-                <span class="nameList">客户分类：</span>
+                <span class="nameList">数据授权：</span>
                 <el-radio v-for="item in pIdData" :key="item.label" :label="item.label" @change="search()">{{item.value}}</el-radio>
             </el-radio-group>
         </div>
@@ -419,8 +419,8 @@
                 },
 
                 pIdData:[
-                    {label:'0',value:'全部线索'},
-                    {label:'1',value:'我的线索'},
+                    {label:'0',value:'全部'},
+                    {label:'1',value:'我的'},
                     {label:'2',value:'本组'},
                     {label:'3',value:'本机构'},],
 

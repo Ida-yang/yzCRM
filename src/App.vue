@@ -325,8 +325,10 @@ export default {
         cursor: default;
     }
 
-    .hoverline:hover{
+    .hoverline{
         color: blue;
+    }
+    .hoverline:hover{
         text-decoration:underline;
     }
 
@@ -533,5 +535,8 @@ export default {
     .ul_business span{
         display: inline-block;
         width: 100px;
+    }
+    .el-radio__input.is-checked+.el-radio__label{
+        color: blue
     }
 </style>

@@ -182,6 +182,21 @@ const router =new Router({
           meta: { title: '编辑拜访计划' ,requireAuth:true}
         },
         {
+          path: '/missionplan',
+          component: resolve => require(['../components/index/page/work/missionplan.vue'], resolve),
+          meta: { title: '工作计划',name:'missionplan', requireAuth:true}
+        },
+        {
+          path: '/missionplandetails',
+          component: resolve => require(['../components/index/page/work/missionplandetails.vue'], resolve),
+          meta: { title: '工作计划详情' ,requireAuth:true}
+        },
+        {
+          path: '/missionplanaddorupdate',
+          component: resolve => require(['../components/index/page/AddAndUpdate/missionplanaddorupdate.vue'], resolve),
+          meta: { title: '编辑工作计划' ,requireAuth:true}
+        },
+        {
           path: '/name',
           component: resolve => require(['../components/index/page/name/name.vue'], resolve),
           meta: { title: '导入',requireAuth:true}

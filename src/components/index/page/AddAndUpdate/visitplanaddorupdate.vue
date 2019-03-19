@@ -28,9 +28,10 @@
                     auto-complete="off">
                 </el-input>
                 <el-input 
-                    v-else-if="item.type && item.type == 'require' && item.inputModel == 'customerpoolid'"
+                    v-else-if="item.type && item.type == 'require' && item.inputModel == 'customerName'"
                     :value="myForm[item.inputModel]"
                     @input="handleoninput($event, item.inputModel)"
+                    @blur="handleblur($event, item.inputModel)"
                     style="width:90%;" 
                     auto-complete="off">
                 </el-input>
@@ -129,7 +130,7 @@ export default {
             visitaddOrUpdateData:{},
 
             myForm:{
-                customerpoolid:null,
+                customerName:null,
             },
 
             rules:{},
@@ -192,7 +193,7 @@ export default {
                 this.conid = setForm.contactsid
                 this.assisid = setForm.assistantsid
                 this.apprid = setForm.approverid
-                this.myForm.customerpoolid = setForm.customerName
+                this.myForm.customerName = setForm.customerName
                 this.myForm.contactsid = setForm.contactsid
                 this.myForm.assistantsid = setForm.assistantsid
                 this.myForm.approverid = setForm.approverid
@@ -229,7 +230,7 @@ export default {
             });
         },
         getRow(index,row){
-            this.myForm.customerpoolid = row.name
+            this.myForm.customerName = row.name
             this.formid = row.id
             this.loadContacts()
         },
@@ -240,6 +241,16 @@ export default {
             this.myForm[key] = val
             this.searchvalue = val
             this.$options.methods.loadTable.bind(this)(true);
+        },
+        handleblur(e,key){
+            let val = e.target.value
+            this.tableData.forEach(el => {
+                if(val == el.name){
+                    this.formid = el.id
+                    this.myForm.customerName = el.name
+                    this.loadContacts()
+                }
+            });
         },
         submit(){
             const _this = this;
@@ -254,7 +265,7 @@ export default {
             let flag = false;
             createForm.forEach(item => {
                 subData[item.inputModel] = _this.myForm[item.inputModel];
-                if(item.inputModel == "customerpoolid" && !subData[item.inputModel]) {//拜访客户不能为空
+                if(item.inputModel == "customerName" && !subData[item.inputModel]) {//拜访客户不能为空
                     _this.$message({
                         message: "拜访客户不能为空",
                         type: 'error'
@@ -314,6 +325,11 @@ export default {
                         type: 'success'
                     });
                     _this.closeTag();
+                } else if(res.data.code && res.data.code == 20001) {
+                    _this.$message({
+                        message: '如改变了拜访公司，请重新选择拜访对象',
+                        type: 'error'
+                    });
                 } else {
                     _this.$message({
                         message: res.data.msg,

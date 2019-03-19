@@ -216,7 +216,7 @@
                     width="120">
                 </el-table-column>
                 <el-table-column
-                    prop="coPhone"
+                    prop="phoneId"
                     v-else-if="item.prop == 'coPhone' && item.state == 1"
                     header-align="left"
                     align="left"
@@ -225,7 +225,7 @@
                     sortable>
                 </el-table-column>
                 <el-table-column
-                    prop="coTelephone"
+                    prop="telephoneId"
                     v-else-if="item.prop == 'coTelephone' && item.state == 1"
                     header-align="left"
                     align="left"
@@ -234,7 +234,7 @@
                     sortable>
                 </el-table-column>
                 <el-table-column
-                    prop="coEmail"
+                    prop="emailId"
                     v-else-if="item.prop == 'coEmail' && item.state == 1"
                     header-align="left"
                     align="left"
@@ -429,12 +429,12 @@
             }
         },
         activated(){
-            this.loadData()
             this.reloadTable()
+            this.loadData()
         },
         mounted(){
-            this.loadData()
             this.reloadTable()
+            this.loadData()
         },
 
         methods: {
@@ -622,12 +622,19 @@
                     url:  _this.$store.state.defaultHttp+ 'customerOne/insert.do?cId='+_this.$store.state.iscId+"&pId="+_this.$store.state.ispId,
                     data:qs.stringify(idArr),
                 }).then(function(res){
-                    if(res.data.msg && res.data.msg == 'success') {
+                    if(res.data.code && res.data.code == '200') {
                         _this.Loading = false
-                        _this.$message({
-                            message: '转移成功',
-                            type: 'success'
-                        });
+                        if(res.data.map.map.eroorCount && res.data.map.map.eroorCount == 0){
+                            _this.$message({
+                                message: '转移成功,转移了'+res.data.map.map.suceessCount+ '条',
+                                type: 'success'
+                            });
+                        }else{
+                            _this.$message({
+                                message: '转移了'+res.data.map.map.suceessCount+ '条，有'+res.data.map.map.eroorCount+'已存在于线索或客户中',
+                                type: 'success'
+                            });
+                        }
                         _this.$options.methods.reloadTable.bind(_this)(true);
                     } else if(res.data.msg && res.data.msg == 'error'){//转移至线索
                         _this.Loading = false
