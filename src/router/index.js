@@ -187,11 +187,6 @@ const router =new Router({
           meta: { title: '工作计划',name:'missionplan', requireAuth:true}
         },
         {
-          path: '/missionplandetails',
-          component: resolve => require(['../components/index/page/work/missionplandetails.vue'], resolve),
-          meta: { title: '工作计划详情' ,requireAuth:true}
-        },
-        {
           path: '/missionplanaddorupdate',
           component: resolve => require(['../components/index/page/AddAndUpdate/missionplanaddorupdate.vue'], resolve),
           meta: { title: '编辑工作计划' ,requireAuth:true}

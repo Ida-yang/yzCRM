@@ -76,7 +76,7 @@
                         </div>
                     </el-form-item>
                     <div style="margin-left:60px;">
-                        <el-button class="searchbutton" @click="submit">立即提交</el-button>
+                        <el-button type="primary" @click="submit">立即提交</el-button>
                         &nbsp;&nbsp;
                         <el-button @click="closeTag">取消</el-button>
                     </div>
@@ -145,36 +145,36 @@
                         </el-select>
                         <!-- 行业 -->
                         <el-select 
-                            v-else-if="item.type && item.type == 'select' && item.inputModel == 'industryType'"
+                            v-else-if="item.type && item.type == 'select' && item.inputModel == 'industryId'"
                             :multiple="item.multiple"
                             :collapse-tags="item.multiple"
                             v-model="myForm[item.inputModel]"
                             @select="handleInput($event, item.inputModel)"
                             :placeholder="item.placeholder"
                             style="width:90%;">
-                            <el-option v-for="o in industryTypeList" :key="o.id" :label="o.name" :value="o.name"></el-option>
+                            <el-option v-for="o in industryTypeList" :key="o.id" :label="o.name" :value="o.id"></el-option>
                         </el-select>
                         <!-- 公司类型 -->
                         <el-select 
-                            v-else-if="item.type && item.type == 'select' && item.inputModel == 'companyType'"
+                            v-else-if="item.type && item.type == 'select' && item.inputModel == 'companyId'"
                             :multiple="item.multiple"
                             :collapse-tags="item.multiple"
                             v-model="myForm[item.inputModel]"
                             @select="handleInput($event, item.inputModel)"
                             :placeholder="item.placeholder"
                             style="width:90%;">
-                            <el-option v-for="o in companyTypeList" :key="o.id" :label="o.name" :value="o.name"></el-option>
+                            <el-option v-for="o in companyTypeList" :key="o.id" :label="o.name" :value="o.id"></el-option>
                         </el-select>
                         <!-- 经营状态 -->
                         <el-select 
-                            v-else-if="item.type && item.type == 'select' && item.inputModel == 'operatingState'"
+                            v-else-if="item.type && item.type == 'select' && item.inputModel == 'operatingStateId'"
                             :multiple="item.multiple"
                             :collapse-tags="item.multiple"
                             v-model="myForm[item.inputModel]"
                             @select="handleInput($event, item.inputModel)"
                             :placeholder="item.placeholder"
                             style="width:90%;">
-                            <el-option v-for="o in operatingStateList" :key="o.id" :label="o.name" :value="o.name"></el-option>
+                            <el-option v-for="o in operatingStateList" :key="o.id" :label="o.name" :value="o.id"></el-option>
                         </el-select>
                     </el-form-item>
                 </el-form>
@@ -265,6 +265,9 @@
 
                 subData: {},
                 cuesList:null,
+                industryId:null,
+                companyId:null,
+                operatingStateId:null,
                 mapJson:'../../../../dist/static/map.json',
                 Provinces:[],
                 Citys:[],
@@ -288,93 +291,11 @@
                 },
             }
         },
-        beforeCreate(){
-            const _this = this
-            let qs = require('querystring')
-
-            let industryTypeList = {} 
-            industryTypeList.comboType = 'IndustryType'
-            let enterpriseScaleList = {}   
-            enterpriseScaleList.comboType = 'EnterpriseScale'
-            let companyTypeList = {} 
-            companyTypeList.comboType = 'CompanyType'
-            let operatingStateList = {} 
-            operatingStateList.comboType = 'OperatingState'
-            let financingStateList = {} 
-            financingStateList.comboType = 'FinancingState'
-            let listedList = {} 
-            listedList.comboType = 'Listed'
-
-            //行业
-            axios({
-                method: 'post',
-                url: _this.$store.state.defaultHttp+'search/find.do',
-                data: qs.stringify(industryTypeList,),
-            }).then(function(res){
-                _this.industryTypeList=res.data;
-            }).catch(function(err){
-                console.log(err);
-            });
-            //企业规模
-            axios({
-                method: 'post',
-                url: _this.$store.state.defaultHttp+'search/find.do',
-                data: qs.stringify(enterpriseScaleList),
-            }).then(function(res){
-                _this.enterpriseScaleList=res.data;
-            }).catch(function(err){
-                console.log(err);
-            });
-            //企业类型
-            axios({
-                method: 'post',
-                url: _this.$store.state.defaultHttp+'search/find.do',
-                data: qs.stringify(companyTypeList),
-            }).then(function(res){
-                _this.companyTypeList=res.data;
-            }).catch(function(err){
-                console.log(err);
-            });
-            //经营状态
-            axios({
-                method: 'post',
-                url: _this.$store.state.defaultHttp+'search/find.do',
-                data: qs.stringify(operatingStateList),
-            }).then(function(res){
-                _this.operatingStateList=res.data;
-            }).catch(function(err){
-                console.log(err);
-            });
-            //融资状态
-            axios({
-                method: 'post',
-                url: _this.$store.state.defaultHttp+'search/find.do',
-                data: qs.stringify(financingStateList),
-            }).then(function(res){
-                _this.financingStateList=res.data;
-            }).catch(function(err){
-                console.log(err);
-            });
-            //上市信息
-            axios({
-                method: 'post',
-                url: _this.$store.state.defaultHttp+'search/find.do',
-                data: qs.stringify(listedList),
-            }).then(function(res){
-                _this.listedList=res.data;
-            }).catch(function(err){
-                console.log(err);
-            });
-        },
-        // mounted() {
-        //     this.loadData();
-        //     this.loadTable();
-        //     this.loadCountry()
-        // },
-        activated() {
+        mounted() {
             this.loadData();
             this.loadTable();
             this.loadCountry()
+            this.loadinfo()
         },
         methods:{
             loadCountry(){
@@ -456,6 +377,9 @@
                 this.countryid = this.clueaddOrUpdateData.setForm.country
                 this.cityid = this.clueaddOrUpdateData.setForm.city
                 this.areaid = this.clueaddOrUpdateData.setForm.area
+                this.industryId = this.clueaddOrUpdateData.setForm.industryId
+                this.companyId = this.clueaddOrUpdateData.setForm.companyId
+                this.operatingStateId = this.clueaddOrUpdateData.setForm.operatingStateId
 
                 // 设置默认值
                 let createForm = this.clueaddOrUpdateData.createForm;
@@ -482,9 +406,12 @@
                             this.myForm[item.inputModel] = setForm[item.inputModel];
                         }
                     });
-                    this.myForm.countryid = this.clueaddOrUpdateData.setForm.country
-                    this.myForm.cityid = this.clueaddOrUpdateData.setForm.city
-                    this.myForm.areaid = this.clueaddOrUpdateData.setForm.area
+                    this.myForm.countryid = setForm.country
+                    this.myForm.cityid = setForm.city
+                    this.myForm.areaid = setForm.area
+                    this.myForm.industryId = setForm.industryType
+                    this.myForm.companyId = setForm.companyType
+                    this.myForm.operatingStateId = setForm.operatingState
                     this.$emit('input', this.myForm);
                 }
             },
@@ -559,6 +486,9 @@
                 if(flag) return;
                 subData.secondid = this.$store.state.deptid
                 subData.deptid = this.$store.state.insid
+                subData.industryId = this.myForm.industryId
+                subData.companyId = this.myForm.companyId
+                subData.operatingStateId = this.myForm.operatingStateId
 
                 axios({
                     method: 'post',
@@ -607,13 +537,17 @@
                 this.myForm.registrationNumber = row.registrationNumber  //注册号
                 this.myForm.organizationCode = row.organizationCode  //组织机构代码
                 this.myForm.date = row.date  //注册时间
-                this.myForm.industryType = row.industryName  //行业
-                this.myForm.companyType = row.company  //公司类型
-                this.myForm.operatingState = row.ostate  // 经营状态
+                this.myForm.industryId = row.industryName  //行业
+                this.industryId = row.industryId
+                this.myForm.companyId = row.company  //公司类型
+                this.companyId = row.companyId
+                this.myForm.operatingStateId = row.ostate  // 经营状态
+                this.operatingStateId = row.operatingStateId
                 this.myForm.capital = row.capital  //注册资金
                 this.myForm.financingState = row.financing  //是否融资
                 this.myForm.enterpriseScale = row.enterpriseScaleName  //企业规模
                 this.myForm.creditCode = row.creditCode  //统一社会信用代码
+                this.loadinfo()
             },
             // 选省
             choseProvince(e) {
@@ -638,6 +572,100 @@
 
             handleClick(tab, event){
                 // console.log(tab, event)
+            },
+            loadinfo(){
+                const _this = this
+                let qs = require('querystring')
+
+                let industryTypeList = {} 
+                industryTypeList.comboType = 'IndustryType'
+                let enterpriseScaleList = {}   
+                enterpriseScaleList.comboType = 'EnterpriseScale'
+                let companyTypeList = {} 
+                companyTypeList.comboType = 'CompanyType'
+                let operatingStateList = {} 
+                operatingStateList.comboType = 'OperatingState'
+                let financingStateList = {} 
+                financingStateList.comboType = 'FinancingState'
+                let listedList = {} 
+                listedList.comboType = 'Listed'
+
+                //行业
+                axios({
+                    method: 'post',
+                    url: _this.$store.state.defaultHttp+'search/find.do',
+                    data: qs.stringify(industryTypeList,),
+                }).then(function(res){
+                    _this.industryTypeList=res.data;
+                    _this.industryTypeList.forEach(el => {
+                        if(_this.industryId == el.id){
+                            // console.log(el.id)
+                            _this.myForm.industryId = el.id
+                        }
+                    });
+                }).catch(function(err){
+                    console.log(err);
+                });
+                //企业规模
+                axios({
+                    method: 'post',
+                    url: _this.$store.state.defaultHttp+'search/find.do',
+                    data: qs.stringify(enterpriseScaleList),
+                }).then(function(res){
+                    _this.enterpriseScaleList=res.data;
+                }).catch(function(err){
+                    console.log(err);
+                });
+                //企业类型
+                axios({
+                    method: 'post',
+                    url: _this.$store.state.defaultHttp+'search/find.do',
+                    data: qs.stringify(companyTypeList),
+                }).then(function(res){
+                    _this.companyTypeList=res.data;
+                    _this.companyTypeList.forEach(el => {
+                        if(_this.companyId == el.id){
+                            _this.myForm.companyId = el.id
+                        }
+                    });
+                }).catch(function(err){
+                    console.log(err);
+                });
+                //经营状态
+                axios({
+                    method: 'post',
+                    url: _this.$store.state.defaultHttp+'search/find.do',
+                    data: qs.stringify(operatingStateList),
+                }).then(function(res){
+                    _this.operatingStateList=res.data;
+                    _this.operatingStateList.forEach(el => {
+                        if(_this.operatingStateId == el.id){
+                            _this.myForm.operatingStateId = el.id
+                        }
+                    });
+                }).catch(function(err){
+                    console.log(err);
+                });
+                //融资状态
+                axios({
+                    method: 'post',
+                    url: _this.$store.state.defaultHttp+'search/find.do',
+                    data: qs.stringify(financingStateList),
+                }).then(function(res){
+                    _this.financingStateList=res.data;
+                }).catch(function(err){
+                    console.log(err);
+                });
+                //上市信息
+                axios({
+                    method: 'post',
+                    url: _this.$store.state.defaultHttp+'search/find.do',
+                    data: qs.stringify(listedList),
+                }).then(function(res){
+                    _this.listedList=res.data;
+                }).catch(function(err){
+                    console.log(err);
+                });
             },
 
             handleSizeChange(val) {

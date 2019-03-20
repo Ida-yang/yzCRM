@@ -83,7 +83,7 @@
                 </div>
             </el-form-item>
             <div style="margin-left:60px;">
-                <el-button class="searchbutton" @click="submit">立即提交</el-button>
+                <el-button type="primary" @click="submit">立即提交</el-button>
                 &nbsp;&nbsp;
                 <el-button @click="closeTag">取消</el-button>
             </div>

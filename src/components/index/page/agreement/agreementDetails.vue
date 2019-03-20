@@ -68,7 +68,7 @@
             <div class="searchList" style="width:100%;">
                 <!-- <el-input v-model="searchList.searchName" placeholder="公司名称" style="width:200px;"></el-input> -->
                 <el-input  v-model="searchList.keyword" placeholder="请输入标题" style="width:80%;"></el-input>
-                <el-button icon="el-icon-search" class="searchbutton" size="mini" @click="search()"></el-button>
+                <el-button icon="el-icon-search" type="primary" size="mini" @click="search()"></el-button>
             </div>
             <el-table
             :data="tableData"

@@ -62,12 +62,13 @@
                     @change="handleInput($event, item.inputModel)"
                     :placeholder="item.placeholder"
                     format="yyyy-MM-dd HH:mm:ss" value-format="yyyy-MM-dd HH:mm:ss"
+                    default-time="12:00:00"
                     style="width:90%;" 
                     auto-complete="off">
                 </el-date-picker>
             </el-form-item>
             <div style="margin-left:60px;">
-                <el-button class="searchbutton" @click="submit">立即提交</el-button>
+                <el-button type="primary" @click="submit">立即提交</el-button>
                 &nbsp;&nbsp;
                 <el-button @click="closeTag">取消</el-button>
             </div>
@@ -133,7 +134,15 @@ export default {
                 customerName:null,
             },
 
-            rules:{},
+            rules:{
+                customerName : [{ required: true, message: '公司名称不能为空', trigger: 'blur' }],
+                visitTime : [{ required: true, message: '拜访时间不能为空', trigger: 'blur' }],
+                endTime : [{ required: true, message: '结束时间不能为空', trigger: 'blur' }],
+                contactsid : [{ required: true, message: '拜访对象不能为空', trigger: 'blur' }],
+                visitTheme : [{ required: true, message: '拜访主题不能为空', trigger: 'blur' }],
+                visitObjective : [{ required: true, message: '拜访目的不能为空', trigger: 'blur' }],
+                approverid : [{ required: true, message: '审批人不能为空', trigger: 'blur' }],
+            },
 
             tableData:null,
             assistAudit:null,
@@ -303,6 +312,13 @@ export default {
                 if(item.inputModel == "visitObjective" && !subData[item.inputModel]) {
                     _this.$message({
                         message: "拜访目的不能为空",
+                        type: 'error'
+                    });
+                    flag = true;
+                }
+                if(item.inputModel == "approverid" && !subData[item.inputModel]) {
+                    _this.$message({
+                        message: "审批人不能为空",
                         type: 'error'
                     });
                     flag = true;

@@ -336,19 +336,14 @@ export default {
         background-color: #ff6333;
         color: #ffffff;
     }
-    .el-button--primary{
-        color:#ffffff;
-        background-color:#ff6333;
-        border-color:#ff6b3e
-    }
-    .el-button--primary:focus,.el-button--primary:hover{
+    .el-button--primary,.el-button--primary:focus,.el-button--primary:hover,.el-button--primary.is-active,.el-button--primary:active{
         background:#ff6333;
         border-color:#ff6b3e;
         color:#ffffff
     }
-    .el-button--primary.is-active,.el-button--primary:active{
-        background:#ff511c;
-        border-color:#ff6b3e;
+    .el-button--primary.is-disabled, .el-button--primary.is-disabled:active, .el-button--primary.is-disabled:focus, .el-button--primary.is-disabled:hover{
+        background:#fa8663;
+        border-color:#ff815a;
         color:#ffffff
     }
     .followform{

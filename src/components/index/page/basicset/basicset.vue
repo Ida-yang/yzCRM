@@ -432,7 +432,7 @@
     }
     .namecontent li.actived{
         background-color: #f0f0f0;
-        color: blue
+        color: #409EFF
     }
     .centercontent{
         display: block;

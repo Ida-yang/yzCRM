@@ -9,8 +9,8 @@
                         <span style="margin-left:50px;">{{visitdetails.contactsName}}</span>
                         <el-button style="float:right;margin-left:10px;" class="info-btn" size="mini" @click="retract()" v-show="retracts">收起</el-button>
                         <el-button style="float:right;margin-left:10px;" class="info-btn" size="mini" @click="retract()" v-show="!retracts">显示</el-button>
-                        <el-button style="float:right;margin-left:10px;" class="info-btn" size="mini" @click="toexamine($event)" v-show="examines">审核</el-button>
-                        <el-button style="float:right;margin-left:10px;" class="info-btn" size="mini" @click="toexamine($event)" v-show="!examines">反审核</el-button>
+                        <el-button style="float:right;margin-left:10px;" class="info-btn" size="mini" @click="toexamine($event)" v-if="isexa" v-show="examines">审核</el-button>
+                        <el-button style="float:right;margin-left:10px;" class="info-btn" size="mini" @click="toexamine($event)" v-if="isexa" v-show="!examines">反审核</el-button>
                     </div>
                     <div class="text item">
                         <ul>
@@ -83,7 +83,7 @@
         <el-col :span="6" style="padding:10px;" class="right">
             <div class="searchList" style="width:100%;">
                 <el-input  v-model="searchName" placeholder="请输入标题" style="width:80%;"></el-input>
-                <el-button icon="el-icon-search" class="searchbutton" size="mini" @click="search()"></el-button>
+                <el-button icon="el-icon-search" type="primary" size="mini" @click="search()"></el-button>
             </div>
             <el-table
                 :data="tableData"
@@ -129,6 +129,7 @@ export default {
             visitId:null,
 
             visitdetails:{},
+            isexa:false,
 
             tableData:null,
             tableNumber:0,
@@ -171,10 +172,15 @@ export default {
                         _this.visitdetails.assistantsid.push(item.private_id)
                     });
                 }
-                if(_this.visitdetails.approverState == '已审核'){
-                    _this.examines = false
+                if(_this.$store.state.ispId == _this.visitdetails.approverid){
+                    _this.isexa = true
+                    if(_this.visitdetails.approverState == '已审核'){
+                        _this.examines = false
+                    }else{
+                        _this.examines = true
+                    }
                 }else{
-                    _this.examines = true
+                    _this.isexa = false
                 }
             }).catch(function(err){
                 console.log(err);
@@ -184,7 +190,7 @@ export default {
             const _this = this
             let qs = require('querystring')
             let searchList = {}
-            searchList.keyword = this.searchName
+            searchList.searchName = this.searchName
             searchList.page = this.page
             searchList.limit = this.limit
 
@@ -267,7 +273,8 @@ export default {
             this.thisshow = !this.thisshow
         },
         clickRates(val){
-            console.log(val)
+            // console.log(val)
+            console.log(this.visitdetails.state)
             const _this = this
             let qs = require('querystring')
             let data = {}
@@ -275,31 +282,40 @@ export default {
             data.customerpoolid = this.visitdetails.customerpoolid
             data.customerName = this.visitdetails.customerName
             data.score = val
-
-            axios({
-                method: 'post',
-                url: _this.$store.state.defaultHttp+'visit/updateVisit.do?cId='+_this.$store.state.iscId + '&pId=' + this.$store.state.ispId,
-                data: qs.stringify(data),
-            }).then(function(res){
-                console.log(res)
-                if(res.data.code && res.data.code == 200) {
-                    _this.$message({
-                        message: '评分成功',
-                        type: 'success'
-                    });
-                    _this.$options.methods.loadData.bind(_this)(true)
-                } else {
-                    _this.$message({
-                        message: res.data.msg,
-                        type: 'error'
-                    });
-                }
-            }).catch(function(err){
-                console.log(err)
-            });
+            if(this.visitdetails.state !== '已完成'){
+                _this.$message({
+                    message: '该拜访计划非完成状态，暂不可评分',
+                    type: 'error'
+                })
+            }else{
+                axios({
+                    method: 'post',
+                    url: _this.$store.state.defaultHttp+'visit/updateVisit.do?cId='+_this.$store.state.iscId + '&pId=' + this.$store.state.ispId,
+                    data: qs.stringify(data),
+                }).then(function(res){
+                    console.log(res)
+                    if(res.data.code && res.data.code == 200) {
+                        _this.$message({
+                            message: '评分成功',
+                            type: 'success'
+                        });
+                        _this.$options.methods.loadData.bind(_this)(true)
+                    } else {
+                        _this.$message({
+                            message: res.data.msg,
+                            type: 'error'
+                        });
+                    }
+                }).catch(function(err){
+                    console.log(err)
+                });
+            }
         },
         showImg(){
             this.dialogVisible = true
+        },
+        search(){
+            this.$options.methods.loadTable.bind(this)(true);
         },
         handleSizeChange(val) {
             const _this = this;
@@ -346,6 +362,7 @@ export default {
     }
     .block{
         height: 20px;
+        padding: 20px;
     }
     .rate_text,.rate_star{
         float: left;

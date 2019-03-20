@@ -21,7 +21,7 @@
             <span class="nameList">公司名称：</span>
             <el-input v-model="searchList.searchName" placeholder="公司名称" style="width:300px;"></el-input>
             &nbsp;&nbsp;
-            <el-button icon="el-icon-search" class="searchbutton" size="mini" @click="search()">查询</el-button>
+            <el-button icon="el-icon-search" type="primary" size="mini" @click="search()">查询</el-button>
         </div>
         <div class="entry">
             <el-button class="btn info-btn" size="mini" @click="handleAdd()">新增</el-button>
@@ -48,9 +48,10 @@
             </el-table-column>
             <el-table-column
                 prop="id"
+                fixed
                 header-align="left"
                 align="left"
-                min-width="400"
+                min-width="350"
                 label="主要信息"
                 sortable>
                 <template slot-scope="scope">
@@ -154,10 +155,12 @@
                 <template slot-scope="scope">
                     <el-button
                     size="mini"
+                    :disabled="scope.row.disableBtn"
                     @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
                     <el-button
                     size="mini"
                     type="primary"
+                    :disabled="scope.row.disableBtn"
                     @click="handledelete(scope.$index, scope.row)">删除</el-button>
                 </template>
             </el-table-column>
@@ -269,10 +272,10 @@ export default {
             }else if(this.searchList.label == 3){
                 searchList.deptid = _this.$store.state.insid
             }else if(this.searchList.label == 10){
-                searchList.pId = _this.$store.state.ispId
+                searchList.userid = _this.$store.state.ispId
                 searchList.type = 1
             }else if(this.searchList.label == 11){
-                searchList.pId = _this.$store.state.ispId
+                searchList.userid = _this.$store.state.ispId
                 searchList.type = 2
             }
             if(this.searchList.state !== this.nullvalue){
@@ -300,6 +303,14 @@ export default {
                         el.progress = ''
                         el.completed = 'warning'
                         el.nullify = ''
+                        let startTime = Date.parse(el.updateTime); // 开始时间
+                        let endTime = new Date().getTime(); // 结束时间
+                        let usedTime = endTime - startTime; // 相差的毫秒数
+                        if(usedTime < 7200000){
+                            el.disableBtn = false
+                        }else{
+                            el.disableBtn = true
+                        }
                     }else{
                         el.progress = ''
                         el.completed = ''
@@ -363,8 +374,8 @@ export default {
             });
         },
         handleAdd(){
-            const _this = this;
-            let visitaddOrUpdateData = {};
+            const _this = this
+            let visitaddOrUpdateData = {}
             visitaddOrUpdateData.createForm = [
                 {"label":"拜访公司","inputModel":"customerName","type":"require"},
                 {"label":"拜访时间","inputModel":"visitTime","type":"date"},
@@ -374,7 +385,7 @@ export default {
                 {"label":"拜访目的","inputModel":"visitObjective","type":"textarea"},
                 {"label":"协助人员","inputModel":"assistantsid","type":"select","multiple":true},
                 {"label":"审批人员","inputModel":"approverid","type":"select"},
-                {"label":"备注","inputModel":"remarks","type":"textarea"}];
+                {"label":"备注","inputModel":"remarks","type":"textarea"}]
             visitaddOrUpdateData.setForm = {
                 "customerName": '',
                 "visitTime": '',
@@ -384,14 +395,14 @@ export default {
                 "visitObjective":'',
                 "assistantsid":'',
                 "approverid":'',
-                "remarks": ''};
-            visitaddOrUpdateData.submitURL = this.$store.state.defaultHttp+ 'visit/insertVisit.do?cId='+this.$store.state.iscId+'&pId='+this.$store.state.ispId,
-            this.$store.state.visitaddOrUpdateData = visitaddOrUpdateData;
-            _this.$router.push({ path: '/visitplanaddorupdate' });
+                "remarks": ''}
+            visitaddOrUpdateData.submitURL = this.$store.state.defaultHttp+ 'visit/insertVisit.do?cId='+this.$store.state.iscId+'&pId='+this.$store.state.ispId
+            this.$store.state.visitaddOrUpdateData = visitaddOrUpdateData
+            _this.$router.push({ path: '/visitplanaddorupdate' })
         },
         handleEdit(index,row){
-            const _this = this;
-            let visitaddOrUpdateData = {};
+            const _this = this
+            let visitaddOrUpdateData = {}
             visitaddOrUpdateData.createForm = [
                 {"label":"拜访公司","inputModel":"customerName","type":"require"},
                 {"label":"拜访时间","inputModel":"visitTime","type":"date"},
@@ -401,7 +412,7 @@ export default {
                 {"label":"拜访目的","inputModel":"visitObjective","type":"textarea"},
                 {"label":"协助人员","inputModel":"assistantsid","type":"select","multiple":true},
                 {"label":"审批人员","inputModel":"approverid","type":"select"},
-                {"label":"备注","inputModel":"remarks","type":"textarea"}];
+                {"label":"备注","inputModel":"remarks","type":"textarea"}]
             visitaddOrUpdateData.setForm = {
                 "customerpoolid": row.customerpoolid,
                 "customerName": row.customerName,
@@ -415,11 +426,11 @@ export default {
                 "assistants": row.assistants,
                 "approverid":row.approverid,
                 "approver": row.approver,
-                "remarks": row.remarks};
-            visitaddOrUpdateData.submitData = {"id": row.id};
-            visitaddOrUpdateData.submitURL = this.$store.state.defaultHttp+ 'visit/updateVisit.do?cId='+this.$store.state.iscId,
-            this.$store.state.visitaddOrUpdateData = visitaddOrUpdateData;
-            _this.$router.push({ path: '/visitplanaddorupdate' });
+                "remarks": row.remarks}
+            visitaddOrUpdateData.submitData = {"id": row.id}
+            visitaddOrUpdateData.submitURL = this.$store.state.defaultHttp+ 'visit/updateVisit.do?cId='+this.$store.state.iscId
+            this.$store.state.visitaddOrUpdateData = visitaddOrUpdateData
+            _this.$router.push({ path: '/visitplanaddorupdate' })
         },
         handledelete(index,row){
             const _this = this
@@ -459,17 +470,17 @@ export default {
             });
         },
         search(){
-            this.$options.methods.reloadTable.bind(this)(true);
+            this.$options.methods.reloadTable.bind(this)(true)
         },
         handleSizeChange(val) {
             const _this = this;
             _this.limit = val;
-            this.$options.methods.reloadTable.bind(this)(true);
+            this.$options.methods.reloadTable.bind(this)(true)
         },
         handleCurrentChange(val) {
             const _this = this;
             _this.page = val;
-            this.$options.methods.reloadTable.bind(this)(true);
+            this.$options.methods.reloadTable.bind(this)(true)
         },
     },
 }

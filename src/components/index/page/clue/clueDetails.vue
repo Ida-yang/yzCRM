@@ -110,7 +110,7 @@
                                 <el-radio v-model="followform.followContent" v-for="item in fastcontactList" :key="item.communicationId" :label="item.content">{{item.name}}</el-radio>
                             </el-form-item>
                             <el-form-item>
-                                <el-button style="float:right;" class="searchbutton" size="mini" @click="Submitfollowform">立即提交</el-button>
+                                <el-button style="float:right;" type="primary" size="mini" @click="Submitfollowform">立即提交</el-button>
                             </el-form-item>
                         </el-form>
                         <ul class="followrecord" v-for="(item,index) in record" :key="item.followId">
@@ -213,7 +213,7 @@
             <div class="searchList" style="width:100%;">
                 <!-- <el-input v-model="searchList.searchName" placeholder="公司名称" style="width:200px;"></el-input> -->
                 <el-input  v-model="searchList.keyword" placeholder="请输入标题" style="width:80%;"></el-input>
-                <el-button icon="el-icon-search" class="searchbutton" size="mini" @click="search()"></el-button>
+                <el-button icon="el-icon-search" type="primary" size="mini" @click="search()"></el-button>
             </div>
             <el-table
             :data="tableData"

@@ -10,7 +10,7 @@
         <div class="searchList" style="width:100%;">
             <el-input v-model="searchList.searchName" placeholder="公司名称" style="width:300px;"></el-input>
             &nbsp;&nbsp;
-            <el-button icon="el-icon-search" class="searchbutton" size="mini" @click="search()">查询</el-button>
+            <el-button icon="el-icon-search" type="primary" size="mini" @click="search()">查询</el-button>
         </div>
         <div class="entry">
             <el-button class="info-btn" size="mini" @click="handleDeletes()">删除</el-button>
@@ -28,7 +28,7 @@
                 <br><br><br>
                 <div style="text-align: right; margin: 0">
                     <el-button type="text" @click="visible2 = false">取消</el-button>
-                    <el-button class="searchbutton" size="mini" @click="handleDistribution()">确定</el-button>
+                    <el-button type="primary" size="mini" @click="handleDistribution()">确定</el-button>
                 </div>
                 <el-button slot="reference" class="btn" size="mini">分配</el-button>
             </el-popover>

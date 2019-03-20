@@ -39,7 +39,7 @@
                             </el-input>
                         </el-form-item>
                         <el-form-item>
-                            <el-button class="searchbutton" @click="submitForm" style="width:100%;margin-top:10px;">登&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;录</el-button>
+                            <el-button type="primary" @click="submitForm" style="width:100%;margin-top:10px;">登&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;录</el-button>
                         </el-form-item>
                     </el-form>
                 </div>

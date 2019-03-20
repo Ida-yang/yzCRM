@@ -11,7 +11,7 @@
             <span class="nameList">公司名称：</span>
             <el-input v-model="searchList.searchName" placeholder="公司名称" style="width:300px;"></el-input>
             &nbsp;&nbsp;
-            <el-button icon="el-icon-search" class="searchbutton" size="mini" @click="search()">查询</el-button>
+            <el-button icon="el-icon-search" type="primary" size="mini" @click="search()">查询</el-button>
         </div>
         <div class="entry">
             <el-button class="btn info-btn" size="mini" @click="handleAdd()">新增</el-button>

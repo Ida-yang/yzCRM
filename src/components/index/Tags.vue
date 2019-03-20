@@ -11,7 +11,7 @@
         </ul>
         <div ref="rock" class="tags-close-box">
             <el-dropdown @command="handleTags">
-                <el-button size="mini" class="searchbutton">
+                <el-button size="mini" type="primary">
                     <i class="el-icon-arrow-down el-icon--right"></i>
                 </el-button>
                 <el-dropdown-menu size="small" slot="dropdown">

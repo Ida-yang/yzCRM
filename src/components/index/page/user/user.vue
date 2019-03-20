@@ -17,7 +17,7 @@
             <div class="searchList" style="width:100%;">
                 <el-input v-model="searchList.searchName" placeholder="用户名称" style="width:300px;"></el-input>
                 &nbsp;&nbsp;
-                <el-button icon="el-icon-search" class="searchbutton" size="mini" @click="search()">查询</el-button>
+                <el-button icon="el-icon-search" type="primary" size="mini" @click="search()">查询</el-button>
             </div>
             <div class="entry">
                 <el-button class="btn" size="mini" @click="handlesynchros()">同步</el-button>

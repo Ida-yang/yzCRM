@@ -21,7 +21,7 @@
             <span class="nameList">公司名称：</span>
             <el-input v-model="searchList.searchName" placeholder="公司名称" style="width:300px;"></el-input>
             &nbsp;&nbsp;
-            <el-button icon="el-icon-search" class="searchbutton" size="mini" @click="search()">查询</el-button>
+            <el-button icon="el-icon-search" type="primary" size="mini" @click="search()">查询</el-button>
         </div>
         <div class="entry">
             <el-button class="btn info-btn" size="mini" @click="handleAdd()">新增</el-button>
@@ -571,9 +571,9 @@
                     {"label":"注册时间","inputModel":"registerTime","type":"date"},
                     {"label":"企业规模","inputModel":"enterpriseScale","type":"select"},
                     {"label":"融资状态","inputModel":"financingState","type":"select"},
-                    {"label":"行业","inputModel":"industryType","type":"select"},
-                    {"label":"公司类型","inputModel":"companyType","type":"select"},
-                    {"label":"经营状态","inputModel":"operatingState","type":"select"},]
+                    {"label":"行业","inputModel":"industryId","type":"select"},
+                    {"label":"公司类型","inputModel":"companyId","type":"select"},
+                    {"label":"经营状态","inputModel":"operatingStateId","type":"select"},]
                 clueaddOrUpdateData.setForm = {
                     "cuesid": '',
                     "poolName": '',
@@ -597,9 +597,9 @@
                     "registerTime": '',
                     "enterpriseScale": '',
                     "financingState": '',
-                    "industryType": '',
-                    "companyType": '',
-                    "operatingState": ''};
+                    "industryId": '',
+                    "companyId": '',
+                    "operatingStateId": ''};
                 clueaddOrUpdateData.submitURL = this.$store.state.defaultHttp+ 'customerTwo/saveClue.do?cId='+this.$store.state.iscId+'&pId='+this.$store.state.ispId,
                 this.$store.state.clueaddOrUpdateData = clueaddOrUpdateData;
                 axios({
@@ -645,9 +645,9 @@
                     {"label":"注册时间","inputModel":"registerTime","type":"date"},
                     {"label":"企业规模","inputModel":"enterpriseScale","type":"select"},
                     {"label":"融资状态","inputModel":"financingState","type":"select"},
-                    {"label":"行业","inputModel":"industryType","type":"select"},
-                    {"label":"公司类型","inputModel":"companyType","type":"select"},
-                    {"label":"经营状态","inputModel":"operatingState","type":"select"},]
+                    {"label":"行业","inputModel":"industryId","type":"select"},
+                    {"label":"公司类型","inputModel":"companyId","type":"select"},
+                    {"label":"经营状态","inputModel":"operatingStateId","type":"select"},]
                 clueaddOrUpdateData.setForm = {
                     "cuesid": row.cuesid,
                     "poolName": row.name,
@@ -675,8 +675,11 @@
                     "enterpriseScale": row.enterpriseScale,
                     "financingState": row.financingState,
                     "industryType": row.industryType,
+                    "industryId": row.industryId,
                     "companyType": row.companyType,
-                    "operatingState": row.operatingState};
+                    "companyId": row.companyId,
+                    "operatingState": row.operatingState,
+                    "operatingStateId": row.operatingStateId};
                 clueaddOrUpdateData.submitData = {"id": row.id,'csId':row.contacts[0].csId};
                 clueaddOrUpdateData.submitURL = this.$store.state.defaultHttp+ 'customerTwo/updateClue.do?cId='+this.$store.state.iscId+'&pId='+this.$store.state.ispId,
                 this.$store.state.clueaddOrUpdateData = clueaddOrUpdateData;
