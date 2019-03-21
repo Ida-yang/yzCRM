@@ -304,6 +304,7 @@
             this.loadData();
             this.loadTable();
             this.loadCountry()
+            this.loadinfo()
         },
         methods:{
             loadCountry(){

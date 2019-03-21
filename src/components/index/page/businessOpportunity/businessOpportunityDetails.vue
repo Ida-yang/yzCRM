@@ -75,18 +75,18 @@
         
         <el-col :span="6" style="padding:10px;" class="right">
             <div class="searchList" style="width:100%;">
-                <el-input  v-model="searchList.keyword" placeholder="请输入标题" style="width:80%;"></el-input>
+                <el-input  v-model="searchList.keyword" placeholder="请输入公司名称" style="width:80%;" @keyup.enter.native="search"></el-input>
                 <el-button icon="el-icon-search" type="primary" size="mini" @click="search()"></el-button>
             </div>
             <el-table
             :data="tableData"
             style="width: 100%">
                 <el-table-column
-                prop="opportunity_name"
-                label="商机名称">
+                prop="customerpool[0].name"
+                label="公司名称">
                     <template slot-scope="scope">
                     <div @click="getRow(scope.$index, scope.row)">
-                        {{scope.row.opportunity_name}}
+                        {{scope.row.customerpool[0].name}}
                     </div>
                 </template>
                 </el-table-column>
@@ -176,10 +176,11 @@
         //     this.loadData();
         // },
         activated(){
+            this.loadTable()
             this.loadData();
         },
         methods: {
-            loadData() {
+            loadTable(){
                 this.detailData = this.$store.state.oppdetailsData.submitData;
                 this.idArr.opportunity_id = this.$store.state.oppdetailsData.submitData.id
                 const _this = this
@@ -187,6 +188,20 @@
                 let pageInfo = {}
                 pageInfo.page = this.page
                 pageInfo.limit = this.limit
+
+                axios({
+                    method: 'post',
+                    url: _this.$store.state.defaultHttp+'opportunity/query.do?cId='+_this.$store.state.iscId,
+                    data: qs.stringify(pageInfo),
+                }).then(function(res){
+                    _this.tableData = res.data.map.success
+                    _this.tableNumber = res.data.count
+                }).catch(function(err){
+                    console.log(err);
+                });
+            },
+            loadData() {
+                const _this = this
                 //详情页联系人
                 axios({
                     method:'get',
@@ -237,16 +252,6 @@
                             }
                         }
                     }
-                }).catch(function(err){
-                    console.log(err);
-                });
-                axios({
-                    method: 'post',
-                    url: _this.$store.state.defaultHttp+'opportunity/query.do?cId='+_this.$store.state.iscId,
-                    data: qs.stringify(pageInfo),
-                }).then(function(res){
-                    _this.tableData = res.data.map.success
-                    _this.tableNumber = res.data.count
                 }).catch(function(err){
                     console.log(err);
                 });

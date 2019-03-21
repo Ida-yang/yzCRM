@@ -66,8 +66,7 @@
         
         <el-col :span="6" style="padding:10px;" class="right">
             <div class="searchList" style="width:100%;">
-                <!-- <el-input v-model="searchList.searchName" placeholder="公司名称" style="width:200px;"></el-input> -->
-                <el-input  v-model="searchList.keyword" placeholder="请输入标题" style="width:80%;"></el-input>
+                <el-input  v-model="searchList.keyword" placeholder="请输入公司名称" style="width:80%;" @keyup.enter.native="search"></el-input>
                 <el-button icon="el-icon-search" type="primary" size="mini" @click="search()"></el-button>
             </div>
             <el-table
@@ -104,19 +103,16 @@
     import qs from 'qs'
 
     export default {
-        name:'clueDetails',
+        name:'agreementDetails',
         store,
-        computed: {
-            clueDetails(){
-                return store.state.clueDetailsList;
-            }
-        },
+        // computed: {
+        //     agreementDetails(){
+        //         return store.state.agreementDetails;
+        //     }
+        // },
         data(){
             return {
                 detailData:null,
-                agreementform:{
-                    agreementContent:'',
-                },
                 searchList:{
                     keyword:null,
                 },
@@ -163,23 +159,15 @@
                 let pageInfo = {}
                 pageInfo.page = this.page
                 pageInfo.limit = this.limit
+                pageInfo.searchName = this.searchList.keyword
                 //加载详情页右侧表格
                 axios({
                     method:'post',
-                    url:_this.$store.state.defaultHttp+'getContractAll.do?cId='+_this.$store.state.iscId,
+                    url:_this.$store.state.defaultHttp+'getContractAll.do?cId='+_this.$store.state.iscId + '&pId=' +_this.$store.state.ispId,
                     data:qs.stringify(pageInfo)
                 }).then(function(res){
                     _this.tableData = res.data.map.success
                     _this.tableNumber = res.data.count
-                }).catch(function(err){
-                    console.log(err);
-                });
-                //加载合同详情
-                axios({
-                    method:'get',
-                    url:_this.$store.state.defaultHttp+'getContractById.do?cId='+_this.$store.state.iscId+'&contractId='+this.detailData.id,
-                }).then(function(res){
-                    _this.agreementdetail = res.data
                 }).catch(function(err){
                     console.log(err);
                 });
@@ -206,6 +194,15 @@
                         _this.imgurl = '/upload/'+_this.$store.state.iscId+'/'+el.name
                         _this.fileList.push({id:_this.imgid,imgURL:_this.imgurl})
                     });
+                }).catch(function(err){
+                    console.log(err);
+                });
+                //加载合同详情
+                axios({
+                    method:'get',
+                    url:_this.$store.state.defaultHttp+'getContractById.do?cId='+_this.$store.state.iscId+'&contractId='+this.detailData.id,
+                }).then(function(res){
+                    _this.agreementdetail = res.data
                 }).catch(function(err){
                     console.log(err);
                 });
@@ -296,22 +293,7 @@
             },
             search(){
                 const _this = this;
-                let qs =require('querystring')
-                let searchList = {}
-                searchList.searchName = this.searchList.keyword;
-                searchList.page = this.page;
-                searchList.limit = this.limit;
-
-                axios({
-                    method: 'post',
-                    url: _this.$store.state.defaultHttp+'customerTwo/getUserByClue.do?cId='+_this.$store.state.iscId+'&pId='+_this.$store.state.ispId,
-                    data: qs.stringify(searchList),
-                }).then(function(res){
-                    _this.tableData = res.data.map.success
-                    _this.tableNumber = res.data.count
-                }).catch(function(err){
-                    console.log(err);
-                });
+                _this.$options.methods.loadData.bind(_this)();
             },
             handleSizeChange(val) {
                 const _this = this;
@@ -352,17 +334,6 @@
     }
     .el-card__body{
         padding: 0;
-    }
-    .agreementform{
-        height: auto;
-        min-height: 200px;
-        margin-bottom: 30px;
-        position: relative;
-        /* background-color: #90b49c; */
-    }
-    .agreementform > .el-form-item:not(:first-child){
-        float: left;
-        margin-bottom: 5px;
     }
     .fileinput{
         width: 100px;

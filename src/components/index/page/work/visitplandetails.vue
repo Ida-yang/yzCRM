@@ -82,7 +82,7 @@
         
         <el-col :span="6" style="padding:10px;" class="right">
             <div class="searchList" style="width:100%;">
-                <el-input  v-model="searchName" placeholder="请输入标题" style="width:80%;"></el-input>
+                <el-input  v-model="searchName" placeholder="请输入公司名称" style="width:80%;" @keyup.enter.native="search"></el-input>
                 <el-button icon="el-icon-search" type="primary" size="mini" @click="search()"></el-button>
             </div>
             <el-table
@@ -242,7 +242,7 @@ export default {
 
             axios({
                 method: 'post',
-                url: _this.$store.state.defaultHttp+'visit/updateVisit.do?cId='+_this.$store.state.iscId + '&pId=' + this.$store.state.ispId,
+                url: _this.$store.state.defaultHttp+'visit/updateVisit.do?cId='+_this.$store.state.iscId,
                 data: qs.stringify(data),
             }).then(function(res){
                 console.log(res)
@@ -290,7 +290,7 @@ export default {
             }else{
                 axios({
                     method: 'post',
-                    url: _this.$store.state.defaultHttp+'visit/updateVisit.do?cId='+_this.$store.state.iscId + '&pId=' + this.$store.state.ispId,
+                    url: _this.$store.state.defaultHttp+'visit/updateVisit.do?cId='+_this.$store.state.iscId,
                     data: qs.stringify(data),
                 }).then(function(res){
                     console.log(res)

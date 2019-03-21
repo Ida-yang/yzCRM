@@ -183,7 +183,7 @@
                 itemlast: [
                     {
                         icon: 'el-icon-new-shezhi',
-                        index: '999',
+                        index: '7',
                         title: '系统设置',
                         subs: [
                             {
@@ -250,6 +250,7 @@
         left: 0;
         top: 0;
         bottom: 0px;
+        background-color: rgb(32, 34, 42);
         /* border-right: 1px solid #ffff00; */
         /* overflow-y: scroll; */
     }
@@ -258,6 +259,7 @@
     }
     .sidebar-el-menu:not(.el-menu--collapse){
         width: 150px;
+        height: auto
     }
     .sidebar > ul {
         height:100%;

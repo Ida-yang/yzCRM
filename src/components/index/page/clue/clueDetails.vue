@@ -34,9 +34,13 @@
                     <div slot="header" class="clearfix">
                         <span>辅助信息</span>
                         <el-popover placement="left" width="350" trigger="click">
+                            <div style="padding:5px;color:red;">智能补全必须选择客户所在省份</div>
                             <el-select v-model="countryId" @change="searchBusiness" style="width:90%">
                                 <el-option v-for="item in Provinces" :key="item.id" :label="item.name" :value="item.id" placeholder="请选择省份"></el-option>
                             </el-select>
+                            <div class="load_icon" v-if="showloading">
+                                <span><i class="el-icon-loading"></i>请稍候...</span>
+                            </div>
                             <ul class="ul_business" v-if="showbusiness">
                                 <li><span>匹配公司：</span>{{businessList.screenName || '无'}}</li>
                                 <li><span>公司地址：</span>{{businessList.address || '无'}}</li>
@@ -211,8 +215,7 @@
         
         <el-col :span="6" style="padding:10px;" class="right">
             <div class="searchList" style="width:100%;">
-                <!-- <el-input v-model="searchList.searchName" placeholder="公司名称" style="width:200px;"></el-input> -->
-                <el-input  v-model="searchList.keyword" placeholder="请输入标题" style="width:80%;"></el-input>
+                <el-input  v-model="searchList.keyword" placeholder="请输入公司名称" style="width:80%;" @keyup.enter.native="search"></el-input>
                 <el-button icon="el-icon-search" type="primary" size="mini" @click="search()"></el-button>
             </div>
             <el-table
@@ -316,6 +319,7 @@
                 Provinces:null,
                 businessList:null,
                 showbusiness:false,
+                showloading:false
             }
         },
         activated(){
@@ -331,8 +335,6 @@
                 this.idArr.id = this.$store.state.cluedetailsData.submitData.id
                 const _this = this
                 let qs = require('querystring')
-                let data = {}
-                data.type = '线索状态'
                 let pageInfo = {}
                 pageInfo.page = this.page
                 pageInfo.limit = this.limit
@@ -346,16 +348,6 @@
                     _this.contactList = res.data.map.success
                     _this.priconList = res.data.map.success
                     _this.followform.contactsId = res.data.map.success[0].id
-                }).catch(function(err){
-                    console.log(err);
-                });
-                //加载线索状态
-                axios({
-                    method:'post',
-                    url:_this.$store.state.defaultHttp+'typeInfo/getTypeInfoGroupByType.do?cId='+_this.$store.state.iscId,
-                    data:qs.stringify(data)
-                }).then(function(res){
-                    _this.stateList = res.data.slice(1)
                 }).catch(function(err){
                     console.log(err);
                 });
@@ -385,7 +377,12 @@
                     url:_this.$store.state.defaultHttp+'getFollowStaff.do?cId='+_this.$store.state.iscId+'&customertwoId='+this.detailData.id,
                 }).then(function(res){
                     _this.record = res.data.map.success
-                    _this.followform.state = _this.record[0].state
+                    if(!_this.record[0]){
+                        _this.loadState()
+                    }else{
+                        _this.followform.state = _this.record[0].state
+                        _this.loadState()
+                    }
                     _this.record.forEach(el => {
                         el.showdelico = false
                         let startTime = Date.parse(el.createTime); // 开始时间
@@ -410,6 +407,29 @@
                     _this.showbusiness = false
                 }).catch(function(err){
                     console.log(err);
+                });
+            },
+            loadState(){
+                const _this = this
+                let qs = require('querystring')
+                let data = {}
+                data.type = '线索状态'
+
+                //加载线索状态
+                axios({
+                    method:'post',
+                    url:_this.$store.state.defaultHttp+'typeInfo/getTypeInfoGroupByType.do?cId='+_this.$store.state.iscId,
+                    data:qs.stringify(data)
+                }).then(function(res){
+                    _this.stateList = res.data.slice(1)
+                    _this.stateList.forEach(el => {
+                        if(_this.followform.state == el.typeName){
+                            _this.followform.state = el.id
+                        }
+                    });
+                    console.log(_this.followform.state)
+                }).catch(function(err){
+                    console.log(err)
                 });
             },
             loadCountry(){
@@ -558,6 +578,7 @@
                 // console.log(tab, event);
             },
             searchBusiness(val){
+                this.showloading = true
                 const _this = this
                 let qs = require('querystring')
                 let freshList = {}
@@ -571,6 +592,7 @@
                 }).then(function(res){
                     if(res.data.code && res.data.code == '200' && res.data.map.businessDatas){
                         _this.businessList = res.data.map.businessDatas[0]
+                        _this.showloading = false
                         _this.showbusiness = true
                         axios({
                             method: 'post',
@@ -659,45 +681,51 @@
                 data.deptid = this.$store.state.deptid
                 data.secondid = this.$store.state.insid
 
-                axios({
-                    method: 'get',
-                    url: _this.$store.state.defaultHttp+'clueJurisdiction/follow.do',//新增部门
-                }).then(function(res){
-                    if(res.data.msg && res.data.msg == 'error'){
-                        _this.$message({
-                            message:'对不起，您没有该权限，请联系管理员开通',
-                            type:'error'
-                        })
-                    }else{
-                        axios({
-                            method: 'post',
-                            url:  _this.$store.state.defaultHttp+ 'addFollow.do?cId='+_this.$store.state.iscId+'&pId='+_this.$store.state.ispId,
-                            data:qs.stringify(data,this),
-                        }).then(function(res){
-                            if(res.data.msg && res.data.msg == 'success' ) {
-                                _this.$message({
-                                    message: '提交成功',
-                                    type: 'success'
-                                });
-                                _this.followform.contactTime = ''
-                                _this.followform.followContent = ''
-                                _this.$store.state.cluedetailsData.submitData = {"id":_this.detailData.id}
-                                _this.$options.methods.loadData.bind(_this)(true);
-                            } else {
-                                _this.$message({
-                                    message: res.data.msg,
-                                    type: 'error'
-                                });
-                            }
-                        }).catch(function(err){
-                            console.log(err);
-                        });
-                    }
-                    
-                }).catch(function(err){
-                    console.log(err);
-                });
-                
+                if(!data.followContent){
+                    _this.$message({
+                        message: '跟进内容不能为空',
+                        type: 'error'
+                    });
+                }else{
+                    axios({
+                        method: 'get',
+                        url: _this.$store.state.defaultHttp+'clueJurisdiction/follow.do',//新增部门
+                    }).then(function(res){
+                        if(res.data.msg && res.data.msg == 'error'){
+                            _this.$message({
+                                message:'对不起，您没有该权限，请联系管理员开通',
+                                type:'error'
+                            })
+                        }else{
+                            axios({
+                                method: 'post',
+                                url:  _this.$store.state.defaultHttp+ 'addFollow.do?cId='+_this.$store.state.iscId+'&pId='+_this.$store.state.ispId,
+                                data:qs.stringify(data,this),
+                            }).then(function(res){
+                                if(res.data.msg && res.data.msg == 'success' ) {
+                                    _this.$message({
+                                        message: '提交成功',
+                                        type: 'success'
+                                    });
+                                    _this.followform.contactTime = ''
+                                    _this.followform.followContent = ''
+                                    _this.$store.state.cluedetailsData.submitData = {"id":_this.detailData.id}
+                                    _this.$options.methods.loadData.bind(_this)(true);
+                                } else {
+                                    _this.$message({
+                                        message: res.data.msg,
+                                        type: 'error'
+                                    });
+                                }
+                            }).catch(function(err){
+                                console.log(err)
+                            });
+                        }
+                        
+                    }).catch(function(err){
+                        console.log(err);
+                    });
+                }
             },
             closeTag() {
                 let tagsList = this.$store.state.tagsList;

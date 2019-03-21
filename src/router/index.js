@@ -109,7 +109,7 @@ const router =new Router({
         {
           path: '/agreementDetails',
           component: resolve => require(['../components/index/page/agreement/agreementDetails.vue'], resolve),
-          meta: { title: '合同详情',name:'agreementDetails' ,requireAuth:true}
+          meta: { title: '合同详情' ,requireAuth:true}
         },
         {
           path: '/agreementaddorupdate',

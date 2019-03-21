@@ -9,7 +9,7 @@
         </div>
         <div class="searchList" style="width:100%;">
             <span class="nameList">公司名称：</span>
-            <el-input v-model="searchList.searchName" placeholder="公司名称" style="width:300px;"></el-input>
+            <el-input v-model="searchList.searchName" placeholder="请输入公司名称" style="width:300px;" @keyup.enter.native="search"></el-input>
             &nbsp;&nbsp;
             <el-button icon="el-icon-search" type="primary" size="mini" @click="search()">查询</el-button>
         </div>

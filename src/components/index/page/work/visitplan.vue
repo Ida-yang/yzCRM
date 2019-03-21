@@ -19,7 +19,7 @@
         </div>
         <div class="searchList">
             <span class="nameList">公司名称：</span>
-            <el-input v-model="searchList.searchName" placeholder="公司名称" style="width:300px;"></el-input>
+            <el-input v-model="searchList.searchName" placeholder="请输入公司名称" style="width:300px;" @keyup.enter.native="search"></el-input>
             &nbsp;&nbsp;
             <el-button icon="el-icon-search" type="primary" size="mini" @click="search()">查询</el-button>
         </div>
@@ -124,9 +124,9 @@
                 sortable>
                 <template slot-scope="scope">
                     <el-button-group>
-                        <el-button size="mini" :type="scope.row.progress" @click="changeState($event, scope.row)">未完成</el-button>
-                        <el-button size="mini" :type="scope.row.completed" @click="changeState($event, scope.row)">已完成</el-button>
-                        <el-button size="mini" :type="scope.row.nullify" @click="changeState($event, scope.row)">作废</el-button>
+                        <el-button size="mini" :disabled="scope.row.progressBtn" :type="scope.row.progress" @click="changeState($event, scope.row)">未完成</el-button>
+                        <el-button size="mini" :disabled="scope.row.completedBtn" :type="scope.row.completed" @click="changeState($event, scope.row)">已完成</el-button>
+                        <el-button size="mini" :disabled="scope.row.nullifyBtn"  :type="scope.row.nullify" @click="changeState($event, scope.row)">作废</el-button>
                     </el-button-group>
                 </template>
             </el-table-column>
@@ -155,12 +155,12 @@
                 <template slot-scope="scope">
                     <el-button
                     size="mini"
-                    :disabled="scope.row.disableBtn"
+                    :disabled="scope.row.editBtn"
                     @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
                     <el-button
                     size="mini"
                     type="primary"
-                    :disabled="scope.row.disableBtn"
+                    :disabled="scope.row.deleteBtn"
                     @click="handledelete(scope.$index, scope.row)">删除</el-button>
                 </template>
             </el-table-column>
@@ -295,6 +295,9 @@ export default {
                 _this.$store.state.visitplanList = data
                 _this.$store.state.visitplanListnumber = res.data.count
                 data.forEach(el => {
+                    let startTime = Date.parse(el.updateTime); // 开始时间
+                    let endTime = new Date().getTime(); // 结束时间
+                    let usedTime = endTime - startTime; // 相差的毫秒数
                     if(el.state == '未完成' || el.state == '申请拜访'){
                         el.progress = 'info'
                         el.completed = ''
@@ -303,18 +306,22 @@ export default {
                         el.progress = ''
                         el.completed = 'warning'
                         el.nullify = ''
-                        let startTime = Date.parse(el.updateTime); // 开始时间
-                        let endTime = new Date().getTime(); // 结束时间
-                        let usedTime = endTime - startTime; // 相差的毫秒数
-                        if(usedTime < 7200000){
-                            el.disableBtn = false
-                        }else{
-                            el.disableBtn = true
+                        if(usedTime > 7200000){
+                            el.progressBtn = true
+                            el.nullifyBtn = true
+                            el.editBtn = true
+                            el.deleteBtn = true
                         }
                     }else{
                         el.progress = ''
                         el.completed = ''
                         el.nullify = 'danger'
+                        el.completedBtn = true
+                        el.editBtn = true
+                    }
+                    if(el.approverState == '已审核'){
+                        el.editBtn = true
+                        el.deleteBtn = true
                     }
                     el.assistants = []
                     el.assistantsid = []
@@ -351,27 +358,36 @@ export default {
             let data = {}
             data.id = row.id
             data.state = e.target.innerText
+            console.log(row.pId)
+            if(row.pId == this.$store.state.ispId){
+                axios({
+                    method: 'post',
+                    url: _this.$store.state.defaultHttp+'visit/updateVisit.do?cId='+_this.$store.state.iscId,
+                    data: qs.stringify(data),
+                }).then(function(res){
+                    if(res.data.code && res.data.code == 200) {
+                        _this.$message({
+                            message: '修改成功',
+                            type: 'success'
+                        });
+                        _this.$options.methods.reloadTable.bind(_this)(true)
+                    } else {
+                        _this.$message({
+                            message: res.data.msg,
+                            type: 'error'
+                        });
+                    }
+                }).catch(function(err){
+                    console.log(err);
+                });
+            }else{
+                _this.$message({
+                    message: '对不起，您没有修改状态的权限',
+                    type: 'error'
+                });
+            }
 
-            axios({
-                method: 'post',
-                url: _this.$store.state.defaultHttp+'visit/updateVisit.do?cId='+_this.$store.state.iscId,
-                data: qs.stringify(data),
-            }).then(function(res){
-                if(res.data.code && res.data.code == 200) {
-                    _this.$message({
-                        message: '修改成功',
-                        type: 'success'
-                    });
-                    _this.$options.methods.reloadTable.bind(_this)(true)
-                } else {
-                    _this.$message({
-                        message: res.data.msg,
-                        type: 'error'
-                    });
-                }
-            }).catch(function(err){
-                console.log(err);
-            });
+            
         },
         handleAdd(){
             const _this = this

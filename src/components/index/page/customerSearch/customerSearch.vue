@@ -4,7 +4,7 @@
         <div class="searchcontent" v-if="show">
             <div class="searchList1">
                 <span class="searchtitle">公司名称：</span>
-                <el-input v-model="searchList.keyword" placeholder="公司名称" style="width:450px;"></el-input>
+                <el-input v-model="searchList.keyword" placeholder="请输入公司名称" style="width:450px;" @keyup.enter.native="search"></el-input>
                 &nbsp;&nbsp;
                 <el-button icon="el-icon-search" type="primary" size="mini" @click="search()">查询</el-button>
             </div>
@@ -622,8 +622,8 @@
                     url:  _this.$store.state.defaultHttp+ 'customerOne/insert.do?cId='+_this.$store.state.iscId+"&pId="+_this.$store.state.ispId,
                     data:qs.stringify(idArr),
                 }).then(function(res){
+                    _this.Loading = false
                     if(res.data.code && res.data.code == '200') {
-                        _this.Loading = false
                         if(res.data.map.map.eroorCount && res.data.map.map.eroorCount == 0){
                             _this.$message({
                                 message: '转移成功,转移了'+res.data.map.map.suceessCount+ '条',
@@ -637,13 +637,11 @@
                         }
                         _this.$options.methods.reloadTable.bind(_this)(true);
                     } else if(res.data.msg && res.data.msg == 'error'){//转移至线索
-                        _this.Loading = false
                         _this.$message({
                             message: '对不起，您没有该权限，请联系管理员开通',
                             type: 'error'
                         })
                     } else {
-                        _this.Loading = false
                         _this.$message({
                             message: res.data.msg,
                             type: 'error'

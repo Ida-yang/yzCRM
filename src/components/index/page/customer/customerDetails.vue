@@ -35,6 +35,9 @@
                             <el-select v-model="countryId" @change="searchBusiness" style="width:90%">
                                 <el-option v-for="item in Provinces" :key="item.id" :label="item.name" :value="item.id" placeholder="请选择省份"></el-option>
                             </el-select>
+                            <div class="load_icon" v-if="showloading">
+                                <span><i class="el-icon-loading"></i>请稍候...</span>
+                            </div>
                             <ul class="ul_business" v-if="showbusiness">
                                 <li><span>匹配公司：</span>{{businessList.screenName || '无'}}</li>
                                 <li><span>公司地址：</span>{{businessList.address || '无'}}</li>
@@ -333,8 +336,7 @@
         
         <el-col :span="6" style="padding:10px;" class="right">
             <div class="searchList" style="width:100%;">
-                <!-- <el-input v-model="searchList.searchName" placeholder="公司名称" style="width:200px;"></el-input> -->
-                <el-input  v-model="searchList.keyword" placeholder="请输入标题" style="width:80%;"></el-input>
+                <el-input  v-model="searchList.keyword" placeholder="请输入公司名称" style="width:80%;" @keyup.enter.native="search"></el-input>
                 <el-button icon="el-icon-search" type="primary" size="mini" @click="search()"></el-button>
             </div>
             <el-table
@@ -450,11 +452,13 @@
                 Provinces:null,
                 businessList:null,
                 showbusiness:false,
+                showloading:false,
             }
         },
         activated(){
             this.loadData();
             this.loadCountry()
+            // this.loadState()
         },
         // mounted(){
         //     this.loadData();
@@ -465,23 +469,12 @@
                 this.idArr.id = this.$store.state.cusdetailsData.submitData.id
                 
                 const _this = this
-                let data = {}
-                data.type = '客户状态'
-                let qs =require('querystring')
+                let qs = require('querystring')
                 let pageInfo = {}
                 pageInfo.page = this.page
                 pageInfo.limit = this.limit
 
-                //加载客户状态
-                axios({
-                    method:'post',
-                    url:_this.$store.state.defaultHttp+'typeInfo/getTypeInfoGroupByType.do?cId='+_this.$store.state.iscId+'&pId='+_this.$store.state.ispId,
-                    data:qs.stringify(data)
-                }).then(function(res){
-                    _this.stateList = res.data
-                }).catch(function(err){
-                    console.log(err);
-                });
+                
                 //加载快捷方式
                 axios({
                     method:'get',
@@ -502,13 +495,29 @@
                 }).catch(function(err){
                     console.log(err);
                 });
+                //加载客户详情
+                axios({
+                    method:'get',
+                    url:_this.$store.state.defaultHttp+'customerpool/getPoolById.do?cId='+_this.$store.state.iscId+'&id='+this.detailData.id,
+                }).then(function(res){
+                    _this.customerdetail = res.data.map.success[0]
+                    _this.contacts = res.data.map.success[0].contacts[0]
+                    _this.showbusiness = false
+                }).catch(function(err){
+                    console.log(err);
+                });
                 //加载跟进记录
                 axios({
                     method:'get',
                     url:_this.$store.state.defaultHttp+'customerpool/getFollowStaffAndpool.do?cId='+_this.$store.state.iscId+'&pId='+_this.$store.state.ispId+'&customerpool_id='+_this.detailData.id,
                 }).then(function(res){
                     _this.record = res.data.map.success
-                    _this.followform.state = _this.record[0].state
+                    if(!_this.record[0]){
+                        _this.loadState()
+                    }else{
+                        _this.followform.state = _this.record[0].state
+                        _this.loadState()
+                    }
                     _this.record.forEach(el => {
                         let startTime = Date.parse(el.createTime); // 开始时间
                         let endTime = new Date().getTime(); // 结束时间
@@ -519,17 +528,6 @@
                             el.showdelico = false
                         }
                     });
-                }).catch(function(err){
-                    console.log(err);
-                });
-                //加载客户详情
-                axios({
-                    method:'get',
-                    url:_this.$store.state.defaultHttp+'customerpool/getPoolById.do?cId='+_this.$store.state.iscId+'&id='+this.detailData.id,
-                }).then(function(res){
-                    _this.customerdetail = res.data.map.success[0]
-                    _this.contacts = res.data.map.success[0].contacts[0]
-                    _this.showbusiness = false
                 }).catch(function(err){
                     console.log(err);
                 });
@@ -573,6 +571,27 @@
                     data:qs.stringify(pageInfo)
                 }).then(function(res){
                     _this.$store.state.InvoiceDetailsList = res.data.map.success
+                }).catch(function(err){
+                    console.log(err);
+                });
+            },
+            loadState(){
+                const _this = this
+                let qs = require('querystring')
+                let data = {}
+                data.type = '客户状态'
+                //加载客户状态
+                axios({
+                    method:'post',
+                    url:_this.$store.state.defaultHttp+'typeInfo/getTypeInfoGroupByType.do?cId='+_this.$store.state.iscId+'&pId='+_this.$store.state.ispId,
+                    data:qs.stringify(data)
+                }).then(function(res){
+                    _this.stateList = res.data
+                    _this.stateList.forEach(el => {
+                        if(_this.followform.state == el.typeName){
+                            _this.followform.state = el.id
+                        }
+                    });
                 }).catch(function(err){
                     console.log(err);
                 });
@@ -693,6 +712,7 @@
             },
             
             searchBusiness(val){
+                _this.showloading = true
                 const _this = this
                 let qs = require('querystring')
                 let freshList = {}
@@ -706,6 +726,7 @@
                 }).then(function(res){
                     if(res.data.code && res.data.code == '200' && res.data.map.businessDatas){
                         _this.businessList = res.data.map.businessDatas[0]
+                        _this.showloading = false
                         _this.showbusiness = true
                         axios({
                             method: 'post',

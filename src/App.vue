@@ -41,8 +41,8 @@ export default {
     .wrapper {
         width: 100%;
         height: 100%;
-        overflow: hidden;
-        overflow-x: hidden; overflow-y: auto; 
+        /* overflow: hidden; */
+        /* overflow-x: hidden; overflow-y: auto;  */
     }
     .myForm > .el-form-item,.clueForm > .el-form-item,.auxForm > .el-form-item{
         margin-bottom: 12px;
@@ -106,6 +106,9 @@ export default {
     .el-menu-item,.el-submenu__title {
         height: 40px !important;
         line-height: 40px !important;
+    }
+    .el-submenu .el-menu-item{
+        min-width: 149px;
     }
     input::-webkit-outer-spin-button,
     input::-webkit-inner-spin-button{
@@ -533,5 +536,11 @@ export default {
     }
     .el-radio__input.is-checked+.el-radio__label{
         color: blue
+    }
+    .load_icon{
+        width: 300px;
+        height: 30px;
+        padding-left: 120px;
+        padding-top: 10px;
     }
 </style>
