@@ -310,6 +310,7 @@
             this.reloadTable()
         },
         mounted(){
+            this.reloadTable()
             this.reloadData()
             this.loadStep()
         },

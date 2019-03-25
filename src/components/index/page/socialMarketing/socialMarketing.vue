@@ -287,6 +287,7 @@
             this.reloadTable()
         },
         mounted(){
+            this.reloadTable()
             this.loadcues()
         },
         methods:{

@@ -174,13 +174,13 @@ export default {
                 }
                 if(_this.$store.state.ispId == _this.visitdetails.approverid){
                     _this.isexa = true
-                    if(_this.visitdetails.approverState == '已审核'){
-                        _this.examines = false
-                    }else{
-                        _this.examines = true
-                    }
                 }else{
                     _this.isexa = false
+                }
+                if(_this.visitdetails.approverState == '已审核'){
+                    _this.examines = false
+                }else{
+                    _this.examines = true
                 }
             }).catch(function(err){
                 console.log(err);

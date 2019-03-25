@@ -275,6 +275,7 @@ export default {
         }
     },
     mounted(){
+        this.reloadTable()
         this.reloadData()
     },
     activated(){

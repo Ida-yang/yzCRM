@@ -429,9 +429,9 @@
                 },
             }
         },
-        // mounted(){
-        //     this.reloadTable()
-        // },
+        mounted(){
+            this.reloadTable()
+        },
         activated(){
             this.reloadTable()
         },

@@ -476,6 +476,7 @@
             this.reloadTable()
         },
         mounted(){
+            this.reloadTable()
             this.reloadData()
         },
         beforeCreate(){

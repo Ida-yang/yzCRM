@@ -8,6 +8,8 @@
                         <span>{{agreementdetail.poolName}}</span>
                         <el-button style="float:right;margin-left:10px;" class="info-btn" size="mini" @click="retract()" v-show="retracts">收起</el-button>
                         <el-button style="float:right;margin-left:10px;" class="info-btn" size="mini" @click="retract()" v-show="!retracts">显示</el-button>
+                        <el-button style="float:right;margin-left:10px;" class="info-btn" size="mini" @click="toexamine($event)" v-if="isexa" v-show="examines">审核</el-button>
+                        <el-button style="float:right;margin-left:10px;" class="info-btn" size="mini" @click="toexamine($event)" v-if="isexa" v-show="!examines">反审核</el-button>
                     </div>
                     <div class="text item" v-show="thisshow">
                         <ul>
@@ -23,6 +25,9 @@
                             <li>剩余天数：<span>{{agreementdetail.due_time}}</span></li>
                         </ul>
                         <p>&nbsp;</p>
+                        <div class="audited" v-if="showaudited">
+                            <img class="audited_img" src="/upload/staticImg/examine.png" alt="已审核">
+                        </div>
                     </div>
                     <div v-show="!thisshow"></div>
                 </el-card>
@@ -52,7 +57,9 @@
                                 <li>创建人机构：<span>{{agreementdetail.private_employee}}</span></li>
                                 <li>创建时间：<span>{{agreementdetail.create_time}}</span></li>
                                 <li>修改时间：<span>{{agreementdetail.update_time}}</span></li>
-                                <!-- <li>修改人：<span>{{agreementdetail.signatories}}</span></li> -->
+                                <li></li>
+                                <li>审核状态：<span>{{agreementdetail.state}}</span></li>
+                                <li>审核时间：<span>{{agreementdetail.signatories}}</span></li>
                             </ul>
                             <p>&nbsp;</p>
                         </div>
@@ -140,6 +147,9 @@
                 imgshow:false,
 
                 retracts:true,
+                examines:true,
+                isexa:false,
+                showaudited:false
             }
         },
         // activated(){
@@ -152,8 +162,6 @@
         },
         methods: {
             loadData() {
-                this.detailData = this.$store.state.agreedetailsData.submitData;
-                this.idArr.id = this.$store.state.agreedetailsData.submitData.id
                 const _this = this
                 let qs =require('querystring')
                 let pageInfo = {}
@@ -173,6 +181,8 @@
                 });
             },
             loadIMG(){
+                this.detailData = this.$store.state.agreedetailsData.submitData;
+                this.idArr.id = this.$store.state.agreedetailsData.submitData.id
                 const _this = this
                 _this.fileList = []
                 let qs = require('querystring')
@@ -203,8 +213,60 @@
                     url:_this.$store.state.defaultHttp+'getContractById.do?cId='+_this.$store.state.iscId+'&contractId='+this.detailData.id,
                 }).then(function(res){
                     _this.agreementdetail = res.data
+                    if(res.data.approverid == _this.$store.state.ispId){
+                        _this.isexa = true
+                    }else{
+                        _this.isexa = false
+                    }
+                    if(res.data.state == '已审核'){
+                        _this.examines = false
+                        _this.showaudited = true
+                        console.log('1111111')
+                    }else{
+                        _this.examines = true
+                        _this.showaudited = false
+                        console.log('2222222')
+                    }
                 }).catch(function(err){
                     console.log(err);
+                });
+            },
+            toexamine(e){
+                console.log(e)
+                const _this = this
+                let qs = require('querystring')
+                let val = e.target.innerText
+                let data = {}
+                data.contract_id = this.detailData.id
+                data.contract_name = this.agreementdetail.contract_name
+                if(val == '审核'){
+                    data.state = '已审核'
+                }else{
+                    data.state = '未审核'
+                }
+
+                axios({
+                    method: 'post',
+                    url: _this.$store.state.defaultHttp+'updateContract.do?cId='+_this.$store.state.iscId,
+                    data: qs.stringify(data),
+                }).then(function(res){
+                    console.log(res)
+                    if(res.data && res.data == 'success') {
+                        _this.$message({
+                            message: '操作成功',
+                            type: 'success'
+                        });
+                        _this.examines = !_this.examines
+                        _this.showaudited = !_this.showaudited
+                        _this.$options.methods.loadIMG.bind(_this)(true)
+                    } else {
+                        _this.$message({
+                            message: res.data.msg,
+                            type: 'error'
+                        });
+                    }
+                }).catch(function(err){
+                    console.log(err)
                 });
             },
             tirggerFile (event) {
@@ -286,7 +348,7 @@
             getRow(index,row){
                 this.$store.state.agreedetailsData.submitData = {"id":row.contract_id}
                 this.idArr.contractId = row.contract_id
-                this.$options.methods.loadData.bind(this)(true);
+                this.$options.methods.loadIMG.bind(this)(true);
             },
             handleClick(tab, event) {
                 // console.log(tab, event);
@@ -414,4 +476,14 @@
 	    color: rgb(83, 76, 76);
 	    font-size: 24px;
 	}
+    .audited{
+        position: absolute;
+        right: 45%;
+        top: 90px;
+    }
+    .audited .audited_img{
+        width: 150px;
+        height: 75px;
+        transform: rotate(-10deg)
+    }
 </style>

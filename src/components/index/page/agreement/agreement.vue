@@ -8,7 +8,8 @@
             </el-radio-group>
             <el-radio-group v-model="searchList.type">
                 <span class="nameList">合同类型：</span>
-                <el-radio v-for="(item,index) in typeData" :key="index" :label="item.id" @change="search()">{{item.name}}</el-radio>
+                <el-radio :label="nullvalue" @change="search()">全部</el-radio>
+                <el-radio v-for="(item,index) in typeData" :key="index" :label="item.name" @change="search()">{{item.name}}</el-radio>
             </el-radio-group>
             <el-radio-group v-model="searchList.example">
                 <span class="nameList">到期合同：</span>
@@ -241,9 +242,11 @@
                 <template slot-scope="scope">
                     <el-button
                     size="mini"
+                    :disabled="scope.row.disabledBtn"
                     @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
                     <el-button
                     size="mini"
+                    :disabled="scope.row.disabledBtn"
                     type="danger"
                     @click="handleDelete(scope.$index, scope.row)">删除</el-button>
                 </template>
@@ -330,7 +333,6 @@
                     {id:'3',name:'已过期'}
                 ],
                 typeData:[
-                    {id:'',name:'全部'},
                     {id:'1',name:'服务合同'},
                     {id:'2',name:'销售合同'},
                     {id:'3',name:'代理合同'},
@@ -350,10 +352,11 @@
                 
                 formLabelWidth: '130px',
 
-                authorityInterface: null,
+                authorityInterface: null
             }
         },
         mounted(){
+            this.reloadTable()
             this.reloadData()
         },
         activated(){
@@ -377,6 +380,7 @@
                 }
                 searchList.searchName = this.searchList.searchName
                 searchList.example = this.searchList.example
+                searchList.type = this.searchList.type
                 searchList.page = this.page
                 searchList.limit = this.limit
                 
@@ -387,8 +391,14 @@
                 }).then(function(res){
                     _this.$store.state.agreementList = res.data.map.success
                     _this.$store.state.agreementListnumber = res.data.count;
+                    let array = _this.$store.state.agreementList
+                    array.forEach(el => {
+                        if(el.state == '已审核'){
+                            el.disabledBtn = true
+                        }
+                    });
                 }).catch(function(err){
-                    console.log(err);
+                    console.log(err)
                 });
             },
             reloadData() {

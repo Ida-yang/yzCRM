@@ -39,7 +39,7 @@
                                 <el-option v-for="item in Provinces" :key="item.id" :label="item.name" :value="item.id" placeholder="请选择省份"></el-option>
                             </el-select>
                             <div class="load_icon" v-if="showloading">
-                                <span><i class="el-icon-loading"></i>请稍候...</span>
+                                <span><i class="el-icon-loading"></i>加载中，请稍候...</span>
                             </div>
                             <ul class="ul_business" v-if="showbusiness">
                                 <li><span>匹配公司：</span>{{businessList.screenName || '无'}}</li>

@@ -357,6 +357,7 @@
             this.reloadTable()
         },
         mounted(){
+            this.reloadTable()
             this.loadData()
         },
         methods:{

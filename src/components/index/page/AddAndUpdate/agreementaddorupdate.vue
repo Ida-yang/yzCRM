@@ -177,6 +177,7 @@
                 limit: 15,//默认10条
 
                 rules: {
+                    approverid : [{ required: true, message: '审核人不能为空', trigger: 'blur' },],
                     our_signatories : [{ required: true, message: '我方签约人不能为空', trigger: 'blur' },],
                     signatories : [{ required: true, message: '客户签约人不能为空', trigger: 'blur' },],
                     end_date : [{ required: true, message: '合同结束时间不能为空', trigger: 'blur' },],
@@ -329,6 +330,13 @@
                 let flag = false;
                 createForm.forEach(item => {
                     subData[item.inputModel] = _this.myForm[item.inputModel];
+                    if(item.inputModel == "approverid" && !subData[item.inputModel]) {
+                        _this.$message({
+                            message: "审核人不能为空",
+                            type: 'error'
+                        });
+                        flag = true;
+                    }
                     if(item.inputModel == "our_signatories" && !subData[item.inputModel]) {
                         _this.$message({
                             message: "我方签约人不能为空",

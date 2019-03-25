@@ -290,6 +290,7 @@
             this.reloadData()
         },
         activated(){
+            this.reloadData()
             this.loadData()
             this.getresource()
         },
