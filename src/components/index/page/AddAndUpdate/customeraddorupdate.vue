@@ -19,8 +19,17 @@
                             @input="handleInput($event, item.inputModel)"
                             :placeholder="item.placeholder"
                             style="width:90%;" 
+                            auto-complete="off">
+                        </el-input>
+                        <el-input 
+                            v-if="item.type == 'textarea'"
+                            type="textarea"
+                            rows="5"
+                            :value="myForm[item.inputModel]"
+                            @input="handleInput($event, item.inputModel)"
+                            style="width:90%;" 
                             auto-complete="off"
-                            @keyup.enter.native="submit">
+                            :disabled="item.disabled">
                         </el-input>
                         <el-input 
                             v-else-if="item.type && item.type == 'number'"
@@ -108,8 +117,7 @@
                             :value="myForm[item.inputModel]"
                             @input="handleInput($event, item.inputModel)"
                             style="width:90%;" 
-                            auto-complete="off"
-                            @keyup.enter.native="submit">
+                            auto-complete="off">
                         </el-input>
                         <!-- 注册资金 -->
                         <el-input 

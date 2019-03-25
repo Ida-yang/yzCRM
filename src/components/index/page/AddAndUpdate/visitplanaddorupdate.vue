@@ -15,8 +15,7 @@
                     :value="myForm[item.inputModel]"
                     @input="handleInput($event, item.inputModel)"
                     style="width:90%;" 
-                    auto-complete="off"
-                    @keyup.enter.native="submit">
+                    auto-complete="off">
                 </el-input>
                 <el-input 
                     v-else-if="item.type && item.type == 'textarea'"

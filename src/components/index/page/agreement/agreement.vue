@@ -291,7 +291,8 @@
                 let intPart = Math.trunc(value) //获取整数部分
                 let intPartFormat = intPart.toString().replace(/(\d)(?=(?:\d{3})+$)/g, '$1,') // 将整数部分逢三一断
                 let floatPart = '.00' // 预定义小数部分
-                let valArray = intPartFormat.split('.')
+                let valArray = value.split('.')
+                // console.log(valArray)
                 if(valArray.length === 2) {
                     floatPart = valArray[1].toString() // 拿到小数部分
                     if(floatPart.length === 1) { // 补0,实际上用不着
@@ -508,7 +509,7 @@
                     {"label":"客户签约人","inputModel":"signatories","type":"select"},
                     {"label":"我方签约人","inputModel":"our_signatories","disabled":true},
                     {"label":"审批人","inputModel":"approverid","type":"select"},
-                    {"label":"备注","inputModel":"remarks"}];
+                    {"label":"备注","inputModel":"remarks","type":'textarea'}];
                 agreeaddOrUpdateData.setForm = {
                     "contract_type": '',
                     "contract_number": '',
@@ -561,7 +562,7 @@
                     {"label":"客户签约人","inputModel":"signatories","type":"select"},
                     {"label":"我方签约人","inputModel":"our_signatories","disabled":true},
                     {"label":"审批人","inputModel":"approverid","type":"select"},
-                    {"label":"备注","inputModel":"remarks"}];
+                    {"label":"备注","inputModel":"remarks","type":'textarea'}];
                 agreeaddOrUpdateData.setForm = {
                     "contract_type": row.contract_type,
                     "contract_number": row.contract_number,
@@ -678,7 +679,7 @@
                         let intPart = Math.trunc(sums[index])
                         let intPartFormat = intPart.toString().replace(/(\d)(?=(?:\d{3})+$)/g, '$1,')
                         let floatPart = '.00' // 预定义小数部分
-                        let valArray = intPartFormat.split('.')
+                        let valArray = sums[index].split('.')
                         if(valArray.length === 2) {
                             floatPart = valArray[1].toString() // 拿到小数部分
                             if(floatPart.length === 1) { // 补0,实际上用不着

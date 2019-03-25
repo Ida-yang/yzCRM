@@ -111,7 +111,7 @@
                             </el-form-item>
                             
                             <el-form-item label="快捷沟通" style="width:80%;">
-                                <el-radio v-model="followform.followContent" v-for="item in fastcontactList" :key="item.communicationId" :label="item.content">{{item.name}}</el-radio>
+                                <el-radio v-model="followform.followContent" v-for="item in fastcontactList" :key="item.id" :label="item.content">{{item.typeName}}</el-radio>
                             </el-form-item>
                             <el-form-item>
                                 <el-button style="float:right;" type="primary" size="mini" @click="Submitfollowform">立即提交</el-button>
@@ -339,6 +339,8 @@
                 let pageInfo = {}
                 pageInfo.page = this.page
                 pageInfo.limit = this.limit
+                let data = {}
+                data.type = '快捷方式'
                 //详情页联系人
                 axios({
                     method:'post',
@@ -354,8 +356,9 @@
                 });
                 //加载快捷方式
                 axios({
-                    method:'get',
-                    url:_this.$store.state.defaultHttp+'getNameSelected.do?cId='+_this.$store.state.iscId,
+                    method: 'post',
+                    url: _this.$store.state.defaultHttp+'typeInfo/getTypeInfoGroupByType.do?cId='+_this.$store.state.iscId,
+                    data:qs.stringify(data)
                 }).then(function(res){
                     _this.fastcontactList = res.data
                 }).catch(function(err){

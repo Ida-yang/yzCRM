@@ -19,6 +19,15 @@
                     auto-complete="off">
                 </el-input>
                 <el-input 
+                    v-if="item.type == 'textarea'"
+                    type="textarea"
+                    rows="5"
+                    :value="myForm[item.inputModel]"
+                    @input="handleInput($event, item.inputModel)"
+                    style="width:90%;" 
+                    auto-complete="off">
+                </el-input>
+                <el-input 
                     v-else-if="item.type && item.type == 'number'"
                     type="number"
                     :value="myForm[item.inputModel]"

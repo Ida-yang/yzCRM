@@ -108,7 +108,7 @@
                             </el-form-item>
                             
                             <el-form-item label="快捷沟通" style="width:80%;">
-                                <el-radio v-model="followform.followContent" v-for="item in fastcontactList" :key="item.communicationId" :label="item.content">{{item.name}}</el-radio>
+                                <el-radio v-model="followform.followContent" v-for="item in fastcontactList" :key="item.id" :label="item.content">{{item.typeName}}</el-radio>
                             </el-form-item>
                             <el-form-item>
                                 <el-button style="float:right;" type="primary" size="mini" @click="Submitfollowform">立即提交</el-button>
@@ -392,6 +392,21 @@
         filters: {
             rounding (value) {
                 return value.toFixed(2)
+                let intPart = Math.trunc(value) //获取整数部分
+                let intPartFormat = intPart.toString().replace(/(\d)(?=(?:\d{3})+$)/g, '$1,') // 将整数部分逢三一断
+                let floatPart = '.00' // 预定义小数部分
+                let valArray = value.split('.')
+                // console.log(valArray)
+                if(valArray.length === 2) {
+                    floatPart = valArray[1].toString() // 拿到小数部分
+                    if(floatPart.length === 1) { // 补0,实际上用不着
+                        return intPartFormat + '.' + floatPart + '0'
+                    }else{
+                        return intPartFormat + '.' + floatPart
+                    }
+                } else {
+                    return intPartFormat + floatPart
+                }
             }
         },
         data(){
@@ -473,12 +488,15 @@
                 let pageInfo = {}
                 pageInfo.page = this.page
                 pageInfo.limit = this.limit
+                let data = {}
+                data.type = '快捷方式'
 
                 
                 //加载快捷方式
                 axios({
-                    method:'get',
-                    url:_this.$store.state.defaultHttp+'getNameSelected.do?cId='+_this.$store.state.iscId,
+                    method: 'post',
+                    url: _this.$store.state.defaultHttp+'typeInfo/getTypeInfoGroupByType.do?cId='+_this.$store.state.iscId,
+                    data:qs.stringify(data)
                 }).then(function(res){
                     _this.fastcontactList = res.data
                 }).catch(function(err){

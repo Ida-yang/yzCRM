@@ -609,7 +609,7 @@
                     {"label":"","inputModel":"cityid","type":"select","placeholder":"请选择市"},
                     {"label":"","inputModel":"areaid","type":"select","placeholder":"请选择区"},
                     {"label":"地址","inputModel":"address"},
-                    {"label":"备注","inputModel":"remark"}];
+                    {"label":"备注","inputModel":"remark","type":'textarea'}];
                 clueaddOrUpdateData.assistForm = [
                     {"label":"法人代表","inputModel":"representative"},
                     {"label":"登记机关","inputModel":"registrationAuthority"},
@@ -683,7 +683,7 @@
                     {"label":"","inputModel":"cityid","type":"select","placeholder":"请选择市"},
                     {"label":"","inputModel":"areaid","type":"select","placeholder":"请选择区"},
                     {"label":"地址","inputModel":"address"},
-                    {"label":"备注","inputModel":"remark"}];
+                    {"label":"备注","inputModel":"remark","type":'textarea'}];
                 clueaddOrUpdateData.assistForm = [
                     {"label":"法人代表","inputModel":"representative"},
                     {"label":"登记机关","inputModel":"registrationAuthority"},

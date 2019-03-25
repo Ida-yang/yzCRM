@@ -242,7 +242,7 @@
                 let intPart = Math.trunc(value) //获取整数部分
                 let intPartFormat = intPart.toString().replace(/(\d)(?=(?:\d{3})+$)/g, '$1,') // 将整数部分逢三一断
                 let floatPart = '.00' // 预定义小数部分
-                let valArray = intPartFormat.split('.')
+                let valArray = value.split('.')
                 if(valArray.length === 2) {
                     floatPart = valArray[1].toString() // 拿到小数部分
                     if(floatPart.length === 1) { // 补0,实际上用不着
@@ -415,7 +415,7 @@
                     {"label":"预计成绩金额","inputModel":"opportunity_achievement","type":"number"},
                     {"label":"预计成交时间","inputModel":"opportunity_deal","type":"date"},
                     {"label":"负责人","inputModel":"user_id","disabled":true},
-                    {"label":"备注","inputModel":"opportunity_remarks"}];
+                    {"label":"备注","inputModel":"opportunity_remarks","type":'textarea'}];
                 oppaddOrUpdateData.setForm = {
                     "opportunity_number": '',
                     "opportunity_name": '',
@@ -457,7 +457,7 @@
                     {"label":"预计成绩金额","inputModel":"opportunity_achievement","type":"number"},
                     {"label":"预计成交时间","inputModel":"opportunity_deal","type":"date"},
                     {"label":"负责人","inputModel":"user_id","disabled":true},
-                    {"label":"备注","inputModel":"opportunity_remarks"}];
+                    {"label":"备注","inputModel":"opportunity_remarks","type":'textarea'}];
                 oppaddOrUpdateData.setForm = {
                     "opportunity_number": row.opportunity_number,
                     "opportunity_name": row.opportunity_name,
@@ -609,7 +609,7 @@
                         let intPart = Math.trunc(sums[index])
                         let intPartFormat = intPart.toString().replace(/(\d)(?=(?:\d{3})+$)/g, '$1,')
                         let floatPart = '.00' // 预定义小数部分
-                        let valArray = intPartFormat.split('.')
+                        let valArray = sums[index].split('.')
                         if(valArray.length === 2) {
                             floatPart = valArray[1].toString() // 拿到小数部分
                             if(floatPart.length === 1) { // 补0,实际上用不着

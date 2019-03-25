@@ -16,8 +16,17 @@
                     @input="handleInput($event, item.inputModel)"
                     style="width:90%;" 
                     auto-complete="off"
-                    :disabled="item.disabled"
-                    @keyup.enter.native="submit">
+                    :disabled="item.disabled">
+                </el-input>
+                <el-input 
+                    v-if="item.type == 'textarea'"
+                    type="textarea"
+                    rows="5"
+                    :value="myForm[item.inputModel]"
+                    @input="handleInput($event, item.inputModel)"
+                    style="width:90%;" 
+                    auto-complete="off"
+                    :disabled="item.disabled">
                 </el-input>
                 <el-input 
                     v-else-if="item.type && item.type == 'number'"
@@ -41,7 +50,7 @@
                     :multiple="item.multiple"
                     :collapse-tags="item.multiple"
                     v-model="myForm[item.inputModel]"
-                    @change="handleInput($event, item.inputModel)"
+                    @change="handleopp($event, item.inputModel)"
                     :placeholder="item.placeholder"
                     style="width:90%;">
                     <el-option v-for="item in oppoptions" :key="item.opportunity_id" :label="item.opportunity_name" :value="item.opportunity_id"></el-option>
@@ -312,6 +321,13 @@
                     if(val == el.name){
                         this.formid = el.id
                         this.loadOpp()
+                    }
+                });
+            },
+            handleopp(val,key){
+                this.oppoptions.forEach(el => {
+                    if(val == el.opportunity_id){
+                        this.myForm.amount = el.opportunity_achievement
                     }
                 });
             },

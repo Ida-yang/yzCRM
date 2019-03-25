@@ -166,7 +166,7 @@ export default {
         background: #f6faff;
     }
     .el-table {
-        font-size: 12px;
+        font-size: 13px;
         padding-bottom: 1px;
         margin-bottom: 15px;
         color: #000;
@@ -536,6 +536,9 @@ export default {
     }
     .el-radio__input.is-checked+.el-radio__label{
         color: #409EFF
+    }
+    .radioList .el-radio__input.is-checked+.el-radio__label{
+        color: blue
     }
     .load_icon{
         width: 300px;
