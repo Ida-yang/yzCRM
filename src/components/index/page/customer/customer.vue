@@ -52,7 +52,6 @@
             ref="multipleTable"
             border
             stripe
-            :default-sort = "{prop:'id',order: 'descending'}"
             style="width:100%;"
             @selection-change="selectInfo">
             <el-table-column
@@ -490,10 +489,8 @@
         },
         activated(){
             this.reloadTable()
-            this.reloadData()
         },
         mounted(){
-            this.reloadTable()
             this.reloadData()
         },
 

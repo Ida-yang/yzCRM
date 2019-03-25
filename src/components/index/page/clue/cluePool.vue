@@ -52,7 +52,6 @@
             ref="multipleTable"
             border
             stripe
-            :default-sort = "{order: 'ascending'}"
             style="width:100%;text-align:center"
             @selection-change="selectInfo"
             >
@@ -457,10 +456,8 @@
         },
         activated(){
             this.reloadTable()
-            this.reloadData()
         },
         mounted(){
-            this.reloadTable()
             this.reloadData()
         },
         beforeCreate(){

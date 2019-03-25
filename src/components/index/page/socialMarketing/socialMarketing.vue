@@ -35,7 +35,6 @@
             </div>
             <el-table
                 :data="tableData"
-                :default-sort = "{prop:'id',order: 'descending'}"
                 ref="multipleTable"
                 border
                 stripe
@@ -286,10 +285,8 @@
         },
         activated(){
             this.reloadTable()
-            this.loadcues()
         },
         mounted(){
-            this.reloadTable()
             this.loadcues()
         },
         methods:{
@@ -302,11 +299,6 @@
                 pageInfo.searchName = this.searchList.searchName
                 pageInfo.secondid = this.searchList.secondid
                 pageInfo.cuesid = this.searchList.cuesid
-                let filterList = {}
-                filterList.type = '活动'
-                let data = {}
-                data.type = '活动'
-                data.state = 1
 
                 axios({
                     method: 'post',
@@ -320,6 +312,27 @@
                         el.qrcode = '/weChat/'+_this.$store.state.iscId+'/'+el.url
                         el.codeURL = 'http://crm.yunzoe.com/#/activity?c='+_this.$store.state.iscId+'&p='+_this.$store.state.ispId+'&n='+el.name
                     });
+                }).catch(function(err){
+                    console.log(err);
+                });
+            },
+            loadcues(){
+                const _this = this
+                let qs = require('querystring')
+                let cues = {}
+                cues.type = '客户来源'
+                let filterList = {}
+                filterList.type = '活动'
+                let data = {}
+                data.type = '活动'
+                data.state = 1
+                
+                axios({
+                    method: 'post',
+                    url: _this.$store.state.defaultHttp+'typeInfo/getTypeInfoGroupByType.do?cId='+_this.$store.state.iscId,
+                    data: qs.stringify(cues),
+                }).then(function(res){
+                    _this.typeData = res.data
                 }).catch(function(err){
                     console.log(err);
                 });
@@ -338,22 +351,6 @@
                     data: qs.stringify(data)
                 }).then(function(res){
                     _this.checklist = res.data
-                }).catch(function(err){
-                    console.log(err);
-                });
-            },
-            loadcues(){
-                const _this = this
-                let qs = require('querystring')
-                let data = {}
-                data.type = '客户来源'
-                
-                axios({
-                    method: 'post',
-                    url: _this.$store.state.defaultHttp+'typeInfo/getTypeInfoGroupByType.do?cId='+_this.$store.state.iscId,
-                    data: qs.stringify(data),
-                }).then(function(res){
-                    _this.typeData = res.data
                 }).catch(function(err){
                     console.log(err);
                 });

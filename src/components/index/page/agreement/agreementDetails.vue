@@ -142,14 +142,14 @@
                 retracts:true,
             }
         },
-        activated(){
-            this.loadData();
-            this.loadIMG()
-        },
-        // mounted(){
+        // activated(){
         //     this.loadData();
         //     this.loadIMG()
         // },
+        mounted(){
+            this.loadData();
+            this.loadIMG()
+        },
         methods: {
             loadData() {
                 this.detailData = this.$store.state.agreedetailsData.submitData;

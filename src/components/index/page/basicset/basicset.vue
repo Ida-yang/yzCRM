@@ -24,7 +24,6 @@
             </div>
             <el-table
                 :data="tableData"
-                :default-sort = "{order: 'descending'}"
                 border
                 stripe
                 style="width:100%;text-align:center"
@@ -80,7 +79,6 @@
             </el-table>
             <el-table
                 :data="tableData2"
-                :default-sort = "{order: 'descending'}"
                 border
                 stripe
                 style="width:100%;text-align:center"
@@ -145,7 +143,6 @@
             </el-table>
             <el-table
                 :data="tableData3"
-                :default-sort = "{order: 'descending'}"
                 border
                 stripe
                 style="width:100%;text-align:center"
@@ -183,6 +180,9 @@
                     min-width="120"
                     label="成功几率"
                     sortable>
+                    <template slot-scope="scope">
+                        <div>{{scope.row.step_probability}} %</div>
+                    </template>
                 </el-table-column>
                 <el-table-column
                     prop="notes"
@@ -309,18 +309,18 @@
         </el-dialog>
         
         <el-dialog
-            title="添加商机状态"
+            title="添加商机进度"
             :visible.sync="dialogVisible5"
             width="40%">
             <el-form ref="newform" :model="newform" label-width="80px" :rules="rules">
                 <el-form-item prop="type" label="状态类别">
                     <el-input v-model="newform.type" :disabled="true"></el-input>
                 </el-form-item>
-                <el-form-item prop="typeName" label="状态名称">
-                    <el-input v-model="newform.typeName" placeholder="请输入状态名称"></el-input>
+                <el-form-item prop="typeName" label="进度名称">
+                    <el-input v-model="newform.typeName" placeholder="请输入进度名称"></el-input>
                 </el-form-item>
                 <el-form-item prop="probability" label="成功几率">
-                    <el-input type="number" v-model="newform.probability" placeholder="请输入成功几率"><span slot="suffix" style="margin-right:20px">&</span></el-input>
+                    <el-input type="number" v-model="newform.probability" placeholder="请输入成功几率"><span slot="suffix" style="margin-right:20px">%</span></el-input>
                 </el-form-item>
                 <el-form-item prop="sort" label="排序编号">
                     <el-input type="number" v-model="newform.sort" placeholder="请输入排序编号"></el-input>
@@ -335,7 +335,7 @@
             </span>
         </el-dialog>
         <el-dialog
-            title="修改商机状态"
+            title="修改商机进度"
             :visible.sync="dialogVisible6"
             width="40%">
             <el-form ref="newform" :model="newform" :rules="rules" label-width="80px">
@@ -346,7 +346,7 @@
                     <el-input v-model="newform.typeName" placeholder="请输入状态名称"></el-input>
                 </el-form-item>
                 <el-form-item prop="probability" label="成功几率">
-                    <el-input type="number" v-model="newform.probability" placeholder="请输入成功几率"><span slot="suffix" style="margin-right:20px">&</span></el-input>
+                    <el-input type="number" v-model="newform.probability" placeholder="请输入成功几率"><span slot="suffix" style="margin-right:20px">%</span></el-input>
                 </el-form-item>
                 <el-form-item prop="sort" label="排序编号">
                     <el-input type="number" v-model="newform.sort" placeholder="请输入排序编号"></el-input>
@@ -387,7 +387,7 @@
                     {index:3,name:'客户来源',isActive:false},
                     {index:4,name:'客户级别',isActive:false},
                     {index:5,name:'快捷方式',isActive:false},
-                    {index:6,name:'商机状态',isActive:false}
+                    {index:6,name:'商机进度',isActive:false}
                 ],
                 newform:{
                     type:'线索状态',
@@ -421,7 +421,7 @@
                 dialogVisible6:false,
 
                 rules: {
-                    typeName : [{ required: true, message: '状态名称不能为空', trigger: 'blur' },],
+                    typeName : [{ required: true, message: '名称不能为空', trigger: 'blur' },],
                     sort : [{ required: true, message: '排序编号不能为空', trigger: 'blur' },],
                     quickname : [{ required: true, message: '快捷方式不能为空', trigger: 'blur' },],
                     quickcontent : [{ required: true, message: '跟进内容不能为空', trigger: 'blur' },],
@@ -429,9 +429,9 @@
                 },
             }
         },
-        mounted(){
-            this.reloadTable()
-        },
+        // mounted(){
+        //     this.reloadTable()
+        // },
         activated(){
             this.reloadTable()
         },
@@ -544,9 +544,6 @@
                 }else if(i == 5){
                     data.typeName = this.newform.quickname
                     data.content = this.newform.quickcontent
-                }else if(i == 6){
-                    data.typeName = this.newform.typeName
-                    data.probability = this.newform.probability
                 }
                 
                 let flag = false;
@@ -626,7 +623,7 @@
                 }
                 if(!data.step_name){
                     _this.$message({
-                        message: "商机状态不能为空",
+                        message: "商机进度不能为空",
                         type: 'error'
                     });
                     flag = true;
@@ -797,7 +794,7 @@
                 }
                 if(!data.step_name){
                     _this.$message({
-                        message: "商机状态不能为空",
+                        message: "商机进度不能为空",
                         type: 'error'
                     });
                     flag = true;

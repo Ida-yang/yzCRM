@@ -13,7 +13,6 @@
                     ref="multipleTable"
                     border
                     stripe
-                    :default-sort = "{order: 'descending'}"
                     style="width:100%;text-align:center">
                     <el-table-column
                         prop="industry"

@@ -7,9 +7,9 @@
                 <el-radio v-for="item in businessData" :key="item.label" :label="item.label" @change="search()">{{item.value}}</el-radio>
             </el-radio-group>
             <el-radio-group v-model="searchList.state">
-                <span class="nameList">商机状态：</span>
+                <span class="nameList">商机进度：</span>
                 <el-radio :label="nullvalue" @change="search()">全部</el-radio>
-                <el-radio v-for="item in stateData" :key="item.id" :label="item.id" @change="search()">{{item.typeName}}</el-radio>
+                <el-radio v-for="item in stateData" :key="item.step_id" :label="item.step_id" @change="search()">{{item.step_name}}</el-radio>
             </el-radio-group>
             <el-radio-group v-model="searchList.time">
                 <span class="nameList">时间更新：</span>
@@ -44,7 +44,6 @@
             stripe
             :summary-method="getSummaries"
             show-summary
-            :default-sort = "{prop:'opportunity_id',order: 'descending'}"
             style="width:100%;text-align:center"
             @selection-change="selectInfo"
             >
@@ -309,11 +308,10 @@
         },
         activated(){
             this.reloadTable()
-            this.reloadData()
         },
         mounted(){
-            this.reloadTable()
             this.reloadData()
+            this.loadStep()
         },
 
         methods: {
@@ -376,6 +374,18 @@
                     console.log(err);
                 });
             },
+            loadStep(){
+                const _this = this
+                
+                axios({
+                    method: 'get',
+                    url: _this.$store.state.defaultHttp+'addstep/selectAddstep.do?cId='+_this.$store.state.iscId,
+                }).then(function(res){
+                    _this.stateData = res.data.map.addsteps
+                }).catch(function(err){
+                    console.log(err);
+                });
+            },
             selectInfo(val){
                 this.multipleSelection = val;
                 let arr = val;
@@ -386,7 +396,6 @@
                     }
                 });
                 this.idArr.id = newArr;
-                
             },
             openDetails(index,row){
                 let oppdetailsData = {};

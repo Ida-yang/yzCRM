@@ -46,7 +46,6 @@
         </div>
         <el-table
             :data="tableData"
-            :default-sort = "{prop:'id',order: 'descending'}"
             ref="multipleTable"
             border
             stripe
@@ -473,10 +472,8 @@
         },
         activated(){
             this.reloadTable()
-            this.reloadData()
         },
         mounted(){
-            this.reloadTable()
             this.reloadData()
         },
 

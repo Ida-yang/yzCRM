@@ -287,13 +287,10 @@
             }
         },
         mounted(){
-            this.loadData()
             this.reloadData()
-            this.getresource()
         },
         activated(){
             this.loadData()
-            this.reloadData()
             this.getresource()
         },
         methods:{
@@ -309,6 +306,7 @@
                     console.log(err);
                 });
             },
+            //获取该节点下的所有角色
             reloadData(){
                 const _this = this
                 let qs = require('querystring')
@@ -347,7 +345,8 @@
                 this.searchList.deptid = data.deptid
                 this.searchList.parentid = data.parentid
                 this.clickdata = data
-                this.roleform.deptid = data.deptidata.bind(this)(true);
+                this.roleform.deptid = data.deptid;
+                this.$options.methods.reloadData.bind(this)(true);
             },
             //上级部门添加
             handleappend(data){

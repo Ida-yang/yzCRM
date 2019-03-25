@@ -36,7 +36,6 @@
             </div>
             <el-table
                 :data="tableData"
-                :default-sort = "{prop:'private_id',order: 'descending'}"
                 ref="multipleTable"
                 border
                 stripe
@@ -358,7 +357,7 @@
             this.reloadTable()
         },
         mounted(){
-            this.reloadTable()
+            this.loadData()
         },
         methods:{
             reloadTable(){
@@ -371,11 +370,6 @@
                 pageInfo.deptid = this.searchList.deptid
                 let dept = {}
                 dept.deptid = this.searchList.deptid
-                let filterList = {}
-                filterList.type = '用户'
-                let data = {}
-                data.type = '用户'
-                data.state = 1
 
                 axios({
                     method: 'post',
@@ -396,6 +390,16 @@
                 }).catch(function(err){
                     console.log(err);
                 });
+            },
+            loadData(){
+                const _this = this
+                let qs = require('querystring')
+                let filterList = {}
+                filterList.type = '用户'
+                let data = {}
+                data.type = '用户'
+                data.state = 1
+                
                 axios({
                     method: 'post',
                     url: _this.$store.state.defaultHttp+'userPageInfo/getAllUserPage.do?cId='+_this.$store.state.iscId+'&pId='+_this.$store.state.ispId,
@@ -787,7 +791,7 @@
                     data:qs.stringify(data),
                 }).then(function(res){
                     if(res.data && res.data =="success"){
-                        _this.$options.methods.reloadTable.bind(_this)(true);
+                        _this.$options.methods.loadData.bind(_this)(true);
                     }else{
                         console.log(err)
                     }

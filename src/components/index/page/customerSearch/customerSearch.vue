@@ -430,10 +430,8 @@
         },
         activated(){
             this.reloadTable()
-            this.loadData()
         },
         mounted(){
-            this.reloadTable()
             this.loadData()
         },
 
@@ -453,14 +451,20 @@
                 financingStateList.comboType = 'FinancingState'
                 let listedList = {} 
                 listedList.comboType = 'Listed'
+                let Countrys = {}
+                Countrys.id = ''
+                
+                let filterList = {}
+                filterList.type = '大数据客户搜索'
                 let data = {}
-                data.id = ''
+                data.type = '大数据客户搜索'
+                data.state = 1
 
                 //省/市/区
                 axios({
                     method: 'post',
                     url: _this.$store.state.defaultHttp+'address/getAddress.do',
-                    data: qs.stringify(data),
+                    data: qs.stringify(Countrys),
                 }).then(function(res){
                     _this.Provinces=res.data;
                 }).catch(function(err){
@@ -526,6 +530,25 @@
                 }).catch(function(err){
                     console.log(err);
                 });
+                
+                axios({
+                    method: 'post',
+                    url: _this.$store.state.defaultHttp+'userPageInfo/getAllUserPage.do?cId='+_this.$store.state.iscId+'&pId='+_this.$store.state.ispId,
+                    data: qs.stringify(filterList)
+                }).then(function(res){
+                    _this.filterList = res.data
+                }).catch(function(err){
+                    console.log(err);
+                });
+                axios({
+                    method: 'post',
+                    url: _this.$store.state.defaultHttp+'userPageInfo/getUserPage.do?cId='+_this.$store.state.iscId+'&pId='+_this.$store.state.ispId,
+                    data: qs.stringify(data)
+                }).then(function(res){
+                    _this.checklist = res.data
+                }).catch(function(err){
+                    console.log(err);
+                });
             },
             //获取/查询大数据列表
             reloadTable() {
@@ -552,11 +575,6 @@
                 searchList.area_id = this.searchList.area; //区
                 searchList.page = this.page;
                 searchList.limit = this.limit;
-                let filterList = {}
-                filterList.type = '大数据客户搜索'
-                let data = {}
-                data.type = '大数据客户搜索'
-                data.state = 1
 
                 axios({
                     method: 'post',
@@ -570,24 +588,6 @@
                     }else{
                         _this.tablesize = res.data.size
                     }
-                }).catch(function(err){
-                    console.log(err);
-                });
-                axios({
-                    method: 'post',
-                    url: _this.$store.state.defaultHttp+'userPageInfo/getAllUserPage.do?cId='+_this.$store.state.iscId+'&pId='+_this.$store.state.ispId,
-                    data: qs.stringify(filterList)
-                }).then(function(res){
-                    _this.filterList = res.data
-                }).catch(function(err){
-                    console.log(err);
-                });
-                axios({
-                    method: 'post',
-                    url: _this.$store.state.defaultHttp+'userPageInfo/getUserPage.do?cId='+_this.$store.state.iscId+'&pId='+_this.$store.state.ispId,
-                    data: qs.stringify(data)
-                }).then(function(res){
-                    _this.checklist = res.data
                 }).catch(function(err){
                     console.log(err);
                 });

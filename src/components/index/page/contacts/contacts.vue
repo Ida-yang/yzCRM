@@ -36,7 +36,6 @@
         <el-table
             :data="tableData"
             ref="multipleTable"
-            :default-sort= "{prop:'csId',order: 'descending'}"
             border
             stripe
             style="width:100%;"
@@ -292,10 +291,8 @@
         },
         activated(){
             this.reloadTable()
-            this.reloadData()
         },
         mounted(){
-            this.reloadTable()
             this.reloadData()
         },
 

@@ -322,13 +322,14 @@
                 showloading:false
             }
         },
-        activated(){
-            this.loadData();
+        // activated(){
+        //     this.loadData();
+        //     this.loadCountry()
+        // },
+        mounted(){
+            this.loadData()
             this.loadCountry()
         },
-        // mounted(){
-        //     this.loadData();
-        // },
         methods: {
             loadData() {
                 this.detailData = this.$store.state.cluedetailsData.submitData;

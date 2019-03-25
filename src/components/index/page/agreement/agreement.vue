@@ -39,7 +39,6 @@
             <!-- :summary-method="getSummaries" -->
         <el-table
             :data="tableData"
-            :default-sort = "{prop:'contract_id',order: 'descending'}"
             ref="multipleTable"
             border
             stripe
@@ -355,12 +354,10 @@
             }
         },
         mounted(){
-            this.reloadTable()
             this.reloadData()
         },
         activated(){
             this.reloadTable()
-            this.reloadData()
         },
 
         methods: {

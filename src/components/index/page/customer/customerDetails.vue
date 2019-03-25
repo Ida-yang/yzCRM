@@ -455,14 +455,14 @@
                 showloading:false,
             }
         },
-        activated(){
+        // activated(){
+        //     this.loadData();
+        //     this.loadCountry()
+        // },
+        mounted(){
             this.loadData();
             this.loadCountry()
-            // this.loadState()
         },
-        // mounted(){
-        //     this.loadData();
-        // },
         methods: {
             loadData() {
                 this.detailData = this.$store.state.cusdetailsData.submitData;

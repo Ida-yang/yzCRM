@@ -39,7 +39,6 @@
         </div>
         <el-table
             :data="tableData"
-            :default-sort = "{prop:'id',order: 'descending'}"
             ref="multipleTable"
             border
             stripe
@@ -249,12 +248,10 @@ export default {
         }
     },
     mounted(){
-        this.reloadTable()
         this.reloadData()
     },
     activated(){
         this.reloadTable()
-        this.reloadData()
     },
     methods:{
         //获取/查询线索列表

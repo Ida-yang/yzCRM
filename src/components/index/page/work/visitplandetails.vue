@@ -148,7 +148,7 @@ export default {
             dialogVisible:false
         }
     },
-    activated(){
+    mounted(){
         this.loadData()
         this.loadTable()
     },

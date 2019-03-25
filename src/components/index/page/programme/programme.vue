@@ -41,7 +41,6 @@
             </div>
             <el-table
                 :data="tableData"
-                :default-sort = "{prop:'createTime',order: 'descending'}"
                 ref="multipleTable"
                 border
                 stripe
@@ -281,48 +280,23 @@
         },
         //获取机构部门树型结构
         beforeCreate(){
-            const _this = this
-            axios({
-                method: 'get',
-                url: _this.$store.state.defaultHttp+'dept/getDeptNodeTree.do?cId='+_this.$store.state.iscId,
-            }).then(function(res){
-                _this.datalist = res.data.map.success
-            }).catch(function(err){
-                console.log(err);
-            });
         },
         activated(){
             this.reloadTable()
         },
         mounted(){
-            this.reloadTable()
+            this.loadData()
         },
         methods:{
-            reloadTable(){
+            loadData(){
                 const _this = this
                 let qs = require('querystring')
-                let pageInfo = {}
-                pageInfo.page = this.page
-                pageInfo.limit = this.limit
-                pageInfo.state = this.searchList.state
-                pageInfo.secondid = this.searchList.secondid
                 let filterList = {}
                 filterList.type = '方案'
                 let data = {}
                 data.type = '方案'
                 data.state = 1
 
-                //获取所有方案
-                axios({
-                    method: 'post',
-                    url: _this.$store.state.defaultHttp+'project/getProject.do?cId='+_this.$store.state.iscId,
-                    data:qs.stringify(pageInfo)
-                }).then(function(res){
-                    _this.$store.state.programmeList = res.data.map.success
-                    _this.$store.state.programmeListnumber = res.data.count
-                }).catch(function(err){
-                    console.log(err);
-                });
                 axios({
                     method: 'post',
                     url: _this.$store.state.defaultHttp+'userPageInfo/getAllUserPage.do?cId='+_this.$store.state.iscId+'&pId='+_this.$store.state.ispId,
@@ -338,6 +312,35 @@
                     data: qs.stringify(data)
                 }).then(function(res){
                     _this.checklist = res.data
+                }).catch(function(err){
+                    console.log(err);
+                });
+            },
+            reloadTable(){
+                const _this = this
+                let qs = require('querystring')
+                let pageInfo = {}
+                pageInfo.page = this.page
+                pageInfo.limit = this.limit
+                pageInfo.state = this.searchList.state
+                pageInfo.secondid = this.searchList.secondid
+
+                axios({
+                    method: 'get',
+                    url: _this.$store.state.defaultHttp+'dept/getDeptNodeTree.do?cId='+_this.$store.state.iscId,
+                }).then(function(res){
+                    _this.datalist = res.data.map.success
+                }).catch(function(err){
+                    console.log(err);
+                });
+                //获取所有方案
+                axios({
+                    method: 'post',
+                    url: _this.$store.state.defaultHttp+'project/getProject.do?cId='+_this.$store.state.iscId,
+                    data:qs.stringify(pageInfo)
+                }).then(function(res){
+                    _this.$store.state.programmeList = res.data.map.success
+                    _this.$store.state.programmeListnumber = res.data.count
                 }).catch(function(err){
                     console.log(err);
                 });
@@ -643,7 +646,7 @@
                     data:qs.stringify(data),
                 }).then(function(res){
                     if(res.data && res.data =="success"){
-                        _this.$options.methods.reloadTable.bind(_this)(true);
+                        _this.$options.methods.loadData.bind(_this)(true);
                     }else{
                         console.log(err)
                     }
