@@ -26,6 +26,16 @@
         <div class="entry">
             <el-button class="btn info-btn" size="mini" @click="handleAdd()">新增</el-button>
             <div class="totalnum_head">共 <span style="font-weight:bold">{{tableNumber}}</span> 条</div>
+            <el-popover
+                placement="bottom"
+                width="100"
+                trigger="click">
+            <el-checkbox-group class="checklist" v-model="checklist">
+                <el-checkbox class="checkone" v-for="item in filterList" :key="item.id" :label="item.name" :value="item.state" @change="hangleChange($event,item)"></el-checkbox>
+            </el-checkbox-group>
+            <!-- <el-button slot="reference" icon="el-icon-more-outline" type="mini">筛选列表</el-button> -->
+                <el-button slot="reference" icon="el-icon-more" class="info-btn screen" type="mini"></el-button>
+            </el-popover>
         </div>
         <el-table
             :data="tableData"
@@ -46,84 +56,93 @@
                 @selection-change="selectInfo"
                 sortable>
             </el-table-column>
-            <el-table-column
-                prop="id"
-                fixed
-                header-align="left"
-                align="left"
-                min-width="350"
-                label="主题"
-                sortable>
-                <template slot-scope="scope">
-                    <div class="visit_info">
-                        <span class="visit_theme mission_customer">{{scope.row.planningTheme}}</span>
-                    </div>
-                    <div class="visit_info">{{scope.row.describe}}</div>
-                </template>
-            </el-table-column>
-            <el-table-column
-                prop="startTime"
-                show-overflow-tooltip
-                header-align="left"
-                align="left"
-                label="时间"
-                min-width="135"
-                sortable>
-                <template slot-scope="scope">
-                    <div>
-                        <p>{{scope.row.startTime}}</p>
-                        <p>{{scope.row.endTime}}</p>
-                    </div>
-                </template>
-            </el-table-column>
-            <el-table-column
-                prop="customerName"
-                header-align="left"
-                align="left"
-                label="关联对象"
-                min-width="180"
-                sortable>
-            </el-table-column>
-            <el-table-column
-                prop="state"
-                header-align="left"
-                align="left"
-                min-width="220"
-                label="状态"
-                sortable>
-                <template slot-scope="scope">
-                    <el-button-group>
-                        <el-button size="mini" :disabled="scope.row.progressBtn" :type="scope.row.progress" @click="changeState($event, scope.row)">未完成</el-button>
-                        <el-button size="mini" :disabled="scope.row.completedBtn" :type="scope.row.completed" @click="changeState($event, scope.row)">已完成</el-button>
-                        <el-button size="mini" :disabled="scope.row.nullifyBtn" :type="scope.row.nullify" @click="changeState($event, scope.row)">作废</el-button>
-                    </el-button-group>
-                </template>
-            </el-table-column>
-            <el-table-column
-                prop="private_employee"
-                header-align="left"
-                align="left"
-                min-width="100"
-                label="负责人"
-                sortable>
-            </el-table-column>
-            <el-table-column
-                prop="deptname"
-                header-align="left"
-                align="left"
-                min-width="100"
-                label="部门"
-                sortable>
-            </el-table-column>
-            <el-table-column
-                prop="parentname"
-                show-overflow-tooltip
-                header-align="left"
-                align="left"
-                min-width="100"
-                label="机构"
-                sortable>
-            </el-table-column>
+            <div v-for="(item,index) in filterList" :key="index" >
+                <el-table-column
+                    prop="id"
+                    v-if="item.prop == 'planningTheme' && item.state == 1"
+                    fixed
+                    header-align="left"
+                    align="left"
+                    min-width="350"
+                    label="主题"
+                    sortable>
+                    <template slot-scope="scope">
+                        <div class="visit_info">
+                            <span class="visit_theme mission_customer">{{scope.row.planningTheme}}</span>
+                        </div>
+                        <div class="visit_info">{{scope.row.describe}}</div>
+                    </template>
+                </el-table-column>
+                <el-table-column
+                    prop="startTime"
+                    v-else-if="item.prop == 'startTime' && item.state == 1"
+                    show-overflow-tooltip
+                    header-align="left"
+                    align="left"
+                    label="时间"
+                    min-width="135"
+                    sortable>
+                    <template slot-scope="scope">
+                        <div>
+                            <p>{{scope.row.startTime}}</p>
+                            <p>{{scope.row.endTime}}</p>
+                        </div>
+                    </template>
+                </el-table-column>
+                <el-table-column
+                    prop="customerName"
+                    v-else-if="item.prop == 'relationObject' && item.state == 1"
+                    header-align="left"
+                    align="left"
+                    label="关联对象"
+                    min-width="180"
+                    sortable>
+                </el-table-column>
+                <el-table-column
+                    prop="state"
+                    v-else-if="item.prop == 'state' && item.state == 1"
+                    header-align="left"
+                    align="left"
+                    min-width="220"
+                    label="状态"
+                    sortable>
+                    <template slot-scope="scope">
+                        <el-button-group>
+                            <el-button size="mini" :disabled="scope.row.progressBtn" :type="scope.row.progress" @click="changeState($event, scope.row)">未完成</el-button>
+                            <el-button size="mini" :disabled="scope.row.completedBtn" :type="scope.row.completed" @click="changeState($event, scope.row)">已完成</el-button>
+                            <el-button size="mini" :disabled="scope.row.nullifyBtn" :type="scope.row.nullify" @click="changeState($event, scope.row)">作废</el-button>
+                        </el-button-group>
+                    </template>
+                </el-table-column>
+                <el-table-column
+                    prop="private_employee"
+                    v-else-if="item.prop == 'private_employee' && item.state == 1"
+                    header-align="left"
+                    align="left"
+                    min-width="100"
+                    label="负责人"
+                    sortable>
+                </el-table-column>
+                <el-table-column
+                    prop="deptname"
+                    v-else-if="item.prop == 'deptname' && item.state == 1"
+                    header-align="left"
+                    align="left"
+                    min-width="100"
+                    label="部门"
+                    sortable>
+                </el-table-column>
+                <el-table-column
+                    prop="parentname"
+                    v-else-if="item.prop == 'parentname' && item.state == 1"
+                    show-overflow-tooltip
+                    header-align="left"
+                    align="left"
+                    min-width="100"
+                    label="机构"
+                    sortable>
+                </el-table-column>
+            </div>
             <el-table-column label="操作"
                 fixed="right"
                 width="150"
@@ -193,6 +212,9 @@ export default {
             state:'未完成',
             thistime: null,
 
+            filterList:null,
+            checklist:null,
+
             searchList:{
                 label:'1',
                 time:null,
@@ -228,9 +250,11 @@ export default {
     },
     mounted(){
         this.reloadTable()
+        this.reloadData()
     },
     activated(){
         this.reloadTable()
+        this.reloadData()
     },
     methods:{
         //获取/查询线索列表
@@ -292,6 +316,36 @@ export default {
                         el.editBtn = true
                     }
                 });
+            }).catch(function(err){
+                console.log(err);
+            });
+        },
+        
+        //获取筛选列表
+        reloadData() {
+            const _this = this;
+            let qs =require('querystring')
+            let filterList = {}
+            filterList.type = '工作计划'
+            let data = {}
+            data.type = '工作计划'
+            data.state = 1
+            
+            axios({
+                method: 'post',
+                url: _this.$store.state.defaultHttp+'userPageInfo/getAllUserPage.do?cId='+_this.$store.state.iscId+'&pId='+_this.$store.state.ispId,
+                data: qs.stringify(filterList)
+            }).then(function(res){
+                _this.filterList = res.data
+            }).catch(function(err){
+                console.log(err);
+            });
+            axios({
+                method: 'post',
+                url: _this.$store.state.defaultHttp+'userPageInfo/getUserPage.do?cId='+_this.$store.state.iscId+'&pId='+_this.$store.state.ispId,
+                data: qs.stringify(data)
+            }).then(function(res){
+                _this.checklist = res.data
             }).catch(function(err){
                 console.log(err);
             });
@@ -427,6 +481,29 @@ export default {
                     type: 'info',
                     message: '取消删除[' + row.planningTheme + ']'
                 });       
+            });
+        },
+        hangleChange(e,val){
+            const _this = this
+            let qs = require('querystring')
+            let data = {}
+            data.pageInfoId = val.pageInfoId
+            if(e == true){
+                data.state = 1
+            }else{
+                data.state = 0
+            }
+
+            axios({
+                method: 'post',
+                url:  _this.$store.state.defaultHttp+ 'userPageInfo/updateUserPageByid.do?cId='+_this.$store.state.iscId+'&pId='+_this.$store.state.ispId,
+                data:qs.stringify(data),
+            }).then(function(res){
+                if(res.data && res.data =="success"){
+                    _this.$options.methods.reloadData.bind(_this)(true);
+                }
+            }).catch(function(err){
+                console.log(err);
             });
         },
         search(){

@@ -58,6 +58,17 @@
                     <el-option v-for="item in contactslist" :key="item.id" :label="item.name" :value="item.name"></el-option>
                 </el-select>
                 <el-select 
+                    v-else-if="item.inputModel == 'approverid'"
+                    filterable
+                    :multiple="item.multiple"
+                    :collapse-tags="item.multiple"
+                    v-model="myForm[item.inputModel]"
+                    @change="handleInput($event, item.inputModel)"
+                    :placeholder="item.placeholder"
+                    style="width:90%;">
+                    <el-option v-for="item in pIdlist" :key="item.private_id" :label="item.private_employee" :value="item.private_id"></el-option>
+                </el-select>
+                <el-select 
                     v-else-if="item.type && item.type == 'select'"
                     :multiple="item.multiple"
                     :collapse-tags="item.multiple"
@@ -178,6 +189,7 @@
                 },
 
                 tableData:null,
+                pIdlist:[],
 
                 formid:null,
                 searchvalue:null,
@@ -191,6 +203,7 @@
             this.loadData();
             this.loadOpp()
             this.loadTable()
+            this.loadpId()
         },
         methods:{
             //加载或重载页面
@@ -261,6 +274,18 @@
                     data: qs.stringify(pageInfo),
                 }).then(function(res){
                     _this.tableData = res.data.map.success.customerpools
+                }).catch(function(err){
+                    console.log(err);
+                });
+            },
+            loadpId(){
+                const _this = this;
+                let qs =require('querystring')
+                axios({
+                    method: 'get',
+                    url: _this.$store.state.defaultHttp+'getNameAndId.do?cId='+_this.$store.state.iscId,
+                }).then(function(res){
+                    _this.pIdlist = res.data
                 }).catch(function(err){
                     console.log(err);
                 });

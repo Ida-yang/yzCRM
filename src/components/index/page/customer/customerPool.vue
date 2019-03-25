@@ -6,6 +6,11 @@
                 <span class="nameList">数据授权：</span>
                 <el-radio v-for="item in pIdData" :key="item.label" :label="item.label" @change="search()">{{item.value}}</el-radio>
             </el-radio-group>
+            <el-radio-group v-model="searchList.time">
+                <span class="nameList">时间更新：</span>
+                <el-radio :label="nullvalue" @change="search()">全部</el-radio>
+                <el-radio v-for="item in timeData" :key="item.id" :label="item.id" @change="search()">{{item.typeName}}</el-radio>
+            </el-radio-group>
         </div>
         <div class="searchList" style="width:100%;">
             <span class="nameList">公司名称：</span>
@@ -423,12 +428,14 @@
                     label:'1',
                     page:null,
                     limit:null,
+                    time:null,
                 },
                 searchListNew:{
                     searchName:null,
                     label:'1',
                     page:null,
                     limit:null,
+                    time:null,
                 },
                 page:1,//默认第一页
                 limit:20,//默认20条
@@ -440,7 +447,17 @@
                     {label:'0',value:'全部'},
                     {label:'1',value:'我的'},
                     {label:'2',value:'本组'},
-                    {label:'3',value:'本机构'},],
+                    {label:'3',value:'本机构'}
+                ],
+                timeData:[
+                    {id:'1',typeName:'今天'},
+                    {id:'2',typeName:'昨天'},
+                    {id:'3',typeName:'本周'},
+                    {id:'4',typeName:'本月'},
+                    {id:'5',typeName:'上月'}
+                ],
+
+                nullvalue:null,
 
                 useroptions:null,
                 userData:{
@@ -491,9 +508,8 @@
                     searchList.secondid = _this.$store.state.deptid
                 }else if(this.searchList.label == 3){
                     searchList.deptid = _this.$store.state.insid
-                }else{
-                    searchList.pId = _this.$store.state.ispId
                 }
+                searchList.example = this.searchList.time
                 searchList.page = this.page;
                 searchList.limit = this.limit;
                 

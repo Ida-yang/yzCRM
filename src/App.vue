@@ -535,7 +535,7 @@ export default {
         width: 100px;
     }
     .el-radio__input.is-checked+.el-radio__label{
-        color: blue
+        color: #409EFF
     }
     .load_icon{
         width: 300px;

@@ -8,18 +8,23 @@
             </el-radio-group>
             <el-radio-group v-model="searchList.keyType">
                 <span class="nameList">客户级别：</span>
-                <el-radio :label="nullvalue" @change="search()">全部级别</el-radio>
+                <el-radio :label="nullvalue" @change="search()">全部</el-radio>
                 <el-radio v-for="item in labelData" :key="item.id" :label="item.id" @change="search()">{{item.typeName}}</el-radio>
             </el-radio-group>
             <el-radio-group v-model="searchList.keyWord">
                 <span class="nameList">客户来源：</span>
-                <el-radio :label="nullvalue" @change="search()">全部来源</el-radio>
+                <el-radio :label="nullvalue" @change="search()">全部</el-radio>
                 <el-radio v-for="item in typeData" :key="item.id" :label="item.id" @change="search()">{{item.typeName}}</el-radio>
             </el-radio-group>
             <el-radio-group v-model="searchList.state">
                 <span class="nameList">客户状态：</span>
-                <el-radio :label="nullvalue" @change="search()">全部状态</el-radio>
+                <el-radio :label="nullvalue" @change="search()">全部</el-radio>
                 <el-radio v-for="item in stateData" :key="item.id" :label="item.id" @change="search()">{{item.typeName}}</el-radio>
+            </el-radio-group>
+            <el-radio-group v-model="searchList.time">
+                <span class="nameList">时间更新：</span>
+                <el-radio :label="nullvalue" @change="search()">全部</el-radio>
+                <el-radio v-for="item in timeData" :key="item.id" :label="item.id" @change="search()">{{item.typeName}}</el-radio>
             </el-radio-group>
         </div>
         <div class="searchList">
@@ -426,6 +431,7 @@
                     keyType:null,
                     state:null,
                     keyWord:null,
+                    time:null,
                 },
                 searchListNew:{
                     searchName:null,
@@ -433,6 +439,7 @@
                     keyType:null,
                     state:null,
                     keyWord:null,
+                    time:null,
                 },
                 page:1,//默认第一页
                 limit:20,//默认20条
@@ -443,7 +450,16 @@
                     {label:'0',value:'全部'},
                     {label:'1',value:'我的'},
                     {label:'2',value:'本组'},
-                    {label:'3',value:'本机构'},],
+                    {label:'3',value:'本机构'}
+                ],
+                timeData:[
+                    {id:'1',typeName:'今天'},
+                    {id:'2',typeName:'昨天'},
+                    {id:'3',typeName:'本周'},
+                    {id:'4',typeName:'本月'},
+                    {id:'5',typeName:'上月'}
+                ],
+
                 stateData:null,
                 labelData:null,
                 typeData:null,
@@ -495,9 +511,8 @@
                     searchList.secondid = _this.$store.state.deptid
                 }else if(this.searchList.label == 3){
                     searchList.deptid = _this.$store.state.insid
-                }else{
-                    searchList.pId = _this.$store.state.ispId
                 }
+                searchList.example = this.searchList.time
                 searchList.stateid = this.searchList.state //客户状态
                 searchList.levelsid = this.searchList.keyType //客户级别
                 searchList.customerStateid = this.searchList.keyWord //客户来源

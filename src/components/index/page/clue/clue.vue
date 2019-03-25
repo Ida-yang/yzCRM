@@ -8,13 +8,18 @@
             </el-radio-group>
             <el-radio-group v-model="searchList.state">
                 <span class="nameList">线索状态：</span>
-                <el-radio :label="nullvalue" @change="search()">全部线索状态</el-radio>
+                <el-radio :label="nullvalue" @change="search()">全部</el-radio>
                 <el-radio v-for="item in stateData" :key="item.id" :label="item.id" @change="search()">{{item.typeName}}</el-radio>
             </el-radio-group>
             <el-radio-group v-model="searchList.type">
                 <span class="nameList">线索来源：</span>
-                <el-radio :label="nullvalue" @change="search()">全部线索来源</el-radio>
+                <el-radio :label="nullvalue" @change="search()">全部</el-radio>
                 <el-radio v-for="item in typeData" :key="item.id" :label="item.id" @change="search()">{{item.typeName}}</el-radio>
+            </el-radio-group>
+            <el-radio-group v-model="searchList.time">
+                <span class="nameList">时间更新：</span>
+                <el-radio :label="nullvalue" @change="search()">全部</el-radio>
+                <el-radio v-for="item in timeData" :key="item.id" :label="item.id" @change="search()">{{item.typeName}}</el-radio>
             </el-radio-group>
         </div>
         <div class="searchList">
@@ -412,12 +417,14 @@
                     label:'1',
                     state:null,
                     type:null,
+                    time:null,
                 },
                 searchListNew:{
                     searchName:null,
                     label:'1',
                     state:null,
                     type:null,
+                    time:null,
                 },
                 page:1,//默认第一页
                 limit:20,//默认20条
@@ -428,7 +435,16 @@
                     {label:'0',value:'全部'},
                     {label:'1',value:'我的'},
                     {label:'2',value:'本组'},
-                    {label:'3',value:'本机构'},],
+                    {label:'3',value:'本机构'}
+                ],
+                timeData:[
+                    {id:'1',typeName:'今天'},
+                    {id:'2',typeName:'昨天'},
+                    {id:'3',typeName:'本周'},
+                    {id:'4',typeName:'本月'},
+                    {id:'5',typeName:'上月'}
+                ],
+
                 stateData:null,
                 typeData:null,
                 nullvalue:null,
@@ -466,7 +482,7 @@
 
         methods: {
             //获取/查询线索列表
-            reloadTable() {
+            loadTable() {
                 const _this = this;
                 let qs =require('querystring')
                 let searchList = {}
@@ -479,11 +495,10 @@
                     searchList.secondid = _this.$store.state.deptid
                 }else if(this.searchList.label == 3){
                     searchList.deptid = _this.$store.state.insid
-                }else{
-                    searchList.pId = _this.$store.state.ispId
                 }
                 searchList.stateid = this.searchList.state
                 searchList.cuesid = this.searchList.type
+                searchList.example = this.searchList.time
                 searchList.page = this.page;
                 searchList.limit = this.limit;
                 
@@ -493,11 +508,47 @@
                     data: qs.stringify(searchList),
                 }).then(function(res){
                     _this.$store.state.clueList = res.data.map.success
-                    _this.$store.state.clueListnumber = res.data.count;
+                    _this.$store.state.clueListnumber = res.data.count
+                    if(_this.page > 1 && res.data.count <= _this.limit){
+                        _this.page = 1
+                        _this.reloadTable()
+                    }
                 }).catch(function(err){
                     console.log(err);
                 });
             },
+            reloadTable(){
+                const _this = this;
+                let qs =require('querystring')
+                let searchList = {}
+                searchList.searchName = this.searchList.searchName;
+                if(this.searchList.label == 0 ){
+                    searchList.pId = _this.nullvalue
+                }else if(this.searchList.label == 1){
+                    searchList.pId = _this.$store.state.ispId
+                }else if(this.searchList.label == 2){
+                    searchList.secondid = _this.$store.state.deptid
+                }else if(this.searchList.label == 3){
+                    searchList.deptid = _this.$store.state.insid
+                }
+                searchList.stateid = this.searchList.state
+                searchList.cuesid = this.searchList.type
+                searchList.example = this.searchList.time
+                searchList.page = this.page;
+                searchList.limit = this.limit;
+                
+                axios({
+                    method: 'post',
+                    url: _this.$store.state.defaultHttp+'customerTwo/query.do?cId='+_this.$store.state.iscId,
+                    data: qs.stringify(searchList),
+                }).then(function(res){
+                    _this.$store.state.clueList = res.data.map.success
+                    _this.$store.state.clueListnumber = res.data.count
+                }).catch(function(err){
+                    console.log(err);
+                });
+            },
+            
             //获取筛选列表
             reloadData() {
                 const _this = this;
@@ -809,7 +860,7 @@
                             type:'error'
                         })
                     }else{
-                        _this.$options.methods.reloadTable.bind(_this)(true);
+                        _this.$options.methods.loadTable.bind(_this)(true);
                     }
                 }).catch(function(err){
                     console.log(err);
@@ -818,7 +869,7 @@
             },
             reset(){
                 this.searchList = Object.assign({}, this.searchListNew);
-                this.$options.methods.reloadTable.bind(this)(true);
+                this.$options.methods.loadTable.bind(this)(true);
             },
 
             handleSizeChange(val) {

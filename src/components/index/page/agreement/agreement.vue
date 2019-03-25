@@ -6,6 +6,10 @@
                 <span class="nameList">数据授权：</span>
                 <el-radio v-for="item in agreementData" :key="item.label" :label="item.label" @change="search()">{{item.value}}</el-radio>
             </el-radio-group>
+            <el-radio-group v-model="searchList.type">
+                <span class="nameList">合同类型：</span>
+                <el-radio v-for="(item,index) in typeData" :key="index" :label="item.id" @change="search()">{{item.name}}</el-radio>
+            </el-radio-group>
             <el-radio-group v-model="searchList.example">
                 <span class="nameList">到期合同：</span>
                 <el-radio v-for="(item,index) in agreementTime" :key="index" :label="item.id" @change="search()">{{item.name}}</el-radio>
@@ -302,12 +306,15 @@
             return {
                 searchList:{
                     searchName:null,
+                    type:null,
                     label:'1',
-                    example:''
+                    example:null
                 },
                 searchListNew:{
                     searchName:null,
-                    label:'1'
+                    type:null,
+                    label:'1',
+                    example:null
                 },
 
                 agreementData:[
@@ -318,11 +325,20 @@
                 ],
 
                 agreementTime:[
-                    {id:'',name:'全部合同'},
-                    {id:'1',name:'本月合同'},
-                    {id:'2',name:'近一个月到期合同'},
-                    {id:'3',name:'已过期合同'}
+                    {id:'',name:'全部'},
+                    {id:'1',name:'本月'},
+                    {id:'2',name:'近一个月到期'},
+                    {id:'3',name:'已过期'}
                 ],
+                typeData:[
+                    {id:'',name:'全部'},
+                    {id:'1',name:'服务合同'},
+                    {id:'2',name:'销售合同'},
+                    {id:'3',name:'代理合同'},
+                    {id:'4',name:'其他'}
+                ],
+
+                nullvalue:null,
 
                 page:1,//默认第一页
                 limit:20,//默认20条
@@ -361,8 +377,6 @@
                     searchList.secondid = _this.$store.state.deptid
                 }else if(this.searchList.label == 3){
                     searchList.deptid = _this.$store.state.insid
-                }else{
-                    searchList.pId = _this.$store.state.ispId
                 }
                 searchList.searchName = this.searchList.searchName
                 searchList.example = this.searchList.example
@@ -486,6 +500,7 @@
                     {"label":"结束时间","inputModel":"end_date","type":"date"},
                     {"label":"客户签约人","inputModel":"signatories","type":"select"},
                     {"label":"我方签约人","inputModel":"our_signatories","disabled":true},
+                    {"label":"审批人","inputModel":"approverid","type":"select"},
                     {"label":"备注","inputModel":"remarks"}];
                 agreeaddOrUpdateData.setForm = {
                     "contract_type": '',
@@ -498,6 +513,7 @@
                     "end_date": '',
                     "signatories": '',
                     "our_signatories": this.$store.state.user,
+                    "approverid": '',
                     "remarks": ''};
                 agreeaddOrUpdateData.submitURL = this.$store.state.defaultHttp+ 'insertContract.do?cId='+this.$store.state.iscId+'&pId='+this.$store.state.ispId,
                 this.$store.state.agreeaddOrUpdateData = agreeaddOrUpdateData;
@@ -537,6 +553,7 @@
                     {"label":"结束时间","inputModel":"end_date","type":"date"},
                     {"label":"客户签约人","inputModel":"signatories","type":"select"},
                     {"label":"我方签约人","inputModel":"our_signatories","disabled":true},
+                    {"label":"审批人","inputModel":"approverid","type":"select"},
                     {"label":"备注","inputModel":"remarks"}];
                 agreeaddOrUpdateData.setForm = {
                     "contract_type": row.contract_type,
@@ -551,6 +568,7 @@
                     "end_date": row.end_date,
                     "signatories": row.signatories,
                     "our_signatories": row.our_signatories,
+                    "approverid": row.approverid,
                     "remarks": row.remarks};
                 agreeaddOrUpdateData.submitData = {"id": row.contract_id};
                 agreeaddOrUpdateData.submitURL = this.$store.state.defaultHttp+ 'updateContract.do?cId='+this.$store.state.iscId,
