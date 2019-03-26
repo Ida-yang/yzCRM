@@ -12,31 +12,83 @@
                 @node-click="handleNodeClick">
                 <span class="custom-tree-node" slot-scope="{ node, data }">
                     <span><i class="el-icon-info">&nbsp;</i>{{ node.label }}</span>
-                    <span class="showhover">
+                    <span class="showhover" v-show="showtext">
                         <el-button type="text" size="mini" style="font-size:12px;" @click="handleappend(data)">添加/
-                        <!-- <el-button type="text" size="mini" icon="el-icon-circle-plus-outline" @click="handleappend(data)"> -->
                         </el-button>
                         <el-button type="text" size="mini" style="font-size:12px;" @click="handleUpdate(data)">修改/
-                        <!-- <el-button type="text" size="mini" icon="el-icon-edit" @click="handleUpdate(data)"> -->
                         </el-button>
                         <el-button type="text" size="mini" style="font-size:12px;" @click="deletedept(node,data)">删除
-                        <!-- <el-button type="text" size="mini" icon="el-icon-remove-outline" @click="deletedept(node,data)"> -->
                         </el-button>
+                    </span>
+                    <span class="showhover" v-show="!showtext">
                     </span>
                 </span>
             </el-tree>
         </div>
         <div class="rightcontent">
-            <div style="margin:0 0 15px 15px;">
+            <!-- <div style="margin:0 0 15px 15px;">
                 <el-button class="btn info-btn" size="mini" @click="handleAdd()">新增</el-button>
-            </div>
-            <ul class="rolerecord" v-for="item in roleList" :key="item.id">
+            </div> -->
+            <!-- <ul class="rolerecord" v-for="item in roleList" :key="item.id">
                 <li class="rolecontent">
                     ----<span>&nbsp;<i class="el-icon-bell">&nbsp;</i>{{item.name}} - 【{{item.deptname}}】</span>
                     <el-button type="text" size="mini" @click="handleEdit($event,item)">修改</el-button>
                     <el-button type="text" size="mini" @click="handledelete(item.id)">删除</el-button>
                 </li>
-            </ul>
+            </ul> -->
+            <div class="entry">
+                <el-button class="btn info-btn" size="mini" @click="handleAdd()">新增</el-button>
+            </div>
+            <el-table
+                :data="roleList"
+                border
+                stripe
+                :max-height="maxheight"
+                style="width:100%;text-align:left">
+                <el-table-column
+                    header-align="left"
+                    align=""
+                    type="selection"
+                    width="45"
+                    scope.row.id
+                    sortable>
+                </el-table-column>
+                <el-table-column
+                    prop="name"
+                    header-align="left"
+                    align="left"
+                    label="角色名称"
+                    sortable>
+                </el-table-column>
+                <el-table-column
+                    prop="deptname"
+                    header-align="left"
+                    align="left"
+                    label="部门"
+                    sortable>
+                </el-table-column>
+                <el-table-column
+                    prop="deptname"
+                    header-align="left"
+                    align="left"
+                    label="机构"
+                    sortable>
+                </el-table-column>
+                <el-table-column label="操作"
+                    width="140"
+                    header-align="center"
+                    align="left">
+                    <template slot-scope="scope">
+                        <el-button
+                        size="mini"
+                        @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
+                        <el-button
+                        size="mini"
+                        type="danger"
+                        @click="handledelete(scope.$index, scope.row)">删除</el-button>
+                    </template>
+                </el-table-column>
+            </el-table>
         </div>
         <el-dialog
             title="添加"
@@ -245,6 +297,7 @@
                     parentid:null,
                 },
                 roleList:[],
+                maxheight: document.body.clientHeight - 200,
                 clickdata:null,
                 dialogVisible:false,
                 dialogVisible2:false,
@@ -284,15 +337,17 @@
                 agreementrole:null,
                 activityrole:null,
                 setrole:null,
+
+                showtext:true,
             }
         },
         mounted(){
             this.reloadData()
+            this.loadData()
+            this.getresource()
         },
         activated(){
             this.reloadData()
-            this.loadData()
-            this.getresource()
         },
         methods:{
             //加载机构部门树结构
@@ -364,6 +419,7 @@
                     }else{
                         _this.newform.parentname = data.deptname
                         _this.newform.parentid = data.deptid
+                        _this.newform.deptname = ''
                         _this.dialogVisible = true
                     }
                 }).catch(function(err){
@@ -823,7 +879,7 @@
     }
     .leftcontent{
         width: 35%;
-        height: auto;
+        height: 100%;
         float: left;
         box-sizing: border-box;
         overflow-y: scroll;
@@ -869,6 +925,10 @@
     }
     .showhover{
         visibility: visible;
+        position: fixed;
+        right: 64%;
+        width: 30%;
+        text-align: right
     }
     /* .showhover:focus,.showhover:hover{
         visibility: hidden;

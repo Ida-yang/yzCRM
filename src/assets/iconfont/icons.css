@@ -1,0 +1,74 @@
+/* @charset "UTF-8"; */
+@font-face {
+  font-family: "iconfont";
+  src: url("materialdesignicons-webfont.eot?v=1.6.50");
+  src: url("materialdesignicons-webfont.eot?#iefix&v=1.6.50") format("embedded-opentype"), 
+  /* url("materialdesignicons-webfont.woff2?v=1.6.50") format("woff2"),  */
+  url("materialdesignicons-webfont.woff?v=1.6.50") format("woff"), 
+  url("materialdesignicons-webfont.ttf?v=1.6.50") format("truetype"), 
+  url("materialdesignicons-webfont.svg?v=1.6.50#materialdesigniconsregular") format("svg");
+  font-weight: normal;
+  font-style: normal;
+}
+
+[class ^='mdi'], [class *='mdi' ]{
+  font-family:"iconfont" !important;
+  font-size:16px;
+  font-style:normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.mdi {
+  display: inline-block;
+  font: normal normal normal 24px/1 "iconfont";
+  font-size: inherit;
+  text-rendering: auto;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  transform: translate(0, 0);
+}
+
+.mdi-bell-outline:before {content: "\F09C";}
+
+.mdi-dots-horizontal:before {content: "\F1D8";}
+
+.mdi-delete:before {content: "\F1C0";}
+
+.mdi-delete-forever:before {content: "\F5E8";}
+
+.mdi-delete-sweep:before {content: "\F5E9";}
+
+.mdi-access-point:before {content: "\F002";}
+
+.mdi-magnify:before {content: "\F349";}
+
+.mdi-menu-down:before {content: "\F35D";}
+
+.mdi-menu-left:before {content: "\F35E";}
+
+.mdi-menu-right:before {content: "\F35F";}
+
+.mdi-menu-up:before {content: "\F360";}
+
+.mdi-view-grid:before {content: "\F570";}
+
+.mdi-settings:before {content: "\F493";}
+
+.mdi-fullscreen:before {content: "\F293";}
+
+.mdi-fullscreen-exit:before {content: "\F294";}
+
+.mdi-airplay:before {content: "\F01F";}
+
+.mdi-database-plus:before {content: "\F1BA";}
+
+.mdi-cards-outline:before {content: "\F639";}
+
+.mdi-bullseye:before {content: "\F5DD";}
+
+.mdi-account-outline:before {content: "\F013";}
+
+.mdi-account:before {content: "\F004";}
+
+.mdi-lock:before {content: "\F33E";}

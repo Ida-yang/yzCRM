@@ -3,7 +3,7 @@ import ElementUI from 'element-ui';
 import { Message } from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 import 'element-ui/lib/theme-chalk/display.css';
-import './assets/iconfont/iconfont.css';
+import './assets/iconfont/icons.css';
 import axios from 'axios'
 
 import App from './App.vue';

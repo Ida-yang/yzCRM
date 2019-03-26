@@ -16,22 +16,19 @@
                     <el-form  :model="loginFrom" status-icon :rules="rules" ref="loginFrom" 
                     class="demo-ruleForm"
                     style="color:#fff" >
-                        <!-- <i class="el-icon-new-zuzhiguanli selecticonSet"></i> -->
                         <el-form-item prop="public_username" style="width:100%;margin-top:30px;">
-                            <!-- <i class="el-icon-new-people_fill iconSet"></i> -->
                             <el-input 
                             type="text"
-                            prefix-icon="el-icon-new-people_fill"
+                            prefix-icon="mdi-account"
                             v-model="loginFrom.public_username"
                             auto-complete="off"
                             placeholder="请输入登录账号" >
                             </el-input>
                         </el-form-item>
                         <el-form-item  prop="public_password" style="width:100%;margin-top:25px;">
-                            <!-- <i class="el-icon-new-lock_fill iconSet"></i> -->
                             <el-input 
                             type="password" 
-                            prefix-icon="el-icon-new-lock_fill"
+                            prefix-icon="mdi-lock"
                             v-model="loginFrom.public_password"
                             placeholder="请输入登录密码" 
                             @keyup.enter.native="submitForm('loginFrom')"
@@ -50,7 +47,7 @@
 
 <script>
 import store from '../store/store'
-import '../assets/iconfont/iconfont.css'
+import '../assets/iconfont/icons.css'
 import axios from 'axios'
 import 'element-ui/lib/theme-chalk/display.css'
 import $ from 'jquery'

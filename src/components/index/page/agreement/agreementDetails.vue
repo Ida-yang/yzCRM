@@ -152,14 +152,14 @@
                 showaudited:false
             }
         },
-        // activated(){
-        //     this.loadData();
-        //     this.loadIMG()
-        // },
-        mounted(){
+        activated(){
             this.loadData();
             this.loadIMG()
         },
+        // mounted(){
+        //     this.loadData();
+        //     this.loadIMG()
+        // },
         methods: {
             loadData() {
                 const _this = this

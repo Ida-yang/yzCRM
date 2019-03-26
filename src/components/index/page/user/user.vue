@@ -108,6 +108,7 @@
                     </el-table-column>
                     <el-table-column
                         prop="private_email"
+                        show-overflow-tooltip
                         v-if="item.prop == 'private_email' && item.state == 1"
                         header-align="left"
                         align="left"
@@ -139,7 +140,7 @@
                         v-if="item.prop == 'createTime' && item.state == 1"
                         header-align="left"
                         align="left"
-                        min-width="180"
+                        min-width="150"
                         label="创建时间"
                         sortable>
                     </el-table-column>

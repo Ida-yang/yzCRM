@@ -13,7 +13,7 @@
                 <template v-if="item.subs">
                     <el-submenu :index="item.index" :key="item.index">
                         <template slot="title">
-                            <i :class="item.icon"  style="color:#fff"></i>
+                            <i :class="item.icon"  style="color:#fff"> </i>&nbsp;
                             <span slot="title"  style="color:#fff">{{ item.title }}</span>
                         </template>
                         <el-menu-item v-for="(subItem,i) in item.subs" :key="i" :index="subItem.index">
@@ -23,7 +23,7 @@
                 </template>
                 <template v-else>
                     <el-menu-item :index="item.index" :key="item.index">
-                        <i :class="item.icon" style="color:#fff" ></i>
+                        <i :class="item.icon" style="color:#fff" ></i>&nbsp;
                         <span slot="title"  style="color:#fff">{{ item.title }}</span>
                     </el-menu-item>
                 </template>
@@ -33,7 +33,7 @@
                 <template v-if="item.subs">
                     <el-submenu :index="item.index" :key="item.index">
                         <template slot="title">
-                            <i :class="item.icon"  style="color:#fff"></i>
+                            <i :class="item.icon"  style="color:#fff"> </i>&nbsp;
                             <span slot="title"  style="color:#fff">{{ item.title }}</span>
                         </template>
                         <el-menu-item v-for="(subItem,i) in item.subs" :key="i" :index="subItem.index">
@@ -43,7 +43,7 @@
                 </template>
                 <template v-else>
                     <el-menu-item :index="item.index" :key="item.index">
-                        <i :class="item.icon" style="color:#fff" ></i>
+                        <i :class="item.icon" style="color:#fff" ></i>&nbsp;
                         <span slot="title"  style="color:#fff">{{ item.title }}</span>
                     </el-menu-item>
                 </template>
@@ -53,7 +53,7 @@
                 <template v-if="item.subs">
                     <el-submenu :index="item.index" :key="item.index">
                         <template slot="title">
-                            <i :class="item.icon"  style="color:#fff"></i>
+                            <i :class="item.icon"  style="color:#fff"> </i>&nbsp;
                             <span slot="title"  style="color:#fff">{{ item.title }}</span>
                         </template>
                         <el-menu-item v-for="(subItem,i) in item.subs" :key="i" :index="subItem.index">
@@ -63,7 +63,7 @@
                 </template>
                 <template v-else>
                     <el-menu-item :index="item.index" :key="item.index">
-                        <i :class="item.icon" style="color:#fff" ></i>
+                        <i :class="item.icon" style="color:#fff" ></i>&nbsp;
                         <span slot="title"  style="color:#fff">{{ item.title }}</span>
                     </el-menu-item>
                 </template>
@@ -81,12 +81,12 @@
                 show:true,
                 itemone: [
                     {
-                        icon: 'el-icon-new-homepage_fill',
+                        icon: 'mdi-airplay',
                         index: '1',
                         title: '首页',
                     },
                     {
-                        icon: 'el-icon-new-gongyi',
+                        icon: 'mdi-database-plus',
                         index: '2',
                         title: '数据中心',
                         subs: [
@@ -103,7 +103,7 @@
                 ],
                 itemtwo: [
                     {
-                        icon: 'el-icon-new-mn_yonghuziliao',
+                        icon: 'mdi-cards-outline',
                         index: '3',
                         title: '销售支持',
                         subs: [
@@ -131,14 +131,14 @@
                                 index: 'businessOpportunity',
                                 title: '商机',
                             },
-                                                         {
+                            {
                                 index: 'agreement',
                                 title: '合同',
                             },
                         ]
                     },
                     {
-                        icon: 'el-icon-new-quanxianguanli',
+                        icon: 'mdi-bullseye',
                         index: '4',
                         title: '营销',
                         subs: [
@@ -149,7 +149,7 @@
                         ]
                     },
                     {
-                        icon: 'el-icon-new-chuku',
+                        icon: 'mdi-account-outline',
                         index: '5',
                         title: '办公',
                         subs: [
@@ -163,26 +163,26 @@
                             },
                         ]
                     },
-                    {
-                        icon: 'el-icon-new-quanxianguanli',
-                        index: '6',
-                        title: '导入',
-                        subs: [
-                            {
-                                index: 'name',
-                                title: '导入',
-                            },
-                            {
-                                index: 'name2',
-                                title: '导入2',
-                            },
-                        ]
-                    },
+                    // {
+                    //     icon: 'el-icon-new-quanxianguanli',
+                    //     index: '6',
+                    //     title: '导入',
+                    //     subs: [
+                    //         {
+                    //             index: 'name',
+                    //             title: '导入',
+                    //         },
+                    //         {
+                    //             index: 'name2',
+                    //             title: '导入2',
+                    //         },
+                    //     ]
+                    // },
                 ],
                 
                 itemlast: [
                     {
-                        icon: 'el-icon-new-shezhi',
+                        icon: 'mdi-settings',
                         index: '7',
                         title: '系统设置',
                         subs: [

@@ -221,7 +221,7 @@
                     header-align="left"
                     align="left"
                     label="手机"
-                    width="100"
+                    width="110"
                     sortable>
                 </el-table-column>
                 <el-table-column
@@ -230,15 +230,17 @@
                     header-align="left"
                     align="left"
                     label="固话"
-                    width="90"
+                    width="100"
                     sortable>
                 </el-table-column>
                 <el-table-column
                     prop="emailId"
+                    show-overflow-tooltip
                     v-else-if="item.prop == 'coEmail' && item.state == 1"
                     header-align="left"
                     align="left"
                     label="邮箱"
+                    width="130"
                     sortable>
                 </el-table-column>
                 <el-table-column
@@ -273,17 +275,18 @@
                     header-align="left"
                     align="left"
                     label="省-市-区"
-                    width="140"
+                    width="150"
                     sortable>
                     <template slot-scope="scope">{{scope.row.countryId}}-{{scope.row.city}}-{{scope.row.area}}</template>
                 </el-table-column>
                 <el-table-column
                     prop="company"
+                    show-overflow-tooltip
                     v-else-if="item.prop == 'company' && item.state == 1"
                     header-align="left"
                     align="left"
                     label="企业类型"
-                    width="110"
+                    width="130"
                     sortable>
                 </el-table-column>
                 <el-table-column

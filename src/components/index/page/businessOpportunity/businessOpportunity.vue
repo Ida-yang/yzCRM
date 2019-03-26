@@ -331,7 +331,7 @@
                     searchList.deptid = _this.$store.state.insid
                 }
                 searchList.example = this.searchList.time
-                searchList.state = this.searchList.state
+                searchList.stateid = this.searchList.state
                 searchList.page = this.page;
                 searchList.limit = this.limit;
                 
@@ -349,7 +349,6 @@
             reloadData() {
                 const _this = this;
                 let qs =require('querystring')
-                
                 let filterList = {}
                 filterList.type = '商机'
                 let data = {}

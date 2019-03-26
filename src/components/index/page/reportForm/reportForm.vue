@@ -1,7 +1,7 @@
 <template>
     <div class="innerspace">
         <div class="head">
-            <span>获客报表是基于已签约的客户从行业占比，城市分布，企业规模，成立时间等四个维度分析，从而推荐出最优的拓展城市区域。</span>
+            <span>获客报表是基于已签约的客户从行业占比，省份分布，企业规模，成立时间等四个维度分析，从而推荐出最优的拓展省份区域。</span>
         </div>
         <div class="middles">
             <div class="middlebody">
@@ -15,23 +15,24 @@
                     stripe
                     style="width:100%;text-align:center">
                     <el-table-column
-                        prop="industry"
+                        prop="name"
                         header-align="left"
                         align="left"
-                        min-width="110"
+                        min-width="130"
                         label="行业"
                         sortable>
                     </el-table-column>
                     <el-table-column
-                        prop="internalproportion"
+                        prop="innerShare"
                         header-align="left"
                         align="left"
                         min-width="110"
                         label="内部占比"
                         sortable>
+                        <template slot-scope="scope">{{scope.row.innerShare}} %</template>
                     </el-table-column>
                     <el-table-column
-                        prop="internalnumber"
+                        prop="innerNum"
                         header-align="left"
                         align="left"
                         min-width="110"
@@ -39,15 +40,16 @@
                         sortable>
                     </el-table-column>
                     <el-table-column
-                        prop="countryproportion"
+                        prop="countryShare"
                         header-align="left"
                         align="left"
                         min-width="110"
                         label="全国占比"
                         sortable>
+                        <template slot-scope="scope">{{scope.row.countryShare}} %</template>
                     </el-table-column>
                     <el-table-column
-                        prop="countrynumber"
+                        prop="countryNum"
                         header-align="left"
                         align="left"
                         min-width="120"
@@ -70,15 +72,15 @@
                     :default-sort = "{order: 'descending'}"
                     style="width:100%;text-align:center">
                     <el-table-column
-                        prop="city"
+                        prop="name"
                         header-align="left"
                         align="left"
                         min-width="120"
-                        label="城市"
+                        label="省份"
                         sortable>
                     </el-table-column>
                     <el-table-column
-                        prop="number"
+                        prop="num"
                         header-align="left"
                         align="left"
                         min-width="90"
@@ -86,12 +88,13 @@
                         sortable>
                     </el-table-column>
                     <el-table-column
-                        prop="proportion"
+                        prop="share"
                         header-align="left"
                         align="left"
                         min-width="90"
                         label="占比"
                         sortable>
+                        <template slot-scope="scope">{{scope.row.share}} %</template>
                     </el-table-column>
                 </el-table>
             </div>
@@ -131,6 +134,7 @@
                         min-width="90"
                         label="占比"
                         sortable>
+                        <template slot-scope="scope">{{scope.row.proportion}} %</template>
                     </el-table-column>
                 </el-table>
             </div>
@@ -156,7 +160,7 @@
                         sortable>
                     </el-table-column>
                     <el-table-column
-                        prop="number"
+                        prop="num"
                         header-align="left"
                         align="left"
                         min-width="90"
@@ -164,12 +168,13 @@
                         sortable>
                     </el-table-column>
                     <el-table-column
-                        prop="proportion"
+                        prop="share"
                         header-align="left"
                         align="left"
                         min-width="90"
                         label="占比"
                         sortable>
+                        <template slot-scope="scope">{{scope.row.share}} %</template>
                     </el-table-column>
                 </el-table>
             </div>
@@ -180,10 +185,9 @@
                 ref="multipleTable"
                 border
                 stripe
-                :default-sort = "{order: 'descending'}"
                 style="width:100%;text-align:center">
                 <el-table-column
-                    prop="name"
+                    prop="industryName"
                     header-align="left"
                     align="left"
                     min-width="160"
@@ -191,11 +195,11 @@
                     sortable>
                 </el-table-column>
                 <el-table-column
-                    prop="city"
+                    prop="cityName"
                     header-align="left"
                     align="left"
                     min-width="110"
-                    label="城市"
+                    label="省份"
                     sortable>
                 </el-table-column>
                 <el-table-column
@@ -206,38 +210,38 @@
                     label="成立年限"
                     sortable>
                 </el-table-column>
-                <el-table-column
+                <!-- <el-table-column
                     prop="scale"
                     header-align="left"
                     align="left"
                     min-width="120"
                     label="公司规模"
                     sortable>
-                </el-table-column>
-                <el-table-column
+                </el-table-column> -->
+                <!-- <el-table-column
                     prop="capital"
                     header-align="left"
                     align="left"
                     min-width="120"
                     label="注册资金"
                     sortable>
-                </el-table-column>
+                </el-table-column> -->
                 <el-table-column
-                    prop="ensure"
+                    prop="result"
                     header-align="left"
                     align="left"
                     min-width="145"
-                    label="当前城市保有量"
+                    label="当前省份保有量"
                     sortable>
                 </el-table-column>
-                <el-table-column
+                <!-- <el-table-column
                     prop="sort"
                     header-align="left"
                     align="left"
                     min-width="90"
                     label="顺序"
                     sortable>
-                </el-table-column>
+                </el-table-column> -->
                 <el-table-column
                     prop="financing"
                     header-align="left"
@@ -255,7 +259,7 @@
                     sortable>
                 </el-table-column>
                 <el-table-column
-                    prop="telephone"
+                    prop="phone"
                     header-align="left"
                     align="left"
                     min-width="120"
@@ -291,23 +295,14 @@
         data(){
             return {
                 msg:"报表",
-                industryData:[
-                    {industry:'电子',internalproportion:'9.09%',internalnumber:'3000',countryproportion:'0.09%',countrynumber:'130000000'},
-                    {industry:'化妆品',internalproportion:'12.05%',internalnumber:'3000',countryproportion:'0.15%',countrynumber:'234000000'},
-                    {industry:'五金',internalproportion:'18.16%',internalnumber:'3000',countryproportion:'0.18%',countrynumber:'53000000'},
-                    {industry:'知识产权',internalproportion:'16.64%',internalnumber:'3000',countryproportion:'0.35%',countrynumber:'260000000'},
-                    {industry:'农业',internalproportion:'19.63%',internalnumber:'3000',countryproportion:'0.51%',countrynumber:'30000000'},
-                    {industry:'汽配',internalproportion:'24.31%',internalnumber:'3000',countryproportion:'0.12%',countrynumber:'54000000'},
-                ],
-                cityData:[
-                    {city:'北京',number:'599',proportion:'5.01%'},                    
-                    {city:'上海',number:'142',proportion:'5.01%'},                    
-                    {city:'黑龙江',number:'44',proportion:'5.01%'},                    
-                    {city:'深圳',number:'92',proportion:'5.01%'},                    
-                    {city:'湖北',number:'810',proportion:'5.01%'},                    
-                    {city:'广东',number:'19450',proportion:'5.01%'},                    
-                    {city:'云南',number:'150',proportion:'5.01%'},                  
-                ],
+                //行业占比
+                industryData:[],
+                industry:[],
+                indata:[],
+                //省份分布
+                cityData:[],
+                city:[],
+                //公司规模
                 scaleData:[
                     {scale:'1-49',number:'62',proportion:'5.01%'},                    
                     {scale:'50-99',number:'89',proportion:'5.01%'},                    
@@ -318,71 +313,131 @@
                     {scale:'3000-4999',number:'16',proportion:'5.01%'},                    
                     {scale:'5000以上',number:'5',proportion:'5.01%'},                  
                 ],
-                yearsData:[
-                    {years:'1年以内',number:'55',proportion:'5.01%'},                    
-                    {years:'1-3年',number:'20',proportion:'5.01%'},                    
-                    {years:'3-5年',number:'36',proportion:'5.01%'},                    
-                    {years:'5-8年',number:'25',proportion:'5.01%'},                    
-                    {years:'8-10年',number:'10',proportion:'5.01%'},                    
-                    {years:'10年以上',number:'9',proportion:'5.01%'},                   
-                ],
+                scale:[],
+                scdata:[],
+                //成立年限
+                yearsData:[],
+                years:[],
+                yedata:[],
             }
         },
-        activated(){
-            this.loadData()
-            this.drawLine();
-        },
+        // activated(){
+        //     this.loadData()
+        //     this.drawLine();
+        // },
         mounted(){
             this.loadData()
-            this.drawLine();
         },
         methods:{
             loadData(){
                 const _this = this;
-                _this.$store.state.reportFormList = [
-                    {name:'化妆品行业',city:'广州',years:'1-3年',scale:'50-99人',capital:'200-500万',ensure:'1000万客户',sort:'1',financing:'100',list:'100',telephone:'100'},
-                    {name:'化妆品行业',city:'广州',years:'1-3年',scale:'50-99人',capital:'200-500万',ensure:'1000万客户',sort:'2',financing:'100',list:'100',telephone:'100'},
-                    {name:'化妆品行业',city:'广州',years:'1-3年',scale:'50-99人',capital:'200-500万',ensure:'1000万客户',sort:'3',financing:'100',list:'100',telephone:'100'},
-                    {name:'化妆品行业',city:'广州',years:'1-3年',scale:'50-99人',capital:'200-500万',ensure:'1000万客户',sort:'4',financing:'100',list:'100',telephone:'100'},
-                ]
+                // let qs = require('querystring')
+                axios({
+                    method: 'get',
+                    url: _this.$store.state.defaultHttp+'industryShare/selectIndustryShare.do?cId=' + _this.$store.state.iscId,
+                }).then(function(res){
+                    _this.industryData = res.data.map.industryShare
+                    _this.industryData.forEach(el => {
+                        _this.industry.push({name:el.name,value:el.innerNum})
+                        _this.indata.push(el.name)
+                    });
+                    _this.drawLine3()
+                }).catch(function(err){
+                    console.log(err)
+                })
+                axios({
+                    method: 'get',
+                    url: _this.$store.state.defaultHttp+'getCountContractByCountryId.do?cId=' + _this.$store.state.iscId,
+                }).then(function(res){
+                    _this.cityData = res.data.map.contracts
+                    _this.cityData.forEach(el => {
+                        _this.city.push({name:el.name,value:el.num})
+                    });
+                    _this.drawLine4()
+                }).catch(function(err){
+                    console.log(err)
+                })
+                axios({
+                    method: 'get',
+                    url: _this.$store.state.defaultHttp+'getCountContractByYears.do?cId=' + _this.$store.state.iscId,
+                }).then(function(res){
+                    _this.yearsData = res.data.map.contracts
+                    _this.yearsData.forEach(el => {
+                        _this.years.push(el.num)
+                        _this.yedata.push(el.years)
+                    });
+                    _this.drawLine2()
+                    _this.drawLine1()
+                }).catch(function(err){
+                    console.log(err)
+                })
+                axios({
+                    method: 'get',
+                    url: _this.$store.state.defaultHttp+'getCountContractRrecommend.do?cId=' + _this.$store.state.iscId,
+                }).then(function(res){
+                    _this.$store.state.reportFormList = res.data.map.contracts.slice(0,10)
+                }).catch(function(err){
+                    console.log(err)
+                })
+                // _this.$store.state.reportFormList = [
+                //     {name:'化妆品行业',city:'广州',years:'1-3年',scale:'50-99人',capital:'200-500万',ensure:'1000万客户',sort:'1',financing:'100',list:'100',telephone:'100'},
+                //     {name:'化妆品行业',city:'广州',years:'1-3年',scale:'50-99人',capital:'200-500万',ensure:'1000万客户',sort:'2',financing:'100',list:'100',telephone:'100'},
+                //     {name:'化妆品行业',city:'广州',years:'1-3年',scale:'50-99人',capital:'200-500万',ensure:'1000万客户',sort:'3',financing:'100',list:'100',telephone:'100'},
+                //     {name:'化妆品行业',city:'广州',years:'1-3年',scale:'50-99人',capital:'200-500万',ensure:'1000万客户',sort:'4',financing:'100',list:'100',telephone:'100'},
+                // ]
             },
-            drawLine(){
+            drawLine1(){
                 // 基于准备好的dom，初始化echarts实例
                 let chart1 = echarts.init(document.getElementById('chart1'))
-                let chart2 = echarts.init(document.getElementById('chart2'))
-                let chart3 = echarts.init(document.getElementById('chart3'))
-                let chart4 = echarts.init(document.getElementById('chart4'))
                 // 绘制图表
                 //公司规模分析
                 chart1.setOption({
                     title: { text: '公司规模分析',left: 'center' },
-                    tooltip: {},
+                    tooltip: {
+                        trigger: 'item',
+                        formatter: "{a}：" + "{b} <br/> " + '数量：' + "{c}"
+                    },
                     xAxis: {
                         bottom: 20,
                         data: ["1-49", "50-99", "100-199", "200-499", "500-999", "1000-2999", "3000-4999", "5000以上"]
                     },
                     yAxis: {},
                     series: [{
-                        name: '客户数量',
+                        name: '公司规模',
                         type: 'bar',
                         data: [62, 89, 36, 10, 36, 54, 16, 5]
                     }]
                 });
+            },
+            drawLine2(){
+                // 基于准备好的dom，初始化echarts实例
+                let chart2 = echarts.init(document.getElementById('chart2'))
+                // 绘制图表
                 //成立年限分析
                 chart2.setOption({
                     title: { text: '成立年限分析',left: 'center' },
-                    tooltip: {},
+                    tooltip: {
+                        trigger: 'item',
+                        formatter: "{a}：" + "{b} <br/> " + '数量：' + "{c}"
+                    },
                     xAxis: {
                         bottom: 20,
-                        data: ["1年以内", "1-3年", "3-5年", "5-8年", "8-10年", "10年以上"]
+                        // data: ["1年以内", "1-3年", "3-5年", "5-8年", "8-10年", "10年以上"]
+                        data: this.yedata
                     },
                     yAxis: {},
                     series: [{
-                        name: '客户数量',
+                        name: '成立年限',
                         type: 'bar',
-                        data: [55, 20, 36, 25, 10, 9]
+                        // data: [55, 20, 36, 25, 10, 9]
+                        data: this.years
                     }]
                 });
+            },
+            drawLine3(){
+                // 基于准备好的dom，初始化echarts实例
+                let chart3 = echarts.init(document.getElementById('chart3'))
+                // 绘制图表
                 //行业占比分析
                 chart3.setOption({
                     title: {
@@ -391,7 +446,7 @@
                     },
                     tooltip : {
                         trigger: 'item',
-                        formatter: "{a} <br/> " + '销售数量' + ":{c}"
+                        formatter: "{a}：" + "{b} <br/> " + '数量：' + "{c}"
                     },
                     legend: {
                         bottom: 20,
@@ -399,18 +454,20 @@
                         data: ['电子','化妆品','五金','知识产权','农业','汽配'] // 扇形区域名称
                     },
                     series : [{
-                        name:'客户数量',  // 提示框标题
+                        name:'行业',  // 提示框标题
                         type: 'pie',
                         radius : '65%',
                         center: ['50%', '50%'],
                         selectedMode: 'single',
-                        data:[
-                                {value:3000, name:'电子'},
-                                {value:3000, name:'化妆品'},
-                                {value:3000, name:'五金'},
-                                {value:3000, name:'知识产权'},
-                                {value:3000, name:'农业'},
-                                {value:3000, name:'汽配'}], // 扇形区域数据
+                        data: this.industry,
+                        // data:[
+                        //         {value:3000, name:'电子'},
+                        //         {value:3000, name:'化妆品'},
+                        //         {value:3000, name:'五金'},
+                        //         {value:3000, name:'知识产权'},
+                        //         {value:3000, name:'农业'},
+                        //         {value:3000, name:'汽配'}
+                        //     ], // 扇形区域数据
                         itemStyle: {
                             emphasis: {
                                 shadowBlur: 10,
@@ -420,14 +477,22 @@
                         }
                     }]
                 });
-                //城市分布
+            },
+            drawLine4(){
+                // 基于准备好的dom，初始化echarts实例
+                let chart4 = echarts.init(document.getElementById('chart4'))
+                // 绘制图表
+                //省份分布
                 chart4.setOption({
                     title: {
-                        text: '城市分布分析', // 标题文本
+                        text: '省份分布分析', // 标题文本
                         left: 'center'
                     },
                     //  backgroundColor: "#02AFDB",
-                    tooltip: {}, // 鼠标移到图里面的浮动提示框
+                    tooltip: {
+                        trigger: 'item',
+                        formatter: "{a}：" + "{b} <br/> " + '数量：' + "{c}"
+                    }, // 鼠标移到图里面的浮动提示框
                     dataRange: {
                         show: false,
                         min: 0,
@@ -462,36 +527,25 @@
                             }
                         }
                     },
-                    series: [{
-                        type: 'scatter',
-                            coordinateSystem: 'geo' // 对应上方配置
-                            },
+                    series: [
                         {
-                        name: '浏览量', // 浮动框的标题
-                        type: 'map',
-                        geoIndex: 0,
-                        data: [{
-                            "name": "北京",
-                            "value": 599
-                            }, {
-                                "name": "上海",
-                                "value": 142
-                            }, {
-                                "name": "黑龙江",
-                                "value": 44
-                            }, {
-                                "name": "深圳",
-                                "value": 92
-                            }, {
-                                "name": "湖北",
-                                "value": 810
-                            }, {
-                                "name": "广州",
-                                "value": 19450
-                            }, {
-                                "name": "云南",
-                                "value": 150
-                            }]
+                            type: 'scatter',
+                            coordinateSystem: 'geo' // 对应上方配置
+                        },
+                        {
+                            name: '省份', // 浮动框的标题
+                            type: 'map',
+                            geoIndex: 0,
+                            data: this.city
+                            // data: [
+                            //     {"name": "内蒙古","value": 599}, 
+                            //     {"name": "上海","value": 142}, 
+                            //     {"name": "黑龙江","value": 44}, 
+                            //     {"name": "青海","value": 92}, 
+                            //     {"name": "湖北","value": 810}, 
+                            //     {"name": "香港","value": 19450}, 
+                            //     {"name": "澳门特别行政区","value": 150}
+                            // ]
                         }
                     ]
                 });
@@ -509,11 +563,12 @@
     }
     .head{
         width: 100%;
-        height: 60px;
+        height: auto;
         background-color: #ffffff;
         text-align: center;
-        line-height: 60px;
-        font-size: 20px;
+        padding: 15px 0 ;
+        line-height: 30px;
+        font-size: 18px;
     }
     .middles{
         width: 100%;
@@ -528,9 +583,9 @@
     .middles .middlebody{
         flex: 1;
         width: 50%;
-        /* padding: 10px; */
+        padding: 10px;
     }
-    .middles .middlebody div{
+    .middles .middlebody > div{
         margin:0 auto
     }
     .middles .middlebody:first-child{

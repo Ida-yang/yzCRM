@@ -153,14 +153,14 @@
                 retracts:true,
             }
         },
-        mounted(){
-            this.loadTable()
-            this.loadData();
-        },
-        // activated(){
+        // mounted(){
         //     this.loadTable()
         //     this.loadData();
         // },
+        activated(){
+            this.loadTable()
+            this.loadData();
+        },
         methods: {
             loadTable(){
                 this.detailData = this.$store.state.oppdetailsData.submitData;
@@ -201,7 +201,7 @@
                         for(var i = 0,length = addStep.length;i < length;i++){
                             _this.stepList[i].createTime = addStep[i].createTime
                             _this.steptime = addStep[i].createTime
-                            if(addStep[i].progress_name == '失败关闭'){
+                            if(addStep[i].step_probability == '0'){
                                 _this.active = i
                                 _this.shownext = false
                                 _this.showfail = true
@@ -250,7 +250,7 @@
                     data.secondid = this.$store.state.deptid
                     data.oy_id = this.detailData.id
                     if(_this.active == i){
-                        data.progress_name = this.stepList[i].step_name
+                        data.stepId = this.stepList[i].step_id
                         data.progress_probability = this.stepList[i].step_probability
                         if(data.progress_probability == '100'){
                             _this.shownext = false
@@ -294,8 +294,7 @@
                 data.deptid = this.$store.state.insid
                 data.secondid = this.$store.state.deptid
                 data.oy_id = this.detailData.id
-                data.progress_name = '失败关闭'
-                data.progress_probability = '0'
+                data.stepId = 100
                 _this.$confirm('确认关闭商机进度吗？一旦确定将不可撤回','提示',{
                     confirmButtonText:'确定',
                     cancelButtonText:'取消',

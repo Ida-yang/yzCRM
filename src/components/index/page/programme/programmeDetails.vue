@@ -357,12 +357,12 @@
                 retracts:true,
             }
         },
-        // activated(){
-        //     this.loadData();
-        // },
-        mounted(){
+        activated(){
             this.loadData();
         },
+        // mounted(){
+        //     this.loadData();
+        // },
         methods: {
             loadData() {
                 this.detailData = this.$store.state.prodetailsData.submitData;

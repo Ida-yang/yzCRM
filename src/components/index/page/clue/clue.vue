@@ -105,7 +105,7 @@
                     header-align="left"
                     align="left"
                     label="电话"
-                    min-width="95"
+                    min-width="100"
                     sortable>
                 </el-table-column>
                 <el-table-column
@@ -113,7 +113,7 @@
                     v-else-if="item.prop == 'contacts[0].phone' && item.state == 1"
                     header-align="left"
                     align="left"
-                    min-width="95"
+                    min-width="110"
                     label="手机"
                     sortable>
                 </el-table-column>
@@ -128,11 +128,12 @@
                 </el-table-column>
                 <el-table-column
                     prop="contacts[0].email"
+                    show-overflow-tooltip
                     v-else-if="item.prop == 'email' && item.state == 1"
                     header-align="left"
                     align="left"
                     label="邮箱"
-                    min-width="95"
+                    min-width="130"
                     sortable>
                 </el-table-column>
                 <el-table-column
@@ -222,7 +223,7 @@
                     v-else-if="item.prop == 'countryid' && item.state == 1"
                     header-align="left"
                     align="left"
-                    min-width="140"
+                    min-width="150"
                     label="省-市-区"
                     sortable>
                     <template slot-scope="scope">{{scope.row.country}}-{{scope.row.city}}-{{scope.row.area}}</template>
@@ -232,7 +233,7 @@
                     v-else-if="item.prop == 'createTime' && item.state == 1"
                     header-align="left"
                     align="left"
-                    min-width="140"
+                    min-width="150"
                     label="创建时间"
                     sortable>
                 </el-table-column>
@@ -264,6 +265,7 @@
                 </el-table-column>
                 <el-table-column
                     prop="registrationAuthority"
+                    show-overflow-tooltip
                     v-else-if="item.prop == 'registrationAuthority' && item.state == 1"
                     header-align="left"
                     align="left"
@@ -285,7 +287,7 @@
                     v-else-if="item.prop == 'registrationNumber' && item.state == 1"
                     header-align="left"
                     align="left"
-                    min-width="110"
+                    min-width="130"
                     label="注册号"
                     sortable>
                 </el-table-column>
@@ -337,6 +339,7 @@
                 </el-table-column>
                 <el-table-column
                     prop="industryType"
+                    show-overflow-tooltip
                     v-else-if="item.prop == 'industryType' && item.state == 1"
                     header-align="left"
                     align="left"

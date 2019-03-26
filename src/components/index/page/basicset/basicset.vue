@@ -26,10 +26,10 @@
                 :data="tableData"
                 border
                 stripe
-                style="width:100%;text-align:center"
+                style="width:100%;text-align:left"
                 v-show="showtopfour">
                 <el-table-column
-                    header-align="center"
+                    header-align="left"
                     align=""
                     type="selection"
                     width="45"
@@ -39,16 +39,16 @@
                 <el-table-column
                     prop="sort"
                     v-if="showshunxu"
-                    header-align="center"
-                    align="center"
+                    header-align="left"
+                    align="left"
                     label="顺序"
                     sortable>
                 </el-table-column>
                 <el-table-column
                     prop="typeName"
                     v-if="showmingcheng"
-                    header-align="center"
-                    align="center"
+                    header-align="left"
+                    align="left"
                     min-width="120"
                     label="名称"
                     sortable>
@@ -56,8 +56,8 @@
                 <el-table-column
                     prop="notes"
                     v-if="showbeizhu"
-                    header-align="center"
-                    align="center"
+                    header-align="left"
+                    align="left"
                     min-width="120"
                     label="备注"
                     sortable>
@@ -65,7 +65,7 @@
                 <el-table-column label="操作"
                     width="140"
                     header-align="center"
-                    align="center">
+                    align="left">
                     <template slot-scope="scope">
                         <el-button
                         size="mini"
@@ -81,10 +81,10 @@
                 :data="tableData2"
                 border
                 stripe
-                style="width:100%;text-align:center"
+                style="width:100%;text-align:left"
                 v-show="showfive">
                 <el-table-column
-                    header-align="center"
+                    header-align="left"
                     align=""
                     type="selection"
                     width="45"
@@ -94,16 +94,16 @@
                 <el-table-column
                     prop="sort"
                     v-if="showshunxu"
-                    header-align="center"
-                    align="center"
+                    header-align="left"
+                    align="left"
                     label="顺序"
                     sortable>
                 </el-table-column>
                 <el-table-column
                     prop="typeName"
                     v-if="showmingcheng"
-                    header-align="center"
-                    align="center"
+                    header-align="left"
+                    align="left"
                     min-width="120"
                     label="方式名称"
                     sortable>
@@ -111,8 +111,8 @@
                 <el-table-column
                     prop="content"
                     v-if="showmingcheng"
-                    header-align="center"
-                    align="center"
+                    header-align="left"
+                    align="left"
                     min-width="120"
                     label="跟进内容"
                     sortable>
@@ -120,8 +120,8 @@
                 <el-table-column
                     prop="notes"
                     v-if="showbeizhu"
-                    header-align="center"
-                    align="center"
+                    header-align="left"
+                    align="left"
                     min-width="120"
                     label="备注"
                     sortable>
@@ -129,7 +129,7 @@
                 <el-table-column label="操作"
                     width="140"
                     header-align="center"
-                    align="center">
+                    align="left">
                     <template slot-scope="scope">
                         <el-button
                         size="mini"
@@ -145,10 +145,10 @@
                 :data="tableData3"
                 border
                 stripe
-                style="width:100%;text-align:center"
+                style="width:100%;text-align:left"
                 v-show="showsix">
                 <el-table-column
-                    header-align="center"
+                    header-align="left"
                     align=""
                     type="selection"
                     width="45"
@@ -158,16 +158,16 @@
                 <el-table-column
                     prop="sort"
                     v-if="showshunxu"
-                    header-align="center"
-                    align="center"
+                    header-align="left"
+                    align="left"
                     label="顺序"
                     sortable>
                 </el-table-column>
                 <el-table-column
                     prop="step_name"
                     v-if="showmingcheng"
-                    header-align="center"
-                    align="center"
+                    header-align="left"
+                    align="left"
                     min-width="120"
                     label="状态名称"
                     sortable>
@@ -175,8 +175,8 @@
                 <el-table-column
                     prop="step_probability"
                     v-if="showmingcheng"
-                    header-align="center"
-                    align="center"
+                    header-align="left"
+                    align="left"
                     min-width="120"
                     label="成功几率"
                     sortable>
@@ -187,8 +187,8 @@
                 <el-table-column
                     prop="notes"
                     v-if="showbeizhu"
-                    header-align="center"
-                    align="center"
+                    header-align="left"
+                    align="left"
                     min-width="120"
                     label="备注"
                     sortable>
@@ -196,7 +196,7 @@
                 <el-table-column label="操作"
                     width="140"
                     header-align="center"
-                    align="center">
+                    align="left">
                     <template slot-scope="scope">
                         <el-button
                         size="mini"
@@ -945,7 +945,7 @@
         height: 100%;
     }
     .setleftcontent{
-        width: 30%;
+        width: 20%;
         height: auto;
         padding-top:30px;
         float: left;
@@ -975,7 +975,7 @@
         background-color: #f0f0f0;
     }
     .setrightcontent{
-        width: 69%;
+        width: 79%;
         height: 100%;
         float: left;
         box-sizing: border-box;

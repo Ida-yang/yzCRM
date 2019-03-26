@@ -81,6 +81,7 @@
                     v-else-if="item.prop == 'phone' && item.state == 1"
                     header-align="left"
                     align="left"
+                    min-width="110"
                     sortable>
                 </el-table-column>
                 <el-table-column label="QQ"
@@ -92,6 +93,7 @@
                 </el-table-column>
                 <el-table-column
                     prop="email"
+                    show-overflow-tooltip
                     v-else-if="item.prop == 'email' && item.state == 1"
                     header-align="left"
                     align="left"
@@ -170,6 +172,7 @@
                 </el-table-column>
                 <el-table-column
                     prop="parentname"
+                    show-overflow-tooltip
                     v-if="item.prop == 'parentname' && item.state == 1"
                     header-align="left"
                     align="left"
@@ -182,7 +185,7 @@
                     v-else-if="item.prop == 'countryid' && item.state == 1"
                     header-align="left"
                     align="left"
-                    min-width="140"
+                    min-width="150"
                     label="省-市-区"
                     sortable>
                     <template slot-scope="scope">{{scope.row.country}}-{{scope.row.city}}-{{scope.row.area}}</template>
@@ -193,7 +196,7 @@
                     header-align="left"
                     align="left"
                     label="创建时间"
-                    min-width="140"
+                    min-width="150"
                     sortable>
                 </el-table-column>
             </div>
