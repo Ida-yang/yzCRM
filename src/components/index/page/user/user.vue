@@ -708,36 +708,45 @@
                 let qs =require('querystring')
                 let idArr = [];
                 idArr.privateId = this.idArr.private_id
-                _this.$confirm('确认同步到云服务器吗？', '提示', {
-                    confirmButtonText: '确定',
-                    cancelButtonText: '取消',
-                }).then(({ value }) => {
-                    axios({
-                        method: 'post',
-                        url:  _this.$store.state.defaultHttp+ 'tbPrivateToPublicUser.do?cId='+_this.$store.state.iscId,
-                        data:qs.stringify(idArr),
-                    }).then(function(res){
-                        if(res.data.code && res.data.code == 200) {
-                            _this.$message({
-                                message: '同步成功',
-                                type: 'success'
-                            });
-                            _this.$options.methods.reloadTable.bind(_this)(true);
-                        }else if(res.data.msg && res.data.msg == 'error'){//同步用户
-                            _this.$message({
-                                message: '对不起，您没有该权限，请联系管理员开通',
-                                type: 'error'
-                            })
-                        } else {
-                            _this.$message({
-                                message: res.data.msg,
-                                type: 'error'
-                            });
-                        }
-                    }).catch(function(err){
-                        console.log(err);
+
+                if(idArr.privateId){
+                    _this.$confirm('确认同步到云服务器吗？', '提示', {
+                        confirmButtonText: '确定',
+                        cancelButtonText: '取消',
+                    }).then(({ value }) => {
+                        axios({
+                            method: 'post',
+                            url:  _this.$store.state.defaultHttp+ 'tbPrivateToPublicUser.do?cId='+_this.$store.state.iscId,
+                            data:qs.stringify(idArr),
+                        }).then(function(res){
+                            if(res.data.code && res.data.code == 200) {
+                                _this.$message({
+                                    message: '同步成功',
+                                    type: 'success'
+                                });
+                                _this.$options.methods.reloadTable.bind(_this)(true);
+                            }else if(res.data.msg && res.data.msg == 'error'){//同步用户
+                                _this.$message({
+                                    message: '对不起，您没有该权限，请联系管理员开通',
+                                    type: 'error'
+                                })
+                            } else {
+                                _this.$message({
+                                    message: res.data.msg,
+                                    type: 'error'
+                                });
+                            }
+                        }).catch(function(err){
+                            console.log(err);
+                        });
                     });
-                });
+                }else{
+                    _this.$message({
+                        type: 'error',
+                        message: '请先选择要同步的用户'
+                    }); 
+                }
+                
             },
             handlesynchro(index,row){
                 const _this = this;

@@ -25,7 +25,7 @@
         <div class="entry">
             <el-button class="btn info-btn" size="mini" @click="handleAdd()">新增</el-button>
             <el-button class="btn" size="mini" @click="handleDeletes()">删除</el-button>
-            <el-button class="btn info-btn" size="mini" @click="Receivables()">收款</el-button>
+            <!-- <el-button class="btn info-btn" size="mini" @click="Receivables()">收款</el-button> -->
             <div class="totalnum_head">共 <span style="font-weight:bold">{{tableNumber}}</span> 条</div>
             <el-popover
             placement="bottom"
@@ -37,7 +37,6 @@
             <el-button slot="reference" icon="el-icon-more" class="info-btn screen" type="mini"></el-button>
             </el-popover>
         </div>
-            <!-- :summary-method="getSummaries" -->
         <el-table
             :data="tableData"
             ref="multipleTable"
@@ -102,7 +101,7 @@
                     sortable>
                 </el-table-column>
                 <el-table-column
-                    prop="opportunity_id"
+                    prop="opportunity_name"
                     v-else-if="item.prop == 'opportunity_id' && item.state == 1"
                     header-align="left"
                     align="left"
@@ -455,39 +454,47 @@
                 let qs =require('querystring')
                 let idArr = [];
                 idArr.ids = this.idArr.ids
-                _this.$confirm('是否确认删除？', '提示', {
-                    confirmButtonText: '确定',
-                    cancelButtonText: '取消',
-                }).then(({ value }) => {
-                    axios({
-                        method: 'post',
-                        url:  _this.$store.state.defaultHttp+ 'delContract.do?cId='+_this.$store.state.iscId,
-                        data:qs.stringify(idArr),
-                    }).then(function(res){
-                        if(res.data && res.data == 'success') {
+
+                if(idArr.ids){
+                    _this.$confirm('是否确认删除？', '提示', {
+                        confirmButtonText: '确定',
+                        cancelButtonText: '取消',
+                    }).then(({ value }) => {
+                        axios({
+                            method: 'post',
+                            url:  _this.$store.state.defaultHttp+ 'delContract.do?cId='+_this.$store.state.iscId,
+                            data:qs.stringify(idArr),
+                        }).then(function(res){
+                            if(res.data && res.data == 'success') {
+                                _this.$message({
+                                    message: '删除成功',
+                                    type: 'success'
+                                });
+                                _this.$options.methods.reloadTable.bind(_this)(true);
+                            }else if(res.data.msg && res.data.msg == 'error'){//删除合同
+                                _this.$message({
+                                    message: '对不起，您没有该权限，请联系管理员开通',
+                                    type: 'error'
+                                })
+                            } else {
+                                _this.$message({
+                                    message: res.data,
+                                    type: 'error'
+                                });
+                            }
+                        }).catch(() => {
                             _this.$message({
-                                message: '删除成功',
-                                type: 'success'
-                            });
-                            _this.$options.methods.reloadTable.bind(_this)(true);
-                        }else if(res.data.msg && res.data.msg == 'error'){//删除合同
-                            _this.$message({
-                                message: '对不起，您没有该权限，请联系管理员开通',
-                                type: 'error'
-                            })
-                        } else {
-                            _this.$message({
-                                message: res.data,
-                                type: 'error'
-                            });
-                        }
-                    }).catch(() => {
-                        this.$message({
-                            type: 'info',
-                            message: '取消删除'
-                        });       
-                    });
-                })
+                                type: 'info',
+                                message: '取消删除'
+                            });       
+                        });
+                    })
+                }else{
+                    _this.$message({
+                        type: 'error',
+                        message: '请先选择要删除的合同'
+                    });   
+                }
             },
             handleAdd(){
                 let agreeaddOrUpdateData = {};

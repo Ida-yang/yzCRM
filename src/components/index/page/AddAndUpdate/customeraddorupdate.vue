@@ -142,25 +142,25 @@
                         </el-date-picker>
                         <!-- 企业规模 -->
                         <el-select 
-                            v-else-if="item.type && item.type == 'select' && item.inputModel == 'enterpriseScale'"
+                            v-else-if="item.type && item.type == 'select' && item.inputModel == 'enterpriseScaleId'"
                             :multiple="item.multiple"
                             :collapse-tags="item.multiple"
                             v-model="myForm[item.inputModel]"
                             @select="handleInput($event, item.inputModel)"
                             :placeholder="item.placeholder"
                             style="width:90%;">
-                            <el-option v-for="o in enterpriseScaleList" :key="o.id" :label="o.name" :value="o.name"></el-option>
+                            <el-option v-for="o in enterpriseScaleList" :key="o.id" :label="o.name" :value="o.id"></el-option>
                         </el-select>
                         <!-- 融资状态 -->
                         <el-select 
-                            v-else-if="item.type && item.type == 'select' && item.inputModel == 'financingState'"
+                            v-else-if="item.type && item.type == 'select' && item.inputModel == 'financingStateId'"
                             :multiple="item.multiple"
                             :collapse-tags="item.multiple"
                             v-model="myForm[item.inputModel]"
                             @select="handleInput($event, item.inputModel)"
                             :placeholder="item.placeholder"
                             style="width:90%;">
-                            <el-option v-for="o in financingStateList" :key="o.id" :label="o.name" :value="o.name"></el-option>
+                            <el-option v-for="o in financingStateList" :key="o.id" :label="o.name" :value="o.id"></el-option>
                         </el-select>
                         <!-- 行业 -->
                         <el-select 
@@ -285,6 +285,8 @@
                 industryId:null,
                 companyId:null,
                 operatingStateId:null,
+                enterpriseScaleId:null,
+                financingStateId:null,
                 mapJson:'../../../../dist/static/map.json',
                 Provinces:[],
                 Citys:[],
@@ -398,6 +400,8 @@
                 this.industryId = this.cusaddOrUpdateData.setForm.industryId
                 this.companyId = this.cusaddOrUpdateData.setForm.companyId
                 this.operatingStateId = this.cusaddOrUpdateData.setForm.operatingStateId
+                this.enterpriseScaleId = this.cusaddOrUpdateData.setForm.enterpriseScaleId
+                this.financingStateId = this.cusaddOrUpdateData.setForm.financingStateId
 
                 // 设置默认值
                 let createForm = this.cusaddOrUpdateData.createForm;
@@ -431,6 +435,8 @@
                     this.myForm.industryId = setForm.industryType
                     this.myForm.companyId = setForm.companyType
                     this.myForm.operatingStateId = setForm.operatingState
+                    this.myForm.enterpriseScaleId = setForm.enterpriseScale
+                    this.myForm.financingStateId = setForm.financingState
                     this.$emit('input', this.myForm);
                 }
             },
@@ -512,9 +518,11 @@
                 if(flag) return;
                 subData.secondid = this.$store.state.deptid
                 subData.deptid = this.$store.state.insid
-                subData.industryId = this.myForm.industryId
-                subData.companyId = this.myForm.companyId
-                subData.operatingStateId = this.myForm.operatingStateId
+                // subData.industryId = this.myForm.industryId
+                // subData.companyId = this.myForm.companyId
+                // subData.operatingStateId = this.myForm.operatingStateId
+                // subData.enterpriseScaleId = this.myForm.enterpriseScaleId
+                // subData.financingStateId = this.myForm.financingStateId
 
                 axios({
                     method: 'post',
@@ -572,7 +580,9 @@
                 this.operatingStateId = row.operatingStateId
                 this.myForm.capital = row.capital  //注册资金
                 this.myForm.financingState = row.financing  //是否融资
+                this.financingStateId = row.financingId
                 this.myForm.enterpriseScale = row.enterpriseScaleName  //企业规模
+                this.myForm.enterpriseScaleId = row.enterpriseScaleId
                 this.myForm.creditCode = row.creditCode  //统一社会信用代码
                 this.loadinfo()
             },
@@ -641,6 +651,11 @@
                     data: qs.stringify(enterpriseScaleList),
                 }).then(function(res){
                     _this.enterpriseScaleList=res.data;
+                    _this.enterpriseScaleList.forEach(el => {
+                        if(_this.enterpriseScaleId == el.id){
+                            _this.myForm.enterpriseScaleId = el.id
+                        }
+                    });
                 }).catch(function(err){
                     console.log(err);
                 });
@@ -681,6 +696,11 @@
                     data: qs.stringify(financingStateList),
                 }).then(function(res){
                     _this.financingStateList=res.data;
+                    _this.financingStateList.forEach(el => {
+                        if(_this.financingStateId == el.id){
+                            _this.myForm.financingStateId = el.id
+                        }
+                    });
                 }).catch(function(err){
                     console.log(err);
                 });

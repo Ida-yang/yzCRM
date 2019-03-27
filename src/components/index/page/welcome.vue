@@ -21,7 +21,7 @@
             <ul>
                 <li><p>总商机</p><p>{{amountList.totalOpportunity}}</p></li>
                 <li><p>今日新增商机</p><p>{{amountList.todayAddOpportunity}}</p></li>
-                <li><p>今日推荐商机</p><p>{{amountList.todayRecommendOpportunity}}</p></li>
+                <li><p>今日推进商机</p><p>{{amountList.todayRecommendOpportunity}}</p></li>
             </ul>
             <ul>
                 <li><p>总合同</p><p>{{amountList.totalContract}}</p></li>

@@ -571,41 +571,49 @@
                 let idArr = [];
                 idArr.id = this.idArr.id
 
-                _this.$confirm('是否确认删除吗？', '提示', {
-                    confirmButtonText: '确定',
-                    cancelButtonText: '取消',
-                }).then(({ value }) => {
-                    axios({
-                        method: 'post',
-                        url:  _this.$store.state.defaultHttp+ 'customerpool/delete.do?cId='+_this.$store.state.iscId,
-                        data:qs.stringify(idArr),
-                    }).then(function(res){
-                        if(res.data.success && res.data.success == true) {
-                            _this.$message({
-                                message: '删除成功',
-                                type: 'success'
-                            });
-                            _this.$options.methods.reloadTable.bind(_this)(true);
-                        }else if(res.data.msg && res.data.msg == 'error'){//删除客户池
-                            _this.$message({
-                                message: '对不起，您没有该权限，请联系管理员开通',
-                                type: 'error'
-                            })
-                        } else {
-                            _this.$message({
-                                message: res.data.msg,
-                                type: 'error'
-                            });
-                        }
-                    }).catch(function(err){
-                        console.log(err);
+                if(idArr.id){
+                    _this.$confirm('是否确认删除？', '提示', {
+                        confirmButtonText: '确定',
+                        cancelButtonText: '取消',
+                    }).then(({ value }) => {
+                        axios({
+                            method: 'post',
+                            url:  _this.$store.state.defaultHttp+ 'customerpool/delete.do?cId='+_this.$store.state.iscId,
+                            data:qs.stringify(idArr),
+                        }).then(function(res){
+                            if(res.data.success && res.data.success == true) {
+                                _this.$message({
+                                    message: '删除成功',
+                                    type: 'success'
+                                });
+                                _this.$options.methods.reloadTable.bind(_this)(true);
+                            }else if(res.data.msg && res.data.msg == 'error'){//删除客户池
+                                _this.$message({
+                                    message: '对不起，您没有该权限，请联系管理员开通',
+                                    type: 'error'
+                                })
+                            } else {
+                                _this.$message({
+                                    message: res.data.msg,
+                                    type: 'error'
+                                });
+                            }
+                        }).catch(function(err){
+                            console.log(err);
+                        });
+                    }).catch(() => {
+                        this.$message({
+                            type: 'info',
+                            message: '取消删除'
+                        });       
                     });
-                }).catch(() => {
-                    this.$message({
-                        type: 'info',
-                        message: '取消删除'
-                    });       
-                });
+                }else{
+                    _this.$message({
+                        type: 'error',
+                        message: '请先选择要删除的客户'
+                    }); 
+                }
+                
             },
             handleDelete(index,row){
                 const _this = this;
@@ -615,7 +623,7 @@
                 _this.$confirm('是否确认删除[' + row.name + ']？', '提示', {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',
-                }).then(({ value }) => {
+                })
                     axios({
                         method: 'post',
                         url: _this.$store.state.defaultHttp+'customerpool/delete.do?cId='+_this.$store.state.iscId,
@@ -641,12 +649,7 @@
                     }).catch(function(err){
                         console.log(err);
                     })
-                }).catch(() => {
-                    this.$message({
-                        type: 'info',
-                        message: '取消删除[' + row.name + ']'
-                    });       
-                });
+                
             },
             handleReceives(){
                 const _this = this;
@@ -657,40 +660,58 @@
                 idArr.secondid = _this.$store.state.deptid
                 idArr.deptid = _this.$store.state.insid
 
-                axios({
-                    method: 'get',
-                    url: _this.$store.state.defaultHttp+'customerPoolJurisdiction/receive.do',
-                }).then(function(res){
-                    if(res.data.msg && res.data.msg == 'error'){//领取客户池
-                        _this.$message({
-                            message:'对不起，您没有该权限，请联系管理员开通',
-                            type:'error'
-                        })
-                    }else{
+                if(idArr.ids){
+                    _this.$confirm('是否确定领取？','提示',{
+                        confirmButtonText: '确定',
+                        cancelButtonText: '取消'
+                    }).then(({ value }) => {
                         axios({
-                            method: 'post',
-                            url:  _this.$store.state.defaultHttp+ 'customerpool/receivepool.do?cId='+_this.$store.state.iscId,
-                            data:qs.stringify(idArr),
+                            method: 'get',
+                            url: _this.$store.state.defaultHttp+'customerPoolJurisdiction/receive.do',
                         }).then(function(res){
-                            if(res.data.code && res.data.code == 200) {
+                            if(res.data.msg && res.data.msg == 'error'){//领取客户池
                                 _this.$message({
-                                    message: '领取成功',
-                                    type: 'success'
-                                });
-                                _this.$options.methods.reloadTable.bind(_this)(true);
-                            } else {
-                                _this.$message({
-                                    message: res.data.msg,
-                                    type: 'error'
+                                    message:'对不起，您没有该权限，请联系管理员开通',
+                                    type:'error'
+                                })
+                            }else{
+                                axios({
+                                    method: 'post',
+                                    url:  _this.$store.state.defaultHttp+ 'customerpool/receivepool.do?cId='+_this.$store.state.iscId,
+                                    data:qs.stringify(idArr),
+                                }).then(function(res){
+                                    if(res.data.code && res.data.code == 200) {
+                                        _this.$message({
+                                            message: '领取成功',
+                                            type: 'success'
+                                        });
+                                        _this.$options.methods.reloadTable.bind(_this)(true);
+                                    } else {
+                                        _this.$message({
+                                            message: res.data.msg,
+                                            type: 'error'
+                                        });
+                                    }
+                                }).catch(function(err){
+                                    console.log(err);
                                 });
                             }
                         }).catch(function(err){
                             console.log(err);
                         });
-                    }
-                }).catch(function(err){
-                    console.log(err);
-                });
+                    }).catch(() => {
+                        _this.$message({
+                            type: 'info',
+                            message: '取消领取'
+                        });       
+                    });
+                }else{
+                    _this.$message({
+                        type: 'error',
+                        message: '请先选择要领取的客户'
+                    }); 
+                }
+                
                 
             },
             handleReceive(index,row){
@@ -746,42 +767,48 @@
                 idArr.secondid = ''
                 idArr.deptid = ''
 
-                axios({
-                    method: 'get',
-                    url: _this.$store.state.defaultHttp+'customerPoolJurisdiction/distribution.do',
-                }).then(function(res){
-                    if(res.data.msg && res.data.msg == 'error'){//分配客户池
-                        _this.$message({
-                            message:'对不起，您没有该权限，请联系管理员开通',
-                            type:'error'
-                        })
-                    }else{
-                        axios({
-                            method: 'post',
-                            url:  _this.$store.state.defaultHttp+ 'customerpool/receivepool.do?cId='+_this.$store.state.iscId,
-                            data:qs.stringify(idArr),
-                        }).then(function(res){
-                            if(res.data.code && res.data.code == 200) {
-                                _this.$message({
-                                    message: '分配成功',
-                                    type: 'success'
-                                });
-                                _this.visible2 = false
-                                _this.$options.methods.reloadTable.bind(_this)(true);
-                            } else {
-                                _this.$message({
-                                    message: res.data.msg,
-                                    type: 'error'
-                                });
-                            }
-                        }).catch(function(err){
-                            console.log(err);
-                        });
-                    }
-                }).catch(function(err){
-                    console.log(err);
-                });
-                
+                if(idArr.id){
+                    axios({
+                        method: 'get',
+                        url: _this.$store.state.defaultHttp+'customerPoolJurisdiction/distribution.do',
+                    }).then(function(res){
+                        if(res.data.msg && res.data.msg == 'error'){//分配客户池
+                            _this.$message({
+                                message:'对不起，您没有该权限，请联系管理员开通',
+                                type:'error'
+                            })
+                        }else{
+                            axios({
+                                method: 'post',
+                                url:  _this.$store.state.defaultHttp+ 'customerpool/receivepool.do?cId='+_this.$store.state.iscId,
+                                data:qs.stringify(idArr),
+                            }).then(function(res){
+                                if(res.data.code && res.data.code == 200) {
+                                    _this.$message({
+                                        message: '分配成功',
+                                        type: 'success'
+                                    });
+                                    _this.visible2 = false
+                                    _this.$options.methods.reloadTable.bind(_this)(true);
+                                } else {
+                                    _this.$message({
+                                        message: res.data.msg,
+                                        type: 'error'
+                                    });
+                                }
+                            }).catch(function(err){
+                                console.log(err);
+                            });
+                        }
+                    }).catch(function(err){
+                        console.log(err);
+                    });
+                }else{
+                    _this.$message({
+                        type: 'error',
+                        message: '请先选择要分配的客户'
+                    }); 
+                }
             },
 
             

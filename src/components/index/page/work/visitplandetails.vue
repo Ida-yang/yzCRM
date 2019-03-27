@@ -19,6 +19,10 @@
                         </ul>
                         <div class="item_body">拜访主题：<span>{{visitdetails.visitTheme}}</span></div>
                         <div class="item_body">拜访目的：<span>{{visitdetails.visitObjective}}</span></div>
+                        <p>&nbsp;</p>
+                        <div class="verify" v-if="showverify">
+                            <img class="verify_img" src="/upload/staticImg/examine.png" alt="已审核">
+                        </div>
                     </div>
                 </el-card>
             </div>
@@ -145,7 +149,9 @@ export default {
             // ratevalue: null,
             ratetexts: ['2','4','6','8','10'],
 
-            dialogVisible:false
+            dialogVisible:false,
+
+            showverify:false
         }
     },
     // mounted(){
@@ -183,8 +189,10 @@ export default {
                 }
                 if(_this.visitdetails.approverState == '已审核'){
                     _this.examines = false
+                    _this.showverify = true
                 }else{
                     _this.examines = true
+                    _this.showverify = false
                 }
             }).catch(function(err){
                 console.log(err);
@@ -256,6 +264,7 @@ export default {
                         type: 'success'
                     });
                     _this.examines = !_this.examines
+                    _this.showverify = !_this.showverify
                     _this.$options.methods.loadData.bind(_this)(true)
                 } else {
                     _this.$message({
@@ -373,6 +382,17 @@ export default {
     }
     .rate_star{
         margin-left: 50px;
+    }
+    
+    .verify{
+        position: absolute;
+        right: 45%;
+        top: 80px;
+    }
+    .verify .verify_img{
+        width: 150px;
+        height: 75px;
+        transform: rotate(-10deg)
     }
 
 </style>

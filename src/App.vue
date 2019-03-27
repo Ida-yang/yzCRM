@@ -546,4 +546,8 @@ export default {
         padding-left: 120px;
         padding-top: 10px;
     }
+    .step_process .el-step__title.is-success,.step_process .el-step__head.is-success,.step_process .el-step__description.is-success{
+        color:blue;
+        border-color: blue;
+    }
 </style>

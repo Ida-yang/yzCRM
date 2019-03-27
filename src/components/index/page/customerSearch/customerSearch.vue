@@ -619,41 +619,48 @@
                 idArr.id = this.idArr.id
                 idArr.secondid = this.$store.state.deptid
                 idArr.deptid = this.$store.state.insid
-                _this.Loading = true
 
-                axios({
-                    method: 'post',
-                    url:  _this.$store.state.defaultHttp+ 'customerOne/insert.do?cId='+_this.$store.state.iscId+"&pId="+_this.$store.state.ispId,
-                    data:qs.stringify(idArr),
-                }).then(function(res){
-                    _this.Loading = false
-                    if(res.data.code && res.data.code == '200') {
-                        if(res.data.map.map.eroorCount && res.data.map.map.eroorCount == 0){
+                if(idArr.id){
+                    _this.Loading = true
+                    axios({
+                        method: 'post',
+                        url:  _this.$store.state.defaultHttp+ 'customerOne/insert.do?cId='+_this.$store.state.iscId+"&pId="+_this.$store.state.ispId,
+                        data:qs.stringify(idArr),
+                    }).then(function(res){
+                        _this.Loading = false
+                        if(res.data.code && res.data.code == '200') {
+                            if(res.data.map.map.eroorCount && res.data.map.map.eroorCount == 0){
+                                _this.$message({
+                                    message: '转移成功,转移了'+res.data.map.map.suceessCount+ '条',
+                                    type: 'success'
+                                });
+                            }else{
+                                _this.$message({
+                                    message: '转移了'+res.data.map.map.suceessCount+ '条，有'+res.data.map.map.eroorCount+'已存在于线索或客户中',
+                                    type: 'success'
+                                });
+                            }
+                            _this.$options.methods.reloadTable.bind(_this)(true);
+                        } else if(res.data.msg && res.data.msg == 'error'){//转移至线索
                             _this.$message({
-                                message: '转移成功,转移了'+res.data.map.map.suceessCount+ '条',
-                                type: 'success'
-                            });
-                        }else{
+                                message: '对不起，您没有该权限，请联系管理员开通',
+                                type: 'error'
+                            })
+                        } else {
                             _this.$message({
-                                message: '转移了'+res.data.map.map.suceessCount+ '条，有'+res.data.map.map.eroorCount+'已存在于线索或客户中',
-                                type: 'success'
+                                message: res.data.msg,
+                                type: 'error'
                             });
                         }
-                        _this.$options.methods.reloadTable.bind(_this)(true);
-                    } else if(res.data.msg && res.data.msg == 'error'){//转移至线索
-                        _this.$message({
-                            message: '对不起，您没有该权限，请联系管理员开通',
-                            type: 'error'
-                        })
-                    } else {
-                        _this.$message({
-                            message: res.data.msg,
-                            type: 'error'
-                        });
-                    }
-                }).catch(function(err){
-                    console.log(err);
-                });
+                    }).catch(function(err){
+                        console.log(err);
+                    });
+                }else{
+                    _this.$message({
+                        type: 'error',
+                        message: '请先选择要转移的数据'
+                    }); 
+                }
             },
             
             hangleChange(e,val){

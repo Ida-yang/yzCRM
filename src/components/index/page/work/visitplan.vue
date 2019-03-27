@@ -88,7 +88,7 @@
                     v-else-if="item.prop == 'visitTime' && item.state == 1"
                     header-align="left"
                     align="left"
-                    min-width="140"
+                    min-width="150"
                     label="计划时间"
                     sortable>
                     <template slot-scope="scope">
@@ -114,7 +114,7 @@
                     header-align="left"
                     align="left"
                     label="协助人"
-                    min-width="95"
+                    min-width="120"
                     sortable>
                     <template slot-scope="scope">
                         <div>

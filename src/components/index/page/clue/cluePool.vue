@@ -563,39 +563,47 @@
                 let idArr = [];
                 idArr.id = this.idArr.id
 
-                _this.$confirm('是否确认删除吗？', '提示', {
-                    confirmButtonText: '确定',
-                    cancelButtonText: '取消',
-                }).then(({ value }) => {
-                    axios({
-                        method: 'post',
-                        url:  _this.$store.state.defaultHttp+ 'customerTwo/delete.do?cId='+_this.$store.state.iscId,
-                        data:qs.stringify(idArr),
-                    }).then(function(res){
-                        if(res.data.success && res.data.success == true) {
+                if(idArr.id){
+                    _this.$confirm('是否确认删除？', '提示', {
+                        confirmButtonText: '确定',
+                        cancelButtonText: '取消',
+                    }).then(({ value }) => {
+                        axios({
+                            method: 'post',
+                            url:  _this.$store.state.defaultHttp+ 'customerTwo/delete.do?cId='+_this.$store.state.iscId,
+                            data:qs.stringify(idArr),
+                        }).then(function(res){
+                            if(res.data.success && res.data.success == true) {
+                                _this.$message({
+                                    message: '删除成功',
+                                    type: 'success'
+                                });
+                                _this.$options.methods.reloadTable.bind(_this)(true);
+                            }else if(res.data.msg && res.data.msg == 'error'){//删除线索池
+                                _this.$message({
+                                    message: '对不起，您没有该权限，请联系管理员开通',
+                                    type: 'error'
+                                })
+                            } else {
+                                _this.$message({
+                                    message: res.data.msg,
+                                    type: 'error'
+                                });
+                            }
+                        }).catch(() => {
                             _this.$message({
-                                message: '删除成功',
-                                type: 'success'
-                            });
-                            _this.$options.methods.reloadTable.bind(_this)(true);
-                        }else if(res.data.msg && res.data.msg == 'error'){//删除线索池
-                            _this.$message({
-                                message: '对不起，您没有该权限，请联系管理员开通',
-                                type: 'error'
-                            })
-                        } else {
-                            _this.$message({
-                                message: res.data.msg,
-                                type: 'error'
-                            });
-                        }
-                    }).catch(() => {
-                        this.$message({
-                            type: 'info',
-                            message: '取消删除'
-                        });       
+                                type: 'info',
+                                message: '取消删除'
+                            });       
+                        });
                     });
-                });
+                }else{
+                    _this.$message({
+                        type: 'error',
+                        message: '请先选择要删除的线索'
+                    }); 
+                }
+                
             },
             handleDelete(index,row){
                 const _this = this;
@@ -647,40 +655,58 @@
                 idArr.secondid = _this.$store.state.deptid
                 idArr.deptid = _this.$store.state.insid
 
-                axios({
-                    method: 'get',
-                    url: _this.$store.state.defaultHttp+'cluePoolJurisdiction/receive.do',
-                }).then(function(res){
-                    if(res.data.msg && res.data.msg == 'error'){//领取线索池
-                        _this.$message({
-                            message:'对不起，您没有该权限，请联系管理员开通',
-                            type:'error'
-                        })
-                    }else{
+                if(idArr.ids){
+                    _this.$confirm('是否确认删除吗？', '提示', {
+                        confirmButtonText: '确定',
+                        cancelButtonText: '取消',
+                    }).then(({ value }) => {
                         axios({
-                            method: 'post',
-                            url:  _this.$store.state.defaultHttp+ 'customerTwo/receiveClue.do?cId='+_this.$store.state.iscId+'&pId='+_this.$store.state.ispId,
-                            data:qs.stringify(idArr),
+                            method: 'get',
+                            url: _this.$store.state.defaultHttp+'cluePoolJurisdiction/receive.do',
                         }).then(function(res){
-                            if(res.data.code && res.data.code == 200) {
+                            if(res.data.msg && res.data.msg == 'error'){//领取线索池
                                 _this.$message({
-                                    message: '领取成功',
-                                    type: 'success'
-                                });
-                                _this.$options.methods.reloadTable.bind(_this)(true);
-                            } else {
-                                _this.$message({
-                                    message: res.data.msg,
-                                    type: 'error'
+                                    message:'对不起，您没有该权限，请联系管理员开通',
+                                    type:'error'
+                                })
+                            }else{
+                                axios({
+                                    method: 'post',
+                                    url:  _this.$store.state.defaultHttp+ 'customerTwo/receiveClue.do?cId='+_this.$store.state.iscId+'&pId='+_this.$store.state.ispId,
+                                    data:qs.stringify(idArr),
+                                }).then(function(res){
+                                    if(res.data.code && res.data.code == 200) {
+                                        _this.$message({
+                                            message: '领取成功',
+                                            type: 'success'
+                                        });
+                                        _this.$options.methods.reloadTable.bind(_this)(true);
+                                    } else {
+                                        _this.$message({
+                                            message: res.data.msg,
+                                            type: 'error'
+                                        });
+                                    }
+                                }).catch(function(err){
+                                    console.log(err);
                                 });
                             }
                         }).catch(function(err){
                             console.log(err);
                         });
-                    }
-                }).catch(function(err){
-                    console.log(err);
-                });
+                    }).catch(() => {
+                        _this.$message({
+                            type: 'info',
+                            message: '取消领取'
+                        });       
+                    });
+                }else{
+                    _this.$message({
+                        type: 'error',
+                        message: '请先选择要领取的线索'
+                    }); 
+                }
+                
             },
             handleReceive(index,row){
                 const _this = this;
@@ -689,7 +715,7 @@
                 idArr.ids = row.id
                 idArr.secondid = _this.$store.state.deptid
                 idArr.deptid = _this.$store.state.insid
-
+                
                 axios({
                     method: 'get',
                     url: _this.$store.state.defaultHttp+'cluePoolJurisdiction/receive.do',
@@ -734,41 +760,49 @@
                 idArr.secondid = ''
                 idArr.deptid = ''
 
-                axios({
-                    method: 'get',
-                    url: _this.$store.state.defaultHttp+'cluePoolJurisdiction/distribution.do',
-                }).then(function(res){
-                    if(res.data.msg && res.data.msg == 'error'){//分配线索池
-                        _this.$message({
-                            message:'对不起，您没有该权限，请联系管理员开通',
-                            type:'error'
-                        })
-                    }else{
-                        axios({
-                            method: 'post',
-                            url:  _this.$store.state.defaultHttp+ 'customerTwo/receiveClue.do?cId='+_this.$store.state.iscId,
-                            data:qs.stringify(idArr),
-                        }).then(function(res){
-                            if(res.data.code && res.data.code == 200) {
-                                _this.$message({
-                                    message: '分配成功',
-                                    type: 'success'
-                                });
-                                _this.visible2 = false
-                                _this.$options.methods.reloadTable.bind(_this)(true);
-                            } else {
-                                _this.$message({
-                                    message: res.data.msg,
-                                    type: 'error'
-                                });
-                            }
-                        }).catch(function(err){
-                            console.log(err);
-                        });
-                    }
-                }).catch(function(err){
-                    console.log(err);
-                });
+                if(idArr.ids){
+                    axios({
+                        method: 'get',
+                        url: _this.$store.state.defaultHttp+'cluePoolJurisdiction/distribution.do',
+                    }).then(function(res){
+                        if(res.data.msg && res.data.msg == 'error'){//分配线索池
+                            _this.$message({
+                                message:'对不起，您没有该权限，请联系管理员开通',
+                                type:'error'
+                            })
+                        }else{
+                            axios({
+                                method: 'post',
+                                url:  _this.$store.state.defaultHttp+ 'customerTwo/receiveClue.do?cId='+_this.$store.state.iscId,
+                                data:qs.stringify(idArr),
+                            }).then(function(res){
+                                if(res.data.code && res.data.code == 200) {
+                                    _this.$message({
+                                        message: '分配成功',
+                                        type: 'success'
+                                    });
+                                    _this.visible2 = false
+                                    _this.$options.methods.reloadTable.bind(_this)(true);
+                                } else {
+                                    _this.$message({
+                                        message: res.data.msg,
+                                        type: 'error'
+                                    });
+                                }
+                            }).catch(function(err){
+                                console.log(err);
+                            });
+                        }
+                    }).catch(function(err){
+                        console.log(err);
+                    });
+                }else{
+                    _this.$message({
+                        type: 'error',
+                        message: '请先选择要分配的线索'
+                    }); 
+                }
+                
                 
             },
 

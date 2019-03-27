@@ -155,11 +155,11 @@
                         subs: [
                             {
                                 index: 'visitplan',
-                                title: '拜访计划',
+                                title: '外勤',
                             },
                             {
                                 index: 'missionplan',
-                                title: '工作计划',
+                                title: '任务',
                             },
                         ]
                     },

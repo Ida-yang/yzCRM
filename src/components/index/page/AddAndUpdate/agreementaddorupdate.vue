@@ -88,7 +88,17 @@
                     <el-option v-for="o in item.options" :key="o.okey" :label="o.olabel" :value="o.ovalue"></el-option>
                 </el-select>
                 <el-date-picker
-                    v-else-if="item.type && item.type == 'date'"
+                    v-else-if="item.type && item.type == 'date' && item.inputModel == 'start_date'"
+                    v-model="myForm[item.inputModel]"
+                    type="date"
+                    @change="handlechange($event, item.inputModel)"
+                    :placeholder="item.placeholder"
+                    format="yyyy-MM-dd" value-format="yyyy-MM-dd"
+                    style="width:90%;" 
+                    auto-complete="off">
+                </el-date-picker>
+                <el-date-picker
+                    v-else-if="item.type && item.type == 'date' && item.inputModel == 'end_date'"
                     v-model="myForm[item.inputModel]"
                     type="date"
                     @change="handleInput($event, item.inputModel)"
@@ -302,6 +312,15 @@
             },
             handleInput(val, key) {
                 this.myForm[key] = val;
+            },
+            handlechange(val,key){
+                // console.log(val,key)
+                this.myForm[key] = val
+                let arr = val.split('-')
+                let year = parseInt(arr[0]) + 1
+                let month = arr[1]
+                let day = arr[2]
+                this.myForm.end_date = year + '-' + month + '-' + day
             },
             //获取table的索引和行数据，当该行被点击时，将公司名称地址填充到表单（会刷新当前页面，之前填写的信息会被覆盖）
             getRow(index,row){

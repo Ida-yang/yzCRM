@@ -29,7 +29,7 @@
                 </el-card>
             </div>
             <div class="bottom1">
-                <el-card class="box-card">
+                <el-card class="box-card step_process">
                     <div slot="header" class="clearfix">
                         <span>{{opportunitydetail.opportunity_name}}</span>
                         <el-button class="info-btn" size="mini" style="float:right;margin-left:10px;" @click="nextStep()" v-if="shownext">下一步</el-button>

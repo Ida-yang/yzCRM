@@ -603,8 +603,8 @@
                     {"label":"组织机构代码","inputModel":"organizationCode"},
                     {"label":"注册资金","inputModel":"capital","type":"number"},
                     {"label":"注册时间","inputModel":"registerTime","type":"date"},
-                    {"label":"企业规模","inputModel":"enterpriseScale","type":"select"},
-                    {"label":"融资状态","inputModel":"financingState","type":"select"},
+                    {"label":"企业规模","inputModel":"enterpriseScaleId","type":"select"},
+                    {"label":"融资状态","inputModel":"financingStateId","type":"select"},
                     {"label":"行业","inputModel":"industryId","type":"select"},
                     {"label":"公司类型","inputModel":"companyId","type":"select"},
                     {"label":"经营状态","inputModel":"operatingStateId","type":"select"},]
@@ -630,8 +630,8 @@
                     "organizationCode": '',
                     "capital": '',
                     "registerTime": '',
-                    "enterpriseScale": '',
-                    "financingState": '',
+                    "enterpriseScaleId": '',
+                    "financingStateId": '',
                     "industryId": '',
                     "companyId": '',
                     "operatingStateId": ''};
@@ -680,8 +680,8 @@
                     {"label":"组织机构代码","inputModel":"organizationCode"},
                     {"label":"注册资金","inputModel":"capital","type":"number"},
                     {"label":"注册时间","inputModel":"registerTime","type":"date"},
-                    {"label":"企业规模","inputModel":"enterpriseScale","type":"select"},
-                    {"label":"融资状态","inputModel":"financingState","type":"select"},
+                    {"label":"企业规模","inputModel":"enterpriseScaleId","type":"select"},
+                    {"label":"融资状态","inputModel":"financingStateId","type":"select"},
                     {"label":"行业","inputModel":"industryId","type":"select"},
                     {"label":"公司类型","inputModel":"companyId","type":"select"},
                     {"label":"经营状态","inputModel":"operatingStateId","type":"select"},]
@@ -712,7 +712,9 @@
                     "capital": row.capital,
                     "registerTime": row.date,
                     "enterpriseScale": row.enterpriseScale,
+                    "enterpriseScaleId": row.enterpriseScaleId,
                     "financingState": row.financingState,
+                    "financingStateId": row.financingStateId,
                     "industryType": row.industryType,
                     "industryId": row.industryId,
                     "companyType": row.companyType,
@@ -745,31 +747,39 @@
                 let idArr = [];
                 idArr.id = this.idArr.id
 
-                axios({
-                    method: 'post',
-                    url:  _this.$store.state.defaultHttp+ 'customerpool/updateTo.do?cId='+_this.$store.state.iscId,
-                    data:qs.stringify(idArr),
-                }).then(function(res){
-                    if(res.data.code && res.data.code == 200) {
-                        _this.$message({
-                            message: '转移成功',
-                            type: 'success'
-                        });
-                        _this.$options.methods.reloadTable.bind(_this)(true);
-                    }else if(res.data.msg && res.data.msg == 'error'){//转移至客户池
-                        _this.$message({
-                            message: '对不起，您没有该权限，请联系管理员开通',
-                            type: 'error'
-                        })
-                    } else {
-                        _this.$message({
-                            message: res.data,
-                            type: 'error'
-                        });
-                    }
-                }).catch(function(err){
-                    console.log(err);
-                });
+                if(idArr.id){
+                    axios({
+                        method: 'post',
+                        url:  _this.$store.state.defaultHttp+ 'customerpool/updateTo.do?cId='+_this.$store.state.iscId,
+                        data:qs.stringify(idArr),
+                    }).then(function(res){
+                        if(res.data.code && res.data.code == 200) {
+                            _this.$message({
+                                message: '转移成功',
+                                type: 'success'
+                            });
+                            _this.$options.methods.reloadTable.bind(_this)(true);
+                        }else if(res.data.msg && res.data.msg == 'error'){//转移至客户池
+                            _this.$message({
+                                message: '对不起，您没有该权限，请联系管理员开通',
+                                type: 'error'
+                            })
+                        } else {
+                            _this.$message({
+                                message: res.data,
+                                type: 'error'
+                            });
+                        }
+                    }).catch(function(err){
+                        console.log(err);
+                    });
+                }else{
+                    _this.$message({
+                        type: 'error',
+                        message: '请先选择要转移的客户'
+                    }); 
+                }
+                
             },
             hangleChange(e,val){
                 const _this = this

@@ -21,15 +21,22 @@
         </div> -->
         <div class="header-right">
             <div class="header-user-con">
+                <!-- 消息提醒 -->
+                <div class="btn-bell" @click="handlemessage">
+                    <i class="mdi mdi-bell-outline"></i>
+                </div>
                 <!-- 全屏显示 -->
                 <div class="btn-fullscreen" @click="handleFullScreen">
                     <el-tooltip effect="dark" :content="fullscreen?`取消全屏`:`全屏`" placement="bottom">
-                        <i class="el-icon-rank"></i>
+                        <i :class="fullscreen?'mdi mdi-fullscreen-exit':'mdi mdi-fullscreen'"></i>
                     </el-tooltip>
                 </div>
                 <el-dropdown class="user-name" trigger="click" @command="handleCommand">
-                    <span class="el-dropdown-link" id="public_username" style="position: relative;top: -30px;left: 20px;">
-                        {{public_username}} <i class="el-icon-caret-bottom"></i>
+                    <span class="el-dropdown-link" id="public_username">
+                        {{public_username}}
+                    </span>
+                    <span>
+                        <i class="el-icon-caret-bottom"></i>
                     </span>
                     <el-dropdown-menu slot="dropdown" style="">
                         <el-dropdown-item divided  command="resPassWord">修改密码</el-dropdown-item>
@@ -245,7 +252,8 @@
                     }
                 }
                 this.fullscreen = !this.fullscreen;
-            }
+            },
+            handlemessage(){}
         }
     }
 </script>
@@ -303,26 +311,29 @@
         float: right;
         /* padding-right: 150px; */
         /* width: 150px; */
-        margin: 12px 60px 0px 10px;
+        /* margin: 12px 60px 0px 10px; */
         height: 50px!important;
-        line-height: 25px !important;
+        line-height: 50px !important;
     }
     .header-user-con{
-        display: inline-block;
+        display: flex;
         align-items: center;
     }
-    .btn-fullscreen{
+    .header-user-con div{
+        flex: 1;
+        margin-left: 20px;
+    }
+    /* .btn-fullscreen{
         transform: rotate(45deg);
         margin-right: 5px;
         font-size: 24px;
-    }
-    .btn-bell, .btn-fullscreen{
+    } */
+    .btn-bell,.btn-fullscreen{
         position: relative;
-        width: 30px;
-        height: 30px;
         text-align: center;
         border-radius: 15px;
         cursor: pointer;
+        font-size: 24px;
     }
     .btn-bell-badge{
         position: absolute;
@@ -338,23 +349,23 @@
         color: #20222a;
     }
     .user-name{
-        margin-left: 30px;
-        height:0px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 20px;
     }
-    .user-avator{
-        margin-left: 20px;
-    }
-    .user-avator img{
-        display: block;
-        width:40px;
-        height:40px;
-        border-radius: 50%;
+    .user-name span{
+        flex: 1
     }
     .el-dropdown-link{
         color: #20222a;
         cursor: pointer;
+        width: 50px;
     }
     .el-dropdown-menu__item{
         text-align: center;
+    }
+    ul[data-v-e7c7e132]{
+        top:30px !important;
     }
 </style>

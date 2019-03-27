@@ -34,12 +34,12 @@ const router =new Router({
         {
           path: '/',
           component: resolve => require(['../components/index/page/welcome.vue'], resolve),
-          meta: { title: '欢迎页面' ,requireAuth:true}
+          meta: { title: '首页' ,requireAuth:true}
         },
         {
           path: '/welcome',
           component: resolve => require(['../components/index/page/welcome.vue'], resolve),
-          meta: { title: '欢迎页面' ,requireAuth:true}
+          meta: { title: '首页' ,requireAuth:true}
         },
         {
           path: '/customerSearch',
@@ -169,27 +169,27 @@ const router =new Router({
         {
           path: '/visitplan',
           component: resolve => require(['../components/index/page/work/visitplan.vue'], resolve),
-          meta: { title: '拜访计划',name:'visitplan', requireAuth:true}
+          meta: { title: '外勤',name:'visitplan', requireAuth:true}
         },
         {
           path: '/visitplandetails',
           component: resolve => require(['../components/index/page/work/visitplandetails.vue'], resolve),
-          meta: { title: '拜访计划详情' ,requireAuth:true}
+          meta: { title: '外勤详情' ,requireAuth:true}
         },
         {
           path: '/visitplanaddorupdate',
           component: resolve => require(['../components/index/page/AddAndUpdate/visitplanaddorupdate.vue'], resolve),
-          meta: { title: '编辑拜访计划' ,requireAuth:true}
+          meta: { title: '编辑外勤' ,requireAuth:true}
         },
         {
           path: '/missionplan',
           component: resolve => require(['../components/index/page/work/missionplan.vue'], resolve),
-          meta: { title: '工作计划',name:'missionplan', requireAuth:true}
+          meta: { title: '任务',name:'missionplan', requireAuth:true}
         },
         {
           path: '/missionplanaddorupdate',
           component: resolve => require(['../components/index/page/AddAndUpdate/missionplanaddorupdate.vue'], resolve),
-          meta: { title: '编辑工作计划' ,requireAuth:true}
+          meta: { title: '编辑任务' ,requireAuth:true}
         },
         {
           path: '/name',

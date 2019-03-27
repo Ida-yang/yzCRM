@@ -1,22 +1,19 @@
 <template>
     <!-- 登录页 -->
-        <!-- <el-row style="width:100%;height:70%;position:absolute;top:10%;"> -->
     <el-row class="logincontent">
-        <el-col :span="14" class="content-l">
+        <!-- <el-col :span="14" class="content-l">
             <div>
                 <img src="/upload/staticImg/test.png" height="50%" width="60%" alt="元旦快乐" title="元旦快乐" style="margin:25% 20%;">
             </div>
-        </el-col>
-        <!-- <el-col :span="10" :offset="8" class="grid-content content-r systemLogin"> -->
-        <el-col :span="10" class="content-r">
+        </el-col> -->
+        <el-col class="content-r">
             <div class="login">
-                <div style="color:#292929;font-size:28px;margin-top:6%;text-align:center">用户登录</div> 
-                <!-- <div style="color:#fff;font-size:30px;margin-top:10%;text-align:center">用户登录</div>  -->
+                <div style="color:#292929;font-size:28px;margin-top:15%;text-align:center">账号密码登录</div>
                 <div class="grid-content bg-purple-dark">
                     <el-form  :model="loginFrom" status-icon :rules="rules" ref="loginFrom" 
                     class="demo-ruleForm"
                     style="color:#fff" >
-                        <el-form-item prop="public_username" style="width:100%;margin-top:30px;">
+                        <el-form-item prop="public_username" style="width:100%;margin-top:70px;">
                             <el-input 
                             type="text"
                             prefix-icon="mdi-account"
@@ -25,7 +22,7 @@
                             placeholder="请输入登录账号" >
                             </el-input>
                         </el-form-item>
-                        <el-form-item  prop="public_password" style="width:100%;margin-top:25px;">
+                        <el-form-item  prop="public_password" style="width:100%;margin-top:25px;margin-bottom:5px">
                             <el-input 
                             type="password" 
                             prefix-icon="mdi-lock"
@@ -34,6 +31,9 @@
                             @keyup.enter.native="submitForm('loginFrom')"
                             auto-complete="off">
                             </el-input>
+                        </el-form-item>
+                        <el-form-item  prop="rememberme" style="width:100%;margin-top:1px;">
+                            <el-checkbox v-model="remember">记住我</el-checkbox>
                         </el-form-item>
                         <el-form-item>
                             <el-button type="primary" @click="submitForm" style="width:100%;margin-top:10px;">登&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;录</el-button>
@@ -62,6 +62,7 @@ export default {
                 public_username :'',
                 public_password :''
             },
+            remember:false,
             rules: {
                 public_username : [
                     { required: true, message: '请输入用户名', trigger: 'blur' },
@@ -73,6 +74,7 @@ export default {
         }
     },
     mounted() {
+        this.getlocalStorage()
         // var backgroundImage = $("body").css("background-image");
         // $("body").css("background-image", "none");
         // $("body").css("background", "#fff");
@@ -93,6 +95,12 @@ export default {
             loginInfo.public_password = this.loginFrom.public_password;
             let data = [loginInfo,this]
             let qs =require('querystring')
+            if(this.remember == true){
+                _this.setlocalStorage(_this.loginFrom.public_username, _this.loginFrom.public_password)
+            }else{
+                _this.clearlocalStorage()
+            }
+
             axios({
                 method: 'post',
                 url: _this.$store.state.defaultHttp+'tologin.do',
@@ -125,6 +133,23 @@ export default {
                 console.log(err)
             })
         },
+        setlocalStorage(n, p) {
+            // console.log(n,p)
+            localStorage.setItem('siteName',n)
+            localStorage.setItem('sitePassword',p)
+        },
+        getlocalStorage() {
+            let name = localStorage.getItem('siteName') //保存到保存数据的地方
+            let pwd = localStorage.getItem('sitePassword')
+            this.loginFrom.public_username = name
+            this.loginFrom.public_password = pwd
+            if(pwd){
+                this.remember = true
+            }
+        },
+        clearlocalStorage(){
+            this.setlocalStorage('', '')
+        },
     }
 }
 </script>
@@ -135,8 +160,8 @@ export default {
         height: 100%;
         padding: 0;
         margin: 0;
-        /* background-color: #ffffff; */
-       background-image: url('/upload/staticImg/bg.jpg');
+       /* background-image: url('../../static/img/index.jpg'); */
+       background-image: url('/upload/staticImg/index.jpg');
        background-repeat: no-repeat;
        background-size: 100% 100%;
     }
@@ -152,11 +177,11 @@ export default {
        position: relative;
    }
    .login{
-       width: 250px;
-       height: 320px;
+       width: 320px;
+       height: 60%;
        background-color: rgb(255, 255, 255);
        padding: 20px 30px;
-       border-radius: 20px;
+       border-radius: 5px;
        position: absolute;
        left: 50%;
        top: 50%;
