@@ -21,6 +21,10 @@ const state = {
   //标签页
   tagsList:[],
 
+  //消息提醒红点
+  dotmessage:true,
+  messageList:null,
+
   //首页列表
   welcomeData:null,
 

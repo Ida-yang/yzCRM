@@ -30,7 +30,7 @@
                 </el-input>
                 <el-input 
                     v-else-if="item.type && item.type == 'number'"
-                    type="number"
+                    onkeyup = "value=value.replace(/[^\d]/g,'')"
                     :value="myForm[item.inputModel]"
                     @input="handleInput($event, item.inputModel)"
                     style="width:90%;" 

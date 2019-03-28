@@ -802,8 +802,6 @@
                         message: '请先选择要分配的线索'
                     }); 
                 }
-                
-                
             },
 
             hangleChange(e,val){

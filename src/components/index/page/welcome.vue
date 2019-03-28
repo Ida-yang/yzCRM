@@ -3,7 +3,7 @@
         <div class="header-welhead">
             <div class="radioList">
                 <el-radio-group v-model="searchList.label">
-                    <el-radio v-for="item in pIdData" :key="item.label" :label="item.label" @change="search()">{{item.value}}</el-radio>
+                    <el-radio class="wel_radio" v-for="item in pIdData" :key="item.label" :label="item.label" @change="search()">{{item.value}}</el-radio>
                 </el-radio-group>
             </div>
         </div>
@@ -48,61 +48,59 @@
         </div>
         <div class="welfoot">
             <el-table
-            :data="tableData"
-            ref="multipleTable"
-            border
-            stripe
-            :default-sort = "{order: 'descending'}"
-            style="width:100%;text-align:center"
-            >
-            <el-table-column
-            fixed
-            header-align="center"
-            align="center"
-            type="index"
-            width="45">
-            </el-table-column>
-            <el-table-column
-                prop="name"
-                header-align="left"
-                align="left"
-                min-width="120"
-                label="项目名"
-                sortable>
-            </el-table-column>
-            <el-table-column
-                prop="start_time"
-                header-align="left"
-                align="left"
-                min-width="120"
-                label="开始日期"
-                sortable>
-            </el-table-column>
-            <el-table-column
-                prop="end_deal"
-                header-align="left"
-                align="left"
-                min-width="180"
-                label="截止日期"
-                sortable>
-            </el-table-column>
-            <el-table-column
-                prop="state"
-                header-align="left"
-                align="left"
-                min-width="90"
-                label="状态"
-                sortable>
-            </el-table-column>
-            <el-table-column
-                prop="user"
-                header-align="left"
-                align="left"
-                min-width="110"
-                label="分配"
-                sortable>
-            </el-table-column>
-        </el-table>
+                :data="tableData"
+                ref="multipleTable"
+                border
+                stripe
+                style="width:100%;text-align:center">
+                <el-table-column
+                    fixed
+                    header-align="center"
+                    align="center"
+                    type="index"
+                    width="45">
+                </el-table-column>
+                <el-table-column
+                    prop="name"
+                    header-align="left"
+                    align="left"
+                    min-width="120"
+                    label="项目名"
+                    sortable>
+                </el-table-column>
+                <el-table-column
+                    prop="start_time"
+                    header-align="left"
+                    align="left"
+                    min-width="120"
+                    label="开始日期"
+                    sortable>
+                </el-table-column>
+                <el-table-column
+                    prop="end_deal"
+                    header-align="left"
+                    align="left"
+                    min-width="180"
+                    label="截止日期"
+                    sortable>
+                </el-table-column>
+                <el-table-column
+                    prop="state"
+                    header-align="left"
+                    align="left"
+                    min-width="90"
+                    label="状态"
+                    sortable>
+                </el-table-column>
+                <el-table-column
+                    prop="user"
+                    header-align="left"
+                    align="left"
+                    min-width="110"
+                    label="分配"
+                    sortable>
+                </el-table-column>
+            </el-table>
         </div>
     </div>
 </template>
@@ -318,7 +316,7 @@
         width: 100%;
         height: 30px;
         background-color: #ffffff;
-        padding-left: 50%;
+        padding-left: 65%;
     }
     .welhead{
         width: 100%;
@@ -390,5 +388,9 @@
         width: 500px;
         height: 400px;
         margin: 0 auto
+    }
+    .wel_radio{
+        flex: 0 0 7% !important;
+        text-align: center;
     }
 </style>

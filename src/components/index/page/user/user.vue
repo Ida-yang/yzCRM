@@ -182,7 +182,7 @@
                         <el-input v-model="newform.secondname" :disabled="true"></el-input>
                     </el-form-item>
                     <el-form-item prop="private_phone" label="手机号码">
-                        <el-input type="number" v-model="newform.private_phone" placeholder="请输入用户手机号码"></el-input>
+                        <el-input onkeyup = "value=value.replace(/[^\d]/g,'')" v-model="newform.private_phone" placeholder="请输入用户手机号码"></el-input>
                     </el-form-item>
                     <el-form-item prop="private_password" label="密码">
                         <el-input type="password" v-model="newform.private_password" placeholder="请输入用户密码"></el-input>
@@ -206,7 +206,7 @@
                         <el-input type="email" v-model="newform.private_email" placeholder="请输入用户邮箱"></el-input>
                     </el-form-item>
                     <el-form-item prop="private_QQ" label="QQ">
-                        <el-input type="number" v-model="newform.private_QQ" placeholder="请输入用户QQ"></el-input>
+                        <el-input onkeyup = "value=value.replace(/[^\d]/g,'')" v-model="newform.private_QQ" placeholder="请输入用户QQ"></el-input>
                     </el-form-item>
             </el-form>
             <span slot="footer" class="dialog-footer">
@@ -223,7 +223,7 @@
                     <el-input v-model="newform.secondname" :disabled="true"></el-input>
                 </el-form-item>
                 <el-form-item prop="private_phone" label="手机号码">
-                    <el-input type="number" v-model="newform.private_phone" :disabled="true" placeholder="请输入用户手机号码"></el-input>
+                    <el-input onkeyup = "value=value.replace(/[^\d]/g,'')" v-model="newform.private_phone" :disabled="true" placeholder="请输入用户手机号码"></el-input>
                 </el-form-item>
                 <el-form-item prop="private_password" label="密码">
                     <el-input type="password" v-model="newform.private_password" placeholder="请输入用户密码"></el-input>
@@ -247,7 +247,7 @@
                     <el-input type="email" v-model="newform.private_email" placeholder="请输入用户邮箱"></el-input>
                 </el-form-item>
                 <el-form-item prop="private_QQ" label="QQ">
-                    <el-input type="number" v-model="newform.private_QQ" placeholder="请输入用户QQ"></el-input>
+                    <el-input onkeyup = "value=value.replace(/[^\d]/g,'')" v-model="newform.private_QQ" placeholder="请输入用户QQ"></el-input>
                 </el-form-item>
             </el-form>
             <span slot="footer" class="dialog-footer">

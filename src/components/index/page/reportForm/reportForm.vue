@@ -61,7 +61,7 @@
         </div>
         <div class="middles">
             <div class="middlebody">
-                <div id="chart4" :style="{width: '600px', height: '400px'}"></div>
+                <div id="chart4" :style="{width: '500px', height: '400px'}"></div>
             </div>
             <div class="middlebody">
                 <el-table
@@ -69,7 +69,6 @@
                     ref="multipleTable"
                     border
                     stripe
-                    :default-sort = "{order: 'descending'}"
                     style="width:100%;text-align:center">
                     <el-table-column
                         prop="name"
@@ -101,7 +100,7 @@
         </div>
         <div class="middles">
             <div class="middlebody">
-                <div id="chart1" :style="{width: '400px', height: '400px'}"></div>
+                <div id="chart1" :style="{width: '500px', height: '400px'}"></div>
             </div>
             <div class="middlebody">
                 <el-table
@@ -109,7 +108,6 @@
                     ref="multipleTable"
                     border
                     stripe
-                    :default-sort = "{order: 'descending'}"
                     style="width:100%;text-align:center">
                     <el-table-column
                         prop="scale"
@@ -141,7 +139,7 @@
         </div>
         <div class="middles">
             <div class="middlebody">
-                <div id="chart2" :style="{width: '400px', height: '400px'}"></div>
+                <div id="chart2" :style="{width: '500px', height: '400px'}"></div>
             </div>
             <div class="middlebody">
                 <el-table
@@ -149,7 +147,6 @@
                     ref="multipleTable"
                     border
                     stripe
-                    :default-sort = "{order: 'descending'}"
                     style="width:100%;text-align:center">
                     <el-table-column
                         prop="years"
@@ -397,6 +394,16 @@
                         trigger: 'item',
                         formatter: "{a}：" + "{b} <br/> " + '数量：' + "{c}"
                     },
+                    color(params) { 
+                　  //首先定义一个数组 
+                    let colorList = ['#c23531','#61a0a8']; 
+                        if(params.dataIndex % 2 == 0){
+                            return colorList[0]
+                        }else{
+                            return colorList[1]
+                        }
+                    
+                    },
                     xAxis: {
                         bottom: 20,
                         data: ["1-49", "50-99", "100-199", "200-499", "500-999", "1000-2999", "3000-4999", "5000以上"]
@@ -419,6 +426,16 @@
                     tooltip: {
                         trigger: 'item',
                         formatter: "{a}：" + "{b} <br/> " + '数量：' + "{c}"
+                    },
+                    color(params) { 
+                　  //首先定义一个数组 
+                    let colorList = ['#c23531','#61a0a8']; 
+                        if(params.dataIndex % 2 == 0){
+                            return colorList[0]
+                        }else{
+                            return colorList[1]
+                        }
+                    
                     },
                     xAxis: {
                         bottom: 20,
@@ -456,7 +473,7 @@
                     series : [{
                         name:'行业',  // 提示框标题
                         type: 'pie',
-                        radius : '65%',
+                        radius : '60%',
                         center: ['50%', '50%'],
                         selectedMode: 'single',
                         data: this.industry,
@@ -577,13 +594,13 @@
         margin-top: 10px;
         display: flex;
         display: -webkit-flex; /* Safari */
-        justify-content: center;   /*水平居中*/
-        align-items: center;
+        justify-content: center;  /* 水平居中 */
+        /* align-items: center; */
     }
     .middles .middlebody{
         flex: 1;
         width: 50%;
-        padding: 10px;
+        padding: 0 10px;
     }
     .middles .middlebody > div{
         margin:0 auto

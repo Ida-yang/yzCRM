@@ -162,9 +162,15 @@ export default {
     .el-card{
         width: 100%;
     }
-    .el-table tr:hover {
+    /* .el-table tbody tr:hover>td { 
+        background-color: #eff5fd !important 
+    } */
+    /* .el-table tr:hover {
         background: #f6faff;
     }
+    tr.el-table__row.hover-row{
+        background: #5ba5ff;
+    } */
     .el-table {
         font-size: 13px;
         padding-bottom: 1px;
@@ -550,4 +556,17 @@ export default {
         color:blue;
         border-color: blue;
     }
+    
+    .wel_item .el-badge__content.is-fixed{
+        position: absolute;
+        top: 15px;
+        right: 8px;
+    }
+    /* .wel_item .el-badge__content{
+        border-radius: 8px;
+        font-size: 12px;
+        height: 16px;
+        line-height: 16px;
+        padding: 0 2px;
+    } */
 </style>

@@ -1,13 +1,13 @@
 <template>
     <div class="header">
         <div class="header-in" :class="{'content-collapse':collapse}">
-        <!-- 折叠按钮 -->
-        <div class="collapse-btn" @click="collapseChage">
-            <i class="el-icon-menu"></i>
-        </div>
-        <!-- <div class="logo">
-            <span style="font-size:16px">云纵CRM信息平台</span>
-        </div> -->
+            <!-- 折叠按钮 -->
+            <div class="collapse-btn" @click="collapseChage">
+                <i class="el-icon-menu"></i>
+            </div>
+            <!-- <div class="logo">
+                <span style="font-size:16px">云纵CRM信息平台</span>
+            </div> -->
         </div>
         <!-- <div class="breadcrumb">
             <el-breadcrumb separator="/">
@@ -23,7 +23,9 @@
             <div class="header-user-con">
                 <!-- 消息提醒 -->
                 <div class="btn-bell" @click="handlemessage">
-                    <i class="mdi mdi-bell-outline"></i>
+                    <el-badge :is-dot="dotmessage" class="wel_item">
+                        <i class="mdi mdi-bell-outline"></i>
+                    </el-badge>
                 </div>
                 <!-- 全屏显示 -->
                 <div class="btn-fullscreen" @click="handleFullScreen">
@@ -32,7 +34,7 @@
                     </el-tooltip>
                 </div>
                 <el-dropdown class="user-name" trigger="click" @command="handleCommand">
-                    <span class="el-dropdown-link" id="public_username">
+                    <span class="el-dropdown-link">
                         {{public_username}}
                     </span>
                     <span>
@@ -47,7 +49,7 @@
             </div>
         </div>
         
-        <el-dialog :modal="false" center title="修改密码" :visible.sync="dialogFormVisible" width="40%" :close-on-click-modal="false">
+        <el-dialog center title="修改密码" :visible.sync="dialogFormVisible" width="40%">
             <el-form :model="reSetForm" :rules="rules" ref="reSetForm"  label-width="100px" label-position="left">
                 <el-form-item prop="oldpass" label="旧密码">
                     <el-input v-model="reSetForm.oldpass" type="text" class="handle-input mr10" style="width:240px;" clearable></el-input>
@@ -64,6 +66,8 @@
                 <el-button type="primary"  @click="submitFormUser('reSetForm')">确 定</el-button>
             </div>
         </el-dialog>
+
+        <div id="message_c" class="message_c"></div>
     </div>
     
 </template>
@@ -79,8 +83,8 @@
             var validateoldpass = (rule, value, callback) => {
                if (value === '') {
                     callback(new Error('请输入密码'));
-                }else if(!/^[a-z0-9_-]{0,18}$/.test(value)){
-                    callback(new Error('用户名由数字、字母、下划线组成'));    
+                // }else if(!/^[a-z0-9_-]{0,18}$/.test(value)){
+                //     callback(new Error('用户名由数字、字母、下划线组成'));    
                 }else {
                     callback();
                 }
@@ -97,11 +101,15 @@
             return {
                 public_username:this.$store.state.user,
                 dialogFormVisible: false,
+                divisible: false,
                 formLabelWidth: '120px',
+
                 collapse: false,
+                collapse2: false,
                 fullscreen: false,
-                name: '',
-                message: 2,
+
+                dotmessage: false,
+
                 breadsList:{
                     path:'',
                     title:'',
@@ -121,22 +129,22 @@
                     respass: [
                         {require:true, validator: validaterespass, trigger: 'blur'}
                     ]
-                }
+                },
+                thistime:null,
             }
         },
         inject:["reload"], 
         mounted(){
+            this.loadmessage()
             if(document.body.clientWidth < 1500){
                 this.collapseChage();
             }
         },
         watch:{
             $route(newValue, oldValue){
-                this.getBread();
+                // this.getBread();
+                this.loadmessage()
             }
-        },
-        created(){
-            this.getBread();
         },
         methods:{
             getBread(){
@@ -155,6 +163,7 @@
                 let idArr = {}
                 idArr.privateId = _this.$store.state.ispId
                 idArr.cId = _this.$store.state.iscId
+                
                 _this.$refs[formName].validate((valid) => {
                     if (valid) {
                         axios({
@@ -219,12 +228,8 @@
             },
             // 侧边栏折叠
             collapseChage(){
-                
                 this.collapse = !this.collapse;
                 bus.$emit('collapse', this.collapse);
-                // if(this.collapse){
-                // }else{
-                // }
             },
             // 全屏事件
             handleFullScreen(){
@@ -253,7 +258,75 @@
                 }
                 this.fullscreen = !this.fullscreen;
             },
-            handlemessage(){}
+            handlemessage(){
+                this.collapse2 = true;
+                bus.$emit('collapse2', this.collapse2);
+            },
+            getTime(){
+                let myDate = new Date()
+                let y = myDate.getFullYear() //获取完整的年份(4位,1970-????)
+                let m = myDate.getMonth() + 1 //获取当前月份(0-11,0代表1月)
+                let d = myDate.getDate() //获取当前日(1-31)
+                let h = myDate.getHours() //获取当前小时数(0-23)
+                let mm = myDate.getMinutes() //获取当前分钟数(0-59)
+                let s = myDate.getSeconds() //获取当前秒数(0-59)
+                m = (m < 10 ? "0" + m : m)
+                d = (d < 10 ? "0" + d : d)
+                h = (h < 10 ? "0" + h : h)
+                mm = (mm < 10 ? "0" + mm : mm)
+                s = (s < 10 ? "0" + s : s)
+                this.thistime = y + '-' + m + '-' + d + ' ' + h + ':' + mm + ':' + s
+            },
+            loadmessage(){
+                this.getTime()
+                const _this = this
+                let qs =require('querystring')
+                let data = {}
+                // data.remindTime = this.thistime
+                data.state = '未读'
+
+                axios({
+                    method: 'post',
+                    url: _this.$store.state.defaultHttp+'message/selectMessage.do?cId='+_this.$store.state.iscId+'&pId='+_this.$store.state.ispId,
+                    data: qs.stringify(data),
+                }).then(function(res){
+                    _this.$store.state.messageList = res.data
+                    if(res.data.visit){
+                        res.data.visit.forEach(el1 => {
+                            if(el1.id){
+                                _this.dotmessage = true
+                            }
+                        });
+                    }
+                    if(res.data.workplan){
+                        res.data.workplan.forEach(el2 => {
+                            if(el2.id){
+                                _this.dotmessage = true
+                            }
+                        });
+                    }
+                    // let data = [res.data]
+                    // if(!res.data){
+                    //     _this.dotmessage = false
+                    //     console.log('0000000')
+                    // }else{
+                    //     console.log('1111111')
+                    //     data.forEach(el => {
+                    //         // console.log(el)
+                    //         if(el.visit.length == 0){
+                    //             _this.dotmessage = false
+                    //             console.log('22222222')
+                    //         }else{
+
+                    //             _this.dotmessage = true
+                    //             console.log('33333333')
+                    //         }
+                    //     });
+                    // }
+                }).catch(function(err){
+                    console.log(err)
+                });
+            },
         }
     }
 </script>
@@ -264,7 +337,6 @@
         color: #fff !important;
         background: rgb(46, 98, 135) !important;
     } */
-    
     .header {
         position: absolute;
         top: 0;
@@ -322,6 +394,7 @@
     .header-user-con div{
         flex: 1;
         margin-left: 20px;
+        width: auto;
     }
     /* .btn-fullscreen{
         transform: rotate(45deg);
@@ -333,6 +406,12 @@
         text-align: center;
         border-radius: 15px;
         cursor: pointer;
+        /* font-size: 24px; */
+    }
+    .btn-bell{
+        font-size: 22px;
+    }
+    .btn-fullscreen{
         font-size: 24px;
     }
     .btn-bell-badge{
@@ -354,13 +433,14 @@
         justify-content: center;
         margin-right: 20px;
     }
-    .user-name span{
-        flex: 1
-    }
+    /* .user-name span{
+        flex: 1;
+    } */
     .el-dropdown-link{
         color: #20222a;
         cursor: pointer;
-        width: 50px;
+        width: 90px;
+        text-align: right;
     }
     .el-dropdown-menu__item{
         text-align: center;

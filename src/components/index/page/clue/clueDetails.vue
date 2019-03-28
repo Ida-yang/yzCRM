@@ -522,6 +522,7 @@
                 let idArr = [];
                 idArr.id = this.idArr.id
                 idArr.shift()
+                idArr.secondid = this.$store.state.deptid
 
                 axios({
                     method: 'post',

@@ -234,16 +234,16 @@
             <!-- <span>这是一段信息</span> -->
             <el-form label-width="130px" :model="updateList">
                 <el-form-item label="线索/客户新增目标">
-                    <el-input type="number" class="oppinput" v-model="updateList.addClue"></el-input>
+                    <el-input onkeyup = "value=value.replace(/[^\d]/g,'')" class="oppinput" v-model="updateList.addClue"></el-input>
                 </el-form-item>
                 <el-form-item label="线索更新目标">
-                    <el-input type="number" class="oppinput" v-model="updateList.toUpdate"></el-input>
+                    <el-input onkeyup = "value=value.replace(/[^\d]/g,'')" class="oppinput" v-model="updateList.toUpdate"></el-input>
                 </el-form-item>
                 <el-form-item label="每月">
-                    <el-input type="number" class="oppinput" v-model="updateList.monthNum"></el-input>
+                    <el-input onkeyup = "value=value.replace(/[^\d]/g,'')" class="oppinput" v-model="updateList.monthNum"></el-input>
                 </el-form-item>
                 <el-form-item label="每周">
-                    <el-input type="number" class="oppinput" v-model="updateList.weekNum"></el-input>
+                    <el-input onkeyup = "value=value.replace(/[^\d]/g,'')" class="oppinput" v-model="updateList.weekNum"></el-input>
                 </el-form-item>
             </el-form>
             <span slot="footer" class="dialog-footer">
@@ -258,10 +258,10 @@
             <!-- <span>这是一段信息</span> -->
             <el-form label-width="80px" :model="updateList">
                 <el-form-item label="拜访目标">
-                    <el-input type="number" class="oppinput" v-model="updateList.visitNum"></el-input>
+                    <el-input onkeyup = "value=value.replace(/[^\d]/g,'')" class="oppinput" v-model="updateList.visitNum"></el-input>
                 </el-form-item>
                 <el-form-item label="每月最低">
-                    <el-input type="number" class="oppinput" v-model="updateList.monthMinimum"></el-input>
+                    <el-input onkeyup = "value=value.replace(/[^\d]/g,'')" class="oppinput" v-model="updateList.monthMinimum"></el-input>
                 </el-form-item>
             </el-form>
             <span slot="footer" class="dialog-footer">
@@ -276,7 +276,7 @@
             <!-- <span>这是一段信息</span> -->
             <el-form label-width="100px" :model="updateList">
                 <el-form-item label="商机新增目标">
-                    <el-input type="number" class="oppinput" v-model="updateList.opportunityNum"></el-input>
+                    <el-input onkeyup = "value=value.replace(/[^\d]/g,'')" class="oppinput" v-model="updateList.opportunityNum"></el-input>
                 </el-form-item>
             </el-form>
             <span slot="footer" class="dialog-footer">
@@ -291,10 +291,10 @@
             <!-- <span>这是一段信息</span> -->
             <el-form label-width="80px" :model="updateList">
                 <el-form-item label="每月">
-                    <el-input type="number" class="oppinput" v-model="updateList.monthMoney"></el-input>
+                    <el-input onkeyup = "value=value.replace(/[^\d]/g,'')" class="oppinput" v-model="updateList.monthMoney"></el-input>
                 </el-form-item>
                 <el-form-item label="每周">
-                    <el-input type="number" class="oppinput" v-model="updateList.weekMoney"></el-input>
+                    <el-input onkeyup = "value=value.replace(/[^\d]/g,'')" class="oppinput" v-model="updateList.weekMoney"></el-input>
                 </el-form-item>
             </el-form>
             <span slot="footer" class="dialog-footer">

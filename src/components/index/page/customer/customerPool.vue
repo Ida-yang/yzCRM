@@ -767,7 +767,7 @@
                 idArr.secondid = ''
                 idArr.deptid = ''
 
-                if(idArr.id){
+                if(idArr.ids){
                     axios({
                         method: 'get',
                         url: _this.$store.state.defaultHttp+'customerPoolJurisdiction/distribution.do',

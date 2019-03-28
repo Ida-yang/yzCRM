@@ -221,7 +221,7 @@
                     <el-input v-model="newform.typeName" placeholder="请输入状态名称"></el-input>
                 </el-form-item>
                 <el-form-item prop="sort" label="排序编号">
-                    <el-input type="number" v-model="newform.sort" placeholder="请输入排序编号"></el-input>
+                    <el-input onkeyup = "value=value.replace(/[^\d]/g,'')" v-model="newform.sort" placeholder="请输入排序编号"></el-input>
                 </el-form-item>
                 <el-form-item prop="notes" label="备注">
                     <el-input v-model="newform.notes" placeholder="请输入状态备注"></el-input>
@@ -244,7 +244,7 @@
                     <el-input v-model="newform.typeName" placeholder="请输入状态名称"></el-input>
                 </el-form-item>
                 <el-form-item prop="sort" label="排序编号">
-                    <el-input type="number" v-model="newform.sort" placeholder="请输入排序编号"></el-input>
+                    <el-input onkeyup = "value=value.replace(/[^\d]/g,'')" v-model="newform.sort" placeholder="请输入排序编号"></el-input>
                 </el-form-item>
                 <el-form-item prop="notes" label="备注">
                     <el-input v-model="newform.notes" placeholder="请输入状态备注"></el-input>
@@ -270,7 +270,7 @@
                     <el-input v-model="newform.quickcontent" placeholder="请输入跟进内容"></el-input>
                 </el-form-item>
                 <el-form-item prop="sort" label="排序编号">
-                    <el-input type="number" v-model="newform.sort" placeholder="请输入排序编号"></el-input>
+                    <el-input onkeyup = "value=value.replace(/[^\d]/g,'')" v-model="newform.sort" placeholder="请输入排序编号"></el-input>
                 </el-form-item>
                 <el-form-item prop="notes" label="备注">
                     <el-input v-model="newform.notes" placeholder="请输入备注"></el-input>
@@ -296,7 +296,7 @@
                     <el-input v-model="newform.quickcontent" placeholder="请输入跟进内容"></el-input>
                 </el-form-item>
                 <el-form-item prop="sort" label="排序编号">
-                    <el-input type="number" v-model="newform.sort" placeholder="请输入排序编号"></el-input>
+                    <el-input onkeyup = "value=value.replace(/[^\d]/g,'')" v-model="newform.sort" placeholder="请输入排序编号"></el-input>
                 </el-form-item>
                 <!-- <el-form-item prop="notes" label="备注">
                     <el-input v-model="newform.notes" placeholder="请输入备注"></el-input>
@@ -320,10 +320,10 @@
                     <el-input v-model="newform.typeName" placeholder="请输入进度名称"></el-input>
                 </el-form-item>
                 <el-form-item prop="probability" label="成功几率">
-                    <el-input type="number" v-model="newform.probability" placeholder="请输入成功几率"><span slot="suffix" style="margin-right:20px">%</span></el-input>
+                    <el-input type="number" min="0" max="100" v-model="newform.probability" placeholder="请输入成功几率"><span slot="suffix" style="margin-right:20px">%</span></el-input>
                 </el-form-item>
                 <el-form-item prop="sort" label="排序编号">
-                    <el-input type="number" v-model="newform.sort" placeholder="请输入排序编号"></el-input>
+                    <el-input onkeyup = "value=value.replace(/[^\d]/g,'')" v-model="newform.sort" placeholder="请输入排序编号"></el-input>
                 </el-form-item>
                 <!-- <el-form-item prop="notes" label="备注">
                     <el-input v-model="newform.notes" placeholder="请输入备注"></el-input>
@@ -346,10 +346,10 @@
                     <el-input v-model="newform.typeName" placeholder="请输入状态名称"></el-input>
                 </el-form-item>
                 <el-form-item prop="probability" label="成功几率">
-                    <el-input type="number" v-model="newform.probability" placeholder="请输入成功几率"><span slot="suffix" style="margin-right:20px">%</span></el-input>
+                    <el-input type="number" min="0" max="100" v-model="newform.probability" placeholder="请输入成功几率"><span slot="suffix" style="margin-right:20px">%</span></el-input>
                 </el-form-item>
                 <el-form-item prop="sort" label="排序编号">
-                    <el-input type="number" v-model="newform.sort" placeholder="请输入排序编号"></el-input>
+                    <el-input onkeyup = "value=value.replace(/[^\d]/g,'')" v-model="newform.sort" placeholder="请输入排序编号"></el-input>
                 </el-form-item>
                 <el-form-item prop="notes" label="备注">
                     <el-input v-model="newform.notes" placeholder="请输入备注"></el-input>

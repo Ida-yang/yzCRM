@@ -604,7 +604,7 @@
                     {"label":"公司名称","inputModel":"poolName","type":"require"},
                     {"label":"联系人","inputModel":"contactsName",},
                     {"label":"手机","inputModel":"phone","type":"number"},
-                    {"label":"电话","inputModel":"telphone"},
+                    {"label":"电话","inputModel":"telphone","type":"number"},
                     {"label":"QQ","inputModel":"qq","type":"number"},
                     {"label":"性别","inputModel":"sex","type":"radio"},
                     {"label":"职务","inputModel":"identity"},
@@ -799,6 +799,7 @@
                 let idArr = [];
                 idArr.id = this.idArr.id
                 idArr.id.shift()
+                idArr.secondid = this.$store.state.deptid
 
                 if(idArr.id){
                     axios({
@@ -806,7 +807,7 @@
                         url:  _this.$store.state.defaultHttp+ 'customerTwo/insert.do?cId='+_this.$store.state.iscId+"&pId="+_this.$store.state.ispId,
                         data:qs.stringify(idArr),
                     }).then(function(res){
-                        if(res.data && res.data == 'success') {
+                        if(res.data.code && res.data.code == 200) {
                             _this.$message({
                                 message: '转移成功',
                                 type: 'success'
@@ -819,7 +820,7 @@
                             })
                         } else {
                             _this.$message({
-                                message: res.data,
+                                message: res.data.msg,
                                 type: 'error'
                             });
                         }
