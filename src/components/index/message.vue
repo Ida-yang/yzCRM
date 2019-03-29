@@ -23,6 +23,11 @@
                         header-align="left"
                         align="left"
                         label="待办内容">
+                        <template slot-scope="scope">
+                            <div @click="openDetails(scope.$index, scope.row)" class="hoverline">
+                                {{scope.row.remindContent}}
+                            </div>
+                        </template>
                     </el-table-column>
                 </el-table>
             </el-collapse-item>
@@ -44,6 +49,11 @@
                         header-align="left"
                         align="left"
                         label="待审核内容">
+                        <template slot-scope="scope">
+                            <div @click="openDetails(scope.$index, scope.row)" class="hoverline">
+                                {{scope.row.remindContent}}
+                            </div>
+                        </template>
                     </el-table-column>
                 </el-table>
             </el-collapse-item>
@@ -118,18 +128,23 @@
                     _this.messageList = res.data
                     _this.tableData = []
                     _this.tableData2 = []
-                    _this.tableData = res.data.visit
-                    res.data.workplan.forEach(el => {
-                        _this.tableData.push(el)
-                    });
-                    _this.tableData2 = res.data.workplan
+                    _this.tableData = res.data.dealtWith
+                    _this.tableData2 = res.data.examine
                 }).catch(function(err){
                     console.log(err)
                 });
             },
             leavemessage(e){
                 this.collapse2 = false;
-                bus.$emit('collapse2', this.collapse2);
+                bus.$emit('collapse2', this.collapse2)
+            },
+            openDetails(index,row){
+                console.log(row)
+                if(row.type == 'visit'){
+                    console.log(row.typeId)
+                    this.$store.state.visitdetailsData = {submitData:{"id": row.typeId}}
+                    this.$router.push({ path: '/visitplandetails' });
+                }
             }
         }
     }

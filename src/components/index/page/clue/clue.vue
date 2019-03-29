@@ -33,14 +33,23 @@
             <el-button class="btn info-btn" size="mini" @click="cluePool()">转移至线索池</el-button>
             <el-button class="btn info-btn" size="mini" @click="customerSwitching()">转移至客户</el-button>
             <div class="totalnum_head">共 <span style="font-weight:bold">{{tableNumber}}</span> 条</div>
+            <el-upload
+                class="upload-demo"
+                ref="upload"
+                :multiple="true"
+                action="doUpload"
+                :limit="1"
+                :before-upload="beforeUpload">
+                <el-button slot="trigger" size="mini" class="info-btn">导入</el-button>
+            </el-upload>
             <el-popover
-            placement="bottom"
-            width="100"
-            trigger="click">
-            <el-checkbox-group class="checklist" v-model="checklist">
-                <el-checkbox class="checkone" v-for="item in filterList" :key="item.id" :label="item.name" :value="item.state" @change="hangleChange($event,item)"></el-checkbox>
-            </el-checkbox-group>
-            <!-- <el-button slot="reference" icon="el-icon-more-outline" type="mini">筛选列表</el-button> -->
+                placement="bottom"
+                width="100"
+                trigger="click">
+                <el-checkbox-group class="checklist" v-model="checklist">
+                    <el-checkbox class="checkone" v-for="item in filterList" :key="item.id" :label="item.name" :value="item.state" @change="hangleChange($event,item)"></el-checkbox>
+                </el-checkbox-group>
+                <!-- <el-button slot="reference" icon="el-icon-more-outline" type="mini">筛选列表</el-button> -->
                 <el-button slot="reference" icon="el-icon-more" class="info-btn screen" type="mini"></el-button>
             </el-popover>
         </div>
@@ -396,6 +405,7 @@
 <script>
     import store from '../../../../store/store'
     import axios from 'axios'
+    import XLSX from 'xlsx';
     import qs from 'qs'
 
     export default {
@@ -902,6 +912,61 @@
                 const _this = this;
                 _this.page = val;
                 _this.$options.methods.reloadTable.bind(_this)(false);
+            },
+            beforeUpload(file){
+                console.log(file,'文件');
+                this.files = file;
+                const extension = file.name.split('.')[1] === 'xls'
+                const extension2 = file.name.split('.')[1] === 'xlsx'
+                const isLt5M = file.size / 1024 / 1024 < 5
+                if (!extension && !extension2) {
+                    this.$message.warning('上传模板只能是 xls、xlsx格式!')
+                    return
+                }
+                if (!isLt5M) {
+                    this.$message.warning('上传模板大小不能超过 5MB!')
+                    return
+                }
+                this.fileName = file.name;
+                setTimeout(() => {
+                    this.submitUpload();
+                },500);
+                return false; // 返回false不会自动上传
+            },   
+         
+            // 上传excel
+            submitUpload() {
+                const _this = this
+                console.log('上传'+this.files.name)
+                if(this.fileName == ""){
+                    this.$message.warning('请选择要上传的文件！')
+                    return false
+                }
+                let fileFormData = new FormData();
+                // fileFormData.append("code", "t_pathology_info_excel");
+                // fileFormData.append("description", "excel上传测试");
+                fileFormData.append("pId", this.$store.state.ispId);
+                fileFormData.append("secondid", this.$store.state.deptid);
+                fileFormData.append("deptid", this.$store.state.insid);
+                //filename是键，file是值，就是要传的文件，test是要传的文件名
+                fileFormData.append('files', this.files, this.fileName);
+                let requestConfig = {
+                    headers: {
+                        'Content-Type': 'multipart/form-data'
+                    },
+                }
+                // 执行上传excel
+                axios.post(this.$store.state.defaultHttp+'customerTwo/upload.do?cId='+this.$store.state.iscId,fileFormData, requestConfig)
+                .then(res => {
+                    _this.$message({
+                        message: '上传成功',
+                        type: 'success'
+                    })
+                    _this.$options.methods.reloadTable.bind(_this)(true);
+                }).catch((e) => {
+                    // console.log(e);
+                    this.$message.error("excel上传失败，请重新上传");
+                })
             },
         },
     }

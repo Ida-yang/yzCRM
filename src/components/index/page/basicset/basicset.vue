@@ -940,44 +940,4 @@
     }
 </script>
 <style>
-    .contentall{
-        background-color: #ffffff;
-        height: 100%;
-    }
-    .setleftcontent{
-        width: 20%;
-        height: auto;
-        padding-top:30px;
-        float: left;
-        box-sizing: border-box;
-    }
-    .namecontent{
-        width: 90%;
-        list-style: none;
-        font-size: 14px; 
-    }
-    .namecontent li{
-        width: 100%;
-        height: 40px;
-        line-height: 40px;
-        padding-left: 40px;
-        /* text-align: center; */
-    }
-    .namecontent li.actived{
-        background-color: #f0f0f0;
-        color: #409EFF
-    }
-    .centercontent{
-        display: block;
-        width: 1%;
-        height: 100%;
-        float: left;
-        background-color: #f0f0f0;
-    }
-    .setrightcontent{
-        width: 79%;
-        height: 100%;
-        float: left;
-        box-sizing: border-box;
-    }
 </style>

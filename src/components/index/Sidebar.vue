@@ -163,21 +163,21 @@
                             },
                         ]
                     },
-                    // {
-                    //     icon: 'el-icon-new-quanxianguanli',
-                    //     index: '6',
-                    //     title: '导入',
-                    //     subs: [
-                    //         {
-                    //             index: 'name',
-                    //             title: '导入',
-                    //         },
-                    //         {
-                    //             index: 'name2',
-                    //             title: '导入2',
-                    //         },
-                    //     ]
-                    // },
+                    {
+                        icon: 'mdi-view-grid',
+                        index: '6',
+                        title: '导入',
+                        subs: [
+                            {
+                                index: 'upload',
+                                title: '导入',
+                            },
+                            {
+                                index: 'smstemp',
+                                title: '短信模板',
+                            },
+                        ]
+                    },
                 ],
                 
                 itemlast: [

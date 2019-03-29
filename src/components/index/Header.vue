@@ -291,38 +291,20 @@
                     data: qs.stringify(data),
                 }).then(function(res){
                     _this.$store.state.messageList = res.data
-                    if(res.data.visit){
-                        res.data.visit.forEach(el1 => {
+                    if(res.data.dealtWith){
+                        res.data.dealtWith.forEach(el1 => {
                             if(el1.id){
                                 _this.dotmessage = true
                             }
                         });
                     }
-                    if(res.data.workplan){
-                        res.data.workplan.forEach(el2 => {
+                    if(res.data.examine){
+                        res.data.examine.forEach(el2 => {
                             if(el2.id){
                                 _this.dotmessage = true
                             }
                         });
                     }
-                    // let data = [res.data]
-                    // if(!res.data){
-                    //     _this.dotmessage = false
-                    //     console.log('0000000')
-                    // }else{
-                    //     console.log('1111111')
-                    //     data.forEach(el => {
-                    //         // console.log(el)
-                    //         if(el.visit.length == 0){
-                    //             _this.dotmessage = false
-                    //             console.log('22222222')
-                    //         }else{
-
-                    //             _this.dotmessage = true
-                    //             console.log('33333333')
-                    //         }
-                    //     });
-                    // }
                 }).catch(function(err){
                     console.log(err)
                 });

@@ -133,6 +133,10 @@ const state = {
   //报表列表总数
   missionplanListnumber:0,
 
+  //报表列表
+  smstempList:[],
+  //报表列表总数
+  smstempListnumber:0,
 }
 /*配置全局函数*/
 const mutations = {

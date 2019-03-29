@@ -75,17 +75,6 @@ export default {
     },
     mounted() {
         this.getlocalStorage()
-        // var backgroundImage = $("body").css("background-image");
-        // $("body").css("background-image", "none");
-        // $("body").css("background", "#fff");
-        // $("body").css("opacity", "0");
-        // // setTimeout(function(){
-        //     $("body").animate({opacity: "1"}, 300, "linear",function(){
-        //         $("body").css("background", "");
-        //         $("body").css("background-image", backgroundImage);
-        //         $(".systemTitle").show(500);
-        //         $(".systemLogin").show(500);
-        //     });
         },
     methods: {
         submitForm(){
@@ -123,6 +112,7 @@ export default {
                     _this.$store.commit('roleid',userData.roleid)
                     _this.$store.commit('insid',userData.private_deptid)
                     _this.$router.push({path:'/index'})
+                    _this.getData()
                 }else {
                     _this.$message({
                         message: res.data.msg,
@@ -150,6 +140,32 @@ export default {
         clearlocalStorage(){
             this.setlocalStorage('', '')
         },
+        getData(){
+            const _this = this
+            let qs = require('querystring')
+            let data = {}
+            data.cId = this.$store.state.iscId
+            data.secondid = this.$store.state.deptid
+
+            axios({
+                method: 'post',
+                url: _this.$store.state.defaultHttp+'customerTwo/updateBytime.do',
+                data:qs.stringify(data)
+            }).then(function(res){
+                console.log(res)
+            }).catch(function(err){
+                console.log(err);
+            });
+            axios({
+                method: 'post',
+                url: _this.$store.state.defaultHttp+'customerpool/updateBytime.do',
+                data:qs.stringify(data)
+            }).then(function(res){
+                console.log(res)
+            }).catch(function(err){
+                console.log(err);
+            });
+        }
     }
 }
 </script>

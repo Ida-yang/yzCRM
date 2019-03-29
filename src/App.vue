@@ -423,11 +423,6 @@ export default {
         line-height:25px;
         text-align:center;
     }
-    .delico{
-        float: left;
-        width:25px;
-        height:25px;
-    }
 
     .el-table__expand-icon:after {
         content: "查看";
@@ -522,7 +517,7 @@ export default {
     }
     .totalnum_head{
         float: right;
-        margin-right: 100px;
+        margin-right: 130px;
         font-size: 14px;
         line-height: 50px;
         padding: 0 10px;
@@ -569,4 +564,49 @@ export default {
         line-height: 16px;
         padding: 0 2px;
     } */
+    .contentall{
+        background-color: #ffffff;
+        display: flex;
+    }
+    .setleftcontent{
+        flex: 0 0 20%;
+        height: 100%;
+        padding-top:30px;
+        box-sizing: border-box;
+    }
+    .namecontent{
+        width: 100%;
+        list-style: none;
+        font-size: 14px; 
+    }
+    .namecontent li{
+        width: 100%;
+        height: 40px;
+        line-height: 40px;
+        padding-left: 40px;
+        box-sizing: border-box
+    }
+    .namecontent li.actived{
+        background-color: #f0f0f0;
+        color: #409EFF
+    }
+    .centercontent{
+        flex: 0 0 1%;
+        box-sizing: border-box;
+        background-color: #f0f0f0;
+    }
+    .setrightcontent{
+        flex: 0 0 79%;
+        height: 100%;
+        box-sizing: border-box;
+    }
+    .upload-demo .el-upload--text{
+        width: auto;
+        height: auto;
+        position: absolute;
+        top: 12px;
+        right: 60px;
+        border:none;
+        border-radius: 4px;
+    }
 </style>
