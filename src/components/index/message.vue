@@ -177,7 +177,7 @@
     .message_c{
         position: fixed;
         right: 0;
-        width: 300px;
+        width: 400px;
         height: 100%;
         /* margin-top: 80px; */
         background-color: #ffffff;

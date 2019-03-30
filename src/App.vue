@@ -557,18 +557,24 @@ export default {
         border-color: blue;
     }
     
-    .wel_item .el-badge__content.is-fixed{
+    /* .wel_item .el-badge__content.is-fixed{
         position: absolute;
         top: 15px;
         right: 8px;
+    } */
+    .wel_item .el-badge__content.is-fixed{
+        position: absolute;
+        top: 13px;
+        right: 11px;
     }
-    /* .wel_item .el-badge__content{
+    .wel_item .el-badge__content{
         border-radius: 8px;
         font-size: 12px;
         height: 16px;
+        width: 16px;
         line-height: 16px;
-        padding: 0 2px;
-    } */
+        padding: 0;
+    }
     .contentall{
         background-color: #ffffff;
         display: flex;
@@ -604,6 +610,21 @@ export default {
         flex: 0 0 79%;
         height: 100%;
         box-sizing: border-box;
+    }
+    .otherleftcontent{
+        width: 20%;
+        height: auto;
+        float: left;
+        box-sizing: border-box;
+    }
+    .otherightcontent{
+        width: 79%;
+        height: 100%;
+        float: left;
+        box-sizing: border-box;
+    }
+    .el-tree{
+        margin: 20px 0;
     }
     .download_c{
         width: 150px;

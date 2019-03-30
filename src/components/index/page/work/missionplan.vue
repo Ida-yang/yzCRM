@@ -226,7 +226,7 @@ export default {
             searchList:{
                 label:'1',
                 time:null,
-                state:null,
+                state:'未完成',
             },
 
             pIdData:[

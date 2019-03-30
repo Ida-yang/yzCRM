@@ -1,7 +1,7 @@
 <template>
     <!-- 方案 -->
     <div class="contentall">
-        <div class="roleleftcontent">
+        <div class="otherleftcontent">
             <el-tree
                 node-key="deptid"
                 highlight-current
@@ -13,149 +13,164 @@
             </el-tree>
         </div>
         <div class="centercontent"></div>
-        <div class="rolerightcontent">
-            <br>
-            <div class="radioList">
-                <el-radio-group v-model="searchList.state">
-                    <span class="nameList">方案状态：</span>
-                    <el-radio :label="nullvalue" @change="search()">全部状态</el-radio>
-                    <el-radio label="启用" @change="search()">启用</el-radio>
-                    <el-radio label="禁止" @change="search()">禁用</el-radio>
-                </el-radio-group>
-            </div>
-            <br>
-            <div class="entry">
-                <el-button class="btn" size="mini" @click="handledeletes()">删除</el-button>
-                <el-button class="btn info-btn" size="mini" @click="handleAdd()">新增</el-button>
-                <div class="totalnum_head">共 <span style="font-weight:bold">{{tableNumber}}</span> 条</div>
-                <el-popover
-                    placement="bottom"
-                    width="100"
-                    trigger="click">
-                    <el-checkbox-group class="checklist" v-model="checklist">
-                        <el-checkbox class="checkone" v-for="item in filterList" :key="item.id" :label="item.name" :value="item.state" @change="hangleChange($event,item)"></el-checkbox>
-                    </el-checkbox-group>
-                    <!-- <el-button slot="reference" icon="el-icon-more-outline" type="mini">筛选列表</el-button> -->
-                    <el-button slot="reference" icon="el-icon-more" class="info-btn screen" type="mini"></el-button>
-                </el-popover>
-            </div>
-            <el-table
-                :data="tableData"
-                ref="multipleTable"
-                border
-                stripe
-                style="width:100%;text-align:center"
-                @selection-change="selectInfo"
-                >
-                <el-table-column
-                    fixed
-                    header-align="center"
-                    align="center"
-                    type="selection"
-                    width="45"
-                    scope.row.id
-                    prop="id"
-                    @selection-change="selectInfo"
-                    sortable>
-                </el-table-column>
-                <div v-for="(item,index) in filterList" :key="index" >
-                    <el-table-column
-                        prop="projectName"
-                        fixed
-                        v-if="item.prop == 'projectName' && item.state == 1"
-                        header-align="left"
-                        align="left"
-                        min-width="150"
-                        label="方案名称"
-                        sortable>
-                        <template slot-scope="scope">
-                            <div @click="openDetails(scope.$index, scope.row)" class="hoverline">
-                                {{scope.row.projectName}}
-                            </div>
-                        </template>
-                    </el-table-column>
-                    <el-table-column
-                        prop="time"
-                        v-else-if="item.prop == 'time' && item.state == 1"
-                        header-align="left"
-                        align="left"
-                        min-width="90"
-                        label="年份"
-                        sortable>
-                    </el-table-column>
-                    <el-table-column
-                        prop="private_employee"
-                        v-else-if="item.prop == 'private_employee' && item.state == 1"
-                        header-align="left"
-                        align="left"
-                        min-width="100"
-                        label="负责人"
-                        sortable>
-                    </el-table-column>
-                    <el-table-column
-                        prop="deptname"
-                        v-else-if="item.prop == 'deptname' && item.state == 1"
-                        header-align="left"
-                        align="left"
-                        min-width="120"
-                        label="部门"
-                        sortable>
-                    </el-table-column>
-                    <el-table-column
-                        prop="parentname"
-                        v-else-if="item.prop == 'parentname' && item.state == 1"
-                        header-align="left"
-                        align="left"
-                        min-width="130"
-                        label="机构"
-                        sortable>
-                    </el-table-column>
-                    <el-table-column
-                        prop="createTime"
-                        v-else-if="item.prop == 'createTime' && item.state == 1"
-                        header-align="left"
-                        align="left"
-                        min-width="150"
-                        label="创建时间"
-                        sortable>
-                    </el-table-column>
-                    <el-table-column
-                        prop="state"
-                        v-else-if="item.prop == 'state' && item.state == 1"
-                        header-align="left"
-                        align="left"
-                        min-width="80"
-                        label="状态"
-                        sortable>
-                    </el-table-column>
-                </div>
-                <el-table-column label="操作"
-                    fixed="right"
-                    width="140"
-                    header-align="left"
-                    align="center">
-                    <template slot-scope="scope">
-                        <el-button
-                        size="mini"
-                        @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
-                        <el-button
-                        size="mini"
-                        type="danger"
-                        @click="handledelete(scope.$index, scope.row)">删除</el-button>
-                    </template>
-                </el-table-column>
-            </el-table>
-            <div class="block numberPage">
-                <el-pagination
-                @size-change="handleSizeChange"
-                @current-change="handleCurrentChange"
-                :current-page="page"
-                :page-sizes="[20, 50, 100, 500]"
-                :page-size="20"
-                layout="total, sizes, prev, pager, next, jumper"
-                :total="tableNumber">
-                </el-pagination>
-            </div>
+        <div class="otherightcontent">
+            <el-tabs v-model="activename" type="card">
+                <el-tab-pane label="方案目标" name="first">
+                    <div class="radioList">
+                        <el-radio-group v-model="searchList.state">
+                            <span class="nameList">方案状态：</span>
+                            <el-radio :label="nullvalue" @change="search()">全部状态</el-radio>
+                            <el-radio label="启用" @change="search()">启用</el-radio>
+                            <el-radio label="禁止" @change="search()">禁用</el-radio>
+                        </el-radio-group>
+                    </div>
+                    <br>
+                    <div class="entry">
+                        <el-button class="btn info-btn" size="mini" @click="handleAdd()">新增</el-button>
+                        <el-button class="btn" size="mini" @click="handledeletes()">删除</el-button>
+                        <div class="totalnum_head">共 <span style="font-weight:bold">{{tableNumber}}</span> 条</div>
+                        <el-popover
+                            placement="bottom"
+                            width="100"
+                            trigger="click">
+                            <el-checkbox-group class="checklist" v-model="checklist">
+                                <el-checkbox class="checkone" v-for="item in filterList" :key="item.id" :label="item.name" :value="item.state" @change="hangleChange($event,item)"></el-checkbox>
+                            </el-checkbox-group>
+                            <!-- <el-button slot="reference" icon="el-icon-more-outline" type="mini">筛选列表</el-button> -->
+                            <el-button slot="reference" icon="el-icon-more" class="info-btn screen" type="mini"></el-button>
+                        </el-popover>
+                    </div>
+                    <el-table
+                        :data="tableData"
+                        ref="multipleTable"
+                        border
+                        stripe
+                        style="width:100%;text-align:center"
+                        @selection-change="selectInfo"
+                        >
+                        <el-table-column
+                            fixed
+                            header-align="center"
+                            align="center"
+                            type="selection"
+                            width="45"
+                            scope.row.id
+                            prop="id"
+                            @selection-change="selectInfo"
+                            sortable>
+                        </el-table-column>
+                        <div v-for="(item,index) in filterList" :key="index" >
+                            <el-table-column
+                                prop="projectName"
+                                fixed
+                                v-if="item.prop == 'projectName' && item.state == 1"
+                                header-align="left"
+                                align="left"
+                                min-width="150"
+                                label="方案名称"
+                                sortable>
+                                <template slot-scope="scope">
+                                    <div @click="openDetails(scope.$index, scope.row)" class="hoverline">
+                                        {{scope.row.projectName}}
+                                    </div>
+                                </template>
+                            </el-table-column>
+                            <el-table-column
+                                prop="time"
+                                v-else-if="item.prop == 'time' && item.state == 1"
+                                header-align="left"
+                                align="left"
+                                min-width="90"
+                                label="年份"
+                                sortable>
+                            </el-table-column>
+                            <el-table-column
+                                prop="private_employee"
+                                v-else-if="item.prop == 'private_employee' && item.state == 1"
+                                header-align="left"
+                                align="left"
+                                min-width="100"
+                                label="负责人"
+                                sortable>
+                            </el-table-column>
+                            <el-table-column
+                                prop="deptname"
+                                v-else-if="item.prop == 'deptname' && item.state == 1"
+                                header-align="left"
+                                align="left"
+                                min-width="120"
+                                label="部门"
+                                sortable>
+                            </el-table-column>
+                            <el-table-column
+                                prop="parentname"
+                                v-else-if="item.prop == 'parentname' && item.state == 1"
+                                header-align="left"
+                                align="left"
+                                min-width="130"
+                                label="机构"
+                                sortable>
+                            </el-table-column>
+                            <el-table-column
+                                prop="createTime"
+                                v-else-if="item.prop == 'createTime' && item.state == 1"
+                                header-align="left"
+                                align="left"
+                                min-width="150"
+                                label="创建时间"
+                                sortable>
+                            </el-table-column>
+                            <el-table-column
+                                prop="state"
+                                v-else-if="item.prop == 'state' && item.state == 1"
+                                header-align="left"
+                                align="left"
+                                min-width="80"
+                                label="状态"
+                                sortable>
+                            </el-table-column>
+                        </div>
+                        <el-table-column label="操作"
+                            fixed="right"
+                            width="140"
+                            header-align="left"
+                            align="center">
+                            <template slot-scope="scope">
+                                <el-button
+                                size="mini"
+                                @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
+                                <el-button
+                                size="mini"
+                                type="danger"
+                                @click="handledelete(scope.$index, scope.row)">删除</el-button>
+                            </template>
+                        </el-table-column>
+                    </el-table>
+                    <div class="block numberPage">
+                        <el-pagination
+                        @size-change="handleSizeChange"
+                        @current-change="handleCurrentChange"
+                        :current-page="page"
+                        :page-sizes="[20, 50, 100, 500]"
+                        :page-size="20"
+                        layout="total, sizes, prev, pager, next, jumper"
+                        :total="tableNumber">
+                        </el-pagination>
+                    </div>
+                </el-tab-pane>
+                <el-tab-pane label="线索客户参数" name="second">
+                    <div class="entry">
+                        <p class="dept_name">{{depts}}</p>
+                        <!-- <el-button class="btn info-btn" size="mini" @click="editParam()">编辑</el-button> -->
+                    </div>
+                    <div class="param_c">
+                        <p>线索超过 <el-input class="inputnum" v-model="cluenum"></el-input> 天后，线索自动归集到线索池，同时每个人最多允许存在 <el-input class="inputnum" v-model="cluenums"></el-input> 条在线索，超过后不允许新增。</p>
+                        <p>客户超过 <el-input class="inputnum" v-model="cusnum"></el-input> 天后，客户自动归集到客户池，同时每个人最多允许存在 <el-input class="inputnum" v-model="cusnums"></el-input> 条在客户，超过后不允许新增。</p>
+                        <p>没人最多允许存在 <el-input class="inputnum" v-model="oppnum"></el-input> 条商机，超过后不允许新增。</p>
+                    </div>
+                </el-tab-pane>
+            </el-tabs>
+            
         </div>
         <el-dialog
             title="添加方案"
@@ -243,6 +258,9 @@
                     label:'deptname',
                     children:'next',
                 },
+
+                activename:'first',
+
                 newform:{
                     second_id:null,
                     secondname:null,
@@ -260,7 +278,6 @@
                 
                 filterList:null,
                 checklist:null,
-                // checklist:['方案名称','年份','负责人','部门','机构','创建时间','状态'],
                 idArr:{
                     id:null,
                 },
@@ -276,6 +293,14 @@
                     time : [{ required: true, message: '请选择年份', trigger: 'blur' }],
                 },
                 nullvalue:null,
+
+                cluenum:'30',
+                cluenums:'200',
+                cusnum:'60',
+                cusnums:'150',
+                oppnum:'100',
+
+                depts:null,
             }
         },
         //获取机构部门树型结构
@@ -349,9 +374,13 @@
             handleNodeClick(data){
                 this.searchList.secondid = data.deptid
                 this.clickdata = data
-                this.newform.second_id = data.deptid
-                this.newform.secondname = data.deptname
-                this.$options.methods.reloadTable.bind(this)(true);
+                this.depts = data.deptname
+                if(this.activename == 'first'){
+                    this.newform.second_id = data.deptid
+                    this.newform.secondname = data.deptname
+                    this.$options.methods.reloadTable.bind(this)(true);
+                }
+                
             },
             selectInfo(val){
                 this.multipleSelection = val;
@@ -680,34 +709,29 @@
 <style>
     .contentall{
         background-color: #ffffff;
-        height: 100%;
-    }
-    .roleleftcontent{
-        width: 20%;
-        height: auto;
-        float: left;
-        box-sizing: border-box;
-    }
-    .el-tree{
-        margin: 20px 0;
-    }
-    .centercontent{
-        display: block;
-        width: 1%;
-        height: 100%;
-        float: left;
-        background-color: #f0f0f0;
-    }
-    .rolerightcontent{
-        width: 79%;
-        height: 100%;
-        float: left;
-        box-sizing: border-box;
     }
     .dialogform .el-form-item{
         width: 90%;
     }
     .dialogform .el-form-item .el-input{
         width: 100%;
+    }
+    .param_c{
+        line-height: 50px;
+        padding-left: 20px;
+        font-size: 14px;
+    }
+    .inputnum{
+        width: 65px;
+    }
+    .inputnum .el-input__inner{
+        text-align: center;
+        color: brown;
+        font-weight: bold
+    }
+    .dept_name{
+        width: 100%;
+        line-height: 50px;
+        text-align: center;
     }
 </style>

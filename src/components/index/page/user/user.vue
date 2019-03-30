@@ -1,7 +1,7 @@
 <template>
     <!-- 用户 -->
     <div class="contentall">
-        <div class="roleleftcontent">
+        <div class="otherleftcontent">
             <el-tree
                 node-key="deptid"
                 highlight-current
@@ -13,7 +13,7 @@
             </el-tree>
         </div>
         <div class="centercontent"></div>
-        <div class="rolerightcontent">
+        <div class="otherightcontent">
             <div class="searchList" style="width:100%;">
                 <el-input v-model="searchList.searchName" placeholder="请输入用户名称" style="width:300px;" @keyup.enter.native="search"></el-input>
                 &nbsp;&nbsp;
@@ -827,28 +827,5 @@
 <style>
     .contentall{
         background-color: #ffffff;
-        height: 100%;
-    }
-    .roleleftcontent{
-        width: 20%;
-        height: auto;
-        float: left;
-        box-sizing: border-box;
-    }
-    .el-tree{
-        margin: 20px 0;
-    }
-    .centercontent{
-        display: block;
-        width: 1%;
-        height: 100%;
-        float: left;
-        background-color: #f0f0f0;
-    }
-    .rolerightcontent{
-        width: 79%;
-        height: 100%;
-        float: left;
-        box-sizing: border-box;
     }
 </style>

@@ -164,7 +164,7 @@
                         ]
                     },
                     {
-                        icon: 'mdi-view-grid',
+                        icon: 'mdi-puzzle',
                         index: '6',
                         title: '短信模板',
                         subs: [

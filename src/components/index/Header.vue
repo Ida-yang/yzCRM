@@ -23,7 +23,8 @@
             <div class="header-user-con">
                 <!-- 消息提醒 -->
                 <div class="btn-bell" @click="handlemessage">
-                    <el-badge :is-dot="dotmessage" class="wel_item">
+                    <el-badge :hidden="!dotmessage" :value="message_val" class="wel_item">
+                    <!-- <el-badge :is-dot="dotmessage" class="wel_item"> -->
                         <i class="mdi mdi-bell-outline"></i>
                     </el-badge>
                 </div>
@@ -109,6 +110,7 @@
                 fullscreen: false,
 
                 dotmessage: false,
+                message_val:'5',
 
                 breadsList:{
                     path:'',
