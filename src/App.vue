@@ -215,6 +215,11 @@ export default {
         right: 10px;
         top: 12px;
     }
+    .screen_upload{
+        position: absolute;
+        top: 12px;
+        right: 60px;
+    }
     .btn{
         margin-top:15px;
     }
@@ -600,12 +605,31 @@ export default {
         height: 100%;
         box-sizing: border-box;
     }
+    .download_c{
+        width: 150px;
+        height: 100px;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
+    }
+    .download_h{
+        flex: 0 0 100%;
+        text-align: center;
+    }
+    .download_down{
+        flex: 0 0 50%;
+        color: #292929;
+        /* font-size: 12px; */
+    }
+    .download_down a{
+        font-size: 12px;
+        color: #292929;
+    }
     .upload-demo .el-upload--text{
+        flex: 0 0 50%;
         width: auto;
         height: auto;
-        position: absolute;
-        top: 12px;
-        right: 60px;
         border:none;
         border-radius: 4px;
     }

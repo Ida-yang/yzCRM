@@ -453,7 +453,7 @@
                         _this.tableData2 = res.data
                     }
                 }).catch(function(err){
-                    console.log(err);
+                    // console.log(err);
                 });
             },
             loadOppStep(){
@@ -465,7 +465,7 @@
                 }).then(function(res){
                     _this.tableData3 = res.data.map.addsteps
                 }).catch(function(err){
-                    console.log(err);
+                    // console.log(err);
                 });
             },
             //显示对应状态数表格数据
@@ -526,7 +526,7 @@
                         }
                     }
                 }).catch(function(err){
-                    console.log(err);
+                    // console.log(err);
                 });
                 
             },
@@ -600,7 +600,7 @@
                         })
                     }
                 }).catch(function(err){
-                    console.log(err);
+                    _this.$message.error("添加失败,请重新添加");
                 });
             },
             addoppstep(){
@@ -656,7 +656,7 @@
                         })
                     }
                 }).catch(function(err){
-                    console.log(err);
+                    _this.$message.error("添加失败,请重新添加");
                 });
             },
             //状态修改
@@ -693,7 +693,7 @@
                         }
                     }
                 }).catch(function(err){
-                    console.log(err);
+                    // console.log(err);
                 });
             },
             //状态修改提交按钮
@@ -770,7 +770,7 @@
                         })
                     }
                 }).catch(function(err){
-                    console.log(err);
+                    _this.$message.error("修改失败,请重新修改");
                 });
             },
             updateoppstep(){
@@ -827,7 +827,7 @@
                         })
                     }
                 }).catch(function(err){
-                    console.log(err);
+                    _this.$message.error("修改失败,请重新修改");
                 });
             },
             handledelete(index,row){
@@ -879,12 +879,14 @@
                                 type: 'error'
                             });
                         }
-                    }).catch(() => {
-                        this.$message({
-                            type: 'info',
-                            message: '取消删除[' + row.typeName + ']'
-                        });       
+                    }).catch(function(err){
+                        _this.$message.error("删除失败,请重新删除");
                     });
+                }).catch(() => {
+                    _this.$message({
+                        type: 'info',
+                        message: '取消删除'
+                    });       
                 });
             },
             handledel(index,row){
@@ -919,12 +921,14 @@
                                 type: 'error'
                             });
                         }
-                    }).catch(() => {
-                        this.$message({
-                            type: 'info',
-                            message: '取消删除[' + row.typeName + ']'
-                        });       
+                    }).catch(function(err){
+                        _this.$message.error("删除失败,请重新删除");
                     });
+                }).catch(() => {
+                    _this.$message({
+                        type: 'info',
+                        message: '取消删除[' + row.typeName + ']'
+                    });       
                 });
             },
             showsort(){

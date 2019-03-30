@@ -305,7 +305,7 @@
                 }).then(function(res){
                     _this.filterList = res.data
                 }).catch(function(err){
-                    console.log(err);
+                    // console.log(err);
                 });
                 axios({
                     method: 'post',
@@ -314,7 +314,7 @@
                 }).then(function(res){
                     _this.checklist = res.data
                 }).catch(function(err){
-                    console.log(err);
+                    // console.log(err);
                 });
             },
             reloadTable(){
@@ -332,7 +332,7 @@
                 }).then(function(res){
                     _this.datalist = res.data.map.success
                 }).catch(function(err){
-                    console.log(err);
+                    // console.log(err);
                 });
                 //获取所有方案
                 axios({
@@ -343,7 +343,7 @@
                     _this.$store.state.programmeList = res.data.map.success
                     _this.$store.state.programmeListnumber = res.data.count
                 }).catch(function(err){
-                    console.log(err);
+                    // console.log(err);
                 });
             },
             handleNodeClick(data){
@@ -391,7 +391,7 @@
                             _this.dialogVisible = true
                         }
                     }).catch(function(err){
-                        console.log(err);
+                        // console.log(err);
                     });
                 }else{
                     _this.$message({
@@ -449,7 +449,7 @@
                         })
                     }
                 }).catch(function(err){
-                    console.log(err);
+                    _this.$message.error("添加失败,请重新添加");
                 });
                 // alert('添加成功')
             },
@@ -480,7 +480,7 @@
                         _this.dialogVisible2 = true
                     }
                 }).catch(function(err){
-                    console.log(err);
+                    // console.log(err);
                 });
                 
             },
@@ -536,7 +536,7 @@
                         })
                     }
                 }).catch(function(err){
-                    console.log(err);
+                    _this.$message.error("修改失败,请重新修改");
                 });
             },
             openDetails(index,row){
@@ -580,7 +580,7 @@
                                 });
                             }
                         }).catch(function(err){
-                            console.log(err);
+                            _this.$message.error("删除失败,请重新删除");
                         });
                     }).catch(() => {
                         this.$message({
@@ -629,7 +629,7 @@
                             });
                         }
                     }).catch(function(err){
-                        console.log(err);
+                        _this.$message.error("删除失败,请重新删除");
                     });
                 }).catch(() => {
                     this.$message({
@@ -656,11 +656,9 @@
                 }).then(function(res){
                     if(res.data && res.data =="success"){
                         _this.$options.methods.loadData.bind(_this)(true);
-                    }else{
-                        console.log(err)
                     }
                 }).catch(function(err){
-                    console.log(err);
+                    // console.log(err);
                 });
             },
             search() {

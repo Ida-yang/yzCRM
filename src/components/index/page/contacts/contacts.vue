@@ -327,7 +327,7 @@
                     _this.$store.state.contactsList = res.data.map.success
                     _this.$store.state.contactsListnumber = res.data.count;
                 }).catch(function(err){
-                    console.log(err);
+                    // console.log(err);
                 });
             },
             reloadData() {
@@ -346,7 +346,7 @@
                 }).then(function(res){
                     _this.filterList = res.data
                 }).catch(function(err){
-                    console.log(err);
+                    // console.log(err);
                 });
                 axios({
                     method: 'post',
@@ -355,7 +355,7 @@
                 }).then(function(res){
                     _this.checklist = res.data
                 }).catch(function(err){
-                    console.log(err);
+                    // console.log(err);
                 });
             },
             selectInfo(val){
@@ -423,7 +423,7 @@
                         _this.$router.push({ path: '/contactsaddorupdate' });
                     }
                 }).catch(function(err){
-                    console.log(err);
+                    // console.log(err);
                 });
             },
             handleEdit(index,row){
@@ -477,7 +477,7 @@
                         _this.$router.push({ path: '/contactsaddorupdate' });
                     }
                 }).catch(function(err){
-                    console.log(err);
+                    // console.log(err);
                 });
             },
             handleDeletes(){
@@ -561,7 +561,7 @@
                             });
                         }
                     }).catch(function(err){
-                        console.log(err);
+                        _this.$message.error("删除失败,请重新删除");
                     })
                 }).catch(() => {
                     this.$message({
@@ -590,7 +590,7 @@
                         _this.$options.methods.reloadData.bind(_this)(true);
                     }
                 }).catch(function(err){
-                    console.log(err);
+                    // console.log(err);
                 });
             },
             search() {
@@ -619,7 +619,7 @@
                         _this.$options.methods.reloadTable.bind(_this)(true);
                     }
                 }).catch(function(err){
-                    console.log(err);
+                    // console.log(err);
                 });
             },
             reset(){

@@ -33,7 +33,7 @@
                 </el-card>
             </div>
             <div class="bottom">
-                <el-tabs v-model="activeName2" type="card" @tab-click="handleClick">
+                <el-tabs v-model="activeName2" type="card">
                     <el-tab-pane label="跟进记录" name="first">
                         <div class="uploadBOX">
                             <div class="imgbox" v-for="item in fileList" :key="item.id" @mouseenter="mouseenterdiv(item)" @mouseleave="mouseleavediv(item)">
@@ -177,7 +177,7 @@
                     _this.tableData = res.data.map.success
                     _this.tableNumber = res.data.count
                 }).catch(function(err){
-                    console.log(err);
+                    // console.log(err);
                 });
             },
             loadIMG(){
@@ -205,7 +205,7 @@
                         _this.fileList.push({id:_this.imgid,imgURL:_this.imgurl})
                     });
                 }).catch(function(err){
-                    console.log(err);
+                    _this.$message.error("图片加载失败");
                 });
                 //加载合同详情
                 axios({
@@ -221,18 +221,15 @@
                     if(res.data.state == '已审核'){
                         _this.examines = false
                         _this.showaudited = true
-                        console.log('1111111')
                     }else{
                         _this.examines = true
                         _this.showaudited = false
-                        console.log('2222222')
                     }
                 }).catch(function(err){
-                    console.log(err);
+                    // console.log(err);
                 });
             },
             toexamine(e){
-                console.log(e)
                 const _this = this
                 let qs = require('querystring')
                 let val = e.target.innerText
@@ -250,7 +247,6 @@
                     url: _this.$store.state.defaultHttp+'updateContract.do?cId='+_this.$store.state.iscId,
                     data: qs.stringify(data),
                 }).then(function(res){
-                    console.log(res)
                     if(res.data && res.data == 'success') {
                         _this.$message({
                             message: '操作成功',
@@ -266,7 +262,7 @@
                         });
                     }
                 }).catch(function(err){
-                    console.log(err)
+                    _this.$message.error("操作失败,请重新进入页面");
                 });
             },
             tirggerFile (event) {
@@ -326,7 +322,7 @@
                             });
                         }
                     }).catch(function(err){
-                        console.log(err);
+                        _this.$message.error("删除失败,请重新操作");
                     })
                 }).catch(() => {
                     this.$message({
@@ -349,9 +345,6 @@
                 this.$store.state.agreedetailsData.submitData = {"id":row.contract_id}
                 this.idArr.contractId = row.contract_id
                 this.$options.methods.loadIMG.bind(this)(true);
-            },
-            handleClick(tab, event) {
-                // console.log(tab, event);
             },
             search(){
                 const _this = this;

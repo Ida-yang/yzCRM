@@ -359,7 +359,7 @@
                 }).then(function(res){
                     _this.datalist = res.data.map.success
                 }).catch(function(err){
-                    console.log(err);
+                    // console.log(err);
                 });
             },
             //获取该节点下的所有角色
@@ -377,7 +377,7 @@
                 }).then(function(res){
                     _this.roleList = res.data
                 }).catch(function(err){
-                    console.log(err);
+                    // console.log(err);
                 });
             },
             getresource(){
@@ -394,7 +394,7 @@
                     _this.activityrole = res.data.name6
                     _this.setrole = res.data.name7
                 }).catch(function(err){
-                    console.log(err);
+                    // console.log(err);
                 });
             },
             handleNodeClick(data){
@@ -423,7 +423,7 @@
                         _this.dialogVisible = true
                     }
                 }).catch(function(err){
-                    console.log(err);
+                    // console.log(err);
                 });
                 
             },
@@ -457,7 +457,7 @@
                     _this.$options.methods.loadData.bind(_this)(true);
                     _this.$options.methods.reloadData.bind(_this)(true);
                 }).catch(function(err){
-                    console.log(err);
+                    _this.$message.error("添加失败,请重新添加");
                 });
             },
             //上级部门修改
@@ -480,7 +480,7 @@
                         _this.dialogVisible2 = true
                     }
                 }).catch(function(err){
-                    console.log(err);
+                    // console.log(err);
                 });
                 
             },
@@ -513,7 +513,7 @@
                     _this.$options.methods.loadData.bind(_this)(true);
                     _this.$options.methods.reloadData.bind(_this)(true);
                 }).catch(function(err){
-                    console.log(err);
+                    _this.$message.error("修改失败,请重新修改");
                 });
             },
             //上级部门删除提交按钮
@@ -551,7 +551,7 @@
                         _this.$options.methods.loadData.bind(_this)(true);
                         _this.$options.methods.reloadData.bind(_this)(true);
                     }).catch(function(err){
-                        console.log(err);
+                        _this.$message.error("删除失败,请重新删除");
                     });
                 }).catch(() => {
                     this.$message({
@@ -584,7 +584,7 @@
                             _this.dialogVisible3 = true
                         }
                     }).catch(function(err){
-                        console.log(err);
+                        // console.log(err);
                     });
                     
                 }
@@ -616,7 +616,7 @@
                         })
                     }
                 }).catch(function(err){
-                    console.log(err)
+                    _this.$message.error("添加失败,请重新添加");
                 })
             },
             handleEdit(e,val){
@@ -660,7 +660,7 @@
                         _this.dialogVisible4 = true
                     }
                 }).catch(function(err){
-                    console.log(err);
+                    // console.log(err);
                 });
                 
             },
@@ -692,7 +692,7 @@
                     }
                     _this.$options.methods.reloadData.bind(_this)(true);
                 }).catch(function(err){
-                    console.log(err);
+                    _this.$message.error("修改失败,请重新修改");
                 });
             },
             handledelete(val){
@@ -728,7 +728,7 @@
                         }
                         
                     }).catch(function(err){
-                        console.log(err);
+                        _this.$message.error("删除失败,请重新删除");
                     });
                 }).catch(() => {
                     this.$message({

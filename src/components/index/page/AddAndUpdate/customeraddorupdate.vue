@@ -1,7 +1,7 @@
 <template>
     <!-- 客户新增修改 -->
     <div class="content">
-        <el-tabs class="formtabs" v-model="activeName" type="card" @tab-click="handleClick">
+        <el-tabs class="formtabs" v-model="activeName" type="card">
             <el-tab-pane label="主要数据" name="first">
                 <el-form :model="myForm" ref="myForm" class="clueForm" :rules="rules">
                     <!-- <h3>{{cusaddOrUpdateData.title}}</h3> -->
@@ -331,7 +331,6 @@
     
                         _this.areaList=res.data;
                     }).catch(function(err){
-                        console.log(err);
                     });
                 }
                 if(this.countryid){
@@ -344,7 +343,6 @@
     
                         _this.cityList=res.data;
                     }).catch(function(err){
-                        console.log(err);
                     });
                 }
                 country.id = ''
@@ -358,7 +356,6 @@
 
                     _this.Provinces=res.data;
                 }).catch(function(err){
-                    console.log(err);
                 });
                 
             },
@@ -378,7 +375,6 @@
                     _this.tableData = res.data.rows
                     _this.tableNumber = res.data.total;
                 }).catch(function(err){
-                    console.log(err);
                 });
                 axios({
                     method: 'get',
@@ -388,7 +384,6 @@
                     _this.cuesList = res.data.name3001
                     _this.levelList = res.data.name4001
                 }).catch(function(err){
-                    console.log(err);
                 });
             },
             //加载或重载页面
@@ -459,7 +454,7 @@
                     _this.tableData = res.data.rows
                     _this.tableNumber = res.data.total;
                 }).catch(function(err){
-                    console.log(err);
+                    // console.log(err);
                 });
             },
             //提交或修改
@@ -542,7 +537,7 @@
                         });
                     }
                 }).catch(function(err){
-                    console.log(err);
+                    _this.$message.error("提交失败，请重新提交");
                 }); 
             },
             //取消时返回上一个页面，若只有一个页面，则返回首页
@@ -564,7 +559,6 @@
             },
             //获取table的索引和行数据，当该行被点击时，将公司名称地址填充到表单（会刷新当前页面，之前填写的信息会被覆盖）
             getRow(index,row){
-                console.log(row)
                 this.myForm.poolName = row.name
                 this.myForm.address = row.address
                 this.myForm.representative = row.representative  //法人代表  
@@ -607,10 +601,6 @@
                 this.E=e;
                 this.areaid = e
             },
-
-            handleClick(tab, event){
-                // console.log(tab, event)
-            },
             loadinfo(){
                 const _this = this
                 let qs = require('querystring')
@@ -637,12 +627,10 @@
                     _this.industryTypeList=res.data;
                     _this.industryTypeList.forEach(el => {
                         if(_this.industryId == el.id){
-                            // console.log(el.id)
                             _this.myForm.industryId = el.id
                         }
                     });
                 }).catch(function(err){
-                    console.log(err);
                 });
                 //企业规模
                 axios({
@@ -657,7 +645,7 @@
                         }
                     });
                 }).catch(function(err){
-                    console.log(err);
+                    // console.log(err);
                 });
                 //企业类型
                 axios({
@@ -672,7 +660,7 @@
                         }
                     });
                 }).catch(function(err){
-                    console.log(err);
+                    // console.log(err);
                 });
                 //经营状态
                 axios({
@@ -687,7 +675,7 @@
                         }
                     });
                 }).catch(function(err){
-                    console.log(err);
+                    // console.log(err);
                 });
                 //融资状态
                 axios({
@@ -702,7 +690,7 @@
                         }
                     });
                 }).catch(function(err){
-                    console.log(err);
+                    // console.log(err);
                 });
                 //上市信息
                 axios({
@@ -712,7 +700,7 @@
                 }).then(function(res){
                     _this.listedList=res.data;
                 }).catch(function(err){
-                    console.log(err);
+                    // console.log(err);
                 });
             },
 

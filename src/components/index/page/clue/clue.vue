@@ -33,7 +33,7 @@
             <el-button class="btn info-btn" size="mini" @click="cluePool()">转移至线索池</el-button>
             <el-button class="btn info-btn" size="mini" @click="customerSwitching()">转移至客户</el-button>
             <div class="totalnum_head">共 <span style="font-weight:bold">{{tableNumber}}</span> 条</div>
-            <el-upload
+            <!-- <el-upload
                 class="upload-demo"
                 ref="upload"
                 :multiple="true"
@@ -41,7 +41,28 @@
                 :limit="1"
                 :before-upload="beforeUpload">
                 <el-button slot="trigger" size="mini" class="info-btn">导入</el-button>
-            </el-upload>
+            </el-upload> -->
+            <el-popover
+                placement="left"
+                width="150"
+                trigger="click">
+                <div class="download_c">
+                    <p class="download_h">首次导入请下载模板</p>
+                    <div class="download_down">
+                        <el-button class="info-btn" type="mini"><a :href="downloadUrl" download>下载模板</a></el-button>
+                    </div>
+                    <el-upload
+                        class="upload-demo"
+                        ref="upload"
+                        :multiple="true"
+                        action="doUpload"
+                        :limit="1"
+                        :before-upload="beforeUpload">
+                        <el-button slot="trigger" size="mini" class="info-btn">导入excel</el-button>
+                    </el-upload>
+                </div>
+                <el-button slot="reference" class="info-btn screen_upload" type="mini">导入</el-button>
+            </el-popover>
             <el-popover
                 placement="bottom"
                 width="100"
@@ -49,7 +70,6 @@
                 <el-checkbox-group class="checklist" v-model="checklist">
                     <el-checkbox class="checkone" v-for="item in filterList" :key="item.id" :label="item.name" :value="item.state" @change="hangleChange($event,item)"></el-checkbox>
                 </el-checkbox-group>
-                <!-- <el-button slot="reference" icon="el-icon-more-outline" type="mini">筛选列表</el-button> -->
                 <el-button slot="reference" icon="el-icon-more" class="info-btn screen" type="mini"></el-button>
             </el-popover>
         </div>
@@ -469,6 +489,7 @@
                 formLabelWidth: '130px',
 
                 authorityInterface: null,
+                downloadUrl: this.$store.state.defaultHttp+'upload/import_template.xls'
             }
         },
         beforeCreate(){
@@ -480,7 +501,6 @@
                 _this.stateData = res.data.name1001
                 _this.typeData = res.data.name3001
             }).catch(function(err){
-                console.log(err);
             });
         },
         activated(){
@@ -525,7 +545,7 @@
                         _this.reloadTable()
                     }
                 }).catch(function(err){
-                    console.log(err);
+                    // console.log(err);
                 });
             },
             reloadTable(){
@@ -556,7 +576,7 @@
                     _this.$store.state.clueList = res.data.map.success
                     _this.$store.state.clueListnumber = res.data.count
                 }).catch(function(err){
-                    console.log(err);
+                    // console.log(err);
                 });
             },
             
@@ -577,7 +597,7 @@
                 }).then(function(res){
                     _this.filterList = res.data
                 }).catch(function(err){
-                    console.log(err);
+                    // console.log(err);
                 });
                 axios({
                     method: 'post',
@@ -586,7 +606,7 @@
                 }).then(function(res){
                     _this.checklist = res.data
                 }).catch(function(err){
-                    console.log(err);
+                    // console.log(err);
                 });
             },
             selectInfo(val){
@@ -677,7 +697,7 @@
                         _this.$router.push({ path: '/clueaddorupdate' });
                     }
                 }).catch(function(err){
-                    console.log(err);
+                    // console.log(err);
                 });
             },
             handleEdit(index,row){
@@ -760,7 +780,7 @@
                         _this.$router.push({ path: '/clueaddorupdate' });
                     }
                 }).catch(function(err){
-                    console.log(err);
+                    // console.log(err);
                 });
             },
             cluePool(){
@@ -793,7 +813,7 @@
                             });
                         }
                     }).catch(function(err){
-                        console.log(err);
+                        _this.$message.error("转移失败,请重新转移");
                     });
                 }else{
                     _this.$message({
@@ -835,7 +855,7 @@
                             });
                         }
                     }).catch(function(err){
-                        console.log(err);
+                        _this.$message.error("转移失败,请重新转移");
                     });
                 }else{
                     _this.$message({
@@ -865,7 +885,7 @@
                         _this.$options.methods.reloadData.bind(_this)(true);
                     }
                 }).catch(function(err){
-                    console.log(err);
+                    // console.log(err);
                 });
             },
             search() {
@@ -894,7 +914,7 @@
                         _this.$options.methods.loadTable.bind(_this)(true);
                     }
                 }).catch(function(err){
-                    console.log(err);
+                    // console.log(err);
                 });
                 
             },
@@ -914,7 +934,6 @@
                 _this.$options.methods.reloadTable.bind(_this)(false);
             },
             beforeUpload(file){
-                console.log(file,'文件');
                 this.files = file;
                 const extension = file.name.split('.')[1] === 'xls'
                 const extension2 = file.name.split('.')[1] === 'xlsx'
@@ -937,7 +956,6 @@
             // 上传excel
             submitUpload() {
                 const _this = this
-                console.log('上传'+this.files.name)
                 if(this.fileName == ""){
                     this.$message.warning('请选择要上传的文件！')
                     return false
@@ -964,8 +982,7 @@
                     })
                     _this.$options.methods.reloadTable.bind(_this)(true);
                 }).catch((e) => {
-                    // console.log(e);
-                    this.$message.error("excel上传失败，请重新上传");
+                    _this.$message.error("excel上传失败，请重新上传");
                 })
             },
         },

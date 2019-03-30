@@ -343,7 +343,7 @@
                     _this.$store.state.businessOpportunityList = res.data.map.success
                     _this.$store.state.businessOpportunityListnumber = res.data.count;
                 }).catch(function(err){
-                    console.log(err);
+                    // console.log(err);
                 });
             },
             reloadData() {
@@ -362,7 +362,7 @@
                 }).then(function(res){
                     _this.filterList = res.data
                 }).catch(function(err){
-                    console.log(err);
+                    // console.log(err);
                 });
                 axios({
                     method: 'post',
@@ -371,7 +371,7 @@
                 }).then(function(res){
                     _this.checklist = res.data
                 }).catch(function(err){
-                    console.log(err);
+                    // console.log(err);
                 });
             },
             loadStep(){
@@ -383,7 +383,7 @@
                 }).then(function(res){
                     _this.stateData = res.data.map.addsteps
                 }).catch(function(err){
-                    console.log(err);
+                    // console.log(err);
                 });
             },
             selectInfo(val){
@@ -442,7 +442,7 @@
                         _this.$router.push({ path: '/Opportunityaddorupdate' });
                     }
                 }).catch(function(err){
-                    console.log(err);
+                    // console.log(err);
                 });
             },
             handleEdit(index,row){
@@ -485,7 +485,7 @@
                         _this.$router.push({ path: '/Opportunityaddorupdate' });
                     }
                 }).catch(function(err){
-                    console.log(err);
+                    // console.log(err);
                 });
             },
             handleDeletes(){
@@ -521,12 +521,14 @@
                                     type: 'error'
                                 });
                             }
-                        }).catch(() => {
-                            _this.$message({
-                                type: 'info',
-                                message: '取消删除'
-                            });       
+                        }).catch(function(err){
+                            _this.$message.error("删除失败,请重新删除");
                         });
+                    }).catch(() => {
+                        _this.$message({
+                            type: 'info',
+                            message: '取消删除'
+                        });       
                     });
                 }else{
                     _this.$message({
@@ -569,7 +571,7 @@
                             });
                         }
                     }).catch(function(err){
-                        console.log(err);
+                        _this.$message.error("删除失败,请重新删除");
                     })
                 }).catch(() => {
                     this.$message({
@@ -599,7 +601,7 @@
                         _this.$options.methods.reloadData.bind(_this)(true);
                     }
                 }).catch(function(err){
-                    console.log(err);
+                    // console.log(err);
                 });
             },
             getSummaries(param){
@@ -662,7 +664,7 @@
                         _this.$options.methods.reloadTable.bind(_this)(true);
                     }
                 }).catch(function(err){
-                    console.log(err);
+                    // console.log(err);
                 });
             },
             reset(){

@@ -77,7 +77,7 @@
                 </el-card>
             </div>
             <div class="bottom">
-                <el-tabs v-model="activeName2" type="card" @tab-click="handleClick">
+                <el-tabs v-model="activeName2" type="card">
                     <el-tab-pane label="跟进记录" name="first">
                         <el-form class="followform" :rules="rules" ref="followform" :model="followform">
                             <el-form-item prop="followContent">
@@ -352,7 +352,7 @@
                     _this.priconList = res.data.map.success
                     _this.followform.contactsId = res.data.map.success[0].id
                 }).catch(function(err){
-                    console.log(err);
+                    // console.log(err);
                 });
                 //加载快捷方式
                 axios({
@@ -362,7 +362,7 @@
                 }).then(function(res){
                     _this.fastcontactList = res.data
                 }).catch(function(err){
-                    console.log(err);
+                    // console.log(err);
                 });
                 //加载详情页右侧表格
                 axios({
@@ -373,7 +373,7 @@
                     _this.tableData = res.data.map.success
                     _this.tableNumber = res.data.count
                 }).catch(function(err){
-                    console.log(err);
+                    // console.log(err);
                 });
                 //加载跟进记录
                 axios({
@@ -399,7 +399,7 @@
                         }
                     });
                 }).catch(function(err){
-                    console.log(err);
+                    // console.log(err);
                 });
                 //加载线索详情
                 axios({
@@ -410,7 +410,7 @@
                     _this.contacts = res.data.contacts[0]
                     _this.showbusiness = false
                 }).catch(function(err){
-                    console.log(err);
+                    // console.log(err);
                 });
             },
             loadState(){
@@ -431,9 +431,8 @@
                             _this.followform.state = el.id
                         }
                     });
-                    console.log(_this.followform.state)
                 }).catch(function(err){
-                    console.log(err)
+                    // console.log(err)
                 });
             },
             loadCountry(){
@@ -446,7 +445,7 @@
                 }).then(function(res){
                     _this.Provinces=res.data;
                 }).catch(function(err){
-                    console.log(err);
+                    // console.log(err);
                 });
                 
             },
@@ -471,7 +470,7 @@
                         })
                     }
                 }).catch(function(err){
-                    console.log(err);
+                    // console.log(err);
                 });
             },
             retract(){
@@ -513,7 +512,7 @@
                         });
                     }
                 }).catch(function(err){
-                    console.log(err);
+                    _this.$message.error("转移失败,请重新转移");
                 });
             },
             customerSwitching(){
@@ -547,7 +546,7 @@
                         });
                     }
                 }).catch(function(err){
-                    console.log(err);
+                    _this.$message.error("转移失败,请重新转移");
                 });
             },
             deletefollow(index){
@@ -576,11 +575,8 @@
                         });
                     }
                 }).catch(function(err){
-                    console.log(err);
+                    _this.$message.error("删除失败,请重新删除");
                 });
-            },
-            handleClick(tab, event) {
-                // console.log(tab, event);
             },
             searchBusiness(val){
                 this.showloading = true
@@ -604,9 +600,7 @@
                             url: _this.$store.state.defaultHttp+'businessData/insertBusinessData.do',
                             data: qs.stringify(freshList),
                         }).then(function(res){
-                            // console.log(res)
                         }).catch(function(err){
-                            // console.log(err);
                         });
                     }else{
                         _this.$message({
@@ -615,7 +609,7 @@
                         })
                     }
                 }).catch(function(err){
-                    console.log(err);
+                    _this.$message.error("服务器开小差了,请稍候重试");
                 });
             },
             clickRefresh(){
@@ -645,7 +639,7 @@
                             })
                         }
                     }).catch(function(err){
-                        console.log(err);
+                        _this.$message.error("更新失败,请重新更新");
                     });
                 }else{
                     _this.$message({
@@ -670,7 +664,7 @@
                     _this.tableData = res.data.map.success
                     _this.tableNumber = res.data.count
                 }).catch(function(err){
-                    console.log(err);
+                    // console.log(err);
                 });
             },
             Submitfollowform(){
@@ -723,12 +717,12 @@
                                     });
                                 }
                             }).catch(function(err){
-                                console.log(err)
+                                _this.$message.error("提交失败,请重新提交");
                             });
                         }
                         
                     }).catch(function(err){
-                        console.log(err);
+                        // console.log(err);
                     });
                 }
             },

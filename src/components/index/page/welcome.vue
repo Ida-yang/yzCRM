@@ -181,7 +181,7 @@
                 }).then(function(res){
                     _this.amountList = res.data
                 }).catch(function(err){
-                    console.log(err)
+                    // console.log(err)
                 })
 
                 //获取首页商机进度漏斗
@@ -193,7 +193,7 @@
                     _this.funnelList = res.data
                     _this.$options.methods.drawfunnel.bind(_this)(true);
                 }).catch(function(err){
-                    console.log(err)
+                    // console.log(err)
                 })
                 //获取首页合同金额排行榜
                 axios({
@@ -205,7 +205,7 @@
                     _this.barList = res.data.value
                     _this.$options.methods.drawbar.bind(_this)(true);
                 }).catch(function(err){
-                    console.log(err)
+                    // console.log(err)
                 })
                 _this.$store.state.welcomeData = [
                     {name:'项目名称',start_time:'2019-01-01',end_deal:'2019-03-31',state:'启动',user:'销售'},

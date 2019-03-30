@@ -120,6 +120,7 @@
 <script>
     import store from '../../../../store/store'
     import axios from 'axios'
+    import bus from '../../bus';
     import qs from 'qs'
 
 export default {
@@ -155,14 +156,26 @@ export default {
         }
     },
     // mounted(){
-    //     this.loadData()
-    //     this.loadTable()
+        // this.loadData()
+        // this.loadTable()
+        // this.reload()
     // },
     activated(){
         this.loadData()
         this.loadTable()
+        this.reload()
+
     },
     methods:{
+        reload(){
+            const _this = this
+            bus.$on('id', function (msg) {
+                if(msg){
+                    _this.loadData()
+                    _this.loadTable()
+                }
+            })
+        },
         loadData(){
             const _this = this
             this.detailData = this.$store.state.visitdetailsData
@@ -172,7 +185,6 @@ export default {
                 method: 'get',
                 url: _this.$store.state.defaultHttp+'visit/selectVisitById.do?cId='+_this.$store.state.iscId + '&id=' + this.visitId,
             }).then(function(res){
-                console.log(res)
                 _this.visitdetails = res.data.map.visit
                 _this.visitdetails.assistants = []
                 _this.visitdetails.assistantsid = []
@@ -195,7 +207,7 @@ export default {
                     _this.showverify = false
                 }
             }).catch(function(err){
-                console.log(err);
+                // console.log(err);
             });
         },
         loadTable(){
@@ -212,11 +224,10 @@ export default {
                 data: qs.stringify(searchList),
             }).then(function(res){
                 let data = res.data.map.success
-                // console.log(data)
                 _this.tableData = data
                 _this.tableNumber = res.data.count
             }).catch(function(err){
-                console.log(err);
+                // console.log(err);
             });
         },
         getTime(){
@@ -233,11 +244,9 @@ export default {
             mm = (mm < 10 ? "0" + mm : mm)
             s = (s < 10 ? "0" + s : s)
             this.thistime = y + '-' + m + '-' + d + ' ' + h + ':' + mm + ':' + s
-            // console.log(this.thistime)
         },
         toexamine(e){
             this.getTime()
-            console.log(e)
             const _this = this
             let qs = require('querystring')
             let val = e.target.innerText
@@ -257,7 +266,6 @@ export default {
                 url: _this.$store.state.defaultHttp+'visit/updateVisit.do?cId='+_this.$store.state.iscId,
                 data: qs.stringify(data),
             }).then(function(res){
-                console.log(res)
                 if(res.data.code && res.data.code == 200) {
                     _this.$message({
                         message: '操作成功',
@@ -273,11 +281,10 @@ export default {
                     });
                 }
             }).catch(function(err){
-                console.log(err)
+                _this.$message.error("操作失败,请重新操作");
             });
         },
         getRow(index,row){
-            console.log(row.id)
             this.$store.state.visitdetailsData.submitData = {"id":row.id}
             this.$options.methods.loadData.bind(this)(true)
         },
@@ -286,8 +293,6 @@ export default {
             this.thisshow = !this.thisshow
         },
         clickRates(val){
-            // console.log(val)
-            console.log(this.visitdetails.state)
             const _this = this
             let qs = require('querystring')
             let data = {}
@@ -306,7 +311,6 @@ export default {
                     url: _this.$store.state.defaultHttp+'visit/updateVisit.do?cId='+_this.$store.state.iscId,
                     data: qs.stringify(data),
                 }).then(function(res){
-                    console.log(res)
                     if(res.data.code && res.data.code == 200) {
                         _this.$message({
                             message: '评分成功',
@@ -320,7 +324,7 @@ export default {
                         });
                     }
                 }).catch(function(err){
-                    console.log(err)
+                    _this.$message.error("评分失败,请重新评分");
                 });
             }
         },

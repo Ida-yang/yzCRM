@@ -15,14 +15,15 @@
                         prop="typeName"
                         header-align="left"
                         align="left"
-                        label="模块"
-                        width="90">
+                        label="事件"
+                        min-width="79">
                     </el-table-column>
                     <el-table-column
                         prop="remindContent"
                         header-align="left"
                         align="left"
-                        label="待办内容">
+                        label="待办内容"
+                        min-width="190">
                         <template slot-scope="scope">
                             <div @click="openDetails(scope.$index, scope.row)" class="hoverline">
                                 {{scope.row.remindContent}}
@@ -41,14 +42,15 @@
                         prop="typeName"
                         header-align="left"
                         align="left"
-                        label="模块"
-                        width="90">
+                        label="事件"
+                        min-width="79">
                     </el-table-column>
                     <el-table-column
                         prop="remindContent"
                         header-align="left"
                         align="left"
-                        label="待审核内容">
+                        label="待审核内容"
+                        min-width="190">
                         <template slot-scope="scope">
                             <div @click="openDetails(scope.$index, scope.row)" class="hoverline">
                                 {{scope.row.remindContent}}
@@ -85,7 +87,6 @@
             // 通过 Event Bus 进行组件间通信，来折叠侧边栏
             bus.$on('collapse2', msg => {
                 this.collapse2 = msg;
-                console.log(msg)
             })
         },
         mounted(){
@@ -131,7 +132,7 @@
                     _this.tableData = res.data.dealtWith
                     _this.tableData2 = res.data.examine
                 }).catch(function(err){
-                    console.log(err)
+                    // console.log(err)
                 });
             },
             leavemessage(e){
@@ -139,11 +140,12 @@
                 bus.$emit('collapse2', this.collapse2)
             },
             openDetails(index,row){
-                console.log(row)
                 if(row.type == 'visit'){
-                    console.log(row.typeId)
                     this.$store.state.visitdetailsData = {submitData:{"id": row.typeId}}
                     this.$router.push({ path: '/visitplandetails' });
+                    bus.$emit('id', row.typeId);
+                }else if(row.type == 'workplan'){
+                    this.$router.push({ path: '/missionplan' });
                 }
             }
         }

@@ -166,12 +166,8 @@
                     {
                         icon: 'mdi-view-grid',
                         index: '6',
-                        title: '导入',
+                        title: '短信模板',
                         subs: [
-                            {
-                                index: 'upload',
-                                title: '导入',
-                            },
                             {
                                 index: 'smstemp',
                                 title: '短信模板',

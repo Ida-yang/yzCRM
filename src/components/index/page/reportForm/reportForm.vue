@@ -340,7 +340,7 @@
                     });
                     _this.drawLine3()
                 }).catch(function(err){
-                    console.log(err)
+                    // console.log(err)
                 })
                 axios({
                     method: 'get',
@@ -352,7 +352,7 @@
                     });
                     _this.drawLine4()
                 }).catch(function(err){
-                    console.log(err)
+                    // console.log(err)
                 })
                 axios({
                     method: 'get',
@@ -366,7 +366,7 @@
                     _this.drawLine2()
                     _this.drawLine1()
                 }).catch(function(err){
-                    console.log(err)
+                    // console.log(err)
                 })
                 axios({
                     method: 'get',
@@ -374,7 +374,7 @@
                 }).then(function(res){
                     _this.$store.state.reportFormList = res.data.map.contracts.slice(0,10)
                 }).catch(function(err){
-                    console.log(err)
+                    // console.log(err)
                 })
                 // _this.$store.state.reportFormList = [
                 //     {name:'化妆品行业',city:'广州',years:'1-3年',scale:'50-99人',capital:'200-500万',ensure:'1000万客户',sort:'1',financing:'100',list:'100',telephone:'100'},

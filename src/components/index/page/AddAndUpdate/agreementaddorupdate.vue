@@ -266,7 +266,7 @@
                 }).then(function(res){
                     _this.oppoptions = res.data
                 }).catch(function(err){
-                    console.log(err)
+                    // console.log(err)
                 });
                 axios({
                     method: 'post',
@@ -275,7 +275,7 @@
                 }).then(function(res){
                     _this.contactslist = res.data.map.success
                 }).catch(function(err){
-                    console.log(err);
+                    // console.log(err);
                 });
             },
             //获取右边表格
@@ -295,7 +295,7 @@
                 }).then(function(res){
                     _this.tableData = res.data.map.success.customerpools
                 }).catch(function(err){
-                    console.log(err);
+                    // console.log(err);
                 });
             },
             loadpId(){
@@ -307,14 +307,13 @@
                 }).then(function(res){
                     _this.pIdlist = res.data
                 }).catch(function(err){
-                    console.log(err);
+                    // console.log(err);
                 });
             },
             handleInput(val, key) {
                 this.myForm[key] = val;
             },
             handlechange(val,key){
-                // console.log(val,key)
                 this.myForm[key] = val
                 let arr = val.split('-')
                 let year = parseInt(arr[0]) + 1
@@ -457,7 +456,7 @@
                         });
                     }
                 }).catch(function(err){
-                    console.log(err);
+                    _this.$message.error("提交失败，请重新提交");
                 }); 
             },
             //取消时返回上一个页面，若只有一个页面，则返回首页

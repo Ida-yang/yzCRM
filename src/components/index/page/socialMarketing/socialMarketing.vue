@@ -99,7 +99,7 @@
                         label="网址"
                         sortable>
                         <template slot-scope="scope">
-                            <a :href="scope.row.codeURL">
+                            <a :href="scope.row.codeURL" target="_blank">
                                 {{scope.row.codeURL}}
                             </a>
                         </template>
@@ -280,7 +280,7 @@
             }).then(function(res){
                 _this.datalist = res.data.map.success
             }).catch(function(err){
-                console.log(err);
+                // console.log(err);
             });
         },
         activated(){
@@ -314,7 +314,7 @@
                         el.codeURL = 'http://crm.yunzoe.com/#/activity?c='+_this.$store.state.iscId+'&p='+_this.$store.state.ispId+'&n='+el.name
                     });
                 }).catch(function(err){
-                    console.log(err);
+                    // console.log(err);
                 });
             },
             loadcues(){
@@ -335,7 +335,7 @@
                 }).then(function(res){
                     _this.typeData = res.data
                 }).catch(function(err){
-                    console.log(err);
+                    // console.log(err);
                 });
                 axios({
                     method: 'post',
@@ -344,7 +344,7 @@
                 }).then(function(res){
                     _this.filterList = res.data
                 }).catch(function(err){
-                    console.log(err);
+                    // console.log(err);
                 });
                 axios({
                     method: 'post',
@@ -353,7 +353,7 @@
                 }).then(function(res){
                     _this.checklist = res.data
                 }).catch(function(err){
-                    console.log(err);
+                    // console.log(err);
                 });
             },
             handleNodeClick(data){
@@ -406,7 +406,7 @@
                             });
                         }
                     }).catch(function(err){
-                        console.log(err);
+                        _this.$message.error("提交失败,请重新提交");
                     });
                 }).catch(() => {
                     this.$message({
@@ -441,7 +441,7 @@
                             _this.dialogVisible = true
                         }
                     }).catch(function(err){
-                        console.log(err);
+                        // console.log(err);
                     });
                     
                 }
@@ -495,7 +495,7 @@
                         })
                     }
                 }).catch(function(err){
-                    console.log(err);
+                    _this.$message.error("提交失败,请重新提交");
                 });
             },
             hangleChange(e,val){
@@ -518,7 +518,7 @@
                         _this.$options.methods.reloadTable.bind(_this)(true);
                     }
                 }).catch(function(err){
-                    console.log(err);
+                    // console.log(err);
                 });
             },
             search() {

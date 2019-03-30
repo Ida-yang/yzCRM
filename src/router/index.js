@@ -192,11 +192,6 @@ const router =new Router({
           meta: { title: '编辑任务' ,requireAuth:true}
         },
         {
-          path: '/upload',
-          component: resolve => require(['../components/index/page/name/upload.vue'], resolve),
-          meta: { title: '导入',requireAuth:true}
-        },
-        {
           path: '/smstemp',
           component: resolve => require(['../components/index/page/name/smstemp.vue'], resolve),
           meta: { title: '短信模板',requireAuth:true}

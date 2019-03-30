@@ -137,6 +137,7 @@ export default {
                 customerName : [{ required: true, message: '公司名称不能为空', trigger: 'blur' }],
                 visitTime : [{ required: true, message: '拜访时间不能为空', trigger: 'blur' }],
                 endTime : [{ required: true, message: '结束时间不能为空', trigger: 'blur' }],
+                remindTime : [{ required: true, message: '提醒时间不能为空', trigger: 'blur' }],
                 contactsid : [{ required: true, message: '拜访对象不能为空', trigger: 'blur' }],
                 visitTheme : [{ required: true, message: '拜访主题不能为空', trigger: 'blur' }],
                 visitObjective : [{ required: true, message: '拜访目的不能为空', trigger: 'blur' }],
@@ -177,7 +178,7 @@ export default {
             }).then(function(res){
                 _this.tableData = res.data.map.success.customerpools
             }).catch(function(err){
-                console.log(err);
+                // console.log(err);
             });
             },
         //加载或重载页面
@@ -222,7 +223,7 @@ export default {
             }).then(function(res){
                 _this.contactsList = res.data.map.success
             }).catch(function(err){
-                console.log(err);
+                // console.log(err);
             });
         },
         loadpId(){
@@ -234,7 +235,7 @@ export default {
             }).then(function(res){
                 _this.assistAudit = res.data
             }).catch(function(err){
-                console.log(err);
+                // console.log(err);
             });
         },
         getRow(index,row){
@@ -290,6 +291,13 @@ export default {
                 if(item.inputModel == "endTime" && !subData[item.inputModel]) {
                     _this.$message({
                         message: "结束时间不能为空",
+                        type: 'error'
+                    });
+                    flag = true;
+                }
+                if(item.inputModel == "remindTime" && !subData[item.inputModel]) {
+                    _this.$message({
+                        message: "提醒时间不能为空",
                         type: 'error'
                     });
                     flag = true;
@@ -352,7 +360,7 @@ export default {
                     });
                 }
             }).catch(function(err){
-                console.log(err);
+                _this.$message.error("提交失败，请重新提交");
             }); 
         },
         closeTag(){

@@ -190,7 +190,7 @@
                                         });
                                     }
                                 }).catch(function(err){
-                                    console.log(err);
+                                    _this.$message.error("密码修改失败，请重新提交");
                                 });
                             }else{
                                 _this.$message({
@@ -199,7 +199,7 @@
                                 })
                             }
                         }).catch(function(err){
-                            console.log(err);
+                            // console.log(err);
                         });
                     } else {
                         _this.$message.error('提交错误，请检查您的网络');
@@ -306,7 +306,7 @@
                         });
                     }
                 }).catch(function(err){
-                    console.log(err)
+                    // console.log(err)
                 });
             },
         }

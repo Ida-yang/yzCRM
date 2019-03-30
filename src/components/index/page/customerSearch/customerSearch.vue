@@ -472,7 +472,7 @@
                 }).then(function(res){
                     _this.Provinces=res.data;
                 }).catch(function(err){
-                    console.log(err);
+                    // console.log(err);
                 });
                 //行业
                 axios({
@@ -482,7 +482,7 @@
                 }).then(function(res){
                     _this.industryTypeList=res.data;
                 }).catch(function(err){
-                    console.log(err);
+                    // console.log(err);
                 });
                 //企业规模
                 axios({
@@ -492,7 +492,7 @@
                 }).then(function(res){
                     _this.enterpriseScaleList=res.data;
                 }).catch(function(err){
-                    console.log(err);
+                    // console.log(err);
                 });
                 //企业类型
                 axios({
@@ -502,7 +502,7 @@
                 }).then(function(res){
                     _this.companyTypeList=res.data;
                 }).catch(function(err){
-                    console.log(err);
+                    // console.log(err);
                 });
                 //经营状态
                 axios({
@@ -512,7 +512,7 @@
                 }).then(function(res){
                     _this.operatingStateList=res.data;
                 }).catch(function(err){
-                    console.log(err);
+                    // console.log(err);
                 });
                 //融资状态
                 axios({
@@ -522,7 +522,7 @@
                 }).then(function(res){
                     _this.financingStateList=res.data;
                 }).catch(function(err){
-                    console.log(err);
+                    // console.log(err);
                 });
                 //上市信息
                 axios({
@@ -532,7 +532,7 @@
                 }).then(function(res){
                     _this.listedList=res.data;
                 }).catch(function(err){
-                    console.log(err);
+                    // console.log(err);
                 });
                 
                 axios({
@@ -542,7 +542,7 @@
                 }).then(function(res){
                     _this.filterList = res.data
                 }).catch(function(err){
-                    console.log(err);
+                    // console.log(err);
                 });
                 axios({
                     method: 'post',
@@ -551,7 +551,7 @@
                 }).then(function(res){
                     _this.checklist = res.data
                 }).catch(function(err){
-                    console.log(err);
+                    // console.log(err);
                 });
             },
             //获取/查询大数据列表
@@ -593,7 +593,7 @@
                         _this.tablesize = res.data.size
                     }
                 }).catch(function(err){
-                    console.log(err);
+                    // console.log(err);
                 });
             },
             selectInfo(val){
@@ -653,7 +653,7 @@
                             });
                         }
                     }).catch(function(err){
-                        console.log(err);
+                        _this.$message.error("转移失败,请重新转移");
                     });
                 }else{
                     _this.$message({
@@ -681,11 +681,9 @@
                 }).then(function(res){
                     if(res.data && res.data =="success"){
                         _this.$options.methods.reloadTable.bind(_this)(true);
-                    }else{
-                        console.log(err)
                     }
                 }).catch(function(err){
-                    console.log(err);
+                    // console.log(err);
                 });
             },
             search() {
@@ -716,7 +714,7 @@
                 }).then(function(res){
                     _this.cityList=res.data;
                 }).catch(function(err){
-                    console.log(err);
+                    // console.log(err);
                 });
             },
             // 选市
@@ -735,7 +733,7 @@
                 }).then(function(res){
                     _this.areaList=res.data;
                 }).catch(function(err){
-                    console.log(err);
+                    // console.log(err);
                 });
             },
             // 选区

@@ -491,7 +491,7 @@
             }).then(function(res){
                 _this.useroptions = res.data
             }).catch(function(err){
-                console.log(err);
+                // console.log(err);
             });
         },
 
@@ -522,7 +522,7 @@
                     _this.$store.state.customerPoolList = res.data.map.success
                     _this.$store.state.customerPoolListnumber = res.data.count;
                 }).catch(function(err){
-                    console.log(err);
+                    // console.log(err);
                 });
             },
             reloadData() {
@@ -541,7 +541,7 @@
                 }).then(function(res){
                     _this.filterList = res.data
                 }).catch(function(err){
-                    console.log(err);
+                    // console.log(err);
                 });
                 axios({
                     method: 'post',
@@ -550,7 +550,7 @@
                 }).then(function(res){
                     _this.checklist = res.data
                 }).catch(function(err){
-                    console.log(err)
+                    // console.log(err)
                 });
             },
             selectInfo(val){
@@ -599,7 +599,7 @@
                                 });
                             }
                         }).catch(function(err){
-                            console.log(err);
+                            _this.$message.error("删除失败,请重新删除");
                         });
                     }).catch(() => {
                         this.$message({
@@ -647,7 +647,7 @@
                             });
                         }
                     }).catch(function(err){
-                        console.log(err);
+                        _this.$message.error("删除失败,请重新删除");
                     })
                 
             },
@@ -693,11 +693,11 @@
                                         });
                                     }
                                 }).catch(function(err){
-                                    console.log(err);
+                                    _this.$message.error("领取失败,请重新领取");
                                 });
                             }
                         }).catch(function(err){
-                            console.log(err);
+                            // console.log(err);
                         });
                     }).catch(() => {
                         _this.$message({
@@ -750,11 +750,11 @@
                                 });
                             }
                         }).catch(function(err){
-                            console.log(err);
+                            _this.$message.error("领取失败,请重新领取");
                         })
                     }
                 }).catch(function(err){
-                    console.log(err);
+                    // console.log(err);
                 });
                 
             },
@@ -797,11 +797,11 @@
                                     });
                                 }
                             }).catch(function(err){
-                                console.log(err);
+                                _this.$message.error("分配失败,请重新分配");
                             });
                         }
                     }).catch(function(err){
-                        console.log(err);
+                        // console.log(err);
                     });
                 }else{
                     _this.$message({
@@ -832,7 +832,7 @@
                         _this.$options.methods.reloadData.bind(_this)(true);
                     }
                 }).catch(function(err){
-                    console.log(err);
+                    // console.log(err);
                 });
             },
             search() {
@@ -861,7 +861,7 @@
                         _this.$options.methods.reloadTable.bind(_this)(true);
                     }
                 }).catch(function(err){
-                    console.log(err);
+                    // console.log(err);
                 });
             },
             reset(){

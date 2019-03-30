@@ -213,7 +213,7 @@
                     }).then(function(res){
                         _this.areaList=res.data;
                     }).catch(function(err){
-                        console.log(err);
+                        // console.log(err);
                     });
                 }
                 if(this.countryid){
@@ -225,7 +225,7 @@
                     }).then(function(res){
                         _this.cityList=res.data;
                     }).catch(function(err){
-                        console.log(err);
+                        // console.log(err);
                     });
                 }
                 country.id = ''
@@ -238,7 +238,7 @@
                 }).then(function(res){
                     _this.Provinces=res.data;
                 }).catch(function(err){
-                    console.log(err);
+                    // console.log(err);
                 });
                 
             },
@@ -261,7 +261,7 @@
                     _this.customerList = res.data.map.success.customerpools
                     _this.tableData = _this.clueList.concat(_this.customerList)
                 }).catch(function(err){
-                    console.log(err);
+                    // console.log(err);
                 });
             },
             //加载或重载页面
@@ -358,7 +358,7 @@
                         });
                     }
                 }).catch(function(err){
-                    console.log(err);
+                    _this.$message.error("提交失败，请重新提交");
                 }); 
             },
             //取消时返回上一个页面，若只有一个页面，则返回首页

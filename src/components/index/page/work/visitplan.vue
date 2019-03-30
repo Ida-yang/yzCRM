@@ -33,7 +33,6 @@
             <el-checkbox-group class="checklist" v-model="checklist">
                 <el-checkbox class="checkone" v-for="item in filterList" :key="item.id" :label="item.name" :value="item.state" @change="hangleChange($event,item)"></el-checkbox>
             </el-checkbox-group>
-            <!-- <el-button slot="reference" icon="el-icon-more-outline" type="mini">筛选列表</el-button> -->
                 <el-button slot="reference" icon="el-icon-more" class="info-btn screen" type="mini"></el-button>
             </el-popover>
         </div>
@@ -132,6 +131,24 @@
                     sortable>
                 </el-table-column>
                 <el-table-column
+                    prop="approverState"
+                    v-else-if="item.prop == 'approverState' && item.state == 1"
+                    header-align="left"
+                    align="left"
+                    min-width="130"
+                    label="审批状态"
+                    sortable>
+                </el-table-column>
+                <el-table-column
+                    prop="remindTime"
+                    v-else-if="item.prop == 'remindTime' && item.state == 1"
+                    header-align="left"
+                    align="left"
+                    min-width="150"
+                    label="提醒时间"
+                    sortable>
+                </el-table-column>
+                <el-table-column
                     prop="state"
                     v-else-if="item.prop == 'state' && item.state == 1"
                     header-align="left"
@@ -203,6 +220,7 @@
 <script>
 import store from '../../../../store/store'
 import axios from 'axios'
+// import bus from '../../bus';
 import qs from 'qs'
 
 export default {
@@ -357,7 +375,7 @@ export default {
                     }
                 });
             }).catch(function(err){
-                console.log(err);
+                // console.log(err);
             });
         },
         //获取筛选列表
@@ -377,7 +395,7 @@ export default {
             }).then(function(res){
                 _this.filterList = res.data
             }).catch(function(err){
-                console.log(err);
+                // console.log(err);
             });
             axios({
                 method: 'post',
@@ -386,7 +404,7 @@ export default {
             }).then(function(res){
                 _this.checklist = res.data
             }).catch(function(err){
-                console.log(err);
+                // console.log(err);
             });
         },
         selectInfo(val){
@@ -400,10 +418,11 @@ export default {
             this.idArr.id = newArr;
         },
         openDetails(index,row){
-            let visitdetailsData = {};
-            visitdetailsData.submitData = {"id": row.id};
-            this.$store.state.visitdetailsData = visitdetailsData;
+            // let visitdetailsData = {};
+            // visitdetailsData.submitData = {"id": row.id};
+            this.$store.state.visitdetailsData = {submitData:{"id": row.id}}
             this.$router.push({ path: '/visitplandetails' });
+            // bus.$emit('id', row.id);
         },
         changeState(e,row){
             const _this = this
@@ -411,7 +430,6 @@ export default {
             let data = {}
             data.id = row.id
             data.state = e.target.innerText
-            console.log(row.pId)
             if(row.pId == this.$store.state.ispId){
                 axios({
                     method: 'post',
@@ -431,7 +449,7 @@ export default {
                         });
                     }
                 }).catch(function(err){
-                    console.log(err);
+                    _this.$message.error("操作失败,请重新操作");
                 });
             }else{
                 _this.$message({
@@ -449,6 +467,7 @@ export default {
                 {"label":"拜访公司","inputModel":"customerName","type":"require"},
                 {"label":"拜访时间","inputModel":"visitTime","type":"date"},
                 {"label":"结束时间","inputModel":"endTime","type":"date"},
+                {"label":"提醒时间","inputModel":"remindTime","type":"date"},
                 {"label":"拜访对象","inputModel":"contactsid","type":"select"},
                 {"label":"拜访主题","inputModel":"visitTheme"},
                 {"label":"拜访目的","inputModel":"visitObjective","type":"textarea"},
@@ -459,6 +478,7 @@ export default {
                 "customerName": '',
                 "visitTime": '',
                 "endTime": '',
+                "remindTime":'',
                 "contactsid": '',
                 "visitTheme": '',
                 "visitObjective":'',
@@ -476,6 +496,7 @@ export default {
                 {"label":"拜访公司","inputModel":"customerName","type":"require"},
                 {"label":"拜访时间","inputModel":"visitTime","type":"date"},
                 {"label":"结束时间","inputModel":"endTime","type":"date"},
+                {"label":"提醒时间","inputModel":"remindTime","type":"date"},
                 {"label":"拜访对象","inputModel":"contactsid","type":"select"},
                 {"label":"拜访主题","inputModel":"visitTheme"},
                 {"label":"拜访目的","inputModel":"visitObjective","type":"textarea"},
@@ -487,6 +508,7 @@ export default {
                 "customerName": row.customerName,
                 "visitTime": row.visitTime,
                 "endTime": row.endTime,
+                "remindTime": row.remindTime,
                 "contactsid": row.contactsid,
                 "contactsName": row.contactsName,
                 "visitTheme": row.visitTheme,
@@ -497,7 +519,7 @@ export default {
                 "approver": row.approver,
                 "remarks": row.remarks}
             visitaddOrUpdateData.submitData = {"id": row.id}
-            visitaddOrUpdateData.submitURL = this.$store.state.defaultHttp+ 'visit/updateVisit.do?cId='+this.$store.state.iscId
+            visitaddOrUpdateData.submitURL = this.$store.state.defaultHttp+ 'visit/updateVisit.do?cId='+this.$store.state.iscId+'&pId='+this.$store.state.ispId
             this.$store.state.visitaddOrUpdateData = visitaddOrUpdateData
             _this.$router.push({ path: '/visitplanaddorupdate' })
         },
@@ -529,7 +551,7 @@ export default {
                         });
                     }
                 }).catch(function(err){
-                    console.log(err);
+                    _this.$message.error("删除失败,请重新删除");
                 });
             }).catch(() => {
                 this.$message({
@@ -558,7 +580,7 @@ export default {
                     _this.$options.methods.reloadData.bind(_this)(true);
                 }
             }).catch(function(err){
-                console.log(err);
+                // console.log(err);
             });
         },
         search(){

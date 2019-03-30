@@ -165,7 +165,7 @@
                         }
                     });
                 }).catch(function(err){
-                    console.log(err);
+                    // console.log(err);
                 });
             },
             //显示对应状态数表格数据
@@ -199,7 +199,7 @@
                         _this.dialogVisible = true
                     }
                 }).catch(function(err){
-                    console.log(err);
+                    // console.log(err);
                 });
                 
             },
@@ -250,7 +250,7 @@
                         })
                     }
                 }).catch(function(err){
-                    console.log(err);
+                    _this.$message.error("添加失败,请重新添加");
                 });
             },
             //状态修改
@@ -274,7 +274,7 @@
                         _this.dialogVisible2 = true
                     }
                 }).catch(function(err){
-                    console.log(err);
+                    // console.log(err);
                 });
             },
             //状态修改提交按钮
@@ -325,7 +325,7 @@
                         })
                     }
                 }).catch(function(err){
-                    console.log(err);
+                    _this.$message.error("修改失败,请重新修改");
                 });
             },
             handledelete(e,val){

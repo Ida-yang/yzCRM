@@ -135,7 +135,7 @@
                         })
                     }
                 }).catch(function(err){
-                    console.log(err);
+                    _this.$message.error("提交失败，请重新提交");
                 });
             },
         }

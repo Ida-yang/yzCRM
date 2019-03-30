@@ -351,7 +351,7 @@
             }).then(function(res){
                 _this.datalist = res.data.map.success
             }).catch(function(err){
-                console.log(err);
+                // console.log(err);
             });
         },
         activated(){
@@ -381,7 +381,7 @@
                     _this.$store.state.userList = res.data.map.success
                     _this.$store.state.userListnumber = res.data.count
                 }).catch(function(err){
-                    console.log(err);
+                    // console.log(err);
                 });
                 axios({
                     method: 'post',
@@ -390,7 +390,7 @@
                 }).then(function(res){
                     _this.roleList = res.data
                 }).catch(function(err){
-                    console.log(err);
+                    // console.log(err);
                 });
             },
             loadData(){
@@ -409,7 +409,7 @@
                 }).then(function(res){
                     _this.filterList = res.data
                 }).catch(function(err){
-                    console.log(err);
+                    // console.log(err);
                 });
                 axios({
                     method: 'post',
@@ -418,7 +418,7 @@
                 }).then(function(res){
                     _this.checklist = res.data
                 }).catch(function(err){
-                    console.log(err);
+                    // console.log(err);
                 });
             },
             handleNodeClick(data){
@@ -471,7 +471,7 @@
                             _this.dialogVisible = true
                         }
                     }).catch(function(err){
-                        console.log(err);
+                        // console.log(err);
                     });
                 }
             },
@@ -571,7 +571,7 @@
                         })
                     }
                 }).catch(function(err){
-                    console.log(err);
+                    _this.$message.error("添加失败,请重新添加");
                 });
             },
             //用户修改
@@ -609,11 +609,11 @@
                             }).then(function(res){
                                 _this.roleList = res.data
                             }).catch(function(err){
-                                console.log(err);
+                                _this.$message.error("权限加载失败,请重新打开页面");
                             });
                         }
                     }).catch(function(err){
-                        console.log(err);
+                        // console.log(err);
                     });
                 
             },
@@ -699,7 +699,7 @@
                         })
                     }
                 }).catch(function(err){
-                    console.log(err);
+                    _this.$message.error("修改失败,请重新修改");
                 });
             },
             //同步用户
@@ -737,7 +737,7 @@
                                 });
                             }
                         }).catch(function(err){
-                            console.log(err);
+                            _this.$message.error("同步失败,请重新同步");
                         });
                     });
                 }else{
@@ -781,7 +781,7 @@
                             });
                         }
                     }).catch(function(err){
-                        console.log(err);
+                        _this.$message.error("同步失败,请重新同步");
                     });
                 });
             },
@@ -803,11 +803,9 @@
                 }).then(function(res){
                     if(res.data && res.data =="success"){
                         _this.$options.methods.loadData.bind(_this)(true);
-                    }else{
-                        console.log(err)
                     }
                 }).catch(function(err){
-                    console.log(err);
+                    // console.log(err);
                 });
             },
             search() {

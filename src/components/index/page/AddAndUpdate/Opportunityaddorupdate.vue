@@ -209,7 +209,7 @@
                 }).then(function(res){
                     _this.contactslist = res.data.map.success
                 }).catch(function(err){
-                    console.log(err);
+                    // console.log(err);
                 });
                 
             },
@@ -256,7 +256,7 @@
                 }).then(function(res){
                     _this.tableData = res.data.map.success.customerpools
                 }).catch(function(err){
-                    console.log(err);
+                    // console.log(err);
                 });
             },
             handleoninput(val,key){
@@ -362,7 +362,7 @@
                         });
                     }
                 }).catch(function(err){
-                    console.log(err);
+                    _this.$message.error("提交失败，请重新提交");
                 }); 
             },
             //取消时返回上一个页面，若只有一个页面，则返回首页

@@ -383,7 +383,7 @@
                     _this.opportunityProjects = res.data.opportunityProjects
                     _this.visitprojects = res.data.visitprojects
                 }).catch(function(err){
-                    console.log(err);
+                    // console.log(err);
                 });
                 //右侧表格
                 axios({
@@ -394,7 +394,7 @@
                     _this.tableData = res.data.map.success
                     _this.tableNumber = res.data.count
                 }).catch(function(err){
-                    console.log(err);
+                    // console.log(err);
                 });
             },
             retract(){
@@ -446,7 +446,7 @@
                         });
                     }
                 }).catch(function(err){
-                    console.log(err);
+                    _this.$message.error("提交失败,请重新提交");
                 });
             },
             handlevisit(index,row){
@@ -485,7 +485,7 @@
                         });
                     }
                 }).catch(function(err){
-                    console.log(err);
+                    _this.$message.error("提交失败,请重新提交");
                 });
             },
             handleopportunity(index,row){
@@ -522,7 +522,7 @@
                         });
                     }
                 }).catch(function(err){
-                    console.log(err);
+                    _this.$message.error("提交失败,请重新提交");
                 });
             },
             handlecontract(index,row){
@@ -561,7 +561,7 @@
                         });
                     }
                 }).catch(function(err){
-                    console.log(err);
+                    _this.$message.error("提交失败,请重新提交");
                 });
             },
             search(){
@@ -580,7 +580,7 @@
                     _this.tableData = res.data.map.success
                     _this.tableNumber = res.data.count
                 }).catch(function(err){
-                    console.log(err);
+                    // console.log(err);
                 });
             },
             handleSizeChange(val) {

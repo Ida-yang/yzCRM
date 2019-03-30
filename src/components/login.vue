@@ -98,7 +98,6 @@ export default {
                     'Content-Type': 'application/x-www-form-urlencoded'
                 }
             }).then(function(res){
-                // console.log(res)
                 if(res.data.msg && res.data.code == 200) {
                     _this.$message({
                       message: '登录成功',
@@ -120,11 +119,10 @@ export default {
                     });
                 }
             }).catch(function(err){
-                console.log(err)
+                // console.log(err)
             })
         },
         setlocalStorage(n, p) {
-            // console.log(n,p)
             localStorage.setItem('siteName',n)
             localStorage.setItem('sitePassword',p)
         },
@@ -152,18 +150,14 @@ export default {
                 url: _this.$store.state.defaultHttp+'customerTwo/updateBytime.do',
                 data:qs.stringify(data)
             }).then(function(res){
-                console.log(res)
             }).catch(function(err){
-                console.log(err);
             });
             axios({
                 method: 'post',
                 url: _this.$store.state.defaultHttp+'customerpool/updateBytime.do',
                 data:qs.stringify(data)
             }).then(function(res){
-                console.log(res)
             }).catch(function(err){
-                console.log(err);
             });
         }
     }

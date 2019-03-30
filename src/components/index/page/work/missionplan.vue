@@ -114,6 +114,15 @@
                     </template>
                 </el-table-column>
                 <el-table-column
+                    prop="remindTime"
+                    v-else-if="item.prop == 'remindTime' && item.state == 1"
+                    header-align="left"
+                    align="left"
+                    min-width="150"
+                    label="提醒时间"
+                    sortable>
+                </el-table-column>
+                <el-table-column
                     prop="private_employee"
                     v-else-if="item.prop == 'private_employee' && item.state == 1"
                     header-align="left"
@@ -285,7 +294,6 @@ export default {
                 data: qs.stringify(searchList),
             }).then(function(res){
                 let data = res.data.map.success
-                console.log(data)
                 _this.$store.state.missionplanList = data
                 _this.$store.state.missionplanListnumber = res.data.count
                 data.forEach(el => {
@@ -315,7 +323,7 @@ export default {
                     }
                 });
             }).catch(function(err){
-                console.log(err);
+                // console.log(err);
             });
         },
         
@@ -336,7 +344,7 @@ export default {
             }).then(function(res){
                 _this.filterList = res.data
             }).catch(function(err){
-                console.log(err);
+                // console.log(err);
             });
             axios({
                 method: 'post',
@@ -345,7 +353,7 @@ export default {
             }).then(function(res){
                 _this.checklist = res.data
             }).catch(function(err){
-                console.log(err);
+                // console.log(err);
             });
         },
         selectInfo(val){
@@ -372,7 +380,6 @@ export default {
             mm = (mm < 10 ? "0" + mm : mm)
             s = (s < 10 ? "0" + s : s)
             this.thistime = y + '-' + m + '-' + d + ' ' + h + ':' + mm + ':' + s
-            // console.log(this.thistime)
         },
         changeState(e,row){
             this.getTime()
@@ -401,7 +408,7 @@ export default {
                     });
                 }
             }).catch(function(err){
-                console.log(err);
+                _this.$message.error("操作失败,请重新操作");
             });
         },
         handleAdd(){
@@ -412,12 +419,14 @@ export default {
                 {"label":"关联对象","inputModel":"customerName","type":"require"},
                 {"label":"开始时间","inputModel":"startTime","type":"date"},
                 {"label":"结束时间","inputModel":"endTime","type":"date"},
+                {"label":"提醒时间","inputModel":"remindTime","type":"date"},
                 {"label":"描述","inputModel":"describe","type":"textarea"}]
             missionaddOrUpdateData.setForm = {
                 "planningTheme": '',
                 "describe": '',
                 "startTime": '',
                 "endTime": '',
+                "remindTime": '',
                 "customerName": ''}
             missionaddOrUpdateData.submitURL = this.$store.state.defaultHttp+ 'workPlan/insertWorkPlan.do?cId='+this.$store.state.iscId+'&pId='+this.$store.state.ispId,
             this.$store.state.missionaddOrUpdateData = missionaddOrUpdateData;
@@ -431,12 +440,14 @@ export default {
                 {"label":"关联对象","inputModel":"customerName","type":"require"},
                 {"label":"开始时间","inputModel":"startTime","type":"date"},
                 {"label":"结束时间","inputModel":"endTime","type":"date"},
+                {"label":"提醒时间","inputModel":"remindTime","type":"date"},
                 {"label":"描述","inputModel":"describe","type":"textarea"}]
             missionaddOrUpdateData.setForm = {
                 "planningTheme": row.planningTheme,
                 "describe": row.describe,
                 "startTime": row.startTime,
                 "endTime": row.endTime,
+                "remindTime": row.remindTime,
                 "customerId": row.customerId,
                 "customerName": row.customerName}
             missionaddOrUpdateData.submitData = {"id": row.id};
@@ -472,7 +483,7 @@ export default {
                         });
                     }
                 }).catch(function(err){
-                    console.log(err);
+                    _this.$message.error("删除失败,请重新删除");
                 });
             }).catch(() => {
                 this.$message({
@@ -501,7 +512,7 @@ export default {
                     _this.$options.methods.reloadData.bind(_this)(true);
                 }
             }).catch(function(err){
-                console.log(err);
+                // console.log(err);
             });
         },
         search(){

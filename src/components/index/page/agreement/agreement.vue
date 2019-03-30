@@ -170,6 +170,24 @@
                     sortable>
                 </el-table-column>
                 <el-table-column
+                    prop="approver"
+                    v-else-if="item.prop == 'approver' && item.state == 1"
+                    header-align="left"
+                    align="left"
+                    min-width="130"
+                    label="审核人"
+                    sortable>
+                </el-table-column>
+                <el-table-column
+                    prop="state"
+                    v-else-if="item.prop == 'state' && item.state == 1"
+                    header-align="left"
+                    align="left"
+                    min-width="150"
+                    label="审批状态"
+                    sortable>
+                </el-table-column>
+                <el-table-column
                     prop="deptname"
                     v-else-if="item.prop == 'deptname' && item.state == 1"
                     header-align="left"
@@ -291,7 +309,6 @@
                 let intPartFormat = intPart.toString().replace(/(\d)(?=(?:\d{3})+$)/g, '$1,') // 将整数部分逢三一断
                 let floatPart = '.00' // 预定义小数部分
                 let valArray = value.split('.')
-                // console.log(valArray)
                 if(valArray.length === 2) {
                     floatPart = valArray[1].toString() // 拿到小数部分
                     if(floatPart.length === 1) { // 补0,实际上用不着
@@ -398,7 +415,7 @@
                         }
                     });
                 }).catch(function(err){
-                    console.log(err)
+                    // console.log(err)
                 });
             },
             reloadData() {
@@ -418,7 +435,7 @@
                 }).then(function(res){
                     _this.filterList = res.data
                 }).catch(function(err){
-                    console.log(err);
+                    // console.log(err);
                 });
                 axios({
                     method: 'post',
@@ -427,7 +444,7 @@
                 }).then(function(res){
                     _this.checklist = res.data
                 }).catch(function(err){
-                    console.log(err);
+                    // console.log(err);
                 });
             },
             //获取列表id
@@ -546,7 +563,7 @@
                         _this.$router.push({ path: '/agreementaddorupdate' });
                     }
                 }).catch(function(err){
-                    console.log(err);
+                    // console.log(err);
                 });
             },
             handleEdit(index,row){
@@ -602,7 +619,7 @@
                         _this.$router.push({ path: '/agreementaddorupdate' });
                     }
                 }).catch(function(err){
-                    console.log(err);
+                    // console.log(err);
                 });
             },
             handleDelete(index,row){
@@ -637,7 +654,7 @@
                             });
                         }
                     }).catch(function(err){
-                        console.log(err);
+                        _this.$message.error("删除失败，请重新操作");
                     })
                 }).catch(() => {
                     this.$message({
@@ -664,11 +681,9 @@
                 }).then(function(res){
                     if(res.data && res.data =="success"){
                         _this.$options.methods.reloadData.bind(_this)(true);
-                    }else{
-                        console.log(err)
                     }
                 }).catch(function(err){
-                    console.log(err);
+                    _this.$message.error("提交失败，请重新提交");
                 });
             },
             getSummaries(param){
@@ -731,7 +746,7 @@
                         _this.$options.methods.reloadTable.bind(_this)(true);
                     }
                 }).catch(function(err){
-                    console.log(err);
+                    _this.$message.error("查询失败，请重新查询");
                 });
                 // this.$options.methods.reloadTable.bind(this)(true);
             },

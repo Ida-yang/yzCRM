@@ -179,7 +179,7 @@
                     _this.tableData = res.data.map.success
                     _this.tableNumber = res.data.count
                 }).catch(function(err){
-                    console.log(err);
+                    // console.log(err);
                 });
             },
             loadData() {
@@ -237,7 +237,7 @@
                         }
                     }
                 }).catch(function(err){
-                    console.log(err);
+                    _this.$message.error("商机详情加载失败,请重新进入页面");
                 });
             },
             nextStep(){
@@ -278,7 +278,7 @@
                                     });
                                 }
                             }).catch(function(err){
-                                console.log(err)
+                                _this.$message.error("修改失败,请重新修改");
                             })
                         }).catch(() => {
                             _this.shownext = true      
@@ -320,7 +320,7 @@
                             });
                         }
                     }).catch(function(err){
-                        console.log(err)
+                        _this.$message.error("关闭失败,请重新关闭");
                     })
                 })
             },
@@ -332,9 +332,6 @@
                 this.$store.state.oppdetailsData.submitData = {"id":row.opportunity_id}
                 this.idArr.opportunity_id = row.opportunity_id
                 this.$options.methods.loadData.bind(this)(true);
-            },
-            handleClick(tab, event) {
-                // console.log(tab, event);
             },
             search(){
                 const _this = this;
@@ -351,7 +348,7 @@
                     _this.tableData = res.data.map.success
                     _this.tableNumber = res.data.count
                 }).catch(function(err){
-                    console.log(err);
+                    // console.log(err);
                 });
             },
             handleSizeChange(val) {

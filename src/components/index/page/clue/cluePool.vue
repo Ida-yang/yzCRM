@@ -483,7 +483,7 @@
             }).then(function(res){
                 _this.useroptions = res.data
             }).catch(function(err){
-                console.log(err);
+                // console.log(err);
             });
         },
 
@@ -514,7 +514,7 @@
                     _this.$store.state.cluePoolList = res.data.map.success
                     _this.$store.state.cluePoolListnumber = res.data.count;
                 }).catch(function(err){
-                    console.log(err);
+                    // console.log(err);
                 });
             },
             reloadData() {
@@ -533,7 +533,7 @@
                 }).then(function(res){
                     _this.filterList = res.data
                 }).catch(function(err){
-                    console.log(err);
+                    // console.log(err);
                 });
                 axios({
                     method: 'post',
@@ -542,7 +542,7 @@
                 }).then(function(res){
                     _this.checklist = res.data
                 }).catch(function(err){
-                    console.log(err);
+                    // console.log(err);
                 });
             },
             selectInfo(val){
@@ -590,12 +590,14 @@
                                     type: 'error'
                                 });
                             }
-                        }).catch(() => {
-                            _this.$message({
-                                type: 'info',
-                                message: '取消删除'
-                            });       
-                        });
+                        }).catch((err) => {
+                            _this.$message.error("删除失败,请重新删除");
+                        })
+                    }).catch(() => {
+                        _this.$message({
+                            type: 'info',
+                            message: '取消删除'
+                        });       
                     });
                 }else{
                     _this.$message({
@@ -638,7 +640,7 @@
                             });
                         }
                     }).catch(function(err){
-                        console.log(err);
+                        _this.$message.error("删除失败,请重新删除");
                     })
                 }).catch(() => {
                     this.$message({
@@ -656,7 +658,7 @@
                 idArr.deptid = _this.$store.state.insid
 
                 if(idArr.ids){
-                    _this.$confirm('是否确认删除吗？', '提示', {
+                    _this.$confirm('是否确认领取吗？', '提示', {
                         confirmButtonText: '确定',
                         cancelButtonText: '取消',
                     }).then(({ value }) => {
@@ -688,11 +690,11 @@
                                         });
                                     }
                                 }).catch(function(err){
-                                    console.log(err);
+                                    _this.$message.error("领取失败,请重新领取");
                                 });
                             }
                         }).catch(function(err){
-                            console.log(err);
+                            // console.log(err);
                         });
                     }).catch(() => {
                         _this.$message({
@@ -744,11 +746,11 @@
                                 });
                             }
                         }).catch(function(err){
-                            console.log(err);
+                            _this.$message.error("领取失败,请重新领取");
                         })
                     }
                 }).catch(function(err){
-                    console.log(err);
+                    // console.log(err);
                 });
             },
             handleDistribution(){
@@ -790,11 +792,11 @@
                                     });
                                 }
                             }).catch(function(err){
-                                console.log(err);
+                                _this.$message.error("分配失败,请重新分配");
                             });
                         }
                     }).catch(function(err){
-                        console.log(err);
+                        // console.log(err);
                     });
                 }else{
                     _this.$message({
@@ -824,7 +826,7 @@
                         _this.$options.methods.reloadData.bind(_this)(true);
                     }
                 }).catch(function(err){
-                    console.log(err);
+                    // console.log(err);
                 });
             },
 
@@ -853,7 +855,7 @@
                         _this.$options.methods.reloadTable.bind(_this)(true);
                     }
                 }).catch(function(err){
-                    console.log(err);
+                    // console.log(err);
                 });
                 
             },

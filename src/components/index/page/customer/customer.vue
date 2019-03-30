@@ -37,6 +37,36 @@
             <el-button class="btn info-btn" size="mini" @click="handleAdd()">新增</el-button>
             <el-button class="btn info-btn" size="mini" @click="TocustomerPool()">转移至客户池</el-button>
             <div class="totalnum_head">共 <span style="font-weight:bold">{{tableNumber}}</span> 条</div>
+            <!-- <el-upload
+                class="upload-demo"
+                ref="upload"
+                :multiple="true"
+                action="doUpload"
+                :limit="1"
+                :before-upload="beforeUpload">
+                <el-button slot="trigger" size="mini" class="info-btn">导入</el-button>
+            </el-upload> -->
+            <el-popover
+                placement="left"
+                width="150"
+                trigger="click">
+                <div class="download_c">
+                    <p class="download_h">首次导入请下载模板</p>
+                    <div class="download_down">
+                        <el-button class="info-btn" type="mini"><a :href="downloadUrl" download>下载模板</a></el-button>
+                    </div>
+                    <el-upload
+                        class="upload-demo"
+                        ref="upload"
+                        :multiple="true"
+                        action="doUpload"
+                        :limit="1"
+                        :before-upload="beforeUpload">
+                        <el-button slot="trigger" size="mini" class="info-btn">导入excel</el-button>
+                    </el-upload>
+                </div>
+                <el-button slot="reference" class="info-btn screen_upload" type="mini">导入</el-button>
+            </el-popover>
             <el-popover
             placement="bottom"
             width="100"
@@ -409,6 +439,7 @@
 <script>
     import store from '../../../../store/store'
     import axios from 'axios'
+    import XLSX from 'xlsx';
     import qs from 'qs'
 
     export default {
@@ -475,6 +506,7 @@
                 formLabelWidth: '130px',
 
                 authorityInterface: null,
+                downloadUrl: this.$store.state.defaultHttp+'upload/import_template.xls'
             }
         },
         beforeCreate(){
@@ -487,7 +519,7 @@
                 _this.typeData = res.data.name3001
                 _this.labelData = res.data.name4001
             }).catch(function(err){
-                console.log(err);
+                // console.log(err);
             });
         },
         activated(){
@@ -528,7 +560,7 @@
                     _this.$store.state.customerList = res.data.map.success
                     _this.$store.state.customerListnumber = res.data.count;
                 }).catch(function(err){
-                    console.log(err);
+                    // console.log(err);
                 });
             },
             reloadData(){
@@ -547,7 +579,7 @@
                 }).then(function(res){
                     _this.filterList = res.data
                 }).catch(function(err){
-                    console.log(err);
+                    // console.log(err);
                 });
                 axios({
                     method: 'post',
@@ -556,7 +588,7 @@
                 }).then(function(res){
                     _this.checklist = res.data
                 }).catch(function(err){
-                    console.log(err);
+                    // console.log(err);
                 });
             },
             selectInfo(val){
@@ -651,7 +683,7 @@
                         _this.$router.push({ path: '/customeraddorupdate' });
                     }
                 }).catch(function(err){
-                    console.log(err);
+                    // console.log(err);
                 });
             },
             handleEdit(index,row){
@@ -738,7 +770,7 @@
                         _this.$router.push({ path: '/customeraddorupdate' });
                     }
                 }).catch(function(err){
-                    console.log(err);
+                    // console.log(err);
                 });
             },
             TocustomerPool(){
@@ -771,7 +803,7 @@
                             });
                         }
                     }).catch(function(err){
-                        console.log(err);
+                        _this.$message.error("转移失败,请重新转移");
                     });
                 }else{
                     _this.$message({
@@ -801,7 +833,7 @@
                         _this.$options.methods.reloadData.bind(_this)(true);
                     }
                 }).catch(function(err){
-                    console.log(err);
+                    // console.log(err);
                 });
             },
             search() {
@@ -829,7 +861,7 @@
                         _this.$options.methods.reloadTable.bind(_this)(true);
                     }
                 }).catch(function(err){
-                    console.log(err);
+                    // console.log(err);
                 });
             },
             reset(){
@@ -846,6 +878,65 @@
                 const _this = this;
                 _this.page = val;
                 _this.$options.methods.reloadTable.bind(_this)(false);
+            },
+            beforeUpload(file){
+                this.files = file;
+                const extension = file.name.split('.')[1] === 'xls'
+                const extension2 = file.name.split('.')[1] === 'xlsx'
+                const isLt5M = file.size / 1024 / 1024 < 5
+                if (!extension && !extension2) {
+                    this.$message.warning('上传模板只能是 xls、xlsx格式!')
+                    return
+                }
+                if (!isLt5M) {
+                    this.$message.warning('上传模板大小不能超过 5MB!')
+                    return
+                }
+                this.fileName = file.name;
+                setTimeout(() => {
+                    this.submitUpload();
+                },500);
+                return false; // 返回false不会自动上传
+            },   
+         
+            // 上传excel
+            submitUpload() {
+                const _this = this
+                if(this.fileName == ""){
+                    this.$message.warning('请选择要上传的文件！')
+                    return false
+                }
+                let fileFormData = new FormData();
+                // fileFormData.append("code", "t_pathology_info_excel");
+                // fileFormData.append("description", "excel上传测试");
+                fileFormData.append("pId", this.$store.state.ispId);
+                fileFormData.append("secondid", this.$store.state.deptid);
+                fileFormData.append("deptid", this.$store.state.insid);
+                //filename是键，file是值，就是要传的文件，test是要传的文件名
+                fileFormData.append('files', this.files, this.fileName);
+                let requestConfig = {
+                    headers: {
+                        'Content-Type': 'multipart/form-data'
+                    },
+                }
+                // 执行上传excel
+                axios.post(this.$store.state.defaultHttp+'customerpool/upload.do?cId='+this.$store.state.iscId,fileFormData, requestConfig)
+                .then(res => {
+                    if(res.data.code && res.data.code == 200){
+                        _this.$message({
+                            message: '上传成功',
+                            type: 'success'
+                        })
+                    }else{
+                        _this.$message({
+                            message: res.data.msg,
+                            type: 'error'
+                        })
+                    }
+                    _this.$options.methods.reloadTable.bind(_this)(true);
+                }).catch((e) => {
+                    _this.$message.error("excel上传失败，请重新上传");
+                })
             },
         },
     }
