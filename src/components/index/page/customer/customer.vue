@@ -604,9 +604,9 @@
                 
             },
             openDetails(index,row){
-                let cusdetailsData = {};
-                cusdetailsData.submitData = {"id": row.id};
-                this.$store.state.cusdetailsData = cusdetailsData;
+                // let cusdetailsData = {};
+                // cusdetailsData.submitData = {"id": row.id};
+                this.$store.state.cusdetailsData = {submitData:{"id": row.id}};
                 this.$router.push({ path: '/customerDetails' });
             },
             handleAdd(){
@@ -946,8 +946,5 @@
     .el-table td, .el-table th {
         padding: 6px 0 !important;
         line-height: 30px;
-    }
-    .el-row{
-        margin-bottom: 10px;
     }
 </style>

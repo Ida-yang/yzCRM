@@ -759,9 +759,6 @@
     .el-input {
         width: 100%;
     }
-    .el-row{
-        margin-bottom: 10px;
-    }
     .searchcontent{
         width: 100%;
         height: 370px;

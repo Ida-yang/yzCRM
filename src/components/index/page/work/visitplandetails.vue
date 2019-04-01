@@ -120,7 +120,7 @@
 <script>
     import store from '../../../../store/store'
     import axios from 'axios'
-    import bus from '../../bus';
+    import bus from '../../bus'
     import qs from 'qs'
 
 export default {
@@ -145,7 +145,6 @@ export default {
             thisshow:true,
             retracts:true,
             examines:true,
-            thistime:null,
 
             // ratevalue: null,
             ratetexts: ['2','4','6','8','10'],
@@ -165,6 +164,10 @@ export default {
         this.loadTable()
         this.reload()
 
+    },
+    beforeRouteLeave(to, from , next){
+        bus.$off('id')
+        next()
     },
     methods:{
         reload(){
@@ -231,19 +234,8 @@ export default {
             });
         },
         getTime(){
-            let myDate = new Date()
-            let y = myDate.getFullYear() //获取完整的年份(4位,1970-????)
-            let m = myDate.getMonth() + 1 //获取当前月份(0-11,0代表1月)
-            let d = myDate.getDate() //获取当前日(1-31)
-            let h = myDate.getHours() //获取当前小时数(0-23)
-            let mm = myDate.getMinutes() //获取当前分钟数(0-59)
-            let s = myDate.getSeconds() //获取当前秒数(0-59)
-            m = (m < 10 ? "0" + m : m)
-            d = (d < 10 ? "0" + d : d)
-            h = (h < 10 ? "0" + h : h)
-            mm = (mm < 10 ? "0" + mm : mm)
-            s = (s < 10 ? "0" + s : s)
-            this.thistime = y + '-' + m + '-' + d + ' ' + h + ':' + mm + ':' + s
+            this.$store.commit('getNowTime')
+            // console.log(this.$store.state.nowtime)
         },
         toexamine(e){
             this.getTime()
@@ -257,13 +249,11 @@ export default {
             }else{
                 data.approverState = '未审核'
             }
-            data.approverTime = this.thistime
-            data.customerpoolid = this.visitdetails.customerpoolid
-            data.customerName = this.visitdetails.customerName
+            data.approverTime = this.$store.state.nowtime
 
             axios({
                 method: 'post',
-                url: _this.$store.state.defaultHttp+'visit/updateVisit.do?cId='+_this.$store.state.iscId,
+                url: _this.$store.state.defaultHttp+'visit/updateVisitState.do?cId='+_this.$store.state.iscId,
                 data: qs.stringify(data),
             }).then(function(res){
                 if(res.data.code && res.data.code == 200) {

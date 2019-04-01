@@ -691,7 +691,4 @@
         padding: 6px 0 !important;
         line-height: 30px;
     }
-    .el-row{
-        margin-bottom: 10px;
-    }
 </style>

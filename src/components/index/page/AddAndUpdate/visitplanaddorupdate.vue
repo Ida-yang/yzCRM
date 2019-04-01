@@ -376,7 +376,7 @@ export default {
             if (item) {
                 delItem.path === this.$route.fullPath && this.$router.push('/visitplan');
             }else{
-                this.$router.push('/welcome');
+                this.$router.push('/index');
             }
         },
     },

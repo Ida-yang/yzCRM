@@ -825,7 +825,7 @@
     }
 </script>
 <style>
-    .contentall{
+    /* .contentall{
         background-color: #ffffff;
-    }
+    } */
 </style>

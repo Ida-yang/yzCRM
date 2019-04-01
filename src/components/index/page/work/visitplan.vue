@@ -424,16 +424,22 @@ export default {
             this.$router.push({ path: '/visitplandetails' });
             // bus.$emit('id', row.id);
         },
+        getTime(){
+            this.$store.commit('getNowTime')
+            // console.log(this.$store.state.nowtime)
+        },
         changeState(e,row){
+            this.getTime()
             const _this = this
             let qs =require('querystring')
             let data = {}
             data.id = row.id
             data.state = e.target.innerText
+            data.updateTime = this.$store.state.nowtime
             if(row.pId == this.$store.state.ispId){
                 axios({
                     method: 'post',
-                    url: _this.$store.state.defaultHttp+'visit/updateVisit.do?cId='+_this.$store.state.iscId,
+                    url: _this.$store.state.defaultHttp+'visit/updateVisitState.do?cId='+_this.$store.state.iscId,
                     data: qs.stringify(data),
                 }).then(function(res){
                     if(res.data.code && res.data.code == 200) {

@@ -379,7 +379,7 @@
                 if (item) {
                     delItem.path === this.$route.fullPath && this.$router.push('/businessOpportunity');
                 }else{
-                    this.$router.push('/welcome');
+                    this.$router.push('/index');
                 }
             },
         }

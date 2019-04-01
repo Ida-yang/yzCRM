@@ -146,6 +146,10 @@
                                 index: 'socialMarketing',
                                 title: '社交营销',
                             },
+                            {
+                                index: 'smstemp',
+                                title: '短信营销',
+                            },
                         ]
                     },
                     {
@@ -166,11 +170,11 @@
                     {
                         icon: 'mdi-puzzle',
                         index: '6',
-                        title: '短信模板',
+                        title: '报表',
                         subs: [
                             {
-                                index: 'smstemp',
-                                title: '短信模板',
+                                index: 'analysisReport',
+                                title: '报表',
                             },
                         ]
                     },
@@ -196,7 +200,7 @@
                             },
                             {
                                 index: 'programme',
-                                title: '方案/目标',
+                                title: '目标',
                             },
                             // {
                             //     index: 'suibian',

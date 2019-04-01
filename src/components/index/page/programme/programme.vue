@@ -46,8 +46,7 @@
                         border
                         stripe
                         style="width:100%;text-align:center"
-                        @selection-change="selectInfo"
-                        >
+                        @selection-change="selectInfo">
                         <el-table-column
                             fixed
                             header-align="center"
@@ -160,13 +159,14 @@
                 </el-tab-pane>
                 <el-tab-pane label="线索客户参数" name="second">
                     <div class="entry">
-                        <p class="dept_name">{{depts}}</p>
+                        <p class="dept_name" v-show="showparams">{{depts}}</p>
+                        <p class="dept_name" v-show="!showparams">请选择部门，查看限制参数</p>
                         <!-- <el-button class="btn info-btn" size="mini" @click="editParam()">编辑</el-button> -->
                     </div>
-                    <div class="param_c">
-                        <p>线索超过 <el-input class="inputnum" v-model="cluenum"></el-input> 天后，线索自动归集到线索池，同时每个人最多允许存在 <el-input class="inputnum" v-model="cluenums"></el-input> 条在线索，超过后不允许新增。</p>
-                        <p>客户超过 <el-input class="inputnum" v-model="cusnum"></el-input> 天后，客户自动归集到客户池，同时每个人最多允许存在 <el-input class="inputnum" v-model="cusnums"></el-input> 条在客户，超过后不允许新增。</p>
-                        <p>没人最多允许存在 <el-input class="inputnum" v-model="oppnum"></el-input> 条商机，超过后不允许新增。</p>
+                    <div class="param_c" v-show="showparams">
+                        <p>线索超过 <el-input class="inputnum" v-model="paramList.clueDay" name="clueDay" @blur="changeNum"></el-input> 天后，线索自动归集到线索池，同时每个人最多允许存在 <el-input class="inputnum" v-model="paramList.clueNum" name="clueNum" @blur="changeNum"></el-input> 条在线索，超过后不允许新增。</p>
+                        <p>客户超过 <el-input class="inputnum" v-model="paramList.customerDay" name="customerDay" @blur="changeNum"></el-input> 天后，客户自动归集到客户池，同时每个人最多允许存在 <el-input class="inputnum" v-model="paramList.customerNum" name="customerNum" @blur="changeNum"></el-input> 条在客户，超过后不允许新增。</p>
+                        <p>没人最多允许存在 <el-input class="inputnum" v-model="paramList.opportunityNum" name="opportunityNum" @blur="changeNum"></el-input> 条商机，超过后不允许新增。</p>
                     </div>
                 </el-tab-pane>
             </el-tabs>
@@ -270,6 +270,12 @@
                     state:'启用',
                     private_employee:null,
                     createTime:null,
+                    clueDay:0,
+                    customerDay:0,
+                    clueNum:0,
+                    customerNum:0,
+                    // opportunityDay:0,
+                    opportunityNum:0,
                 },
                 searchList:{
                     state:null,
@@ -294,13 +300,10 @@
                 },
                 nullvalue:null,
 
-                cluenum:'30',
-                cluenums:'200',
-                cusnum:'60',
-                cusnums:'150',
-                oppnum:'100',
+                paramList:{},
 
                 depts:null,
+                showparams:false
             }
         },
         //获取机构部门树型结构
@@ -341,6 +344,14 @@
                 }).catch(function(err){
                     // console.log(err);
                 });
+                axios({
+                    method: 'get',
+                    url: _this.$store.state.defaultHttp+'dept/getDeptNodeTree.do?cId='+_this.$store.state.iscId,
+                }).then(function(res){
+                    _this.datalist = res.data.map.success
+                }).catch(function(err){
+                    // console.log(err);
+                });
             },
             reloadTable(){
                 const _this = this
@@ -351,14 +362,6 @@
                 pageInfo.state = this.searchList.state
                 pageInfo.secondid = this.searchList.secondid
 
-                axios({
-                    method: 'get',
-                    url: _this.$store.state.defaultHttp+'dept/getDeptNodeTree.do?cId='+_this.$store.state.iscId,
-                }).then(function(res){
-                    _this.datalist = res.data.map.success
-                }).catch(function(err){
-                    // console.log(err);
-                });
                 //获取所有方案
                 axios({
                     method: 'post',
@@ -371,16 +374,35 @@
                     // console.log(err);
                 });
             },
+            reloadNum(){
+                const _this = this
+                let qs = require('querystring')
+                let pageInfo = {}
+                pageInfo.secondid = this.searchList.secondid
+
+                axios({
+                    method: 'post',
+                    url: _this.$store.state.defaultHttp+'restrictiveConditions/selectBySecondid.do?cId='+_this.$store.state.iscId,
+                    data:qs.stringify(pageInfo)
+                }).then(function(res){
+                    _this.paramList = res.data.map.restrictiveConditions
+                }).catch(function(err){
+                    // console.log(err);
+                });
+            },
             handleNodeClick(data){
                 this.searchList.secondid = data.deptid
                 this.clickdata = data
                 this.depts = data.deptname
+                this.newform.second_id = data.deptid
+                this.newform.secondname = data.deptname
                 if(this.activename == 'first'){
-                    this.newform.second_id = data.deptid
-                    this.newform.secondname = data.deptname
                     this.$options.methods.reloadTable.bind(this)(true);
+                }else{
+                    this.$options.methods.reloadNum.bind(this)(true)
+                    this.showparams = true
+                    console.log()
                 }
-                
             },
             selectInfo(val){
                 this.multipleSelection = val;
@@ -667,6 +689,35 @@
                     });       
                 });
             },
+            changeNum(e){
+                console.log(e.target.name,e.target.value)
+                const _this = this
+                let qs = require('querystring')
+                let data = {}
+                data.id = this.paramList.id
+                data.secondid = this.paramList.secondid
+                data.clueDay = this.paramList.clueDay
+                data.clueNum = this.paramList.clueNum
+                data.customerDay = this.paramList.customerDay
+                data.customerNum = this.paramList.customerNum
+                data.opportunityNum = this.paramList.opportunityNum
+
+                axios({
+                    method: 'post',
+                    url:  _this.$store.state.defaultHttp+ 'restrictiveConditions/updateRestrictiveConditionsById.do?cId='+_this.$store.state.iscId+'&pId='+_this.$store.state.ispId,
+                    data:qs.stringify(data),
+                }).then(function(res){
+                    if(res.data.code && res.data.code == 200){
+                        _this.$message({
+                            type: 'success',
+                            message: '修改成功'
+                        });  
+                    }
+                }).catch(function(err){
+                    // console.log(err);
+                });
+                // console.log(e.target.value)
+            },
             hangleChange(e,val){
                 const _this = this
                 let qs = require('querystring')
@@ -707,9 +758,9 @@
     }
 </script>
 <style>
-    .contentall{
+    /* .contentall{
         background-color: #ffffff;
-    }
+    } */
     .dialogform .el-form-item{
         width: 90%;
     }
@@ -722,7 +773,7 @@
         font-size: 14px;
     }
     .inputnum{
-        width: 65px;
+        width: 75px;
     }
     .inputnum .el-input__inner{
         text-align: center;

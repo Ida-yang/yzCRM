@@ -370,6 +370,7 @@
 <script>
     import store from '../../../../store/store'
     import axios from 'axios'
+    import bus from '../../bus'
     import qs from 'qs'
 
     export default {
@@ -469,15 +470,30 @@
                 showloading:false
             }
         },
+        beforeRouteLeave(to, from , next){
+            bus.$off('customer')
+            next()
+        },
         activated(){
             this.loadData();
             this.loadCountry()
+            this.reload()
         },
         // mounted(){
         //     this.loadData();
         //     this.loadCountry()
         // },
         methods: {
+            reload(){
+                const _this = this
+                bus.$on('customer', function (msg) {
+                    if(msg){
+                        console.log('1111111')
+                        _this.$options.methods.loadData.bind(_this)()
+                        _this.$options.methods.loadCountry.bind(_this)()
+                    }
+                })
+            },
             loadData() {
                 this.detailData = this.$store.state.cusdetailsData.submitData;
                 this.idArr.id = this.$store.state.cusdetailsData.submitData.id
@@ -530,10 +546,10 @@
                 }).then(function(res){
                     _this.record = res.data.map.success
                     if(!_this.record[0]){
-                        _this.loadState()
+                        _this.$options.methods.loadState.bind(_this)()
                     }else{
                         _this.followform.state = _this.record[0].state
-                        _this.loadState()
+                        _this.$options.methods.loadState.bind(_this)()
                     }
                     _this.record.forEach(el => {
                         let startTime = Date.parse(el.createTime); // 开始时间
@@ -881,7 +897,7 @@
                 if (item) {
                     delItem.path === this.$route.fullPath && this.$router.push('/customer');
                 }else{
-                    this.$router.push('/welcome');
+                    this.$router.push('/index');
                 }
             },
             handleSizeChange(val) {

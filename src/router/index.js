@@ -37,7 +37,7 @@ const router =new Router({
           meta: { title: '首页' ,requireAuth:true}
         },
         {
-          path: '/welcome',
+          path: '/index',
           component: resolve => require(['../components/index/page/welcome.vue'], resolve),
           meta: { title: '首页' ,requireAuth:true}
         },
@@ -159,12 +159,12 @@ const router =new Router({
         {
           path: '/programme',
           component: resolve => require(['../components/index/page/programme/programme.vue'], resolve),
-          meta: { title: '方案/目标',name:'programme' ,requireAuth:true}
+          meta: { title: '目标',name:'programme' ,requireAuth:true}
         },
         {
           path: '/programmeDetails',
           component: resolve => require(['../components/index/page/programme/programmeDetails.vue'], resolve),
-          meta: { title: '方案/目标详情',requireAuth:true}
+          meta: { title: '目标详情',requireAuth:true}
         },
         {
           path: '/visitplan',
@@ -193,8 +193,13 @@ const router =new Router({
         },
         {
           path: '/smstemp',
-          component: resolve => require(['../components/index/page/name/smstemp.vue'], resolve),
-          meta: { title: '短信模板',requireAuth:true}
+          component: resolve => require(['../components/index/page/smstemp/smstemp.vue'], resolve),
+          meta: { title: '短信营销',requireAuth:true}
+        },
+        {
+          path: '/analysisReport',
+          component: resolve => require(['../components/index/page/analysisReport/analysisReport.vue'], resolve),
+          meta: { title: '报表',requireAuth:true}
         },
       ]
     },

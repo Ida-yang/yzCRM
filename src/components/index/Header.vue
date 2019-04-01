@@ -110,7 +110,7 @@
                 fullscreen: false,
 
                 dotmessage: false,
-                message_val:'5',
+                message_val: 0,
 
                 breadsList:{
                     path:'',
@@ -132,7 +132,6 @@
                         {require:true, validator: validaterespass, trigger: 'blur'}
                     ]
                 },
-                thistime:null,
             }
         },
         inject:["reload"], 
@@ -265,26 +264,14 @@
                 bus.$emit('collapse2', this.collapse2);
             },
             getTime(){
-                let myDate = new Date()
-                let y = myDate.getFullYear() //获取完整的年份(4位,1970-????)
-                let m = myDate.getMonth() + 1 //获取当前月份(0-11,0代表1月)
-                let d = myDate.getDate() //获取当前日(1-31)
-                let h = myDate.getHours() //获取当前小时数(0-23)
-                let mm = myDate.getMinutes() //获取当前分钟数(0-59)
-                let s = myDate.getSeconds() //获取当前秒数(0-59)
-                m = (m < 10 ? "0" + m : m)
-                d = (d < 10 ? "0" + d : d)
-                h = (h < 10 ? "0" + h : h)
-                mm = (mm < 10 ? "0" + mm : mm)
-                s = (s < 10 ? "0" + s : s)
-                this.thistime = y + '-' + m + '-' + d + ' ' + h + ':' + mm + ':' + s
+                this.$store.commit('getNowTime')
             },
             loadmessage(){
                 this.getTime()
                 const _this = this
                 let qs =require('querystring')
                 let data = {}
-                // data.remindTime = this.thistime
+                data.remindTime = this.$store.state.nowtime
                 data.state = '未读'
 
                 axios({
@@ -292,20 +279,11 @@
                     url: _this.$store.state.defaultHttp+'message/selectMessage.do?cId='+_this.$store.state.iscId+'&pId='+_this.$store.state.ispId,
                     data: qs.stringify(data),
                 }).then(function(res){
-                    _this.$store.state.messageList = res.data
-                    if(res.data.dealtWith){
-                        res.data.dealtWith.forEach(el1 => {
-                            if(el1.id){
-                                _this.dotmessage = true
-                            }
-                        });
-                    }
-                    if(res.data.examine){
-                        res.data.examine.forEach(el2 => {
-                            if(el2.id){
-                                _this.dotmessage = true
-                            }
-                        });
+                    if(res.data.count && res.data.count > 0){
+                        _this.dotmessage = true
+                        _this.message_val = res.data.count
+                    }else if(!res.data.count && res.data.count == 0){
+                        _this.dotmessage = false
                     }
                 }).catch(function(err){
                     // console.log(err)

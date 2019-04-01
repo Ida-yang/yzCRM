@@ -62,6 +62,7 @@ export default {
                 public_username :'',
                 public_password :''
             },
+            loginname: null,
             remember:false,
             rules: {
                 public_username : [
@@ -87,7 +88,9 @@ export default {
             if(this.remember == true){
                 _this.setlocalStorage(_this.loginFrom.public_username, _this.loginFrom.public_password)
             }else{
-                _this.clearlocalStorage()
+                if(loginInfo.public_username == _this.loginname){
+                    _this.clearlocalStorage()
+                }
             }
 
             axios({
@@ -127,9 +130,9 @@ export default {
             localStorage.setItem('sitePassword',p)
         },
         getlocalStorage() {
-            let name = localStorage.getItem('siteName') //保存到保存数据的地方
+            this.loginname = localStorage.getItem('siteName') //保存到保存数据的地方
             let pwd = localStorage.getItem('sitePassword')
-            this.loginFrom.public_username = name
+            this.loginFrom.public_username = this.loginname
             this.loginFrom.public_password = pwd
             if(pwd){
                 this.remember = true

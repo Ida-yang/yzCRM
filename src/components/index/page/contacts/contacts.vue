@@ -642,8 +642,5 @@
 </script>
 
 <style>
-    .el-row{
-        margin-bottom: 10px;
-    }
     
 </style>

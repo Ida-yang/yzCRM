@@ -137,6 +137,9 @@ const state = {
   smstempList:[],
   //报表列表总数
   smstempListnumber:0,
+
+  //当前时间
+  nowtime:null,
 }
 /*配置全局函数*/
 const mutations = {
@@ -166,6 +169,21 @@ const mutations = {
   insid(state,msg){
     state.insid = msg;
     localStorage.setItem('insid',msg);
+  },
+  getNowTime(){
+    let myDate = new Date()
+    let y = myDate.getFullYear() //获取完整的年份(4位,1970-????)
+    let m = myDate.getMonth() + 1 //获取当前月份(0-11,0代表1月)
+    let d = myDate.getDate() //获取当前日(1-31)
+    let h = myDate.getHours() //获取当前小时数(0-23)
+    let mm = myDate.getMinutes() //获取当前分钟数(0-59)
+    let s = myDate.getSeconds() //获取当前秒数(0-59)
+    m = (m < 10 ? "0" + m : m)
+    d = (d < 10 ? "0" + d : d)
+    h = (h < 10 ? "0" + h : h)
+    mm = (mm < 10 ? "0" + mm : mm)
+    s = (s < 10 ? "0" + s : s)
+    state.nowtime = y + '-' + m + '-' + d + ' ' + h + ':' + mm + ':' + s
   }
 
 }

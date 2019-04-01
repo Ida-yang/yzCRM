@@ -578,12 +578,20 @@ export default {
     .contentall{
         background-color: #ffffff;
         display: flex;
+        height: 100%
     }
     .setleftcontent{
         flex: 0 0 20%;
         height: 100%;
         padding-top:30px;
         box-sizing: border-box;
+    }
+    .setrightcontent{
+        flex: 0 0 79%;
+        height: 100%;
+        box-sizing: border-box;
+        overflow-y: scroll;
+        overflow-x: hidden
     }
     .namecontent{
         width: 100%;
@@ -606,14 +614,9 @@ export default {
         box-sizing: border-box;
         background-color: #f0f0f0;
     }
-    .setrightcontent{
-        flex: 0 0 79%;
-        height: 100%;
-        box-sizing: border-box;
-    }
     .otherleftcontent{
         width: 20%;
-        height: auto;
+        height: 100%;
         float: left;
         box-sizing: border-box;
     }
@@ -622,6 +625,8 @@ export default {
         height: 100%;
         float: left;
         box-sizing: border-box;
+        overflow-y: scroll;
+        overflow-x: hidden
     }
     .el-tree{
         margin: 20px 0;
@@ -653,5 +658,10 @@ export default {
         height: auto;
         border:none;
         border-radius: 4px;
+    }
+    .checkform{
+        width: 100%;
+        height: 200px;
+        background-color: #5281c7
     }
 </style>

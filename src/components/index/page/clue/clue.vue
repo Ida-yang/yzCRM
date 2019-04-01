@@ -621,9 +621,10 @@
                 
             },
             openDetails(index,row){
-                let cluedetailsData = {};
-                cluedetailsData.submitData = {"id": row.id};
-                this.$store.state.cluedetailsData = cluedetailsData;
+                // let cluedetailsData = {};
+                // cluedetailsData.submitData = {"id": row.id};
+                // this.$store.state.cluedetailsData = cluedetailsData;
+                this.$store.state.cluedetailsData = {submitData:{"id": row.id}};
                 this.$router.push({ path: '/clueDetails' });
             },
             handleAdd(){
@@ -993,9 +994,6 @@
     .el-table td, .el-table th {
         padding: 6px 0 !important;
         line-height: 30px;
-    }
-    .el-row{
-        margin-bottom: 10px;
     }
     
 </style>

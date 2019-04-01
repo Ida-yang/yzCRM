@@ -1,6 +1,6 @@
 <template>
     <!-- 机构部门及角色 -->
-    <div class="contentall">
+    <div class="organ_content">
         <div class="leftcontent">
             <el-tree
                 node-key="deptid"
@@ -873,7 +873,7 @@
 </script>
 
 <style>
-    .contentall{
+    .organ_content{
         background-color: #ffffff;
         height: 100%;
     }
