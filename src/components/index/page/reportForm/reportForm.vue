@@ -439,14 +439,12 @@
                     },
                     xAxis: {
                         bottom: 20,
-                        // data: ["1年以内", "1-3年", "3-5年", "5-8年", "8-10年", "10年以上"]
                         data: this.yedata
                     },
                     yAxis: {},
                     series: [{
                         name: '成立年限',
                         type: 'bar',
-                        // data: [55, 20, 36, 25, 10, 9]
                         data: this.years
                     }]
                 });
@@ -476,15 +474,7 @@
                         radius : '60%',
                         center: ['50%', '50%'],
                         selectedMode: 'single',
-                        data: this.industry,
-                        // data:[
-                        //         {value:3000, name:'电子'},
-                        //         {value:3000, name:'化妆品'},
-                        //         {value:3000, name:'五金'},
-                        //         {value:3000, name:'知识产权'},
-                        //         {value:3000, name:'农业'},
-                        //         {value:3000, name:'汽配'}
-                        //     ], // 扇形区域数据
+                        data: this.industry,// 扇形区域数据
                         itemStyle: {
                             emphasis: {
                                 shadowBlur: 10,
@@ -554,15 +544,6 @@
                             type: 'map',
                             geoIndex: 0,
                             data: this.city
-                            // data: [
-                            //     {"name": "内蒙古","value": 599}, 
-                            //     {"name": "上海","value": 142}, 
-                            //     {"name": "黑龙江","value": 44}, 
-                            //     {"name": "青海","value": 92}, 
-                            //     {"name": "湖北","value": 810}, 
-                            //     {"name": "香港","value": 19450}, 
-                            //     {"name": "澳门特别行政区","value": 150}
-                            // ]
                         }
                     ]
                 });

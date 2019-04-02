@@ -148,7 +148,7 @@
                             },
                             {
                                 index: 'smstemp',
-                                title: '短信营销',
+                                title: '短信模板',
                             },
                         ]
                     },
@@ -175,6 +175,10 @@
                             {
                                 index: 'analysisReport',
                                 title: '报表',
+                            },
+                            {
+                                index: 'suibian',
+                                title: '报表测试',
                             },
                         ]
                     },

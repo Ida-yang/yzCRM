@@ -661,7 +661,7 @@ export default {
     }
     .checkform{
         width: 100%;
-        height: 200px;
+        height: 150px;
         background-color: #5281c7
     }
 </style>

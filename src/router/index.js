@@ -136,11 +136,11 @@ const router =new Router({
           component: resolve => require(['../components/index/page/organization/organization.vue'], resolve),
           meta: { title: '组织机构',name:'organization' ,requireAuth:true}
         },
-        {
-          path: '/suibian',
-          component: resolve => require(['../components/index/page/organization/name.vue'], resolve),
-          meta: { title: '随便',name:'suibian' ,requireAuth:true}
-        },
+        // {
+        //   path: '/suibian',
+        //   component: resolve => require(['../components/index/page/organization/name.vue'], resolve),
+        //   meta: { title: '随便',name:'suibian' ,requireAuth:true}
+        // },
         {
           path: '/user',
           component: resolve => require(['../components/index/page/user/user.vue'], resolve),
@@ -194,12 +194,17 @@ const router =new Router({
         {
           path: '/smstemp',
           component: resolve => require(['../components/index/page/smstemp/smstemp.vue'], resolve),
-          meta: { title: '短信营销',requireAuth:true}
+          meta: { title: '短信模板',requireAuth:true}
         },
         {
           path: '/analysisReport',
           component: resolve => require(['../components/index/page/analysisReport/analysisReport.vue'], resolve),
           meta: { title: '报表',requireAuth:true}
+        },
+        {
+          path: '/suibian',
+          component: resolve => require(['../components/index/page/analysisReport/suibian.vue'], resolve),
+          meta: { title: '报表测试',requireAuth:true}
         },
       ]
     },
