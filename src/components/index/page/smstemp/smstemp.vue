@@ -13,19 +13,19 @@
             </div>
             <div class="sms_c">
                 <ul>
-                    <li v-for="item in smsData" :key="item.id">
+                    <li v-for="(item,index) in smsData" :key="index">
                         <div class="sms_h">
-                            <span>{{item.type}}:{{item.typeName}}</span>
+                            <span>{{item.type}}:{{item.title}}</span>
                         </div>
                         <hr style='background-color:#cccccc;height:1px;border:none;'/>
                         <div class="sms_b">
                             <p>短信/彩信</p>
                             <p>2019-03-29 15:31:21</p>
-                            <div class="sms_b_c">这是一个短信模板，这是一个短信模板，这是一个短信模板，这是一个短信模板，这是一个短信模板，这是一个短信模板，这是一个短信</div>
-                            <div class="approve" v-show="item.showapprove">
+                            <div class="sms_b_c">{{item.content}}</div>
+                            <div class="approve" v-show="item.status == 2">
                                 <img class="approve_img" src="/upload/staticImg/examine.png" alt="已审核">
                             </div>
-                            <div class="approve" v-show="!item.showapprove">
+                            <div class="approve" v-show="item.status == 3">
                                 <img class="approve_img" src="/upload/staticImg/approve.png" alt="审核未通过">
                             </div>
                         </div>
@@ -43,17 +43,19 @@
             :visible.sync="dialogVisible"
             width="40%">
             <el-form ref="newform" :model="newform" label-width="80px" :rules="rules">
-                <el-form-item prop="type" label="状态类别">
+                <el-form-item prop="type" label="模板类别">
                     <el-input v-model="newform.type" :disabled="true"></el-input>
                 </el-form-item>
-                <el-form-item prop="typeName" label="状态名称">
-                    <el-input v-model="newform.typeName" placeholder="请输入状态名称"></el-input>
+                <el-form-item prop="title" label="模板标题">
+                    <el-input v-model="newform.title" placeholder="请输入模板标题"></el-input>
                 </el-form-item>
-                <el-form-item prop="sort" label="排序编号">
-                    <el-input onkeyup = "value=value.replace(/[^\d]/g,'')" v-model="newform.sort" placeholder="请输入排序编号"></el-input>
+                <el-form-item prop="content" label="模板内容">
+                    <el-input type="textarea" rows="5" v-model="newform.content" placeholder="模板内容"></el-input>
                 </el-form-item>
-                <el-form-item prop="notes" label="备注">
-                    <el-input v-model="newform.notes" placeholder="请输入状态备注"></el-input>
+                <el-form-item label="标签">
+                    <el-button plain size="mini" @click="checkTag">姓名</el-button>
+                    <el-button plain size="mini" @click="checkTag">公司名称</el-button>
+                    <el-button plain size="mini" @click="checkTag">时间</el-button>
                 </el-form-item>
             </el-form>
             <span slot="footer" class="dialog-footer">
@@ -66,17 +68,19 @@
             :visible.sync="dialogVisible2"
             width="40%">
             <el-form ref="newform" :model="newform" :rules="rules" label-width="80px">
-                <el-form-item prop="type" label="状态类别">
+                <el-form-item prop="type" label="模板类别">
                     <el-input v-model="newform.type" :disabled="true"></el-input>
                 </el-form-item>
-                <el-form-item prop="typeName" label="状态名称">
-                    <el-input v-model="newform.typeName" placeholder="请输入状态名称"></el-input>
+                <el-form-item prop="title" label="模板标题">
+                    <el-input v-model="newform.title" placeholder="请输入模板标题"></el-input>
                 </el-form-item>
-                <el-form-item prop="sort" label="排序编号">
-                    <el-input onkeyup = "value=value.replace(/[^\d]/g,'')" v-model="newform.sort" placeholder="请输入排序编号"></el-input>
+                <el-form-item prop="content" label="模板内容">
+                    <el-input type="textarea" rows="5" v-model="newform.content" placeholder="请输入模板内容"></el-input>
                 </el-form-item>
-                <el-form-item prop="notes" label="备注">
-                    <el-input v-model="newform.notes" placeholder="请输入状态备注"></el-input>
+                <el-form-item label="标签">
+                    <el-button plain size="mini" @click="checkTag">姓名</el-button>
+                    <el-button plain size="mini" @click="checkTag">公司名称</el-button>
+                    <el-button plain size="mini" @click="checkTag">时间</el-button>
                 </el-form-item>
             </el-form>
             <span slot="footer" class="dialog-footer">
@@ -103,38 +107,30 @@
             return {
                 dataList:null,
                 nameList:[
-                    {index:1,name:'线索状态',isActive:true},
-                    {index:2,name:'客户状态',isActive:false},
-                    {index:3,name:'客户来源',isActive:false},
-                    {index:4,name:'客户级别',isActive:false},
-                    {index:5,name:'快捷方式',isActive:false},
+                    {index:1,name:'线索',isActive:true},
+                    {index:2,name:'客户',isActive:false},
+                    {index:3,name:'联系人',isActive:false},
+                    {index:4,name:'商机',isActive:false},
+                    {index:5,name:'合同',isActive:false},
+                    {index:6,name:'营销',isActive:false},
                 ],
                 newform:{
-                    type:'线索状态',
+                    type:'线索',
                     index:'1',
                     id:null,
-                    sort:null,
-                    typeName:null,
-                    notes:null,
-                    quickname:null,
-                    quickcontent:null,
-                    probability:null,
-                },
-
-                checklist:['顺序','名称','备注'],
-                idArr:{
-                    id:null,
+                    title:null,
+                    content:null,
+                    signature:null,
+                    varCount:[],
                 },
 
                 dialogVisible:false,
                 dialogVisible2:false,
 
                 rules: {
-                    typeName : [{ required: true, message: '名称不能为空', trigger: 'blur' },],
-                    sort : [{ required: true, message: '排序编号不能为空', trigger: 'blur' },],
-                    quickname : [{ required: true, message: '快捷方式不能为空', trigger: 'blur' },],
-                    quickcontent : [{ required: true, message: '跟进内容不能为空', trigger: 'blur' },],
-                    probability : [{ required: true, message: '成功几率不能为空', trigger: 'blur' },],
+                    title : [{ required: true, message: '模板标题不能为空', trigger: 'blur' },],
+                    content : [{ required: true, message: '模板内容不能为空', trigger: 'blur' },],
+                    signature : [{ required: true, message: '模板签名不能为空', trigger: 'blur' },],
                 },
             }
         },
@@ -153,17 +149,10 @@
                 data.type = this.newform.type
                 axios({
                     method: 'post',
-                    url: _this.$store.state.defaultHttp+'typeInfo/getTypeInfoGroupByType.do?cId='+_this.$store.state.iscId,
+                    url: _this.$store.state.defaultHttp+'template/selectTemplate.do?cId='+_this.$store.state.iscId,
                     data:qs.stringify(data)
                 }).then(function(res){
-                    _this.$store.state.smstempList = res.data
-                    res.data.forEach(element => {
-                        if(element.sort == 3 || element.sort == 5){
-                            element.showapprove = false
-                        }else{
-                            element.showapprove = true
-                        }
-                    });
+                    _this.$store.state.smstempList = res.data.map.templates
                 }).catch(function(err){
                     // console.log(err);
                 });
@@ -193,9 +182,10 @@
                             type:'error'
                         })
                     }else{
-                        _this.newform.sort = null
-                        _this.newform.notes = null
-                        _this.newform.typeName = null
+                        _this.newform.title = null
+                        _this.newform.content = null
+                        _this.newform.signature = null
+                        _this.newform.varCount = []
                         _this.dialogVisible = true
                     }
                 }).catch(function(err){
@@ -210,21 +200,22 @@
                 let i = this.newform.index
                 let data = {}
                 data.type = this.newform.type
-                data.sort = this.newform.sort
-                data.notes = this.newform.notes
-                data.typeName = this.newform.typeName
+                data.title = this.newform.title
+                data.content = this.newform.content
+                data.signature = this.newform.signature
+                data.varCount = this.newform.varCount
                 
                 let flag = false;
                 if(!data.sort){
                     _this.$message({
-                        message: "排序编号不能为空",
+                        message: "模板内容不能为空",
                         type: 'error'
                     });
                     flag = true;
                 }
-                if(!data.typeName){
+                if(!data.title){
                     _this.$message({
-                        message: "状态名称不能为空",
+                        message: "模板标题不能为空",
                         type: 'error'
                     });
                     flag = true;
@@ -233,7 +224,7 @@
 
                 axios({
                     method: 'post',
-                    url: _this.$store.state.defaultHttp+'typeInfo/saveOrUpdate.do?cId='+_this.$store.state.iscId,
+                    url: _this.$store.state.defaultHttp+'template/insertTemplate.do?cId='+_this.$store.state.iscId,
                     data:qs.stringify(data)
                 }).then(function(res){
                     if(res.data.code && res.data.code == 200){
@@ -242,7 +233,7 @@
                             type:'success'
                         })
                         _this.dialogVisible = false
-                        _this.$options.methods.reloadTable.bind(_this)(true);
+                        _this.$options.methods.reloadTable.bind(_this)(true)
                     }else{
                         _this.$message({
                             message:res.data.msg,
@@ -259,7 +250,7 @@
 
                 axios({
                     method: 'get',
-                    url: _this.$store.state.defaultHttp+'typeInfoJurisdiction/update.do',//编辑状态
+                    url: _this.$store.state.defaultHttp+'template/updateTemplate.do',//编辑状态
                 }).then(function(res){
                     if(res.data.msg && res.data.msg == 'error'){
                         _this.$message({
@@ -267,10 +258,11 @@
                             type:'error'
                         })
                     }else{
-                        _this.newform.sort = val.sort
-                        _this.newform.notes = val.notes
-                        _this.newform.id = val.id
-                        _this.newform.typeName = val.typeName
+                        _this.newform.templateId = val.templateId
+                        _this.newform.title = val.title
+                        _this.newform.content = val.content
+                        _this.newform.signature = val.signature
+                        _this.newform.varCount = val.varCount
                         _this.dialogVisible2 = true
                     }
                 }).catch(function(err){
@@ -283,23 +275,24 @@
                 let i = this.newform.index
                 let qs = require('querystring')
                 let data = {}
-                data.id = this.newform.id
+                data.templateId = this.newform.templateId
                 data.type = this.newform.type
-                data.sort = this.newform.sort
-                data.notes = this.newform.notes
-                data.typeName = this.newform.typeName
+                data.title = this.newform.title
+                data.content = this.newform.content
+                data.signature = this.newform.signature
+                data.varCount = this.newform.varCount
                 
                 let flag = false;
-                if(!data.sort){
+                if(!data.content){
                     _this.$message({
-                        message: "排序编号不能为空",
+                        message: "模板内容不能为空",
                         type: 'error'
                     });
                     flag = true;
                 }
-                if(!data.typeName){
+                if(!data.title){
                     _this.$message({
-                        message: "状态名称不能为空",
+                        message: "模板标题不能为空",
                         type: 'error'
                     });
                     flag = true;
@@ -331,13 +324,44 @@
             handledelete(e,val){
                 const _this = this;
                 let qs =require('querystring')
-                console.log(val)
+                // console.log(val)
+                let data = {}
+                data.templateId = val.templateId
+
+                _this.$confirm('是否确认删除【'+ val.title +'】？', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                }).then(({ value }) => {
+                    // axios({
+                    //     method: 'post',
+                    //     url: _this.$store.state.defaultHttp+'template/deleteTemplate.do?cId='+_this.$store.state.iscId,
+                    //     data:qs.stringify(data)
+                    // }).then(function(res){
+                    //     if(res.data.code && res.data.code == 200){
+                    //         _this.$message({
+                    //             message:'删除成功',
+                    //             type:'success'
+                    //         })
+                    //         _this.$options.methods.reloadTable.bind(_this)(true);
+                    //     }else{
+                    //         _this.$message({
+                    //             message:res.data.msg,
+                    //             type:'error'
+                    //         })
+                    //     }
+                    // }).catch(function(err){
+                    //     _this.$message.error("删除失败,请重新删除");
+                    // });
+                })
             },
             handleSend(e,val){
                 const _this = this;
                 let qs =require('querystring')
                 console.log(val)
-            }
+            },
+            checkTag(e){
+                console.log(e)
+            },
         }
     }
 </script>

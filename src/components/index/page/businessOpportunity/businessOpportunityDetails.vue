@@ -201,7 +201,7 @@
                         for(var i = 0,length = addStep.length;i < length;i++){
                             _this.stepList[i].createTime = addStep[i].createTime
                             _this.steptime = addStep[i].createTime
-                            if(addStep[i].step_probability == '0'){
+                            if(addStep[i].progress_probability == '0'){
                                 _this.active = i
                                 _this.shownext = false
                                 _this.showfail = true

@@ -152,6 +152,9 @@
             this.getMonth()
             this.loadData()
         },
+        activated(){
+            this.loadData()
+        },
         methods:{
             loadData(){
                 const _this = this;

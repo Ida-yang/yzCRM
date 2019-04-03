@@ -68,7 +68,7 @@
                     sortable>
                 </el-table-column>
                 <el-table-column
-                    prop="deptname"
+                    prop="parentname"
                     header-align="left"
                     align="left"
                     label="机构"

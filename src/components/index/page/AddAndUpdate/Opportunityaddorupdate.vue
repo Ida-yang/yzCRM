@@ -349,7 +349,7 @@
                     url: _this.oppaddOrUpdateData.submitURL,
                     data: qs.stringify(subData)
                 }).then(function(res){
-                    if(res.data && res.data == "success") {
+                    if(res.data.code && res.data.code == 200) {
                         _this.$message({
                             message: '成功',
                             type: 'success'
@@ -357,7 +357,7 @@
                         _this.closeTag();
                     } else {
                         _this.$message({
-                            message: res.data,
+                            message: res.data.msg,
                             type: 'error'
                         });
                     }

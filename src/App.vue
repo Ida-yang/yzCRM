@@ -59,7 +59,7 @@ export default {
     }
     .radioList{
         padding-left: 8px;
-        width: 100%;
+        /* width: 100%; */
         display: flex;
         flex-direction: column;
         justify-content: center;
@@ -76,6 +76,7 @@ export default {
         flex: 0 0 10%;
         line-height: 30px;
         margin-left: 10px ;
+        color: #000000;
     }
     .nameList{
         display: inline-block;
@@ -83,7 +84,7 @@ export default {
         text-align: right;
         padding-right: 30px;
         font-size: 14px;
-        color: #242424;
+        color: #000000;
         line-height: 30px;
     }
     .el-table th {
@@ -661,7 +662,8 @@ export default {
     }
     .checkform{
         width: 100%;
-        height: 150px;
-        background-color: #5281c7
+        /* padding-bottom: 20px;
+        height: 50px; */
+        /* background-color: #5281c7 */
     }
 </style>

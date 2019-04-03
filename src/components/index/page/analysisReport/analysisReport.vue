@@ -8,35 +8,39 @@
         </div>
         <div class="centercontent"></div>
         <div class="setrightcontent" v-show="item.isActive" v-for="item in nameList" :key="item.index">
-            <div class="checkform" v-if="item.index == 1">
+            <div class="checkform" v-if="item.index == 1 || item.index == 3 || item.index == 4">
                 <div class="searchList" style="width:100%;">
                     <span class="nameList">年份：</span>
-                    <el-date-picker v-model="searchList.year" type="year" placeholder="选择年份"></el-date-picker>
+                    <el-date-picker v-model="searchList.year" type="year" format="yyyy" value-format="yyyy" placeholder="选择年份" @change="search"></el-date-picker>
                     <span class="nameList">月份：</span>
-                    <el-date-picker v-model="searchList.yearMonth" type="month" placeholder="选择月份"></el-date-picker>
-                </div>
-                <div class="searchList" style="width:100%;">
-                    <span class="nameList">机构：</span>
-                    <el-select v-model="searchList.mechanism" placeholder="请选择">
-                        <el-option v-for="item in mechanismData" :key="item.value" :label="item.label" :value="item.value"></el-option>
+                    <!-- <el-date-picker v-model="searchList.yearMonth" type="month" format="yyyy-MM" value-format="yyyy-MM" placeholder="选择月份" @change="changeMonth"></el-date-picker> -->
+                    <el-select v-model="searchList.yearMonth" placeholder="选择月份" @change="search">
+                        <el-option v-for="item in monthList" :key="item.id" :label="item.label" :value="item.id"></el-option>
                     </el-select>
                 </div>
-                <div class="radioList" v-if="showradioList">
-                    <el-radio-group v-model="searchList.label">
-                        <span class="nameList">部门：</span>
-                        <el-radio v-for="item in deptnameData" :key="item.label" :label="item.label" @change="search()">{{item.value}}</el-radio>
-                    </el-radio-group>
-                </div>
+            </div>
+            <div class="searchList" style="width:100%;">
+                <span class="nameList">机构：</span>
+                <el-select v-model="searchList.mechanism" placeholder="请选择"  @change="search">
+                    <el-option v-for="item in mechanismData" :key="item.deptid" :label="item.deptname" :value="item.deptid"></el-option>
+                </el-select>
+            </div>
+             <!-- v-if="showradioList" -->
+            <div class="radioList dept_radio">
+                <el-radio-group v-model="searchList.department">
+                    <el-radio v-for="item in deptnameData" :key="item.deptid" :label="item.deptid" @change="search">{{item.deptname}}</el-radio>
+                </el-radio-group>
+                <div style="width:100%;height:20px"></div>
             </div>
             <div class="checkform" v-if="item.index == 2">
                 {{item.name}}
             </div>
-            <div class="checkform" v-if="item.index == 3">
+            <!-- <div class="checkform" v-if="item.index == 3">
                 {{item.name}}
             </div>
             <div class="checkform" v-if="item.index == 4">
                 {{item.name}}
-            </div>
+            </div> -->
             <div class="report_c">
                 <div :id="item.id" :style="bar_style"></div>
             </div>
@@ -62,7 +66,7 @@
             <!-- report_b -->
         </div>
         <!-- setrightcontent -->
-        <div class="null_c"><span>请点击左边菜单栏查看报表</span></div>
+        <div class="null_c" v-if="showTitle"><span>请点击左边菜单栏查看报表</span></div>
     </div>
 </template>
 <script>
@@ -79,12 +83,15 @@
         store,
         data(){
             return {
+                showTitle:true,
+
                 nameList:[
                     {col:'amount',index:1,name:'合同报表',id:'chart1',isActive:false},
                     {col:'parentname',index:2,name:'商机报表',id:'chart2',isActive:false},
                     {col:'contractNum',index:3,name:'部门业绩排行榜',id:'chart3',isActive:false},
                     {col:'deptname',index:4,name:'个人业绩排行榜',id:'chart4',isActive:false},
                 ],
+                index:'',
 
                 bar_style:{
                     width:'',
@@ -97,9 +104,12 @@
                     year:null,
                     yearMonth:null,
                 },
-                showradioList:false,
                 mechanismData:[],
                 deptnameData:[],
+                monthList:[
+                    {id:'01',label:'一月'},{id:'02',label:'二月'},{id:'03',label:'三月'},{id:'04',label:'四月'},{id:'05',label:'五月'},{id:'06',label:'六月'},
+                    {id:'07',label:'七月'},{id:'08',label:'八月'},{id:'09',label:'九月'},{id:'10',label:'十月'},{id:'11',label:'十一月'},{id:'12',label:'十二月'},
+                ],
 
                 agreeReportList:[],
                 agreeData:['10200','15021','13201','18452'],
@@ -152,14 +162,17 @@
                 tableData:[],
                 colList:[],
 
+                
+
             }
         },
         mounted(){
             this.loadwidth()
             this.loadOppStep()
+            this.loadmechanism()
         },
         activated(){
-            this.loadwidth()
+            // this.loadwidth()
         },
         methods:{
             loadwidth(){
@@ -167,7 +180,7 @@
                 let heights = document.documentElement.offsetHeight || document.body.offsetHeight
                 this.bar_style.width = widths * 0.7 +'px'
                 this.bar_style.height = heights * 0.6 +'px'
-                console.log(this.bar_style.width,this.bar_style.height)
+                // console.log(this.bar_style.width,this.bar_style.height)
             },
             loadOppStep(){
                 const _this = this
@@ -184,9 +197,20 @@
                         {index:-2,name:'客户数量',col:'amount'},
                     ]
                     data.forEach(el => {
-                        // console.log(el.step_name)
                         _this.oppcolList.push({index:el.step_id,name:el.step_name,col:el.step_probability},)
                     });
+                }).catch(function(err){
+                    // console.log(err);
+                });
+            },
+            loadmechanism(){
+                const _this = this
+
+                axios({
+                    method: 'get',
+                    url: _this.$store.state.defaultHttp+'dept/selectAllMechanism.do?cId='+_this.$store.state.iscId
+                }).then(function(res){
+                    _this.mechanismData = res.data.map.success
                 }).catch(function(err){
                     // console.log(err);
                 });
@@ -194,6 +218,13 @@
             loadagreeReport(){
                 const _this = this
                 let qs = require('querystring')
+                let data = {}
+                data.year = this.searchList.year
+                if(this.searchList.year && this.searchList.yearMonth){
+                    data.yearMonth = this.searchList.year + '-' + this.searchList.yearMonth
+                }
+                data.deptid = this.searchList.mechanism
+                data.secondid = this.searchList.department
                 _this.tableData = _this.agreeReportList
                 _this.colList = _this.agreecolList
                 _this.drawLine1()
@@ -201,6 +232,13 @@
             loadoppReport(){
                 const _this = this
                 let qs = require('querystring')
+                let data = {}
+                data.year = this.searchList.year
+                if(this.searchList.year && this.searchList.yearMonth){
+                    data.yearMonth = this.searchList.year + '-' + this.searchList.yearMonth
+                }
+                data.deptid = this.searchList.mechanism
+                data.secondid = this.searchList.department
                 _this.tableData = _this.oppReportList
                 _this.colList = _this.oppcolList
                 _this.drawLine2()
@@ -210,7 +248,10 @@
                 let qs = require('querystring')
                 let data = {}
                 data.year = this.searchList.year
-                data.yearMonth = this.searchList.yearMonth
+                if(this.searchList.year && this.searchList.yearMonth){
+                    data.yearMonth = this.searchList.year + '-' + this.searchList.yearMonth
+                }
+                data.deptid = this.searchList.mechanism
                 data.secondid = this.searchList.department
 
                 axios({
@@ -238,7 +279,10 @@
                 let qs = require('querystring')
                 let data = {}
                 data.year = this.searchList.year
-                data.yearMonth = this.searchList.yearMonth
+                if(this.searchList.year && this.searchList.yearMonth){
+                    data.yearMonth = this.searchList.year + '-' + this.searchList.yearMonth
+                }
+                data.deptid = this.searchList.mechanism
                 data.secondid = this.searchList.department
 
                 axios({
@@ -265,7 +309,14 @@
             showTableval(val){
                 const _this = this
                 let i = val.index
-                // this.index = val.index
+                this.showTitle = false
+                this.index = val.index
+                this.searchList = {
+                    mechanism:null,
+                    department:null,
+                    year:null,
+                    yearMonth:null,
+                }
                 this.nameList.forEach(function(obj){
                     obj.isActive = false;
                 });
@@ -379,6 +430,60 @@
                     }]
                 });
             },
+            loaddeptList(){
+                const _this = this
+                let qs = require('querystring')
+                let data = {}
+                data.deptid = this.searchList.mechanism
+
+                axios({
+                    method: 'post',
+                    url: _this.$store.state.defaultHttp+'dept/getChildrenByMechanism.do?cId='+_this.$store.state.iscId,
+                    data:qs.stringify(data)
+                }).then(function(res){
+                    _this.deptnameData = res.data.map.success
+                }).catch(function(err){
+                    // console.log(err);
+                });
+            },
+            changeYear(val){
+                console.log(val)
+            },
+            changeMonth(val){
+                console.log(this.searchList.year,val)
+            },
+            search(){
+                const _this = this
+                // console.log(this.index)
+                if(!this.searchList.year && this.searchList.yearMonth){
+                    // console.log('111111')
+                    _this.$message({
+                        message:'请先选择年份再选择月份',
+                        type:'error'
+                    })
+                }else{
+                    if(!this.searchList.department && this.searchList.mechanism){
+                        console.log(this.searchList.mechanism)
+                        _this.$options.methods.loaddeptList.bind(_this)()
+                    }
+                    console.log('2222222222')
+                    _this.$options.methods.searchtwo.bind(_this)()
+                }
+                
+            },
+            searchtwo(){
+                const _this = this
+
+                if(_this.index == 1){
+                    _this.$options.methods.loadagreeReport.bind(_this)()
+                }else if(_this.index == 2){
+                    _this.$options.methods.loadoppReport.bind(_this)()
+                }else if(_this.index == 3){
+                    _this.$options.methods.loaddeptrank.bind(_this)()
+                }else if(_this.index == 4){
+                    _this.$options.methods.loadpersonrank.bind(_this)()
+                }
+            },
         }
     }
 </script>
@@ -399,5 +504,8 @@
         top: 50%;
         left: 50%;
         transform: translate(-50%,-50%);
+    }
+    .dept_radio{
+        margin: 0 25px;
     }
 </style>
