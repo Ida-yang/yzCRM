@@ -2,10 +2,14 @@
     <div class="sidebar" >
         <el-menu class="sidebar-el-menu" :default-active="onRoutes" :collapse="collapse" background-color="#20222a"
             text-color="#FFFFFF" active-text-color="#ff6722" unique-opened router>
-            <div id="logo" v-if="show">
-                <span style="font-size:16px">云纵CRM信息平台</span>
+            <div id="logo" v-if="showlogo">
+                <span style="font-size:16px">
+                    云纵CRM信息平台
+                    <!-- <img src="../../../static/img/logo_2.png" alt="logo" /> -->
+                </span>
             </div>
-            <div id="logo1" v-if="!show">
+            <div id="logo1" v-if="!showlogo">
+                <!-- <img src="../../../static/img/logo_1.png" alt="logo" /> -->
                 <!-- <span style="font-size:16px">云纵CRM信息平台</span> -->
             </div>
             <span class="title">主要</span>
@@ -78,7 +82,7 @@
         data() {
             return {
                 collapse: false,
-                show:true,
+                showlogo:true,
                 itemone: [
                     {
                         icon: 'mdi-airplay',
@@ -223,8 +227,14 @@
         created(){
             // 通过 Event Bus 进行组件间通信，来折叠侧边栏
             bus.$on('collapse', msg => {
+                // console.log(msg)
                 this.collapse = msg;
-                this.show = !this.show
+                if(msg == true){
+                    this.showlogo = false
+                }else{
+                    this.showlogo = true
+                }
+                // this.showlogo = !this.showlogo
             })
         }
     }
@@ -267,6 +277,7 @@
     }
     .sidebar > ul {
         height:100%;
+        padding-top: 5px;
     }
     .title{
         display: inline-block;

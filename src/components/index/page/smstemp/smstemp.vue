@@ -43,19 +43,26 @@
             :visible.sync="dialogVisible"
             width="40%">
             <el-form ref="newform" :model="newform" label-width="80px" :rules="rules">
-                <el-form-item prop="type" label="模板类别">
+                <el-form-item prop="type" label="应用模块">
                     <el-input v-model="newform.type" :disabled="true"></el-input>
                 </el-form-item>
-                <el-form-item prop="title" label="模板标题">
-                    <el-input v-model="newform.title" placeholder="请输入模板标题"></el-input>
+                <el-form-item prop="title" label="短信标题">
+                    <el-input v-model="newform.title" placeholder="请输入短信标题"></el-input>
                 </el-form-item>
-                <el-form-item prop="content" label="模板内容">
-                    <el-input type="textarea" rows="5" v-model="newform.content" placeholder="模板内容"></el-input>
+                <el-form-item prop="signature" label="短信签名">
+                    <el-input v-model="newform.signature" placeholder="请输入短信签名"></el-input>
+                </el-form-item>
+                <el-form-item prop="labellllls" label="短信类型">
+                    <el-select v-model="newform.labellllls" placeholder="请选择短信类型" style="width:100%">
+                        <el-option value="通知类">通知类</el-option>
+                        <el-option value="营销类">营销类</el-option>
+                    </el-select>
+                </el-form-item>
+                <el-form-item prop="content" label="短信内容">
+                    <el-input ref="elInput" type="textarea" rows="5" v-model="newform.content" placeholder="请输入短信内容"></el-input>
                 </el-form-item>
                 <el-form-item label="标签">
-                    <el-button plain size="mini" @click="checkTag">姓名</el-button>
-                    <el-button plain size="mini" @click="checkTag">公司名称</el-button>
-                    <el-button plain size="mini" @click="checkTag">时间</el-button>
+                    <el-button plain size="mini" v-for="item in btnList" :key="item.id" :value="item.value" @click="checkTag(item)">{{item.name}}</el-button>
                 </el-form-item>
             </el-form>
             <span slot="footer" class="dialog-footer">
@@ -68,19 +75,26 @@
             :visible.sync="dialogVisible2"
             width="40%">
             <el-form ref="newform" :model="newform" :rules="rules" label-width="80px">
-                <el-form-item prop="type" label="模板类别">
+                <el-form-item prop="type" label="应用模块">
                     <el-input v-model="newform.type" :disabled="true"></el-input>
                 </el-form-item>
-                <el-form-item prop="title" label="模板标题">
-                    <el-input v-model="newform.title" placeholder="请输入模板标题"></el-input>
+                <el-form-item prop="title" label="短信标题">
+                    <el-input v-model="newform.title" placeholder="请输入短信标题"></el-input>
                 </el-form-item>
-                <el-form-item prop="content" label="模板内容">
-                    <el-input type="textarea" rows="5" v-model="newform.content" placeholder="请输入模板内容"></el-input>
+                <el-form-item prop="signature" label="短信签名">
+                    <el-input v-model="newform.signature" placeholder="请输入短信签名"></el-input>
+                </el-form-item>
+                <el-form-item prop="labellllls" label="短信类型">
+                    <el-select v-model="newform.labellllls" placeholder="请选择短信类型" style="width:100%">
+                        <el-option value="通知类">通知类</el-option>
+                        <el-option value="营销类">营销类</el-option>
+                    </el-select>
+                </el-form-item>
+                <el-form-item prop="content" label="短信内容">
+                    <el-input ref="elInput" type="textarea" rows="5" v-model="newform.content" placeholder="请输入短信内容"></el-input>
                 </el-form-item>
                 <el-form-item label="标签">
-                    <el-button plain size="mini" @click="checkTag">姓名</el-button>
-                    <el-button plain size="mini" @click="checkTag">公司名称</el-button>
-                    <el-button plain size="mini" @click="checkTag">时间</el-button>
+                    <el-button plain size="mini" v-for="item in btnList" :key="item.id" :value="item.value" @click="checkTag(item)">{{item.name}}</el-button>
                 </el-form-item>
             </el-form>
             <span slot="footer" class="dialog-footer">
@@ -119,18 +133,26 @@
                     index:'1',
                     id:null,
                     title:null,
+                    labellllls:null,
                     content:null,
                     signature:null,
-                    varCount:[],
+                    varCount:0,
                 },
+
+                btnList:[
+                    {id:'001',name:'公司名称',value:'@var(name1)'},
+                    {id:'002',name:'联系人名称',value:'@var(name2)'},
+                    {id:'003',name:'合同到期时间',value:'@var(name3)'},
+                ],
 
                 dialogVisible:false,
                 dialogVisible2:false,
 
                 rules: {
-                    title : [{ required: true, message: '模板标题不能为空', trigger: 'blur' },],
-                    content : [{ required: true, message: '模板内容不能为空', trigger: 'blur' },],
+                    title : [{ required: true, message: '短信标题不能为空', trigger: 'blur' },],
+                    content : [{ required: true, message: '短信内容不能为空', trigger: 'blur' },],
                     signature : [{ required: true, message: '模板签名不能为空', trigger: 'blur' },],
+                    labellllls : [{ required: true, message: '短信类型不能为空', trigger: 'blur' },],
                 },
             }
         },
@@ -171,51 +193,70 @@
             handleAdd(){
                 const _this = this
                 let i = this.newform.index
-
-                axios({
-                    method: 'get',
-                    url: _this.$store.state.defaultHttp+'typeInfoJurisdiction/insert.do',//新增状态
-                }).then(function(res){
-                    if(res.data.msg && res.data.msg == 'error'){
-                        _this.$message({
-                            message:'对不起，您没有该权限，请联系管理员开通',
-                            type:'error'
-                        })
-                    }else{
-                        _this.newform.title = null
-                        _this.newform.content = null
-                        _this.newform.signature = null
-                        _this.newform.varCount = []
-                        _this.dialogVisible = true
-                    }
-                }).catch(function(err){
-                    // console.log(err);
-                });
-                
+                _this.newform.title = null
+                _this.newform.labellllls = null
+                _this.newform.content = null
+                _this.newform.signature = null
+                _this.dialogVisible = true
             },
             //状态添加提交按钮
             addbasicset(){
                 const _this = this;
                 let qs = require('querystring')
-                let i = this.newform.index
+                // let i = this.newform.index
+                this.newform.varCount = 0
+                let contents = this.newform.content
+                if(contents){
+                    if(contents.indexOf('@公司名称') != -1){
+                        this.newform.varCount += 1
+                        contents = contents.replace(/@公司名称/g, "@var(name1)")
+                        console.log(contents)
+                    }
+                    if(contents.indexOf('@联系人名称') != -1){
+                        this.newform.varCount += 1
+                        contents = contents.replace(/@联系人名称/g, "@var(name2)")
+                    }
+                    if(contents.indexOf('@合同到期时间') != -1){
+                        this.newform.varCount += 1
+                        contents = contents.replace(/@合同到期时间/g, "@var(name3)")
+                    }
+                }
+                
                 let data = {}
                 data.type = this.newform.type
                 data.title = this.newform.title
-                data.content = this.newform.content
-                data.signature = this.newform.signature
+                data.labellllls = this.newform.labellllls
+                data.content = contents
+                data.signature = '【' + this.newform.signature + '】'
                 data.varCount = this.newform.varCount
+                data.status = 1
+                console.log(data)
                 
                 let flag = false;
-                if(!data.sort){
+                if(!data.content){
                     _this.$message({
-                        message: "模板内容不能为空",
+                        message: "短信内容不能为空",
+                        type: 'error'
+                    });
+                    flag = true;
+                }
+                if(!data.labellllls){
+                    _this.$message({
+                        message: "短信类型不能为空",
+                        type: 'error'
+                    });
+                    flag = true;
+                }
+                if(!data.signature){
+                    _this.$message({
+                        message: "短信签名不能为空",
                         type: 'error'
                     });
                     flag = true;
                 }
                 if(!data.title){
                     _this.$message({
-                        message: "模板标题不能为空",
+                        message: "短信标题不能为空",
                         type: 'error'
                     });
                     flag = true;
@@ -248,51 +289,88 @@
             handleEdit(e,val){
                 const _this = this
 
-                axios({
-                    method: 'get',
-                    url: _this.$store.state.defaultHttp+'template/updateTemplate.do',//编辑状态
-                }).then(function(res){
-                    if(res.data.msg && res.data.msg == 'error'){
-                        _this.$message({
-                            message:'对不起，您没有该权限，请联系管理员开通',
-                            type:'error'
-                        })
-                    }else{
-                        _this.newform.templateId = val.templateId
-                        _this.newform.title = val.title
-                        _this.newform.content = val.content
-                        _this.newform.signature = val.signature
-                        _this.newform.varCount = val.varCount
-                        _this.dialogVisible2 = true
+                _this.newform.templateId = val.templateId
+                _this.newform.title = val.title
+                _this.newform.labellllls = val.labellllls
+                // _this.newform.content = val.content
+                let contents = val.content
+                if(contents){
+                    if(contents.indexOf('@var(name1)') != -1){
+                        console.log('111')
+                        contents = contents.replace(/@var(name1)/g, "@公司名称")
                     }
-                }).catch(function(err){
-                    // console.log(err);
-                });
+                    if(contents.indexOf('@var(name2)') != -1){
+                        console.log('222')
+                        contents = contents.replace(/@var(name2)/g, "@联系人名称")
+                    }
+                    if(contents.indexOf('@var(name3)') != -1){
+                        console.log('333')
+                        contents = contents.replace(/@var(name3)/g, "@合同到期时间")
+                    }
+                    // console.log(contents)
+                }
+                // _this.newform.content = contents
+                _this.newform.signature = val.signature
+                _this.dialogVisible2 = true
             },
             //状态修改提交按钮
             updatebasicset(){
                 const _this = this;
                 let i = this.newform.index
                 let qs = require('querystring')
+
+                this.newform.varCount = 0
+                let contents = this.newform.content
+                if(contents){
+                    if(contents.indexOf('@公司名称') != -1){
+                        this.newform.varCount += 1
+                        contents = contents.replace(/@公司名称/g, "@var(name1)")
+                        console.log(contents)
+                    }
+                    if(contents.indexOf('@联系人名称') != -1){
+                        this.newform.varCount += 1
+                        contents = contents.replace(/@联系人名称/g, "@var(name2)")
+                    }
+                    if(contents.indexOf('@合同到期时间') != -1){
+                        this.newform.varCount += 1
+                        contents = contents.replace(/@合同到期时间/g, "@var(name3)")
+                    }
+                }
+
                 let data = {}
                 data.templateId = this.newform.templateId
                 data.type = this.newform.type
                 data.title = this.newform.title
-                data.content = this.newform.content
-                data.signature = this.newform.signature
+                data.labellllls = this.newform.labellllls
+                data.content = contents
+                data.signature = '【' + this.newform.signature + '】'
                 data.varCount = this.newform.varCount
                 
                 let flag = false;
                 if(!data.content){
                     _this.$message({
-                        message: "模板内容不能为空",
+                        message: "短信内容不能为空",
+                        type: 'error'
+                    });
+                    flag = true;
+                }
+                if(!data.labellllls){
+                    _this.$message({
+                        message: "短信类型不能为空",
+                        type: 'error'
+                    });
+                    flag = true;
+                }
+                if(!data.signature){
+                    _this.$message({
+                        message: "短信签名不能为空",
                         type: 'error'
                     });
                     flag = true;
                 }
                 if(!data.title){
                     _this.$message({
-                        message: "模板标题不能为空",
+                        message: "短信标题不能为空",
                         type: 'error'
                     });
                     flag = true;
@@ -360,7 +438,18 @@
                 console.log(val)
             },
             checkTag(e){
-                console.log(e)
+                console.log(this.$refs.elInput)
+                let elInput = this.$refs.elInput
+                let startPos = elInput.$refs.textarea.selectionStart
+                let endPos = elInput.$refs.textarea.selectionEnd
+                // console.log(startPos,endPos)
+                let txt = elInput.value
+                if (startPos === 0 || endPos === 0) return
+                this.newform.content = txt.substring(0, startPos) + '@' + e.name + txt.substring(endPos)
+                elInput.focus()
+                elInput.selectionStart = startPos + e.name.length + 1
+                elInput.selectionEnd = startPos + e.name.length + 1
+                
             },
         }
     }
@@ -382,7 +471,7 @@
         height: 380px;
         margin-right: 0.5%;
         margin-bottom: 0.5%;
-        background-color: aquamarine;
+        /* background-color: aquamarine; */
         border: 1px solid #cccccc;
     }
     .sms_h{

@@ -32,10 +32,10 @@
                 </el-radio-group>
                 <div style="width:100%;height:20px"></div>
             </div>
-            <div class="checkform" v-if="item.index == 2">
+            <!-- <div class="checkform" v-if="item.index == 2">
                 {{item.name}}
             </div>
-            <!-- <div class="checkform" v-if="item.index == 3">
+            <div class="checkform" v-if="item.index == 3">
                 {{item.name}}
             </div>
             <div class="checkform" v-if="item.index == 4">
@@ -75,6 +75,7 @@
     import qs from 'qs'
     let echarts = require('echarts/lib/echarts')
     require('echarts/lib/chart/bar')
+    require('echarts/lib/chart/funnel')
     require('echarts/lib/component/tooltip')
     require('echarts/lib/component/title')
 
@@ -143,7 +144,7 @@
                     {index:3,name:'部门',col:'deptname',width:'80'},
                     {index:4,name:'合同数量',col:'contractNum',width:'90'},
                     {index:5,name:'合同金额',col:'amount',width:'90'},
-                    {index:6,name:'平均金额',col:'amount',width:'90'},
+                    {index:6,name:'平均金额',col:'avg',width:'90'},
                 ],
 
                 personrankList:[],
@@ -156,7 +157,7 @@
                     {index:4,name:'部门',col:'deptname',width:'80'},
                     {index:5,name:'合同数量',col:'contractNum',width:'90'},
                     {index:6,name:'合同金额',col:'amount',width:'90'},
-                    {index:7,name:'平均金额',col:'amount',width:'90'},
+                    {index:7,name:'平均金额',col:'avg',width:'90'},
                 ],
 
                 tableData:[],
@@ -187,17 +188,17 @@
 
                 axios({
                     method: 'get',
-                    url: _this.$store.state.defaultHttp+'addstep/selectAddstep.do?cId='+_this.$store.state.iscId
+                    url: _this.$store.state.defaultHttp+'addstep/selectAddstepState.do?cId='+_this.$store.state.iscId
                 }).then(function(res){
-                    let data = res.data.map.addsteps
+                    let data = res.data
                     _this.oppcolList = [
-                        {index:-5,name:'职员',col:'parentname'},
-                        {index:-4,name:'机构',col:'deptname'},
-                        {index:-3,name:'部门',col:'contractNum'},
-                        {index:-2,name:'客户数量',col:'amount'},
+                        {index:-5,name:'职员',col:'private_employee'},
+                        {index:-4,name:'部门',col:'deptname'},
+                        {index:-3,name:'机构',col:'parentname'},
+                        {index:-2,name:'客户数量',col:'customerNum'},
                     ]
                     data.forEach(el => {
-                        _this.oppcolList.push({index:el.step_id,name:el.step_name,col:el.step_probability},)
+                        _this.oppcolList.push({index:el.sort,name:el.step_name,col:el.col},)
                     });
                 }).catch(function(err){
                     // console.log(err);
@@ -225,6 +226,7 @@
                 }
                 data.deptid = this.searchList.mechanism
                 data.secondid = this.searchList.department
+
                 _this.tableData = _this.agreeReportList
                 _this.colList = _this.agreecolList
                 _this.drawLine1()
@@ -239,9 +241,22 @@
                 }
                 data.deptid = this.searchList.mechanism
                 data.secondid = this.searchList.department
-                _this.tableData = _this.oppReportList
-                _this.colList = _this.oppcolList
-                _this.drawLine2()
+
+                axios({
+                    method: 'post',
+                    url: _this.$store.state.defaultHttp+'opportunity/getOpportunityReportForm.do?cId='+_this.$store.state.iscId,
+                    data:qs.stringify(data)
+                }).then(function(res){
+                    // console.log(res.data)
+                    _this.oppData = []
+                    _this.oppList = []
+                    _this.oppReportList = res.data.map.opportunitys
+                    _this.tableData = _this.oppReportList
+                    _this.colList = _this.oppcolList
+                    _this.drawLine2()
+                }).catch(function(err){
+                    // console.log(err);
+                });
             },
             loaddeptrank(){
                 const _this = this
@@ -370,6 +385,35 @@
                 // 基于准备好的dom，初始化echarts实例
                 let chart2 = echarts.init(document.getElementById('chart2'))
                 // 绘制图表
+                chart2.setOption({
+                    title : { text: '商机漏斗', left: 'center' },
+                    tooltip : {
+                        trigger: 'item',
+                        formatter: "{b}<br>{a}：{c}"
+                    },
+                    calculable : true,
+                    emphasis: {
+                        label: {
+                            fontSize: 20
+                        }
+                    },
+                    series : [
+                        {
+                            name:'金额',
+                            type:'funnel',
+                            // width: '40%',
+                            minSize: '10%',
+                            sort: 'none',
+                            data:[
+                                {name:'111',value:'2222'},
+                                {name:'222',value:'3333'},
+                                {name:'333',value:'4444'},
+                                {name:'444',value:'5555'},
+                                {name:'555',value:'6666'},
+                            ]
+                        }
+                    ]
+                });
             },
             drawLine3(){
                 // 基于准备好的dom，初始化echarts实例

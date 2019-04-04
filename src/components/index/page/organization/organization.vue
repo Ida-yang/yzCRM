@@ -71,7 +71,7 @@
                     prop="parentname"
                     header-align="left"
                     align="left"
-                    label="机构"
+                    label="上级部门"
                     sortable>
                 </el-table-column>
                 <el-table-column label="操作"

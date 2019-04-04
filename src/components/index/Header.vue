@@ -35,9 +35,12 @@
                     </el-tooltip>
                 </div>
                 <el-dropdown class="user-name" trigger="click" @command="handleCommand">
-                    <span class="el-dropdown-link">
-                        {{public_username}}
-                    </span>
+                     <!-- :content="public_username" -->
+                    <el-tooltip effect="dark" :content="public_username" placement="left-end">
+                        <span class="el-dropdown-link">
+                            <img src="../../../static/img/timg.jpg" alt=""/>
+                        </span>
+                    </el-tooltip>
                     <span>
                         <i class="el-icon-caret-bottom"></i>
                     </span>
@@ -46,7 +49,6 @@
                         <el-dropdown-item divided  command="loginout">退出登录</el-dropdown-item>
                     </el-dropdown-menu>
                 </el-dropdown>
-
             </div>
         </div>
         
@@ -393,7 +395,7 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        margin-right: 20px;
+        margin-right: 30px;
     }
     /* .user-name span{
         flex: 1;
@@ -401,8 +403,16 @@
     .el-dropdown-link{
         color: #20222a;
         cursor: pointer;
-        width: 90px;
-        text-align: right;
+        width: 30px;
+        display: flex;
+        justify-content: center;
+        align-items: center
+    }
+    .el-dropdown-link img{
+        flex: 1;
+        width: 30px;
+        height: 30px;
+        border-radius: 15px;
     }
     .el-dropdown-menu__item{
         text-align: center;
