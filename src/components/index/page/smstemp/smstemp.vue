@@ -140,8 +140,8 @@
                 },
 
                 btnList:[
-                    {id:'001',name:'公司名称',value:'@var(name1)'},
-                    {id:'002',name:'联系人名称',value:'@var(name2)'},
+                    {id:'001',name:'公司名称',value:'@var(name2)'},
+                    {id:'002',name:'联系人名称',value:'@var(name1)'},
                     {id:'003',name:'合同到期时间',value:'@var(name3)'},
                 ],
 
@@ -207,18 +207,14 @@
                 this.newform.varCount = 0
                 let contents = this.newform.content
                 if(contents){
-                    if(contents.indexOf('@公司名称') != -1){
+                    if(contents.indexOf('@var(name2)') != -1){
                         this.newform.varCount += 1
-                        contents = contents.replace(/@公司名称/g, "@var(name1)")
-                        console.log(contents)
                     }
-                    if(contents.indexOf('@联系人名称') != -1){
+                    if(contents.indexOf('@var(name1)') != -1){
                         this.newform.varCount += 1
-                        contents = contents.replace(/@联系人名称/g, "@var(name2)")
                     }
-                    if(contents.indexOf('@合同到期时间') != -1){
+                    if(contents.indexOf('@var(name3)') != -1){
                         this.newform.varCount += 1
-                        contents = contents.replace(/@合同到期时间/g, "@var(name3)")
                     }
                 }
                 
@@ -292,24 +288,7 @@
                 _this.newform.templateId = val.templateId
                 _this.newform.title = val.title
                 _this.newform.labellllls = val.labellllls
-                // _this.newform.content = val.content
-                let contents = val.content
-                if(contents){
-                    if(contents.indexOf('@var(name1)') != -1){
-                        console.log('111')
-                        contents = contents.replace(/@var(name1)/g, "@公司名称")
-                    }
-                    if(contents.indexOf('@var(name2)') != -1){
-                        console.log('222')
-                        contents = contents.replace(/@var(name2)/g, "@联系人名称")
-                    }
-                    if(contents.indexOf('@var(name3)') != -1){
-                        console.log('333')
-                        contents = contents.replace(/@var(name3)/g, "@合同到期时间")
-                    }
-                    // console.log(contents)
-                }
-                // _this.newform.content = contents
+                _this.newform.content = val.content
                 _this.newform.signature = val.signature
                 _this.dialogVisible2 = true
             },
@@ -322,18 +301,15 @@
                 this.newform.varCount = 0
                 let contents = this.newform.content
                 if(contents){
-                    if(contents.indexOf('@公司名称') != -1){
+                    if(contents.indexOf('@var(name2)') != -1){
                         this.newform.varCount += 1
-                        contents = contents.replace(/@公司名称/g, "@var(name1)")
                         console.log(contents)
                     }
-                    if(contents.indexOf('@联系人名称') != -1){
+                    if(contents.indexOf('@var(name1)') != -1){
                         this.newform.varCount += 1
-                        contents = contents.replace(/@联系人名称/g, "@var(name2)")
                     }
-                    if(contents.indexOf('@合同到期时间') != -1){
+                    if(contents.indexOf('@var(name3)') != -1){
                         this.newform.varCount += 1
-                        contents = contents.replace(/@合同到期时间/g, "@var(name3)")
                     }
                 }
 
@@ -445,10 +421,10 @@
                 // console.log(startPos,endPos)
                 let txt = elInput.value
                 if (startPos === 0 || endPos === 0) return
-                this.newform.content = txt.substring(0, startPos) + '@' + e.name + txt.substring(endPos)
+                this.newform.content = txt.substring(0, startPos) + e.value + txt.substring(endPos)
                 elInput.focus()
-                elInput.selectionStart = startPos + e.name.length + 1
-                elInput.selectionEnd = startPos + e.name.length + 1
+                // elInput.selectionStart = startPos + e.name.length
+                // elInput.selectionEnd = startPos + e.name.length
                 
             },
         }
