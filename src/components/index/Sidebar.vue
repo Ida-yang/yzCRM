@@ -17,8 +17,8 @@
                 <template v-if="item.subs">
                     <el-submenu :index="item.index" :key="item.index">
                         <template slot="title">
-                            <i :class="item.icon"  style="color:#fff"> </i>&nbsp;
-                            <span slot="title"  style="color:#fff">{{ item.title }}</span>
+                            <i :class="item.icon" style="color:#fff"> </i>&nbsp;
+                            <span slot="title" style="color:#fff">{{ item.title }}</span>
                         </template>
                         <el-menu-item v-for="(subItem,i) in item.subs" :key="i" :index="subItem.index">
                             {{ subItem.title }}
@@ -96,7 +96,7 @@
                         subs: [
                             {
                                 index: 'customerSearch',
-                                title: '搜索客户',
+                                title: '线索挖掘',
                             },
                             {
                                 index: 'reportForm',
@@ -173,18 +173,8 @@
                     },
                     {
                         icon: 'mdi-puzzle',
-                        index: '6',
+                        index: 'analysisReport',
                         title: '报表',
-                        subs: [
-                            {
-                                index: 'analysisReport',
-                                title: '报表',
-                            },
-                            {
-                                index: 'suibian',
-                                title: '报表测试',
-                            },
-                        ]
                     },
                 ],
                 
@@ -210,10 +200,6 @@
                                 index: 'programme',
                                 title: '目标',
                             },
-                            // {
-                            //     index: 'suibian',
-                            //     title: '随便',
-                            // },
                         ]
                     },
                 ],
@@ -246,7 +232,6 @@
         height: 60px;
         padding: 0 10px;
         line-height: 60px;
-        font-family: "楷体";
         color: #ffffff;
     }
     #logo1{
@@ -254,7 +239,6 @@
         height: 60px;
         padding: 0 10px;
         line-height: 60px;
-        font-family: "楷体";
         color: #ffffff;
     }
     .sidebar{
@@ -278,6 +262,7 @@
     .sidebar > ul {
         height:100%;
         padding-top: 5px;
+        box-sizing: border-box
     }
     .title{
         display: inline-block;

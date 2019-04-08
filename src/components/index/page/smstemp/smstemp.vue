@@ -21,7 +21,7 @@
                         <div class="sms_b">
                             <p>短信/彩信</p>
                             <p>2019-03-29 15:31:21</p>
-                            <div class="sms_b_c">{{item.content}}</div>
+                            <div class="sms_b_c"> {{item.content}} </div>
                             <div class="approve" v-show="item.status == 2">
                                 <img class="approve_img" src="/upload/staticImg/examine.png" alt="已审核">
                             </div>
@@ -31,7 +31,9 @@
                         </div>
                         <div class="sms_f">
                             <span @click="handleEdit($event,item)"><i class="el-icon-edit i_edit"></i></span>
-                            <span @click="handleSend($event,item)"><i class="mdi mdi-send i_send"></i></span>
+                            <el-tooltip :content="item.state" placement="right">
+                                <el-switch v-model="item.state" active-value="启用" inactive-value="禁用" active-color="#13ce66" inactive-color="#bbbbbb" class="i_send" @change="changeState(item)"></el-switch>
+                            </el-tooltip>
                             <span @click="handledelete($event,item)"><i class="el-icon-delete i_del"></i></span>
                         </div>
                     </li>
@@ -39,10 +41,10 @@
             </div>
         </div>
         <el-dialog
-            title="添加状态"
+            title="添加短信模板"
             :visible.sync="dialogVisible"
             width="40%">
-            <el-form ref="newform" :model="newform" label-width="80px" :rules="rules">
+            <el-form ref="newform" :model="newform" label-width="110px" :rules="rules" style="padding-right:30px">
                 <el-form-item prop="type" label="应用模块">
                     <el-input v-model="newform.type" :disabled="true"></el-input>
                 </el-form-item>
@@ -52,11 +54,14 @@
                 <el-form-item prop="signature" label="短信签名">
                     <el-input v-model="newform.signature" placeholder="请输入短信签名"></el-input>
                 </el-form-item>
-                <el-form-item prop="labellllls" label="短信类型">
-                    <el-select v-model="newform.labellllls" placeholder="请选择短信类型" style="width:100%">
+                <el-form-item prop="genre" label="短信类型">
+                    <el-select v-model="newform.genre" placeholder="请选择短信类型" style="width:100%">
                         <el-option value="通知类">通知类</el-option>
                         <el-option value="营销类">营销类</el-option>
                     </el-select>
+                </el-form-item>
+                <el-form-item prop="dayNum" label="提前提醒天数" v-if="newform.type == '合同'">
+                    <el-input v-model="newform.dayNum" placeholder="请输入提前提醒天数"></el-input>
                 </el-form-item>
                 <el-form-item prop="content" label="短信内容">
                     <el-input ref="elInput" type="textarea" rows="5" v-model="newform.content" placeholder="请输入短信内容"></el-input>
@@ -71,10 +76,10 @@
             </span>
         </el-dialog>
         <el-dialog
-            title="修改状态"
+            title="修改短信模板"
             :visible.sync="dialogVisible2"
             width="40%">
-            <el-form ref="newform" :model="newform" :rules="rules" label-width="80px">
+            <el-form ref="newform" :model="newform" :rules="rules" label-width="110px" style="padding-right:30px">
                 <el-form-item prop="type" label="应用模块">
                     <el-input v-model="newform.type" :disabled="true"></el-input>
                 </el-form-item>
@@ -84,11 +89,14 @@
                 <el-form-item prop="signature" label="短信签名">
                     <el-input v-model="newform.signature" placeholder="请输入短信签名"></el-input>
                 </el-form-item>
-                <el-form-item prop="labellllls" label="短信类型">
-                    <el-select v-model="newform.labellllls" placeholder="请选择短信类型" style="width:100%">
+                <el-form-item prop="genre" label="短信类型">
+                    <el-select v-model="newform.genre" placeholder="请选择短信类型" style="width:100%">
                         <el-option value="通知类">通知类</el-option>
                         <el-option value="营销类">营销类</el-option>
                     </el-select>
+                </el-form-item>
+                <el-form-item prop="dayNum" label="提前提醒天数" v-if="newform.type == '合同'">
+                    <el-input v-model="newform.dayNum" placeholder="请输入提前提醒天数"></el-input>
                 </el-form-item>
                 <el-form-item prop="content" label="短信内容">
                     <el-input ref="elInput" type="textarea" rows="5" v-model="newform.content" placeholder="请输入短信内容"></el-input>
@@ -133,10 +141,11 @@
                     index:'1',
                     id:null,
                     title:null,
-                    labellllls:null,
+                    genre:null,
                     content:null,
                     signature:null,
                     varCount:0,
+                    dayNum:null,
                 },
 
                 btnList:[
@@ -152,7 +161,7 @@
                     title : [{ required: true, message: '短信标题不能为空', trigger: 'blur' },],
                     content : [{ required: true, message: '短信内容不能为空', trigger: 'blur' },],
                     signature : [{ required: true, message: '模板签名不能为空', trigger: 'blur' },],
-                    labellllls : [{ required: true, message: '短信类型不能为空', trigger: 'blur' },],
+                    genre : [{ required: true, message: '短信类型不能为空', trigger: 'blur' },],
                 },
             }
         },
@@ -194,9 +203,11 @@
                 const _this = this
                 let i = this.newform.index
                 _this.newform.title = null
-                _this.newform.labellllls = null
+                _this.newform.genre = null
                 _this.newform.content = null
                 _this.newform.signature = null
+                _this.newform.status = null
+                _this.newform.dayNum = null
                 _this.dialogVisible = true
             },
             //状态添加提交按钮
@@ -221,11 +232,12 @@
                 let data = {}
                 data.type = this.newform.type
                 data.title = this.newform.title
-                data.labellllls = this.newform.labellllls
+                data.genre = this.newform.genre
                 data.content = contents
-                data.signature = '【' + this.newform.signature + '】'
+                data.signature = this.newform.signature
                 data.varCount = this.newform.varCount
                 data.status = 1
+                data.dayNum = this.newform.dayNum
                 console.log(data)
                 
                 let flag = false;
@@ -236,7 +248,7 @@
                     });
                     flag = true;
                 }
-                if(!data.labellllls){
+                if(!data.genre){
                     _this.$message({
                         message: "短信类型不能为空",
                         type: 'error'
@@ -287,9 +299,11 @@
 
                 _this.newform.templateId = val.templateId
                 _this.newform.title = val.title
-                _this.newform.labellllls = val.labellllls
+                _this.newform.genre = val.genre
                 _this.newform.content = val.content
                 _this.newform.signature = val.signature
+                _this.newform.status = val.status
+                _this.newform.dayNum = val.dayNum
                 _this.dialogVisible2 = true
             },
             //状态修改提交按钮
@@ -303,7 +317,6 @@
                 if(contents){
                     if(contents.indexOf('@var(name2)') != -1){
                         this.newform.varCount += 1
-                        console.log(contents)
                     }
                     if(contents.indexOf('@var(name1)') != -1){
                         this.newform.varCount += 1
@@ -317,10 +330,12 @@
                 data.templateId = this.newform.templateId
                 data.type = this.newform.type
                 data.title = this.newform.title
-                data.labellllls = this.newform.labellllls
+                data.genre = this.newform.genre
                 data.content = contents
-                data.signature = '【' + this.newform.signature + '】'
+                data.signature = this.newform.signature
                 data.varCount = this.newform.varCount
+                data.status = this.newform.status
+                data.dayNum = this.newform.dayNum
                 
                 let flag = false;
                 if(!data.content){
@@ -330,7 +345,7 @@
                     });
                     flag = true;
                 }
-                if(!data.labellllls){
+                if(!data.genre){
                     _this.$message({
                         message: "短信类型不能为空",
                         type: 'error'
@@ -355,7 +370,7 @@
                 
                 axios({
                     method: 'post',
-                    url: _this.$store.state.defaultHttp+'typeInfo/saveOrUpdate.do?cId='+_this.$store.state.iscId,
+                    url: _this.$store.state.defaultHttp+'template/updateTemplate.do?cId='+_this.$store.state.iscId,
                     data:qs.stringify(data)
                 }).then(function(res){
                     if(res.data.code && res.data.code == 200){
@@ -386,26 +401,26 @@
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',
                 }).then(({ value }) => {
-                    // axios({
-                    //     method: 'post',
-                    //     url: _this.$store.state.defaultHttp+'template/deleteTemplate.do?cId='+_this.$store.state.iscId,
-                    //     data:qs.stringify(data)
-                    // }).then(function(res){
-                    //     if(res.data.code && res.data.code == 200){
-                    //         _this.$message({
-                    //             message:'删除成功',
-                    //             type:'success'
-                    //         })
-                    //         _this.$options.methods.reloadTable.bind(_this)(true);
-                    //     }else{
-                    //         _this.$message({
-                    //             message:res.data.msg,
-                    //             type:'error'
-                    //         })
-                    //     }
-                    // }).catch(function(err){
-                    //     _this.$message.error("删除失败,请重新删除");
-                    // });
+                    axios({
+                        method: 'post',
+                        url: _this.$store.state.defaultHttp+'template/deleteTemplate.do?cId='+_this.$store.state.iscId,
+                        data:qs.stringify(data)
+                    }).then(function(res){
+                        if(res.data.code && res.data.code == 200){
+                            _this.$message({
+                                message:'删除成功',
+                                type:'success'
+                            })
+                            _this.$options.methods.reloadTable.bind(_this)(true);
+                        }else{
+                            _this.$message({
+                                message:res.data.msg,
+                                type:'error'
+                            })
+                        }
+                    }).catch(function(err){
+                        _this.$message.error("删除失败,请重新删除");
+                    });
                 })
             },
             handleSend(e,val){
@@ -418,15 +433,43 @@
                 let elInput = this.$refs.elInput
                 let startPos = elInput.$refs.textarea.selectionStart
                 let endPos = elInput.$refs.textarea.selectionEnd
-                // console.log(startPos,endPos)
                 let txt = elInput.value
                 if (startPos === 0 || endPos === 0) return
                 this.newform.content = txt.substring(0, startPos) + e.value + txt.substring(endPos)
                 elInput.focus()
-                // elInput.selectionStart = startPos + e.name.length
-                // elInput.selectionEnd = startPos + e.name.length
-                
             },
+            changeState(val){
+                const _this = this;
+                let qs = require('querystring')
+
+                let data = {}
+                data.templateId = val.templateId
+                data.type = val.type
+                data.status = val.status
+                data.state = val.state
+                console.log(data)
+                
+                axios({
+                    method: 'post',
+                    url: _this.$store.state.defaultHttp+'template/updateTemplateState.do?cId='+_this.$store.state.iscId,
+                    data:qs.stringify(data)
+                }).then(function(res){
+                    if(res.data.code && res.data.code == 200){
+                        _this.$message({
+                            message:'修改成功',
+                            type:'success'
+                        })
+                        _this.$options.methods.reloadTable.bind(_this)(true);
+                    }else{
+                        _this.$message({
+                            message:res.data.msg,
+                            type:'error'
+                        })
+                    }
+                }).catch(function(err){
+                    _this.$message.error("修改失败,请重新修改");
+                });
+            }
         }
     }
 </script>
@@ -466,7 +509,7 @@
         padding-top: 12px;
         box-sizing: border-box;
     }
-    .sms_b p{
+    .sms_b > p{
         font-size: 12px;
         line-height: 16px;
         color: #888888;
@@ -482,6 +525,8 @@
         right: 10px;
         padding: 10px;
         box-sizing: border-box;
+        word-wrap: break-word;
+        overflow: hidden;
     }
     .sms_f{
         width: 100%;
@@ -490,7 +535,7 @@
         background-color: rgb(222, 222, 222);
         box-sizing: border-box;
     }
-    .i_edit,.i_send,.i_del{
+    .i_edit,.i_del{
         width:25px;
         height:25px;
         line-height:25px;
@@ -502,7 +547,7 @@
         margin-top: 13px;
         cursor: pointer;
     }
-    .i_edit:hover,.i_send:hover,.i_del:hover{
+    .i_edit:hover,.i_del:hover{
         color: #ff6333;
         border: 1px solid #ff6333;
     }
@@ -510,8 +555,13 @@
         float: left;
     }
     .i_send{
+        width:45px;
+        height:25px;
+        line-height:25px;
+        margin-top: 13px;
         margin-left: 5px;
-        transform: rotate(-30deg)
+        color: #bbbbbb
+        /* transform: rotate(-30deg) */
     }
     .i_del{
         float: right;

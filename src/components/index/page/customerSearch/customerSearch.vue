@@ -171,7 +171,7 @@
                     label="公司名称"
                     sortable>
                     <template slot-scope="scope">
-                        <div class="hoverline">
+                        <div @click="openDetails(scope.$index, scope.row)" class="hoverline">
                             {{scope.row.name}}
                         </div>
                     </template>
@@ -331,6 +331,10 @@
             :total="tablesize">
             </el-pagination>
         </div>
+        <keep-alive>
+            <v-search v-if="showdetails"></v-search>
+        </keep-alive>
+        
     </div>
 </template>
 
@@ -338,6 +342,7 @@
     import store from '../../../../store/store'
     import axios from 'axios'
     import qs from 'qs'
+    import vSearch from './searchDetails.vue';
     import bus from '../../bus';
 
     export default {
@@ -354,6 +359,9 @@
                return store.state.customerListnumber;     
             },
         },
+        components:{
+            vSearch
+        },
         data(){
             return {
                 industryTypeList:[],
@@ -367,46 +375,9 @@
                 telephoneList:[{id:'0',name:'全部'},{id:'1',name:'有'},{id:'2',name:'无'}],
                 emailList:[{id:'0',name:'全部'},{id:'1',name:'有'},{id:'2',name:'无'}],
                 websiteList:[{id:'0',name:'全部'},{id:'1',name:'有'},{id:'2',name:'无'}],
-                searchList:{
-                    keyword:null,
-                    industryType:null,
-                    MinDate:null,
-                    MaxDate:null,
-                    capital:null,
-                    enterpriseScale:null,
-                    companyType:null,
-                    operatingState:null,
-                    financingState:null,
-                    listed:null,
-                    phone:null,
-                    telephone:null,
-                    email:null,
-                    website:null,
-                    AddressKeyword:null,
-                    country:null,
-                    city:null,
-                    area:null,
-                },
-                searchListNew:{
-                    keyword:null,
-                    industryType:null,
-                    MinDate:null,
-                    MaxDate:null,
-                    capital:null,
-                    enterpriseScale:null,
-                    companyType:null,
-                    operatingState:null,
-                    financingState:null,
-                    listed:null,
-                    phone:null,
-                    telephone:null,
-                    email:null,
-                    website:null,
-                    AddressKeyword:null,
-                    country:null,
-                    city:null,
-                    area:null,
-                },
+
+                searchList:{ keyword:null, industryType:null, MinDate:null, MaxDate:null, capital:null, enterpriseScale:null, companyType:null, operatingState:null, financingState:null, listed:null, phone:null, telephone:null, email:null, website:null, AddressKeyword:null, country:null, city:null, area:null},
+                searchListNew:{ keyword:null, industryType:null, MinDate:null, MaxDate:null, capital:null, enterpriseScale:null, companyType:null, operatingState:null, financingState:null, listed:null, phone:null, telephone:null, email:null, website:null, AddressKeyword:null, country:null, city:null, area:null,},
                 page:1,//默认第一页
                 limit:15,//默认10条
                 tablesize: 0,
@@ -429,6 +400,8 @@
                 block:[],
                 cityList: [],
                 areaList: [],
+
+                showdetails:false
             }
         },
         activated(){
@@ -595,6 +568,12 @@
                 }).catch(function(err){
                     // console.log(err);
                 });
+            },
+            openDetails(index,row){
+                this.$store.state.searchdetailsData = {id: row.id};
+                this.showdetails = true
+                bus.$emit('showdetails', this.showdetails);
+                // this.$router.push({ path: '/searchDetails' });
             },
             selectInfo(val){
                 this.multipleSelection = val;

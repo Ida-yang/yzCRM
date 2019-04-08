@@ -93,7 +93,7 @@
                     v-else-if="item.prop == 'relationObject' && item.state == 1"
                     header-align="left"
                     align="left"
-                    label="关联对象"
+                    label="关联客户"
                     min-width="180"
                     sortable>
                 </el-table-column>
@@ -403,7 +403,7 @@ export default {
             let missionaddOrUpdateData = {}
             missionaddOrUpdateData.createForm = [
                 {"label":"计划主题","inputModel":"planningTheme"},
-                {"label":"关联对象","inputModel":"customerName","type":"require"},
+                {"label":"关联客户","inputModel":"customerName","type":"require"},
                 {"label":"开始时间","inputModel":"startTime","type":"date"},
                 {"label":"结束时间","inputModel":"endTime","type":"date"},
                 {"label":"提醒时间","inputModel":"remindTime","type":"date"},
@@ -424,7 +424,7 @@ export default {
             let missionaddOrUpdateData = {}
             missionaddOrUpdateData.createForm = [
                 {"label":"计划主题","inputModel":"planningTheme"},
-                {"label":"关联对象","inputModel":"customerName","type":"require"},
+                {"label":"关联客户","inputModel":"customerName","type":"require"},
                 {"label":"开始时间","inputModel":"startTime","type":"date"},
                 {"label":"结束时间","inputModel":"endTime","type":"date"},
                 {"label":"提醒时间","inputModel":"remindTime","type":"date"},

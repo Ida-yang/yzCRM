@@ -114,7 +114,6 @@ export default {
             },
 
             rules:{
-                customerName : [{ required: true, message: '关联对象不能为空', trigger: 'blur' }],
                 planningTheme : [{ required: true, message: '计划主题不能为空', trigger: 'blur' }],
                 describe : [{ required: true, message: '描述不能为空', trigger: 'blur' }],
                 startTime : [{ required: true, message: '开始时间不能为空', trigger: 'blur' }],
@@ -211,13 +210,6 @@ export default {
                 if(item.inputModel == "planningTheme" && !subData[item.inputModel]) {
                     _this.$message({
                         message: "计划主题不能为空",
-                        type: 'error'
-                    });
-                    flag = true;
-                }
-                if(item.inputModel == "customerName" && !subData[item.inputModel]) {//拜访时间不能为空
-                    _this.$message({
-                        message: "关联对象不能为空",
                         type: 'error'
                     });
                     flag = true;

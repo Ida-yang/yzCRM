@@ -44,8 +44,13 @@ const router =new Router({
         {
           path: '/customerSearch',
           component: resolve => require(['../components/index/page/customerSearch/customerSearch.vue'], resolve),
-          meta: { title: '搜索客户',name:'customerSearch' ,requireAuth:true}
+          meta: { title: '线索挖掘',name:'customerSearch' ,requireAuth:true}
         },
+        // {
+        //   path: '/searchDetails',
+        //   component: resolve => require(['../components/index/page/customerSearch/searchDetails.vue'], resolve),
+        //   meta: { title: '详情页',name:'searchDetails' ,requireAuth:true}
+        // },
         {
           path: '/reportForm',
           component: resolve => require(['../components/index/page/reportForm/reportForm.vue'], resolve),
@@ -136,11 +141,6 @@ const router =new Router({
           component: resolve => require(['../components/index/page/organization/organization.vue'], resolve),
           meta: { title: '组织机构',name:'organization' ,requireAuth:true}
         },
-        // {
-        //   path: '/suibian',
-        //   component: resolve => require(['../components/index/page/organization/name.vue'], resolve),
-        //   meta: { title: '随便',name:'suibian' ,requireAuth:true}
-        // },
         {
           path: '/user',
           component: resolve => require(['../components/index/page/user/user.vue'], resolve),

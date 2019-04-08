@@ -330,6 +330,29 @@
                             </el-table-column>
                         </el-table>
                     </el-tab-pane>
+                    <el-tab-pane label="外勤任务" name="sixth">
+                        <el-table
+                            :data="FielDutyDetails"
+                            border
+                            stripe
+                            style="width: 100%">
+                            <el-table-column
+                                prop="name"
+                                header-align="left"
+                                label="公司名称">
+                            </el-table-column>
+                            <el-table-column
+                                prop="creditCode"
+                                header-align="left"
+                                label="税务登记号">
+                            </el-table-column>
+                            <el-table-column
+                                prop="address"
+                                header-align="left"
+                                label="税务地址">
+                            </el-table-column>
+                        </el-table>
+                    </el-tab-pane>
                 </el-tabs>
             </div>
         </el-col>
@@ -388,6 +411,9 @@
             },
             InvoiceDetails(){
                 return store.state.InvoiceDetailsList;
+            },
+            FielDutyDetails(){
+                return store.state.FielDutyDetailsList
             }
         },
         filters: {

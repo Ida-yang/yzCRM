@@ -48,10 +48,12 @@ const state = {
   missiondetailsData:null,
 
 
-  //搜索客户列表
+  //线索挖掘列表
   customerList:[],
-  //搜索客户列表总数
+  //线索挖掘列表总数
   customerListnumber: 0,
+  //线索挖掘详情页联列表
+  searchdetailsData:null,
 
   //线索列表
   clueList:[],
@@ -78,6 +80,8 @@ const state = {
   agreementDetailsList:null,
   //客户详情页开票列表
   InvoiceDetailsList:null,
+  //客户详情页外勤任务列表
+  FielDutyDetailsList:null,
   //客户列表数据
   customerData:null,
   //客户池列表
