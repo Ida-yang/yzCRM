@@ -331,9 +331,9 @@
             :total="tablesize">
             </el-pagination>
         </div>
-        <keep-alive>
+        <!-- <keep-alive> -->
             <v-search v-if="showdetails"></v-search>
-        </keep-alive>
+        <!-- </keep-alive> -->
         
     </div>
 </template>
@@ -570,9 +570,9 @@
                 });
             },
             openDetails(index,row){
-                this.$store.state.searchdetailsData = {id: row.id};
+                this.$store.state.searchdetailsData = row.id
                 this.showdetails = true
-                bus.$emit('showdetails', this.showdetails);
+                // this.showdetails = !this.showdetails
                 // this.$router.push({ path: '/searchDetails' });
             },
             selectInfo(val){
