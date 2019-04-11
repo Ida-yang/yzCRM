@@ -131,7 +131,7 @@
             <el-button class="icon" icon="el-icon-caret-bottom" size="mini" v-show="!text">显示搜索列表</el-button>
         </div>
         <div class="entry">
-            <el-button class="btn info-btn" size="mini" @click="transfer()">转移至线索</el-button>
+            <el-button class="btn info-btn" size="mini" @click="transfers()">转移至线索</el-button>
             <div class="totalnum_head">共 <span style="font-weight:bold">{{tableNumber}}</span> 条</div>
             <el-popover
             placement="bottom"
@@ -160,6 +160,16 @@
                 width="45"
                 scope.row.id
                 @selection-change="selectInfo">
+            </el-table-column>
+            <el-table-column
+                header-align="center"
+                fixed
+                align="center"
+                label="转移"
+                width="45">
+                <template slot-scope="scope">
+                    <span class="arrowdown" @click="transfer(scope.$index, scope.row)"><i class="mdi-arrow-down"></i></span>
+                </template>
             </el-table-column>
             <div v-for="(item,index) in filterList" :key="index" >
                 <el-table-column
@@ -332,7 +342,7 @@
             </el-pagination>
         </div>
         <!-- <keep-alive> -->
-            <v-search v-if="showdetails"></v-search>
+            <v-search></v-search>
         <!-- </keep-alive> -->
         
     </div>
@@ -571,8 +581,9 @@
             },
             openDetails(index,row){
                 this.$store.state.searchdetailsData = row.id
+                // this.showdetails = true
                 this.showdetails = true
-                // this.showdetails = !this.showdetails
+                bus.$emit('showdetails', this.showdetails);
                 // this.$router.push({ path: '/searchDetails' });
             },
             selectInfo(val){
@@ -591,13 +602,14 @@
                 this.show = !this.show;
                 this.text = !this.text;
             },
-            transfer(){
+            transfers(){
                 const _this = this;
                 let qs =require('querystring')
                 let idArr = [];
                 idArr.id = this.idArr.id
                 idArr.secondid = this.$store.state.deptid
                 idArr.deptid = this.$store.state.insid
+                console.log(idArr)
 
                 if(idArr.id){
                     _this.Loading = true
@@ -640,6 +652,49 @@
                         message: '请先选择要转移的数据'
                     }); 
                 }
+            },
+            transfer(index,row){
+                const _this = this;
+                let qs =require('querystring')
+                let idArr = [];
+                idArr.id = row.id
+                idArr.secondid = this.$store.state.deptid
+                idArr.deptid = this.$store.state.insid
+
+                
+                axios({
+                    method: 'post',
+                    url:  _this.$store.state.defaultHttp+ 'customerOne/insert.do?cId='+_this.$store.state.iscId+"&pId="+_this.$store.state.ispId,
+                    data:qs.stringify(idArr),
+                }).then(function(res){
+                    _this.Loading = false
+                    if(res.data.code && res.data.code == '200') {
+                        if(res.data.map.map.suceessCount && res.data.map.map.suceessCount == 1){
+                            _this.$message({
+                                message: '转移成功',
+                                type: 'success'
+                            });
+                        }else{
+                            _this.$message({
+                                message: '转移失败，该数据已存在于线索或客户中',
+                                type: 'error'
+                            });
+                        }
+                        _this.$options.methods.reloadTable.bind(_this)(true);
+                    } else if(res.data.msg && res.data.msg == 'error'){//转移至线索
+                        _this.$message({
+                            message: '对不起，您没有该权限，请联系管理员开通',
+                            type: 'error'
+                        })
+                    } else {
+                        _this.$message({
+                            message: res.data.msg,
+                            type: 'error'
+                        });
+                    }
+                }).catch(function(err){
+                    _this.$message.error("转移失败,请重新转移");
+                });
             },
             
             hangleChange(e,val){
@@ -793,6 +848,13 @@
         color: #2c2c2c;
         float: left;
         margin: 20px 0;
+    }
+    .arrowdown{
+        color: #595959;
+        cursor: pointer;
+    }
+    .arrowdown:hover{
+        color: #ff6333
     }
     /* .country{
         display: flex;

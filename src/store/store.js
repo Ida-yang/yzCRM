@@ -25,6 +25,9 @@ const state = {
   dotmessage:true,
   messageList:null,
 
+  //消息是否加载
+  loadornot:false,
+
   //首页列表
   welcomeData:null,
 

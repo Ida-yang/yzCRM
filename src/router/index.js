@@ -199,7 +199,7 @@ const router =new Router({
         {
           path: '/analysisReport',
           component: resolve => require(['../components/index/page/analysisReport/analysisReport.vue'], resolve),
-          meta: { title: '报表',requireAuth:true}
+          meta: { title: '商业智能',requireAuth:true}
         },
         {
           path: '/suibian',

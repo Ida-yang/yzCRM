@@ -127,7 +127,7 @@
                             <li class="recordcontent">
                                 <div>
                                     <p>{{item.private_employee}}于{{item.createTime}}&nbsp;&nbsp;&nbsp;通过{{item.followType}}更新了一条记录&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;客户联系人为：&nbsp;{{item.contacts[0].name}}
-                                        &nbsp;&nbsp;&nbsp;<span>并约定下次联系时间：{{item.contactTime}}</span>
+                                        <span>&nbsp;&nbsp;&nbsp;并约定下次联系时间：{{item.contactTime}}</span>
                                         &nbsp;&nbsp;&nbsp;<span>状态为：{{item.state}} &nbsp;&nbsp;&nbsp;{{item.inputType}}</span> 
                                     </p>
                                     <p style="margin-top:15px;margin-bottom:15px;">{{item.followContent}}</p>

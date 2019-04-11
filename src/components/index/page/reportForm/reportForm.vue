@@ -18,7 +18,6 @@
                         prop="name"
                         header-align="left"
                         align="left"
-                        min-width="130"
                         label="行业"
                         sortable>
                     </el-table-column>
@@ -26,7 +25,6 @@
                         prop="innerShare"
                         header-align="left"
                         align="left"
-                        min-width="110"
                         label="内部占比"
                         sortable>
                         <template slot-scope="scope">{{scope.row.innerShare}} %</template>
@@ -35,7 +33,6 @@
                         prop="innerNum"
                         header-align="left"
                         align="left"
-                        min-width="110"
                         label="内部数量"
                         sortable>
                     </el-table-column>
@@ -43,7 +40,6 @@
                         prop="countryShare"
                         header-align="left"
                         align="left"
-                        min-width="110"
                         label="全国占比"
                         sortable>
                         <template slot-scope="scope">{{scope.row.countryShare}} %</template>
@@ -52,7 +48,7 @@
                         prop="countryNum"
                         header-align="left"
                         align="left"
-                        min-width="120"
+                        min-width="90"
                         label="全国总数量"
                         sortable>
                     </el-table-column>

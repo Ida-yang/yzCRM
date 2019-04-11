@@ -71,6 +71,11 @@
     import qs from 'qs'
 
     export default {
+        computed:{
+            loadState(){
+                return store.state.loadornot
+            },
+        },
         data() {
             return {
                 collapse2: false,
@@ -92,9 +97,11 @@
             this.loadmessage()
         },
         watch:{
-            $route(newValue, oldValue){
-                this.loadmessage()
-            }
+            loadState(nv,ov){
+                if(this.$store.state.loadornot){
+                    this.loadmessage()
+                }
+            },
         },
         methods:{
             getTime(){
@@ -123,6 +130,7 @@
                 });
             },
             leavemessage(e){
+                this.$store.state.loadornot = false
                 this.collapse2 = false;
                 bus.$emit('collapse2', this.collapse2)
             },

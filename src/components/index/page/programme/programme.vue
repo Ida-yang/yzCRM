@@ -777,7 +777,8 @@
     }
     .inputnum .el-input__inner{
         text-align: center;
-        color: brown;
+        /* color: brown; */
+        color: #409EFF;
         font-weight: bold
     }
     .dept_name{

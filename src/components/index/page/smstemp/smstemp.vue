@@ -15,7 +15,7 @@
                 <ul>
                     <li v-for="(item,index) in smsData" :key="index">
                         <div class="sms_h">
-                            <span>{{item.type}}:{{item.title}}</span>
+                            <span>{{item.genre}}:{{item.title}}</span>
                         </div>
                         <hr style='background-color:#cccccc;height:1px;border:none;'/>
                         <div class="sms_b">

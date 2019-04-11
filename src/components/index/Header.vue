@@ -262,6 +262,7 @@
                 this.fullscreen = !this.fullscreen;
             },
             handlemessage(){
+                this.$store.state.loadornot = true
                 this.collapse2 = true;
                 bus.$emit('collapse2', this.collapse2);
             },

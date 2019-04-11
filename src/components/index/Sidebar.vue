@@ -174,7 +174,7 @@
                     {
                         icon: 'mdi-puzzle',
                         index: 'analysisReport',
-                        title: '报表',
+                        title: '商业智能',
                     },
                 ],
                 

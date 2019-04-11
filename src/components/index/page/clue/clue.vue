@@ -32,16 +32,8 @@
             <el-button class="btn info-btn" size="mini" @click="handleAdd()">新增</el-button>
             <el-button class="btn info-btn" size="mini" @click="cluePool()">转移至线索池</el-button>
             <el-button class="btn info-btn" size="mini" @click="customerSwitching()">转移至客户</el-button>
+            <el-button class="btn info-btn" size="mini" @click="showsend()">发送短信</el-button>
             <div class="totalnum_head">共 <span style="font-weight:bold">{{tableNumber}}</span> 条</div>
-            <!-- <el-upload
-                class="upload-demo"
-                ref="upload"
-                :multiple="true"
-                action="doUpload"
-                :limit="1"
-                :before-upload="beforeUpload">
-                <el-button slot="trigger" size="mini" class="info-btn">导入</el-button>
-            </el-upload> -->
             <el-popover
                 placement="left"
                 width="150"
@@ -419,6 +411,31 @@
             :total="tableNumber">
             </el-pagination>
         </div>
+        <el-dialog
+            title="发送短信"
+            :visible.sync="dialogVisible"
+            width="40%">
+            <el-form ref="newform" :model="newform" label-width="110px" :rules="rules" style="padding-right:30px">
+                <el-form-item prop="cluenum" label="线索选择量">
+                    <el-input v-model="newform.cluenum" :disabled="true"></el-input>
+                </el-form-item>
+                <el-form-item prop="templateId" label="短信模板">
+                    <el-select v-model="newform.templateId" placeholder="请选择" style="width:100%" @change="changetemplate">
+                        <el-option v-for="item in templateList" :key="item.templateId" :label="item.title" :value="item.templateId"></el-option>
+                    </el-select>
+                </el-form-item>
+                <el-form-item prop="smscontent" label="短信内容">
+                    <el-input type="textarea" rows="5" v-model="newform.smscontent"  :disabled="true"></el-input>
+                </el-form-item>
+                <el-form-item prop="clueremark" label="说明">
+                    <el-input type="textarea" rows="5" v-model="newform.clueremark" placeholder="请输入短信说明"></el-input>
+                </el-form-item>
+            </el-form>
+            <span slot="footer" class="dialog-footer">
+                <el-button @click="dialogVisible = false">取 消</el-button>
+                <el-button type="primary" @click="sendSMS()">确 定</el-button>
+            </span>
+        </el-dialog>
     </div>
 </template>
 
@@ -463,6 +480,9 @@
                 idArr:{
                     id:null,
                 },
+                SMSnames:[],
+                SMSphones:[],
+                SMScontacts:[],
                 pIdData:[
                     {label:'0',value:'全部'},
                     {label:'1',value:'我的'},
@@ -489,7 +509,19 @@
                 formLabelWidth: '130px',
 
                 authorityInterface: null,
-                downloadUrl: this.$store.state.defaultHttp+'upload/import_template.xls'
+                downloadUrl: this.$store.state.defaultHttp+'upload/import_template.xls',
+
+                dialogVisible:false,
+                templateList:null,
+                newform:{
+                    templateId:null,
+                    cluenum:null,
+                    clueremark:null,
+                    smscontent:null,
+                },
+                rules: {
+                    templateId : [{ required: true, message: '短信模板不能为空', trigger: 'blur' },],
+                },
             }
         },
         beforeCreate(){
@@ -608,17 +640,32 @@
                 }).catch(function(err){
                     // console.log(err);
                 });
+                axios({
+                    method: 'post',
+                    url: _this.$store.state.defaultHttp+'template/selectTemplate.do?cId='+_this.$store.state.iscId,
+                    data:qs.stringify(filterList)
+                }).then(function(res){
+                    _this.templateList = res.data.map.templates
+                }).catch(function(err){
+                    // console.log(err);
+                });
             },
             selectInfo(val){
+                const _this = this
                 let arr = val;
                 let newArr = [new Array()];
+                this.SMSnames = []
+                this.SMSphones = []
+                this.SMScontacts = []
                 arr.forEach((item) => {
                     if(item.id != 0){
                         newArr.push(item.id)
+                        _this.SMSnames.push(item.name)
+                        _this.SMSphones.push(item.contacts[0].phone)
+                        _this.SMScontacts.push(item.contacts[0].coName)
                     }
                 });
                 this.idArr.id = newArr;
-                
             },
             openDetails(index,row){
                 // let cluedetailsData = {};
@@ -985,6 +1032,69 @@
                 }).catch((e) => {
                     _this.$message.error("excel上传失败，请重新上传");
                 })
+            },
+            showsend(){
+                if(this.SMSnames[0]){
+                    // console.log(this.SMSnames.length)
+                    this.newform.cluenum = this.SMSnames.length
+                    this.dialogVisible = true
+                }else{
+                    this.$message({
+                        type: 'error',
+                        message: '请先选择要发送短信的线索'
+                    }); 
+                }
+            },
+            changetemplate(val){
+                console.log(val)
+                this.templateList.forEach(el => {
+                    if(el.templateId == val){
+                        this.newform.smscontent = el.content
+                    }
+                });
+            },
+            sendSMS(){
+                const _this = this
+                let qs = require('querystring')
+                let data = {}
+                data.names = this.SMSnames
+                data.phones = this.SMSphones
+                data.contacts = this.SMScontacts
+                data.templateId = this.newform.templateId
+                let data2 = {}
+                data2.names = this.SMSnames
+                data2.phones = this.SMSphones
+                data2.contacts = this.SMScontacts
+                data2.templateId = this.newform.templateId
+                // data2.customernum = this.newform.customernum
+                data2.customeremark = this.newform.customeremark
+                data2.pId = this.$store.state.ispId
+                data2.secondid = this.$store.state.deptid
+                data2.deptid = this.$store.state.insid
+                // console.log(data)
+
+                axios({
+                    method: 'post',
+                    url: _this.$store.state.defaultHttp+'message/sendMarketingMsg.do?cId='+this.$store.state.iscId,
+                    data: qs.stringify(data)
+                }).then(function(res){
+                    if(res.data.code && res.data.code == '200'){
+                        _this.$message({
+                            message:'发送成功',
+                            type:'success'
+                        })
+                    }
+                    _this.dialogVisible = false
+                    axios({
+                        method: 'post',
+                        url: _this.$store.state.defaultHttp+'sendRecord/insertSendRecord.do?cId='+_this.$store.state.iscId,
+                        data: qs.stringify(data2)
+                    }).then(function(res){
+                    }).catch(function(err){
+                    });
+                }).catch(function(err){
+                    // console.log(err);
+                });
             },
         },
     }

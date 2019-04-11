@@ -1,11 +1,15 @@
 <template>
-    <div class="engine_c">
-        <div class="top engine_top">
+    <div class="engine_c" v-if="showdetails">
+        <!-- <div class="engine_top"><span @click="closeDetail"><i class="el-icon-circle-close-outline"></i></span></div> -->
+        <div class="top">
                 <el-card class="box-card">
                     <div slot="header" class="clearfix">
                         <span>{{customername}}</span>
+                        <span class="engine_icon" @click="closeDetail"><i class="el-icon-circle-close-outline"></i></span>
+                        <el-button style="float:right;" class="info-btn" size="mini" @click="retract()" v-show="retracts">显示</el-button>
+                        <el-button style="float:right;" class="info-btn" size="mini" @click="retract()" v-show="!retracts">收起</el-button>
                     </div>
-                    <div class="text item">
+                    <div class="text item" v-show="showinfo">
                         <ul>
                             <li>法人代表：<span>{{searchdetailsList.representative || '无'}}</span></li>
                             <li>行业：<span>{{searchdetailsList.industryName || '无'}}</span></li>
@@ -21,10 +25,11 @@
                             <li>成立时间：<span>{{searchdetailsList.date || '无'}}</span></li>
                         </ul>
                     </div>
+                    <div v-show="!showinfo"></div>
                 </el-card>
             </div>
-            <div class="bottom">
-                <el-tabs v-model="activeName2" type="card">
+            <div class="bottom engine_bottom">
+                <el-tabs v-model="activeName2" type="card" @tab-click="tabClick">
                     <el-tab-pane label="联系人" name="first">
                         <el-table
                             :data="contacts"
@@ -69,8 +74,8 @@
                         </el-table>
                     </el-tab-pane>
                     <el-tab-pane label="官网" name="second">
-                        <p style="margin-left:30px;font-size:12px;">暂无数据</p>
-                        <!-- <iframe class="engine_iframe" src="https://cn.vuejs.org/"/></iframe> -->
+                        <!-- <p style="margin-left:30px;font-size:12px;">暂无数据</p> -->
+                        <iframe class="engine_iframe" :src="website"/>
                     </el-tab-pane>
                 </el-tabs>
             </div>
@@ -81,13 +86,23 @@
     import store from '../../../../store/store'
     import axios from 'axios'
     import XLSX from 'xlsx';
+    import bus from '../../bus';
     import qs from 'qs'
 
     export default {
         name:'searchDetails',
         store,
+        computed: {
+            searchID(){
+                return store.state.searchdetailsData;
+            },
+        },
         data(){
             return{
+                showdetails:false,
+                retracts:false,
+                showinfo:true,
+
                 activeName2:'first',
 
                 searchdetailsList:{
@@ -107,13 +122,19 @@
                 },
                 customername:null,
                 contacts:null,
+                website:'http://www.kingdee.com/'
             }
         },
-        // activated(){
-        //     this.loadData()
-        // },
-        mounted(){
-            this.loadData()
+        created(){
+            // 通过 Event Bus 进行组件间通信
+            bus.$on('showdetails', msg => {
+                this.showdetails = msg;
+            })
+        },
+        watch:{
+            searchID(nv,ov){
+                this.loadData()
+            }
         },
         methods:{
             loadData(){
@@ -150,15 +171,27 @@
                     // console.log(err);
                 });
             },
+            retract(){
+                this.showinfo = !this.showinfo
+                this.retracts = !this.retracts
+            },
+            closeDetail(){
+                this.showdetails = false
+            },
+            tabClick(val){
+                // console.log(val)
+                if(val.index == '1'){
+                    console.log(val.name)
+                }
+            }
         },
     }
 </script>
 
 <style>
     .engine_c{
-        width: 70%;
+        width: 66.5%;
         height: 100%;
-        /* background-color: rgb(202, 169, 169); */
         background-color: rgb(255, 255, 255);
         border: 1px solid #dddddd;
         position: fixed;
@@ -168,11 +201,24 @@
         box-sizing: border-box
     }
     .engine_top{
-        margin-bottom: 20px;
+        width: 100%;
+        text-align: right;
+        cursor: pointer;
+        color: #969696
+    }
+    .engine_icon{
+        float:right;
+        margin-left:5px;
+        line-height:27px;
+        color: #969696;
+        cursor: pointer;
+    }
+    .engine_bottom{
+        margin-top: 20px;
     }
     .engine_iframe{
         width: 100%;
-        height: 250px;
+        height: 450px;
     }
 </style>
 
