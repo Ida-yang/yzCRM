@@ -145,6 +145,11 @@ const state = {
   //报表列表总数
   smstempListnumber:0,
 
+  //报表列表
+  logList:[],
+  //报表列表总数
+  logListnumber:0,
+
   //当前时间
   nowtime:null,
 }

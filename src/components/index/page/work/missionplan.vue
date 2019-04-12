@@ -299,7 +299,7 @@ export default {
                     let startTime = Date.parse(el.updateTime); // 开始时间
                     let endTime = new Date().getTime(); // 结束时间
                     let usedTime = endTime - startTime; // 相差的毫秒数
-                    if(el.state == '未完成' || el.state == '申请拜访'){
+                    if(el.state == '未完成' || el.state == ''){
                         el.progress = 'info'
                         el.completed = ''
                         el.nullify = ''
@@ -379,7 +379,7 @@ export default {
 
             axios({
                 method: 'post',
-                url: _this.$store.state.defaultHttp+'workPlan/updateWorkPlan.do?cId='+_this.$store.state.iscId,
+                url: _this.$store.state.defaultHttp+'workPlan/updateWorkPlan.do?cId='+_this.$store.state.iscId+'&pId='+this.$store.state.ispId,
                 data: qs.stringify(data),
             }).then(function(res){
                 if(res.data.code && res.data.code == 200) {
@@ -436,9 +436,9 @@ export default {
                 "endTime": row.endTime,
                 "remindTime": row.remindTime,
                 "customerId": row.customerId,
-                "customerName": row.customerName}
+                "customerName": row.customerName,}
             missionaddOrUpdateData.submitData = {"id": row.id};
-            missionaddOrUpdateData.submitURL = this.$store.state.defaultHttp+ 'workPlan/updateWorkPlan.do?cId='+this.$store.state.iscId,
+            missionaddOrUpdateData.submitURL = this.$store.state.defaultHttp+ 'workPlan/updateWorkPlan.do?cId='+this.$store.state.iscId+'&pId='+this.$store.state.ispId,
             this.$store.state.missionaddOrUpdateData = missionaddOrUpdateData;
             _this.$router.push({ path: '/missionplanaddorupdate' });
         },

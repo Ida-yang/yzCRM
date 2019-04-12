@@ -427,8 +427,8 @@
                 <el-form-item prop="smscontent" label="短信内容">
                     <el-input type="textarea" rows="5" v-model="newform.smscontent"  :disabled="true"></el-input>
                 </el-form-item>
-                <el-form-item prop="clueremark" label="说明">
-                    <el-input type="textarea" rows="5" v-model="newform.clueremark" placeholder="请输入短信说明"></el-input>
+                <el-form-item prop="explain" label="说明">
+                    <el-input type="textarea" rows="5" v-model="newform.explain" placeholder="请输入短信说明"></el-input>
                 </el-form-item>
             </el-form>
             <span slot="footer" class="dialog-footer">
@@ -516,7 +516,7 @@
                 newform:{
                     templateId:null,
                     cluenum:null,
-                    clueremark:null,
+                    explain:null,
                     smscontent:null,
                 },
                 rules: {
@@ -1067,7 +1067,7 @@
                 data2.contacts = this.SMScontacts
                 data2.templateId = this.newform.templateId
                 // data2.customernum = this.newform.customernum
-                data2.customeremark = this.newform.customeremark
+                data2.explain = this.newform.explain
                 data2.pId = this.$store.state.ispId
                 data2.secondid = this.$store.state.deptid
                 data2.deptid = this.$store.state.insid

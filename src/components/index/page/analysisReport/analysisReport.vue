@@ -13,8 +13,7 @@
                     <span class="nameList">年份：</span>
                     <el-date-picker v-model="searchList.year" :disabled="yeardisabled" type="year" format="yyyy" value-format="yyyy" placeholder="选择年份" @change="search"></el-date-picker>
                     <span class="nameList">时间段：</span>
-                    <el-date-picker v-model="searchList.yearrange" :disabled="rangedisabled" type="daterange" format="yyyy-MM-dd" value-format="yyyy-MM-dd" start-placeholder="开始日期" end-placeholder="结束日期" @change="datepick">
-                    </el-date-picker>
+                    <el-date-picker v-model="searchList.yearrange" :disabled="rangedisabled" type="daterange" format="yyyy-MM-dd" value-format="yyyy-MM-dd" start-placeholder="开始日期" end-placeholder="结束日期" @change="datepick"></el-date-picker>
                 </div>
                 <div class="radioList report_radio">
                     <el-radio-group v-model="searchList.yearMonth">
@@ -537,8 +536,10 @@
             },
             datepick(val){
                 this.yeardisabled = true
-                this.searchList.startTime = val[0]
-                this.searchList.endTime = val[1]
+                if(val){
+                    this.searchList.startTime = val[0]
+                    this.searchList.endTime = val[1]
+                }
                 this.$options.methods.searchtwo.bind(this)()
             }
         }

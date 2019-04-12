@@ -200,6 +200,10 @@
                                 index: 'programme',
                                 title: '目标',
                             },
+                            {
+                                index: 'log',
+                                title: '日志',
+                            },
                         ]
                     },
                 ],

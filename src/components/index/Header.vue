@@ -80,6 +80,14 @@
     import bus from './bus';
     import $ from 'jquery'
     import qs from 'qs'
+    
+    var _hmt = _hmt || [];
+    (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?419f9fb8b9f5e52971e7e52c328860a8";
+        var s = document.getElementsByTagName("script")[0]; 
+        s.parentNode.insertBefore(hm, s);
+    })();
 
     export default {
         data() {

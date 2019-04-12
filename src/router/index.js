@@ -202,9 +202,9 @@ const router =new Router({
           meta: { title: '商业智能',requireAuth:true}
         },
         {
-          path: '/suibian',
-          component: resolve => require(['../components/index/page/analysisReport/suibian.vue'], resolve),
-          meta: { title: '报表测试',requireAuth:true}
+          path: '/log',
+          component: resolve => require(['../components/index/page/log/log.vue'], resolve),
+          meta: { title: '日志',requireAuth:true}
         },
       ]
     },

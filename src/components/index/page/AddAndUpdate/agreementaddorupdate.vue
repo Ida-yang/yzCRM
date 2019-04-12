@@ -299,8 +299,6 @@
                 });
             },
             loadpId(){
-                const _this = this;
-                let qs =require('querystring')
                 axios({
                     method: 'get',
                     url: _this.$store.state.defaultHttp+'getNameAndId.do?cId='+_this.$store.state.iscId,

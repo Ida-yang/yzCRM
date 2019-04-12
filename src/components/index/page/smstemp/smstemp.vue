@@ -8,6 +8,16 @@
         </div>
         <div class="centercontent"></div>
         <div class="setrightcontent">
+            <div class="radioList">
+            <el-radio-group v-model="searchList.status">
+                <span class="nameList">审核状态：</span>
+                <el-radio v-for="item in statusData" :key="item.id" :label="item.id" @change="search()">{{item.name}}</el-radio>
+            </el-radio-group>
+            <el-radio-group v-model="searchList.genre">
+                <span class="nameList">短信类型：</span>
+                <el-radio v-for="item in genreData" :key="item.id" :label="item.id" @change="search()">{{item.name}}</el-radio>
+            </el-radio-group>
+        </div>
             <div class="entry">
                 <el-button class="btn info-btn" size="mini" @click="handleAdd()">新增</el-button>
             </div>
@@ -148,6 +158,23 @@
                     dayNum:null,
                 },
 
+                searchList:{
+                    type:null,
+                    genre:'',
+                    status:'10',
+                },
+                statusData:[
+                    {id:'10',name:'全部'},
+                    {id:'1',name:'正在审核'},
+                    {id:'2',name:'审核通过'},
+                    {id:'3',name:'未通过审核'},
+                ],
+                genreData:[
+                    {id:'',name:'全部'},
+                    {id:'通知类',name:'通知类'},
+                    {id:'营销类',name:'营销类'},
+                ],
+
                 btnList:[
                     {id:'001',name:'公司名称',value:'@var(name2)'},
                     {id:'002',name:'联系人名称',value:'@var(name1)'},
@@ -178,6 +205,9 @@
                 let i = this.newform.index
                 let data = {}
                 data.type = this.newform.type
+                data.genre = this.searchList.genre
+                data.status = this.searchList.status
+
                 axios({
                     method: 'post',
                     url: _this.$store.state.defaultHttp+'template/selectTemplate.do?cId='+_this.$store.state.iscId,
@@ -447,7 +477,6 @@
                 data.type = val.type
                 data.status = val.status
                 data.state = val.state
-                console.log(data)
                 
                 axios({
                     method: 'post',
@@ -469,7 +498,11 @@
                 }).catch(function(err){
                     _this.$message.error("修改失败,请重新修改");
                 });
-            }
+            },
+            search(){
+                const _this = this;
+                _this.$options.methods.reloadTable.bind(_this)()
+            },
         }
     }
 </script>

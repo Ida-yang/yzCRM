@@ -99,14 +99,12 @@
                 fixed
                 header-align="center"
                 align="center"
-                width="50">
+                width="65">
                 <template slot-scope="scope">
-                    <div v-show="scope.row.haveContract !== 0" class="diamood_red"></div>
-                    <div v-show="scope.row.haveContract == 0" class="diamood_red_h"></div>
-                    <div v-show="scope.row.haveOpportunity !== 0" class="diamood_blue"></div>
-                    <div v-show="scope.row.haveOpportunity == 0" class="diamood_blue_h"></div>
-                    <!-- <div class="diamood_red">{{scope.row.haveContract}}</div>
-                    <div class="diamood_blue">{{scope.row.haveOpportunity}}</div> -->
+                    <div v-show="scope.row.haveOpportunity !== 0" class="diamood_blue"><i class="mdi mdi-martini"></i></div>
+                    <div v-show="scope.row.haveOpportunity == 0" class="diamood_blue_h"><i class="mdi mdi-martini"></i></div>
+                    <div v-show="scope.row.haveContract !== 0" class="diamood_red"><i class="mdi mdi-coin"></i></div>
+                    <div v-show="scope.row.haveContract == 0" class="diamood_red_h"><i class="mdi mdi-coin"></i></div>
                 </template>
             </el-table-column>
             <div v-for="(item,index) in filterList" :key="index" >
@@ -464,8 +462,8 @@
                 <el-form-item prop="smscontent" label="短信内容">
                     <el-input type="textarea" rows="5" v-model="newform.smscontent"  :disabled="true"></el-input>
                 </el-form-item>
-                <el-form-item prop="customeremark" label="说明">
-                    <el-input type="textarea" rows="5" v-model="newform.customeremark" placeholder="请输入短信说明"></el-input>
+                <el-form-item prop="explain" label="说明">
+                    <el-input type="textarea" rows="5" v-model="newform.explain" placeholder="请输入短信说明"></el-input>
                 </el-form-item>
             </el-form>
             <span slot="footer" class="dialog-footer">
@@ -556,7 +554,7 @@
                 newform:{
                     templateId:null,
                     customernum:null,
-                    customeremark:null,
+                    explain:null,
                     smscontent:null,
                 },
                 rules: {
@@ -1043,7 +1041,7 @@
                 data2.contacts = this.SMScontacts
                 data2.templateId = this.newform.templateId
                 // data2.customernum = this.newform.customernum
-                data2.customeremark = this.newform.customeremark
+                data2.explain = this.newform.explain
                 data2.pId = this.$store.state.ispId
                 data2.secondid = this.$store.state.deptid
                 data2.deptid = this.$store.state.insid
@@ -1083,15 +1081,20 @@
         line-height: 30px;
     }
     .diamood_red,.diamood_blue,.diamood_red_h,.diamood_blue_h{
-        width: 12px;
-        height: 12px;
+        font-size: 18px;
         float: left;
     }
     .diamood_red{
-        background-color: rgb(221, 122, 122);
+        color: rgb(255, 0, 0);
+        margin-left: 6px;
     }
     .diamood_blue{
-        background-color: rgb(122, 162, 221);
-        margin-left: 3px;
+        color: rgb(0, 0, 255)
+    }
+    .diamood_red_h,.diamood_blue_h{
+        color: #aaaaaa
+    }
+    .diamood_red_h{
+        margin-left: 6px;
     }
 </style>
