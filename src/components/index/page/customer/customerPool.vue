@@ -63,6 +63,18 @@
                 scope.row.id
                 @selection-change="selectInfo">
             </el-table-column>
+            <el-table-column
+                fixed
+                header-align="center"
+                align="center"
+                width="65">
+                <template slot-scope="scope">
+                    <div v-show="scope.row.haveOpportunity !== 0" class="diamood_blue"><i class="mdi mdi-martini"></i></div>
+                    <div v-show="scope.row.haveOpportunity == 0" class="diamood_blue_h"><i class="mdi mdi-martini"></i></div>
+                    <div v-show="scope.row.haveContract !== 0" class="diamood_red"><i class="mdi mdi-coin"></i></div>
+                    <div v-show="scope.row.haveContract == 0" class="diamood_red_h"><i class="mdi mdi-coin"></i></div>
+                </template>
+            </el-table-column>
             <div v-for="(item,index) in filterList" :key="index" >
                 <el-table-column
                     prop="name"

@@ -44,10 +44,10 @@
                     style="width:90%;">
                     <el-option v-for="o in contactsList" :key="o.id" :label="o.name" :value="o.id"></el-option>
                 </el-select>
+                <!-- :collapse-tags="item.multiple" .el-input__inner-->
                 <el-select 
                     v-else-if="item.type && item.type == 'select'"
                     :multiple="item.multiple"
-                    :collapse-tags="item.multiple"
                     v-model="myForm[item.inputModel]"
                     @change="handleInput($event, item.inputModel)"
                     :placeholder="item.placeholder"

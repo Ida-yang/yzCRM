@@ -23,6 +23,7 @@
                             <li>地址：<span>{{cluedetail.address}}</span></li>
                             <li>职务：<span>{{contacts.identity}}</span></li>
                             <li>性别：<span>{{contacts.sex}}</span></li>
+                            <li>网址：<span>{{contacts.url}}</span></li>
                             <li>备注：<span>{{cluedetail.remark}}</span></li>
                         </ul>
                     </div>
@@ -109,7 +110,16 @@
                                     <el-option v-for="item in stateList" :key="item.id" :label="item.typeName" :value="item.id"></el-option>
                                 </el-select>
                             </el-form-item>
-                            
+                            <el-form-item label="上传图片" style="width:300px;">
+                                <el-upload class="upload-demo" ref="upload" :file-list="imgList" :multiple="true" action="doUpload" :limit="1" :before-upload="beforeUploadimg">
+                                    <el-button slot="trigger" size="mini" class="info-btn">上传图片</el-button>
+                                </el-upload>
+                            </el-form-item>
+                            <el-form-item label="上传附件" style="width:300px;">
+                                <el-upload class="upload-demo" ref="upload" :file-list="fileList" :multiple="true" action="doUpload" :limit="1" :before-upload="beforeUploadfile">
+                                    <el-button slot="trigger" size="mini" class="info-btn">上传附件</el-button>
+                                </el-upload>
+                            </el-form-item>
                             <el-form-item label="快捷沟通" style="width:80%;">
                                 <el-radio v-model="followform.followContent" v-for="item in fastcontactList" :key="item.id" :label="item.content">{{item.typeName}}</el-radio>
                             </el-form-item>
@@ -119,18 +129,28 @@
                         </el-form>
                         <ul class="followrecord" v-for="(item,index) in record" :key="item.followId">
                             <li class="recordicon">
-                                <i class="el-icon-delete delico" v-show="item.showdelico" @click="deletefollow(index)"></i>
-                                <i class="nodelico" v-show="!item.showdelico"></i>
+                                <img v-show="!portrait" src="/upload/staticImg/avatar.jpg" class="detail_portrait" alt="头像" />
+                                <img v-show="portrait" :src="imgUrl" class="detail_portrait" alt="头像" />
                             </li>
-                            <li class="verticalline" v-show="item.showdelico"></li>
-                            <li class="noverticalline" v-show="!item.showdelico"></li>
+                            <li class="verticalline"></li>
                             <li class="recordcontent">
-                                <div>
+                                <div class="left_more">
                                     <p>{{item.private_employee}}于{{item.createTime}}&nbsp;&nbsp;&nbsp;通过{{item.followType}}更新了一条记录&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;客户联系人为：&nbsp;{{item.contacts[0].name}}
-                                        <span>&nbsp;&nbsp;&nbsp;并约定下次联系时间：{{item.contactTime}}</span>
+                                        <span v-if="item.contactTime">&nbsp;&nbsp;&nbsp;并约定下次联系时间：{{item.contactTime}}</span>
                                         &nbsp;&nbsp;&nbsp;<span>状态为：{{item.state}} &nbsp;&nbsp;&nbsp;{{item.inputType}}</span> 
                                     </p>
                                     <p style="margin-top:15px;margin-bottom:15px;">{{item.followContent}}</p>
+                                </div>
+                                <div class="right_more" v-if="item.showdelico">
+                                    <el-dropdown trigger="click" @command="deletefollow(index)">
+                                        <span class="el-dropdown-link">更多</span>
+                                        <span>
+                                            <i class="el-icon-caret-bottom"></i>
+                                        </span>
+                                        <el-dropdown-menu slot="dropdown">
+                                            <el-dropdown-item command="del">删除</el-dropdown-item>
+                                        </el-dropdown-menu>
+                                    </el-dropdown>
                                 </div>
                             </li>
                         </ul>
@@ -277,6 +297,8 @@
                     contactsId:'',
                     followContent:'',
                     state:'',
+                    imgName:null,
+                    enclosureName: null,
                 },
                 rules: {
                     followContent : [{ required: true, message: '请输入跟进内容', trigger: 'blur' },],
@@ -288,8 +310,13 @@
                     {label:'电话',value:'1'},
                     {label:'微信',value:'2'},
                     {label:'QQ',value:'3'},
-                    {label:'邮箱',value:'4'}
+                    {label:'邮箱',value:'4'},
+                    {label:'拜访',value:'5'},
                 ],
+                
+                portrait:this.$store.state.portrait,
+                imgUrl:'/upload/'+this.$store.state.iscId+'/'+this.$store.state.portrait,
+                
                 stateList:null,
                 searchList:{
                     keyword:null,
@@ -320,7 +347,14 @@
                 Provinces:null,
                 businessList:null,
                 showbusiness:false,
-                showloading:false
+                showloading:false,
+
+                files:null,
+                filesName:null,
+                imgfile:null,
+                imgName:null,
+                fileList:[],
+                imgList:[]
             }
         },
         beforeRouteLeave(to, from , next){
@@ -565,7 +599,11 @@
                     _this.$message.error("转移失败,请重新转移");
                 });
             },
+            handleCommand(val){
+                console.log(val)
+            },
             deletefollow(index){
+                console.log(index)
                 const _this = this
                 let qs = require('querystring')
                 let followData = {}
@@ -683,20 +721,62 @@
                     // console.log(err);
                 });
             },
+
+            beforeUploadimg(val,imgList){
+                console.log(val)
+                this.imgfile = val;
+                const extension = val.name.split('.')[1] === 'jpg'
+                const extension2 = val.name.split('.')[1] === 'png'
+                const extension3 = val.name.split('.')[1] === 'jpeg'
+                const isLt500k = val.size / 1024 / 1024 < 0.5
+                if (!extension && !extension2 && !extension3) {
+                    this.$message.warning('图片只能是 jpg、png、jpeg格式!')
+                    return
+                }
+                if (!isLt500k) {
+                    this.$message.warning('图片大小不能超过 500KB!')
+                    return
+                }
+                this.imgName = val.name
+                this.imgList.push({name:val.name})
+                return false;
+            },
+            beforeUploadfile(file,fileList){
+                this.files = file;
+                const extension = file.name.split('.')[1] === 'xls'
+                const extension2 = file.name.split('.')[1] === 'xlsx'
+                const extension3 = file.name.split('.')[1] === 'doc'
+                const extension4 = file.name.split('.')[1] === 'docx'
+                const isLt5M = file.size / 1024 / 1024 < 5
+                if (!extension && !extension2 && !extension3 && !extension4) {
+                    this.$message.warning('附件只能是 xls、xlsx、doc、docx格式!')
+                    return
+                }
+                if (!isLt5M) {
+                    this.$message.warning('附件大小不能超过 5MB!')
+                    return
+                }
+                this.filesName = file.name
+                this.fileList.push({name:file.name})
+                return false; // 返回false不会自动上传
+            },  
+
             Submitfollowform(){
                 const _this = this
                 let qs = require('querystring')
-                let data = {}
-                data.followType = this.followform.followType
-                data.contactTime = this.followform.contactTime
-                data.followContent = this.followform.followContent;
-                data.contactsId = this.followform.contactsId;
-                data.follow_state = this.followform.state;
-                data.customertwo_id = this.detailData.id;
-                data.deptid = this.$store.state.deptid
-                data.secondid = this.$store.state.insid
+                let data = new FormData()
+                data.append("followType", this.followform.followType);
+                data.append("contactTime", this.followform.contactTime);
+                data.append("followContent", this.followform.followContent);
+                data.append("contactsId", this.followform.contactsId);
+                data.append("follow_state", this.followform.state);
+                data.append("customertwo_id", this.detailData.id);
+                data.append("deptid", this.$store.state.insid);
+                data.append("secondid", this.$store.state.deptid);
+                data.append("imgNames", this.imgfile, this.imgName);
+                data.append("enclosureNames", this.files, this.filesName);
 
-                if(!data.followContent){
+                if(!this.followform.followContent){
                     _this.$message({
                         message: '跟进内容不能为空',
                         type: 'error'
@@ -704,7 +784,7 @@
                 }else{
                     axios({
                         method: 'get',
-                        url: _this.$store.state.defaultHttp+'clueJurisdiction/follow.do',//新增部门
+                        url: _this.$store.state.defaultHttp+'clueJurisdiction/follow.do',//新增跟进记录
                     }).then(function(res){
                         if(res.data.msg && res.data.msg == 'error'){
                             _this.$message({
@@ -715,7 +795,10 @@
                             axios({
                                 method: 'post',
                                 url:  _this.$store.state.defaultHttp+ 'addFollow.do?cId='+_this.$store.state.iscId+'&pId='+_this.$store.state.ispId,
-                                data:qs.stringify(data,this),
+                                headers: {
+                                    'Content-Type': 'multipart/form-data'
+                                },
+                                data:data,
                             }).then(function(res){
                                 if(res.data.msg && res.data.msg == 'success' ) {
                                     _this.$message({

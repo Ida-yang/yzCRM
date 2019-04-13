@@ -77,7 +77,10 @@
                     <el-input ref="elInput" type="textarea" rows="5" v-model="newform.content" placeholder="请输入短信内容"></el-input>
                 </el-form-item>
                 <el-form-item label="标签">
-                    <el-button plain size="mini" v-for="item in btnList" :key="item.id" :value="item.value" @click="checkTag(item)">{{item.name}}</el-button>
+                    <div v-for="item in btnList" :key="item.id" style="width:100%;">
+                        <el-button plain size="mini" :value="item.value" @click="checkTag(item)">{{item.name}}</el-button>
+                        <span>变量值为： {{item.value}}</span>
+                    </div>
                 </el-form-item>
             </el-form>
             <span slot="footer" class="dialog-footer">
@@ -112,7 +115,10 @@
                     <el-input ref="elInput" type="textarea" rows="5" v-model="newform.content" placeholder="请输入短信内容"></el-input>
                 </el-form-item>
                 <el-form-item label="标签">
-                    <el-button plain size="mini" v-for="item in btnList" :key="item.id" :value="item.value" @click="checkTag(item)">{{item.name}}</el-button>
+                    <div v-for="item in btnList" :key="item.id" style="width:100%;">
+                        <el-button plain size="mini" :value="item.value" @click="checkTag(item)">{{item.name}}</el-button>
+                        <span>变量值为： {{item.value}}</span>
+                    </div>
                 </el-form-item>
             </el-form>
             <span slot="footer" class="dialog-footer">
@@ -161,10 +167,10 @@
                 searchList:{
                     type:null,
                     genre:'',
-                    status:'10',
+                    status:'',
                 },
                 statusData:[
-                    {id:'10',name:'全部'},
+                    {id:'',name:'全部'},
                     {id:'1',name:'正在审核'},
                     {id:'2',name:'审核通过'},
                     {id:'3',name:'未通过审核'},

@@ -132,8 +132,8 @@
                 deptList:[],
                 deptcolList:[
                     {index:1,name:'排行',col:'sort',width:'80'},
-                    {index:2,name:'机构',col:'parentname',width:'80'},
-                    {index:3,name:'部门',col:'deptname',width:'80'},
+                    {index:2,name:'部门',col:'deptname',width:'80'},
+                    {index:3,name:'机构',col:'parentname',width:'80'},
                     {index:4,name:'合同数量',col:'contractNum',width:'90'},
                     {index:5,name:'合同金额',col:'amount',width:'90'},
                     {index:6,name:'平均金额',col:'avg',width:'90'},
@@ -145,8 +145,8 @@
                 personcolList:[
                     {index:1,name:'排行',col:'sort',width:'80'},
                     {index:2,name:'职员',col:'private_employee',width:'80'},
-                    {index:3,name:'机构',col:'parentname',width:'80'},
-                    {index:4,name:'部门',col:'deptname',width:'80'},
+                    {index:3,name:'部门',col:'deptname',width:'80'},
+                    {index:4,name:'机构',col:'parentname',width:'80'},
                     {index:5,name:'合同数量',col:'contractNum',width:'90'},
                     {index:6,name:'合同金额',col:'amount',width:'90'},
                     {index:7,name:'平均金额',col:'avg',width:'90'},

@@ -38,7 +38,8 @@
                      <!-- :content="public_username" -->
                     <el-tooltip effect="dark" :content="public_username" placement="left-end">
                         <span class="el-dropdown-link">
-                            <img src="../../../static/img/timg.jpg" alt=""/>
+                            <img v-show="portrait" :src="imgUrl" alt=""/>
+                            <img v-show="!portrait" src="/upload/staticImg/avatar.jpg" alt=""/>
                         </span>
                     </el-tooltip>
                     <span>
@@ -111,6 +112,9 @@
             };
             return {
                 public_username:this.$store.state.user,
+                imgUrl:'/upload/'+this.$store.state.iscId+'/'+this.$store.state.portrait,
+                portrait:this.$store.state.portrait,
+
                 dialogFormVisible: false,
                 divisible: false,
                 formLabelWidth: '120px',
@@ -142,6 +146,8 @@
                         {require:true, validator: validaterespass, trigger: 'blur'}
                     ]
                 },
+
+                
             }
         },
         inject:["reload"], 

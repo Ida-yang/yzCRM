@@ -695,12 +695,13 @@
                     _this.$message.error("修改失败,请重新修改");
                 });
             },
-            handledelete(val){
+            handledelete(index,row){
+                console.log(row)
                 const _this = this
                 let data = {}
                 let qs = require('querystring')
-                data.id = val
-                _this.$confirm('是否确认删除吗？', '提示', {
+                data.id = row.id
+                _this.$confirm('是否确认删除【' + row.id + '】吗？', '提示', {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',
                 }).then(({ value }) => {
@@ -733,7 +734,7 @@
                 }).catch(() => {
                     this.$message({
                         type: 'info',
-                        message: '取消删除'
+                        message: '取消删除【' + row.id + '】'
                     });       
                 });
             },

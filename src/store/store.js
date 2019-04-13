@@ -17,6 +17,7 @@ const state = {
   deptid:'', //部门ID
   roleid:'', //角色ID
   insid:'', //机构ID
+  portrait:'',//用户头像名称
 
   //标签页
   tagsList:[],
@@ -181,6 +182,10 @@ const mutations = {
   insid(state,msg){
     state.insid = msg;
     localStorage.setItem('insid',msg);
+  },
+  portrait(state,msg){
+    state.portrait = msg;
+    localStorage.setItem('portrait',msg)
   },
   getNowTime(){
     let myDate = new Date()

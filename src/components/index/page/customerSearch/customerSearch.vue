@@ -254,7 +254,7 @@
                     sortable>
                 </el-table-column>
                 <el-table-column
-                    prop="coWebsite"
+                    prop="url"
                     v-else-if="item.prop == 'coWebsite' && item.state == 1"
                     header-align="left"
                     align="left"

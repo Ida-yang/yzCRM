@@ -388,42 +388,51 @@ export default {
     }
     .followrecord .recordicon {
         float: left;
-        position: absolute;
-        /* right: 0; */
-        width: 3%;
-        /* height: auto; */
-        height: 80px;
-        /* height: 100px; */
         color: #ffffff;
         padding-top: 5px;
     }
     .verticalline{
         float: left;
-        width: 3%;
+        width: 10px;
         height: 19px;
-        border-bottom: 1px solid #c2c4c9;
-    }
-    .noverticalline{
-        float: left;
-        width: 3%;
-        height: 19px;
+        /* border-bottom: 1px solid #c2c4c9; */
     }
     .followrecord .recordcontent{
-        width:94%;
+        width:88%;
         line-height:20px;
         height: auto;
-        /* min-height: 80px; */
         color: #000000;
         padding-top: 5px;
         padding-left: 10px;
         background-color: #f7f7f7;
         border-radius: 5px;
     }
+    .recordcontent .left_more{
+        float: left;
+        width: 92%;
+    }
+    .recordcontent .right_more{
+        float: right;
+        /* width:8%; */
+        height:30px;
+        cursor: pointer;
+        /* background-color: #686868; */
+    }
     .delico{
         float: left;
         width:25px;
         height:25px;
         background-color:#ff8153;
+        border: 1px solid #ffffff;
+        border-radius:50%;
+        line-height:25px;
+        text-align:center;
+    }
+    .detail_portrait{
+        float: left;
+        width:40px;
+        height:40px;
+        /* background-color:#ff8153; */
         border: 1px solid #ffffff;
         border-radius:50%;
         line-height:25px;

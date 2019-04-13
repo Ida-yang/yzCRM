@@ -23,6 +23,7 @@
                             <li>注册资金：<span>{{searchdetailsList.capitalName || '无'}}</span></li>
                             <li>登记机关：<span>{{searchdetailsList.registrationAuthority || '无'}}</span></li>
                             <li>成立时间：<span>{{searchdetailsList.date || '无'}}</span></li>
+                            <li>网址：<span>{{searchdetailsList.url || '无'}}</span></li>
                         </ul>
                     </div>
                     <div v-show="!showinfo"></div>

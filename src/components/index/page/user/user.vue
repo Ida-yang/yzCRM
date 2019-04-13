@@ -53,6 +53,25 @@
                     @selection-change="selectInfo"
                     sortable>
                 </el-table-column>
+                <el-table-column
+                    prop="imgUrl"
+                    fixed
+                    header-align="left"
+                    align="left"
+                    min-width="80"
+                    label="头像"
+                    sortable>
+                    <template slot-scope="scope">
+                        <el-popover
+                            placement="right"
+                            width="200"
+                            trigger="hover">
+                            <img v-show="scope.row.imgUrl" :src="scope.row.portrait" alt="头像" width="200" height="200">
+                            <img v-show="scope.row.imgUrl" slot="reference" :src="scope.row.portrait" alt="头像" width="50" height="50">
+                            <img v-show="!scope.row.imgUrl" slot="reference" src="/upload/staticImg/avatar.jpg" alt="头像" width="50" height="50">
+                        </el-popover>
+                    </template>
+                </el-table-column>
                 <div v-for="(item,index) in filterList" :key="index" >
                     <el-table-column
                         prop="private_number"
@@ -60,7 +79,7 @@
                         v-if="item.prop == 'private_number' && item.state == 1"
                         header-align="left"
                         align="left"
-                        min-width="150"
+                        min-width="160"
                         label="编号"
                         sortable>
                     </el-table-column>
@@ -144,6 +163,24 @@
                         label="创建时间"
                         sortable>
                     </el-table-column>
+                    <el-table-column
+                        prop="isSynchronization"
+                        v-if="item.prop == 'createTime' && item.state == 1"
+                        header-align="left"
+                        align="left"
+                        min-width="110"
+                        label="是否同步"
+                        sortable>
+                    </el-table-column>
+                    <el-table-column
+                        prop="private_state"
+                        v-if="item.prop == 'createTime' && item.state == 1"
+                        header-align="left"
+                        align="left"
+                        min-width="80"
+                        label="状态"
+                        sortable>
+                    </el-table-column>
                 </div>
                 <el-table-column label="操作"
                     fixed="right"
@@ -181,6 +218,12 @@
                     <el-form-item prop="second_id" label="所属部门">
                         <el-input v-model="newform.secondname" :disabled="true"></el-input>
                     </el-form-item>
+                    <el-form-item prop="imgUrl" label="头像">
+                        <el-upload class="avatar-uploader portrait" action="doUpload" :show-file-list="false" :before-upload="beforeUploadimg">
+                            <img v-if="imgfile" :src="imgfile" class="avatar">
+                            <i v-else class="el-icon-plus avatar-uploader-icon portrait_add"></i>
+                        </el-upload>
+                    </el-form-item>
                     <el-form-item prop="private_phone" label="手机号码">
                         <el-input onkeyup = "value=value.replace(/[^\d]/g,'')" v-model="newform.private_phone" placeholder="请输入用户手机号码"></el-input>
                     </el-form-item>
@@ -191,7 +234,7 @@
                         <el-input type="password" v-model="newform.private_passwords" placeholder="请再次输入用户密码"></el-input>
                     </el-form-item>
                     <el-form-item prop="role_id" label="角色">
-                        <el-select v-model="newform.role_id" placeholder="请选择用户角色">
+                        <el-select v-model="newform.role_id" placeholder="请选择用户角色" style="width:100%;">
                             <el-option v-for="item in roleList" :key="item.id" :label="item.name" :value="item.id"></el-option>
                         </el-select>
                     </el-form-item>
@@ -222,6 +265,12 @@
                 <el-form-item prop="second_id" label="所属部门">
                     <el-input v-model="newform.secondname" :disabled="true"></el-input>
                 </el-form-item>
+                    <el-form-item prop="imgUrl" label="头像">
+                        <el-upload class="avatar-uploader portrait" action="doUpload" :show-file-list="false" :before-upload="beforeUploadimg">
+                            <img v-if="imgfile" :src="imgfile" class="avatar">
+                            <i v-else class="el-icon-plus avatar-uploader-icon portrait_add"></i>
+                        </el-upload>
+                    </el-form-item>
                 <el-form-item prop="private_phone" label="手机号码">
                     <el-input onkeyup = "value=value.replace(/[^\d]/g,'')" v-model="newform.private_phone" :disabled="true" placeholder="请输入用户手机号码"></el-input>
                 </el-form-item>
@@ -232,7 +281,7 @@
                     <el-input type="password" v-model="newform.private_passwords" placeholder="请再次输入用户密码"></el-input>
                 </el-form-item>
                 <el-form-item prop="role_id" label="角色">
-                    <el-select v-model="newform.role_id" placeholder="请选择用户角色">
+                    <el-select v-model="newform.role_id" placeholder="请选择用户角色" style="width:100%;">
                         <el-option v-for="item in roleList" :key="item.id" :label="item.name" :value="item.id"></el-option>
                     </el-select>
                 </el-form-item>
@@ -302,9 +351,13 @@
                     private_passwords:null,
                     private_employee:null,
                     private_state:'启用',
-                    private_email:null,
-                    private_QQ:null,
+                    private_email:'',
+                    private_QQ:'',
+                    imgUrl:null,
                 },
+                imgName:null,
+                imgfile:null,
+
                 searchList:{
                     searchName:null,
                     deptid:null,
@@ -380,6 +433,10 @@
                 }).then(function(res){
                     _this.$store.state.userList = res.data.map.success
                     _this.$store.state.userListnumber = res.data.count
+                    let arr = res.data.map.success
+                    arr.forEach(el => {
+                        el.portrait = '/upload/'+_this.$store.state.iscId+'/'+el.imgUrl
+                    });
                 }).catch(function(err){
                     // console.log(err);
                 });
@@ -440,6 +497,27 @@
                 this.idArr.private_id = newArr;
                 
             },
+            // handleAvatarSuccess(res, file) {
+            //     this.imgfile = URL.createObjectURL(file.raw);
+            // },
+            beforeUploadimg(val) {
+                this.newform.imgUrl = val;
+                const extension = val.name.split('.')[1] === 'jpg'
+                const extension2 = val.name.split('.')[1] === 'png'
+                const extension3 = val.name.split('.')[1] === 'jpeg'
+                const isLt500k = val.size / 1024 / 1024 < 0.5
+                if (!extension && !extension2 && !extension3) {
+                    this.$message.warning('头像只能是 jpg、png、jpeg格式!')
+                    return
+                }
+                if (!isLt500k) {
+                    this.$message.warning('头像大小不能超过 500KB!')
+                    return
+                }
+                this.imgName = val.name
+                // console.log(this.newform)
+                return false;
+            },
             //用户添加
             handleAdd(){
                 const _this = this
@@ -449,8 +527,8 @@
                 this.newform.private_passwords = null
                 this.newform.private_employee = null
                 this.newform.private_state = null
-                this.newform.private_email = null
-                this.newform.private_QQ = null
+                this.newform.private_email = ''
+                this.newform.private_QQ = ''
 
                 if(!this.clickdata){
                     _this.$message({
@@ -479,15 +557,25 @@
             adduser(){
                 const _this = this;
                 let qs = require('querystring')
-                let data = {}
-                data.second_id = this.newform.second_id
-                data.role_id = this.newform.role_id
-                data.private_phone = this.newform.private_phone
-                data.private_password = this.newform.private_password
-                data.private_employee = this.newform.private_employee
-                data.private_state = this.newform.private_state
-                data.private_email = this.newform.private_email
-                data.private_QQ = this.newform.private_QQ
+                // let data = {}
+                // data.second_id = this.newform.second_id
+                // data.role_id = this.newform.role_id
+                // data.private_phone = this.newform.private_phone
+                // data.private_password = this.newform.private_password
+                // data.private_employee = this.newform.private_employee
+                // data.private_state = this.newform.private_state
+                // data.private_email = this.newform.private_email
+                // data.private_QQ = this.newform.private_QQ
+                let data = new FormData()
+                data.append("second_id", this.newform.second_id);
+                data.append("role_id", this.newform.role_id);
+                data.append("private_phone", this.newform.private_phone);
+                data.append("private_password", this.newform.private_password);
+                data.append("private_employee", this.newform.private_employee);
+                data.append("private_state", this.newform.private_state);
+                data.append("private_email", this.newform.private_email);
+                data.append("private_QQ", this.newform.private_QQ);
+                data.append("file", this.newform.imgUrl, this.imgName);
 
                 let arr = [this.newform]
                 let flag = false;
@@ -555,7 +643,10 @@
                 axios({
                     method: 'post',
                     url: _this.$store.state.defaultHttp+'insertPrivateUser.do?cId='+_this.$store.state.iscId,
-                    data:qs.stringify(data)
+                    headers: {
+                        'Content-Type': 'multipart/form-data'
+                    },
+                    data:data
                 }).then(function(res){
                     if(res.data.code && res.data.code == 200){
                         _this.$message({
@@ -828,4 +919,11 @@
     /* .contentall{
         background-color: #ffffff;
     } */
+    .portrait .el-upload--text{
+        width: 100px;
+        height: 100px;
+    }
+    .portrait .el-upload--text .portrait_add{
+        line-height: 100px;
+    }
 </style>

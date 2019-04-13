@@ -81,12 +81,16 @@ new Vue({
     if(localStorage.getItem('insid')===null){
       localStorage.setItem('insid','')
     }
+    if(localStorage.getItem('portrait')===null){
+      localStorage.setItem('portrait','')
+    }
     this.$store.state.iscId = localStorage.getItem('iscId');//存放cId
     this.$store.state.ispId = localStorage.getItem('ispId');//存放pId
     this.$store.state.user = localStorage.getItem('user');//存放用户名
     this.$store.state.deptid = localStorage.getItem('deptid');//存放部门编号
     this.$store.state.roleid = localStorage.getItem('roleid');//存放角色编号
     this.$store.state.insid = localStorage.getItem('insid');//存放机构编号
+    this.$store.state.portrait = localStorage.getItem('portrait');//存放用户头像名称
     // if(this.$store.state.userData == null){
     //   this.$store.state.userData = JSON.parse(localStorage.getItem('userData'))
     // }

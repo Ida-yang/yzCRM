@@ -510,6 +510,7 @@
 
                 authorityInterface: null,
                 downloadUrl: this.$store.state.defaultHttp+'upload/import_template.xls',
+                fileName:null,
 
                 dialogVisible:false,
                 templateList:null,
@@ -1014,8 +1015,9 @@
                 fileFormData.append("pId", this.$store.state.ispId);
                 fileFormData.append("secondid", this.$store.state.deptid);
                 fileFormData.append("deptid", this.$store.state.insid);
-                //filename是键，file是值，就是要传的文件，test是要传的文件名
+                //fileName是键，files是值，就是要传的文件，files是要传的文件名
                 fileFormData.append('files', this.files, this.fileName);
+                console.log(fileFormData)
                 let requestConfig = {
                     headers: {
                         'Content-Type': 'multipart/form-data'
