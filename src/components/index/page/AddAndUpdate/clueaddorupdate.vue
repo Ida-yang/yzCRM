@@ -84,7 +84,7 @@
                             <el-radio v-model="myForm[item.inputModel]" @input="handleInput($event, item.inputModel)" label="女">女</el-radio>
                         </div>
                     </el-form-item>
-                    <div style="margin-left:60px;">
+                    <div style="float:right;margin:20px 60px;">
                         <el-button type="primary" @click="submit">立即提交</el-button>
                         &nbsp;&nbsp;
                         <el-button @click="closeTag">取消</el-button>
@@ -295,7 +295,7 @@
                 rules: {
                     poolName : [{ required: true, message: '公司名称不能为空', trigger: 'blur' },],
                     contactsName : [{ required: true, message: '联系人名称不能为空', trigger: 'blur' },],
-                    phone : [{ required: true, message: '电话不能为空', trigger: 'blur' },],
+                    phone : [{ required: true, message: '手机不能为空', trigger: 'blur' },],
                     // telphone:[{ validator:/[\d-]{1,10}/, trigger:'input'},],
                     cuesid : [{ required: true, message: '线索来源不能为空', trigger: 'blur' },],
                 },

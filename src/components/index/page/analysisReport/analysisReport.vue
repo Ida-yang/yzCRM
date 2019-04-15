@@ -539,6 +539,9 @@
                 if(val){
                     this.searchList.startTime = val[0]
                     this.searchList.endTime = val[1]
+                }else{
+                    this.searchList.startTime = ''
+                    this.searchList.endTime = ''
                 }
                 this.$options.methods.searchtwo.bind(this)()
             }

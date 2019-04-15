@@ -66,7 +66,7 @@
                     auto-complete="off">
                 </el-date-picker>
             </el-form-item>
-            <div style="margin-left:60px;">
+            <div style="float:right;margin:20px 60px;">
                 <el-button type="primary" @click="submit">立即提交</el-button>
                 &nbsp;&nbsp;
                 <el-button @click="closeTag">取消</el-button>

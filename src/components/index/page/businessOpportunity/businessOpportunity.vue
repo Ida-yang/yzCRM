@@ -88,8 +88,8 @@
                     v-else-if="item.prop == 'opportunity_time' && item.state == 1"
                     header-align="left"
                     align="left"
-                    min-width="120"
-                    label="日期"
+                    min-width="145"
+                    label="创建时间"
                     sortable>
                 </el-table-column>
                 <el-table-column

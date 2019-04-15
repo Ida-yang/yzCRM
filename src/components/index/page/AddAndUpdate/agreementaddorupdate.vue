@@ -64,7 +64,7 @@
                     @change="handleInput($event, item.inputModel)"
                     :placeholder="item.placeholder"
                     style="width:90%;">
-                    <el-option v-for="item in contactslist" :key="item.id" :label="item.name" :value="item.name"></el-option>
+                    <el-option v-for="item in contactslist" :key="item.id" :label="item.name" :value="item.id"></el-option>
                 </el-select>
                 <el-select 
                     v-else-if="item.inputModel == 'approverid'"
@@ -112,8 +112,8 @@
                     <el-radio v-model="myForm[item.inputModel]" @input="handleInput($event, item.inputModel)" label="否">否</el-radio>
                 </div>
             </el-form-item>
-            <div style="margin-left:60px;">
-                <el-button type="primary" @click="submit">立即提交</el-button>
+            <div style="float:right;margin:20px 60px;">
+                <el-button type="primary" :disabled="isDisable" @click="submit">立即提交</el-button>
                 &nbsp;&nbsp;
                 <el-button @click="closeTag">取消</el-button>
             </div>
@@ -188,10 +188,13 @@
                     start_date:null,
                     end_date:null,
                     customerpool_id:null,
+                    signatories:null,
                 },
                 subData: {},
                 oppoptions:null,
                 contactslist:null,
+                our_signatoriesId:null,
+
                 page: 1,//默认第一页
                 limit: 15,//默认10条
 
@@ -213,6 +216,8 @@
 
                 formid:null,
                 searchvalue:null,
+
+                isDisable:false
             }
         },
         // mounted() {
@@ -221,15 +226,16 @@
         // },
         activated() {
             this.loadData();
-            this.loadOpp()
             this.loadTable()
             this.loadpId()
+            this.loadOpp()
         },
         methods:{
             //加载或重载页面
             loadData() {
                 this.agreeaddOrUpdateData = this.$store.state.agreeaddOrUpdateData;
                 this.oppoptions = this.$store.state.agreeaddOrUpdateData.customerpool_id
+                this.our_signatoriesId = this.agreeaddOrUpdateData.setForm.our_signatoriesId
 
                 // 设置默认值
                 let createForm = this.agreeaddOrUpdateData.createForm;
@@ -250,6 +256,7 @@
                     this.formid = this.agreeaddOrUpdateData.setForm.customerpool_id
                     this.myForm.opportunity_id = this.agreeaddOrUpdateData.setForm.opportunity_name
                     this.$emit('input', this.myForm);
+                    console.log(this.myForm)
                 }
             },
             //加载已选择客户下的商机和联系人（客户决策人）
@@ -274,6 +281,13 @@
                     data: qs.stringify(data)
                 }).then(function(res){
                     _this.contactslist = res.data.map.success
+                    _this.contactslist.forEach(el => {
+                        // console.log(el.id,el.name)
+                        if(_this.myForm.signatories == el.name){
+                            // console.log('01010101')
+                            _this.myForm.signatories = el.id
+                        }
+                    });
                 }).catch(function(err){
                     // console.log(err);
                 });
@@ -299,6 +313,8 @@
                 });
             },
             loadpId(){
+                const _this = this
+                
                 axios({
                     method: 'get',
                     url: _this.$store.state.defaultHttp+'getNameAndId.do?cId='+_this.$store.state.iscId,
@@ -358,6 +374,7 @@
                 }
                 subData.secondid = this.$store.state.deptid
                 subData.deptid = this.$store.state.insid
+
                 let createForm = _this.agreeaddOrUpdateData.createForm;
                 let flag = false;
                 createForm.forEach(item => {
@@ -435,6 +452,13 @@
                 });
                 if(flag) return;
                 subData.customerpool_id = this.formid
+                if(subData.our_signatories == this.$store.state.user){
+                    subData.our_signatories = this.$store.state.ispId
+                }else{
+                    subData.our_signatories = this.our_signatoriesId
+                }
+
+                this.isDisable = true
 
                 axios({
                     method: 'post',
@@ -453,8 +477,9 @@
                             type: 'error'
                         });
                     }
+                    this.isDisable = false
                 }).catch(function(err){
-                    _this.$message.error("提交失败，请重新提交");
+                    // _this.$message.error("提交失败，请重新提交");
                 }); 
             },
             //取消时返回上一个页面，若只有一个页面，则返回首页

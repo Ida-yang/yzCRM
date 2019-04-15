@@ -311,7 +311,7 @@
                     let arr = _this.$store.state.activityList
                     arr.forEach(el => {
                         el.qrcode = '/weChat/'+_this.$store.state.iscId+'/'+el.url
-                        el.codeURL = 'http://crm.yunzoe.com/#/activity?c='+_this.$store.state.iscId+'&p='+_this.$store.state.ispId+'&n='+el.name
+                        el.codeURL = 'http://crm.yunzoe.com/#/activity?c='+_this.$store.state.iscId+'&p='+_this.$store.state.ispId+'&n='+el.name+'&re='+el.resourceid
                     });
                 }).catch(function(err){
                     // console.log(err);

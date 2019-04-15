@@ -89,9 +89,14 @@
                                     <el-option v-for="item in followTypes" :key="item.value" :value="item.label" :label="item.label"></el-option>
                                 </el-select>
                             </el-form-item>
-                            <el-form-item label="联系人" style="width:300px;" prop="contactsId">
+                            <el-form-item label="联系人" style="width:290px;" prop="contactsId">
                                 <el-select v-model="followform.contactsId" placeholder="请选择" style="width:200px;">
                                     <el-option v-for="item in contactList" :key="item.id" :label="item.name" :value="item.id"></el-option>
+                                </el-select>
+                            </el-form-item>
+                            <el-form-item label="状态" style="width:275px;" prop="state">
+                                <el-select v-model="followform.state" placeholder="请选择" style="width:200px;">
+                                    <el-option v-for="item in stateList" :key="item.id" :label="item.typeName" :value="item.id"></el-option>
                                 </el-select>
                             </el-form-item>
                             <el-form-item label="下次联系时间" style="width:300px;">
@@ -105,10 +110,8 @@
                                 placeholder="选择日期时间" style="width:200px;">
                                 </el-date-picker>
                             </el-form-item>
-                            <el-form-item label="状态" style="width:300px;" prop="state">
-                                <el-select v-model="followform.state" placeholder="请选择" style="width:200px;">
-                                    <el-option v-for="item in stateList" :key="item.id" :label="item.typeName" :value="item.id"></el-option>
-                                </el-select>
+                            <el-form-item label="快捷沟通" style="width:100%;">
+                                <el-radio v-model="followform.followContent" v-for="item in fastcontactList" :key="item.id" :label="item.content">{{item.typeName}}</el-radio>
                             </el-form-item>
                             <el-form-item label="上传图片" style="width:300px;">
                                 <el-upload class="upload-demo" ref="upload" :file-list="imgList" :multiple="true" action="doUpload" :limit="1" :before-upload="beforeUploadimg">
@@ -120,17 +123,14 @@
                                     <el-button slot="trigger" size="mini" class="info-btn">上传附件</el-button>
                                 </el-upload>
                             </el-form-item>
-                            <el-form-item label="快捷沟通" style="width:80%;">
-                                <el-radio v-model="followform.followContent" v-for="item in fastcontactList" :key="item.id" :label="item.content">{{item.typeName}}</el-radio>
-                            </el-form-item>
-                            <el-form-item>
-                                <el-button style="float:right;" type="primary" size="mini" @click="Submitfollowform">立即提交</el-button>
+                            <el-form-item style="float:right;">
+                                <el-button style="margin-top:6px;" type="primary" size="mini" @click="Submitfollowform">立即提交</el-button>
                             </el-form-item>
                         </el-form>
+                        <div style="width:100%;height:10px;"></div>
                         <ul class="followrecord" v-for="(item,index) in record" :key="item.followId">
                             <li class="recordicon">
-                                <img v-show="!portrait" src="/upload/staticImg/avatar.jpg" class="detail_portrait" alt="头像" />
-                                <img v-show="portrait" :src="imgUrl" class="detail_portrait" alt="头像" />
+                                <img :src="imgUrl" class="detail_portrait" alt="头像" />
                             </li>
                             <li class="verticalline"></li>
                             <li class="recordcontent">
@@ -173,59 +173,64 @@
                             stripe
                             style="width: 100%">
                             <el-table-column
-                            prop="name"
-                            header-align="center"
-                            label="名称">
+                                prop="name"
+                                header-align="center"
+                                label="名称">
                             </el-table-column>
                             <el-table-column
-                            prop="phone"
-                            header-align="center"
-                            label="手机">
+                                prop="phone"
+                                header-align="center"
+                                label="手机">
                             </el-table-column>
                             <el-table-column
-                            prop="telephone"
-                            header-align="center"
-                            label="固话">
+                                prop="telephone"
+                                header-align="center"
+                                label="固话">
                             </el-table-column>
                             <el-table-column
-                            prop="email"
-                            header-align="center"
-                            label="邮箱">
+                                prop="email"
+                                header-align="center"
+                                label="邮箱">
                             </el-table-column>
                             <el-table-column
-                            prop="qq"
-                            header-align="center"
-                            label="QQ">
+                                prop="qq"
+                                header-align="center"
+                                label="QQ">
                             </el-table-column>
                             <el-table-column
-                            prop="wechat"
-                            header-align="center"
-                            label="微信">
+                                prop="wechat"
+                                header-align="center"
+                                label="微信">
                             </el-table-column>
                             <el-table-column
-                            prop="contactsAddress"
-                            header-align="center"
-                            label="地址">
+                                prop="contactsAddress"
+                                header-align="center"
+                                label="地址">
                             </el-table-column>
                             <el-table-column
-                            prop="identity"
-                            header-align="center"
-                            label="职务">
+                                prop="identity"
+                                header-align="center"
+                                label="职务">
                             </el-table-column>
                             <el-table-column
-                            prop="sex"
-                            header-align="center"
-                            label="性别">
+                                prop="sex"
+                                header-align="center"
+                                label="性别">
                             </el-table-column>
                             <el-table-column
-                            prop="status"
-                            header-align="center"
-                            label="是否在职">
+                                prop="status"
+                                header-align="center"
+                                label="是否在职">
+                                <template slot-scope="scope">
+                                    <el-tooltip :content="scope.row.status" placement="right">
+                                        <el-switch v-model="scope.row.status" active-value="在职" inactive-value="离职" active-color="#13ce66" inactive-color="#bbbbbb" @change="changeState(scope.row)"></el-switch>
+                                    </el-tooltip>
+                                </template>
                             </el-table-column>
                             <el-table-column
-                            prop="remark"
-                            header-align="center"
-                            label="备注">
+                                prop="remark"
+                                header-align="center"
+                                label="备注">
                             </el-table-column>
                         </el-table>
                     </el-tab-pane>
@@ -304,7 +309,7 @@
                     followContent : [{ required: true, message: '请输入跟进内容', trigger: 'blur' },],
                     contactsId : [{ required: true, message: '请选择联系人', trigger: 'blur' },],
                     followType : [{ required: true, message: '请选择联系方式', trigger: 'blur' },],
-                    // contactTime : [{ required: true, message: '请选择下次联系时间', trigger: 'blur' },],
+                    state : [{ required: true, message: '请选择状态', trigger: 'blur' },],
                 },
                 followTypes:[
                     {label:'电话',value:'1'},
@@ -315,7 +320,7 @@
                 ],
                 
                 portrait:this.$store.state.portrait,
-                imgUrl:'/upload/'+this.$store.state.iscId+'/'+this.$store.state.portrait,
+                imgUrl:'',
                 
                 stateList:null,
                 searchList:{
@@ -375,7 +380,6 @@
                 const _this = this
                 bus.$on('clue', function (msg) {
                     if(msg){
-                        console.log('2222222222')
                         _this.$options.methods.loadData.bind(_this)()
                         _this.$options.methods.loadCountry.bind(_this)()
                     }
@@ -446,6 +450,11 @@
                             el.showdelico = true
                         }else{
                             el.showdelico = false
+                        }
+                        if(el.userImagName && el.userImagName !== null){
+                            _this.imgUrl = '/upload/'+this.$store.state.iscId+'/'+el.userImagName
+                        }else{
+                            _this.imgUrl = '/upload/staticImg/avatar.jpg'
                         }
                     });
                 }).catch(function(err){
@@ -720,6 +729,9 @@
                 }).catch(function(err){
                     // console.log(err);
                 });
+            },
+            changeState(row){
+                console.log(row)
             },
 
             beforeUploadimg(val,imgList){

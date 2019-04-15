@@ -61,27 +61,41 @@
                     width="45">
                 </el-table-column>
                 <el-table-column
-                    prop="name"
+                    prop="type"
                     header-align="left"
                     align="left"
                     min-width="120"
-                    label="项目名"
+                    label="类型"
                     sortable>
                 </el-table-column>
                 <el-table-column
-                    prop="start_time"
+                    prop="theme"
                     header-align="left"
                     align="left"
                     min-width="120"
-                    label="开始日期"
+                    label="主题"
                     sortable>
                 </el-table-column>
                 <el-table-column
-                    prop="end_deal"
+                    prop="startTime"
                     header-align="left"
                     align="left"
                     min-width="180"
-                    label="截止日期"
+                    label="时间"
+                    sortable>
+                    <template slot-scope="scope">
+                        <div>
+                            <p>{{scope.row.startTime}}</p>
+                            <p>{{scope.row.endTime}}</p>
+                        </div>
+                    </template>
+                </el-table-column>
+                <el-table-column
+                    prop="private_employee"
+                    header-align="left"
+                    align="left"
+                    min-width="110"
+                    label="负责人"
                     sortable>
                 </el-table-column>
                 <el-table-column
@@ -90,14 +104,6 @@
                     align="left"
                     min-width="90"
                     label="状态"
-                    sortable>
-                </el-table-column>
-                <el-table-column
-                    prop="user"
-                    header-align="left"
-                    align="left"
-                    min-width="110"
-                    label="分配"
                     sortable>
                 </el-table-column>
             </el-table>
@@ -176,6 +182,9 @@
                 let monthData = {}
                 monthData.month = this.searchList.date
 
+                let pageInfo2 = {}
+                pageInfo2.state = '未完成'
+
                 //获取首页头部报表数据
                 axios({
                     method: 'post',
@@ -210,18 +219,29 @@
                 }).catch(function(err){
                     // console.log(err)
                 })
-                _this.$store.state.welcomeData = [
-                    {name:'项目名称',start_time:'2019-01-01',end_deal:'2019-03-31',state:'启动',user:'销售'},
-                    {name:'项目名称',start_time:'2019-01-01',end_deal:'2019-03-31',state:'启动',user:'销售'},
-                    {name:'项目名称',start_time:'2019-01-01',end_deal:'2019-03-31',state:'启动',user:'销售'},
-                    {name:'项目名称',start_time:'2019-01-01',end_deal:'2019-03-31',state:'启动',user:'销售'},
-                    {name:'项目名称',start_time:'2019-01-01',end_deal:'2019-03-31',state:'启动',user:'销售'},
-                    {name:'项目名称',start_time:'2019-01-01',end_deal:'2019-03-31',state:'启动',user:'销售'},
-                    {name:'项目名称',start_time:'2019-01-01',end_deal:'2019-03-31',state:'启动',user:'销售'},
-                    {name:'项目名称',start_time:'2019-01-01',end_deal:'2019-03-31',state:'启动',user:'销售'},
-                    {name:'项目名称',start_time:'2019-01-01',end_deal:'2019-03-31',state:'启动',user:'销售'},
-                    {name:'项目名称',start_time:'2019-01-01',end_deal:'2019-03-31',state:'启动',user:'销售'},
-                ]
+                
+                //底部表格外勤任务
+                axios({
+                    method:'post',
+                    url:_this.$store.state.defaultHttp+'customerpool/selectWorkPlanAndVisit.do?cId='+_this.$store.state.iscId,
+                    data:qs.stringify(pageInfo2)
+                }).then(function(res){
+                    _this.$store.state.welcomeData = res.data.map.workPlanAndVisit
+                }).catch(function(err){
+                    // console.log(err);
+                });
+                // _this.$store.state.welcomeData = [
+                //     {name:'项目名称',start_time:'2019-01-01',end_deal:'2019-03-31',state:'启动',user:'销售'},
+                //     {name:'项目名称',start_time:'2019-01-01',end_deal:'2019-03-31',state:'启动',user:'销售'},
+                //     {name:'项目名称',start_time:'2019-01-01',end_deal:'2019-03-31',state:'启动',user:'销售'},
+                //     {name:'项目名称',start_time:'2019-01-01',end_deal:'2019-03-31',state:'启动',user:'销售'},
+                //     {name:'项目名称',start_time:'2019-01-01',end_deal:'2019-03-31',state:'启动',user:'销售'},
+                //     {name:'项目名称',start_time:'2019-01-01',end_deal:'2019-03-31',state:'启动',user:'销售'},
+                //     {name:'项目名称',start_time:'2019-01-01',end_deal:'2019-03-31',state:'启动',user:'销售'},
+                //     {name:'项目名称',start_time:'2019-01-01',end_deal:'2019-03-31',state:'启动',user:'销售'},
+                //     {name:'项目名称',start_time:'2019-01-01',end_deal:'2019-03-31',state:'启动',user:'销售'},
+                //     {name:'项目名称',start_time:'2019-01-01',end_deal:'2019-03-31',state:'启动',user:'销售'},
+                // ]
             },
             getMonth(){
                 let date=new Date;

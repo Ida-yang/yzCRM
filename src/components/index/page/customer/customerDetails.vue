@@ -81,14 +81,19 @@
                             <el-form-item prop="followContent">
                                 <el-input type="textarea" placeholder="添加跟进内容" v-model="followform.followContent"></el-input>
                             </el-form-item>
-                            <el-form-item label="联系方式" style="width:310px;" prop="followType">
+                            <el-form-item label="联系方式" style="width:300px;" prop="followType">
                                 <el-select v-model="followform.followType" placeholder="请选择" style="width:200px;">
                                     <el-option v-for="item in followTypes" :key="item.value" :value="item.label" :label="item.label"></el-option>
                                 </el-select>
                             </el-form-item>
-                            <el-form-item label="联系人" style="width:310px;" prop="contactsId">
+                            <el-form-item label="联系人" style="width:290px;" prop="contactsId">
                                 <el-select v-model="followform.contactsId" placeholder="请选择" style="width:200px;">
                                     <el-option v-for="item in contactList" :key="item.id" :label="item.name" :value="item.id"></el-option>
+                                </el-select>
+                            </el-form-item>
+                            <el-form-item label="状态" style="width:275px;" prop="state">
+                                <el-select v-model="followform.state" placeholder="请选择" style="width:200px;">
+                                    <el-option v-for="item in stateList" :key="item.id" :label="item.typeName" :value="item.id"></el-option>
                                 </el-select>
                             </el-form-item>
                             <el-form-item label="下次联系时间" style="width:310px;">
@@ -102,10 +107,8 @@
                                 placeholder="选择日期时间" style="width:200px;">
                                 </el-date-picker>
                             </el-form-item>
-                            <el-form-item label="状态" style="width:310px;" prop="state">
-                                <el-select v-model="followform.state" placeholder="请选择" style="width:200px;">
-                                    <el-option v-for="item in stateList" :key="item.id" :label="item.typeName" :value="item.id"></el-option>
-                                </el-select>
+                            <el-form-item label="快捷沟通" style="width:80%;">
+                                <el-radio v-model="followform.followContent" v-for="item in fastcontactList" :key="item.id" :label="item.content">{{item.typeName}}</el-radio>
                             </el-form-item>
                             <el-form-item label="上传图片" style="width:300px;">
                                 <el-upload class="upload-demo" ref="upload" :file-list="imgList" :multiple="true" action="doUpload" :limit="1" :before-upload="beforeUploadimg">
@@ -118,17 +121,13 @@
                                 </el-upload>
                             </el-form-item>
                             
-                            <el-form-item label="快捷沟通" style="width:80%;">
-                                <el-radio v-model="followform.followContent" v-for="item in fastcontactList" :key="item.id" :label="item.content">{{item.typeName}}</el-radio>
-                            </el-form-item>
-                            <el-form-item>
-                                <el-button style="float:right;" type="primary" size="mini" @click="Submitfollowform">立即提交</el-button>
+                            <el-form-item style="float:right;">
+                                <el-button style="margin-top:6px" type="primary" size="mini" @click="Submitfollowform">立即提交</el-button>
                             </el-form-item>
                         </el-form>
                         <ul class="followrecord" v-for="(item,index) in record" :key="item.followId">
                             <li class="recordicon">
-                                <img v-show="!portrait" src="/upload/staticImg/avatar.jpg" class="detail_portrait" alt="头像" />
-                                <img v-show="portrait" :src="imgUrl" class="detail_portrait" alt="头像" />
+                                <img :src="imgUrl" class="detail_portrait" alt="头像" />
                             </li>
                             <li class="verticalline"></li>
                             <li class="recordcontent">
@@ -138,6 +137,12 @@
                                         &nbsp;&nbsp;&nbsp;<span>状态为：{{item.state}} &nbsp;&nbsp;&nbsp;{{item.inputType}}</span>
                                     </p>
                                     <p style="margin-top:15px;margin-bottom:15px;">{{item.followContent}}</p>
+                                    <div class="imgbox_two" v-if="item.imgName">
+                                        <img :src="item.picture_detail" alt="图片" width="80" height="80" @click="showImg($event,item)">
+                                    </div>
+                                    <el-dialog :visible.sync="dialogVisible2">
+                                        <img width="100%" :src="dialogImageUrl2" alt="">
+                                    </el-dialog>
                                 </div>
                                 <div class="right_more" v-if="item.showdelico">
                                     <el-dropdown trigger="click" @command="deletefollow(index)">
@@ -314,11 +319,13 @@
                             <el-table-column
                                 prop="start_date"
                                 header-align="left"
+                                min-width="90"
                                 label="合同开始时间">
                             </el-table-column>
                             <el-table-column
                                 prop="end_date"
                                 header-align="left"
+                                min-width="90"
                                 label="合同到期时间">
                             </el-table-column>
                             <el-table-column
@@ -358,19 +365,36 @@
                             stripe
                             style="width: 100%">
                             <el-table-column
-                                prop="name"
+                                prop="type"
                                 header-align="left"
-                                label="公司名称">
+                                label="类型">
                             </el-table-column>
                             <el-table-column
-                                prop="creditCode"
+                                prop="theme"
                                 header-align="left"
-                                label="税务登记号">
+                                label="主题">
                             </el-table-column>
                             <el-table-column
-                                prop="address"
+                                prop="startTime"
                                 header-align="left"
-                                label="税务地址">
+                                min-width="90"
+                                label="时间">
+                                <template slot-scope="scope">
+                                    <div>
+                                        <p>{{scope.row.startTime}}</p>
+                                        <p>{{scope.row.endTime}}</p>
+                                    </div>
+                                </template>
+                            </el-table-column>
+                            <el-table-column
+                                prop="private_employee"
+                                header-align="left"
+                                label="负责人">
+                            </el-table-column>
+                            <el-table-column
+                                prop="state"
+                                header-align="left"
+                                label="状态">
                             </el-table-column>
                         </el-table>
                     </el-tab-pane>
@@ -479,7 +503,7 @@
                     followContent : [{ required: true, message: '请输入跟进内容', trigger: 'blur' },],
                     contactsId : [{ required: true, message: '请选择联系人', trigger: 'blur' },],
                     followType : [{ required: true, message: '请选择联系方式', trigger: 'blur' },],
-                    // contactTime : [{ required: true, message: '请选择下次联系时间', trigger: 'blur' },],
+                    state : [{ required: true, message: '请选择状态', trigger: 'blur' },],
                     
                 },
                 followTypes:[
@@ -490,7 +514,7 @@
                     {label:'拜访',value:'5'},
                 ],
                 portrait:this.$store.state.portrait,
-                imgUrl:'/upload/'+this.$store.state.iscId+'/'+this.$store.state.portrait,
+                imgUrl:'',
 
                 stateList:null,
                 searchList:{
@@ -527,7 +551,10 @@
                 imgfile:null,
                 imgName:null,
                 fileList:[],
-                imgList:[]
+                imgList:[],
+
+                dialogVisible2:false,
+                dialogImageUrl2:null,
             }
         },
         beforeRouteLeave(to, from , next){
@@ -563,6 +590,9 @@
                 let pageInfo = {}
                 pageInfo.page = this.page
                 pageInfo.limit = this.limit
+                let pageInfo2 = {}
+                pageInfo2.page = '1'
+                pageInfo2.limit = '100000'
                 let data = {}
                 data.type = '快捷方式'
 
@@ -620,6 +650,14 @@
                         }else{
                             el.showdelico = false
                         }
+                        if(el.userImagName && el.userImagName !== null){
+                            _this.imgUrl = '/upload/'+_this.$store.state.iscId+'/'+el.userImagName
+                        }else{
+                            _this.imgUrl = '/upload/staticImg/avatar.jpg'
+                        }
+                        if(el.imgName && el.imgName !== null){
+                            el.picture_detail = '/upload/'+_this.$store.state.iscId+'/'+val.imgName
+                        }
                     });
                 }).catch(function(err){
                     // console.log(err);
@@ -628,7 +666,7 @@
                 axios({
                     method:'post',
                     url:_this.$store.state.defaultHttp+'customerpool/getPoolContacts.do?cId='+_this.$store.state.iscId+'&customerpool_id='+this.detailData.id,
-                    data:qs.stringify(pageInfo)
+                    data:qs.stringify(pageInfo2)
                 }).then(function(res){
                     _this.$store.state.customerDetailsList = res.data.map.success
                     _this.contactList = res.data.map.success
@@ -641,7 +679,7 @@
                 axios({
                     method:'post',
                     url:_this.$store.state.defaultHttp+'customerpool/queryForPoolList.do?cId='+_this.$store.state.iscId+'&customerpool_id='+this.detailData.id,
-                    data:qs.stringify(pageInfo)
+                    data:qs.stringify(pageInfo2)
                 }).then(function(res){
                     _this.$store.state.opportunityDetailsList = res.data.map.success
                 }).catch(function(err){
@@ -651,7 +689,7 @@
                 axios({
                     method:'post',
                     url:_this.$store.state.defaultHttp+'customerpool/getContractByPool.do?cId='+_this.$store.state.iscId+'&customerpool_id='+this.detailData.id,
-                    data:qs.stringify(pageInfo)
+                    data:qs.stringify(pageInfo2)
                 }).then(function(res){
                     _this.$store.state.agreementDetailsList = res.data.map.success
                 }).catch(function(err){
@@ -661,9 +699,18 @@
                 axios({
                     method:'post',
                     url:_this.$store.state.defaultHttp+'customerpool/getPoolNameAndNumber.do?cId='+_this.$store.state.iscId+'&customerpool_id='+this.detailData.id,
-                    data:qs.stringify(pageInfo)
+                    data:qs.stringify(pageInfo2)
                 }).then(function(res){
                     _this.$store.state.InvoiceDetailsList = res.data.map.success
+                }).catch(function(err){
+                    // console.log(err);
+                });
+                //详情页外勤任务
+                axios({
+                    method:'get',
+                    url:_this.$store.state.defaultHttp+'customerpool/selectWorkPlanAndVisit.do?cId='+_this.$store.state.iscId+'&customerpool_id='+this.detailData.id
+                }).then(function(res){
+                    _this.$store.state.FielDutyDetailsList = res.data.map.workPlanAndVisit
                 }).catch(function(err){
                     // console.log(err);
                 });
@@ -728,6 +775,11 @@
                 }).catch(function(err){
                     // console.log(err);
                 });
+            },
+            showImg(e,val){
+                // console.log(val)
+                this.dialogImageUrl2 = '/upload/'+this.$store.state.iscId+'/'+val.imgName
+                this.dialogVisible2 = true
             },
             retract(){
                 this.thisshow = !this.thisshow

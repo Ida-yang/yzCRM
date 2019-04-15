@@ -85,10 +85,10 @@
                 prop="customerpool[0].name"
                 label="公司名称">
                     <template slot-scope="scope">
-                    <div @click="getRow(scope.$index, scope.row)">
-                        {{scope.row.customerpool[0].name}}
-                    </div>
-                </template>
+                        <div @click="getRow(scope.$index, scope.row)">
+                            {{scope.row.customerpool[0].name}}
+                        </div>
+                    </template>
                 </el-table-column>
             </el-table>
             <div class="block numberPage number">
@@ -116,7 +116,6 @@
         store,
         data(){
             return {
-                detailData:null,
                 searchList:{
                     keyword:null,
                 },
@@ -163,7 +162,6 @@
         },
         methods: {
             loadTable(){
-                this.detailData = this.$store.state.oppdetailsData.submitData;
                 this.idArr.opportunity_id = this.$store.state.oppdetailsData.submitData.id
                 const _this = this
                 let qs =require('querystring')
@@ -173,7 +171,7 @@
 
                 axios({
                     method: 'post',
-                    url: _this.$store.state.defaultHttp+'opportunity/query.do?cId='+_this.$store.state.iscId,
+                    url: _this.$store.state.defaultHttp+'opportunity/query.do?cId='+_this.$store.state.iscId+'&pId='+_this.$store.state.ispId,
                     data: qs.stringify(pageInfo),
                 }).then(function(res){
                     _this.tableData = res.data.map.success
@@ -187,7 +185,7 @@
                 //详情页
                 axios({
                     method:'get',
-                    url:_this.$store.state.defaultHttp+'opportunity/getopportunityById.do?cId='+_this.$store.state.iscId+'&opportunity_id='+_this.detailData.id,
+                    url:_this.$store.state.defaultHttp+'opportunity/getopportunityById.do?cId='+_this.$store.state.iscId+'&opportunity_id='+_this.idArr.opportunity_id,
                 }).then(function(res){
                     _this.opportunitydetail = res.data.map.success[0]
                     _this.contacts = res.data.map.success[0].contacts[0]
@@ -248,7 +246,7 @@
                     data.previousTime = this.steptime + ':00'
                     data.deptid = this.$store.state.insid
                     data.secondid = this.$store.state.deptid
-                    data.oy_id = this.detailData.id
+                    data.oy_id = this.idArr.opportunity_id
                     if(_this.active == i){
                         data.stepId = this.stepList[i].step_id
                         data.progress_probability = this.stepList[i].step_probability
@@ -293,7 +291,7 @@
                 data.previousTime = this.steptime + ':00'
                 data.deptid = this.$store.state.insid
                 data.secondid = this.$store.state.deptid
-                data.oy_id = this.detailData.id
+                data.oy_id = this.idArr.opportunity_id
                 data.stepId = 100
                 _this.$confirm('确认关闭商机进度吗？一旦确定将不可撤回','提示',{
                     confirmButtonText:'确定',

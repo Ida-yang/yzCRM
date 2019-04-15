@@ -204,7 +204,7 @@ const router =new Router({
         {
           path: '/log',
           component: resolve => require(['../components/index/page/log/log.vue'], resolve),
-          meta: { title: '日志',requireAuth:true}
+          meta: { title: '操作日志',requireAuth:true}
         },
       ]
     },

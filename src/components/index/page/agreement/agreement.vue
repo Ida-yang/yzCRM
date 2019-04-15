@@ -600,6 +600,7 @@
                     "end_date": row.end_date,
                     "signatories": row.signatories,
                     "our_signatories": row.our_signatories,
+                    "our_signatoriesId": row.pId,
                     "approverid": row.approverid,
                     "remarks": row.remarks};
                 agreeaddOrUpdateData.submitData = {"id": row.contract_id};

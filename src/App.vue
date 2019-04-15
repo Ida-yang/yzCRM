@@ -390,6 +390,7 @@ export default {
         float: left;
         color: #ffffff;
         padding-top: 5px;
+        /* width: 5%; */
     }
     .verticalline{
         float: left;
@@ -398,7 +399,7 @@ export default {
         /* border-bottom: 1px solid #c2c4c9; */
     }
     .followrecord .recordcontent{
-        width:88%;
+        width:calc(100% - 50px);
         line-height:20px;
         height: auto;
         color: #000000;
@@ -430,13 +431,11 @@ export default {
     }
     .detail_portrait{
         float: left;
-        width:40px;
-        height:40px;
+        width:35px;
+        height:35px;
         /* background-color:#ff8153; */
-        border: 1px solid #ffffff;
+        border: 1px solid #d6d6d6;
         border-radius:50%;
-        line-height:25px;
-        text-align:center;
     }
 
     .el-table__expand-icon:after {
@@ -674,5 +673,13 @@ export default {
         /* padding-bottom: 20px;
         height: 50px; */
         /* background-color: #5281c7 */
+    }
+    .el-date-editor .el-range-separator{
+        line-height: 20px
+    }
+    .imgbox_two{
+        width:80px;
+        height: 80px;
+        border: 1px solid #121212
     }
 </style>

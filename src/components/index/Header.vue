@@ -38,8 +38,7 @@
                      <!-- :content="public_username" -->
                     <el-tooltip effect="dark" :content="public_username" placement="left-end">
                         <span class="el-dropdown-link">
-                            <img v-show="portrait" :src="imgUrl" alt=""/>
-                            <img v-show="!portrait" src="/upload/staticImg/avatar.jpg" alt=""/>
+                            <img :src="imgUrl" alt=""/>
                         </span>
                     </el-tooltip>
                     <span>
@@ -112,7 +111,7 @@
             };
             return {
                 public_username:this.$store.state.user,
-                imgUrl:'/upload/'+this.$store.state.iscId+'/'+this.$store.state.portrait,
+                imgUrl:'',
                 portrait:this.$store.state.portrait,
 
                 dialogFormVisible: false,
@@ -146,12 +145,11 @@
                         {require:true, validator: validaterespass, trigger: 'blur'}
                     ]
                 },
-
-                
             }
         },
         inject:["reload"], 
         mounted(){
+            this.loadIMG()
             this.loadmessage()
             if(document.body.clientWidth < 1500){
                 this.collapseChage();
@@ -167,6 +165,13 @@
             getBread(){
                 this.breadsList.path=this.$route.path
                 this.breadsList.title=this.$route.meta.title
+            },
+            loadIMG(){
+                if(this.$store.state.portrait && this.$store.state.portrait !== 'null'){
+                    this.imgUrl = '/upload/'+this.$store.state.iscId+'/'+this.$store.state.portrait
+                }else{
+                    this.imgUrl = '/upload/staticImg/avatar.jpg'
+                }
             },
             //修改密码
              submitFormUser(formName){

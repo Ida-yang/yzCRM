@@ -13,11 +13,11 @@
             </el-form-item>
             <el-form-item prop="phone">
                 <span class="itemlabel">手机:</span>
-                <el-input class="forminput" v-model="newform.phone"></el-input>
+                <el-input onkeyup="value=value.replace(/[^\d]/g,'')" class="forminput" v-model="newform.phone"></el-input>
             </el-form-item>
             <el-form-item prop="qq">
                 <span class="itemlabel">qq:</span>
-                <el-input class="forminput" v-model="newform.qq"></el-input>
+                <el-input onkeyup="value=value.replace(/[^\d]/g,'')" class="forminput" v-model="newform.qq"></el-input>
             </el-form-item>
             <el-form-item>
                 <el-button class="activitybtn" type="primary" @click="addactivity()">提 交</el-button>
@@ -51,6 +51,7 @@
                 title:null,
                 cId:null,
                 pId:null,
+                resourceid:null,
             }
         },
         mounted(){
@@ -75,6 +76,7 @@
                 this.title = obj.n
                 this.cId = obj.c
                 this.pId = obj.p
+                this.resourceid = obj.re
             },
             addactivity(){
                 const _this = this;
@@ -85,9 +87,12 @@
                 data.phone = this.newform.phone
                 data.qq = this.newform.qq
                 data.remark = this.title
+                data.cuesid = this.resourceid
+
                 let arr = [this.newform]
                 let flag = false;
                 arr.forEach(item => {
+                    const myreg = /^[1][3,4,5,6,7,8][0-9]{9}$/;
                     if(!item.poolName){
                         _this.$message({
                             message: "请填写公司名称",
@@ -98,6 +103,13 @@
                     if(!item.contactsName){
                         _this.$message({
                             message: "请填写姓名",
+                            type: 'error'
+                        });
+                        flag = true;
+                    }
+                    if(!myreg.test(item.phone)){
+                        _this.$message({
+                            message: "请输入11位手机号码",
                             type: 'error'
                         });
                         flag = true;
@@ -128,6 +140,9 @@
                             phone:null,
                             qq:null,
                         }
+                        setTimeout(() => {
+                            window.close()
+                        }, 1500);
                     }else{
                         _this.$message({
                             message:res.data.msg,

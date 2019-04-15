@@ -66,9 +66,9 @@
                             placement="right"
                             width="200"
                             trigger="hover">
-                            <img v-show="scope.row.imgUrl" :src="scope.row.portrait" alt="头像" width="200" height="200">
-                            <img v-show="scope.row.imgUrl" slot="reference" :src="scope.row.portrait" alt="头像" width="50" height="50">
-                            <img v-show="!scope.row.imgUrl" slot="reference" src="/upload/staticImg/avatar.jpg" alt="头像" width="50" height="50">
+                            <img class="img_portrait_big" v-show="scope.row.imgUrl" :src="scope.row.portrait" alt="头像" width="200" height="200">
+                            <img class="img_portrait" v-show="scope.row.imgUrl" slot="reference" :src="scope.row.portrait" alt="头像" width="50" height="50">
+                            <img class="img_portrait" v-show="!scope.row.imgUrl" slot="reference" src="/upload/staticImg/avatar.jpg" alt="头像" width="50" height="50">
                         </el-popover>
                     </template>
                 </el-table-column>
@@ -220,7 +220,7 @@
                     </el-form-item>
                     <el-form-item prop="imgUrl" label="头像">
                         <el-upload class="avatar-uploader portrait" action="doUpload" :show-file-list="false" :before-upload="beforeUploadimg">
-                            <img v-if="imgfile" :src="imgfile" class="avatar">
+                            <img v-if="imgfile" :src="imgfile" class="avatar" width="100" height="100">
                             <i v-else class="el-icon-plus avatar-uploader-icon portrait_add"></i>
                         </el-upload>
                     </el-form-item>
@@ -267,7 +267,7 @@
                 </el-form-item>
                     <el-form-item prop="imgUrl" label="头像">
                         <el-upload class="avatar-uploader portrait" action="doUpload" :show-file-list="false" :before-upload="beforeUploadimg">
-                            <img v-if="imgfile" :src="imgfile" class="avatar">
+                            <img v-if="imgfile" :src="imgfile" class="avatar" width="100" height="100">
                             <i v-else class="el-icon-plus avatar-uploader-icon portrait_add"></i>
                         </el-upload>
                     </el-form-item>
@@ -435,7 +435,11 @@
                     _this.$store.state.userListnumber = res.data.count
                     let arr = res.data.map.success
                     arr.forEach(el => {
-                        el.portrait = '/upload/'+_this.$store.state.iscId+'/'+el.imgUrl
+                        if(el.imgUrl){
+                            el.portrait = '/upload/'+_this.$store.state.iscId+'/'+el.imgUrl
+                        }else{
+                            return
+                        }
                     });
                 }).catch(function(err){
                     // console.log(err);
@@ -529,6 +533,7 @@
                 this.newform.private_state = null
                 this.newform.private_email = ''
                 this.newform.private_QQ = ''
+                this.newform.file = ''
 
                 if(!this.clickdata){
                     _this.$message({
@@ -557,15 +562,6 @@
             adduser(){
                 const _this = this;
                 let qs = require('querystring')
-                // let data = {}
-                // data.second_id = this.newform.second_id
-                // data.role_id = this.newform.role_id
-                // data.private_phone = this.newform.private_phone
-                // data.private_password = this.newform.private_password
-                // data.private_employee = this.newform.private_employee
-                // data.private_state = this.newform.private_state
-                // data.private_email = this.newform.private_email
-                // data.private_QQ = this.newform.private_QQ
                 let data = new FormData()
                 data.append("second_id", this.newform.second_id);
                 data.append("role_id", this.newform.role_id);
@@ -692,6 +688,11 @@
                             _this.newform.private_state = row.private_state
                             _this.newform.private_email = row.private_email
                             _this.newform.private_QQ = row.private_QQ
+                            _this.newform.imgUrl = row.imgUrl
+                            if(row.imgUrl){
+                                _this.imgfile = '/upload/'+_this.$store.state.iscId+'/'+row.imgUrl
+                            }
+                            
                             _this.dialogVisible2 = true
                             axios({
                                 method: 'post',
@@ -712,16 +713,17 @@
             updateuser(){
                 const _this = this;
                 let qs = require('querystring')
-                let data = {}
-                data.second_id = this.newform.second_id
-                data.private_id = this.newform.private_id
-                data.role_id = this.newform.role_id
-                data.private_phone = this.newform.private_phone
-                data.private_password = this.newform.private_password
-                data.private_employee = this.newform.private_employee
-                data.private_state = this.newform.private_state
-                data.private_email = this.newform.private_email
-                data.private_QQ = this.newform.private_QQ
+                let data = new FormData()
+                data.append("second_id", this.newform.second_id);
+                data.append("private_id", this.newform.private_id);
+                data.append("role_id", this.newform.role_id);
+                data.append("private_phone", this.newform.private_phone);
+                data.append("private_password", this.newform.private_password);
+                data.append("private_employee", this.newform.private_employee);
+                data.append("private_state", this.newform.private_state);
+                data.append("private_email", this.newform.private_email);
+                data.append("private_QQ", this.newform.private_QQ);
+                data.append("file", this.newform.imgUrl, this.imgName);
                 
                 let arr = [this.newform]
                 let flag = false;
@@ -774,7 +776,10 @@
                 axios({
                     method: 'post',
                     url: _this.$store.state.defaultHttp+'updatePrivate.do?cId='+_this.$store.state.iscId,
-                    data:qs.stringify(data)
+                    headers: {
+                        'Content-Type': 'multipart/form-data'
+                    },
+                    data:data
                 }).then(function(res){
                     if(res.data.code && res.data.code == 200){
                         _this.$message({
@@ -925,5 +930,11 @@
     }
     .portrait .el-upload--text .portrait_add{
         line-height: 100px;
+    }
+    .img_portrait{
+        border-radius: 25px;
+    }
+    .img_portrait_big{
+        border-radius: 100px
     }
 </style>

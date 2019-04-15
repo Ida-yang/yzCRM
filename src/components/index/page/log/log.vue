@@ -59,7 +59,7 @@
                 sortable>
             </el-table-column>
             <el-table-column
-                prop="startTime"
+                prop="startDate"
                 header-align="left"
                 align="left"
                 label="时间"
@@ -173,8 +173,10 @@
                 let searchList = {}
                 searchList.model = this.searchList.model
                 searchList.private_employee = this.searchList.private_employee
-                // searchList.page = this.page;
-                // searchList.limit = this.limit;
+                searchList.startTime = this.searchList.startTime
+                searchList.endTime = this.searchList.endTime
+                searchList.page = this.page;
+                searchList.limit = this.limit;
                 
                 axios({
                     method: 'post',
@@ -187,10 +189,13 @@
                     // console.log(err);
                 });
             },
-            datepick(){
+            datepick(val){
                 if(val){
                     this.searchList.startTime = val[0]
                     this.searchList.endTime = val[1]
+                }else{
+                    this.searchList.startTime = ''
+                    this.searchList.endTime = ''
                 }
                 this.$options.methods.loadTable.bind(this)()
             },

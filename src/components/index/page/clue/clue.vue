@@ -509,7 +509,7 @@
                 formLabelWidth: '130px',
 
                 authorityInterface: null,
-                downloadUrl: this.$store.state.defaultHttp+'upload/import_template.xls',
+                downloadUrl: this.$store.state.systemHttp+'upload/import_template.xls',
                 fileName:null,
 
                 dialogVisible:false,
