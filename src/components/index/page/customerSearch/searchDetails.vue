@@ -123,7 +123,7 @@
                 },
                 customername:null,
                 contacts:null,
-                website:'http://www.kingdee.com/'
+                website:''
             }
         },
         created(){
@@ -182,7 +182,8 @@
             tabClick(val){
                 // console.log(val)
                 if(val.index == '1'){
-                    console.log(val.name)
+                    // console.log(val.name)
+                    this.website = 'https://www.baidu.com/'
                 }
             }
         },

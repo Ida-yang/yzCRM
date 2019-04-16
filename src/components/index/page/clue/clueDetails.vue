@@ -78,7 +78,7 @@
                 </el-card>
             </div>
             <div class="bottom">
-                <el-tabs v-model="activeName2" type="card">
+                <el-tabs v-model="activeName2" type="card" @tab-click="tabClick">
                     <el-tab-pane label="跟进记录" name="first">
                         <el-form class="followform" :rules="rules" ref="followform" :model="followform">
                             <el-form-item prop="followContent">
@@ -130,7 +130,7 @@
                         <div style="width:100%;height:10px;"></div>
                         <ul class="followrecord" v-for="(item,index) in record" :key="item.followId">
                             <li class="recordicon">
-                                <img :src="imgUrl" class="detail_portrait" alt="头像" />
+                                <img :src="item.imgUrl" class="detail_portrait" alt="头像" />
                             </li>
                             <li class="verticalline"></li>
                             <li class="recordcontent">
@@ -140,13 +140,16 @@
                                         &nbsp;&nbsp;&nbsp;<span>状态为：{{item.state}} &nbsp;&nbsp;&nbsp;{{item.inputType}}</span> 
                                     </p>
                                     <p style="margin-top:15px;margin-bottom:15px;">{{item.followContent}}</p>
+                                    <div class="imgbox_two" v-if="item.imgName">
+                                        <img :src="item.picture_detail" alt="图片" width="80" height="80" @click="showImg($event,item)">
+                                    </div>
+                                    <div v-if="item.enclosureName">
+                                        <a :href="item.enclosureUrl" download>下载附件</a>
+                                    </div>
                                 </div>
                                 <div class="right_more" v-if="item.showdelico">
                                     <el-dropdown trigger="click" @command="deletefollow(index)">
-                                        <span class="el-dropdown-link">更多</span>
-                                        <span>
-                                            <i class="el-icon-caret-bottom"></i>
-                                        </span>
+                                        <span class="el-dropdown-link">更多<i class="el-icon-caret-bottom"></i></span>
                                         <el-dropdown-menu slot="dropdown">
                                             <el-dropdown-item command="del">删除</el-dropdown-item>
                                         </el-dropdown-menu>
@@ -234,6 +237,36 @@
                             </el-table-column>
                         </el-table>
                     </el-tab-pane>
+                    <el-tab-pane label="官网" name="third">
+                        <iframe class="tab_iframe" :src="website"/>
+                    </el-tab-pane>
+                    <el-tab-pane label="附件" name="fourth">
+                        <el-table
+                            :data="Enclosureclue"
+                            border
+                            stripe
+                            style="width: 100%">
+                            <el-table-column
+                                prop="name"
+                                header-align="left"
+                                min-width="150"
+                                label="附件名称">
+                                <template slot-scope="scope">
+                                    <a :href="scope.row.src" download>{{scope.row.name}}</a>
+                                </template>
+                            </el-table-column>
+                            <el-table-column
+                                prop="uploads"
+                                header-align="left"
+                                label="上传者">
+                            </el-table-column>
+                            <el-table-column
+                                prop="uploadTime"
+                                header-align="left"
+                                label="上传时间">
+                            </el-table-column>
+                        </el-table>
+                    </el-tab-pane>
                 </el-tabs>
             </div>
         </el-col>
@@ -284,7 +317,7 @@
         computed: {
             clueDetails(){
                 return store.state.clueDetailsList;
-            }
+            },
         },
         data(){
             return {
@@ -318,9 +351,6 @@
                     {label:'邮箱',value:'4'},
                     {label:'拜访',value:'5'},
                 ],
-                
-                portrait:this.$store.state.portrait,
-                imgUrl:'',
                 
                 stateList:null,
                 searchList:{
@@ -359,7 +389,11 @@
                 imgfile:null,
                 imgName:null,
                 fileList:[],
-                imgList:[]
+                imgList:[],
+
+                website:'',
+
+                Enclosureclue:[]
             }
         },
         beforeRouteLeave(to, from , next){
@@ -435,12 +469,6 @@
                     url:_this.$store.state.defaultHttp+'getFollowStaff.do?cId='+_this.$store.state.iscId+'&customertwoId='+this.detailData.id,
                 }).then(function(res){
                     _this.record = res.data.map.success
-                    if(!_this.record[0]){
-                        _this.loadState()
-                    }else{
-                        _this.followform.state = _this.record[0].state
-                        _this.loadState()
-                    }
                     _this.record.forEach(el => {
                         el.showdelico = false
                         let startTime = Date.parse(el.createTime); // 开始时间
@@ -448,15 +476,29 @@
                         let usedTime = endTime - startTime; // 相差的毫秒数
                         if(usedTime < 7200000){
                             el.showdelico = true
-                        }else{
+                        }
+                        if(usedTime > 7200000){
                             el.showdelico = false
                         }
-                        if(el.userImagName && el.userImagName !== null){
-                            _this.imgUrl = '/upload/'+this.$store.state.iscId+'/'+el.userImagName
-                        }else{
-                            _this.imgUrl = '/upload/staticImg/avatar.jpg'
+                        if(el.userImagName){
+                            el.imgUrl = '/upload/'+_this.$store.state.iscId+'/'+el.userImagName
+                        }
+                        if(!el.userImagName || el.userImagName == null){
+                            el.imgUrl = '/upload/staticImg/avatar.jpg'
+                        }
+                        if(el.imgName && el.imgName !== null){
+                            el.picture_detail = '/upload/'+_this.$store.state.iscId+'/'+el.imgName
+                        }
+                        if(el.enclosureName && el.enclosureName !== null){
+                            el.enclosureUrl = '/upload/'+_this.$store.state.iscId+'/'+el.enclosureName
                         }
                     });
+                    if(!_this.record[0]){
+                        _this.loadState()
+                    }else{
+                        _this.followform.state = _this.record[0].state
+                        _this.loadState()
+                    }
                 }).catch(function(err){
                     // console.log(err);
                 });
@@ -608,11 +650,7 @@
                     _this.$message.error("转移失败,请重新转移");
                 });
             },
-            handleCommand(val){
-                console.log(val)
-            },
             deletefollow(index){
-                console.log(index)
                 const _this = this
                 let qs = require('querystring')
                 let followData = {}
@@ -730,12 +768,57 @@
                     // console.log(err);
                 });
             },
+            showImg(e,val){
+                // console.log(val)
+                this.dialogImageUrl2 = '/upload/'+this.$store.state.iscId+'/'+val.imgName
+                this.dialogVisible2 = true
+            },
             changeState(row){
-                console.log(row)
+                // console.log(row)
+                const _this = this
+                let qs = require('querystring')
+                let data = {}
+                data.id = row.id
+                data.status = row.status
+
+                axios({
+                    method:'post',
+                    url:_this.$store.state.defaultHttp+'contacts/updateStatus.do?cId='+_this.$store.state.iscId,
+                    data:qs.stringify(data)
+                }).then(function(res){
+                    if(res.data.code && res.data.code == '200'){
+                        _this.$options.methods.loadData.bind(_this)();
+                    }else{
+                        _this.$message({
+                            message: '可能出了点什么问题，再看看',
+                            type: 'error'
+                        })
+                    }
+                }).catch(function(err){
+                    // console.log(err);
+                });
+            },
+
+            tabClick(val){
+                if(val.index == 2){
+                    this.website = this.cluedetail.url
+                }
+                if(val.index == 3){
+                    this.Enclosureclue = []
+                    this.record.forEach(el => {
+                        if(el.enclosureName){
+                            this.Enclosureclue.push({
+                                name:el.enclosureName,
+                                src:this.$store.state.systemHttp+'upload/'+this.$store.state.iscId+'/'+el.enclosureName,
+                                uploads:el.private_employee,
+                                uploadTime:el.createTime
+                            })
+                        }
+                    });
+                }
             },
 
             beforeUploadimg(val,imgList){
-                console.log(val)
                 this.imgfile = val;
                 const extension = val.name.split('.')[1] === 'jpg'
                 const extension2 = val.name.split('.')[1] === 'png'
@@ -791,6 +874,11 @@
                 if(!this.followform.followContent){
                     _this.$message({
                         message: '跟进内容不能为空',
+                        type: 'error'
+                    });
+                }else if(!this.followform.state){
+                    _this.$message({
+                        message: '跟进状态不能为空',
                         type: 'error'
                     });
                 }else{

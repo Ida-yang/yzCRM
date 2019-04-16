@@ -680,6 +680,10 @@ export default {
     .imgbox_two{
         width:80px;
         height: 80px;
-        border: 1px solid #121212
+        border: 1px solid #919191
+    }
+    .tab_iframe{
+        width: 98%;
+        height: 630px;
     }
 </style>

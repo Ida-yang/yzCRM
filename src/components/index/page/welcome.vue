@@ -164,26 +164,29 @@
         methods:{
             loadData(){
                 const _this = this;
+
+                let pageInfo2 = {}
                 let searchList = {}
+                pageInfo2.state = '未完成'
                 if(this.searchList.label == 0 ){
                     searchList.pId = _this.nullvalue
+                    pageInfo2.pId = _this.nullvalue
                 }else if(this.searchList.label == 1){
                     searchList.pId = _this.$store.state.ispId
+                    pageInfo2.pId = _this.$store.state.ispId
                 }else if(this.searchList.label == 2){
                     searchList.secondid = _this.$store.state.deptid
+                    pageInfo2.secondid = _this.$store.state.deptid
                 }else if(this.searchList.label == 3){
                     searchList.deptid = _this.$store.state.insid
-                }else{
-                    searchList.pId = _this.$store.state.ispId
+                    pageInfo2.deptid = _this.$store.state.insid
                 }
+                
                 let oppData = searchList
                 oppData.yearMonth = this.searchList.oppdate
 
                 let monthData = {}
                 monthData.month = this.searchList.date
-
-                let pageInfo2 = {}
-                pageInfo2.state = '未完成'
 
                 //获取首页头部报表数据
                 axios({
@@ -230,18 +233,6 @@
                 }).catch(function(err){
                     // console.log(err);
                 });
-                // _this.$store.state.welcomeData = [
-                //     {name:'项目名称',start_time:'2019-01-01',end_deal:'2019-03-31',state:'启动',user:'销售'},
-                //     {name:'项目名称',start_time:'2019-01-01',end_deal:'2019-03-31',state:'启动',user:'销售'},
-                //     {name:'项目名称',start_time:'2019-01-01',end_deal:'2019-03-31',state:'启动',user:'销售'},
-                //     {name:'项目名称',start_time:'2019-01-01',end_deal:'2019-03-31',state:'启动',user:'销售'},
-                //     {name:'项目名称',start_time:'2019-01-01',end_deal:'2019-03-31',state:'启动',user:'销售'},
-                //     {name:'项目名称',start_time:'2019-01-01',end_deal:'2019-03-31',state:'启动',user:'销售'},
-                //     {name:'项目名称',start_time:'2019-01-01',end_deal:'2019-03-31',state:'启动',user:'销售'},
-                //     {name:'项目名称',start_time:'2019-01-01',end_deal:'2019-03-31',state:'启动',user:'销售'},
-                //     {name:'项目名称',start_time:'2019-01-01',end_deal:'2019-03-31',state:'启动',user:'销售'},
-                //     {name:'项目名称',start_time:'2019-01-01',end_deal:'2019-03-31',state:'启动',user:'销售'},
-                // ]
             },
             getMonth(){
                 let date=new Date;

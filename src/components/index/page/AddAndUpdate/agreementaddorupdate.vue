@@ -477,7 +477,7 @@
                             type: 'error'
                         });
                     }
-                    this.isDisable = false
+                    _this.isDisable = false
                 }).catch(function(err){
                     // _this.$message.error("提交失败，请重新提交");
                 }); 

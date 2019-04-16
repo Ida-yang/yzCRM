@@ -85,7 +85,7 @@
                         </div>
                     </el-form-item>
                     <div style="float:right;margin:20px 60px;">
-                        <el-button type="primary" @click="submit">立即提交</el-button>
+                        <el-button type="primary" :disabled="isDisable" @click="submit">立即提交</el-button>
                         &nbsp;&nbsp;
                         <el-button @click="closeTag">取消</el-button>
                     </div>
@@ -299,6 +299,8 @@
                     // telphone:[{ validator:/[\d-]{1,10}/, trigger:'input'},],
                     cuesid : [{ required: true, message: '线索来源不能为空', trigger: 'blur' },],
                 },
+
+                isDisable:false
             }
         },
         mounted() {
@@ -499,6 +501,7 @@
                 // subData.operatingStateId = this.myForm.operatingStateId
                 // subData.operatingStateId = this.myForm.enterpriseScaleId
                 // subData.financingStateId = this.myForm.financingStateId
+                this.isDisable = true
 
                 axios({
                     method: 'post',
@@ -517,6 +520,7 @@
                             type: 'error'
                         });
                     }
+                    _this.isDisable = false
                 }).catch(function(err){
                     _this.$message.error("提交失败，请重新提交");
                     

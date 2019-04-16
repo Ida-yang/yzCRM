@@ -67,7 +67,7 @@
                 </el-date-picker>
             </el-form-item>
             <div style="float:right;margin:20px 60px;">
-                <el-button type="primary" @click="submit">立即提交</el-button>
+                <el-button type="primary" :disabled="isDisable" @click="submit">立即提交</el-button>
                 &nbsp;&nbsp;
                 <el-button @click="closeTag">取消</el-button>
             </div>
@@ -153,6 +153,8 @@ export default {
             conid:null,
             assisid:null,
             apprid:null,
+
+            isDisable:false
         }
     },
     activated(){
@@ -337,6 +339,8 @@ export default {
             subData.approverid = this.myForm.approverid
             subData.assistantsid = this.myForm.assistantsid
 
+            this.isDisable = true
+
             axios({
                 method: 'post',
                 url: _this.visitaddOrUpdateData.submitURL,
@@ -359,6 +363,7 @@ export default {
                         type: 'error'
                     });
                 }
+                _this.isDisable = false
             }).catch(function(err){
                 _this.$message.error("提交失败，请重新提交");
             }); 

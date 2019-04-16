@@ -75,7 +75,7 @@
                 </el-card>
             </div>
             <div class="bottom">
-                <el-tabs v-model="activeName2" type="card">
+                <el-tabs v-model="activeName2" type="card" @tab-click="tabClick">
                     <el-tab-pane label="跟进记录" name="first">
                         <el-form class="followform" :rules="rules" ref="followform" :model="followform">
                             <el-form-item prop="followContent">
@@ -127,7 +127,7 @@
                         </el-form>
                         <ul class="followrecord" v-for="(item,index) in record" :key="item.followId">
                             <li class="recordicon">
-                                <img :src="imgUrl" class="detail_portrait" alt="头像" />
+                                <img :src="item.imgUrl" class="detail_portrait" alt="头像" />
                             </li>
                             <li class="verticalline"></li>
                             <li class="recordcontent">
@@ -140,16 +140,16 @@
                                     <div class="imgbox_two" v-if="item.imgName">
                                         <img :src="item.picture_detail" alt="图片" width="80" height="80" @click="showImg($event,item)">
                                     </div>
+                                    <div v-if="item.enclosureName">
+                                        <a :href="item.enclosureUrl" download>下载附件</a>
+                                    </div>
                                     <el-dialog :visible.sync="dialogVisible2">
                                         <img width="100%" :src="dialogImageUrl2" alt="">
                                     </el-dialog>
                                 </div>
                                 <div class="right_more" v-if="item.showdelico">
                                     <el-dropdown trigger="click" @command="deletefollow(index)">
-                                        <span class="el-dropdown-link">更多</span>
-                                        <span>
-                                            <i class="el-icon-caret-bottom"></i>
-                                        </span>
+                                        <span class="el-dropdown-link">更多<i class="el-icon-caret-bottom"></i></span>
                                         <el-dropdown-menu slot="dropdown">
                                             <el-dropdown-item command="del">删除</el-dropdown-item>
                                         </el-dropdown-menu>
@@ -224,6 +224,11 @@
                                 prop="status"
                                 header-align="left"
                                 label="是否在职">
+                                <template slot-scope="scope">
+                                    <el-tooltip :content="scope.row.status" placement="right">
+                                        <el-switch v-model="scope.row.status" active-value="在职" inactive-value="离职" active-color="#13ce66" inactive-color="#bbbbbb" @change="changeState(scope.row)"></el-switch>
+                                    </el-tooltip>
+                                </template>
                             </el-table-column>
                             <el-table-column
                                 prop="remark"
@@ -395,6 +400,43 @@
                                 prop="state"
                                 header-align="left"
                                 label="状态">
+                                <template slot-scope="scope">
+                                    <div>
+                                        <span v-if="scope.row.state == '已完成'" style="color:#e6a23c">{{scope.row.state}}</span>
+                                        <span v-if="scope.row.state == '未完成'" style="color:#909399">{{scope.row.state}}</span>
+                                        <span v-if="scope.row.state == '作废'" style="color:#f56c6c">{{scope.row.state}}</span>
+                                    </div>
+                                </template>
+                            </el-table-column>
+                        </el-table>
+                    </el-tab-pane>
+                    <el-tab-pane label="官网" name="seventh">
+                        <iframe class="tab_iframe" :src="website"/>
+                    </el-tab-pane>
+                    <el-tab-pane label="附件" name="eighth">
+                        <el-table
+                            :data="EnclosureDetails"
+                            border
+                            stripe
+                            style="width: 100%">
+                            <el-table-column
+                                prop="name"
+                                header-align="left"
+                                min-width="150"
+                                label="附件名称">
+                                <template slot-scope="scope">
+                                    <a :href="scope.row.src" download>{{scope.row.name}}</a>
+                                </template>
+                            </el-table-column>
+                            <el-table-column
+                                prop="uploads"
+                                header-align="left"
+                                label="上传者">
+                            </el-table-column>
+                            <el-table-column
+                                prop="uploadTime"
+                                header-align="left"
+                                label="上传时间">
                             </el-table-column>
                         </el-table>
                     </el-tab-pane>
@@ -459,7 +501,7 @@
             },
             FielDutyDetails(){
                 return store.state.FielDutyDetailsList
-            }
+            },
         },
         filters: {
             rounding (value) {
@@ -513,8 +555,8 @@
                     {label:'邮箱',value:'4'},
                     {label:'拜访',value:'5'},
                 ],
-                portrait:this.$store.state.portrait,
-                imgUrl:'',
+                // portrait:this.$store.state.portrait,
+                // imgUrl:'',
 
                 stateList:null,
                 searchList:{
@@ -555,6 +597,10 @@
 
                 dialogVisible2:false,
                 dialogImageUrl2:null,
+
+                website:'',
+
+                EnclosureDetails:[]
             }
         },
         beforeRouteLeave(to, from , next){
@@ -575,7 +621,6 @@
                 const _this = this
                 bus.$on('customer', function (msg) {
                     if(msg){
-                        console.log('1111111')
                         _this.$options.methods.loadData.bind(_this)()
                         _this.$options.methods.loadCountry.bind(_this)()
                     }
@@ -647,16 +692,21 @@
                         let usedTime = endTime - startTime; // 相差的毫秒数
                         if(usedTime < 7200000){
                             el.showdelico = true
-                        }else{
+                        }
+                        if(usedTime > 7200000){
                             el.showdelico = false
                         }
-                        if(el.userImagName && el.userImagName !== null){
-                            _this.imgUrl = '/upload/'+_this.$store.state.iscId+'/'+el.userImagName
-                        }else{
-                            _this.imgUrl = '/upload/staticImg/avatar.jpg'
+                        if(el.userImagName){
+                            el.imgUrl = '/upload/'+_this.$store.state.iscId+'/'+el.userImagName
+                        }
+                        if(!el.userImagName || el.userImagName == null){
+                            el.imgUrl = '/upload/staticImg/avatar.jpg'
                         }
                         if(el.imgName && el.imgName !== null){
-                            el.picture_detail = '/upload/'+_this.$store.state.iscId+'/'+val.imgName
+                            el.picture_detail = '/upload/'+_this.$store.state.iscId+'/'+el.imgName
+                        }
+                        if(el.enclosureName && el.enclosureName !== null){
+                            el.enclosureUrl = '/upload/'+_this.$store.state.iscId+'/'+el.enclosureName
                         }
                     });
                 }).catch(function(err){
@@ -824,7 +874,6 @@
                 });
             },
             deletefollow(index){
-                console.log(index)
                 const _this = this
                 let qs =require('querystring')
                 let followData = {}
@@ -943,9 +992,56 @@
                     // console.log(err);
                 });
             },
+            changeState(row){
+                // console.log(row)
+                const _this = this
+                let qs = require('querystring')
+                let data = {}
+                data.id = row.id
+                data.status = row.status
+
+                axios({
+                    method:'post',
+                    url:_this.$store.state.defaultHttp+'contacts/updateStatus.do?cId='+_this.$store.state.iscId,
+                    data:qs.stringify(data)
+                }).then(function(res){
+                    if(res.data.code && res.data.code == '200'){
+                        _this.$options.methods.loadData.bind(_this)();
+                    }else{
+                        _this.$message({
+                            message: '可能出了点什么问题，再看看',
+                            type: 'error'
+                        })
+                    }
+                }).catch(function(err){
+                    // console.log(err);
+                });
+            },
+
+            tabClick(val){
+                
+                if(val.index == 6){
+                    // console.log(this.customerdetail)
+                    this.website = this.customerdetail.url
+                }
+                if(val.index == 7){
+                    this.EnclosureDetails = []
+                    this.record.forEach(el => {
+                        if(el.enclosureName){
+                            // console.log(el.enclosureName)
+                            this.EnclosureDetails.push({
+                                name:el.enclosureName,
+                                src:this.$store.state.systemHttp+'upload/'+this.$store.state.iscId+'/'+el.enclosureName,
+                                uploads:el.private_employee,
+                                uploadTime:el.createTime
+                            })
+                        }
+                    });
+                }
+            },
+            
 
             beforeUploadimg(val,imgList){
-                console.log(val)
                 this.imgfile = val;
                 const extension = val.name.split('.')[1] === 'jpg'
                 const extension2 = val.name.split('.')[1] === 'png'
@@ -1001,6 +1097,11 @@
                 if(!this.followform.followContent){
                     _this.$message({
                         message: '跟进内容不能为空',
+                        type: 'error'
+                    });
+                }else if(!this.followform.state){
+                    _this.$message({
+                        message: '跟进状态不能为空',
                         type: 'error'
                     });
                 }else{
