@@ -480,6 +480,7 @@
                 idArr:{
                     id:null,
                 },
+                SMSId:[],
                 SMSnames:[],
                 SMSphones:[],
                 SMScontacts:[],
@@ -641,10 +642,19 @@
                 }).catch(function(err){
                     // console.log(err);
                 });
+            },
+            loadTemplate(){
+                const _this = this;
+                let qs =require('querystring')
+                let data = {}
+                data.type = '线索'
+                data.genre = '营销类'
+                data.status = '2'
+                
                 axios({
                     method: 'post',
                     url: _this.$store.state.defaultHttp+'template/selectTemplate.do?cId='+_this.$store.state.iscId,
-                    data:qs.stringify(filterList)
+                    data:qs.stringify(data)
                 }).then(function(res){
                     _this.templateList = res.data.map.templates
                 }).catch(function(err){
@@ -655,12 +665,14 @@
                 const _this = this
                 let arr = val;
                 let newArr = [new Array()];
+                this.SMSId = []
                 this.SMSnames = []
                 this.SMSphones = []
                 this.SMScontacts = []
                 arr.forEach((item) => {
                     if(item.id != 0){
                         newArr.push(item.id)
+                        _this.SMSId.push(item.id)
                         _this.SMSnames.push(item.name)
                         _this.SMSphones.push(item.contacts[0].phone)
                         _this.SMScontacts.push(item.contacts[0].coName)
@@ -1017,7 +1029,6 @@
                 fileFormData.append("deptid", this.$store.state.insid);
                 //fileName是键，files是值，就是要传的文件，files是要传的文件名
                 fileFormData.append('files', this.files, this.fileName);
-                console.log(fileFormData)
                 let requestConfig = {
                     headers: {
                         'Content-Type': 'multipart/form-data'
@@ -1036,9 +1047,12 @@
                 })
             },
             showsend(){
-                if(this.SMSnames[0]){
-                    // console.log(this.SMSnames.length)
-                    this.newform.cluenum = this.SMSnames.length
+                if(this.SMSId[0]){
+                    this.$options.methods.loadTemplate.bind(this)()
+                    this.newform.cluenum = this.SMSId.length
+                    this.newform.templateId = ''
+                    this.newform.explain = ''
+                    this.newform.smscontent = ''
                     this.dialogVisible = true
                 }else{
                     this.$message({
@@ -1048,7 +1062,6 @@
                 }
             },
             changetemplate(val){
-                console.log(val)
                 this.templateList.forEach(el => {
                     if(el.templateId == val){
                         this.newform.smscontent = el.content
@@ -1063,21 +1076,10 @@
                 data.phones = this.SMSphones
                 data.contacts = this.SMScontacts
                 data.templateId = this.newform.templateId
-                let data2 = {}
-                data2.names = this.SMSnames
-                data2.phones = this.SMSphones
-                data2.contacts = this.SMScontacts
-                data2.templateId = this.newform.templateId
-                // data2.customernum = this.newform.customernum
-                data2.explain = this.newform.explain
-                data2.pId = this.$store.state.ispId
-                data2.secondid = this.$store.state.deptid
-                data2.deptid = this.$store.state.insid
-                // console.log(data)
 
                 axios({
                     method: 'post',
-                    url: _this.$store.state.defaultHttp+'message/sendMarketingMsg.do?cId='+this.$store.state.iscId,
+                    url: _this.$store.state.defaultHttp+'message/sendMarketingMsg.do?cId='+_this.$store.state.iscId,
                     data: qs.stringify(data)
                 }).then(function(res){
                     if(res.data.code && res.data.code == '200'){
@@ -1085,19 +1087,42 @@
                             message:'发送成功',
                             type:'success'
                         })
+                        _this.$options.methods.addSMSsended.bind(_this)()
+                        _this.dialogVisible = false
+                    }else{
+                        _this.$message({
+                            message:res.data.msg,
+                            type:'error'
+                        })
                     }
-                    _this.dialogVisible = false
-                    axios({
-                        method: 'post',
-                        url: _this.$store.state.defaultHttp+'sendRecord/insertSendRecord.do?cId='+_this.$store.state.iscId,
-                        data: qs.stringify(data2)
-                    }).then(function(res){
-                    }).catch(function(err){
-                    });
                 }).catch(function(err){
                     // console.log(err);
                 });
             },
+            addSMSsended(){
+                const _this = this
+                let qs = require('querystring')
+                let data2 = {}
+                data2.type = '线索'
+                data2.ids = this.SMSId
+                data2.names = this.SMSnames
+                data2.phones = this.SMSphones
+                data2.contacts = this.SMScontacts
+                data2.templateId = this.newform.templateId
+                // data2.customernum = this.newform.customernum     
+                data2.explain = this.newform.explain
+                data2.pId = this.$store.state.ispId
+                data2.secondid = this.$store.state.deptid
+                data2.deptid = this.$store.state.insid
+
+                axios({
+                    method: 'post',
+                    url: _this.$store.state.defaultHttp+'sendRecord/insertSendRecord.do?cId='+_this.$store.state.iscId,
+                    data: qs.stringify(data2)
+                }).then(function(res){
+                }).catch(function(err){
+                });
+            }
         },
     }
 </script>

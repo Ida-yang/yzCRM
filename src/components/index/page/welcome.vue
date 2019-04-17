@@ -77,6 +77,15 @@
                     sortable>
                 </el-table-column>
                 <el-table-column
+                    prop="describe"
+                    show-overflow-tooltip
+                    header-align="left"
+                    align="left"
+                    min-width="120"
+                    label="描述"
+                    sortable>
+                </el-table-column>
+                <el-table-column
                     prop="startTime"
                     header-align="left"
                     align="left"
@@ -123,7 +132,7 @@
     require('echarts/lib/component/title')
 
     export default {
-        name:'suibian',
+        name:'welcome',
         store,
         computed:{
             tableData(){
@@ -267,9 +276,10 @@
                         {
                             name:'数量',
                             type:'funnel',
+                            sort: 'descending',
                             // width: '40%',
                             minSize: '10%',
-                            sort: 'none',
+                            // sort: 'none',
                             data:this.funnelList
                         }
                     ]

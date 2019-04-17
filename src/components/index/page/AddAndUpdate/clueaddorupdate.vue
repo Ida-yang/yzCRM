@@ -42,6 +42,7 @@
                             v-else-if="item.type && item.type == 'require' && item.inputModel == 'poolName'"
                             :value="myForm[item.inputModel]"
                             @input="handleoninput($event, item.inputModel)"
+                            @blur="handleblur($event, item.inputModel)"
                             style="width:90%;" 
                             auto-complete="off">
                         </el-input>
@@ -251,13 +252,14 @@
     import bus from '../../bus';
     
     export default {
-        name:'clueaddOrUpdate',
+        name:'clueaddorupdate',
         computed:{  
         },
         data(){
             return {
                 activeName: 'first',
                 tableData:null,
+                tableData2:null,
                 clueaddOrUpdateData: {},
                 myForm: {
                     poolName:null,
@@ -289,7 +291,7 @@
                 areaid:null,
 
                 page: 1,//默认第一页
-                limit: 15,//默认10条
+                limit: 15,//默认15条
                 selectData: null,
                 tableNumber: null,
                 rules: {
@@ -308,6 +310,7 @@
             this.loadTable();
             this.loadCountry()
             this.loadinfo()
+            this.loadTable2()
         },
         methods:{
             loadCountry(){
@@ -349,7 +352,7 @@
                 });
                 
             },
-            //获取右边表格和线索来源
+            //获取所有线索和客户的列表
             loadTable(){
                 const _this = this
                 let qs =require('querystring')
@@ -426,6 +429,25 @@
                     this.$emit('input', this.myForm);
                 }
             },
+            loadTable2(){
+                const _this = this
+                let qs =require('querystring')
+                let pageInfo = {}
+                pageInfo.page = this.page;
+                pageInfo.limit = this.limit;
+
+                axios({
+                    method: 'post',
+                    url: _this.$store.state.defaultHttp+'rightPoolName.do?cId='+_this.$store.state.iscId,
+                    data: qs.stringify(pageInfo),
+                }).then(function(res){
+                    let clueList = res.data.map.success.customerTwos
+                    let customerList = res.data.map.success.customerpools
+                    _this.tableData2 = clueList.concat(customerList)
+                }).catch(function(err){
+                    // console.log(err);
+                });
+            },
             handleInput(val, key) {
                 this.myForm[key] = val;
             },
@@ -447,6 +469,17 @@
                 }).catch(function(err){
                 });
             },
+            handleblur(e,key){
+                let val = e.target.value
+                this.tableData2.forEach(el => {
+                    if(val == el.name){
+                        this.$message({
+                            message:'该公司已存在于线索或客户中',
+                            type:'error'
+                        })
+                    }
+                });
+            },
             //提交或修改
             submit() {
                 const _this = this;
@@ -461,28 +494,28 @@
                 let flag = false;
                 createForm.forEach(item => {
                     subData[item.inputModel] = _this.myForm[item.inputModel];
-                    if(item.inputModel == "contactsName" && !subData[item.inputModel]) {//联系人名称不能为空
+                    if(item.inputModel == "contactsName" && !subData[item.inputModel]) {
                         _this.$message({
                             message: "联系人名称不能为空",
                             type: 'error'
                         });
                         flag = true;
                     }
-                    if(item.inputModel == "poolName" && !subData[item.inputModel]) {//公司名称不能为空
+                    if(item.inputModel == "poolName" && !subData[item.inputModel]) {
                         _this.$message({
                             message: "公司名称不能为空",
                             type: 'error'
                         });
                         flag = true;
                     }
-                    if(item.inputModel == "phone" && !subData[item.inputModel]) {//手机号码或电话号码至少一个不能为空
+                    if(item.inputModel == "phone" && !subData[item.inputModel]) {
                         _this.$message({
                             message: "手机号码不能为空",
                             type: 'error'
                         });
                         flag = true;
                     }
-                    if(item.inputModel == "cuesid" && !subData[item.inputModel]) {//线索来源不能为空
+                    if(item.inputModel == "cuesid" && !subData[item.inputModel]) {
                         _this.$message({
                             message: "请选择线索来源",
                             type: 'error'
@@ -495,12 +528,8 @@
                 });
                 if(flag) return;
                 subData.secondid = this.$store.state.deptid
-                subData.deptid = this.$store.state.insid
-                // subData.industryId = this.myForm.industryId
-                // subData.companyId = this.myForm.companyId
-                // subData.operatingStateId = this.myForm.operatingStateId
-                // subData.operatingStateId = this.myForm.enterpriseScaleId
-                // subData.financingStateId = this.myForm.financingStateId
+                subData.deptid = this.$store.state.industryId
+
                 this.isDisable = true
 
                 axios({

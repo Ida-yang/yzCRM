@@ -13,8 +13,11 @@
             </el-radio-group>
         </div>
         <div class="searchList">
-            <span class="nameList">联系人名称：</span>
-            <el-input v-model="searchList.searchName" placeholder="请输入联系人名称" style="width:300px;" @keyup.enter.native="search"></el-input>
+            <el-select v-model="searchList.keyType" style="margin-left:20px;width:125px">
+                <el-option label="联系人名称" value="1">联系人名称</el-option>
+                <el-option label="公司名称" value="2">公司名称</el-option>
+            </el-select>
+            <el-input v-model="searchList.searchName" placeholder="请输入联系人或公司名称" style="width:300px;" @keyup.enter.native="search"></el-input>
             &nbsp;&nbsp;
             <el-button icon="el-icon-search" type="primary" size="mini" @click="search()">查询</el-button>
         </div>
@@ -252,11 +255,13 @@
         data(){
             return {
                 searchList:{
+                    keyType:'1',
                     searchName:null,
                     time:null,
                     label:'1'
                 },
                 searchListNew:{
+                    keyType:'1',
                     searchName:null,
                     time:null,
                     label:'1'
@@ -316,6 +321,7 @@
                     searchList.deptid = _this.$store.state.insid
                 }
                 searchList.example = this.searchList.time
+                searchList.keyType = this.searchList.keyType
                 searchList.page = this.page;
                 searchList.limit = this.limit;
                 

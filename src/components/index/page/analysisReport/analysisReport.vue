@@ -1,5 +1,5 @@
 <template>
-    <!-- 基础设置页面 -->
+    <!-- 商业智能（报表）页面 -->
     <div class="contentall">
         <div class="setleftcontent">
             <ul class="namecontent">
@@ -172,7 +172,6 @@
                 let heights = document.documentElement.offsetHeight || document.body.offsetHeight
                 this.bar_style.width = widths * 0.7 +'px'
                 this.bar_style.height = heights * 0.6 +'px'
-                // console.log(this.bar_style.width,this.bar_style.height)
             },
             loadmechanism(){
                 const _this = this
@@ -243,7 +242,6 @@
                     url: _this.$store.state.defaultHttp+'opportunity/getOpportunityReportForm.do?cId='+_this.$store.state.iscId,
                     data:qs.stringify(data)
                 }).then(function(res){
-                    // console.log(res.data)
                     _this.oppReportList = res.data.map.opportunitys
                     _this.tableData = _this.oppReportList
                     _this.colList = _this.oppcolList
@@ -269,7 +267,6 @@
                     url: _this.$store.state.defaultHttp+'getContractByDept.do?cId='+_this.$store.state.iscId,
                     data:qs.stringify(data)
                 }).then(function(res){
-                    // console.log(res.data)
                     _this.deptData = []
                     _this.deptList = []
                     _this.deptrankList = res.data.map.contracts
@@ -302,7 +299,6 @@
                     url: _this.$store.state.defaultHttp+'getContractByPersonal.do?cId='+_this.$store.state.iscId,
                     data:qs.stringify(data)
                 }).then(function(res){
-                    // console.log(res.data)
                     _this.personData = []
                     _this.personList = []
                     _this.personrankList = res.data.map.contracts
@@ -401,13 +397,6 @@
                             minSize: '10%',
                             sort: 'none',
                             data:this.oppData
-                            // data:[
-                            //     {name:'111',value:'2222'},
-                            //     {name:'222',value:'3333'},
-                            //     {name:'333',value:'4444'},
-                            //     {name:'444',value:'5555'},
-                            //     {name:'555',value:'6666'},
-                            // ]
                         }
                     ]
                 });
@@ -491,17 +480,9 @@
                     // console.log(err);
                 });
             },
-            changeYear(val){
-                console.log(val)
-            },
-            changeMonth(val){
-                console.log(this.searchList.year,val)
-            },
             search(){
                 const _this = this
-                // console.log(this.index)
                 if(!this.searchList.department && this.searchList.mechanism){
-                    console.log(this.searchList.mechanism)
                     _this.$options.methods.loaddeptList.bind(_this)()
                 }
                 if(!this.searchList.yearMonth && this.searchList.year){

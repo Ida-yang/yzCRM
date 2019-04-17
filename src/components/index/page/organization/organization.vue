@@ -560,6 +560,7 @@
                     });       
                 });
             },
+            //添加角色
             handleAdd(){
                 const _this = this
                 this.roleform.name = ''
@@ -589,6 +590,7 @@
                     
                 }
             },
+            //添加角色按钮提交
             addrole(){
                 const _this = this
                 let qs = require('querystring')
@@ -619,6 +621,7 @@
                     _this.$message.error("添加失败,请重新添加");
                 })
             },
+            //修改角色
             handleEdit(e,val){
                 const _this = this
 
@@ -664,6 +667,7 @@
                 });
                 
             },
+            //修改角色按钮提交
             updaterole(){
                 const _this = this
                 let qs = require('querystring')
@@ -695,8 +699,8 @@
                     _this.$message.error("修改失败,请重新修改");
                 });
             },
+            //删除角色
             handledelete(index,row){
-                console.log(row)
                 const _this = this
                 let data = {}
                 let qs = require('querystring')
@@ -738,6 +742,7 @@
                     });       
                 });
             },
+            // 选中全部线索权限
             CheckAllclues(val) {
                 let data = this.cluerole
                 data.forEach(el => {
@@ -750,6 +755,7 @@
                     }
                 });
             },
+            // 选中全部客户权限
             CheckAllcustomers(val) {
                 let data = this.customerole
                 data.forEach(el => {
@@ -762,6 +768,7 @@
                     }
                 });
             },
+            // 选中全部联系人权限
             CheckAllcontacts(val) {
                 let data = this.contactrole
                 data.forEach(el => {
@@ -774,6 +781,7 @@
                     }
                 });
             },
+            // 选中全部商机权限
             CheckAllopportunitys(val) {
                 let data = this.opportunityrole
                 data.forEach(el => {
@@ -786,6 +794,7 @@
                     }
                 });
             },
+            // 选中全部合同权限
             CheckAllagreements(val) {
                 let data = this.agreementrole
                 data.forEach(el => {
@@ -798,6 +807,7 @@
                     }
                 });
             },
+            // 选中全部活动权限
             CheckAllactivitys(val) {
                 let data = this.activityrole
                 data.forEach(el => {
@@ -810,6 +820,7 @@
                     }
                 });
             },
+            // 选中全部基础设置权限
             CheckAllsets(val) {
                 let data = this.setrole
                 data.forEach(el => {
@@ -822,36 +833,43 @@
                     }
                 });
             },
+            // 选中线索权限
             handleCheckedroleclue(e) {
                 let checkedCount = e.length;
                 this.checkAllclue = checkedCount === this.cluerole.length;
                 this.checksomeclue = checkedCount > 0 && checkedCount < this.cluerole.length;
             },
+            // 选中客户权限
             handleCheckedrolecustomer(e) {
                 let checkedCount = e.length;
                 this.checkAllcustomer = checkedCount === this.customerole.length;
                 this.checksomecustomer = checkedCount > 0 && checkedCount < this.customerole.length;
             },
+            // 选中联系人权限
             handleCheckedrolecontact(e) {
                 let checkedCount = e.length;
                 this.checkAllcontact = checkedCount === this.contactrole.length;
                 this.checksomecontact = checkedCount > 0 && checkedCount < this.contactrole.length;
             },
+            // 选中商机权限
             handleCheckedroleopportunity(e) {
                 let checkedCount = e.length;
                 this.checkAllopportunity = checkedCount === this.opportunityrole.length;
                 this.checksomeopportunity = checkedCount > 0 && checkedCount < this.opportunityrole.length;
             },
+            // 选中合同权限
             handleCheckedroleagreement(e) {
                 let checkedCount = e.length;
                 this.checkAllagreement = checkedCount === this.agreementrole.length;
                 this.checksomeagreement = checkedCount > 0 && checkedCount < this.agreementrole.length;
             },
+            // 选中活动权限
             handleCheckedroleactivity(e) {
                 let checkedCount = e.length;
                 this.checkAllactivity = checkedCount === this.activityrole.length;
                 this.checksomeactivity = checkedCount > 0 && checkedCount < this.activityrole.length;
             },
+            // 选中基础设置权限
             handleCheckedroleset(e) {
                 let checkedCount = e.length;
                 this.checkAllset = checkedCount === this.setrole.length;

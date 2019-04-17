@@ -7,13 +7,22 @@
             </div>
         </el-col> -->
         <el-col class="content-r">
-            <div class="login">
-                <div style="color:#292929;font-size:28px;margin-top:15%;text-align:center">账号密码登录</div>
+            <p v-if="isShowChromeTip" style="color:red;font-size: 15px; margin-top: 60px;text-align:center">
+                请务必使用Chrome浏览器打开【
+                <a target="_blank" href="https://www.baidu.com/link?url=AAazRp3jmfLLZ4bMb1jamhnrWvxDBE3D5-P0NA6YIKM9e0XTc3kUvA7kJK6OdK7S3T_jFDV2VTTsvKnGB6DDto3CfN5FDBEJfFTgkXBu2DS&wd=&eqid=a35565a60002e3ea000000035a13f001">
+                    点击下载
+                </a>
+                】
+            </p>
+            <div class="login" v-if="!isShowChromeTip">
+                <p class="login_head">云纵CRM系统管理平台 </p>
+                <p class="login_wel">欢迎登录</p>
+                <!-- <p class="login_wel"><span>欢迎登录</span></p> -->
                 <div class="grid-content bg-purple-dark">
                     <el-form  :model="loginFrom" status-icon :rules="rules" ref="loginFrom" 
                     class="demo-ruleForm"
                     style="color:#fff" >
-                        <el-form-item prop="public_username" style="width:100%;margin-top:70px;">
+                        <el-form-item prop="public_username" style="width:100%;margin-top:60px;">
                             <el-input 
                             type="text"
                             prefix-icon="mdi-account"
@@ -56,6 +65,14 @@ import qs from 'qs'
 export default { 
     name: 'login',
     store,
+    computed:{
+        isShowChromeTip() {
+            const USER_AGENT = navigator.userAgent.toLowerCase()
+            const isChrome = /.*(chrome)\/([\w.]+).*/
+            console.log(USER_AGENT,isChrome)
+            return !isChrome.test(USER_AGENT)
+        }
+    },
     data () {
         return {
             loginFrom:{
@@ -72,6 +89,7 @@ export default {
                     { required: true, message: '请输入密码', trigger: 'blur' },
                 ],
             },
+            // isShowChromeTip:true
         }
     },
     mounted() {
@@ -174,8 +192,8 @@ export default {
         height: 100%;
         padding: 0;
         margin: 0;
-       /* background-image: url('../../static/img/index.jpg'); */
-       background-image: url('/upload/staticImg/index.jpg');
+       background-image: url('../../static/img/index.jpg');
+       /* background-image: url('/upload/staticImg/index.jpg'); */
        background-repeat: no-repeat;
        background-size: 100% 100%;
     }
@@ -207,4 +225,21 @@ export default {
     /* .el-form-item__error{
         left: 20% !important;
     } */
+    .login_head{
+        color:#292929;
+        font-weight:bold;
+        font-size:28px;
+        margin-top:15%;
+        text-align:center
+    }
+    .login_wel{
+        color:#292929;
+        font-size:16px;
+        margin-top:15%;
+        text-align:center;
+    }
+    .login_wel span{
+        border-bottom: 2px solid #82a79f;
+        padding-bottom: 2px;
+    }
 </style>

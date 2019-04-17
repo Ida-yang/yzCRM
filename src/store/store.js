@@ -78,7 +78,7 @@ const state = {
   //客户列表总数
   customerListnumber:0,
   //客户详情页联系人列表
-  customerDetailsList:null,
+  cusConsDetailsList:null,
   //客户详情页商机列表
   opportunityDetailsList:null,
   //客户详情页合同列表
@@ -132,24 +132,29 @@ const state = {
   //报表列表总数
   reportFormListnumber:0,
 
-  //报表列表
+  //外勤列表
   visitplanList:[],
-  //报表列表总数
+  //外勤列表总数
   visitplanListnumber:0,
   
-  //报表列表
+  //任务列表
   missionplanList:[],
-  //报表列表总数
+  //任务列表总数
   missionplanListnumber:0,
 
-  //报表列表
+  //短信模板列表
   smstempList:[],
-  //报表列表总数
+  //短信模板列表总数
   smstempListnumber:0,
 
-  //报表列表
+  //短信日志列表
+  SMSlogList:[],
+  //短信日志列表总数
+  SMSlogListnumber:0,
+
+  //操作日志列表
   logList:[],
-  //报表列表总数
+  //操作日志列表总数
   logListnumber:0,
 
   //当前时间

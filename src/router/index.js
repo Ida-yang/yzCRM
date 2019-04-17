@@ -197,6 +197,11 @@ const router =new Router({
           meta: { title: '短信模板',requireAuth:true}
         },
         {
+          path: '/SMSlog',
+          component: resolve => require(['../components/index/page/smstemp/SMSlog.vue'], resolve),
+          meta: { title: '短信日志',name:'SMSlog' ,requireAuth:true}
+        },
+        {
           path: '/analysisReport',
           component: resolve => require(['../components/index/page/analysisReport/analysisReport.vue'], resolve),
           meta: { title: '商业智能',requireAuth:true}

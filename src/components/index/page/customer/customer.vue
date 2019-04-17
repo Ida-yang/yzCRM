@@ -38,15 +38,6 @@
             <el-button class="btn info-btn" size="mini" @click="TocustomerPool()">转移至客户池</el-button>
             <el-button class="btn info-btn" size="mini" @click="showsend()">发送短信</el-button>
             <div class="totalnum_head">共 <span style="font-weight:bold">{{tableNumber}}</span> 条</div>
-            <!-- <el-upload
-                class="upload-demo"
-                ref="upload"
-                :multiple="true"
-                action="doUpload"
-                :limit="1"
-                :before-upload="beforeUpload">
-                <el-button slot="trigger" size="mini" class="info-btn">导入</el-button>
-            </el-upload> -->
             <el-popover
                 placement="left"
                 width="150"
@@ -69,13 +60,13 @@
                 <el-button slot="reference" class="info-btn screen_upload" type="mini">导入</el-button>
             </el-popover>
             <el-popover
-            placement="bottom"
-            width="100"
-            trigger="click">
-            <el-checkbox-group class="checklist" v-model="checklist">
-                <el-checkbox class="checkone" v-for="item in filterList" :key="item.id" :label="item.name" :value="item.state" @change="hangleChange($event,item)"></el-checkbox>
-            </el-checkbox-group>
-            <el-button slot="reference" icon="el-icon-more" class="info-btn screen" type="mini"></el-button>
+                placement="bottom"
+                width="100"
+                trigger="click">
+                <el-checkbox-group class="checklist" v-model="checklist">
+                    <el-checkbox class="checkone" v-for="item in filterList" :key="item.id" :label="item.name" :value="item.state" @change="hangleChange($event,item)"></el-checkbox>
+                </el-checkbox-group>
+                <el-button slot="reference" icon="el-icon-more" class="info-btn screen" type="mini"></el-button>
             </el-popover>
         </div>
         <el-table
@@ -517,6 +508,7 @@
                 idArr:{
                     id:null,
                 },
+                SMSId:[],
                 SMSnames:[],
                 SMSphones:[],
                 SMScontacts:[],
@@ -643,10 +635,19 @@
                 }).catch(function(err){
                     // console.log(err);
                 });
+            },
+            loadTemplate(){
+                const _this = this;
+                let qs =require('querystring')
+                let data = {}
+                data.type = '客户'
+                data.genre = '营销类'
+                data.status = '2'
+                
                 axios({
                     method: 'post',
                     url: _this.$store.state.defaultHttp+'template/selectTemplate.do?cId='+_this.$store.state.iscId,
-                    data:qs.stringify(filterList)
+                    data:qs.stringify(data)
                 }).then(function(res){
                     _this.templateList = res.data.map.templates
                 }).catch(function(err){
@@ -658,12 +659,14 @@
                 this.multipleSelection = val;
                 let arr = val;
                 let newArr = [new Array()];
+                this.SMSId = []
                 this.SMSnames = []
                 this.SMSphones = []
                 this.SMScontacts = []
                 arr.forEach((item) => {
                     if(item.id != 0){
                         newArr.push(item.id)
+                        _this.SMSId.push(item.id)
                         _this.SMSnames.push(item.pName)
                         _this.SMSphones.push(item.contacts[0].phone)
                         _this.SMScontacts.push(item.contacts[0].coName)
@@ -1008,9 +1011,12 @@
                 })
             },
             showsend(){
-                if(this.SMSnames[0]){
-                    // console.log(this.SMSnames.length)
-                    this.newform.customernum = this.SMSnames.length
+                if(this.SMSId[0]){
+                    this.$options.methods.loadTemplate.bind(this)()
+                    this.newform.customernum = this.SMSId.length
+                    this.newform.templateId = ''
+                    this.newform.smscontent = ''
+                    this.newform.explain = ''
                     this.dialogVisible = true
                 }else{
                     this.$message({
@@ -1020,7 +1026,6 @@
                 }
             },
             changetemplate(val){
-                console.log(val)
                 this.templateList.forEach(el => {
                     if(el.templateId == val){
                         this.newform.smscontent = el.content
@@ -1035,17 +1040,6 @@
                 data.phones = this.SMSphones
                 data.contacts = this.SMScontacts
                 data.templateId = this.newform.templateId
-                let data2 = {}
-                data2.names = this.SMSnames
-                data2.phones = this.SMSphones
-                data2.contacts = this.SMScontacts
-                data2.templateId = this.newform.templateId
-                // data2.customernum = this.newform.customernum
-                data2.explain = this.newform.explain
-                data2.pId = this.$store.state.ispId
-                data2.secondid = this.$store.state.deptid
-                data2.deptid = this.$store.state.insid
-                // console.log(data)
 
                 axios({
                     method: 'post',
@@ -1057,20 +1051,42 @@
                             message:'发送成功',
                             type:'success'
                         })
+                        _this.dialogVisible = false
+                        _this.$options.methods.addSMSsended.bind(_this)()
+                    }else{
+                        _this.$message({
+                            message:res.data.msg,
+                            type:'error'
+                        })
                     }
-                    _this.dialogVisible = false
-                    axios({
-                        method: 'post',
-                        url: _this.$store.state.defaultHttp+'sendRecord/insertSendRecord.do?cId='+_this.$store.state.iscId,
-                        data: qs.stringify(data2)
-                    }).then(function(res){
-                        console.log(res)
-                    }).catch(function(err){
-                    });
                 }).catch(function(err){
                     // console.log(err);
                 });
             },
+            
+            addSMSsended(){
+                const _this = this
+                let qs = require('querystring')
+                let data2 = {}
+                data2.type = '客户'
+                data2.ids = this.SMSId
+                data2.names = this.SMSnames
+                data2.phones = this.SMSphones
+                data2.contacts = this.SMScontacts
+                data2.templateId = this.newform.templateId
+                data2.explain = this.newform.explain
+                data2.pId = this.$store.state.ispId
+                data2.secondid = this.$store.state.deptid
+                data2.deptid = this.$store.state.insid
+
+                axios({
+                    method: 'post',
+                    url: _this.$store.state.defaultHttp+'sendRecord/insertSendRecord.do?cId='+_this.$store.state.iscId,
+                    data: qs.stringify(data2)
+                }).then(function(res){
+                }).catch(function(err){
+                });
+            }
         },
     }
 </script>

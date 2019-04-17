@@ -251,7 +251,6 @@
                 
                 filterList:null,
                 checklist:null,
-                // checklist:['活动名称','负责人','线索量','创建时间','网址','来源','备注'],
                 idArr:{
                     id:null,
                 },

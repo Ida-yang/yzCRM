@@ -1,4 +1,5 @@
 <template>
+<!-- 数据中心详情页 -->
     <div class="engine_c" v-if="showdetails">
         <!-- <div class="engine_top"><span @click="closeDetail"><i class="el-icon-circle-close-outline"></i></span></div> -->
         <div class="top">
@@ -180,10 +181,8 @@
                 this.showdetails = false
             },
             tabClick(val){
-                // console.log(val)
                 if(val.index == '1'){
-                    // console.log(val.name)
-                    this.website = 'https://www.baidu.com/'
+                    this.website = this.searchdetailsList.url
                 }
             }
         },

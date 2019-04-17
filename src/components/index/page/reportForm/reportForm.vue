@@ -1,4 +1,5 @@
 <template>
+<!-- 获客报表 -->
     <div class="innerspace">
         <div class="head">
             <span>获客报表是基于已签约的客户从行业占比，省份分布，企业规模，成立时间等四个维度分析，从而推荐出最优的拓展省份区域。</span>
@@ -106,7 +107,7 @@
                     stripe
                     style="width:100%;text-align:center">
                     <el-table-column
-                        prop="scale"
+                        prop="name"
                         header-align="left"
                         align="left"
                         min-width="120"
@@ -114,7 +115,7 @@
                         sortable>
                     </el-table-column>
                     <el-table-column
-                        prop="number"
+                        prop="num"
                         header-align="left"
                         align="left"
                         min-width="90"
@@ -122,13 +123,13 @@
                         sortable>
                     </el-table-column>
                     <el-table-column
-                        prop="proportion"
+                        prop="share"
                         header-align="left"
                         align="left"
                         min-width="90"
                         label="占比"
                         sortable>
-                        <template slot-scope="scope">{{scope.row.proportion}} %</template>
+                        <template slot-scope="scope">{{scope.row.share}} %</template>
                     </el-table-column>
                 </el-table>
             </div>
@@ -296,16 +297,7 @@
                 cityData:[],
                 city:[],
                 //公司规模
-                scaleData:[
-                    {scale:'1-49',number:'62',proportion:'5.01%'},                    
-                    {scale:'50-99',number:'89',proportion:'5.01%'},                    
-                    {scale:'100-199',number:'36',proportion:'5.01%'},                    
-                    {scale:'200-499',number:'10',proportion:'5.01%'},                    
-                    {scale:'500-999',number:'36',proportion:'5.01%'},                    
-                    {scale:'1000-2999',number:'54',proportion:'5.01%'},                    
-                    {scale:'3000-4999',number:'16',proportion:'5.01%'},                    
-                    {scale:'5000以上',number:'5',proportion:'5.01%'},                  
-                ],
+                scaleData:[],
                 scale:[],
                 scdata:[],
                 //成立年限
@@ -314,10 +306,9 @@
                 yedata:[],
             }
         },
-        // activated(){
-        //     this.loadData()
-        //     this.drawLine();
-        // },
+        activated(){
+            this.loadData()
+        },
         mounted(){
             this.loadData()
         },
@@ -325,11 +316,14 @@
             loadData(){
                 const _this = this;
                 // let qs = require('querystring')
+                //行业
                 axios({
                     method: 'get',
                     url: _this.$store.state.defaultHttp+'industryShare/selectIndustryShare.do?cId=' + _this.$store.state.iscId,
                 }).then(function(res){
                     _this.industryData = res.data.map.industryShare
+                    _this.industry = []
+                    _this.indata = []
                     _this.industryData.forEach(el => {
                         _this.industry.push({name:el.name,value:el.innerNum})
                         _this.indata.push(el.name)
@@ -338,11 +332,13 @@
                 }).catch(function(err){
                     // console.log(err)
                 })
+                //城市
                 axios({
                     method: 'get',
                     url: _this.$store.state.defaultHttp+'getCountContractByCountryId.do?cId=' + _this.$store.state.iscId,
                 }).then(function(res){
                     _this.cityData = res.data.map.contracts
+                    _this.city = []
                     _this.cityData.forEach(el => {
                         _this.city.push({name:el.name,value:el.num})
                     });
@@ -350,17 +346,35 @@
                 }).catch(function(err){
                     // console.log(err)
                 })
+                //规模
+                axios({
+                    method: 'get',
+                    url: _this.$store.state.defaultHttp+'getCountContractByEnterpriseScaleId.do?cId=' + _this.$store.state.iscId,
+                }).then(function(res){
+                    _this.scaleData = res.data.map.contracts
+                    _this.scale = []
+                    _this.scdata = []
+                    _this.scaleData.forEach(el => {
+                        _this.scale.push(el.num)
+                        _this.scdata.push(el.name)
+                    });
+                    _this.drawLine1()
+                }).catch(function(err){
+                    // console.log(err)
+                })
+                //成立年限
                 axios({
                     method: 'get',
                     url: _this.$store.state.defaultHttp+'getCountContractByYears.do?cId=' + _this.$store.state.iscId,
                 }).then(function(res){
                     _this.yearsData = res.data.map.contracts
+                    _this.years = []
+                    _this.yedata = []
                     _this.yearsData.forEach(el => {
                         _this.years.push(el.num)
                         _this.yedata.push(el.years)
                     });
                     _this.drawLine2()
-                    _this.drawLine1()
                 }).catch(function(err){
                     // console.log(err)
                 })
@@ -372,12 +386,6 @@
                 }).catch(function(err){
                     // console.log(err)
                 })
-                // _this.$store.state.reportFormList = [
-                //     {name:'化妆品行业',city:'广州',years:'1-3年',scale:'50-99人',capital:'200-500万',ensure:'1000万客户',sort:'1',financing:'100',list:'100',telephone:'100'},
-                //     {name:'化妆品行业',city:'广州',years:'1-3年',scale:'50-99人',capital:'200-500万',ensure:'1000万客户',sort:'2',financing:'100',list:'100',telephone:'100'},
-                //     {name:'化妆品行业',city:'广州',years:'1-3年',scale:'50-99人',capital:'200-500万',ensure:'1000万客户',sort:'3',financing:'100',list:'100',telephone:'100'},
-                //     {name:'化妆品行业',city:'广州',years:'1-3年',scale:'50-99人',capital:'200-500万',ensure:'1000万客户',sort:'4',financing:'100',list:'100',telephone:'100'},
-                // ]
             },
             drawLine1(){
                 // 基于准备好的dom，初始化echarts实例
@@ -402,13 +410,19 @@
                     },
                     xAxis: {
                         bottom: 20,
-                        data: ["1-49", "50-99", "100-199", "200-499", "500-999", "1000-2999", "3000-4999", "5000以上"]
+                        // data: ["1-49", "50-99", "100-199", "200-499", "500-999", "1000-2999", "3000-4999", "5000以上"]
+                        data: this.scdata,
+                        axisLabel:{
+                            interval:0,
+                            rotate:30 
+                        }
                     },
                     yAxis: {},
                     series: [{
                         name: '公司规模',
                         type: 'bar',
-                        data: [62, 89, 36, 10, 36, 54, 16, 5]
+                        data: this.scale
+                        // data: [62, 89, 36, 10, 36, 54, 16, 5]
                     }]
                 });
             },

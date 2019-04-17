@@ -1,5 +1,5 @@
 <template>
-    <!-- 基础设置页面 -->
+    <!-- 短信模板页面 -->
     <div class="contentall">
         <div class="setleftcontent">
             <ul class="namecontent">
@@ -224,7 +224,7 @@
                     // console.log(err);
                 });
             },
-            //显示对应状态数表格数据
+            //显示对应短信模板数表格数据
             showTableval(val){
                 const _this = this
                 this.newform.type = val.name
@@ -234,7 +234,7 @@
                 val.isActive = !val.isActive;
                 _this.$options.methods.reloadTable.bind(_this)(true)
             },
-            //状态添加
+            //短信模板添加
             handleAdd(){
                 const _this = this
                 let i = this.newform.index
@@ -246,7 +246,7 @@
                 _this.newform.dayNum = null
                 _this.dialogVisible = true
             },
-            //状态添加提交按钮
+            //短信模板添加提交按钮
             addbasicset(){
                 const _this = this;
                 let qs = require('querystring')
@@ -274,7 +274,6 @@
                 data.varCount = this.newform.varCount
                 data.status = 1
                 data.dayNum = this.newform.dayNum
-                console.log(data)
                 
                 let flag = false;
                 if(!data.content){
@@ -329,7 +328,7 @@
                     _this.$message.error("添加失败,请重新添加");
                 });
             },
-            //状态修改
+            //短信模板修改
             handleEdit(e,val){
                 const _this = this
 
@@ -342,7 +341,7 @@
                 _this.newform.dayNum = val.dayNum
                 _this.dialogVisible2 = true
             },
-            //状态修改提交按钮
+            //短信模板修改提交按钮
             updatebasicset(){
                 const _this = this;
                 let i = this.newform.index
@@ -429,7 +428,6 @@
             handledelete(e,val){
                 const _this = this;
                 let qs =require('querystring')
-                // console.log(val)
                 let data = {}
                 data.templateId = val.templateId
 
@@ -462,10 +460,8 @@
             handleSend(e,val){
                 const _this = this;
                 let qs =require('querystring')
-                console.log(val)
             },
             checkTag(e){
-                console.log(this.$refs.elInput)
                 let elInput = this.$refs.elInput
                 let startPos = elInput.$refs.textarea.selectionStart
                 let endPos = elInput.$refs.textarea.selectionEnd

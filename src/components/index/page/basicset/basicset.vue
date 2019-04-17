@@ -468,7 +468,7 @@
                     // console.log(err);
                 });
             },
-            //显示对应状态数表格数据
+            //显示左边对应表格数据
             showTableval(val){
                 const _this = this
                 let i = val.index
@@ -495,14 +495,14 @@
                     _this.$options.methods.loadOppStep.bind(_this)(true)
                 }
             },
-            //状态添加
+            //添加
             handleAdd(){
                 const _this = this
                 let i = this.newform.index
 
                 axios({
                     method: 'get',
-                    url: _this.$store.state.defaultHttp+'typeInfoJurisdiction/insert.do',//新增状态
+                    url: _this.$store.state.defaultHttp+'typeInfoJurisdiction/insert.do',//新增
                 }).then(function(res){
                     if(res.data.msg && res.data.msg == 'error'){
                         _this.$message({
@@ -530,7 +530,7 @@
                 });
                 
             },
-            //状态添加提交按钮
+            //添加提交按钮
             addbasicset(){
                 const _this = this;
                 let qs = require('querystring')
@@ -659,14 +659,14 @@
                     _this.$message.error("添加失败,请重新添加");
                 });
             },
-            //状态修改
+            //修改
             handleEdit(index,row){
                 const _this = this
                 let i = this.newform.index
 
                 axios({
                     method: 'get',
-                    url: _this.$store.state.defaultHttp+'typeInfoJurisdiction/update.do',//编辑状态
+                    url: _this.$store.state.defaultHttp+'typeInfoJurisdiction/update.do',//编辑
                 }).then(function(res){
                     if(res.data.msg && res.data.msg == 'error'){
                         _this.$message({
@@ -696,7 +696,7 @@
                     // console.log(err);
                 });
             },
-            //状态修改提交按钮
+            //修改提交按钮
             updatebasicset(){
                 const _this = this;
                 let i = this.newform.index
@@ -868,7 +868,7 @@
                                 _this.$options.methods.loadOppStep.bind(_this)(true);
                             }
                             
-                        } else if(res.data.msg && res.data.msg == 'error'){//删除状态
+                        } else if(res.data.msg && res.data.msg == 'error'){//删除
                             _this.$message({
                                 message: '对不起，您没有该权限，请联系管理员开通',
                                 type: 'error'
@@ -910,7 +910,7 @@
                                 type: 'success'
                             });
                             _this.$options.methods.reloadTable.bind(_this)(true);
-                        } else if(res.data.msg && res.data.msg == 'error'){//删除状态
+                        } else if(res.data.msg && res.data.msg == 'error'){//删除
                             _this.$message({
                                 message: '对不起，您没有该权限，请联系管理员开通',
                                 type: 'error'

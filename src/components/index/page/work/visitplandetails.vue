@@ -235,7 +235,6 @@ export default {
         },
         getTime(){
             this.$store.commit('getNowTime')
-            // console.log(this.$store.state.nowtime)
         },
         toexamine(e){
             this.getTime()

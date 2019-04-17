@@ -154,6 +154,10 @@
                                 index: 'smstemp',
                                 title: '短信模板',
                             },
+                            {
+                                index: 'SMSlog',
+                                title: '短信日志',
+                            },
                         ]
                     },
                     {

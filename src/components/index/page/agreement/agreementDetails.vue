@@ -292,7 +292,6 @@
                 })
             },
             showImg(e,val){
-                console.log(val)
                 this.dialogImageUrl = val.imgURL
                 this.dialogVisible = true
             },

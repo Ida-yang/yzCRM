@@ -180,7 +180,7 @@
     import axios from 'axios'
     import bus from '../../bus';
     export default {
-        name:'agreementaddOrUpdate',
+        name:'agreementaddorupdate',
         data(){
             return {
                 agreeaddOrUpdateData: {},
@@ -196,7 +196,7 @@
                 our_signatoriesId:null,
 
                 page: 1,//默认第一页
-                limit: 15,//默认10条
+                limit: 15,//默认15条
 
                 rules: {
                     approverid : [{ required: true, message: '审核人不能为空', trigger: 'blur' },],
@@ -256,7 +256,6 @@
                     this.formid = this.agreeaddOrUpdateData.setForm.customerpool_id
                     this.myForm.opportunity_id = this.agreeaddOrUpdateData.setForm.opportunity_name
                     this.$emit('input', this.myForm);
-                    console.log(this.myForm)
                 }
             },
             //加载已选择客户下的商机和联系人（客户决策人）
@@ -282,9 +281,7 @@
                 }).then(function(res){
                     _this.contactslist = res.data.map.success
                     _this.contactslist.forEach(el => {
-                        // console.log(el.id,el.name)
                         if(_this.myForm.signatories == el.name){
-                            // console.log('01010101')
                             _this.myForm.signatories = el.id
                         }
                     });
@@ -335,7 +332,7 @@
                 let day = arr[2]
                 this.myForm.end_date = year + '-' + month + '-' + day
             },
-            //获取table的索引和行数据，当该行被点击时，将公司名称地址填充到表单（会刷新当前页面，之前填写的信息会被覆盖）
+            //获取table的索引和行数据，当该行被点击时，将公司名称地址填充到表单
             getRow(index,row){
                 this.formid = row.id
                 this.myForm.customerpool_id = row.name
@@ -435,14 +432,14 @@
                         });
                         flag = true;
                     }
-                    if(item.inputModel == "contract_type" && !subData[item.inputModel]) {//联系人名称不能为空
+                    if(item.inputModel == "contract_type" && !subData[item.inputModel]) {
                         _this.$message({
                             message: "合同类型不能为空",
                             type: 'error'
                         });
                         flag = true;
                     }
-                    if(item.inputModel == "contract_name" && !subData[item.inputModel]) {//公司名称不能为空
+                    if(item.inputModel == "contract_name" && !subData[item.inputModel]) {
                         _this.$message({
                             message: "合同名称不能为空",
                             type: 'error'

@@ -1,7 +1,6 @@
 <template>
-    <!-- 商机详情页 -->
+    <!-- 方案详情页 -->
     <el-row class="prodetcontent" :gutter="10">
-        <!-- <p>商机详情页</p> -->
         <el-col :span="18">
             <div class="top">
                 <el-card class="box-card">

@@ -8,6 +8,17 @@
                         <span>{{customerdetail.pName}}</span>
                         <el-button style="float:right;" class="info-btn" size="mini" @click="retract()" v-show="!retracts">收起</el-button>
                         <el-button style="float:right;" class="info-btn" size="mini" @click="retract()" v-show="retracts">显示</el-button>
+                        <!-- <el-button style="float:right;" class="info-btn" size="mini" @click="showsend()">发送短信</el-button> -->
+                        <el-popover placement="bottom" width="100" trigger="click">
+                            <el-select v-model="SMSform.templateId" placeholder="请选择" style="width:100%">
+                                <el-option v-for="item in templateList" :key="item.templateId" :label="item.title" :value="item.templateId"></el-option>
+                            </el-select>
+                            <br><br><br>
+                            <div style="text-align: right; margin: 0">
+                                <el-button type="primary" size="mini" @click="sendSMS()">确定</el-button>
+                            </div>
+                            <el-button style="float:right;" class="info-btn" slot="reference" type="mini">发送短信</el-button>
+                        </el-popover>
                         <el-button style="float:right;" class="info-btn" size="mini" @click="TocustomerPool()">转移至客户池</el-button>
                     </div>
                     <div class="text item">
@@ -171,58 +182,68 @@
                             </el-select>
                         </div>
                         <el-table
-                            :data="customerDetails"
+                            :data="cusConsDetails"
                             border
                             stripe
                             style="width: 100%">
                             <el-table-column
                                 prop="name"
                                 header-align="left"
+                                min-width="90"
                                 label="名称">
                             </el-table-column>
                             <el-table-column
                                 prop="phone"
                                 header-align="left"
+                                min-width="110"
                                 label="手机">
                             </el-table-column>
                             <el-table-column
                                 prop="telephone"
                                 header-align="left"
+                                min-width="110"
                                 label="固话">
                             </el-table-column>
                             <el-table-column
                                 prop="email"
                                 header-align="left"
+                                min-width="110"
                                 label="邮箱">
                             </el-table-column>
                             <el-table-column
                                 prop="qq"
                                 header-align="left"
+                                min-width="110"
                                 label="QQ">
                             </el-table-column>
                             <el-table-column
                                 prop="wechat"
                                 header-align="left"
+                                min-width="110"
                                 label="微信">
                             </el-table-column>
                             <el-table-column
                                 prop="address"
                                 header-align="left"
+                                min-width="140"
                                 label="地址">
                             </el-table-column>
                             <el-table-column
                                 prop="identity"
                                 header-align="left"
+                                min-width="90"
                                 label="职务">
                             </el-table-column>
                             <el-table-column
                                 prop="sex"
                                 header-align="left"
+                                min-width="90"
                                 label="性别">
                             </el-table-column>
                             <el-table-column
                                 prop="status"
                                 header-align="left"
+                                min-width="90"
                                 label="是否在职">
                                 <template slot-scope="scope">
                                     <el-tooltip :content="scope.row.status" placement="right">
@@ -233,6 +254,7 @@
                             <el-table-column
                                 prop="remark"
                                 header-align="left"
+                                min-width="100"
                                 label="备注">
                             </el-table-column>
                         </el-table>
@@ -244,14 +266,16 @@
                             stripe
                             style="width: 100%">
                             <el-table-column
-                            prop="opportunity_name"
-                            header-align="left"
-                            label="商机名称">
+                                prop="opportunity_name"
+                                header-align="left"
+                                min-width="140"
+                                label="商机名称">
                             </el-table-column>
                             <el-table-column
-                            prop="opportunity_achievement"
-                            header-align="left"
-                            label="商机金额">
+                                prop="opportunity_achievement"
+                                header-align="left"
+                                min-width="100"
+                                label="商机金额">
                             <template slot-scope="scope">
                                 <div>
                                     {{scope.row.opportunity_achievement}}
@@ -261,21 +285,25 @@
                             <el-table-column
                                 prop="opportunity_deal"
                                 header-align="left"
+                                min-width="145"
                                 label="预计签单时间">
                             </el-table-column>
                             <el-table-column
                                 prop="opportunityProgress[0].progress_name"
                                 header-align="left"
+                                min-width="90"
                                 label="商机阶段">
                             </el-table-column>
                             <el-table-column
                                 prop="opportunityProgress[0].progress_probability"
                                 header-align="left"
+                                min-width="110"
                                 label="预计成功率">
                             </el-table-column>
                             <el-table-column
                                 prop="opportunity_time"
                                 header-align="left"
+                                min-width="145"
                                 label="商机新建时间">
                             </el-table-column>
                             <!-- <el-table-column
@@ -294,21 +322,25 @@
                             <el-table-column
                                 prop="contract_number"
                                 header-align="left"
+                                min-width="100"
                                 label="合同代码">
                             </el-table-column>
                             <el-table-column
                                 prop="contract_name"
                                 header-align="left"
+                                min-width="120"
                                 label="合同名称">
                             </el-table-column>
                             <el-table-column
                                 prop="contract_type"
                                 header-align="left"
+                                min-width="90"
                                 label="合同类型">
                             </el-table-column>
                             <el-table-column
                                 prop="amount"
                                 header-align="left"
+                                min-width="90"
                                 label="合同金额">
                                 <template slot-scope="scope">
                                     <div>
@@ -319,23 +351,25 @@
                             <el-table-column
                                 prop="signatories"
                                 header-align="left"
+                                min-width="90"
                                 label="签约人">
                             </el-table-column>
                             <el-table-column
                                 prop="start_date"
                                 header-align="left"
-                                min-width="90"
+                                min-width="145"
                                 label="合同开始时间">
                             </el-table-column>
                             <el-table-column
                                 prop="end_date"
                                 header-align="left"
-                                min-width="90"
+                                min-width="145"
                                 label="合同到期时间">
                             </el-table-column>
                             <el-table-column
                                 prop="due_time"
                                 header-align="left"
+                                min-width="90"
                                 label="剩余天数">
                             </el-table-column>
                         </el-table>
@@ -349,16 +383,19 @@
                             <el-table-column
                                 prop="name"
                                 header-align="left"
+                                min-width="180"
                                 label="公司名称">
                             </el-table-column>
                             <el-table-column
                                 prop="creditCode"
                                 header-align="left"
+                                min-width="150"
                                 label="税务登记号">
                             </el-table-column>
                             <el-table-column
                                 prop="address"
                                 header-align="left"
+                                min-width="180"
                                 label="税务地址">
                             </el-table-column>
                         </el-table>
@@ -372,17 +409,19 @@
                             <el-table-column
                                 prop="type"
                                 header-align="left"
+                                min-width="90"
                                 label="类型">
                             </el-table-column>
                             <el-table-column
                                 prop="theme"
                                 header-align="left"
+                                min-width="150"
                                 label="主题">
                             </el-table-column>
                             <el-table-column
                                 prop="startTime"
                                 header-align="left"
-                                min-width="90"
+                                min-width="145"
                                 label="时间">
                                 <template slot-scope="scope">
                                     <div>
@@ -394,11 +433,13 @@
                             <el-table-column
                                 prop="private_employee"
                                 header-align="left"
+                                min-width="100"
                                 label="负责人">
                             </el-table-column>
                             <el-table-column
                                 prop="state"
                                 header-align="left"
+                                min-width="100"
                                 label="状态">
                                 <template slot-scope="scope">
                                     <div>
@@ -431,11 +472,13 @@
                             <el-table-column
                                 prop="uploads"
                                 header-align="left"
+                                min-width="100"
                                 label="上传者">
                             </el-table-column>
                             <el-table-column
                                 prop="uploadTime"
                                 header-align="left"
+                                min-width="150"
                                 label="上传时间">
                             </el-table-column>
                         </el-table>
@@ -487,8 +530,8 @@
         name:'customerDetails',
         store,
         computed: {
-            customerDetails(){
-                return store.state.customerDetailsList;
+            cusConsDetails(){
+                return store.state.cusConsDetailsList;
             },
             opportunityDetails(){
                 return store.state.opportunityDetailsList;
@@ -531,6 +574,11 @@
                         return time.getTime() < Date.now() - 8.64e7;
                     },
                 },
+
+                SMSform:{
+                    templateId:null,
+                },
+                templateList:null,
                 
                 followform:{
                     followType:'电话',
@@ -611,6 +659,7 @@
             this.loadData();
             this.loadCountry()
             this.reload()
+            this.loadTemplate()
         },
         // mounted(){
         //     this.loadData();
@@ -718,7 +767,7 @@
                     url:_this.$store.state.defaultHttp+'customerpool/getPoolContacts.do?cId='+_this.$store.state.iscId+'&customerpool_id='+this.detailData.id,
                     data:qs.stringify(pageInfo2)
                 }).then(function(res){
-                    _this.$store.state.customerDetailsList = res.data.map.success
+                    _this.$store.state.cusConsDetailsList = res.data.map.success
                     _this.contactList = res.data.map.success
                     _this.priconList = res.data.map.success
                     _this.followform.contactsId = res.data.map.success[0].id
@@ -787,6 +836,25 @@
                 });
             },
             
+            loadTemplate(){
+                const _this = this;
+                let qs =require('querystring')
+                let data = {}
+                data.type = '客户'
+                data.genre = '营销类'
+                data.status = '2'
+                
+                axios({
+                    method: 'post',
+                    url: _this.$store.state.defaultHttp+'template/selectTemplate.do?cId='+_this.$store.state.iscId,
+                    data:qs.stringify(data)
+                }).then(function(res){
+                    _this.templateList = res.data.map.templates
+                }).catch(function(err){
+                    // console.log(err);
+                });
+            },
+            
             loadCountry(){
                 const _this = this
                 let qs =require('querystring')
@@ -827,7 +895,6 @@
                 });
             },
             showImg(e,val){
-                // console.log(val)
                 this.dialogImageUrl2 = '/upload/'+this.$store.state.iscId+'/'+val.imgName
                 this.dialogVisible2 = true
             },
@@ -993,7 +1060,6 @@
                 });
             },
             changeState(row){
-                // console.log(row)
                 const _this = this
                 let qs = require('querystring')
                 let data = {}
@@ -1021,14 +1087,12 @@
             tabClick(val){
                 
                 if(val.index == 6){
-                    // console.log(this.customerdetail)
                     this.website = this.customerdetail.url
                 }
                 if(val.index == 7){
                     this.EnclosureDetails = []
                     this.record.forEach(el => {
                         if(el.enclosureName){
-                            // console.log(el.enclosureName)
                             this.EnclosureDetails.push({
                                 name:el.enclosureName,
                                 src:this.$store.state.systemHttp+'upload/'+this.$store.state.iscId+'/'+el.enclosureName,
@@ -1176,6 +1240,70 @@
                 _this.page = val;
                 _this.$options.methods.loadData.bind(_this)();
             },
+
+            sendSMS(){
+                const _this = this
+                let qs = require('querystring')
+                let data = {}
+                data.names = [this.customerdetail.pName]
+                data.phones = [this.contacts.phone]
+                data.contacts = [this.contacts.coName]
+                data.templateId = this.SMSform.templateId
+
+                axios({
+                    method: 'post',
+                    url: _this.$store.state.defaultHttp+'message/sendMarketingMsg.do?cId='+_this.$store.state.iscId,
+                    data: qs.stringify(data)
+                }).then(function(res){
+                    if(res.data.code && res.data.code == '200'){
+                        _this.$message({
+                            message:'发送成功',
+                            type:'success'
+                        })
+                        _this.$options.methods.addSMSsended.bind(_this)()
+                    }else{
+                        _this.$message({
+                            message:res.data.msg,
+                            type:'error'
+                        })
+                    }
+                }).catch(function(err){
+                    // console.log(err);
+                });
+            },
+            addSMSsended(){
+                const _this = this
+                let qs = require('querystring')
+                let data2 = {}
+                data2.type = '客户'
+                data2.ids = [this.customerdetail.id]
+                data2.names = [this.customerdetail.pName]
+                data2.phones = [this.contacts.phone]
+                data2.contacts = [this.contacts.coName]
+                data2.templateId = this.SMSform.templateId
+                data2.pId = this.$store.state.ispId
+                data2.secondid = this.$store.state.deptid
+                data2.deptid = this.$store.state.insid
+
+                axios({
+                    method: 'post',
+                    url: _this.$store.state.defaultHttp+'sendRecord/insertSendRecord.do?cId='+_this.$store.state.iscId,
+                    data: qs.stringify(data2)
+                }).then(function(res){
+                    if(res.data.code && res.data.code == '200'){
+                        _this.$message({
+                            message:'发送成功',
+                            type:'success'
+                        })
+                    }else{
+                        _this.$message({
+                            message:res.data.msg,
+                            type:'error'
+                        })
+                    }
+                }).catch(function(err){
+                });
+            }
         },
     }
 </script>
@@ -1203,7 +1331,7 @@
         margin-top: 20px;
     }
     .bottom{
-        height: 100%;
+        /* height: 100%; */
         background-color: #fff;
         margin-top: 20px;
         padding: 5px 20px;

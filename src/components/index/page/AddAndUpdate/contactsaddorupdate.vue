@@ -152,7 +152,7 @@
     import axios from 'axios'
     import bus from '../../bus';
     export default {
-        name:'contactsaddOrUpdate',
+        name:'contactsaddorupdate',
         data(){
             return {
                 clueList:[],
@@ -177,7 +177,7 @@
                 areaid:null,
 
                 page: 1,//默认第一页
-                limit: 15,//默认10条
+                limit: 15,//默认15条
                 selectData: null,
                 
                 rules: {
@@ -314,21 +314,21 @@
                 let flag = false;
                 createForm.forEach(item => {
                     subData[item.inputModel] = _this.myForm[item.inputModel];
-                    if(item.inputModel == "name" && !subData[item.inputModel]) {//联系人名称不能为空
+                    if(item.inputModel == "name" && !subData[item.inputModel]) {
                         _this.$message({
                             message: "联系人名称不能为空",
                             type: 'error'
                         });
                         flag = true;
                     }
-                    if(item.inputModel == "poolName" && !subData[item.inputModel]) {//公司名称不能为空
+                    if(item.inputModel == "poolName" && !subData[item.inputModel]) {
                         _this.$message({
                             message: "公司名称不能为空",
                             type: 'error'
                         });
                         flag = true;
                     }
-                    if(item.inputModel == "phone" && !subData[item.inputModel]) {//手机号码或电话号码至少一个不能为空
+                    if(item.inputModel == "phone" && !subData[item.inputModel]) {
                         _this.$message({
                             message: "手机号码不能为空",
                             type: 'error'
@@ -383,7 +383,7 @@
                     this.$router.push('/index');
                 }
             },
-            //获取table的索引和行数据，当该行被点击时，将公司名称地址填充到表单（会刷新当前页面，之前填写的信息会被覆盖）
+            //获取table的索引和行数据，当该行被点击时，将公司名称地址填充到表单
             getRow(index,row){
                 this.myForm.poolName = row.name
                 this.myForm.address = row.address

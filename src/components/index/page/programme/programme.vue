@@ -306,9 +306,6 @@
                 showparams:false
             }
         },
-        //获取机构部门树型结构
-        beforeCreate(){
-        },
         activated(){
             this.reloadTable()
         },
@@ -344,6 +341,7 @@
                 }).catch(function(err){
                     // console.log(err);
                 });
+                //获取机构部门树型结构
                 axios({
                     method: 'get',
                     url: _this.$store.state.defaultHttp+'dept/getDeptNodeTree.do?cId='+_this.$store.state.iscId,
@@ -401,7 +399,6 @@
                 }else{
                     this.$options.methods.reloadNum.bind(this)(true)
                     this.showparams = true
-                    console.log()
                 }
             },
             selectInfo(val){
@@ -690,7 +687,6 @@
                 });
             },
             changeNum(e){
-                console.log(e.target.name,e.target.value)
                 const _this = this
                 let qs = require('querystring')
                 let data = {}
@@ -716,7 +712,6 @@
                 }).catch(function(err){
                     // console.log(err);
                 });
-                // console.log(e.target.value)
             },
             hangleChange(e,val){
                 const _this = this

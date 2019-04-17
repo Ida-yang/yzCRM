@@ -1,5 +1,5 @@
 <template>
-    <!-- 拜访计划新增修改 -->
+    <!-- 外勤新增修改 -->
     <div class="content">
         <el-form :model="myForm" ref="myForm" class="myForm" :rules="rules">
             <el-form-item
@@ -169,8 +169,8 @@ export default {
             const _this = this
             let qs =require('querystring')
             let pageInfo = {}
-            pageInfo.page = this.page;
-            pageInfo.limit = this.limit;
+            pageInfo.page = '1';
+            pageInfo.limit = '15';
             pageInfo.pId = this.$store.state.ispId;
             pageInfo.searchName = this.searchvalue
             axios({
@@ -276,14 +276,14 @@ export default {
             let flag = false;
             createForm.forEach(item => {
                 subData[item.inputModel] = _this.myForm[item.inputModel];
-                if(item.inputModel == "customerName" && !subData[item.inputModel]) {//拜访客户不能为空
+                if(item.inputModel == "customerName" && !subData[item.inputModel]) {
                     _this.$message({
                         message: "拜访客户不能为空",
                         type: 'error'
                     });
                     flag = true;
                 }
-                if(item.inputModel == "visitTime" && !subData[item.inputModel]) {//拜访时间不能为空
+                if(item.inputModel == "visitTime" && !subData[item.inputModel]) {
                     _this.$message({
                         message: "拜访时间不能为空",
                         type: 'error'

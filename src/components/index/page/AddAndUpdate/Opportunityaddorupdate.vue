@@ -169,7 +169,7 @@
                 },
                 subData: {},
                 page: 1,//默认第一页
-                limit: 15,//默认10条
+                limit: 15,//默认15条
                 rules: {
                     opportunity_number : [{ required: true, message: '商机编号不能为空', trigger: 'blur' },],
                     opportunity_name : [{ required: true, message: '商机名称不能为空', trigger: 'blur' },],

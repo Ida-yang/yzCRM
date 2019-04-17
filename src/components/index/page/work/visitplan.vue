@@ -220,7 +220,6 @@
 <script>
 import store from '../../../../store/store'
 import axios from 'axios'
-// import bus from '../../bus';
 import qs from 'qs'
 
 export default {
@@ -300,7 +299,7 @@ export default {
         this.reloadTable()
     },
     methods:{
-        //获取/查询线索列表
+        //获取/查询外勤列表
         reloadTable() {
             const _this = this;
             let qs =require('querystring')
@@ -426,7 +425,6 @@ export default {
         },
         getTime(){
             this.$store.commit('getNowTime')
-            // console.log(this.$store.state.nowtime)
         },
         changeState(e,row){
             this.getTime()

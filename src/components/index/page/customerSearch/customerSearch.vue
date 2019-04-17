@@ -609,7 +609,6 @@
                 idArr.id = this.idArr.id
                 idArr.secondid = this.$store.state.deptid
                 idArr.deptid = this.$store.state.insid
-                console.log(idArr)
 
                 if(idArr.id){
                     _this.Loading = true

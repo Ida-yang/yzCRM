@@ -1,5 +1,5 @@
 <template>
-    <!-- 工作计划新增修改 -->
+    <!-- 任务新增修改 -->
     <div class="content">
         <el-form :model="myForm" ref="myForm" class="myForm" :rules="rules">
             <el-form-item
@@ -104,7 +104,7 @@
     import bus from '../../bus';
 
 export default {
-    name:'visitplanaddorupdate',
+    name:'missionplanaddorupdate',
     data(){
         return{
             missionaddOrUpdateData:{},
@@ -114,7 +114,7 @@ export default {
             },
 
             rules:{
-                planningTheme : [{ required: true, message: '计划主题不能为空', trigger: 'blur' }],
+                planningTheme : [{ required: true, message: '任务主题不能为空', trigger: 'blur' }],
                 describe : [{ required: true, message: '描述不能为空', trigger: 'blur' }],
                 startTime : [{ required: true, message: '开始时间不能为空', trigger: 'blur' }],
                 endTime : [{ required: true, message: '结束时间不能为空', trigger: 'blur' }],
@@ -139,8 +139,8 @@ export default {
             const _this = this
             let qs =require('querystring')
             let pageInfo = {}
-            pageInfo.page = this.page;
-            pageInfo.limit = this.limit;
+            pageInfo.page = '1';
+            pageInfo.limit = '15';
             pageInfo.pId = this.$store.state.ispId;
             pageInfo.searchName = this.searchvalue
             axios({
@@ -222,7 +222,7 @@ export default {
                 subData[item.inputModel] = _this.myForm[item.inputModel];
                 if(item.inputModel == "planningTheme" && !subData[item.inputModel]) {
                     _this.$message({
-                        message: "计划主题不能为空",
+                        message: "任务主题不能为空",
                         type: 'error'
                     });
                     flag = true;

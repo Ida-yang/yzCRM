@@ -32,7 +32,7 @@
     import qs from 'qs'
 
     export default {
-        contactsName:'activity',
+        name:'activity',
         store,
         data(){
             return{

@@ -1,5 +1,5 @@
 <template>
-    <!-- 工作计划 -->
+    <!-- 任务 -->
     <div>
         <div class="radioList">
             <el-radio-group v-model="searchList.label">
@@ -7,12 +7,12 @@
                 <el-radio v-for="item in pIdData" :key="item.id" :label="item.id" @change="search()">{{item.name}}</el-radio>
             </el-radio-group>
             <el-radio-group v-model="searchList.time">
-                <span class="nameList">计划时间：</span>
+                <span class="nameList">任务时间：</span>
                 <el-radio :label="nullvalue" @change="search()">全部</el-radio>
                 <el-radio v-for="item in timeData" :key="item.id" :label="item.id" @change="search()">{{item.name}}</el-radio>
             </el-radio-group>
             <el-radio-group v-model="searchList.state">
-                <span class="nameList">计划状态：</span>
+                <span class="nameList">任务状态：</span>
                 <el-radio :label="nullvalue" @change="search()">全部</el-radio>
                 <el-radio v-for="item in stateData" :key="item.id" :label="item.name" @change="search()">{{item.name}}</el-radio>
             </el-radio-group>
@@ -202,7 +202,7 @@ export default {
     },
     data(){
         return{
-            msg:'工作计划',
+            msg:'任务',
 
             btnList:[
                 {id:'1',name:'未完成'},
@@ -263,7 +263,7 @@ export default {
         this.reloadTable()
     },
     methods:{
-        //获取/查询线索列表
+        //获取/查询任务列表
         reloadTable() {
             const _this = this;
             let qs =require('querystring')
@@ -402,7 +402,7 @@ export default {
             const _this = this;
             let missionaddOrUpdateData = {}
             missionaddOrUpdateData.createForm = [
-                {"label":"计划主题","inputModel":"planningTheme"},
+                {"label":"任务主题","inputModel":"planningTheme"},
                 {"label":"关联客户","inputModel":"customerName","type":"require"},
                 {"label":"开始时间","inputModel":"startTime","type":"date"},
                 {"label":"结束时间","inputModel":"endTime","type":"date"},
@@ -423,7 +423,7 @@ export default {
             const _this = this;
             let missionaddOrUpdateData = {}
             missionaddOrUpdateData.createForm = [
-                {"label":"计划主题","inputModel":"planningTheme"},
+                {"label":"任务主题","inputModel":"planningTheme"},
                 {"label":"关联客户","inputModel":"customerName","type":"require"},
                 {"label":"开始时间","inputModel":"startTime","type":"date"},
                 {"label":"结束时间","inputModel":"endTime","type":"date"},

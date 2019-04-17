@@ -219,7 +219,7 @@
                         <el-input v-model="newform.secondname" :disabled="true"></el-input>
                     </el-form-item>
                     <el-form-item prop="imgUrl" label="头像">
-                        <el-upload class="avatar-uploader portrait" action="doUpload" :show-file-list="false" :before-upload="beforeUploadimg">
+                        <el-upload class="avatar-uploader portrait" :action="doUpload" :show-file-list="false" :on-success="handleAvatarSuccess" :before-upload="beforeUploadimg">
                             <img v-if="imgfile" :src="imgfile" class="avatar" width="100" height="100">
                             <i v-else class="el-icon-plus avatar-uploader-icon portrait_add"></i>
                         </el-upload>
@@ -266,7 +266,7 @@
                     <el-input v-model="newform.secondname" :disabled="true"></el-input>
                 </el-form-item>
                     <el-form-item prop="imgUrl" label="头像">
-                        <el-upload class="avatar-uploader portrait" action="doUpload" :show-file-list="false" :before-upload="beforeUploadimg">
+                        <el-upload class="avatar-uploader portrait" :action="doUpload" :on-success="handleAvatarSuccess" :show-file-list="false" :before-upload="beforeUploadimg">
                             <img v-if="imgfile" :src="imgfile" class="avatar" width="100" height="100">
                             <i v-else class="el-icon-plus avatar-uploader-icon portrait_add"></i>
                         </el-upload>
@@ -394,6 +394,8 @@
                     private_passwords : [{ required: true, validator: validatePass, trigger: 'blur' },],
                     private_state : [{ required: true, message: '请选择用户状态', trigger: 'blur' },],
                 },
+
+                doUpload:this.$store.state.defaultHttp + 'previewAvatar.do?cId=' + this.$store.state.iscId
             }
         },
         beforeCreate(){
@@ -501,15 +503,15 @@
                 this.idArr.private_id = newArr;
                 
             },
-            // handleAvatarSuccess(res, file) {
-            //     this.imgfile = URL.createObjectURL(file.raw);
-            // },
-            beforeUploadimg(val) {
-                this.newform.imgUrl = val;
-                const extension = val.name.split('.')[1] === 'jpg'
-                const extension2 = val.name.split('.')[1] === 'png'
-                const extension3 = val.name.split('.')[1] === 'jpeg'
-                const isLt500k = val.size / 1024 / 1024 < 0.5
+            handleAvatarSuccess(res, file) {
+                this.imgfile = URL.createObjectURL(file.raw);
+            },
+            beforeUploadimg(file) {
+                this.newform.imgUrl = file;
+                const extension = file.name.split('.')[1] === 'jpg'
+                const extension2 = file.name.split('.')[1] === 'png'
+                const extension3 = file.name.split('.')[1] === 'jpeg'
+                const isLt500k = file.size / 1024 / 1024 < 0.5
                 if (!extension && !extension2 && !extension3) {
                     this.$message.warning('头像只能是 jpg、png、jpeg格式!')
                     return
@@ -518,9 +520,8 @@
                     this.$message.warning('头像大小不能超过 500KB!')
                     return
                 }
-                this.imgName = val.name
-                // console.log(this.newform)
-                return false;
+                this.imgName = file.name
+                // return false;
             },
             //用户添加
             handleAdd(){

@@ -1,7 +1,6 @@
 <template>
     <!-- 线索详情页 -->
     <el-row class="cluedetcontent" :gutter="10">
-        <!-- <p>线索详情页</p> -->
         <el-col :span="18">
             <div class="top">
                 <el-card class="box-card" v-model="cluedetail">
@@ -9,6 +8,16 @@
                         <span>{{cluedetail.name}}</span>
                         <el-button style="float:right;" class="info-btn" size="mini" @click="retract()" v-show="retracts">显示</el-button>
                         <el-button style="float:right;" class="info-btn" size="mini" @click="retract()" v-show="!retracts">收起</el-button>
+                        <el-popover placement="bottom" width="100" trigger="click">
+                            <el-select v-model="SMSform.templateId" placeholder="请选择" style="width:100%">
+                                <el-option v-for="item in templateList" :key="item.templateId" :label="item.title" :value="item.templateId"></el-option>
+                            </el-select>
+                            <br><br><br>
+                            <div style="text-align: right; margin: 0">
+                                <el-button type="primary" size="mini" @click="sendSMS()">确定</el-button>
+                            </div>
+                            <el-button style="float:right;" class="info-btn" slot="reference" type="mini">发送短信</el-button>
+                        </el-popover>
                         <el-button style="float:right;" class="info-btn" size="mini" @click="cluePool()">转移至线索池</el-button>
                         <el-button style="float:right;" class="info-btn" size="mini" @click="customerSwitching()">转移至客户</el-button>
                     </div>
@@ -329,6 +338,11 @@
                     },
                 },
 
+                SMSform:{
+                    templateId:null,
+                },
+                templateList:null,
+
                 followform:{
                     followType:'电话',
                     contactTime:'',
@@ -404,6 +418,7 @@
             this.loadData();
             this.loadCountry();
             this.reload()
+            this.loadTemplate()
         },
         // mounted(){
         //     this.loadData()
@@ -536,6 +551,26 @@
                     // console.log(err)
                 });
             },
+            
+            loadTemplate(){
+                const _this = this;
+                let qs =require('querystring')
+                let data = {}
+                data.type = '线索'
+                data.genre = '营销类'
+                data.status = '2'
+                
+                axios({
+                    method: 'post',
+                    url: _this.$store.state.defaultHttp+'template/selectTemplate.do?cId='+_this.$store.state.iscId,
+                    data:qs.stringify(data)
+                }).then(function(res){
+                    _this.templateList = res.data.map.templates
+                }).catch(function(err){
+                    // console.log(err);
+                });
+            },
+
             loadCountry(){
                 const _this = this
 
@@ -774,7 +809,6 @@
                 this.dialogVisible2 = true
             },
             changeState(row){
-                // console.log(row)
                 const _this = this
                 let qs = require('querystring')
                 let data = {}
@@ -951,6 +985,70 @@
                 _this.page = val;
                 _this.$options.methods.loadData.bind(_this)();
             },
+
+            sendSMS(){
+                const _this = this
+                let qs = require('querystring')
+                let data = {}
+                data.names = [this.cluedetail.name]
+                data.phones = [this.contacts.phone]
+                data.contacts = [this.contacts.coName]
+                data.templateId = this.SMSform.templateId
+
+                axios({
+                    method: 'post',
+                    url: _this.$store.state.defaultHttp+'message/sendMarketingMsg.do?cId='+_this.$store.state.iscId,
+                    data: qs.stringify(data)
+                }).then(function(res){
+                    if(res.data.code && res.data.code == '200'){
+                        _this.$message({
+                            message:'发送成功',
+                            type:'success'
+                        })
+                        _this.$options.methods.addSMSsended.bind(_this)()
+                    }else{
+                        _this.$message({
+                            message:res.data.msg,
+                            type:'error'
+                        })
+                    }
+                }).catch(function(err){
+                    // console.log(err);
+                });
+            },
+            addSMSsended(){
+                const _this = this
+                let qs = require('querystring')
+                let data2 = {}
+                data2.type = '线索'
+                data2.ids = [this.cluedetail.id]
+                data2.names = [this.cluedetail.name]
+                data2.phones = [this.contacts.phone]
+                data2.contacts = [this.contacts.coName]
+                data2.templateId = this.SMSform.templateId
+                data2.pId = this.$store.state.ispId
+                data2.secondid = this.$store.state.deptid
+                data2.deptid = this.$store.state.insid
+
+                axios({
+                    method: 'post',
+                    url: _this.$store.state.defaultHttp+'sendRecord/insertSendRecord.do?cId='+_this.$store.state.iscId,
+                    data: qs.stringify(data2)
+                }).then(function(res){
+                    if(res.data.code && res.data.code == '200'){
+                        _this.$message({
+                            message:'发送成功',
+                            type:'success'
+                        })
+                    }else{
+                        _this.$message({
+                            message:res.data.msg,
+                            type:'error'
+                        })
+                    }
+                }).catch(function(err){
+                });
+            }
         },
     }
 </script>
