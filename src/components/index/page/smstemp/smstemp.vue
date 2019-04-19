@@ -70,6 +70,9 @@
                         <el-option value="营销类">营销类</el-option>
                     </el-select>
                 </el-form-item>
+                <el-form-item prop="url" label="原网址">
+                    <el-input v-model="newform.url" placeholder="请输入原网址"></el-input>
+                </el-form-item>
                 <el-form-item prop="dayNum" label="提前提醒天数" v-if="newform.type == '合同'">
                     <el-input v-model="newform.dayNum" placeholder="请输入提前提醒天数"></el-input>
                 </el-form-item>
@@ -107,6 +110,9 @@
                         <el-option value="通知类">通知类</el-option>
                         <el-option value="营销类">营销类</el-option>
                     </el-select>
+                </el-form-item>
+                <el-form-item prop="url" label="原网址">
+                    <el-input v-model="newform.url" placeholder="请输入原网址"></el-input>
                 </el-form-item>
                 <el-form-item prop="dayNum" label="提前提醒天数" v-if="newform.type == '合同'">
                     <el-input v-model="newform.dayNum" placeholder="请输入提前提醒天数"></el-input>
@@ -162,6 +168,7 @@
                     signature:null,
                     varCount:0,
                     dayNum:null,
+                    url:null,
                 },
 
                 searchList:{
@@ -244,6 +251,7 @@
                 _this.newform.signature = null
                 _this.newform.status = null
                 _this.newform.dayNum = null
+                _this.newform.url = null
                 _this.dialogVisible = true
             },
             //短信模板添加提交按钮
@@ -274,6 +282,7 @@
                 data.varCount = this.newform.varCount
                 data.status = 1
                 data.dayNum = this.newform.dayNum
+                data.url = this.newform.url
                 
                 let flag = false;
                 if(!data.content){
@@ -339,6 +348,7 @@
                 _this.newform.signature = val.signature
                 _this.newform.status = val.status
                 _this.newform.dayNum = val.dayNum
+                _this.newform.url = val.url
                 _this.dialogVisible2 = true
             },
             //短信模板修改提交按钮
@@ -371,6 +381,7 @@
                 data.varCount = this.newform.varCount
                 data.status = this.newform.status
                 data.dayNum = this.newform.dayNum
+                data.url = this.newform.url
                 
                 let flag = false;
                 if(!data.content){

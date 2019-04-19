@@ -1,7 +1,7 @@
 <template>
     <div class="sidebar" >
         <el-menu class="sidebar-el-menu" :default-active="onRoutes" :collapse="collapse" background-color="#20222a"
-            text-color="#FFFFFF" active-text-color="#ff6722" unique-opened router>
+            text-color="#FFFFFF" active-text-color="#ff6722" unique-opened router @select="selectMain">
             <div id="logo" v-if="showlogo">
                 <span style="font-size:16px">
                     云纵CRM信息平台
@@ -86,7 +86,7 @@
                 itemone: [
                     {
                         icon: 'mdi-airplay',
-                        index: '1',
+                        index: 'index',
                         title: '首页',
                     },
                     {
@@ -230,7 +230,12 @@
                 }
                 // this.showlogo = !this.showlogo
             })
-        }
+        },
+        methods:{
+            selectMain(key,path){
+                console.log(key)
+            },
+        },
     }
 </script>
 

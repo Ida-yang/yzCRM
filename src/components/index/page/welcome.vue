@@ -75,6 +75,11 @@
                     min-width="120"
                     label="主题"
                     sortable>
+                    <template slot-scope="scope">
+                        <div @click="openDetails(scope.$index, scope.row)" class="hoverline">
+                            {{scope.row.theme}}
+                        </div>
+                    </template>
                 </el-table-column>
                 <el-table-column
                     prop="describe"
@@ -242,6 +247,16 @@
                 }).catch(function(err){
                     // console.log(err);
                 });
+            },
+            openDetails(index,row){
+                if(row.type == '任务'){
+                    console.log(row,1111111)
+                    this.$router.push({ path: '/missionplan' });
+                }else if(row.type == '外勤'){
+                    console.log(row,22222222)
+                    this.$store.state.visitdetailsData = {submitData:{"id": row.id}}
+                    this.$router.push({ path: '/visitplandetails' });
+                }
             },
             getMonth(){
                 let date=new Date;

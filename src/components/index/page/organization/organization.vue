@@ -12,15 +12,13 @@
                 @node-click="handleNodeClick">
                 <span class="custom-tree-node" slot-scope="{ node, data }">
                     <span><i class="el-icon-info">&nbsp;</i>{{ node.label }}</span>
-                    <span class="showhover" v-show="showtext">
+                    <span class="operation_org">
                         <el-button type="text" size="mini" style="font-size:12px;" @click="handleappend(data)">添加/
                         </el-button>
                         <el-button type="text" size="mini" style="font-size:12px;" @click="handleUpdate(data)">修改/
                         </el-button>
                         <el-button type="text" size="mini" style="font-size:12px;" @click="deletedept(node,data)">删除
                         </el-button>
-                    </span>
-                    <span class="showhover" v-show="!showtext">
                     </span>
                 </span>
             </el-tree>
@@ -338,7 +336,6 @@
                 activityrole:null,
                 setrole:null,
 
-                showtext:true,
             }
         },
         mounted(){
@@ -573,7 +570,7 @@
                 }else{
                     axios({
                         method: 'get',
-                        url: _this.$store.state.defaultHttp+'deptJurisdiction/insert.do',//新增角色
+                        url: _this.$store.state.defaultHttp+'roleJurisdiction/insert.do',//新增角色
                     }).then(function(res){
                         if(res.data.msg && res.data.msg == 'error'){
                             _this.$message({
@@ -942,16 +939,13 @@
         font-size: 14px;
         padding-right: 8px;
     }
-    .showhover{
+    .operation_org{
         visibility: visible;
         position: fixed;
         right: 64%;
         width: 30%;
         text-align: right
     }
-    /* .showhover:focus,.showhover:hover{
-        visibility: hidden;
-    } */
     .checkboxclass{
         width: 100px;
     }

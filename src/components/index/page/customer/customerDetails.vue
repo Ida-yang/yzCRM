@@ -152,7 +152,7 @@
                                         <img :src="item.picture_detail" alt="图片" width="80" height="80" @click="showImg($event,item)">
                                     </div>
                                     <div v-if="item.enclosureName">
-                                        <a :href="item.enclosureUrl" download>下载附件</a>
+                                        <a :href="item.enclosureUrl" download>{{item.enclosureOldName}}</a>
                                     </div>
                                     <el-dialog :visible.sync="dialogVisible2">
                                         <img width="100%" :src="dialogImageUrl2" alt="">
@@ -1094,7 +1094,7 @@
                     this.record.forEach(el => {
                         if(el.enclosureName){
                             this.EnclosureDetails.push({
-                                name:el.enclosureName,
+                                name:el.enclosureOldName,
                                 src:this.$store.state.systemHttp+'upload/'+this.$store.state.iscId+'/'+el.enclosureName,
                                 uploads:el.private_employee,
                                 uploadTime:el.createTime
@@ -1129,8 +1129,9 @@
                 const extension2 = file.name.split('.')[1] === 'xlsx'
                 const extension3 = file.name.split('.')[1] === 'doc'
                 const extension4 = file.name.split('.')[1] === 'docx'
+                const extension5 = file.name.split('.')[1] === 'pdf'
                 const isLt5M = file.size / 1024 / 1024 < 5
-                if (!extension && !extension2 && !extension3 && !extension4) {
+                if (!extension && !extension2 && !extension3 && !extension4 && !extension5) {
                     this.$message.warning('附件只能是 xls、xlsx、doc、docx格式!')
                     return
                 }
@@ -1171,7 +1172,7 @@
                 }else{
                     axios({
                         method: 'get',
-                        url: _this.$store.state.defaultHttp+'customerJurisdiction/follow.do',//编辑部门
+                        url: _this.$store.state.defaultHttp+'customerJurisdiction/follow.do',//客户添加跟进记录
                     }).then(function(res){
                         if(res.data.msg && res.data.msg == 'error'){
                             _this.$message({
@@ -1192,16 +1193,16 @@
                                         message: '提交成功',
                                         type: 'success'
                                     });
-                                    _this.followform.contactTime = ''
-                                    _this.followform.followContent = ''
-                                    _this.$store.state.cusdetailsData.submitData = {"id":_this.detailData.id}
-                                    _this.$options.methods.loadData.bind(_this)(true);
                                 } else {
                                     _this.$message({
                                         message: res.data.msg,
                                         type: 'error'
                                     });
                                 }
+                                _this.followform.contactTime = ''
+                                _this.followform.followContent = ''
+                                _this.$store.state.cusdetailsData.submitData = {"id":_this.detailData.id}
+                                _this.$options.methods.loadData.bind(_this)(true);
                             }).catch(function(err){
                                 _this.$message.error("提交失败,请重新提交");
                             });

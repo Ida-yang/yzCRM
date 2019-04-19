@@ -1,20 +1,17 @@
 <template>
     <!-- 登录页 -->
     <el-row class="logincontent">
-        <!-- <el-col :span="14" class="content-l">
-            <div>
-                <img src="/upload/staticImg/test.png" height="50%" width="60%" alt="元旦快乐" title="元旦快乐" style="margin:25% 20%;">
-            </div>
-        </el-col> -->
-        <el-col class="content-r">
-            <p v-if="isShowChromeTip" style="color:red;font-size: 15px; margin-top: 60px;text-align:center">
+        <el-col class="content-l" v-if="isShowChromeTip">
+            <p style="color:red;font-size:20px;margin-top:300px;text-align:center">
                 请务必使用Chrome浏览器打开【
-                <a target="_blank" href="https://www.baidu.com/link?url=AAazRp3jmfLLZ4bMb1jamhnrWvxDBE3D5-P0NA6YIKM9e0XTc3kUvA7kJK6OdK7S3T_jFDV2VTTsvKnGB6DDto3CfN5FDBEJfFTgkXBu2DS&wd=&eqid=a35565a60002e3ea000000035a13f001">
+                <a target="_blank" href="https://www.google.cn/intl/zh-CN/chrome/">
                     点击下载
                 </a>
                 】
             </p>
-            <div class="login" v-if="!isShowChromeTip">
+        </el-col>
+        <el-col class="content-r" v-if="!isShowChromeTip">
+            <div class="login">
                 <p class="login_head">云纵CRM系统管理平台 </p>
                 <p class="login_wel">欢迎登录</p>
                 <!-- <p class="login_wel"><span>欢迎登录</span></p> -->
@@ -69,7 +66,7 @@ export default {
         isShowChromeTip() {
             const USER_AGENT = navigator.userAgent.toLowerCase()
             const isChrome = /.*(chrome)\/([\w.]+).*/
-            console.log(USER_AGENT,isChrome)
+            // console.log(USER_AGENT,isChrome)
             return !isChrome.test(USER_AGENT)
         }
     },
@@ -89,12 +86,12 @@ export default {
                     { required: true, message: '请输入密码', trigger: 'blur' },
                 ],
             },
-            // isShowChromeTip:true
+            // isShowChromeTip:false
         }
     },
     mounted() {
         this.getlocalStorage()
-        },
+    },
     methods: {
         submitForm(){
             const _this = this;
@@ -192,21 +189,20 @@ export default {
         height: 100%;
         padding: 0;
         margin: 0;
-       background-image: url('../../static/img/index.jpg');
-       /* background-image: url('/upload/staticImg/index.jpg'); */
-       background-repeat: no-repeat;
-       background-size: 100% 100%;
     }
    .content-l{
+       width: 100%;
        height: 100%;
-       /* background-image: url(../assets/img/index.png);
-       background-repeat: no-repeat;
-       background-size: 70% 50%; */
    }
    .content-r{
+       width: 100%;
        height: 100%;
        padding: 20px;
        position: relative;
+       background-image: url('/upload/staticImg/index.jpg');
+       /* background-image: url('../../static/img/index.jpg'); */
+       background-repeat: no-repeat;
+       background-size: 100% 100%;
    }
    .login{
        width: 320px;

@@ -889,48 +889,6 @@
                     });       
                 });
             },
-            handledel(index,row){
-                const _this = this;
-                let qs =require('querystring')
-                let idArr = [];
-                idArr.step_id = row.id
-
-                _this.$confirm('确认删除 ['+ row.typeName +'] 吗？', '提示', {
-                    confirmButtonText: '确定',
-                    cancelButtonText: '取消',
-                }).then(({ value }) => {
-                    axios({
-                        method: 'post',
-                        url:  _this.$store.state.defaultHttp+ 'addstep/deleteByPrimaryKey.do?cId='+_this.$store.state.iscId,
-                        data:qs.stringify(idArr),
-                    }).then(function(res){
-                        if(res.data.code && res.data.code == 200) {
-                            _this.$message({
-                                message: '删除成功',
-                                type: 'success'
-                            });
-                            _this.$options.methods.reloadTable.bind(_this)(true);
-                        } else if(res.data.msg && res.data.msg == 'error'){//删除
-                            _this.$message({
-                                message: '对不起，您没有该权限，请联系管理员开通',
-                                type: 'error'
-                            })
-                        }else {
-                            _this.$message({
-                                message: res.data.msg,
-                                type: 'error'
-                            });
-                        }
-                    }).catch(function(err){
-                        _this.$message.error("删除失败,请重新删除");
-                    });
-                }).catch(() => {
-                    _this.$message({
-                        type: 'info',
-                        message: '取消删除[' + row.typeName + ']'
-                    });       
-                });
-            },
             showsort(){
                 this.showshunxu = !this.showshunxu
             },

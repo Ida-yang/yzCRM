@@ -544,7 +544,7 @@
                 }else{
                     axios({
                         method: 'get',
-                        url: _this.$store.state.defaultHttp+'deptJurisdiction/insert.do',//新增用户
+                        url: _this.$store.state.defaultHttp+'insertPrivateState.do',//新增用户
                     }).then(function(res){
                         if(res.data.msg && res.data.msg == 'error'){
                             _this.$message({
@@ -669,7 +669,7 @@
 
                 axios({
                         method: 'get',
-                        url: _this.$store.state.defaultHttp+'deptJurisdiction/insert.do',//编辑用户
+                        url: _this.$store.state.defaultHttp+'updatePrivateState.do',//编辑用户
                     }).then(function(res){
                         if(res.data.msg && res.data.msg == 'error'){
                             _this.$message({

@@ -1,6 +1,12 @@
 <template>
     <!-- 短信日志 -->
     <div>
+        <div class="radioList">
+            <el-radio-group v-model="searchList.label">
+                <span class="nameList">数据授权：</span>
+                <el-radio v-for="item in pIdData" :key="item.label" :label="item.label" @change="search()">{{item.value}}</el-radio>
+            </el-radio-group>
+        </div>
         <div class="searchList" style="width:100%;">
             <span class="nameList">发送时间：</span>
             <el-date-picker v-model="searchList.yearrange" type="daterange" format="yyyy-MM-dd" value-format="yyyy-MM-dd" start-placeholder="开始日期" end-placeholder="结束日期" @change="datepick"></el-date-picker>
@@ -46,8 +52,8 @@
                 min-width="100"
                 sortable>
             </el-table-column>
-            <!-- <el-table-column
-                prop="contact"
+            <el-table-column
+                prop="title"
                 header-align="left"
                 align="left"
                 label="模板标题"
@@ -55,13 +61,23 @@
                 sortable>
             </el-table-column>
             <el-table-column
-                prop="contact"
+                prop="content"
+                show-overflow-tooltip
                 header-align="left"
                 align="left"
                 label="模板内容"
-                min-width="130"
+                min-width="180"
                 sortable>
-            </el-table-column> -->
+            </el-table-column>
+            <el-table-column
+                prop="explain"
+                show-overflow-tooltip
+                header-align="left"
+                align="left"
+                label="短信说明"
+                min-width="180"
+                sortable>
+            </el-table-column>
             <el-table-column
                 prop="private_employee"
                 header-align="left"
@@ -135,7 +151,14 @@
                     yearrange:null,
                     startTime:null,
                     endTime:null,
+                    label:'1'
                 },
+                pIdData:[
+                    {label:'0',value:'全部'},
+                    {label:'1',value:'我的'},
+                    {label:'2',value:'本组'},
+                    {label:'3',value:'本机构'}
+                ],
                 page:1,//默认第一页
                 limit:100,//默认100条
 
@@ -159,6 +182,15 @@
                     searchList.searchName = this.searchName
                 }else if(this.searchList.keyType == '2'){
                     searchList.keyWord = this.searchName
+                }
+                if(this.searchList.label == 0 ){
+                    searchList.pId = _this.nullvalue
+                }else if(this.searchList.label == 1){
+                    searchList.pId = _this.$store.state.ispId
+                }else if(this.searchList.label == 2){
+                    searchList.secondid = _this.$store.state.deptid
+                }else if(this.searchList.label == 3){
+                    searchList.deptid = _this.$store.state.insid
                 }
                 searchList.startTime = this.searchList.startTime
                 searchList.endTime = this.searchList.endTime

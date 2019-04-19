@@ -153,7 +153,7 @@
                                         <img :src="item.picture_detail" alt="图片" width="80" height="80" @click="showImg($event,item)">
                                     </div>
                                     <div v-if="item.enclosureName">
-                                        <a :href="item.enclosureUrl" download>下载附件</a>
+                                        <a :href="item.enclosureUrl" download>{{item.enclosureOldName}}</a>
                                     </div>
                                 </div>
                                 <div class="right_more" v-if="item.showdelico">
@@ -842,7 +842,7 @@
                     this.record.forEach(el => {
                         if(el.enclosureName){
                             this.Enclosureclue.push({
-                                name:el.enclosureName,
+                                name:el.enclosureOldName,
                                 src:this.$store.state.systemHttp+'upload/'+this.$store.state.iscId+'/'+el.enclosureName,
                                 uploads:el.private_employee,
                                 uploadTime:el.createTime
@@ -939,16 +939,18 @@
                                         message: '提交成功',
                                         type: 'success'
                                     });
-                                    _this.followform.contactTime = ''
-                                    _this.followform.followContent = ''
-                                    _this.$store.state.cluedetailsData.submitData = {"id":_this.detailData.id}
-                                    _this.$options.methods.loadData.bind(_this)(true);
                                 } else {
                                     _this.$message({
                                         message: res.data.msg,
                                         type: 'error'
                                     });
                                 }
+                                _this.followform.contactTime = ''
+                                _this.followform.followContent = ''
+                                _this.followform.imgName = ''
+                                _this.followform.enclosureName = ''
+                                _this.$store.state.cluedetailsData.submitData = {"id":_this.detailData.id}
+                                _this.$options.methods.loadData.bind(_this)(true);
                             }).catch(function(err){
                                 _this.$message.error("提交失败,请重新提交");
                             });
