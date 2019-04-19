@@ -12,11 +12,12 @@
             <el-date-picker v-model="searchList.yearrange" type="daterange" format="yyyy-MM-dd" value-format="yyyy-MM-dd" start-placeholder="开始日期" end-placeholder="结束日期" @change="datepick"></el-date-picker>
         </div>
         <div class="searchList">
-            <el-select v-model="searchList.keyType" style="margin-left:20px;width:125px">
-                <el-option label="联系人名称" value="1">联系人名称</el-option>
-                <el-option label="公司名称" value="2">公司名称</el-option>
-            </el-select>
-            <el-input v-model="searchName" placeholder="请输入联系人或公司名称" style="width:300px;" @keyup.enter.native="search"></el-input>
+            <el-input placeholder="请输入联系人或公司名称" v-model="searchName" style="margin-left:20px;width:400px;" @keyup.enter.native="search">
+                <el-select v-model="searchList.keyType" slot="prepend" placeholder="请选择" style="width:125px"> 
+                <el-option label="联系人名称" value="1"></el-option>
+                <el-option label="公司名称" value="2"></el-option>
+                </el-select>
+            </el-input>
             &nbsp;&nbsp;
             <el-button icon="el-icon-search" type="primary" size="mini" @click="search()">查询</el-button>
         </div>

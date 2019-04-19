@@ -46,11 +46,6 @@ const router =new Router({
           component: resolve => require(['../components/index/page/customerSearch/customerSearch.vue'], resolve),
           meta: { title: '线索挖掘',name:'customerSearch' ,requireAuth:true}
         },
-        // {
-        //   path: '/searchDetails',
-        //   component: resolve => require(['../components/index/page/customerSearch/searchDetails.vue'], resolve),
-        //   meta: { title: '详情页',name:'searchDetails' ,requireAuth:true}
-        // },
         {
           path: '/reportForm',
           component: resolve => require(['../components/index/page/reportForm/reportForm.vue'], resolve),

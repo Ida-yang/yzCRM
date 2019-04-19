@@ -21,7 +21,6 @@
     import vHead from './Header.vue';
     import vSidebar from './Sidebar.vue';
     import vMessage from './message.vue';
-    // import vSearch from './page/customerSearch/searchDetails.vue';
     import vTags from './Tags.vue';
     import bus from './bus';
     export default {
@@ -33,7 +32,6 @@
         },
         components:{
             vHead, vSidebar, vTags, vMessage
-            // , vSearch
         },
         created(){
             bus.$on('collapse', msg => {
