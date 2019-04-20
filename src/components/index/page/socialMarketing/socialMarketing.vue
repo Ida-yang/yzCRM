@@ -378,41 +378,49 @@
                 let qs =require('querystring')
                 let idArr = {};
                 idArr.id = row.id
-                _this.$confirm('是否确认删除'+row.name+'吗？', '提示', {
-                    confirmButtonText: '确定',
-                    cancelButtonText: '取消',
-                }).then(({ value }) => {
-                    axios({
-                        method: 'post',
-                        url:  _this.$store.state.defaultHttp+ 'activity/delActivity.do?cId='+_this.$store.state.iscId,
-                        data:qs.stringify(idArr),
-                    }).then(function(res){
-                        if(res.data.code && res.data.code == 200) {
-                            _this.$message({
-                                message: '删除成功',
-                                type: 'success'
-                            });
-                            _this.$options.methods.reloadTable.bind(_this)(true);
-                        }else if(res.data.msg && res.data.msg == 'error'){//删除活动
-                            _this.$message({
-                                message: '对不起，您没有该权限，请联系管理员开通',
-                                type: 'error'
-                            })
-                        } else {
-                            _this.$message({
-                                message: res.data.msg,
-                                type: 'error'
-                            });
-                        }
-                    }).catch(function(err){
-                        _this.$message.error("提交失败,请重新提交");
+
+                if(row.pId == this.$store.state.ispId){
+                    _this.$confirm('是否确认删除'+row.name+'吗？', '提示', {
+                        confirmButtonText: '确定',
+                        cancelButtonText: '取消',
+                    }).then(({ value }) => {
+                        axios({
+                            method: 'post',
+                            url:  _this.$store.state.defaultHttp+ 'activity/delActivity.do?cId='+_this.$store.state.iscId,
+                            data:qs.stringify(idArr),
+                        }).then(function(res){
+                            if(res.data.code && res.data.code == 200) {
+                                _this.$message({
+                                    message: '删除成功',
+                                    type: 'success'
+                                });
+                                _this.$options.methods.reloadTable.bind(_this)(true);
+                            }else if(res.data.msg && res.data.msg == 'error'){//删除活动
+                                _this.$message({
+                                    message: '对不起，您没有该权限，请联系管理员开通',
+                                    type: 'error'
+                                })
+                            } else {
+                                _this.$message({
+                                    message: res.data.msg,
+                                    type: 'error'
+                                });
+                            }
+                        }).catch(function(err){
+                            _this.$message.error("提交失败,请重新提交");
+                        });
+                    }).catch(() => {
+                        _this.$message({
+                            type: 'info',
+                            message: '取消删除[' + row.name + ']'
+                        });       
                     });
-                }).catch(() => {
-                    this.$message({
-                        type: 'info',
-                        message: '取消删除[' + row.name + ']'
-                    });       
-                });
+                }else{
+                    _this.$message({
+                        type: 'error',
+                        message: '不可删除非本人的活动'
+                    }); 
+                }
             },
             //活动添加
             handleAdd(){
@@ -426,7 +434,7 @@
                         message:'请先选择部门，再添加活动',
                         type:'info'
                     })
-                }else{
+                }else if(this.newform.secondid == this.$store.state.deptid){
                     axios({
                         method: 'post',
                         url: _this.$store.state.defaultHttp+'activityJurisdiction/insert.do',//新增活动
@@ -443,6 +451,11 @@
                         // console.log(err);
                     });
                     
+                }else{
+                    _this.$message({
+                        message:'请添加自己部门下的活动',
+                        type:'error'
+                    })
                 }
             },
             //活动添加提交按钮
@@ -521,7 +534,22 @@
                 });
             },
             search() {
-                this.$options.methods.reloadTable.bind(this)(true);
+                const _this = this
+                // axios({
+                //     method: 'get',
+                //     url: _this.$store.state.defaultHttp+'activityJurisdiction/select.do',//新增线索
+                // }).then(function(res){
+                //     if(res.data.msg && res.data.msg == 'error'){
+                //         _this.$message({
+                //             message:'对不起，您没有该权限，请联系管理员开通',
+                //             type:'error'
+                //         })
+                //     }else{
+                        _this.$options.methods.reloadTable.bind(_this)(true);
+                //     }
+                // }).catch(function(err){
+                //     // console.log(err);
+                // });
             },
             handleSizeChange(val) {
                 const _this = this;

@@ -82,6 +82,10 @@
                         min-width="160"
                         label="编号"
                         sortable>
+                        <template slot-scope="scope">
+                            <span v-if="scope.row.private_isAdmin == '是'" style="color:blue">{{scope.row.private_number}}</span>
+                            <span v-if="scope.row.private_isAdmin == '否'">{{scope.row.private_number}}</span>
+                        </template>
                     </el-table-column>
                     <el-table-column
                         prop="private_employee"
@@ -544,7 +548,7 @@
                 }else{
                     axios({
                         method: 'get',
-                        url: _this.$store.state.defaultHttp+'insertPrivateState.do',//新增用户
+                        url: _this.$store.state.defaultHttp+'userJurisdiction/insert.do',//新增用户
                     }).then(function(res){
                         if(res.data.msg && res.data.msg == 'error'){
                             _this.$message({
@@ -669,7 +673,7 @@
 
                 axios({
                         method: 'get',
-                        url: _this.$store.state.defaultHttp+'updatePrivateState.do',//编辑用户
+                        url: _this.$store.state.defaultHttp+'userJurisdiction/update.do',//编辑用户
                     }).then(function(res){
                         if(res.data.msg && res.data.msg == 'error'){
                             _this.$message({
@@ -905,8 +909,10 @@
                     // console.log(err);
                 });
             },
+            
             search() {
-                this.$options.methods.reloadTable.bind(this)(true);
+                const _this = this
+                _this.$options.methods.reloadTable.bind(_this)(true);
             },
             handleSizeChange(val) {
                 const _this = this;

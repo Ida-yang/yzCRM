@@ -491,7 +491,21 @@ export default {
                 "remarks": ''}
             visitaddOrUpdateData.submitURL = this.$store.state.defaultHttp+ 'visit/insertVisit.do?cId='+this.$store.state.iscId+'&pId='+this.$store.state.ispId
             this.$store.state.visitaddOrUpdateData = visitaddOrUpdateData
-            _this.$router.push({ path: '/visitplanaddorupdate' })
+            axios({
+                method: 'get',
+                url: _this.$store.state.defaultHttp+'visitJurisdiction/insert.do',//新增外勤
+            }).then(function(res){
+                if(res.data.msg && res.data.msg == 'error'){
+                    _this.$message({
+                        message:'对不起，您没有该权限，请联系管理员开通',
+                        type:'error'
+                    })
+                }else{
+                    _this.$router.push({ path: '/visitplanaddorupdate' })
+                }
+            }).catch(function(err){
+                // console.log(err);
+            });
         },
         handleEdit(index,row){
             const _this = this
@@ -525,7 +539,21 @@ export default {
             visitaddOrUpdateData.submitData = {"id": row.id}
             visitaddOrUpdateData.submitURL = this.$store.state.defaultHttp+ 'visit/updateVisit.do?cId='+this.$store.state.iscId+'&pId='+this.$store.state.ispId
             this.$store.state.visitaddOrUpdateData = visitaddOrUpdateData
-            _this.$router.push({ path: '/visitplanaddorupdate' })
+            axios({
+                method: 'get',
+                url: _this.$store.state.defaultHttp+'visitJurisdiction/update.do',//编辑外勤
+            }).then(function(res){
+                if(res.data.msg && res.data.msg == 'error'){
+                    _this.$message({
+                        message:'对不起，您没有该权限，请联系管理员开通',
+                        type:'error'
+                    })
+                }else{
+                    _this.$router.push({ path: '/visitplanaddorupdate' })
+                }
+            }).catch(function(err){
+                // console.log(err);
+            });
         },
         handledelete(index,row){
             const _this = this
@@ -548,7 +576,12 @@ export default {
                             type: 'success'
                         });
                         _this.$options.methods.reloadTable.bind(_this)(true)
-                    } else {
+                    }else if(res.data.msg && res.data.msg == 'error'){
+                        _this.$message({
+                            message: '对不起，您没有该权限，请联系管理员开通',
+                            type: 'error'
+                        })
+                    }  else {
                         _this.$message({
                             message: res.data.msg,
                             type: 'error'
@@ -588,7 +621,46 @@ export default {
             });
         },
         search(){
-            this.$options.methods.reloadTable.bind(this)(true)
+            const _this = this
+            let authorityInterface = ''
+            let i = 1
+            if(this.searchList.label == 0 ){
+                authorityInterface = 'visitJurisdiction/all.do'//全部外勤
+                i = 0
+            }else if(this.searchList.label == 2){
+                authorityInterface = 'visitJurisdiction/second.do'//本组外勤
+                i = 0
+            }else if(this.searchList.label == 3){
+                authorityInterface = 'visitJurisdiction/dept.do'//本机构外勤
+                i = 0
+            }else if(this.searchList.label == 10){
+                authorityInterface = 'visitJurisdiction/assistants.do'//我协助外勤
+                i = 0
+            }else if(this.searchList.label == 11){
+                authorityInterface = 'visitJurisdiction/approver.do'//我审核外勤
+                i = 0
+            }
+
+            if(i == 0){
+                console.log(i)
+                axios({
+                    method: 'get',
+                    url: _this.$store.state.defaultHttp+authorityInterface,//查询用户
+                }).then(function(res){
+                    if(res.data.msg && res.data.msg == 'error'){
+                        _this.$message({
+                            message:'对不起，您没有该权限，请联系管理员开通',
+                            type:'error'
+                        })
+                    }else{
+                        _this.$options.methods.reloadTable.bind(_this)(true);
+                    }
+                }).catch(function(err){
+                    // console.log(err);
+                });
+            }else{
+                _this.$options.methods.reloadTable.bind(_this)(true);
+            }
         },
         handleSizeChange(val) {
             const _this = this;

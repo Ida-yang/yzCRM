@@ -329,13 +329,69 @@
                 });
                 val.isActive = !val.isActive;
                 if(i == 1){
-                    _this.$options.methods.loadagreeReport.bind(_this)()
+                    axios({
+                        method: 'get',
+                        url: _this.$store.state.defaultHttp+'reportFormJurisdiction/contract.do',//合同报表
+                    }).then(function(res){
+                        if(res.data.msg && res.data.msg == 'error'){
+                            _this.$message({
+                                message:'对不起，您没有该权限，请联系管理员开通',
+                                type:'error'
+                            })
+                        }else{
+                            _this.$options.methods.loadagreeReport.bind(_this)();
+                        }
+                    }).catch(function(err){
+                        // console.log(err);
+                    });
                 }else if(i == 2){
-                    _this.$options.methods.loadoppReport.bind(_this)()
+                    axios({
+                        method: 'get',
+                        url: _this.$store.state.defaultHttp+'reportFormJurisdiction/opportunity.do',//商机报表
+                    }).then(function(res){
+                        if(res.data.msg && res.data.msg == 'error'){
+                            _this.$message({
+                                message:'对不起，您没有该权限，请联系管理员开通',
+                                type:'error'
+                            })
+                        }else{
+                            _this.$options.methods.loadoppReport.bind(_this)();
+                        }
+                    }).catch(function(err){
+                        // console.log(err);
+                    });
                 }else if(i == 3){
-                    _this.$options.methods.loaddeptrank.bind(_this)()
+                    axios({
+                        method: 'get',
+                        url: _this.$store.state.defaultHttp+'reportFormJurisdiction/dept.do',//部门报表
+                    }).then(function(res){
+                        if(res.data.msg && res.data.msg == 'error'){
+                            _this.$message({
+                                message:'对不起，您没有该权限，请联系管理员开通',
+                                type:'error'
+                            })
+                        }else{
+                            _this.$options.methods.loaddeptrank.bind(_this)();
+                        }
+                    }).catch(function(err){
+                        // console.log(err);
+                    });
                 }else if(i == 4){
-                    _this.$options.methods.loadpersonrank.bind(_this)()
+                    axios({
+                        method: 'get',
+                        url: _this.$store.state.defaultHttp+'reportFormJurisdiction/user.do',//个人报表
+                    }).then(function(res){
+                        if(res.data.msg && res.data.msg == 'error'){
+                            _this.$message({
+                                message:'对不起，您没有该权限，请联系管理员开通',
+                                type:'error'
+                            })
+                        }else{
+                            _this.$options.methods.loadpersonrank.bind(_this)();
+                        }
+                    }).catch(function(err){
+                        // console.log(err);
+                    });
                 }
             },
             drawLine1(){

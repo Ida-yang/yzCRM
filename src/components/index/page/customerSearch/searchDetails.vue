@@ -181,8 +181,20 @@
                 this.showdetails = false
             },
             tabClick(val){
+                const _this = this
+                let qs = require('querystring')
+                let data = {}
+                data.company = this.customername
                 if(val.index == '1'){
-                    this.website = this.searchdetailsList.url
+                    axios({
+                        method: 'post',
+                        url: _this.$store.state.defaultHttp+'website/selectWebsiteByCompany.do',
+                        data: qs.stringify(data)
+                    }).then(function(res){
+                        _this.website = 'http://' + res.data.map.websites[0].url
+                    }).catch(function(err){
+                        // console.log(err);
+                    });
                 }
             }
         },

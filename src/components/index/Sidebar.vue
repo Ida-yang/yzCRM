@@ -155,8 +155,8 @@
                                 title: '短信模板',
                             },
                             {
-                                index: 'SMSlog',
-                                title: '短信日志',
+                                index: 'SMSradar',
+                                title: '短信雷达',
                             },
                         ]
                     },
@@ -204,9 +204,13 @@
                                 index: 'programme',
                                 title: '目标',
                             },
+                            // {
+                            //     index: 'log',
+                            //     title: '操作日志',
+                            // },
                             {
-                                index: 'log',
-                                title: '操作日志',
+                                index: 'logs',
+                                title: '日志',
                             },
                         ]
                     },

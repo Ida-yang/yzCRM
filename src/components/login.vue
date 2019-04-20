@@ -13,7 +13,7 @@
         <el-col class="content-r" v-if="!isShowChromeTip">
             <div class="login">
                 <p class="login_head">云纵CRM系统管理平台 </p>
-                <p class="login_wel">欢迎登录</p>
+                <p class="login_wel">欢迎您登录</p>
                 <!-- <p class="login_wel"><span>欢迎登录</span></p> -->
                 <div class="grid-content bg-purple-dark">
                     <el-form  :model="loginFrom" status-icon :rules="rules" ref="loginFrom" 
@@ -199,16 +199,15 @@ export default {
        height: 100%;
        padding: 20px;
        position: relative;
-       background-image: url('/upload/staticImg/index.jpg');
-       /* background-image: url('../../static/img/index.jpg'); */
+       /* background-image: url('/upload/staticImg/index.jpg'); */
+       background-image: url('../../static/img/index.jpg');
        background-repeat: no-repeat;
        background-size: 100% 100%;
    }
    .login{
        width: 320px;
-       height: 60%;
        background-color: rgb(255, 255, 255);
-       padding: 20px 30px;
+       padding: 20px 50px 120px 50px;
        border-radius: 5px;
        position: absolute;
        left: 50%;

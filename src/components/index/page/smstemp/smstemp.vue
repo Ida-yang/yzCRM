@@ -245,14 +245,29 @@
             handleAdd(){
                 const _this = this
                 let i = this.newform.index
-                _this.newform.title = null
-                _this.newform.genre = null
-                _this.newform.content = null
-                _this.newform.signature = null
-                _this.newform.status = null
-                _this.newform.dayNum = null
-                _this.newform.url = null
-                _this.dialogVisible = true
+                axios({
+                    method: 'get',
+                    url: _this.$store.state.defaultHttp+'templateJurisdiction/insert.do',//新增短信模板
+                }).then(function(res){
+                    if(res.data.msg && res.data.msg == 'error'){
+                        _this.$message({
+                            message:'对不起，您没有该权限，请联系管理员开通',
+                            type:'error'
+                        })
+                    }else{
+                        _this.newform.title = null
+                        _this.newform.genre = null
+                        _this.newform.content = null
+                        _this.newform.signature = null
+                        _this.newform.status = null
+                        _this.newform.dayNum = null
+                        _this.newform.url = null
+                        _this.dialogVisible = true
+                    }
+                }).catch(function(err){
+                    // console.log(err);
+                });
+                
             },
             //短信模板添加提交按钮
             addbasicset(){
@@ -340,16 +355,29 @@
             //短信模板修改
             handleEdit(e,val){
                 const _this = this
-
-                _this.newform.templateId = val.templateId
-                _this.newform.title = val.title
-                _this.newform.genre = val.genre
-                _this.newform.content = val.content
-                _this.newform.signature = val.signature
-                _this.newform.status = val.status
-                _this.newform.dayNum = val.dayNum
-                _this.newform.url = val.url
-                _this.dialogVisible2 = true
+                axios({
+                    method: 'get',
+                    url: _this.$store.state.defaultHttp+'template/deleteTemplate.do',//编辑短信模板
+                }).then(function(res){
+                    if(res.data.msg && res.data.msg == 'error'){
+                        _this.$message({
+                            message:'对不起，您没有该权限，请联系管理员开通',
+                            type:'error'
+                        })
+                    }else{
+                        _this.newform.templateId = val.templateId
+                        _this.newform.title = val.title
+                        _this.newform.genre = val.genre
+                        _this.newform.content = val.content
+                        _this.newform.signature = val.signature
+                        _this.newform.status = val.status
+                        _this.newform.dayNum = val.dayNum
+                        _this.newform.url = val.url
+                        _this.dialogVisible2 = true
+                    }
+                }).catch(function(err){
+                    // console.log(err);
+                });
             },
             //短信模板修改提交按钮
             updatebasicset(){
@@ -457,7 +485,12 @@
                                 type:'success'
                             })
                             _this.$options.methods.reloadTable.bind(_this)(true);
-                        }else{
+                        }else if(res.data.msg && res.data.msg == 'error'){
+                            _this.$message({
+                                message: '对不起，您没有该权限，请联系管理员开通',
+                                type: 'error'
+                            })
+                        } else{
                             _this.$message({
                                 message:res.data.msg,
                                 type:'error'
@@ -502,7 +535,12 @@
                             type:'success'
                         })
                         _this.$options.methods.reloadTable.bind(_this)(true);
-                    }else{
+                    }else if(res.data.msg && res.data.msg == 'error'){
+                        _this.$message({
+                            message: '对不起，您没有该权限，请联系管理员开通',
+                            type: 'error'
+                        })
+                    } else{
                         _this.$message({
                             message:res.data.msg,
                             type:'error'

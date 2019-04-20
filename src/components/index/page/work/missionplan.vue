@@ -417,7 +417,22 @@ export default {
                 "customerName": ''}
             missionaddOrUpdateData.submitURL = this.$store.state.defaultHttp+ 'workPlan/insertWorkPlan.do?cId='+this.$store.state.iscId+'&pId='+this.$store.state.ispId,
             this.$store.state.missionaddOrUpdateData = missionaddOrUpdateData;
-            _this.$router.push({ path: '/missionplanaddorupdate' });
+            axios({
+                method: 'get',
+                url: _this.$store.state.defaultHttp+'workPlanJurisdiction/insert.do',//新增任务
+            }).then(function(res){
+                if(res.data.msg && res.data.msg == 'error'){
+                    _this.$message({
+                        message:'对不起，您没有该权限，请联系管理员开通',
+                        type:'error'
+                    })
+                }else{
+                    _this.$router.push({ path: '/missionplanaddorupdate' });
+                }
+            }).catch(function(err){
+                // console.log(err);
+            });
+            
         },
         handleEdit(index,row){
             const _this = this;
@@ -440,7 +455,21 @@ export default {
             missionaddOrUpdateData.submitData = {"id": row.id};
             missionaddOrUpdateData.submitURL = this.$store.state.defaultHttp+ 'workPlan/updateWorkPlan.do?cId='+this.$store.state.iscId+'&pId='+this.$store.state.ispId,
             this.$store.state.missionaddOrUpdateData = missionaddOrUpdateData;
-            _this.$router.push({ path: '/missionplanaddorupdate' });
+            axios({
+                method: 'get',
+                url: _this.$store.state.defaultHttp+'workPlanJurisdiction/update.do',//编辑任务
+            }).then(function(res){
+                if(res.data.msg && res.data.msg == 'error'){
+                    _this.$message({
+                        message:'对不起，您没有该权限，请联系管理员开通',
+                        type:'error'
+                    })
+                }else{
+                    _this.$router.push({ path: '/missionplanaddorupdate' });
+                }
+            }).catch(function(err){
+                // console.log(err);
+            });
         },
         handledelete(index,row){
             const _this = this
@@ -463,7 +492,12 @@ export default {
                             type: 'success'
                         });
                         _this.$options.methods.reloadTable.bind(_this)(true)
-                    } else {
+                    }else if(res.data.msg && res.data.msg == 'error'){
+                        _this.$message({
+                            message: '对不起，您没有该权限，请联系管理员开通',
+                            type: 'error'
+                        })
+                    }  else {
                         _this.$message({
                             message: res.data.msg,
                             type: 'error'
@@ -503,7 +537,39 @@ export default {
             });
         },
         search(){
-            this.$options.methods.reloadTable.bind(this)(true);
+            const _this = this
+            let authorityInterface = ''
+            let i = 1
+            if(this.searchList.label == 0 ){
+                authorityInterface = 'workPlanJurisdiction/all.do'//全部线索
+                i = 0
+            }else if(this.searchList.label == 2){
+                authorityInterface = 'workPlanJurisdiction/second.do'//本组线索
+                i = 0
+            }else if(this.searchList.label == 3){
+                authorityInterface = 'workPlanJurisdiction/dept.do'//本机构线索
+                i = 0
+            }
+
+            if(i == 0){
+                axios({
+                    method: 'get',
+                    url: _this.$store.state.defaultHttp+authorityInterface,
+                }).then(function(res){
+                    if(res.data.msg && res.data.msg == 'error'){
+                        _this.$message({
+                            message:'对不起，您没有该权限，请联系管理员开通',
+                            type:'error'
+                        })
+                    }else{
+                        _this.$options.methods.reloadTable.bind(_this)(true);
+                    }
+                }).catch(function(err){
+                    // console.log(err);
+                });
+            }else{
+                _this.$options.methods.reloadTable.bind(_this)(true);
+            }
         },
         handleSizeChange(val) {
             const _this = this;

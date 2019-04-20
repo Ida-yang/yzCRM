@@ -1048,12 +1048,27 @@
             },
             showsend(){
                 if(this.SMSId[0]){
-                    this.$options.methods.loadTemplate.bind(this)()
-                    this.newform.cluenum = this.SMSId.length
-                    this.newform.templateId = ''
-                    this.newform.explain = ''
-                    this.newform.smscontent = ''
-                    this.dialogVisible = true
+                    axios({
+                        method: 'get',
+                        url: _this.$store.state.defaultHttp+'clueJurisdiction/send.do',//线索发送短信
+                    }).then(function(res){
+                        if(res.data.msg && res.data.msg == 'error'){
+                            _this.$message({
+                                message:'对不起，您没有该权限，请联系管理员开通',
+                                type:'error'
+                            })
+                        }else{
+                            _this.$options.methods.loadTemplate.bind(_this)()
+                            _this.newform.cluenum = _this.SMSId.length
+                            _this.newform.templateId = ''
+                            _this.newform.explain = ''
+                            _this.newform.smscontent = ''
+                            _this.dialogVisible = true
+                        }
+                    }).catch(function(err){
+                        // console.log(err);
+                    });
+                    
                 }else{
                     this.$message({
                         type: 'error',

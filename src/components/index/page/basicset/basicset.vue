@@ -10,17 +10,6 @@
         <div class="setrightcontent">
             <div class="entry">
                 <el-button class="btn info-btn" size="mini" @click="handleAdd()">新增</el-button>
-                <!-- <el-popover
-                    placement="bottom"
-                    width="100"
-                    trigger="click">
-                    <el-checkbox-group class="checklist" v-model="checklist">
-                        <el-checkbox class="checkone" @change="showsort()" label="顺序"></el-checkbox>
-                        <el-checkbox class="checkone" @change="showname()" label="名称"></el-checkbox>
-                        <el-checkbox class="checkone" @change="showremark()" label="备注"></el-checkbox>
-                    </el-checkbox-group>
-                    <el-button slot="reference" icon="el-icon-more" class="info-btn screen" type="mini"></el-button>
-                </el-popover> -->
             </div>
             <el-table
                 :data="tableData"
@@ -839,11 +828,11 @@
                 let val = null
                 if(i == 1 || i == 2 || i == 3 || i == 4 || i == 5){
                     idArr.id = row.id
-                    urls = _this.$store.state.defaultHttp+ 'typeInfo/deleteTypeInfoById.do?cId='+_this.$store.state.iscId
+                    urls = _this.$store.state.defaultHttp+ 'typeInfo/deleteTypeInfoById.do?cId='+_this.$store.state.iscId // 删除辅助资料
                     val = row.typeName
                 }else if(i == 6){
                     idArr.step_id = row.step_id
-                    urls = _this.$store.state.defaultHttp+ 'addstep/deleteByPrimaryKey.do?cId='+_this.$store.state.iscId
+                    urls = _this.$store.state.defaultHttp+ 'addstep/deleteByPrimaryKey.do?cId='+_this.$store.state.iscId  // 删除商机进度
                     val = row.step_name
                 }
                 
@@ -888,15 +877,6 @@
                         message: '取消删除'
                     });       
                 });
-            },
-            showsort(){
-                this.showshunxu = !this.showshunxu
-            },
-            showname(){
-                this.showmingcheng = !this.showmingcheng
-            },
-            showremark(){
-                this.showbeizhu = !this.showbeizhu
             },
         }
     }

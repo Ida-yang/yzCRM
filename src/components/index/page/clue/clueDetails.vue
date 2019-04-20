@@ -998,25 +998,40 @@
                 data.templateId = this.SMSform.templateId
 
                 axios({
-                    method: 'post',
-                    url: _this.$store.state.defaultHttp+'message/sendMarketingMsg.do?cId='+_this.$store.state.iscId,
-                    data: qs.stringify(data)
+                    method: 'get',
+                    url: _this.$store.state.defaultHttp+'clueJurisdiction/send.do',//线索发送短信
                 }).then(function(res){
-                    if(res.data.code && res.data.code == '200'){
+                    if(res.data.msg && res.data.msg == 'error'){
                         _this.$message({
-                            message:'发送成功',
-                            type:'success'
-                        })
-                        _this.$options.methods.addSMSsended.bind(_this)()
-                    }else{
-                        _this.$message({
-                            message:res.data.msg,
+                            message:'对不起，您没有该权限，请联系管理员开通',
                             type:'error'
                         })
+                    }else{
+                        axios({
+                            method: 'post',
+                            url: _this.$store.state.defaultHttp+'message/sendMarketingMsg.do?cId='+_this.$store.state.iscId,
+                            data: qs.stringify(data)
+                        }).then(function(res){
+                            if(res.data.code && res.data.code == '200'){
+                                _this.$message({
+                                    message:'发送成功',
+                                    type:'success'
+                                })
+                                _this.$options.methods.addSMSsended.bind(_this)()
+                            }else{
+                                _this.$message({
+                                    message:res.data.msg,
+                                    type:'error'
+                                })
+                            }
+                        }).catch(function(err){
+                            // console.log(err);
+                        });
                     }
                 }).catch(function(err){
                     // console.log(err);
                 });
+                
             },
             addSMSsended(){
                 const _this = this

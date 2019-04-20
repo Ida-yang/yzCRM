@@ -143,9 +143,9 @@
                             <li class="verticalline"></li>
                             <li class="recordcontent">
                                 <div class="left_more">
-                                    <p>{{item.private_employee}}&nbsp;&nbsp;于{{item.createTime}}&nbsp;&nbsp;通过{{item.followType}}更新了一条记录&nbsp;&nbsp;&nbsp;客户联系人为：&nbsp;{{item.contacts[0].name}}
+                                    <p>{{item.private_employee}}&nbsp;&nbsp;于{{item.createTime}}&nbsp;&nbsp;通过{{item.followType}}更新了一条记录<span v-if="item.contacts[0]">&nbsp;&nbsp;&nbsp;客户联系人为：&nbsp;{{item.contacts[0].name}}</span>
                                         <span v-if="item.contactTime">&nbsp;&nbsp;&nbsp;并约定下次联系时间：{{item.contactTime}}</span>
-                                        &nbsp;&nbsp;&nbsp;<span>状态为：{{item.state}} &nbsp;&nbsp;&nbsp;{{item.inputType}}</span>
+                                        <span>&nbsp;&nbsp;&nbsp;状态为：{{item.state}} &nbsp;&nbsp;&nbsp;{{item.inputType}}</span>
                                     </p>
                                     <p style="margin-top:15px;margin-bottom:15px;">{{item.followContent}}</p>
                                     <div class="imgbox_two" v-if="item.imgName">
@@ -606,15 +606,15 @@
                 // portrait:this.$store.state.portrait,
                 // imgUrl:'',
 
-                stateList:null,
+                stateList:[],
                 searchList:{
                     keyword:null,
                 },
                 customerdetail:{},
                 contacts:{},
-                record:null,
+                record:[],
                 fastcontactList:null,
-                contactList:null,
+                contactList:[],
                 activeName2: 'first',
                 tableData: null,
                 tableNumber:null,
@@ -627,11 +627,11 @@
 
                 retracts:true,
 
-                priconList:null,
+                priconList:[],
                 contacts_id:null,
 
                 countryId:null,
-                Provinces:null,
+                Provinces:[],
                 businessList:null,
                 showbusiness:false,
                 showloading:false,
@@ -723,6 +723,19 @@
                 }).catch(function(err){
                     // console.log(err);
                 });
+                //详情页联系人
+                axios({
+                    method:'post',
+                    url:_this.$store.state.defaultHttp+'customerpool/getPoolContacts.do?cId='+_this.$store.state.iscId+'&customerpool_id='+this.detailData.id,
+                    data:qs.stringify(pageInfo2)
+                }).then(function(res){
+                    _this.$store.state.cusConsDetailsList = res.data.map.success
+                    _this.contactList = res.data.map.success
+                    _this.priconList = res.data.map.success
+                    _this.followform.contactsId = res.data.map.success[0].id
+                }).catch(function(err){
+                    // console.log(err);
+                });
                 //加载跟进记录
                 axios({
                     method:'get',
@@ -758,19 +771,6 @@
                             el.enclosureUrl = '/upload/'+_this.$store.state.iscId+'/'+el.enclosureName
                         }
                     });
-                }).catch(function(err){
-                    // console.log(err);
-                });
-                //详情页联系人
-                axios({
-                    method:'post',
-                    url:_this.$store.state.defaultHttp+'customerpool/getPoolContacts.do?cId='+_this.$store.state.iscId+'&customerpool_id='+this.detailData.id,
-                    data:qs.stringify(pageInfo2)
-                }).then(function(res){
-                    _this.$store.state.cusConsDetailsList = res.data.map.success
-                    _this.contactList = res.data.map.success
-                    _this.priconList = res.data.map.success
-                    _this.followform.contactsId = res.data.map.success[0].id
                 }).catch(function(err){
                     // console.log(err);
                 });
@@ -827,7 +827,7 @@
                 }).then(function(res){
                     _this.stateList = res.data
                     _this.stateList.forEach(el => {
-                        if(_this.followform.state == el.typeName){
+                        if(_this.followform.state && _this.followform.state == el.typeName){
                             _this.followform.state = el.id
                         }
                     });
@@ -1085,7 +1085,6 @@
             },
 
             tabClick(val){
-                
                 if(val.index == 6){
                     this.website = this.customerdetail.url
                 }
@@ -1252,25 +1251,41 @@
                 data.templateId = this.SMSform.templateId
 
                 axios({
-                    method: 'post',
-                    url: _this.$store.state.defaultHttp+'message/sendMarketingMsg.do?cId='+_this.$store.state.iscId,
-                    data: qs.stringify(data)
-                }).then(function(res){
-                    if(res.data.code && res.data.code == '200'){
-                        _this.$message({
-                            message:'发送成功',
-                            type:'success'
-                        })
-                        _this.$options.methods.addSMSsended.bind(_this)()
-                    }else{
-                        _this.$message({
-                            message:res.data.msg,
-                            type:'error'
-                        })
-                    }
-                }).catch(function(err){
-                    // console.log(err);
-                });
+                        method: 'get',
+                        url: _this.$store.state.defaultHttp+'customerJurisdiction/send.do',//客户发送短信
+                    }).then(function(res){
+                        if(res.data.msg && res.data.msg == 'error'){
+                            _this.$message({
+                                message:'对不起，您没有该权限，请联系管理员开通',
+                                type:'error'
+                            })
+                        }else{
+                            axios({
+                                method: 'post',
+                                url: _this.$store.state.defaultHttp+'message/sendMarketingMsg.do?cId='+_this.$store.state.iscId,
+                                data: qs.stringify(data)
+                            }).then(function(res){
+                                if(res.data.code && res.data.code == '200'){
+                                    _this.$message({
+                                        message:'发送成功',
+                                        type:'success'
+                                    })
+                                    _this.$options.methods.addSMSsended.bind(_this)()
+                                }else{
+                                    _this.$message({
+                                        message:res.data.msg,
+                                        type:'error'
+                                    })
+                                }
+                            }).catch(function(err){
+                                // console.log(err);
+                            });
+                        }
+                    }).catch(function(err){
+                        // console.log(err);
+                    });
+
+                
             },
             addSMSsended(){
                 const _this = this
