@@ -199,8 +199,8 @@ export default {
        height: 100%;
        padding: 20px;
        position: relative;
-       /* background-image: url('/upload/staticImg/index.jpg'); */
-       background-image: url('../../static/img/index.jpg');
+       background-image: url('/upload/staticImg/index.jpg');
+       /* background-image: url('../../static/img/index.jpg'); */
        background-repeat: no-repeat;
        background-size: 100% 100%;
    }

@@ -435,31 +435,38 @@
             searchSMSlog() {
                 const _this = this
                 let authorityInterface = ''
+                let i = 1
                 if(this.searchList.label == 0 ){
                     authorityInterface = 'sendRecordJurisdiction/all.do'//全部短信日志
-                }else if(this.searchList.label == 1 ){
-                    authorityInterface = 'sendRecordJurisdiction/my.do'//我的短信日志
+                    i = 0
                 }else if(this.searchList.label == 2){
                     authorityInterface = 'sendRecordJurisdiction/second.do'//本组短信日志
+                    i = 0
                 }else if(this.searchList.label == 3){
                     authorityInterface = 'sendRecordJurisdiction/dept.do'//本机构短信日志
+                    i = 0
                 }
 
-                axios({
-                    method: 'get',
-                    url: _this.$store.state.defaultHttp+authorityInterface,
-                }).then(function(res){
-                    if(res.data.msg && res.data.msg == 'error'){
-                        _this.$message({
-                            message:'对不起，您没有该权限，请联系管理员开通',
-                            type:'error'
-                        })
-                    }else{
-                        _this.$options.methods.loadSMSlog.bind(_this)(true);
-                    }
-                }).catch(function(err){
-                    // console.log(err);
-                });
+                if(i == 0){
+                    axios({
+                        method: 'get',
+                        url: _this.$store.state.defaultHttp+authorityInterface,
+                    }).then(function(res){
+                        if(res.data.msg && res.data.msg == 'error'){
+                            _this.$message({
+                                message:'对不起，您没有该权限，请联系管理员开通',
+                                type:'error'
+                            })
+                        }else{
+                            _this.$options.methods.loadSMSlog.bind(_this)(true);
+                        }
+                    }).catch(function(err){
+                        // console.log(err);
+                    });
+                }else{
+                    _this.$options.methods.loadSMSlog.bind(_this)(true);
+                }
+                
             },
             searchOplog() {
                 const _this = this

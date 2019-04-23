@@ -832,31 +832,38 @@
 
             search() {
                 const _this = this
+                let authorityInterface = ''
+                let i = 1
                 if(this.searchList.label == 0 ){
-                    this.authorityInterface = 'cluePoolJurisdiction/all.do'//全部线索池
-                }else if(this.searchList.label == 1 ){
-                    this.authorityInterface = 'cluePoolJurisdiction/my.do'//我的线索池
+                    authorityInterface = 'cluePoolJurisdiction/all.do'//全部线索池
+                    i = 0
                 }else if(this.searchList.label == 2){
-                    this.authorityInterface = 'cluePoolJurisdiction/second.do'//本组线索池
+                    authorityInterface = 'cluePoolJurisdiction/second.do'//本组线索池
+                    i = 0
                 }else if(this.searchList.label == 3){
-                    this.authorityInterface = 'cluePoolJurisdiction/dept.do'//本机构线索池
+                    authorityInterface = 'cluePoolJurisdiction/dept.do'//本机构线索池
+                    i = 0
                 }
 
-                axios({
-                    method: 'get',
-                    url: _this.$store.state.defaultHttp+_this.authorityInterface,
-                }).then(function(res){
-                    if(res.data.msg && res.data.msg == 'error'){
-                        _this.$message({
-                            message:'对不起，您没有该权限，请联系管理员开通',
-                            type:'error'
-                        })
-                    }else{
-                        _this.$options.methods.reloadTable.bind(_this)(true);
-                    }
-                }).catch(function(err){
-                    // console.log(err);
-                });
+                if(i == 0){
+                    axios({
+                        method: 'get',
+                        url: _this.$store.state.defaultHttp+authorityInterface,
+                    }).then(function(res){
+                        if(res.data.msg && res.data.msg == 'error'){
+                            _this.$message({
+                                message:'对不起，您没有该权限，请联系管理员开通',
+                                type:'error'
+                            })
+                        }else{
+                            _this.$options.methods.reloadTable.bind(_this)(true);
+                        }
+                    }).catch(function(err){
+                        // console.log(err);
+                    });
+                }else{
+                    _this.$options.methods.reloadTable.bind(_this)(true);
+                }
                 
             },
             reset(){

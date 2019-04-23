@@ -180,6 +180,7 @@
         overflow: hidden;
         cursor: pointer;
         height: 23px;
+        /* width: 65px; */
         line-height: 23px;
         border: 1px solid #e9eaec;
         background: #fff;
@@ -218,6 +219,10 @@
         background-color: #ff6333;
         color: #fff;
     }
+
+    /* .tags-li-icon{
+        float: right;
+    } */
 
     .tags-close-box {
         position: absolute;

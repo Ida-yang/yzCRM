@@ -27,15 +27,21 @@
                 </el-table-column>
                 <el-table-column
                     prop="sort"
-                    v-if="showshunxu"
                     header-align="left"
                     align="left"
                     label="顺序"
                     sortable>
                 </el-table-column>
                 <el-table-column
+                    prop="id"
+                    header-align="left"
+                    align="left"
+                    width="100"
+                    label="ID"
+                    sortable>
+                </el-table-column>
+                <el-table-column
                     prop="typeName"
-                    v-if="showmingcheng"
                     header-align="left"
                     align="left"
                     min-width="120"
@@ -44,7 +50,6 @@
                 </el-table-column>
                 <el-table-column
                     prop="notes"
-                    v-if="showbeizhu"
                     header-align="left"
                     align="left"
                     min-width="120"
@@ -82,7 +87,6 @@
                 </el-table-column>
                 <el-table-column
                     prop="sort"
-                    v-if="showshunxu"
                     header-align="left"
                     align="left"
                     label="顺序"
@@ -90,7 +94,6 @@
                 </el-table-column>
                 <el-table-column
                     prop="typeName"
-                    v-if="showmingcheng"
                     header-align="left"
                     align="left"
                     min-width="120"
@@ -99,7 +102,6 @@
                 </el-table-column>
                 <el-table-column
                     prop="content"
-                    v-if="showmingcheng"
                     header-align="left"
                     align="left"
                     min-width="120"
@@ -108,7 +110,6 @@
                 </el-table-column>
                 <el-table-column
                     prop="notes"
-                    v-if="showbeizhu"
                     header-align="left"
                     align="left"
                     min-width="120"
@@ -146,7 +147,6 @@
                 </el-table-column>
                 <el-table-column
                     prop="sort"
-                    v-if="showshunxu"
                     header-align="left"
                     align="left"
                     label="顺序"
@@ -154,7 +154,6 @@
                 </el-table-column>
                 <el-table-column
                     prop="step_name"
-                    v-if="showmingcheng"
                     header-align="left"
                     align="left"
                     min-width="120"
@@ -163,7 +162,6 @@
                 </el-table-column>
                 <el-table-column
                     prop="step_probability"
-                    v-if="showmingcheng"
                     header-align="left"
                     align="left"
                     min-width="120"
@@ -175,7 +173,6 @@
                 </el-table-column>
                 <el-table-column
                     prop="notes"
-                    v-if="showbeizhu"
                     header-align="left"
                     align="left"
                     min-width="120"
@@ -395,9 +392,6 @@
                     id:null,
                 },
 
-                showshunxu:true,
-                showmingcheng:true,
-                showbeizhu:true,
                 showtopfour:true,
                 showfive:false,
                 showsix:false,

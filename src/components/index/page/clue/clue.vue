@@ -509,7 +509,6 @@
                 dialogFormVisible1:false,
                 formLabelWidth: '130px',
 
-                authorityInterface: null,
                 downloadUrl: this.$store.state.systemHttp+'upload/import_template.xls',
                 fileName:null,
 
@@ -952,31 +951,38 @@
             search() {
                 const _this = this
                 const qs = require('querystring')
+                let authorityInterface = ''
+                let i = 1
                 if(this.searchList.label == 0 ){
-                    this.authorityInterface = 'clueJurisdiction/all.do'//全部线索
-                }else if(this.searchList.label == 1 ){
-                    this.authorityInterface = 'clueJurisdiction/my.do'//我的线索
+                    authorityInterface = 'clueJurisdiction/all.do'//全部线索
+                    i = 0
                 }else if(this.searchList.label == 2){
-                    this.authorityInterface = 'clueJurisdiction/second.do'//本组线索
+                    authorityInterface = 'clueJurisdiction/second.do'//本组线索
+                    i = 0
                 }else if(this.searchList.label == 3){
-                    this.authorityInterface = 'clueJurisdiction/dept.do'//本机构线索
+                    authorityInterface = 'clueJurisdiction/dept.do'//本机构线索
+                    i = 0
                 }
 
-                axios({
-                    method: 'get',
-                    url: _this.$store.state.defaultHttp+_this.authorityInterface,
-                }).then(function(res){
-                    if(res.data.msg && res.data.msg == 'error'){
-                        _this.$message({
-                            message:'对不起，您没有该权限，请联系管理员开通',
-                            type:'error'
-                        })
-                    }else{
-                        _this.$options.methods.loadTable.bind(_this)(true);
-                    }
-                }).catch(function(err){
-                    // console.log(err);
-                });
+                if(i == 0){
+                    axios({
+                        method: 'get',
+                        url: _this.$store.state.defaultHttp+authorityInterface,
+                    }).then(function(res){
+                        if(res.data.msg && res.data.msg == 'error'){
+                            _this.$message({
+                                message:'对不起，您没有该权限，请联系管理员开通',
+                                type:'error'
+                            })
+                        }else{
+                            _this.$options.methods.loadTable.bind(_this)(true);
+                        }
+                    }).catch(function(err){
+                        // console.log(err);
+                    });
+                }else{
+                    _this.$options.methods.loadTable.bind(_this)(true);
+                }
                 
             },
             reset(){
@@ -1047,6 +1053,7 @@
                 })
             },
             showsend(){
+                const _this = this
                 if(this.SMSId[0]){
                     axios({
                         method: 'get',

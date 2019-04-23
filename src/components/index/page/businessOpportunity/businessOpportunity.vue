@@ -302,8 +302,6 @@
                 dialogFormVisible:false,
                 dialogFormVisible1:false,
                 formLabelWidth: '130px',
-
-                authorityInterface: null,
             }
         },
         activated(){
@@ -641,31 +639,38 @@
             search() {
                 const _this = this
                 const qs = require('querystring')
+                let authorityInterface = ''
+                let i = 1
                 if(this.searchList.label == 0 ){
-                    this.authorityInterface = 'opportunityJurisdiction/all.do'//全部商机
-                }else if(this.searchList.label == 1 ){
-                    this.authorityInterface = 'opportunityJurisdiction/my.do'//我的商机
+                    authorityInterface = 'opportunityJurisdiction/all.do'//全部商机
+                    i = 0
                 }else if(this.searchList.label == 2){
-                    this.authorityInterface = 'opportunityJurisdiction/second.do'//本组商机
+                    authorityInterface = 'opportunityJurisdiction/second.do'//本组商机
+                    i = 0
                 }else if(this.searchList.label == 3){
-                    this.authorityInterface = 'opportunityJurisdiction/dept.do'//本机构商机
+                    authorityInterface = 'opportunityJurisdiction/dept.do'//本机构商机
+                    i = 0
                 }
 
-                axios({
+                if(i == 0){
+                    axios({
                     method: 'get',
-                    url: _this.$store.state.defaultHttp+_this.authorityInterface,
-                }).then(function(res){
-                    if(res.data.msg && res.data.msg == 'error'){
-                        _this.$message({
-                            message:'对不起，您没有该权限，请联系管理员开通',
-                            type:'error'
-                        })
-                    }else{
-                        _this.$options.methods.reloadTable.bind(_this)(true);
-                    }
-                }).catch(function(err){
-                    // console.log(err);
-                });
+                        url: _this.$store.state.defaultHttp+authorityInterface,
+                    }).then(function(res){
+                        if(res.data.msg && res.data.msg == 'error'){
+                            _this.$message({
+                                message:'对不起，您没有该权限，请联系管理员开通',
+                                type:'error'
+                            })
+                        }else{
+                            _this.$options.methods.reloadTable.bind(_this)(true);
+                        }
+                    }).catch(function(err){
+                        // console.log(err);
+                    });
+                }else{
+                    _this.$options.methods.reloadTable.bind(_this)(true);
+                }
             },
             reset(){
                 this.searchList = Object.assign({}, this.searchListNew);

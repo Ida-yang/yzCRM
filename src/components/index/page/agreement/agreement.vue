@@ -368,8 +368,6 @@
                 checklist:null,
                 
                 formLabelWidth: '130px',
-
-                authorityInterface: null
             }
         },
         mounted(){
@@ -724,32 +722,38 @@
             search() {
                 const _this = this
                 const qs = require('querystring')
+                let authorityInterface = ''
+                let i = 1
                 if(this.searchList.label == 0 ){
-                    this.authorityInterface = 'contractJurisdiction/all.do'//全部合同
-                }else if(this.searchList.label == 1 ){
-                    this.authorityInterface = 'contractJurisdiction/my.do'//我的合同
+                    authorityInterface = 'contractJurisdiction/all.do'//全部合同
+                    i = 0
                 }else if(this.searchList.label == 2){
-                    this.authorityInterface = 'contractJurisdiction/second.do'//本组合同
+                    authorityInterface = 'contractJurisdiction/second.do'//本组合同
+                    i = 0
                 }else if(this.searchList.label == 3){
-                    this.authorityInterface = 'contractJurisdiction/dept.do'//本机构合同
+                    authorityInterface = 'contractJurisdiction/dept.do'//本机构合同
+                    i = 0
                 }
 
-                axios({
+                if(i == 0){
+                    axios({
                     method: 'get',
-                    url: _this.$store.state.defaultHttp+_this.authorityInterface,
-                }).then(function(res){
-                    if(res.data.msg && res.data.msg == 'error'){
-                        _this.$message({
-                            message:'对不起，您没有该权限，请联系管理员开通',
-                            type:'error'
-                        })
-                    }else{
-                        _this.$options.methods.reloadTable.bind(_this)(true);
-                    }
-                }).catch(function(err){
-                    _this.$message.error("查询失败，请重新查询");
-                });
-                // this.$options.methods.reloadTable.bind(this)(true);
+                        url: _this.$store.state.defaultHttp+authorityInterface,
+                    }).then(function(res){
+                        if(res.data.msg && res.data.msg == 'error'){
+                            _this.$message({
+                                message:'对不起，您没有该权限，请联系管理员开通',
+                                type:'error'
+                            })
+                        }else{
+                            _this.$options.methods.reloadTable.bind(_this)(true);
+                        }
+                    }).catch(function(err){
+                        _this.$message.error("查询失败，请重新查询");
+                    });
+                }else{
+                    _this.$options.methods.reloadTable.bind(_this)(true);
+                }
             },
             reset(){
                 this.searchList = Object.assign({}, this.searchListNew);

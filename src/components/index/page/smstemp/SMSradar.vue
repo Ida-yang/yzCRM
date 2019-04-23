@@ -16,12 +16,13 @@
         <div class="searchList" style="width:100%;">
             <el-input placeholder="请输入联系人或公司名称" v-model="searchName" style="margin-left:20px;width:400px;" @keyup.enter.native="search">
                 <el-select v-model="searchList.keyType" slot="prepend" placeholder="请选择" style="width:125px"> 
-                <el-option label="联系人名称" value="1"></el-option>
-                <el-option label="公司名称" value="2"></el-option>
+                    <el-option label="联系人名称" value="1"></el-option>
+                    <el-option label="公司名称" value="2"></el-option>
                 </el-select>
             </el-input>
             &nbsp;&nbsp;
             <el-button icon="el-icon-search" type="primary" size="mini" @click="search()">查询</el-button>
+            <br><br>
         </div>
         <el-table
             :data="tableData"
@@ -37,7 +38,7 @@
                 width="45">
             </el-table-column>
             <el-table-column
-                prop="coName"
+                prop="name"
                 fixed
                 header-align="left"
                 align="left"
@@ -46,16 +47,13 @@
                 sortable>
             </el-table-column>
             <el-table-column
-                prop="name"
+                prop="workName"
                 fixed
                 header-align="left"
                 align="left"
                 min-width="180"
                 label="公司名称"
                 sortable>
-                <template slot-scope="scope">
-                    {{scope.row.name}}
-                </template>
             </el-table-column>
             <el-table-column
                 prop="createTime"
@@ -66,7 +64,7 @@
                 sortable>
             </el-table-column>
             <el-table-column
-                prop="titile"
+                prop="content"
                 show-overflow-tooltip
                 header-align="left"
                 align="left"
@@ -116,11 +114,12 @@
         data(){
             return{
                 msg:'短信雷达',
-                searchList:{},
-                nullvalue:null,
-                page:1,//默认第一页
-                limit:100,//默认100条
-
+                searchList:{
+                    label:'1',
+                    time:null,
+                    keyType:'1',
+                    searchName:null,
+                },
                 pIdData:[
                     {label:'0',value:'全部'},
                     {label:'1',value:'我的'},
@@ -134,7 +133,11 @@
                     {id:'4',typeName:'本月'},
                     {id:'5',typeName:'上月'}
                 ],
-                searchName:null,
+
+                nullvalue:null,
+                page:1,//默认第一页
+                limit:100,//默认100条
+
             }
         },
         mounted(){
@@ -148,11 +151,6 @@
                 const _this = this;
                 let qs =require('querystring')
                 let searchList = {}
-                if(this.searchList.keyType == '1'){
-                    searchList.searchName = this.searchName
-                }else if(this.searchList.keyType == '2'){
-                    searchList.keyWord = this.searchName
-                }
                 if(this.searchList.label == 0 ){
                     searchList.pId = _this.nullvalue
                 }else if(this.searchList.label == 1){
@@ -162,6 +160,9 @@
                 }else if(this.searchList.label == 3){
                     searchList.deptid = _this.$store.state.insid
                 }
+                searchList.keyType = this.searchList.keyType
+                searchList.searchName = this.searchList.searchName
+                searchList.example = this.searchList.time
                 searchList.page = this.page;
                 searchList.limit = this.limit;
 
@@ -177,9 +178,51 @@
                     // console.log(err);
                 });
             },
-            search(){},
-            handleSizeChange(){},
-            handleCurrentChange(){},
+            search(){
+                const _this = this
+                let authorityInterface = ''
+                let i = 1
+                if(this.searchList.label == 0 ){
+                    authorityInterface = 'openRecordJurisdiction/all.do'//全部短信日志
+                    i = 0
+                }else if(this.searchList.label == 2){
+                    authorityInterface = 'openRecordJurisdiction/second.do'//本组短信日志
+                    i = 0
+                }else if(this.searchList.label == 3){
+                    authorityInterface = 'openRecordJurisdiction/dept.do'//本机构短信日志
+                    i = 0
+                }
+
+                if(i == 0){
+                    axios({
+                        method: 'get',
+                        url: _this.$store.state.defaultHttp+authorityInterface,
+                    }).then(function(res){
+                        if(res.data.msg && res.data.msg == 'error'){
+                            _this.$message({
+                                message:'对不起，您没有该权限，请联系管理员开通',
+                                type:'error'
+                            })
+                        }else{
+                            _this.$options.methods.loadTable.bind(_this)(true);
+                        }
+                    }).catch(function(err){
+                        // console.log(err);
+                    });
+                }else{
+                    _this.$options.methods.loadTable.bind(_this)(true);
+                }
+            },
+            handleSizeChange(val){
+                const _this = this;
+                _this.limit = val;
+                _this.$options.methods.loadTable.bind(_this)(false);
+            },
+            handleCurrentChange(val){
+                const _this = this;
+                _this.page = val;
+                _this.$options.methods.loadTable.bind(_this)(false);
+            },
         },
     }
 </script>

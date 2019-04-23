@@ -24,6 +24,16 @@
             </el-tree>
         </div>
         <div class="rightcontent">
+            <!-- <div style="margin:0 0 15px 15px;">
+                <el-button class="btn info-btn" size="mini" @click="handleAdd()">新增</el-button>
+            </div> -->
+            <!-- <ul class="rolerecord" v-for="item in roleList" :key="item.id">
+                <li class="rolecontent">
+                    ----<span>&nbsp;<i class="el-icon-bell">&nbsp;</i>{{item.name}} - 【{{item.deptname}}】</span>
+                    <el-button type="text" size="mini" @click="handleEdit($event,item)">修改</el-button>
+                    <el-button type="text" size="mini" @click="handledelete(item.id)">删除</el-button>
+                </li>
+            </ul> -->
             <div class="entry">
                 <el-button class="btn info-btn" size="mini" @click="handleAdd()">新增</el-button>
             </div>
@@ -125,35 +135,72 @@
                 </el-form-item>
             </el-form>
             <el-tabs v-model="activeindex" type="card" @tab-click="checkResource">
-                <el-tab-pane v-for="item in resourceData" :key="item[0].index" :label="item[1].name">
-                    <el-checkbox :indeterminate="item.checksome" v-model="item.checkAll" @change="CheckAlls($event,item)">全选</el-checkbox>
+                <el-tab-pane v-for="(item,index) in resourceData" :key="index" :label="index">
+                    <el-checkbox :indeterminate="checksome" v-model="checkAll" @change="CheckAlls($event,item)">全选</el-checkbox>
                     <div style="margin: 15px 0;"></div>
-                    <div v-for="(a,i) in item[2]" :key="i">
-                        <el-checkbox v-model="b.checked" class="checkboxclass" v-for="b in a" :key="b.id" :label="b.id" @change="checkvalue($event,b)">{{b.resourcename}}</el-checkbox>
-                        <div style="margin:30px 0;"></div>
-                    </div>
-                    
-                    <div v-for="(a,i) in item[3]" :key="i">
-                        <el-checkbox v-model="b.checked" class="checkboxclass" v-for="b in a" :key="b.id" :label="b.id" @change="checkvalue($event,b)">{{b.resourcename}}</el-checkbox>
-                        <div style="margin:30px 0;"></div>
-                    </div>
-                    
-                    <div v-for="(a,i) in item[4]" :key="i">
-                        <el-checkbox v-model="b.checked" class="checkboxclass" v-for="b in a" :key="b.id" :label="b.id" @change="checkvalue($event,b)">{{b.resourcename}}</el-checkbox>
-                        <div style="margin:30px 0;"></div>
-                    </div>
-                    
-                    <div v-for="(a,i) in item[5]" :key="i">
-                        <el-checkbox v-model="b.checked" class="checkboxclass" v-for="b in a" :key="b.id" :label="b.id" @change="checkvalue($event,b)">{{b.resourcename}}</el-checkbox>
-                        <div style="margin:30px 0;"></div>
-                    </div>
-                    
-                    <div v-for="(a,i) in item[6]" :key="i">
-                        <el-checkbox v-model="b.checked" class="checkboxclass" v-for="b in a" :key="b.id" :label="b.id" @change="checkvalue($event,b)">{{b.resourcename}}</el-checkbox>
-                        <div style="margin:30px 0;"></div>
+                    <div v-for="(a,i) in item" :key="i">
+                        <div v-for="(b,j) in a" :key="j">
+                            <div v-for="(c,k) in b" :key="k">
+                                <div v-for="(d,l) in c" :key="l">
+                                    <el-checkbox class="checkboxclass" v-for="e in d" :key="e.id" :label="e.id">{{e.resourcename}}</el-checkbox>
+                                </div>
+                            </div>
+                        </div>
+                        <hr style="width:100%;height:1px;background:#dcdfe6;border:none;margin:15px">
                     </div>
                 </el-tab-pane>
             </el-tabs>
+            <!-- <el-tabs v-model="activeName" type="card">
+                <el-tab-pane label="线索" name="first">
+                    <el-checkbox :indeterminate="checksomeclue" v-model="checkAllclue" @change="CheckAllclues">全选</el-checkbox>
+                    <div style="margin: 15px 0;"></div>
+                    <el-checkbox-group v-model="checkedroleclues" @change="handleCheckedroleclue">
+                        <el-checkbox class="checkboxclass" v-for="item in cluerole" :key="item.id" :label="item.id" @change="changevalue($event,item.id)">{{item.resourcename}}</el-checkbox>
+                    </el-checkbox-group>
+                </el-tab-pane>
+                <el-tab-pane label="客户" name="second">
+                    <el-checkbox :indeterminate="checksomecustomer" v-model="checkAllcustomer" @change="CheckAllcustomers">全选</el-checkbox>
+                    <div style="margin: 15px 0;"></div>
+                    <el-checkbox-group v-model="checkedrolecustomers" @change="handleCheckedrolecustomer">
+                        <el-checkbox class="checkboxclass" v-for="item in customerole" :key="item.id" :label="item.id" @change="changevalue($event,item.id)">{{item.resourcename}}</el-checkbox>
+                    </el-checkbox-group>
+                </el-tab-pane>
+                <el-tab-pane label="联系人" name="third">
+                    <el-checkbox :indeterminate="checksomecontact" v-model="checkAllcontact" @change="CheckAllcontacts">全选</el-checkbox>
+                    <div style="margin: 15px 0;"></div>
+                    <el-checkbox-group v-model="checkedrolecontacts" @change="handleCheckedrolecontact">
+                        <el-checkbox class="checkboxclass" v-for="item in contactrole" :key="item.id" :label="item.id" @change="changevalue($event,item.id)">{{item.resourcename}}</el-checkbox>
+                    </el-checkbox-group>
+                </el-tab-pane>
+                <el-tab-pane label="商机" name="fourth">
+                    <el-checkbox :indeterminate="checksomeopportunity" v-model="checkAllopportunity" @change="CheckAllopportunitys">全选</el-checkbox>
+                    <div style="margin: 15px 0;"></div>
+                    <el-checkbox-group v-model="checkedroleopportunitys" @change="handleCheckedroleopportunity">
+                        <el-checkbox class="checkboxclass" v-for="item in opportunityrole" :key="item.id" :label="item.id" @change="changevalue($event,item.id)">{{item.resourcename}}</el-checkbox>
+                    </el-checkbox-group>
+                </el-tab-pane>
+                <el-tab-pane label="合同" name="fifth">
+                    <el-checkbox :indeterminate="checksomeagreement" v-model="checkAllagreement" @change="CheckAllagreements">全选</el-checkbox>
+                    <div style="margin: 15px 0;"></div>
+                    <el-checkbox-group v-model="checkedroleagreements" @change="handleCheckedroleagreement">
+                        <el-checkbox class="checkboxclass" v-for="item in agreementrole" :key="item.id" :label="item.id" @change="changevalue($event,item.id)">{{item.resourcename}}</el-checkbox>
+                    </el-checkbox-group>
+                </el-tab-pane>
+                <el-tab-pane label="社交营销" name="sixth">
+                    <el-checkbox :indeterminate="checksomeactivity" v-model="checkAllactivity" @change="CheckAllactivitys">全选</el-checkbox>
+                    <div style="margin: 15px 0;"></div>
+                    <el-checkbox-group v-model="checkedroleactivitys" @change="handleCheckedroleactivity">
+                        <el-checkbox class="checkboxclass" v-for="item in activityrole" :key="item.id" :label="item.id" @change="changevalue($event,item.id)">{{item.resourcename}}</el-checkbox>
+                    </el-checkbox-group>
+                </el-tab-pane>
+                <el-tab-pane label="系统设置" name="seventh">
+                    <el-checkbox :indeterminate="checksomeset" v-model="checkAllset" @change="CheckAllsets">全选</el-checkbox>
+                    <div style="margin: 15px 0;"></div>
+                    <el-checkbox-group v-model="checkedrolesets" @change="handleCheckedroleset">
+                        <el-checkbox class="checkboxclass" v-for="item in setrole" :key="item.id" :label="item.id" @change="changevalue($event,item.id)">{{item.resourcename}}</el-checkbox>
+                    </el-checkbox-group>
+                </el-tab-pane>
+            </el-tabs> -->
             <span slot="footer" class="dialog-footer">
                 <el-button @click="dialogVisible3 = false">取 消</el-button>
                 <el-button type="primary" @click="addrole()">确 定</el-button>
@@ -171,34 +218,55 @@
                     <el-input v-model="roleform.name" style="200px;"></el-input>
                 </el-form-item>
             </el-form>
-            <el-tabs v-model="activeindex" type="card" @tab-click="checkResource">
-                <el-tab-pane v-for="item in resourceData" :key="item[0].index" :label="item[1].name">
-                    <el-checkbox :indeterminate="item.checksome" v-model="item.checkAll" @change="CheckAlls($event,item)">全选</el-checkbox>
+            <el-tabs v-model="activeName" type="card">
+                <el-tab-pane label="线索" name="first">
+                    <el-checkbox :indeterminate="checksomeclue" v-model="checkAllclue" @change="CheckAllclues">全选</el-checkbox>
                     <div style="margin: 15px 0;"></div>
-                    <div v-for="(a,i) in item[2]" :key="i">
-                        <el-checkbox v-model="b.checked" class="checkboxclass" v-for="b in a" :key="b.id" :label="b.id" @change="checkvalue($event,b)">{{b.resourcename}}</el-checkbox>
-                        <div style="margin:30px 0;"></div>
-                    </div>
-                    
-                    <div v-for="(a,i) in item[3]" :key="i">
-                        <el-checkbox v-model="b.checked" class="checkboxclass" v-for="b in a" :key="b.id" :label="b.id" @change="checkvalue($event,b)">{{b.resourcename}}</el-checkbox>
-                        <div style="margin:30px 0;"></div>
-                    </div>
-                    
-                    <div v-for="(a,i) in item[4]" :key="i">
-                        <el-checkbox v-model="b.checked" class="checkboxclass" v-for="b in a" :key="b.id" :label="b.id" @change="checkvalue($event,b)">{{b.resourcename}}</el-checkbox>
-                        <div style="margin:30px 0;"></div>
-                    </div>
-                    
-                    <div v-for="(a,i) in item[5]" :key="i">
-                        <el-checkbox v-model="b.checked" class="checkboxclass" v-for="b in a" :key="b.id" :label="b.id" @change="checkvalue($event,b)">{{b.resourcename}}</el-checkbox>
-                        <div style="margin:30px 0;"></div>
-                    </div>
-                    
-                    <div v-for="(a,i) in item[6]" :key="i">
-                        <el-checkbox v-model="b.checked" class="checkboxclass" v-for="b in a" :key="b.id" :label="b.id" @change="checkvalue($event,b)">{{b.resourcename}}</el-checkbox>
-                        <div style="margin:30px 0;"></div>
-                    </div>
+                    <el-checkbox-group v-model="checkedroleclues" @change="handleCheckedroleclue">
+                        <el-checkbox class="checkboxclass" v-for="item in cluerole" :key="item.id" :label="item.id" @change="changevalue($event,item.id)">{{item.resourcename}}</el-checkbox>
+                    </el-checkbox-group>
+                </el-tab-pane>
+                <el-tab-pane label="客户" name="second">
+                    <el-checkbox :indeterminate="checksomecustomer" v-model="checkAllcustomer" @change="CheckAllcustomers">全选</el-checkbox>
+                    <div style="margin: 15px 0;"></div>
+                    <el-checkbox-group v-model="checkedrolecustomers" @change="handleCheckedrolecustomer">
+                        <el-checkbox class="checkboxclass" v-for="item in customerole" :key="item.id" :label="item.id" @change="changevalue($event,item.id)">{{item.resourcename}}</el-checkbox>
+                    </el-checkbox-group>
+                </el-tab-pane>
+                <el-tab-pane label="联系人" name="third">
+                    <el-checkbox :indeterminate="checksomecontact" v-model="checkAllcontact" @change="CheckAllcontacts">全选</el-checkbox>
+                    <div style="margin: 15px 0;"></div>
+                    <el-checkbox-group v-model="checkedrolecontacts" @change="handleCheckedrolecontact">
+                        <el-checkbox class="checkboxclass" v-for="item in contactrole" :key="item.id" :label="item.id" @change="changevalue($event,item.id)">{{item.resourcename}}</el-checkbox>
+                    </el-checkbox-group>
+                </el-tab-pane>
+                <el-tab-pane label="商机" name="fourth">
+                    <el-checkbox :indeterminate="checksomeopportunity" v-model="checkAllopportunity" @change="CheckAllopportunitys">全选</el-checkbox>
+                    <div style="margin: 15px 0;"></div>
+                    <el-checkbox-group v-model="checkedroleopportunitys" @change="handleCheckedroleopportunity">
+                        <el-checkbox class="checkboxclass" v-for="item in opportunityrole" :key="item.id" :label="item.id" @change="changevalue($event,item.id)">{{item.resourcename}}</el-checkbox>
+                    </el-checkbox-group>
+                </el-tab-pane>
+                <el-tab-pane label="合同" name="fifth">
+                    <el-checkbox :indeterminate="checksomeagreement" v-model="checkAllagreement" @change="CheckAllagreements">全选</el-checkbox>
+                    <div style="margin: 15px 0;"></div>
+                    <el-checkbox-group v-model="checkedroleagreements" @change="handleCheckedroleagreement">
+                        <el-checkbox class="checkboxclass" v-for="item in agreementrole" :key="item.id" :label="item.id" @change="changevalue($event,item.id)">{{item.resourcename}}</el-checkbox>
+                    </el-checkbox-group>
+                </el-tab-pane>
+                <el-tab-pane label="社交营销" name="sixth">
+                    <el-checkbox :indeterminate="checksomeactivity" v-model="checkAllactivity" @change="CheckAllactivitys">全选</el-checkbox>
+                    <div style="margin: 15px 0;"></div>
+                    <el-checkbox-group v-model="checkedroleactivitys" @change="handleCheckedroleactivity">
+                        <el-checkbox class="checkboxclass" v-for="item in activityrole" :key="item.id" :label="item.id" @change="changevalue($event,item.id)">{{item.resourcename}}</el-checkbox>
+                    </el-checkbox-group>
+                </el-tab-pane>
+                <el-tab-pane label="系统设置" name="seventh">
+                    <el-checkbox :indeterminate="checksomeset" v-model="checkAllset" @change="CheckAllsets">全选</el-checkbox>
+                    <div style="margin: 15px 0;"></div>
+                    <el-checkbox-group v-model="checkedrolesets" @change="handleCheckedroleset">
+                        <el-checkbox class="checkboxclass" v-for="item in setrole" :key="item.id" :label="item.id" @change="changevalue($event,item.id)">{{item.resourcename}}</el-checkbox>
+                    </el-checkbox-group>
                 </el-tab-pane>
             </el-tabs>
             <span slot="footer" class="dialog-footer">
@@ -247,25 +315,48 @@
                 clickdata:null,
                 dialogVisible:false,
                 dialogVisible2:false,
-                dialogVisible3:true,
+                dialogVisible3:false,
                 dialogVisible4:false,
                 
                 activeName: 'first',
-                activeindex: 'first',
-
-                resourceData:null,
-
-                checkedList:[],
+                activeindex: 'name1',
+                
+                checkAllclue: false,
+                checkAllcustomer: false,
+                checkAllcontact: false,
+                checkAllopportunity: false,
+                checkAllagreement: false,
+                checkAllactivity: false,
+                checkAllset: false,
+                
+                checksomeclue: false,
+                checksomecustomer:false,
+                checksomecontact:false,
+                checksomeopportunity:false,
+                checksomeagreement:false,
+                checksomeactivity:false,
+                checksomeset:false,
 
                 checkedroleclues: [],
                 checkedrolecustomers: [],
                 checkedrolecontacts: [],
                 checkedroleopportunitys: [],
-                checkedroleagreements: [],
-                checkedroleactivitys: [],
-                checkedrolesets: [],
-                checkedroleworks: [],
-                checkedrolereports: [],
+                checkedroleagreements: [],             
+                checkedroleactivitys: [],             
+                checkedrolesets: [],             
+
+                cluerole: null,
+                customerole:null,
+                contactrole:null,
+                opportunityrole:null,
+                agreementrole:null,
+                activityrole:null,
+                setrole:null,
+
+                resourceData:null,
+                checksome:false,
+                checkAll:false
+
             }
         },
         mounted(){
@@ -314,6 +405,13 @@
                     url: _this.$store.state.defaultHttp+'resource/getResources.do',
                 }).then(function(res){
                     _this.resourceData = res.data
+                    // _this.cluerole = res.data.name1
+                    // _this.customerole = res.data.name2
+                    // _this.contactrole = res.data.name3
+                    // _this.opportunityrole = res.data.name4
+                    // _this.agreementrole = res.data.name5
+                    // _this.activityrole = res.data.name6
+                    // _this.setrole = res.data.name7
                 }).catch(function(err){
                     // console.log(err);
                 });
@@ -492,10 +590,10 @@
                         type:'info'
                     })
                 }else{
-                    // axios({
-                    //     method: 'get',
-                    //     url: _this.$store.state.defaultHttp+'roleJurisdiction/insert.do',//新增角色
-                    // }).then(function(res){
+                    axios({
+                        method: 'get',
+                        url: _this.$store.state.defaultHttp+'roleJurisdiction/insert.do',//新增角色
+                    }).then(function(res){
                         // if(res.data.msg && res.data.msg == 'error'){
                         //     _this.$message({
                         //         message:'对不起，您没有该权限，请联系管理员开通',
@@ -505,9 +603,9 @@
                             _this.roleform.deptname = _this.clickdata.deptname
                             _this.dialogVisible3 = true
                         // }
-                    // }).catch(function(err){
-                    //     // console.log(err);
-                    // });
+                    }).catch(function(err){
+                        // console.log(err);
+                    });
                     
                 }
             },
@@ -518,7 +616,7 @@
                 let data = {}
                 data.deptid = this.roleform.deptid
                 data.name = this.roleform.name
-                data.ids = this.checkedList
+                data.ids = this.roleform.ids
 
                 axios({
                     method:'post',
@@ -809,458 +907,13 @@
                 }
             },
             checkResource(i){
+                console.log(i.index)
                 this.checkindex = i.index
             },
             CheckAlls(e,val){
-                console.log(e,'1001010101')
-                const _this = this
-                let arr = val.slice(2)
-                let i = this.checkindex
-                this.checkedroleclues = []
-                this.checkedrolecustomers = []
-                this.checkedrolecontacts = []
-                this.checkedroleopportunitys = []
-                this.checkedroleagreements = []
-                this.checkedroleactivitys = []
-                this.checkedrolesets = []
-                this.checkedroleworks = []
-                this.checkedrolereports = []
-                if(i == 0){//线索
-                    arr.forEach(el => {
-                        if(el.type1){
-                            el.type1.forEach(item => {
-                                if(e == true){
-                                    this.checkedList.push(item.id)
-                                    this.checkedroleclues.push(item.id)
-                                    item.checked = true
-                                }else{
-                                    this.checkedList.pop(item.id)
-                                    this.checkedroleclues.pop(item.id)
-                                    item.checked = false
-                                }
-                                
-                            });
-                        }
-                        if(el.type2){
-                            el.type2.forEach(item => {
-                                if(e == true){
-                                    this.checkedList.push(item.id)
-                                    item.checked = true
-                                }else{
-                                    this.checkedList.pop(item.id)
-                                    item.checked = false
-                                }
-                            });
-                        }
-                        if(el.type3){
-                            el.type3.forEach(item => {
-                                if(e == true){
-                                    this.checkedList.push(item.id)
-                                    item.checked = true
-                                }else{
-                                    this.checkedList.pop(item.id)
-                                    item.checked = false
-                                }
-                            });
-                        }
-                    });
-                }else if(i == 1){//客户
-                    arr.forEach(el => {
-                        if(el.type1){
-                            el.type1.forEach(item => {
-                                if(e == true){
-                                    this.checkedList.push(item.id)
-                                    item.checked = true
-                                }else{
-                                    this.checkedList.pop(item.id)
-                                    item.checked = false
-                                }
-                                
-                            });
-                        }
-                        if(el.type2){
-                            el.type2.forEach(item => {
-                                if(e == true){
-                                    this.checkedList.push(item.id)
-                                    item.checked = true
-                                }else{
-                                    this.checkedList.pop(item.id)
-                                    item.checked = false
-                                }
-                            });
-                        }
-                    });
-                }else if(i == 2){//联系人
-                    arr.forEach(el => {
-                        if(el.type1){
-                            el.type1.forEach(item => {
-                                if(e == true){
-                                    this.checkedList.push(item.id)
-                                    item.checked = true
-                                }else{
-                                    this.checkedList.pop(item.id)
-                                    item.checked = false
-                                }
-                                
-                            });
-                        }
-                    });
-                }else if(i == 3){//商机
-                    arr.forEach(el => {
-                        if(el.type1){
-                            el.type1.forEach(item => {
-                                if(e == true){
-                                    this.checkedList.push(item.id)
-                                    item.checked = true
-                                }else{
-                                    this.checkedList.pop(item.id)
-                                    item.checked = false
-                                }
-                                
-                            });
-                        }
-                    });
-                }else if(i == 4){//合同
-                    arr.forEach(el => {
-                        if(el.type1){
-                            el.type1.forEach(item => {
-                                if(e == true){
-                                    this.checkedList.push(item.id)
-                                    item.checked = true
-                                }else{
-                                    this.checkedList.pop(item.id)
-                                    item.checked = false
-                                }
-                                
-                            });
-                        }
-                    });
-                }else if(i == 5){//社交营销
-                    arr.forEach(el => {
-                        if(el.type1){
-                            el.type1.forEach(item => {
-                                if(e == true){
-                                    this.checkedList.push(item.id)
-                                    item.checked = true
-                                }else{
-                                    this.checkedList.pop(item.id)
-                                    item.checked = false
-                                }
-                            });
-                        }
-                        if(el.type2){
-                            el.type2.forEach(item => {
-                                if(e == true){
-                                    this.checkedList.push(item.id)
-                                    item.checked = true
-                                }else{
-                                    this.checkedList.pop(item.id)
-                                    item.checked = false
-                                }
-                            });
-                        }
-                        if(el.type3){
-                            el.type3.forEach(item => {
-                                if(e == true){
-                                    this.checkedList.push(item.id)
-                                    item.checked = true
-                                }else{
-                                    this.checkedList.pop(item.id)
-                                    item.checked = false
-                                }
-                            });
-                        }
-                        if(el.type4){
-                            el.type4.forEach(item => {
-                                if(e == true){
-                                    this.checkedList.push(item.id)
-                                    item.checked = true
-                                }else{
-                                    this.checkedList.pop(item.id)
-                                    item.checked = false
-                                }
-                            });
-                        }
-                    });
-                }else if(i == 6){//系统设置
-                    arr.forEach(el => {
-                        if(el.type1){
-                            el.type1.forEach(item => {
-                                if(e == true){
-                                    this.checkedList.push(item.id)
-                                    item.checked = true
-                                }else{
-                                    this.checkedList.pop(item.id)
-                                    item.checked = false
-                                }
-                            });
-                        }
-                        if(el.type2){
-                            el.type2.forEach(item => {
-                                if(e == true){
-                                    this.checkedList.push(item.id)
-                                    item.checked = true
-                                }else{
-                                    this.checkedList.pop(item.id)
-                                    item.checked = false
-                                }
-                            });
-                        }
-                        if(el.type3){
-                            el.type3.forEach(item => {
-                                if(e == true){
-                                    this.checkedList.push(item.id)
-                                    item.checked = true
-                                }else{
-                                    this.checkedList.pop(item.id)
-                                    item.checked = false
-                                }
-                            });
-                        }
-                        if(el.type4){
-                            el.type4.forEach(item => {
-                                if(e == true){
-                                    this.checkedList.push(item.id)
-                                    item.checked = true
-                                }else{
-                                    this.checkedList.pop(item.id)
-                                    item.checked = false
-                                }
-                            });
-                        }
-                        if(el.type5){
-                            el.type5.forEach(item => {
-                                if(e == true){
-                                    this.checkedList.push(item.id)
-                                    item.checked = true
-                                }else{
-                                    this.checkedList.pop(item.id)
-                                    item.checked = false
-                                }
-                            });
-                        }
-                    });
-                }else if(i == 7){//办公
-                    arr.forEach(el => {
-                        if(el.type1){
-                            el.type1.forEach(item => {
-                                if(e == true){
-                                    this.checkedList.push(item.id)
-                                    item.checked = true
-                                }else{
-                                    this.checkedList.pop(item.id)
-                                    item.checked = false
-                                }
-                            });
-                        }
-                        if(el.type2){
-                            el.type2.forEach(item => {
-                                if(e == true){
-                                    this.checkedList.push(item.id)
-                                    item.checked = true
-                                }else{
-                                    this.checkedList.pop(item.id)
-                                    item.checked = false
-                                }
-                            });
-                        }
-                    });
-                }else if(i == 8){//商业智能
-                    arr.forEach(el => {
-                        if(el.type1){
-                            el.type1.forEach(item => {
-                                if(e == true){
-                                    this.checkedList.push(item.id)
-                                    item.checked = true
-                                }else{
-                                    this.checkedList.pop(item.id)
-                                    item.checked = false
-                                }
-                            });
-                        }
-                    });
-                }
-                console.log(this.checkedList)
-                
-            },
-            checkvalue(e,val){
-                console.log(val.checked)
-                let i = this.checkindex
-                if(i == 0){//线索
-                    let name1 = this.resourceData.name1
-                    if(val.checked == true){
-                        this.checkedroleclues.push(val.id)
-                        this.checkedList.push(val.id)
-                    }
-                    if(val.checked == false){
-                        this.checkedroleclues.pop(val.id)
-                        this.checkedList.pop(val.id)
-                    }
-                    if(this.checkedroleclues.length < name1[0].count && this.checkedroleclues.length !== 0){
-                        name1.checksome = true
-                        name1.checkAll = false
-                    }else if(this.checkedroleclues.length == name1[0].count){
-                        name1.checkAll = true
-                        name1.checksome = false
-                    }else if(this.checkedroleclues.length == 0){
-                        name1.checkAll = false
-                        name1.checksome = false
-                    }
-                }else if(i == 1){//客户
-                    let name2 = this.resourceData.name2
-                    if(val.checked == true){
-                        this.checkedrolecustomers.push(val.id)
-                        this.checkedList.push(val.id)
-                    }else{
-                        this.checkedrolecustomers.pop(val.id)
-                        this.checkedList.pop(val.id)
-                    }
-                    if(this.checkedrolecustomers.length < name2[0].count && this.checkedrolecustomers.length !== 0){
-                        name2.checksome = true
-                        name2.checkAll = false
-                    }else if(this.checkedrolecustomers.length == name2[0].count){
-                        name2.checkAll = true
-                        name2.checksome = false
-                    }else if(this.checkedrolecustomers.length == 0){
-                        name2.checkAll = false
-                        name2.checksome = false
-                    }
-                }else if(i == 2){//联系人
-                    let name3 = this.resourceData.name3
-                    if(val.checked == true){
-                        this.checkedrolecontacts.push(val.id)
-                        this.checkedList.push(val.id)
-                    }else{
-                        this.checkedrolecontacts.pop(val.id)
-                        this.checkedList.pop(val.id)
-                    }
-                    if(this.checkedrolecontacts.length < name3[0].count && this.checkedrolecontacts.length !== 0){
-                        name3.checksome = true
-                        name3.checkAll = false
-                    }else if(this.checkedrolecontacts.length == name3[0].count){
-                        name3.checkAll = true
-                        name3.checksome = false
-                    }else if(this.checkedrolecontacts.length == 0){
-                        name3.checkAll = false
-                        name3.checksome = false
-                    }
-                }else if(i == 3){//商机
-                    let name4 = this.resourceData.name4
-                    if(val.checked == true){
-                        this.checkedroleopportunitys.push(val.id)
-                        this.checkedList.push(val.id)
-                    }else{
-                        this.checkedroleopportunitys.pop(val.id)
-                        this.checkedList.pop(val.id)
-                    }
-                    if(this.checkedroleopportunitys.length < name4[0].count && this.checkedroleopportunitys.length !== 0){
-                        name4.checksome = true
-                        name4.checkAll = false
-                    }else if(this.checkedroleopportunitys.length == name4[0].count){
-                        name4.checkAll = true
-                        name4.checksome = false
-                    }else if(this.checkedroleopportunitys.length == 0){
-                        name4.checkAll = false
-                        name4.checksome = false
-                    }
-                }else if(i == 4){//合同
-                    let name5 = this.resourceData.name5
-                    if(val.checked == true){
-                        this.checkedroleagreements.push(val.id)
-                        this.checkedList.push(val.id)
-                    }else{
-                        this.checkedroleagreements.pop(val.id)
-                        this.checkedList.pop(val.id)
-                    }
-                    if(this.checkedroleagreements.length < name5[0].count && this.checkedroleagreements.length !== 0){
-                        name5.checksome = true
-                        name5.checkAll = false
-                    }else if(this.checkedroleagreements.length == name5[0].count){
-                        name5.checkAll = true
-                        name5.checksome = false
-                    }else if(this.checkedroleagreements.length == 0){
-                        name5.checkAll = false
-                        name5.checksome = false
-                    }
-                }else if(i == 5){//社交营销
-                    let name6 = this.resourceData.name6
-                    if(val.checked == true){
-                        this.checkedroleactivitys.push(val.id)
-                        this.checkedList.push(val.id)
-                    }else{
-                        this.checkedroleactivitys.pop(val.id)
-                        this.checkedList.pop(val.id)
-                    }
-                    if(this.checkedroleactivitys.length < name6[0].count && this.checkedroleactivitys.length !== 0){
-                        name6.checksome = true
-                        name6.checkAll = false
-                    }else if(this.checkedroleactivitys.length == name6[0].count){
-                        name6.checkAll = true
-                        name6.checksome = false
-                    }else if(this.checkedroleactivitys.length == 0){
-                        name6.checkAll = false
-                        name6.checksome = false
-                    }
-                }else if(i == 6){//系统设置
-                    let name7 = this.resourceData.name7
-                    if(val.checked == true){
-                        this.checkedrolesets.push(val.id)
-                        this.checkedList.push(val.id)
-                    }else{
-                        this.checkedrolesets.pop(val.id)
-                        this.checkedList.pop(val.id)
-                    }
-                    if(this.checkedrolesets.length < name7[0].count && this.checkedrolesets.length !== 0){
-                        name7.checksome = true
-                        name7.checkAll = false
-                    }else if(this.checkedrolesets.length == name7[0].count){
-                        name7.checkAll = true
-                        name7.checksome = false
-                    }else if(this.checkedrolesets.length == 0){
-                        name7.checkAll = false
-                        name7.checksome = false
-                    }
-                }else if(i == 7){//办公
-                    let name8 = this.resourceData.name8
-                    if(val.checked == true){
-                        this.checkedroleworks.push(val.id)
-                        this.checkedList.push(val.id)
-                    }else{
-                        this.checkedroleworks.pop(val.id)
-                        this.checkedList.pop(val.id)
-                    }
-                    if(this.checkedroleworks.length < name8[0].count && this.checkedroleworks.length !== 0){
-                        name8.checksome = true
-                        name8.checkAll = false
-                    }else if(this.checkedroleworks.length == name8[0].count){
-                        name8.checkAll = true
-                        name8.checksome = false
-                    }else if(this.checkedroleworks.length == 0){
-                        name8.checkAll = false
-                        name8.checksome = false
-                    }
-                }else if(i == 8){//商业智能
-                    let name9 = this.resourceData.name9
-                    if(val.checked == true){
-                        this.checkedrolereports.push(val.id)
-                        this.checkedList.push(val.id)
-                    }else{
-                        this.checkedrolereports.pop(val.id)
-                        this.checkedList.pop(val.id)
-                    }
-                    if(this.checkedrolereports.length < name9[0].count && this.checkedrolereports.length !== 0){
-                        name9.checksome = true
-                        name9.checkAll = false
-                    }else if(this.checkedrolereports.length == name9[0].count){
-                        name9.checkAll = true
-                        name9.checksome = false
-                    }else if(this.checkedrolereports.length == 0){
-                        name9.checkAll = false
-                        name9.checksome = false
-                    }
-                }
+                console.log(e,val)
+                // console.log(this.checkindex)
             }
-            
         }
     }
 </script>
