@@ -69,6 +69,7 @@
                     <template slot-scope="scope">
                         <el-button
                         size="mini"
+                        disabled
                         @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
                         <el-button
                         size="mini"
@@ -125,35 +126,92 @@
                 </el-form-item>
             </el-form>
             <el-tabs v-model="activeindex" type="card" @tab-click="checkResource">
-                <el-tab-pane v-for="item in resourceData" :key="item[0].index" :label="item[1].name">
-                    <el-checkbox :indeterminate="item.checksome" v-model="item.checkAll" @change="CheckAlls($event,item)">全选</el-checkbox>
-                    <div style="margin: 15px 0;"></div>
-                    <div v-for="(a,i) in item[2]" :key="i">
-                        <el-checkbox v-model="b.checked" class="checkboxclass" v-for="b in a" :key="b.id" :label="b.id" @change="checkvalue($event,b)">{{b.resourcename}}</el-checkbox>
-                        <div style="margin:30px 0;"></div>
+                <el-tab-pane label="线索" name="first">
+                    <el-checkbox :indeterminate="someclue" v-model="allclue" @change="CheckAllclues">全选</el-checkbox>
+                    <div v-for="item in cluesData">
+                        <el-checkbox v-model="a.checked" class="checkboxclass" v-for="a in item.type1" :key="a.id" :label="a.id" @change="changevalue($event,a)">{{a.resourcename}}</el-checkbox>
+                        <el-checkbox v-model="a.checked" class="checkboxclass" v-for="a in item.type2" :key="a.id" :label="a.id" @change="changevalue($event,a)">{{a.resourcename}}</el-checkbox>
+                        <el-checkbox v-model="a.checked" class="checkboxclass" v-for="a in item.type3" :key="a.id" :label="a.id" @change="changevalue($event,a)">{{a.resourcename}}</el-checkbox>
+                        <div style="width:100%;height:20px;"></div>
                     </div>
-                    
-                    <div v-for="(a,i) in item[3]" :key="i">
-                        <el-checkbox v-model="b.checked" class="checkboxclass" v-for="b in a" :key="b.id" :label="b.id" @change="checkvalue($event,b)">{{b.resourcename}}</el-checkbox>
-                        <div style="margin:30px 0;"></div>
+                </el-tab-pane>
+                <el-tab-pane label="客户" name="second">
+                    <el-checkbox :indeterminate="somecuestom" v-model="allcuestom" @change="CheckAllcuestoms">全选</el-checkbox>
+                    <div v-for="item in cuestomsData">
+                        <el-checkbox v-model="a.checked" class="checkboxclass" v-for="a in item.type1" :key="a.id" :label="a.id" @change="changevalue($event,a)">{{a.resourcename}}</el-checkbox>
+                        <el-checkbox v-model="a.checked" class="checkboxclass" v-for="a in item.type2" :key="a.id" :label="a.id" @change="changevalue($event,a)">{{a.resourcename}}</el-checkbox>
+                        <el-checkbox v-model="a.checked" class="checkboxclass" v-for="a in item.type3" :key="a.id" :label="a.id" @change="changevalue($event,a)">{{a.resourcename}}</el-checkbox>
+                        <div style="width:100%;height:20px;"></div>
                     </div>
-                    
-                    <div v-for="(a,i) in item[4]" :key="i">
-                        <el-checkbox v-model="b.checked" class="checkboxclass" v-for="b in a" :key="b.id" :label="b.id" @change="checkvalue($event,b)">{{b.resourcename}}</el-checkbox>
-                        <div style="margin:30px 0;"></div>
+                </el-tab-pane>
+                <el-tab-pane label="联系人" name="third">
+                    <el-checkbox :indeterminate="somecontact" v-model="allcontact" @change="CheckAllcontacts">全选</el-checkbox>
+                    <div v-for="item in contactsData">
+                        <el-checkbox v-model="a.checked" class="checkboxclass" v-for="a in item.type1" :key="a.id" :label="a.id" @change="changevalue($event,a)">{{a.resourcename}}</el-checkbox>
+                        <div style="width:100%;height:20px;"></div>
                     </div>
-                    
-                    <div v-for="(a,i) in item[5]" :key="i">
-                        <el-checkbox v-model="b.checked" class="checkboxclass" v-for="b in a" :key="b.id" :label="b.id" @change="checkvalue($event,b)">{{b.resourcename}}</el-checkbox>
-                        <div style="margin:30px 0;"></div>
+                </el-tab-pane>
+                <el-tab-pane label="商机" name="fourth">
+                    <el-checkbox :indeterminate="someoppo" v-model="alloppo" @change="CheckAlloppos">全选</el-checkbox>
+                    <div v-for="item in opposData">
+                        <el-checkbox v-model="a.checked" class="checkboxclass" v-for="a in item.type1" :key="a.id" :label="a.id" @change="changevalue($event,a)">{{a.resourcename}}</el-checkbox>
+                        <div style="width:100%;height:20px;"></div>
                     </div>
-                    
-                    <div v-for="(a,i) in item[6]" :key="i">
-                        <el-checkbox v-model="b.checked" class="checkboxclass" v-for="b in a" :key="b.id" :label="b.id" @change="checkvalue($event,b)">{{b.resourcename}}</el-checkbox>
-                        <div style="margin:30px 0;"></div>
+                </el-tab-pane>
+                <el-tab-pane label="合同" name="fifth">
+                    <el-checkbox :indeterminate="someagree" v-model="allagree" @change="CheckAllagrees">全选</el-checkbox>
+                    <div v-for="item in agreesData">
+                        <el-checkbox v-model="a.checked" class="checkboxclass" v-for="a in item.type1" :key="a.id" :label="a.id" @change="changevalue($event,a)">{{a.resourcename}}</el-checkbox>
+                        <div style="width:100%;height:20px;"></div>
+                    </div>
+                </el-tab-pane>
+                <el-tab-pane label="社交营销" name="sixth">
+                    <el-checkbox :indeterminate="someactive" v-model="allactive" @change="CheckAllactives">全选</el-checkbox>
+                    <div v-for="item in activesData">
+                        <el-checkbox v-model="a.checked" class="checkboxclass" v-for="a in item.type1" :key="a.id" :label="a.id" @change="changevalue($event,a)">{{a.resourcename}}</el-checkbox>
+                        <el-checkbox v-model="a.checked" class="checkboxclass" v-for="a in item.type2" :key="a.id" :label="a.id" @change="changevalue($event,a)">{{a.resourcename}}</el-checkbox>
+                        <el-checkbox v-model="a.checked" class="checkboxclass" v-for="a in item.type3" :key="a.id" :label="a.id" @change="changevalue($event,a)">{{a.resourcename}}</el-checkbox>
+                        <el-checkbox v-model="a.checked" class="checkboxclass" v-for="a in item.type4" :key="a.id" :label="a.id" @change="changevalue($event,a)">{{a.resourcename}}</el-checkbox>
+                        <div style="width:100%;height:20px;"></div>
+                    </div>
+                </el-tab-pane>
+                <el-tab-pane label="系统设置" name="seventh">
+                    <el-checkbox :indeterminate="someset" v-model="allset" @change="CheckAllsets">全选</el-checkbox>
+                    <div v-for="item in setsData">
+                        <el-checkbox v-model="a.checked" class="checkboxclass" v-for="a in item.type1" :key="a.id" :label="a.id" @change="changevalue($event,a)">{{a.resourcename}}</el-checkbox>
+                        <el-checkbox v-model="a.checked" class="checkboxclass" v-for="a in item.type2" :key="a.id" :label="a.id" @change="changevalue($event,a)">{{a.resourcename}}</el-checkbox>
+                        <el-checkbox v-model="a.checked" class="checkboxclass" v-for="a in item.type3" :key="a.id" :label="a.id" @change="changevalue($event,a)">{{a.resourcename}}</el-checkbox>
+                        <el-checkbox v-model="a.checked" class="checkboxclass" v-for="a in item.type4" :key="a.id" :label="a.id" @change="changevalue($event,a)">{{a.resourcename}}</el-checkbox>
+                        <el-checkbox v-model="a.checked" class="checkboxclass" v-for="a in item.type5" :key="a.id" :label="a.id" @change="changevalue($event,a)">{{a.resourcename}}</el-checkbox>
+                        <div style="width:100%;height:20px;"></div>
+                    </div>
+                </el-tab-pane>
+                <el-tab-pane label="办公" name="eighth">
+                    <el-checkbox :indeterminate="somework" v-model="allwork" @change="CheckAllworks">全选</el-checkbox>
+                    <div v-for="item in worksData">
+                        <el-checkbox v-model="a.checked" class="checkboxclass" v-for="a in item.type1" :key="a.id" :label="a.id" @change="changevalue($event,a)">{{a.resourcename}}</el-checkbox>
+                        <el-checkbox v-model="a.checked" class="checkboxclass" v-for="a in item.type2" :key="a.id" :label="a.id" @change="changevalue($event,a)">{{a.resourcename}}</el-checkbox>
+                        <div style="width:100%;height:20px;"></div>
+                    </div>
+                </el-tab-pane>
+                <el-tab-pane label="商业智能" name="ninth">
+                    <el-checkbox :indeterminate="somereport" v-model="allreport" @change="CheckAllreports">全选</el-checkbox>
+                    <div v-for="item in reportsData">
+                        <el-checkbox v-model="a.checked" class="checkboxclass" v-for="a in item.type1" :key="a.id" :label="a.id" @change="changevalue($event,a)">{{a.resourcename}}</el-checkbox>
+                        <div style="width:100%;height:20px;"></div>
+                    </div>
+                </el-tab-pane>
+                <el-tab-pane label="菜单" name="tenth">
+                    <el-checkbox :indeterminate="somemenu" v-model="allmenu" @change="CheckAllmenus">全选</el-checkbox>
+                    <div v-for="item in menusData">
+                        <el-checkbox v-model="a.checked" class="checkboxclass" v-for="a in item.type1" :key="a.id" :label="a.id" @change="changevalue($event,a)">{{a.resourcename}}</el-checkbox>
+                        <div style="width:100%;height:20px;"></div>
                     </div>
                 </el-tab-pane>
             </el-tabs>
+            <div>
+                <span v-for="(item,index) in checkedList" :key="index">{{item}},</span>
+            </div>
             <span slot="footer" class="dialog-footer">
                 <el-button @click="dialogVisible3 = false">取 消</el-button>
                 <el-button type="primary" @click="addrole()">确 定</el-button>
@@ -171,7 +229,7 @@
                     <el-input v-model="roleform.name" style="200px;"></el-input>
                 </el-form-item>
             </el-form>
-            <el-tabs v-model="activeindex" type="card" @tab-click="checkResource">
+            <el-tabs v-model="activeindex" type="card">
                 <el-tab-pane v-for="item in resourceData" :key="item[0].index" :label="item[1].name">
                     <el-checkbox :indeterminate="item.checksome" v-model="item.checkAll" @change="CheckAlls($event,item)">全选</el-checkbox>
                     <div style="margin: 15px 0;"></div>
@@ -247,7 +305,7 @@
                 clickdata:null,
                 dialogVisible:false,
                 dialogVisible2:false,
-                dialogVisible3:true,
+                dialogVisible3:false,
                 dialogVisible4:false,
                 
                 activeName: 'first',
@@ -257,15 +315,50 @@
 
                 checkedList:[],
 
-                checkedroleclues: [],
-                checkedrolecustomers: [],
-                checkedrolecontacts: [],
-                checkedroleopportunitys: [],
-                checkedroleagreements: [],
-                checkedroleactivitys: [],
-                checkedrolesets: [],
-                checkedroleworks: [],
-                checkedrolereports: [],
+                cluesData:null,
+                cuestomsData:null,
+                contactsData:null,
+                opposData:null,
+                agreesData:null,
+                activesData:null,
+                setsData:null,
+                worksData:null,
+                reportsData:null,
+                menusData:null,
+
+                someclue:false,
+                somecuestom:false,
+                somecontact:false,
+                someoppo:false,
+                someagree:false,
+                someactive:false,
+                someset:false,
+                somework:false,
+                somereport:false,
+                somemenu:false,
+
+                allclue:false,
+                allcuestom:false,
+                allcontact:false,
+                alloppo:false,
+                allagree:false,
+                allactive:false,
+                allset:false,
+                allwork:false,
+                allreport:false,
+                allmenu:false,
+
+                roleclues:[],
+                rolecuestoms:[],
+                rolecontacts:[],
+                roleoppos:[],
+                roleagrees:[],
+                roleactives:[],
+                rolesets:[],
+                roleworks:[],
+                rolereports:[],
+                rolemenus:[],
+
             }
         },
         mounted(){
@@ -313,7 +406,16 @@
                     method: 'get',
                     url: _this.$store.state.defaultHttp+'resource/getResources.do',
                 }).then(function(res){
-                    _this.resourceData = res.data
+                    _this.cluesData = res.data.name1
+                    _this.cuestomsData = res.data.name2
+                    _this.contactsData = res.data.name3
+                    _this.opposData = res.data.name4
+                    _this.agreesData = res.data.name5
+                    _this.activesData = res.data.name6
+                    _this.setsData = res.data.name7
+                    _this.worksData = res.data.name8
+                    _this.reportsData = res.data.name9
+                    _this.menusData = res.data.name10
                 }).catch(function(err){
                     // console.log(err);
                 });
@@ -557,24 +659,24 @@
                         })
                     }else{
                         _this.roleform.ids = []
-                        _this.checkedroleclues = []
-                        _this.checkedrolecustomers = []
-                        _this.checkedrolecontacts = []
-                        _this.checkedroleopportunitys = []
-                        _this.checkedroleagreements = []
-                        _this.checkedroleactivitys = []
-                        _this.checkedrolesets = []
+                        _this.roleclues = []
+                        _this.rolecuestoms = []
+                        _this.rolecontacts = []
+                        _this.roleoppos = []
+                        _this.roleagrees = []
+                        _this.roleactives = []
+                        _this.rolesets = []
                         let ids = val.resources
                         ids.forEach(el => {
                             if(el.id){
                                 _this.roleform.ids.push(el.id)
-                                _this.checkedroleclues.push(el.id)
-                                _this.checkedrolecustomers.push(el.id)
-                                _this.checkedrolecontacts.push(el.id)
-                                _this.checkedroleopportunitys.push(el.id)
-                                _this.checkedroleagreements.push(el.id)
-                                _this.checkedroleactivitys.push(el.id)
-                                _this.checkedrolesets.push(el.id)
+                                _this.roleclues.push(el.id)
+                                _this.rolecuestoms.push(el.id)
+                                _this.rolecontacts.push(el.id)
+                                _this.roleoppos.push(el.id)
+                                _this.roleagrees.push(el.id)
+                                _this.roleactives.push(el.id)
+                                _this.rolesets.push(el.id)
                             }
                         });
                         _this.roleform.id = val.id
@@ -663,179 +765,509 @@
                     });       
                 });
             },
+
+
             // 选中全部线索权限
             CheckAllclues(val) {
-                let data = this.cluerole
+                let data = this.cluesData
                 data.forEach(el => {
-                    if(val == true){
-                        this.checkedroleclues.push(el.id)
-                        this.roleform.ids.push(el.id)
-                    }else{
-                        this.checkedroleclues.pop(el.id)
-                        this.roleform.ids.pop(el.id)
+                    if(el.type1){
+                        el.type1.forEach(item => {
+                            if(val == true){
+                                this.checkedList.push(item.id)
+                                item.checked = true
+                            }else{
+                                this.checkedList.pop(item.id)
+                                item.checked = false
+                            }
+                        });
+                    }
+                    if(el.type2){
+                        el.type2.forEach(item => {
+                            if(val == true){
+                                this.checkedList.push(item.id)
+                                item.checked = true
+                            }else{
+                                this.checkedList.pop(item.id)
+                                item.checked = false
+                            }
+                        });
+                    }
+                    if(el.type3){
+                        el.type3.forEach(item => {
+                            if(val == true){
+                                this.checkedList.push(item.id)
+                                item.checked = true
+                            }else{
+                                this.checkedList.pop(item.id)
+                                item.checked = false
+                            }
+                        });
                     }
                 });
+                this.$options.methods.norepeat.bind(this)()
             },
             // 选中全部客户权限
-            CheckAllcustomers(val) {
-                let data = this.customerole
+            CheckAllcuestoms(val) {
+                let data = this.cuestomsData
                 data.forEach(el => {
-                    if(val == true){
-                        this.checkedrolecustomers.push(el.id)
-                        this.roleform.ids.push(el.id)
-                    }else{
-                        this.checkedrolecustomers.pop(el.id)
-                        this.roleform.ids.pop(el.id)
+                    if(el.type1){
+                        el.type1.forEach(item => {
+                            if(val == true){
+                                this.rolecuestoms.push(item.id)
+                                this.checkedList.push(item.id)
+                                item.checked = true
+                            }else{
+                                this.rolecuestoms.pop(item.id)
+                                this.checkedList.pop(item.id)
+                                item.checked = false
+                            }
+                        });
+                    }
+                    if(el.type2){
+                        el.type2.forEach(item => {
+                            if(val == true){
+                                this.rolecuestoms.push(item.id)
+                                this.checkedList.push(item.id)
+                                item.checked = true
+                            }else{
+                                this.rolecuestoms.pop(item.id)
+                                this.checkedList.pop(item.id)
+                                item.checked = false
+                            }
+                        });
                     }
                 });
+                this.$options.methods.norepeat.bind(this)()
             },
             // 选中全部联系人权限
             CheckAllcontacts(val) {
-                let data = this.contactrole
+                let data = this.contactsData
                 data.forEach(el => {
-                    if(val == true){
-                        this.checkedrolecontacts.push(el.id)
-                        this.roleform.ids.push(el.id)
-                    }else{
-                        this.checkedrolecontacts.pop(el.id)
-                        this.roleform.ids.pop(el.id)
+                    if(el.type1){
+                        el.type1.forEach(item => {
+                            if(val == true){
+                                this.rolecontacts.push(item.id)
+                                this.checkedList.push(item.id)
+                                item.checked = true
+                            }else{
+                                this.rolecontacts.pop(item.id)
+                                this.checkedList.pop(item.id)
+                                item.checked = false
+                            }
+                        });
                     }
                 });
+                this.$options.methods.norepeat.bind(this)()
             },
             // 选中全部商机权限
-            CheckAllopportunitys(val) {
-                let data = this.opportunityrole
+            CheckAlloppos(val) {
+                let data = this.opposData
                 data.forEach(el => {
-                    if(val == true){
-                        this.checkedroleopportunitys.push(el.id)
-                        this.roleform.ids.push(el.id)
-                    }else{
-                        this.checkedroleopportunitys.pop(el.id)
-                        this.roleform.ids.pop(el.id)
+                    if(el.type1){
+                        el.type1.forEach(item => {
+                            if(val == true){
+                                this.roleoppos.push(item.id)
+                                this.checkedList.push(item.id)
+                                item.checked = true
+                            }else{
+                                this.roleoppos.pop(item.id)
+                                this.checkedList.pop(item.id)
+                                item.checked = false
+                            }
+                        });
                     }
                 });
+                this.$options.methods.norepeat.bind(this)()
             },
             // 选中全部合同权限
-            CheckAllagreements(val) {
-                let data = this.agreementrole
+            CheckAllagrees(val) {
+                let data = this.agreesData
                 data.forEach(el => {
-                    if(val == true){
-                        this.checkedroleagreements.push(el.id)
-                        this.roleform.ids.push(el.id)
-                    }else{
-                        this.checkedroleagreements.pop(el.id)
-                        this.roleform.ids.pop(el.id)
+                    if(el.type1){
+                        el.type1.forEach(item => {
+                            if(val == true){
+                                this.checkedList.push(item.id)
+                                item.checked = true
+                            }else{
+                                this.checkedList.pop(item.id)
+                                item.checked = false
+                            }
+                        });
                     }
                 });
+                // console.log(this.checkedList)
+                this.$options.methods.norepeat.bind(this)()
             },
             // 选中全部活动权限
-            CheckAllactivitys(val) {
-                let data = this.activityrole
+            CheckAllactives(val) {
+                let data = this.activesData
                 data.forEach(el => {
-                    if(val == true){
-                        this.checkedroleactivitys.push(el.id)
-                        this.roleform.ids.push(el.id)
-                    }else{
-                        this.checkedroleactivitys.pop(el.id)
-                        this.roleform.ids.pop(el.id)
+                    if(el.type1){
+                        el.type1.forEach(item => {
+                            if(val == true){
+                                this.roleactives.push(item.id)
+                                this.checkedList.push(item.id)
+                                item.checked = true
+                            }else{
+                                this.roleactives.pop(item.id)
+                                this.checkedList.pop(item.id)
+                                item.checked = false
+                            }
+                        });
+                    }
+                    if(el.type2){
+                        el.type2.forEach(item => {
+                            if(val == true){
+                                this.roleactives.push(item.id)
+                                this.checkedList.push(item.id)
+                                item.checked = true
+                            }else{
+                                this.roleactives.pop(item.id)
+                                this.checkedList.pop(item.id)
+                                item.checked = false
+                            }
+                        });
+                    }
+                    if(el.type3){
+                        el.type3.forEach(item => {
+                            if(val == true){
+                                this.roleactives.push(item.id)
+                                this.checkedList.push(item.id)
+                                item.checked = true
+                            }else{
+                                this.roleactives.pop(item.id)
+                                this.checkedList.pop(item.id)
+                                item.checked = false
+                            }
+                        });
+                    }
+                    if(el.type4){
+                        el.type4.forEach(item => {
+                            if(val == true){
+                                this.roleactives.push(item.id)
+                                this.checkedList.push(item.id)
+                                item.checked = true
+                            }else{
+                                this.roleactives.pop(item.id)
+                                this.checkedList.pop(item.id)
+                                item.checked = false
+                            }
+                        });
                     }
                 });
+                this.$options.methods.norepeat.bind(this)()
             },
             // 选中全部基础设置权限
             CheckAllsets(val) {
-                let data = this.setrole
+                let data = this.setsData
                 data.forEach(el => {
-                    if(val == true){
-                        this.checkedrolesets.push(el.id)
-                        this.roleform.ids.push(el.id)
-                    }else{
-                        this.checkedrolesets.pop(el.id)
-                        this.roleform.ids.pop(el.id)
+                    if(el.type1){
+                        el.type1.forEach(item => {
+                            if(val == true){
+                                this.rolesets.push(item.id)
+                                this.checkedList.push(item.id)
+                                item.checked = true
+                            }else{
+                                this.rolesets.pop(item.id)
+                                this.checkedList.pop(item.id)
+                                item.checked = false
+                            }
+                        });
+                    }
+                    if(el.type2){
+                        el.type2.forEach(item => {
+                            if(val == true){
+                                this.rolesets.push(item.id)
+                                this.checkedList.push(item.id)
+                                item.checked = true
+                            }else{
+                                this.rolesets.pop(item.id)
+                                this.checkedList.pop(item.id)
+                                item.checked = false
+                            }
+                        });
+                    }
+                    if(el.type3){
+                        el.type3.forEach(item => {
+                            if(val == true){
+                                this.rolesets.push(item.id)
+                                this.checkedList.push(item.id)
+                                item.checked = true
+                            }else{
+                                this.rolesets.pop(item.id)
+                                this.checkedList.pop(item.id)
+                                item.checked = false
+                            }
+                        });
+                    }
+                    if(el.type4){
+                        el.type4.forEach(item => {
+                            if(val == true){
+                                this.rolesets.push(item.id)
+                                this.checkedList.push(item.id)
+                                item.checked = true
+                            }else{
+                                this.rolesets.pop(item.id)
+                                this.checkedList.pop(item.id)
+                                item.checked = false
+                            }
+                        });
+                    }
+                    if(el.type5){
+                        el.type5.forEach(item => {
+                            if(val == true){
+                                this.rolesets.push(item.id)
+                                this.checkedList.push(item.id)
+                                item.checked = true
+                            }else{
+                                this.rolesets.pop(item.id)
+                                this.checkedList.pop(item.id)
+                                item.checked = false
+                            }
+                        });
                     }
                 });
+                this.$options.methods.norepeat.bind(this)()
             },
-            // 选中线索权限
-            handleCheckedroleclue(e) {
-                let checkedCount = e.length;
-                this.checkAllclue = checkedCount === this.cluerole.length;
-                this.checksomeclue = checkedCount > 0 && checkedCount < this.cluerole.length;
+            // 选中全部办公权限
+            CheckAllworks(val) {
+                let data = this.worksData
+                data.forEach(el => {
+                    if(el.type1){
+                        el.type1.forEach(item => {
+                            if(val == true){
+                                this.roleworks.push(item.id)
+                                this.checkedList.push(item.id)
+                                item.checked = true
+                            }else{
+                                this.roleworks.pop(item.id)
+                                this.checkedList.pop(item.id)
+                                item.checked = false
+                            }
+                        });
+                    }
+                    if(el.type2){
+                        el.type2.forEach(item => {
+                            if(val == true){
+                                this.roleworks.push(item.id)
+                                this.checkedList.push(item.id)
+                                item.checked = true
+                            }else{
+                                this.roleworks.pop(item.id)
+                                this.checkedList.pop(item.id)
+                                item.checked = false
+                            }
+                        });
+                    }
+                });
+                this.$options.methods.norepeat.bind(this)()
             },
-            // 选中客户权限
-            handleCheckedrolecustomer(e) {
-                let checkedCount = e.length;
-                this.checkAllcustomer = checkedCount === this.customerole.length;
-                this.checksomecustomer = checkedCount > 0 && checkedCount < this.customerole.length;
+            // 选中全部商业智能权限
+            CheckAllreports(val) {
+                let data = this.reportsData
+                data.forEach(el => {
+                    if(el.type1){
+                        el.type1.forEach(item => {
+                            if(val == true){
+                                this.rolereports.push(item.id)
+                                this.checkedList.push(item.id)
+                                item.checked = true
+                            }else{
+                                this.rolereports.pop(item.id)
+                                this.checkedList.pop(item.id)
+                                item.checked = false
+                            }
+                        });
+                    }
+                });
+                this.$options.methods.norepeat.bind(this)()
             },
-            // 选中联系人权限
-            handleCheckedrolecontact(e) {
-                let checkedCount = e.length;
-                this.checkAllcontact = checkedCount === this.contactrole.length;
-                this.checksomecontact = checkedCount > 0 && checkedCount < this.contactrole.length;
+            // 选中全部菜单权限
+            CheckAllmenus(val) {
+                let data = this.menusData
+                data.forEach(el => {
+                    if(el.type1){
+                        el.type1.forEach(item => {
+                            if(val == true){
+                                this.rolemenus.push(item.id)
+                                this.checkedList.push(item.id)
+                                item.checked = true
+                            }else{
+                                this.rolemenus.pop(item.id)
+                                this.checkedList.pop(item.id)
+                                item.checked = false
+                            }
+                        });
+                    }
+                });
+                this.$options.methods.norepeat.bind(this)()
             },
-            // 选中商机权限
-            handleCheckedroleopportunity(e) {
-                let checkedCount = e.length;
-                this.checkAllopportunity = checkedCount === this.opportunityrole.length;
-                this.checksomeopportunity = checkedCount > 0 && checkedCount < this.opportunityrole.length;
-            },
-            // 选中合同权限
-            handleCheckedroleagreement(e) {
-                let checkedCount = e.length;
-                this.checkAllagreement = checkedCount === this.agreementrole.length;
-                this.checksomeagreement = checkedCount > 0 && checkedCount < this.agreementrole.length;
-            },
-            // 选中活动权限
-            handleCheckedroleactivity(e) {
-                let checkedCount = e.length;
-                this.checkAllactivity = checkedCount === this.activityrole.length;
-                this.checksomeactivity = checkedCount > 0 && checkedCount < this.activityrole.length;
-            },
-            // 选中基础设置权限
-            handleCheckedroleset(e) {
-                let checkedCount = e.length;
-                this.checkAllset = checkedCount === this.setrole.length;
-                this.checksomeset = checkedCount > 0 && checkedCount < this.setrole.length;
-            },
+
             changevalue(e,val){
-                let arr = this.roleform.ids
+                console.log(e,val.id)
+                let i = this.checkindex
+                let arr = this.checkedList
+                
+                if(e == true){
+                    this.checkedList.push(val.id)
+                }
                 if(e == false){
                     arr.forEach((el,i) => {
-                        if(arr[i] == val){
-                            this.roleform.ids.splice(i,1)
+                        if(arr[i] == val.id){
+                            this.checkedList.splice(i,1)
                         }
                     });
-                }else{
-                    this.roleform.ids.push(val)
+                }
+                this.$options.methods.norepeat.bind(this)()
+                if(i == 0){//线索
+                    if(e == true){
+                        this.roleclues.push(val.id)
+                    }else if(e == false){
+                        this.roleclues.pop(val.id)
+                    }
+                    if(this.roleclues.length == this.cluesData[0].count){
+                        this.allclue = true
+                    }else{
+                        this.allclue = false
+                    }
+                }
+                if(i == 1){//客户
+                    if(e == true){
+                        this.rolecuestoms.push(val.id)
+                    }else if(e == false){
+                        this.rolecuestoms.pop(val.id)
+                    }
+                    if(this.rolecuestoms.length == this.cuestomsData[0].count){
+                        this.allcuestom = true
+                    }else{
+                        this.allcuestom = false
+                    }
+                }
+                if(i == 2){//联系人
+                    if(e == true){
+                        this.rolecontacts.push(val.id)
+                    }else if(e == false){
+                        this.rolecontacts.pop(val.id)
+                    }
+                    if(this.rolecontacts.length == this.contactsData[0].count){
+                        this.allcontact = true
+                    }else{
+                        this.allcontact = false
+                    }
+                }
+                if(i == 3){//商机
+                    if(e == true){
+                        this.roleoppos.push(val.id)
+                    }else if(e == false){
+                        this.roleoppos.pop(val.id)
+                    }
+                    if(this.roleoppos.length == this.opposData[0].count){
+                        this.alloppo = true
+                    }else{
+                        this.alloppo = false
+                    }
+                }
+                if(i == 4){//合同
+                    if(e == true){
+                        this.rolecontacts.push(val.id)
+                    }else if(e == false){
+                        this.rolecontacts.pop(val.id)
+                    }
+                    if(this.rolecontacts.length == this.agreesData[0].count){
+                        this.allagree = true
+                    }else{
+                        this.allagree = false
+                    }
+                }
+                if(i == 5){//社交营销
+                    if(e == true){
+                        this.roleactives.push(val.id)
+                    }else if(e == false){
+                        this.roleactives.pop(val.id)
+                    }
+                    if(this.roleactives.length == this.activesData[0].count){
+                        this.allactive = true
+                    }else{
+                        this.allactive = false
+                    }
+                }
+                if(i == 6){//系统设置
+                    if(e == true){
+                        this.rolesets.push(val.id)
+                    }else if(e == false){
+                        this.rolesets.pop(val.id)
+                    }
+                    if(this.rolesets.length == this.setsData[0].count){
+                        this.allset = true
+                    }else{
+                        this.allset = false
+                    }
+                }
+                if(i == 7){//办公
+                    if(e == true){
+                        this.roleworks.push(val.id)
+                    }else if(e == false){
+                        this.roleworks.pop(val.id)
+                    }
+                    if(this.roleworks.length == this.worksData[0].count){
+                        this.allwork = true
+                    }else{
+                        this.allwork = false
+                    }
+                }
+                if(i == 8){//商业智能
+                    if(e == true){
+                        this.rolereports.push(val.id)
+                    }else if(e == false){
+                        this.rolereports.pop(val.id)
+                    }
+                    if(this.rolereports.length == this.reportsData[0].count){
+                        this.allreport = true
+                    }else{
+                        this.allreport = false
+                    }
+                }
+                if(i == 9){//菜单
+                    if(e == true){
+                        this.rolemenus.push(val.id)
+                    }else if(e == false){
+                        this.rolemenus.pop(val.id)
+                    }
+                    if(this.rolemenus.length == this.menusData[0].count){
+                        this.allmenu = true
+                    }else{
+                        this.allmenu = false
+                    }
                 }
             },
             checkResource(i){
                 this.checkindex = i.index
             },
+            norepeat(){
+                let hash = []
+                for (let i = 0; i < this.checkedList.length; i++) {
+                    if(hash.indexOf(this.checkedList[i])==-1){
+                        hash.push(this.checkedList[i]);
+                    }
+                }
+                this.checkedList = hash
+                console.log(this.checkedList)
+            },
             CheckAlls(e,val){
-                console.log(e,'1001010101')
+                // console.log(e,'1001010101')
                 const _this = this
-                let arr = val.slice(2)
+                let arr = val
                 let i = this.checkindex
-                this.checkedroleclues = []
-                this.checkedrolecustomers = []
-                this.checkedrolecontacts = []
-                this.checkedroleopportunitys = []
-                this.checkedroleagreements = []
-                this.checkedroleactivitys = []
-                this.checkedrolesets = []
-                this.checkedroleworks = []
-                this.checkedrolereports = []
                 if(i == 0){//线索
                     arr.forEach(el => {
                         if(el.type1){
                             el.type1.forEach(item => {
                                 if(e == true){
                                     this.checkedList.push(item.id)
-                                    this.checkedroleclues.push(item.id)
                                     item.checked = true
                                 }else{
                                     this.checkedList.pop(item.id)
-                                    this.checkedroleclues.pop(item.id)
                                     item.checked = false
                                 }
                                 
@@ -864,7 +1296,8 @@
                             });
                         }
                     });
-                }else if(i == 1){//客户
+                }
+                if(i == 1){//客户
                     arr.forEach(el => {
                         if(el.type1){
                             el.type1.forEach(item => {
@@ -890,7 +1323,8 @@
                             });
                         }
                     });
-                }else if(i == 2){//联系人
+                }
+                if(i == 2){//联系人
                     arr.forEach(el => {
                         if(el.type1){
                             el.type1.forEach(item => {
@@ -905,7 +1339,8 @@
                             });
                         }
                     });
-                }else if(i == 3){//商机
+                }
+                if(i == 3){//商机
                     arr.forEach(el => {
                         if(el.type1){
                             el.type1.forEach(item => {
@@ -920,7 +1355,8 @@
                             });
                         }
                     });
-                }else if(i == 4){//合同
+                }
+                if(i == 4){//合同
                     arr.forEach(el => {
                         if(el.type1){
                             el.type1.forEach(item => {
@@ -935,7 +1371,8 @@
                             });
                         }
                     });
-                }else if(i == 5){//社交营销
+                }
+                if(i == 5){//社交营销
                     arr.forEach(el => {
                         if(el.type1){
                             el.type1.forEach(item => {
@@ -982,7 +1419,8 @@
                             });
                         }
                     });
-                }else if(i == 6){//系统设置
+                }
+                if(i == 6){//系统设置
                     arr.forEach(el => {
                         if(el.type1){
                             el.type1.forEach(item => {
@@ -1040,7 +1478,8 @@
                             });
                         }
                     });
-                }else if(i == 7){//办公
+                }
+                if(i == 7){//办公
                     arr.forEach(el => {
                         if(el.type1){
                             el.type1.forEach(item => {
@@ -1065,7 +1504,8 @@
                             });
                         }
                     });
-                }else if(i == 8){//商业智能
+                }
+                if(i == 8){//商业智能
                     arr.forEach(el => {
                         if(el.type1){
                             el.type1.forEach(item => {
@@ -1080,186 +1520,168 @@
                         }
                     });
                 }
-                console.log(this.checkedList)
+                if(i == 9){//菜单栏
+                    arr.forEach(el => {
+                        if(el.type1){
+                            el.type1.forEach(item => {
+                                if(e == true){
+                                    this.checkedList.push(item.id)
+                                    item.checked = true
+                                }else{
+                                    this.checkedList.pop(item.id)
+                                    item.checked = false
+                                }
+                            });
+                        }
+                    });
+                }
+                this.$options.methods.norepeat.bind(this)()
                 
             },
             checkvalue(e,val){
-                console.log(val.checked)
+                // console.log(val.checked)
+                if(e == true){
+                    this.checkedList.push(val.id)
+                }else if(e == false){
+                    arr.forEach((el,i) => {
+                        if(arr[i] == val.id){
+                            this.checkedList.splice(i,1)
+                        }
+                    });
+                }
+                this.$options.methods.norepeat.bind(this)()
                 let i = this.checkindex
                 if(i == 0){//线索
                     let name1 = this.resourceData.name1
-                    if(val.checked == true){
-                        this.checkedroleclues.push(val.id)
-                        this.checkedList.push(val.id)
+                    if(e == true){
+                        this.roleclues.push(val.id)
+                    }else if(e == false){
+                        this.roleclues.pop(val.id)
                     }
-                    if(val.checked == false){
-                        this.checkedroleclues.pop(val.id)
-                        this.checkedList.pop(val.id)
-                    }
-                    if(this.checkedroleclues.length < name1[0].count && this.checkedroleclues.length !== 0){
-                        name1.checksome = true
-                        name1.checkAll = false
-                    }else if(this.checkedroleclues.length == name1[0].count){
+                    if(this.roleclues.length == name1[0].count){
                         name1.checkAll = true
-                        name1.checksome = false
-                    }else if(this.checkedroleclues.length == 0){
+                    }else{
                         name1.checkAll = false
-                        name1.checksome = false
-                    }
-                }else if(i == 1){//客户
-                    let name2 = this.resourceData.name2
-                    if(val.checked == true){
-                        this.checkedrolecustomers.push(val.id)
-                        this.checkedList.push(val.id)
-                    }else{
-                        this.checkedrolecustomers.pop(val.id)
-                        this.checkedList.pop(val.id)
-                    }
-                    if(this.checkedrolecustomers.length < name2[0].count && this.checkedrolecustomers.length !== 0){
-                        name2.checksome = true
-                        name2.checkAll = false
-                    }else if(this.checkedrolecustomers.length == name2[0].count){
-                        name2.checkAll = true
-                        name2.checksome = false
-                    }else if(this.checkedrolecustomers.length == 0){
-                        name2.checkAll = false
-                        name2.checksome = false
-                    }
-                }else if(i == 2){//联系人
-                    let name3 = this.resourceData.name3
-                    if(val.checked == true){
-                        this.checkedrolecontacts.push(val.id)
-                        this.checkedList.push(val.id)
-                    }else{
-                        this.checkedrolecontacts.pop(val.id)
-                        this.checkedList.pop(val.id)
-                    }
-                    if(this.checkedrolecontacts.length < name3[0].count && this.checkedrolecontacts.length !== 0){
-                        name3.checksome = true
-                        name3.checkAll = false
-                    }else if(this.checkedrolecontacts.length == name3[0].count){
-                        name3.checkAll = true
-                        name3.checksome = false
-                    }else if(this.checkedrolecontacts.length == 0){
-                        name3.checkAll = false
-                        name3.checksome = false
-                    }
-                }else if(i == 3){//商机
-                    let name4 = this.resourceData.name4
-                    if(val.checked == true){
-                        this.checkedroleopportunitys.push(val.id)
-                        this.checkedList.push(val.id)
-                    }else{
-                        this.checkedroleopportunitys.pop(val.id)
-                        this.checkedList.pop(val.id)
-                    }
-                    if(this.checkedroleopportunitys.length < name4[0].count && this.checkedroleopportunitys.length !== 0){
-                        name4.checksome = true
-                        name4.checkAll = false
-                    }else if(this.checkedroleopportunitys.length == name4[0].count){
-                        name4.checkAll = true
-                        name4.checksome = false
-                    }else if(this.checkedroleopportunitys.length == 0){
-                        name4.checkAll = false
-                        name4.checksome = false
-                    }
-                }else if(i == 4){//合同
-                    let name5 = this.resourceData.name5
-                    if(val.checked == true){
-                        this.checkedroleagreements.push(val.id)
-                        this.checkedList.push(val.id)
-                    }else{
-                        this.checkedroleagreements.pop(val.id)
-                        this.checkedList.pop(val.id)
-                    }
-                    if(this.checkedroleagreements.length < name5[0].count && this.checkedroleagreements.length !== 0){
-                        name5.checksome = true
-                        name5.checkAll = false
-                    }else if(this.checkedroleagreements.length == name5[0].count){
-                        name5.checkAll = true
-                        name5.checksome = false
-                    }else if(this.checkedroleagreements.length == 0){
-                        name5.checkAll = false
-                        name5.checksome = false
-                    }
-                }else if(i == 5){//社交营销
-                    let name6 = this.resourceData.name6
-                    if(val.checked == true){
-                        this.checkedroleactivitys.push(val.id)
-                        this.checkedList.push(val.id)
-                    }else{
-                        this.checkedroleactivitys.pop(val.id)
-                        this.checkedList.pop(val.id)
-                    }
-                    if(this.checkedroleactivitys.length < name6[0].count && this.checkedroleactivitys.length !== 0){
-                        name6.checksome = true
-                        name6.checkAll = false
-                    }else if(this.checkedroleactivitys.length == name6[0].count){
-                        name6.checkAll = true
-                        name6.checksome = false
-                    }else if(this.checkedroleactivitys.length == 0){
-                        name6.checkAll = false
-                        name6.checksome = false
-                    }
-                }else if(i == 6){//系统设置
-                    let name7 = this.resourceData.name7
-                    if(val.checked == true){
-                        this.checkedrolesets.push(val.id)
-                        this.checkedList.push(val.id)
-                    }else{
-                        this.checkedrolesets.pop(val.id)
-                        this.checkedList.pop(val.id)
-                    }
-                    if(this.checkedrolesets.length < name7[0].count && this.checkedrolesets.length !== 0){
-                        name7.checksome = true
-                        name7.checkAll = false
-                    }else if(this.checkedrolesets.length == name7[0].count){
-                        name7.checkAll = true
-                        name7.checksome = false
-                    }else if(this.checkedrolesets.length == 0){
-                        name7.checkAll = false
-                        name7.checksome = false
-                    }
-                }else if(i == 7){//办公
-                    let name8 = this.resourceData.name8
-                    if(val.checked == true){
-                        this.checkedroleworks.push(val.id)
-                        this.checkedList.push(val.id)
-                    }else{
-                        this.checkedroleworks.pop(val.id)
-                        this.checkedList.pop(val.id)
-                    }
-                    if(this.checkedroleworks.length < name8[0].count && this.checkedroleworks.length !== 0){
-                        name8.checksome = true
-                        name8.checkAll = false
-                    }else if(this.checkedroleworks.length == name8[0].count){
-                        name8.checkAll = true
-                        name8.checksome = false
-                    }else if(this.checkedroleworks.length == 0){
-                        name8.checkAll = false
-                        name8.checksome = false
-                    }
-                }else if(i == 8){//商业智能
-                    let name9 = this.resourceData.name9
-                    if(val.checked == true){
-                        this.checkedrolereports.push(val.id)
-                        this.checkedList.push(val.id)
-                    }else{
-                        this.checkedrolereports.pop(val.id)
-                        this.checkedList.pop(val.id)
-                    }
-                    if(this.checkedrolereports.length < name9[0].count && this.checkedrolereports.length !== 0){
-                        name9.checksome = true
-                        name9.checkAll = false
-                    }else if(this.checkedrolereports.length == name9[0].count){
-                        name9.checkAll = true
-                        name9.checksome = false
-                    }else if(this.checkedrolereports.length == 0){
-                        name9.checkAll = false
-                        name9.checksome = false
                     }
                 }
-            }
+                if(i == 1){//客户
+                    let name2 = this.resourceData.name2
+                    if(e == true){
+                        this.rolecuestoms.push(val.id)
+                    }else if(e == false){
+                        this.rolecuestoms.pop(val.id)
+                    }
+                    if(this.rolecuestoms.length == name2[0].count){
+                        name2.checkAll = true
+                    }else{
+                        name2.checkAll = false
+                    }
+                }
+                if(i == 2){//联系人
+                    let name3 = this.resourceData.name3
+                    if(e == true){
+                        this.rolecontacts.push(val.id)
+                    }else if(e == false){
+                        this.rolecontacts.pop(val.id)
+                    }
+                    if(this.rolecontacts.length == name3[0].count){
+                        name3.checkAll = true
+                    }else{
+                        name3.checkAll = false
+                    }
+                }
+                if(i == 3){//商机
+                    let name4 = this.resourceData.name4
+                    if(e == true){
+                        this.roleoppos.push(val.id)
+                    }else if(e == false){
+                        this.roleoppos.pop(val.id)
+                    }
+                    if(this.roleoppos.length == name4[0].count){
+                        name4.checkAll = true
+                    }else{
+                        name4.checkAll = false
+                    }
+                }
+                if(i == 4){//合同
+                    let name5 = this.resourceData.name5
+                    if(e == true){
+                        this.roleagrees.push(val.id)
+                    }else if(e == false){
+                        this.roleagrees.pop(val.id)
+                    }
+                    if(this.roleagrees.length == name5[0].count){
+                        name5.checkAll = true
+                    }else{
+                        name5.checkAll = false
+                    }
+                }
+                if(i == 5){//社交营销
+                    let name6 = this.resourceData.name6
+                    if(e == true){
+                        this.roleactives.push(val.id)
+                    }else if(e == false){
+                        this.roleactives.pop(val.id)
+                    }
+                    if(this.roleactives.length == name6[0].count){
+                        name6.checkAll = true
+                    }else{
+                        name6.checkAll = false
+                    }
+                }
+                if(i == 6){//系统设置
+                    let name7 = this.resourceData.name7
+                    if(e == true){
+                        this.rolesets.push(val.id)
+                    }else if(e == false){
+                        this.rolesets.pop(val.id)
+                    }
+                    if(this.rolesets.length == name7[0].count){
+                        name7.checkAll = true
+                    }else{
+                        name7.checkAll = false
+                    }
+                }
+                if(i == 7){//办公
+                    let name8 = this.resourceData.name8
+                    if(e == true){
+                        this.checkedroleworks.push(val.id)
+                    }else if(e == false){
+                        this.checkedroleworks.pop(val.id)
+                    }
+                    if(this.checkedroleworks.length == name8[0].count){
+                        name8.checkAll = true
+                    }else{
+                        name8.checkAll = false
+                    }
+                }
+                if(i == 8){//商业智能
+                    let name9 = this.resourceData.name9
+                    if(e == true){
+                        this.checkedrolereports.push(val.id)
+                    }else if(e == false){
+                        this.checkedrolereports.pop(val.id)
+                    }
+                    if(this.checkedrolereports.length == name9[0].count){
+                        name9.checkAll = true
+                    }else{
+                        name9.checkAll = false
+                    }
+                }
+                    if(i == 9){//菜单栏
+                    let name10 = this.resourceData.name10
+                    if(e == true){
+                        this.checkedrolemenus.push(val.id)
+                    }else if(e == false){
+                        this.checkedrolemenus.pop(val.id)
+                    }
+                    if(this.checkedrolemenus.length == name10[0].count){
+                        name10.checkAll = true
+                    }else{
+                        name10.checkAll = false
+                    }
+                }
+            },
             
         }
     }
@@ -1325,10 +1747,11 @@
     }
     .checkboxclass{
         width: 100px;
-    }
-    .checkboxclass:first-child{
         margin-left: 30px;
     }
+    /* .checkboxclass{
+        margin-left: 30px;
+    } */
     .el-icon-info{
         font-size: 12px;
     }
