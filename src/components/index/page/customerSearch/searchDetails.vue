@@ -185,7 +185,7 @@
                 let qs = require('querystring')
                 let data = {}
                 data.company = this.customername
-                if(val.index == '1'){
+                if(val.index == 1){
                     axios({
                         method: 'post',
                         url: _this.$store.state.defaultHttp+'website/selectWebsiteByCompany.do',

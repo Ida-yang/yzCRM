@@ -377,16 +377,6 @@
         background-color: #fff;
         padding-bottom: 5px;
     }
-    .top{
-        height: auto;
-        background-color: #fff;
-    }
-    .bottom{
-        height: 100%;
-        background-color: #fff;
-        margin-top: 20px;
-        padding: 5px 20px;
-    }
     .el-card__body{
         padding: 0;
     }

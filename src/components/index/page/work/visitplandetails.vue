@@ -26,7 +26,7 @@
                     </div>
                 </el-card>
             </div>
-            <div class="bottom1" v-if="thisshow">
+            <div class="top" v-if="thisshow">
                 <el-card class="box-card">
                     <div slot="header" class="clearfix">
                         <span>基本信息</span>
@@ -47,7 +47,7 @@
                     </div>
                 </el-card>
             </div>
-            <div class="bottom1">
+            <div class="top">
                 <el-card class="box-card">
                     <div slot="header" class="clearfix">
                         <span>执行结果</span>
@@ -74,7 +74,7 @@
                     </div>
                 </el-card>
             </div>
-            <div class="bottom1">
+            <div class="top">
                 <el-card class="box-card">
                     <div class="block">
                         <span class="rate_text">打分</span>
@@ -346,16 +346,6 @@ export default {
         height: auto;
         background-color: #fff;
         padding-bottom: 5px;
-    }
-    .top{
-        height: auto;
-        background-color: #fff;
-    }
-    .bottom1{
-        height: auto;
-        background-color: #fff;
-        margin-top: 20px;
-        /* padding: 5px 20px; */
     }
     .item_body{
         padding: 2px 20px;

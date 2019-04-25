@@ -27,14 +27,70 @@
                     <div v-show="!thisshow"></div>
                 </el-card>
             </div>
-            <div class="bottom1">
+            
+            <div class="bottom" v-show="auxcontent">
+                <div class="aux_c">
+                    <div class="aux_ul">
+                        <div class="aux_li">
+                            <p>
+                                <span style="font-size:20px;line-height:50px;text-align:center;">{{auxList.timeConsuming}}天</span><br>
+                                <span style="font-size:12px;color:#666666;line-height:25px">跟踪时间</span><br>
+                                <span style="font-size:14px;color:#333333;line-height:20px">{{auxList.trackProportion}}</span>
+                            </p>
+                            <el-progress type="circle" :percentage="27" :width="34" :stroke-width="5" :show-text="false"></el-progress>
+                        </div>
+                    </div>
+                    <div class="aux_ul">
+                        <div class="aux_li">
+                            <p>
+                                <span style="font-size:20px;line-height:50px;text-align:center;">{{auxList.surplusTime}}天</span><br>
+                                <span style="font-size:12px;color:#666666;line-height:25px">剩余天数</span><br>
+                                <span style="font-size:14px;color:#333333;line-height:20px">{{auxList.surplusProportion}}</span>
+                            </p>
+                            <el-progress type="circle" :percentage="10" :width="34" :stroke-width="5" :show-text="false"></el-progress>
+                        </div>
+                    </div>
+                    <div class="aux_ul">
+                        <div class="aux_li">
+                            <p>
+                                <span style="font-size:20px;line-height:50px;text-align:center;">{{auxList.step_probability}}</span><br>
+                                <span style="font-size:12px;color:#666666;line-height:25px">成功率</span><br>
+                                <span style="font-size:14px;color:#333333;line-height:20px">{{auxList.step_probability}}</span>
+                            </p>
+                            <el-progress type="circle" :percentage="80" :width="34" :stroke-width="5" :show-text="false"></el-progress>
+                        </div>
+                    </div>
+                    <div class="aux_ul">
+                        <div class="aux_li">
+                            <p>
+                                <span style="font-size:20px;line-height:50px;text-align:center;">{{auxList.competitor}}人</span><br>
+                                <span style="font-size:12px;color:#666666;line-height:25px">竞争对手</span><br>
+                                <span style="font-size:14px;color:#333333;line-height:20px">{{auxList.competitorProportion}}</span>
+                            </p>
+                            <el-progress type="circle" :percentage="3" :width="34" :stroke-width="5" :show-text="false"></el-progress>
+                        </div>
+                    </div>
+                    <div class="aux_ul">
+                        <div class="aux_li">
+                            <p>
+                                <span style="font-size:20px;line-height:50px;text-align:center;">{{auxList.num}}次</span><br>
+                                <span style="font-size:12px;color:#666666;line-height:25px">联系次数</span><br>
+                                <span style="font-size:14px;color:#333333;line-height:20px">{{auxList.numProportion}}</span>
+                            </p>
+                            <el-progress type="circle" :percentage="20" :width="34" :stroke-width="5" :show-text="false"></el-progress>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="top">
                 <el-card class="box-card step_process">
                     <div slot="header" class="clearfix">
                         <span>{{opportunitydetail.opportunity_name}}</span>
-                        <el-button class="info-btn" size="mini" style="float:right;margin-left:10px;" @click="nextStep()" v-if="shownext">下一步</el-button>
-                        <el-button class="info-btn" size="mini" style="float:right;margin-left:100px;" @click="endStep()" v-if="shownext">失败关闭</el-button>
-                        <span style="line-height:20px;float:right;margin-right:10px;font-size:14px;" v-if="showfail">该商机已关闭</span>
-                        <span style="line-height:20px;float:right;margin-right:10px;font-size:14px;" v-if="showsuccess">签约成功！</span>
+                        <el-button class="info-btn" size="mini" style="float:right;" @click="nextStep()" v-if="shownext">下一步</el-button>
+                        <el-button class="info-btn" size="mini" style="float:right;" @click="endStep()" v-if="shownext">失败关闭</el-button>
+                        <span style="line-height:20px;float:right;font-size:14px;" v-if="showfail">该商机已关闭</span>
+                        <span style="line-height:20px;float:right;font-size:14px;" v-if="showsuccess">签约成功！</span>
+                        <el-button class="info-btn" size="mini" style="float:right;margin-right:10px;" @click="auxAnalys()">辅助分析</el-button>
                     </div>
                     <el-steps :active="active" finish-status="success" :process-status="isprocess" align-center style="padding:10px;">
                         <el-step v-for="item in stepList" :key="item.step_id" :title="item.step_name" :description="item.step_probability">
@@ -47,7 +103,165 @@
                     </el-steps>
                 </el-card>
             </div>
-            <div class="bottom2">
+            <div class="bottom" v-show="auxcontent">
+                <el-tabs v-model="auxindex" type="card">
+                    <el-tab-pane label="跟进记录" name="first">
+                        <ul class="followrecord" v-for="item in record" :key="item.followId">
+                            <li class="recordicon">
+                                <img :src="item.imgUrl" class="detail_portrait" alt="头像" />
+                            </li>
+                            <li class="verticalline"></li>
+                            <li class="recordcontent">
+                                <div class="left_more">
+                                    <p>{{item.private_employee}}&nbsp;&nbsp;于{{item.createTime}}&nbsp;&nbsp;通过{{item.followType}}更新了一条记录<span v-if="item.contacts[0]">&nbsp;&nbsp;&nbsp;客户联系人为：&nbsp;{{item.contacts[0].name}}</span>
+                                        <span v-if="item.contactTime">&nbsp;&nbsp;&nbsp;并约定下次联系时间：{{item.contactTime}}</span>
+                                        <span>&nbsp;&nbsp;&nbsp;状态为：{{item.state}} &nbsp;&nbsp;&nbsp;{{item.inputType}}</span>
+                                    </p>
+                                    <p style="margin-top:15px;margin-bottom:15px;">{{item.followContent}}</p>
+                                    <div class="imgbox_two" v-if="item.imgName">
+                                        <img :src="item.picture_detail" alt="图片" width="80" height="80" @click="showImg($event,item)">
+                                    </div>
+                                    <div v-if="item.enclosureName">
+                                        <a :href="item.enclosureUrl" download>{{item.enclosureOldName}}</a>
+                                    </div>
+                                    <el-dialog :visible.sync="dialogVisible2">
+                                        <img width="100%" :src="dialogImageUrl2" alt="">
+                                    </el-dialog>
+                                </div>
+                            </li>
+                        </ul>
+                    </el-tab-pane>
+                    <el-tab-pane label="竞争对手" name="second">
+                        <el-table
+                            :data="competitorData"
+                            border
+                            stripe
+                            style="width: 100%">
+                            <el-table-column
+                                prop="name"
+                                header-align="left"
+                                min-width="90"
+                                label="公司名称">
+                            </el-table-column>
+                            <el-table-column
+                                prop="phone"
+                                header-align="left"
+                                min-width="110"
+                                label="联系人">
+                            </el-table-column>
+                            <el-table-column
+                                prop="telephone"
+                                header-align="left"
+                                min-width="110"
+                                label="优势">
+                            </el-table-column>
+                            <el-table-column
+                                prop="email"
+                                header-align="left"
+                                min-width="110"
+                                label="劣势">
+                            </el-table-column>
+                            <el-table-column
+                                prop="qq"
+                                header-align="left"
+                                min-width="110"
+                                label="常用战术">
+                            </el-table-column>
+                        </el-table>
+                    </el-tab-pane>
+                    <el-tab-pane label="联系人" name="third">
+                        <el-table
+                            :data="contactData"
+                            border
+                            stripe
+                            style="width: 100%">
+                            <el-table-column
+                                prop="name"
+                                header-align="left"
+                                min-width="90"
+                                label="名称">
+                            </el-table-column>
+                            <el-table-column
+                                prop="phone"
+                                header-align="left"
+                                min-width="110"
+                                label="手机">
+                            </el-table-column>
+                            <el-table-column
+                                prop="telephone"
+                                header-align="left"
+                                min-width="110"
+                                label="固话">
+                            </el-table-column>
+                            <el-table-column
+                                prop="email"
+                                header-align="left"
+                                min-width="110"
+                                label="邮箱">
+                            </el-table-column>
+                            <el-table-column
+                                prop="qq"
+                                header-align="left"
+                                min-width="110"
+                                label="QQ">
+                            </el-table-column>
+                            <el-table-column
+                                prop="wechat"
+                                header-align="left"
+                                min-width="110"
+                                label="微信">
+                            </el-table-column>
+                            <el-table-column
+                                prop="address"
+                                header-align="left"
+                                min-width="140"
+                                label="地址">
+                            </el-table-column>
+                            <el-table-column
+                                prop="identity"
+                                header-align="left"
+                                min-width="90"
+                                label="职务">
+                            </el-table-column>
+                            <el-table-column
+                                prop="sex"
+                                header-align="left"
+                                min-width="90"
+                                label="性别">
+                            </el-table-column>
+                            <el-table-column
+                                prop="status"
+                                header-align="left"
+                                min-width="90"
+                                label="是否在职">
+                                <template slot-scope="scope">
+                                    <el-tooltip :content="scope.row.status" placement="right">
+                                        <el-switch v-model="scope.row.status" active-value="在职" inactive-value="离职" active-color="#13ce66" inactive-color="#bbbbbb" @change="changeState(scope.row)"></el-switch>
+                                    </el-tooltip>
+                                </template>
+                            </el-table-column>
+                            <el-table-column
+                                prop="isCrux"
+                                header-align="left"
+                                min-width="110"
+                                label="是否为关键人">
+                                <template slot-scope="scope">
+                                    <el-tooltip :content="scope.row.isCrux" placement="right">
+                                        <el-switch v-model="scope.row.isCrux" active-value="是" inactive-value="否" active-color="#13ce66" inactive-color="#bbbbbb" @change="changePrimary(scope.row)"></el-switch>
+                                    </el-tooltip>
+                                </template>
+                            </el-table-column>
+                            <el-table-column
+                                prop="remark"
+                                header-align="left"
+                                min-width="100"
+                                label="备注">
+                            </el-table-column>
+                        </el-table>
+                    </el-tab-pane>
+                </el-tabs>
+            </div>
+            <div class="top">
                 <el-card class="box-card">
                     <div slot="header" class="clearfix">
                         <span>基本信息</span>
@@ -121,6 +335,7 @@
                 opportunitydetail:{},
                 contacts:{},
                 customerpool:{},
+                customerId:null,
                 privateUser:{},
                 contractTime:null,
                 failTime:null,
@@ -149,6 +364,17 @@
                 isprocess:'process',
 
                 retracts:true,
+
+                auxindex:'first',
+                auxList:{},
+                auxcontent:true,
+
+                record:[],
+                dialogVisible2:false,
+                dialogImageUrl2:null,
+
+                contactData:[],
+                competitorData:[]
             }
         },
         // mounted(){
@@ -167,6 +393,9 @@
                 let pageInfo = {}
                 pageInfo.page = this.page
                 pageInfo.limit = this.limit
+                let pageInfo2 = {}
+                pageInfo2.page = '1'
+                pageInfo2.limit = '100000'
 
                 axios({
                     method: 'post',
@@ -190,6 +419,7 @@
                     _this.contacts = res.data.map.success[0].contacts[0]
                     _this.privateUser = res.data.map.success[0].privateUser[0]
                     _this.customerpool = res.data.map.success[0].customerpool[0]
+                    _this.customerId = _this.customerpool.id
                     _this.stepList = _this.opportunitydetail.addstep
                     _this.stepList.length = _this.opportunitydetail.addstep.length - 1
                     _this.addstep = _this.opportunitydetail.opportunityProgress
@@ -233,9 +463,65 @@
                             }
                         }
                     }
+                    _this.$options.methods.loadfollow.bind(_this)()
                 }).catch(function(err){
                     _this.$message.error("商机详情加载失败,请重新进入页面");
                 });
+                //商机辅助分析
+                axios({
+                    method: 'get',
+                    url: _this.$store.state.defaultHttp+'opportunity/opportunityAnalysis.do?cId='+_this.$store.state.iscId+'&opportunity_id='+_this.idArr.opportunity_id,
+                }).then(function(res){
+                    _this.auxList = res.data.map.opportunity
+                }).catch(function(err){
+                    // console.log(err);
+                });
+                
+            },
+            loadfollow(){
+                const _this = this
+                let qs =require('querystring')
+                let pageInfo2 = {}
+                pageInfo2.page = '1'
+                pageInfo2.limit = '100000'
+
+                //加载跟进记录
+                axios({
+                    method:'get',
+                    url:_this.$store.state.defaultHttp+'customerpool/getFollowStaffAndpool.do?cId='+_this.$store.state.iscId+'&pId='+_this.$store.state.ispId+'&customerpool_id='+_this.customerId,
+                }).then(function(res){
+                    _this.record = res.data.map.success
+                    _this.record.forEach(el => {
+                        if(el.userImagName){
+                            el.imgUrl = '/upload/'+_this.$store.state.iscId+'/'+el.userImagName
+                        }
+                        if(!el.userImagName || el.userImagName == null){
+                            el.imgUrl = '/upload/staticImg/avatar.jpg'
+                        }
+                        if(el.imgName && el.imgName !== null){
+                            el.picture_detail = '/upload/'+_this.$store.state.iscId+'/'+el.imgName
+                        }
+                        if(el.enclosureName && el.enclosureName !== null){
+                            el.enclosureUrl = '/upload/'+_this.$store.state.iscId+'/'+el.enclosureName
+                        }
+                    });
+                }).catch(function(err){
+                    // console.log(err);
+                });
+                //详情页联系人
+                axios({
+                    method:'post',
+                    url:_this.$store.state.defaultHttp+'customerpool/getPoolContacts.do?cId='+_this.$store.state.iscId+'&customerpool_id='+_this.customerId,
+                    data:qs.stringify(pageInfo2)
+                }).then(function(res){
+                    _this.contactData = res.data.map.success
+                }).catch(function(err){
+                    // console.log(err);
+                });
+            },
+            showImg(e,val){
+                this.dialogImageUrl2 = '/upload/'+this.$store.state.iscId+'/'+val.imgName
+                this.dialogVisible2 = true
             },
             nextStep(){
                 for(var i = 0,length = this.stepList.length;i < length;i++){
@@ -321,6 +607,58 @@
                     })
                 })
             },
+            auxAnalys(){
+                this.auxcontent = !this.auxcontent
+            },
+            
+            changeState(row){
+                const _this = this
+                let qs = require('querystring')
+                let data = {}
+                data.id = row.id
+                data.status = row.status
+
+                axios({
+                    method:'post',
+                    url:_this.$store.state.defaultHttp+'contacts/updateStatus.do?cId='+_this.$store.state.iscId,
+                    data:qs.stringify(data)
+                }).then(function(res){
+                    if(res.data.code && res.data.code == '200'){
+                        _this.$options.methods.loadData.bind(_this)();
+                    }else{
+                        _this.$message({
+                            message: '可能出了点什么问题，再看看',
+                            type: 'error'
+                        })
+                    }
+                }).catch(function(err){
+                    // console.log(err);
+                });
+            },
+            changePrimary(row){
+                const _this = this
+                let qs = require('querystring')
+                let data = {}
+                data.id = row.id
+                data.isCrux = row.isCrux
+
+                axios({
+                    method:'post',
+                    url:_this.$store.state.defaultHttp+'contacts/updateIsCrux.do?cId='+_this.$store.state.iscId,
+                    data:qs.stringify(data)
+                }).then(function(res){
+                    if(res.data.code && res.data.code == '200'){
+                        _this.$options.methods.loadData.bind(_this)();
+                    }else{
+                        _this.$message({
+                            message: '可能出了点什么问题，再看看',
+                            type: 'error'
+                        })
+                    }
+                }).catch(function(err){
+                    // console.log(err);
+                });
+            },
             retract(){
                 this.thisshow = !this.thisshow
                 this.retracts = !this.retracts
@@ -375,23 +713,30 @@
         background-color: #fff;
         padding-bottom: 5px;
     }
-    .top{
-        height: auto;
-        background-color: #fff;
-    }
-    .bottom1{
-        height: auto;
-        background-color: #fff;
-        margin-top: 20px;
-        /* padding: 5px 20px; */
-    }
-    .bottom2{
-        height: 100%;
-        background-color: #fff;
-        margin-top: 20px;
-        /* padding: 5px 20px; */
-    }
     .el-card__body{
         padding: 0;
+    }
+    .aux_c{
+        height: 150px;
+        padding: 20px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        box-sizing: border-box;
+    }
+    .aux_ul{
+        flex: 1
+    }
+    .aux_li{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .aux_li p{
+        width: 60px
+    }
+    .aux_li .el-progress{
+        margin-left: 20px;
+        margin-top: 40px;
     }
 </style>

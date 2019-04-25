@@ -315,9 +315,9 @@
             },
             //显示对应状态数表格数据
             showTableval(val){
+                console.log(val)
                 const _this = this
                 let i = val.index
-                this.showTitle = false
                 this.index = val.index
                 this.searchList = {mechanism:null,department:null,year:null,yearMonth:null,startTime:null,endTime:null,yearrange:''}
                 this.yeardisabled = false
@@ -327,7 +327,7 @@
                 this.nameList.forEach(function(obj){
                     obj.isActive = false;
                 });
-                val.isActive = !val.isActive;
+                // val.isActive = !val.isActive;
                 if(i == 1){
                     axios({
                         method: 'get',
@@ -339,6 +339,8 @@
                                 type:'error'
                             })
                         }else{
+                            this.showTitle = false
+                            val.isActive = !val.isActive
                             _this.$options.methods.loadagreeReport.bind(_this)();
                         }
                     }).catch(function(err){
@@ -355,6 +357,8 @@
                                 type:'error'
                             })
                         }else{
+                            this.showTitle = false
+                            val.isActive = !val.isActive
                             _this.$options.methods.loadoppReport.bind(_this)();
                         }
                     }).catch(function(err){
@@ -371,6 +375,8 @@
                                 type:'error'
                             })
                         }else{
+                            this.showTitle = false
+                            val.isActive = !val.isActive
                             _this.$options.methods.loaddeptrank.bind(_this)();
                         }
                     }).catch(function(err){
@@ -387,6 +393,8 @@
                                 type:'error'
                             })
                         }else{
+                            this.showTitle = false
+                            val.isActive = !val.isActive
                             _this.$options.methods.loadpersonrank.bind(_this)();
                         }
                     }).catch(function(err){

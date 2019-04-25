@@ -14,7 +14,7 @@
             </el-radio-group>
         </div>
         <div class="searchList" style="width:100%;">
-            <el-input placeholder="请输入联系人或公司名称" v-model="searchName" style="margin-left:20px;width:400px;" @keyup.enter.native="search">
+            <el-input placeholder="请输入联系人或公司名称" v-model="searchList.searchName" style="margin-left:20px;width:400px;" @keyup.enter.native="search">
                 <el-select v-model="searchList.keyType" slot="prepend" placeholder="请选择" style="width:125px"> 
                     <el-option label="联系人名称" value="1"></el-option>
                     <el-option label="公司名称" value="2"></el-option>

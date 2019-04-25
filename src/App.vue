@@ -686,4 +686,16 @@ export default {
         width: 98%;
         height: 630px;
     }
+    
+    .top{
+        height: auto;
+        background-color: #fff;
+        margin-bottom: 20px;
+    }
+    .bottom{
+        background-color: #fff;
+        margin-bottom: 20px;
+        padding: 5px 20px;
+        box-sizing: border-box
+    }
 </style>

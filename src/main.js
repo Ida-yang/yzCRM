@@ -103,7 +103,24 @@ router.beforeEach((to, from, next) => {
   if (to.matched.some(record => record.meta.requireAuth)){ // 判断该路由是否需要登录权限
     // console.log('需要登录');
     if(localStorage.ispId) { // 判断当前的ispId是否存在 ； 登录存入的ispId
-      next();
+      if(to.path === '/organization'){
+        console.log('组织机构')
+        next()
+      }else if(to.path === '/user'){
+        console.log('用户管理')
+        next()
+      }else if(to.path === '/basicset'){
+        console.log('辅助资料')
+        next()
+      }else if(to.path === '/programme'){
+        console.log('目标')
+        next()
+      }else if(to.path === '/logs'){
+        console.log('日志')
+        next()
+      }else{
+        next();
+      }
     }else if(to.path === '/activity'){//判断是否为活动页面
       next()
     }else {

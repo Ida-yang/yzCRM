@@ -23,7 +23,7 @@
                     <div v-show="!thisshow"></div>
                 </el-card>
             </div>
-            <div class="bottom2">
+            <div class="top">
                 <el-card class="box-card">
                     <div slot="header" class="clearfix">
                         <span>线索和每日考核目标</span>
@@ -77,7 +77,7 @@
                     </div>
                 </el-card>
             </div>
-            <div class="bottom2">
+            <div class="top">
                 <el-card class="box-card">
                     <div slot="header" class="clearfix">
                         <span>拜访周目标</span>
@@ -118,7 +118,7 @@
                     </div>
                 </el-card>
             </div>
-            <div class="bottom2">
+            <div class="top">
                 <el-card class="box-card">
                     <div slot="header" class="clearfix">
                         <span>每日商机考核</span>
@@ -153,7 +153,7 @@
                     </div>
                 </el-card>
             </div>
-            <div class="bottom2">
+            <div class="top">
                 <el-card class="box-card">
                     <div slot="header" class="clearfix">
                         <span>合同金额</span>
@@ -598,6 +598,7 @@
 
 <style>
     .prodetcontent{
+        background-color: #f7f7f7;
         height: auto;
     }
     .number{
@@ -607,22 +608,6 @@
         height: auto;
         background-color: #fff;
         padding-bottom: 5px;
-    }
-    .top{
-        height: auto;
-        background-color: #fff;
-    }
-    .bottom1{
-        height: auto;
-        background-color: #fff;
-        margin-top: 20px;
-        /* padding: 5px 20px; */
-    }
-    .bottom2{
-        height: 100%;
-        background-color: #fff;
-        margin-top: 20px;
-        /* padding: 5px 20px; */
     }
     .el-card__body{
         padding: 0;

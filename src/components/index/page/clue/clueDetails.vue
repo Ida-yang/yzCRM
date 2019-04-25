@@ -39,7 +39,7 @@
                     <!-- <div v-show="!thisshow"></div> -->
                 </el-card>
             </div>
-            <div class="middle">
+            <div class="top">
                 <el-card class="box-card" v-model="cluedetail" v-show="!thisshow">
                     <div slot="header" class="clearfix">
                         <span>辅助信息</span>
@@ -236,6 +236,17 @@
                                 <template slot-scope="scope">
                                     <el-tooltip :content="scope.row.status" placement="right">
                                         <el-switch v-model="scope.row.status" active-value="在职" inactive-value="离职" active-color="#13ce66" inactive-color="#bbbbbb" @change="changeState(scope.row)"></el-switch>
+                                    </el-tooltip>
+                                </template>
+                            </el-table-column>
+                            <el-table-column
+                                prop="isCrux"
+                                header-align="left"
+                                min-width="110"
+                                label="是否为关键人">
+                                <template slot-scope="scope">
+                                    <el-tooltip :content="scope.row.isCrux" placement="right">
+                                        <el-switch v-model="scope.row.isCrux" active-value="是" inactive-value="否" active-color="#13ce66" inactive-color="#bbbbbb" @change="changePrimary(scope.row)"></el-switch>
                                     </el-tooltip>
                                 </template>
                             </el-table-column>
@@ -832,10 +843,46 @@
                     // console.log(err);
                 });
             },
+            changePrimary(row){
+                const _this = this
+                let qs = require('querystring')
+                let data = {}
+                data.id = row.id
+                data.isCrux = row.isCrux
+
+                axios({
+                    method:'post',
+                    url:_this.$store.state.defaultHttp+'contacts/updateIsCrux.do?cId='+_this.$store.state.iscId,
+                    data:qs.stringify(data)
+                }).then(function(res){
+                    if(res.data.code && res.data.code == '200'){
+                        _this.$options.methods.loadData.bind(_this)();
+                    }else{
+                        _this.$message({
+                            message: '可能出了点什么问题，再看看',
+                            type: 'error'
+                        })
+                    }
+                }).catch(function(err){
+                    // console.log(err);
+                });
+            },
 
             tabClick(val){
+                const _this = this
+                let qs = require('querystring')
+                let data = {}
+                data.company = this.cluedetail.name
                 if(val.index == 2){
-                    this.website = this.cluedetail.url
+                    axios({
+                        method: 'post',
+                        url: _this.$store.state.defaultHttp+'website/selectWebsiteByCompany.do',
+                        data: qs.stringify(data)
+                    }).then(function(res){
+                        _this.website = 'http://' + res.data.map.websites[0].url
+                    }).catch(function(err){
+                        // console.log(err);
+                    });
                 }
                 if(val.index == 3){
                     this.Enclosureclue = []
@@ -1083,20 +1130,10 @@
         background-color: #fff;
         padding-bottom: 5px;
     }
-    .top{
-        height: auto;
-        background-color: #fff;
-    }
     .middle{
         height: auto;
         background-color: #fff;
         margin-top: 20px;
-    }
-    .bottom{
-        height: 100%;
-        background-color: #fff;
-        margin-top: 20px;
-        padding: 5px 20px;
     }
     .el-card__body{
         padding: 0;
