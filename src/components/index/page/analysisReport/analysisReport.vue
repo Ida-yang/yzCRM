@@ -42,13 +42,11 @@
                     :data="tableData"
                     border
                     stripe
-                    style="width:100%;text-align:center">
+                    style="width:100%">
                     <template v-for="item in colList">
                         <el-table-column
                             :key="item.index"
                             :prop="item.col"
-                            header-align="left"
-                            align="left"
                             show-overflow-tooltip
                             :min-width="item.width"
                             :label="item.name">
@@ -339,7 +337,7 @@
                                 type:'error'
                             })
                         }else{
-                            this.showTitle = false
+                            _this.showTitle = false
                             val.isActive = !val.isActive
                             _this.$options.methods.loadagreeReport.bind(_this)();
                         }
@@ -357,7 +355,7 @@
                                 type:'error'
                             })
                         }else{
-                            this.showTitle = false
+                            _this.showTitle = false
                             val.isActive = !val.isActive
                             _this.$options.methods.loadoppReport.bind(_this)();
                         }
@@ -375,7 +373,7 @@
                                 type:'error'
                             })
                         }else{
-                            this.showTitle = false
+                            _this.showTitle = false
                             val.isActive = !val.isActive
                             _this.$options.methods.loaddeptrank.bind(_this)();
                         }
@@ -393,7 +391,7 @@
                                 type:'error'
                             })
                         }else{
-                            this.showTitle = false
+                            _this.showTitle = false
                             val.isActive = !val.isActive
                             _this.$options.methods.loadpersonrank.bind(_this)();
                         }

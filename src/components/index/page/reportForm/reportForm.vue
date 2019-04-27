@@ -17,38 +17,28 @@
                     style="width:100%;text-align:center">
                     <el-table-column
                         prop="name"
-                        header-align="left"
-                        align="left"
                         label="行业"
                         sortable>
                     </el-table-column>
                     <el-table-column
                         prop="innerShare"
-                        header-align="left"
-                        align="left"
                         label="内部占比"
                         sortable>
                         <template slot-scope="scope">{{scope.row.innerShare}} %</template>
                     </el-table-column>
                     <el-table-column
                         prop="innerNum"
-                        header-align="left"
-                        align="left"
                         label="内部数量"
                         sortable>
                     </el-table-column>
                     <el-table-column
                         prop="countryShare"
-                        header-align="left"
-                        align="left"
                         label="全国占比"
                         sortable>
                         <template slot-scope="scope">{{scope.row.countryShare}} %</template>
                     </el-table-column>
                     <el-table-column
                         prop="countryNum"
-                        header-align="left"
-                        align="left"
                         min-width="90"
                         label="全国总数量"
                         sortable>
@@ -69,24 +59,18 @@
                     style="width:100%;text-align:center">
                     <el-table-column
                         prop="name"
-                        header-align="left"
-                        align="left"
                         min-width="120"
                         label="省份"
                         sortable>
                     </el-table-column>
                     <el-table-column
                         prop="num"
-                        header-align="left"
-                        align="left"
                         min-width="90"
                         label="数量"
                         sortable>
                     </el-table-column>
                     <el-table-column
                         prop="share"
-                        header-align="left"
-                        align="left"
                         min-width="90"
                         label="占比"
                         sortable>
@@ -108,24 +92,18 @@
                     style="width:100%;text-align:center">
                     <el-table-column
                         prop="name"
-                        header-align="left"
-                        align="left"
                         min-width="120"
                         label="公司规模"
                         sortable>
                     </el-table-column>
                     <el-table-column
                         prop="num"
-                        header-align="left"
-                        align="left"
                         min-width="90"
                         label="数量"
                         sortable>
                     </el-table-column>
                     <el-table-column
                         prop="share"
-                        header-align="left"
-                        align="left"
                         min-width="90"
                         label="占比"
                         sortable>
@@ -147,24 +125,18 @@
                     style="width:100%;text-align:center">
                     <el-table-column
                         prop="years"
-                        header-align="left"
-                        align="left"
                         min-width="120"
                         label="年限"
                         sortable>
                     </el-table-column>
                     <el-table-column
                         prop="num"
-                        header-align="left"
-                        align="left"
                         min-width="90"
                         label="数量"
                         sortable>
                     </el-table-column>
                     <el-table-column
                         prop="share"
-                        header-align="left"
-                        align="left"
                         min-width="90"
                         label="占比"
                         sortable>
@@ -182,80 +154,60 @@
                 style="width:100%;text-align:center">
                 <el-table-column
                     prop="industryName"
-                    header-align="left"
-                    align="left"
                     min-width="160"
                     label="目标客户定位推荐"
                     sortable>
                 </el-table-column>
                 <el-table-column
                     prop="cityName"
-                    header-align="left"
-                    align="left"
                     min-width="110"
                     label="省份"
                     sortable>
                 </el-table-column>
                 <el-table-column
                     prop="years"
-                    header-align="left"
-                    align="left"
                     min-width="120"
                     label="成立年限"
                     sortable>
                 </el-table-column>
                 <!-- <el-table-column
                     prop="scale"
-                    header-align="left"
-                    align="left"
                     min-width="120"
                     label="公司规模"
                     sortable>
                 </el-table-column> -->
                 <!-- <el-table-column
                     prop="capital"
-                    header-align="left"
-                    align="left"
                     min-width="120"
                     label="注册资金"
                     sortable>
                 </el-table-column> -->
                 <el-table-column
                     prop="result"
-                    header-align="left"
-                    align="left"
                     min-width="145"
                     label="当前省份保有量"
                     sortable>
                 </el-table-column>
                 <!-- <el-table-column
                     prop="sort"
-                    header-align="left"
-                    align="left"
                     min-width="90"
                     label="顺序"
                     sortable>
                 </el-table-column> -->
                 <el-table-column
                     prop="financing"
-                    header-align="left"
-                    align="left"
                     min-width="130"
                     label="已获得融资"
                     sortable>
                 </el-table-column>
                 <el-table-column
                     prop="list"
-                    header-align="left"
-                    align="left"
                     min-width="120"
                     label="已上市"
                     sortable>
                 </el-table-column>
                 <el-table-column
                     prop="phone"
-                    header-align="left"
-                    align="left"
                     min-width="120"
                     label="有电话"
                     sortable>

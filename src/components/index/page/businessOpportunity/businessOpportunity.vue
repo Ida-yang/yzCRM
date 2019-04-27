@@ -44,7 +44,7 @@
             stripe
             :summary-method="getSummaries"
             show-summary
-            style="width:100%;text-align:center"
+            style="width:100%"
             @selection-change="selectInfo"
             >
             <el-table-column
@@ -62,8 +62,6 @@
                     prop="opportunity_number"
                     fixed
                     v-if="item.prop == 'opportunity_number' && item.state == 1"
-                    header-align="left"
-                    align="left"
                     min-width="110"
                     label="商机编号"
                     sortable>
@@ -72,8 +70,6 @@
                     prop="opportunity_name"
                     fixed
                     v-else-if="item.prop == 'opportunity_name' && item.state == 1"
-                    header-align="left"
-                    align="left"
                     min-width="120"
                     label="商机名称"
                     sortable>
@@ -86,8 +82,6 @@
                 <el-table-column
                     prop="opportunity_time"
                     v-else-if="item.prop == 'opportunity_time' && item.state == 1"
-                    header-align="left"
-                    align="left"
                     min-width="145"
                     label="创建时间"
                     sortable>
@@ -95,8 +89,6 @@
                 <el-table-column
                     prop="customerpool[0].name"
                     v-else-if="item.prop == 'customerpool[0].name' && item.state == 1"
-                    header-align="left"
-                    align="left"
                     min-width="180"
                     label="公司名称"
                     sortable>
@@ -104,8 +96,6 @@
                 <el-table-column
                     prop="contacts[0].coName"
                     v-else-if="item.prop == 'contacts[0].coName' && item.state == 1"
-                    header-align="left"
-                    align="left"
                     min-width="115"
                     label="客户决策人"
                     sortable>
@@ -113,8 +103,6 @@
                 <el-table-column
                     prop="opportunityProgress[0].progress_name"
                     v-else-if="item.prop == 'opportunityProgress[0].progress_name' && item.state == 1"
-                    header-align="left"
-                    align="left"
                     min-width="110"
                     label="商机进度"
                     sortable>
@@ -123,8 +111,6 @@
                     prop="opportunityProgress[0].progress_probability"
                     show-overflow-tooltip
                     v-else-if="item.prop == 'opportunityProgress[0].progress_probability' && item.state == 1"
-                    header-align="left"
-                    align="left"
                     min-width="110"
                     label="成功几率"
                     sortable>
@@ -132,8 +118,6 @@
                 <el-table-column
                     prop="opportunity_achievement"
                     v-else-if="item.prop == 'opportunity_achievement' && item.state == 1"
-                    header-align="left"
-                    align="left"
                     min-width="140"
                     label="预计成绩金额"
                     sortable>
@@ -144,8 +128,6 @@
                 <el-table-column
                     prop="opportunity_deal"
                     v-else-if="item.prop == 'opportunity_deal' && item.state == 1"
-                    header-align="left"
-                    align="left"
                     min-width="140"
                     label="预计成交时间"
                     sortable>
@@ -153,8 +135,6 @@
                 <el-table-column
                     prop="private_employee"
                     v-else-if="item.prop == 'private_employee' && item.state == 1"
-                    header-align="left"
-                    align="left"
                     min-width="90"
                     label="负责人"
                     sortable>
@@ -162,8 +142,6 @@
                 <el-table-column
                     prop="deptname"
                     v-else-if="item.prop == 'deptname' && item.state == 1"
-                    header-align="left"
-                    align="left"
                     min-width="80"
                     label="部门"
                     sortable>
@@ -171,8 +149,6 @@
                 <el-table-column
                     prop="parentname"
                     v-else-if="item.prop == 'parentname' && item.state == 1"
-                    header-align="left"
-                    align="left"
                     min-width="200"
                     label="机构"
                     sortable>
@@ -180,8 +156,6 @@
                 <el-table-column
                     prop="opportunity_remarks"
                     v-else-if="item.prop == 'opportunity_remarks' && item.state == 1"
-                    header-align="left"
-                    align="left"
                     min-width="80"
                     label="备注"
                     sortable>
@@ -190,7 +164,7 @@
             <el-table-column label="操作"
                 fixed="right"
                 width="150"
-                header-align="left"
+                header-align="center"
                 align="center">
                 <template slot-scope="scope">
                     <el-button

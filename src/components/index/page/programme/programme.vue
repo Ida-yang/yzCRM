@@ -45,7 +45,7 @@
                         ref="multipleTable"
                         border
                         stripe
-                        style="width:100%;text-align:center"
+                        style="width:100%"
                         @selection-change="selectInfo">
                         <el-table-column
                             fixed
@@ -63,8 +63,6 @@
                                 prop="projectName"
                                 fixed
                                 v-if="item.prop == 'projectName' && item.state == 1"
-                                header-align="left"
-                                align="left"
                                 min-width="150"
                                 label="方案名称"
                                 sortable>
@@ -77,8 +75,6 @@
                             <el-table-column
                                 prop="time"
                                 v-else-if="item.prop == 'time' && item.state == 1"
-                                header-align="left"
-                                align="left"
                                 min-width="90"
                                 label="年份"
                                 sortable>
@@ -86,8 +82,6 @@
                             <el-table-column
                                 prop="private_employee"
                                 v-else-if="item.prop == 'private_employee' && item.state == 1"
-                                header-align="left"
-                                align="left"
                                 min-width="100"
                                 label="负责人"
                                 sortable>
@@ -95,8 +89,6 @@
                             <el-table-column
                                 prop="deptname"
                                 v-else-if="item.prop == 'deptname' && item.state == 1"
-                                header-align="left"
-                                align="left"
                                 min-width="120"
                                 label="部门"
                                 sortable>
@@ -104,8 +96,6 @@
                             <el-table-column
                                 prop="parentname"
                                 v-else-if="item.prop == 'parentname' && item.state == 1"
-                                header-align="left"
-                                align="left"
                                 min-width="130"
                                 label="机构"
                                 sortable>
@@ -113,8 +103,6 @@
                             <el-table-column
                                 prop="createTime"
                                 v-else-if="item.prop == 'createTime' && item.state == 1"
-                                header-align="left"
-                                align="left"
                                 min-width="150"
                                 label="创建时间"
                                 sortable>
@@ -122,8 +110,6 @@
                             <el-table-column
                                 prop="state"
                                 v-else-if="item.prop == 'state' && item.state == 1"
-                                header-align="left"
-                                align="left"
                                 min-width="80"
                                 label="状态"
                                 sortable>
@@ -132,7 +118,7 @@
                         <el-table-column label="操作"
                             fixed="right"
                             width="140"
-                            header-align="left"
+                            header-align="center"
                             align="center">
                             <template slot-scope="scope">
                                 <el-button

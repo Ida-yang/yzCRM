@@ -29,7 +29,7 @@
             ref="multipleTable"
             border
             stripe
-            style="width:100%;text-align:center">
+            style="width:100%">
             <el-table-column
                 fixed
                 header-align="center"
@@ -38,27 +38,26 @@
                 width="45">
             </el-table-column>
             <el-table-column
-                prop="name"
+                prop="phone"
                 fixed
-                header-align="left"
-                align="left"
+                label="手机号码"
+                min-width="100"
+                sortable>
+            </el-table-column>
+            <el-table-column
+                prop="name"
                 label="联系人"
                 min-width="100"
                 sortable>
             </el-table-column>
             <el-table-column
                 prop="workName"
-                fixed
-                header-align="left"
-                align="left"
                 min-width="180"
                 label="公司名称"
                 sortable>
             </el-table-column>
             <el-table-column
                 prop="createTime"
-                header-align="left"
-                align="left"
                 label="时间"
                 min-width="145"
                 sortable>
@@ -66,16 +65,12 @@
             <el-table-column
                 prop="content"
                 show-overflow-tooltip
-                header-align="left"
-                align="left"
                 label="内容"
                 min-width="160"
                 sortable>
             </el-table-column>
             <el-table-column
                 prop="ip"
-                header-align="left"
-                align="left"
                 label="IP"
                 min-width="140"
                 sortable>

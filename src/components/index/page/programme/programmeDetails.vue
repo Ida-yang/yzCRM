@@ -40,32 +40,24 @@
                             </el-table-column>
                             <el-table-column
                                 prop="addClue"
-                                header-align="center"
-                                align="center"
                                 min-width="100"
                                 label="线索/客户新增目标">
                             </el-table-column>
                             <el-table-column
                                 prop="toUpdate"
-                                header-align="center"
-                                align="center"
                                 label="线索更新目标">
                             </el-table-column>
                             <el-table-column
                                 prop="monthNum"
-                                header-align="center"
-                                align="center"
                                 label="每月">
                             </el-table-column>
                             <el-table-column
                                 prop="weekNum"
-                                header-align="center"
-                                align="center"
                                 label="每周">
                             </el-table-column>
                             <el-table-column label="操作"
                                 width="80"
-                                header-align="left"
+                                header-align="center"
                                 align="center">
                                 <template slot-scope="scope">
                                     <el-button
@@ -94,19 +86,15 @@
                             </el-table-column>
                             <el-table-column
                                 prop="visitNum"
-                                header-align="center"
-                                align="center"
                                 label="拜访目标">
                             </el-table-column>
                             <el-table-column
                                 prop="monthMinimum"
-                                header-align="center"
-                                align="center"
                                 label="每月最低">
                             </el-table-column>
                             <el-table-column label="操作"
                                 width="80"
-                                header-align="left"
+                                header-align="center"
                                 align="center">
                                 <template slot-scope="scope">
                                     <el-button
@@ -135,13 +123,11 @@
                             </el-table-column>
                             <el-table-column
                                 prop="opportunityNum"
-                                header-align="center"
-                                align="center"
                                 label="商机新增目标">
                             </el-table-column>
                             <el-table-column label="操作"
                                 width="80"
-                                header-align="left"
+                                header-align="center"
                                 align="center">
                                 <template slot-scope="scope">
                                     <el-button
@@ -170,19 +156,15 @@
                             </el-table-column>
                             <el-table-column
                                 prop="monthMoney"
-                                header-align="center"
-                                align="center"
                                 label="每月">
                             </el-table-column>
                             <el-table-column
                                 prop="weekMoney"
-                                header-align="center"
-                                align="center"
                                 label="每周">
                             </el-table-column>
                             <el-table-column label="操作"
                                 width="80"
-                                header-align="left"
+                                header-align="center"
                                 align="center">
                                 <template slot-scope="scope">
                                     <el-button

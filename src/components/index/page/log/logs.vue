@@ -41,8 +41,6 @@
                 <el-table-column
                     prop="model"
                     fixed
-                    header-align="left"
-                    align="left"
                     min-width="100"
                     label="模块"
                     sortable>
@@ -50,32 +48,24 @@
                 <el-table-column
                     prop="workName"
                     show-overflow-tooltip
-                    header-align="left"
-                    align="left"
                     label="对象"
                     min-width="160"
                     sortable>
                 </el-table-column>
                 <el-table-column
                     prop="type"
-                    header-align="left"
-                    align="left"
                     label="操作类型"
                     min-width="130"
                     sortable>
                 </el-table-column>
                 <el-table-column
                     prop="private_employee"
-                    header-align="left"
-                    align="left"
                     label="用户"
                     min-width="100"
                     sortable>
                 </el-table-column>
                 <el-table-column
                     prop="startDate"
-                    header-align="left"
-                    align="left"
                     label="时间"
                     min-width="140"
                     sortable>
@@ -83,8 +73,6 @@
                 <el-table-column
                     prop="ip"
                     show-overflow-tooltip
-                    header-align="left"
-                    align="left"
                     label="IP地址"
                     min-width="160"
                     sortable>
@@ -140,32 +128,24 @@
                 <el-table-column
                     prop="workname"
                     show-overflow-tooltip
-                    header-align="left"
-                    align="left"
                     label="公司名称"
                     min-width="160"
                     sortable>
                 </el-table-column>
                 <el-table-column
                     prop="contact"
-                    header-align="left"
-                    align="left"
                     label="联系人"
                     min-width="130"
                     sortable>
                 </el-table-column>
                 <el-table-column
                     prop="phone"
-                    header-align="left"
-                    align="left"
                     label="电话"
                     min-width="100"
                     sortable>
                 </el-table-column>
                 <el-table-column
                     prop="title"
-                    header-align="left"
-                    align="left"
                     label="模板标题"
                     min-width="130"
                     sortable>
@@ -173,8 +153,6 @@
                 <el-table-column
                     prop="content"
                     show-overflow-tooltip
-                    header-align="left"
-                    align="left"
                     label="模板内容"
                     min-width="180"
                     sortable>
@@ -182,16 +160,12 @@
                 <el-table-column
                     prop="explain"
                     show-overflow-tooltip
-                    header-align="left"
-                    align="left"
                     label="短信说明"
                     min-width="180"
                     sortable>
                 </el-table-column>
                 <el-table-column
                     prop="private_employee"
-                    header-align="left"
-                    align="left"
                     label="发送者"
                     min-width="140"
                     sortable>
@@ -199,8 +173,6 @@
                 <el-table-column
                     prop="deptname"
                     show-overflow-tooltip
-                    header-align="left"
-                    align="left"
                     label="部门"
                     min-width="160"
                     sortable>
@@ -208,8 +180,6 @@
                 <el-table-column
                     prop="parentname"
                     show-overflow-tooltip
-                    header-align="left"
-                    align="left"
                     label="机构"
                     min-width="160"
                     sortable>
@@ -217,8 +187,6 @@
                 <el-table-column
                     prop="createTime"
                     show-overflow-tooltip
-                    header-align="left"
-                    align="left"
                     label="发送时间"
                     min-width="160"
                     sortable>

@@ -698,4 +698,22 @@ export default {
         padding: 5px 20px;
         box-sizing: border-box
     }
+    
+    .custom-tree-node {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        font-size: 14px;
+        padding-right: 8px;
+    }
+    .operation_org{
+        position: fixed;
+        right: 64%;
+        width: 30%;
+        text-align: right
+    }
+    .el-icon-info{
+        font-size: 12px;
+    }
 </style>

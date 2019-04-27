@@ -59,8 +59,6 @@
                     prop="name"
                     fixed
                     v-if="item.prop == 'name' && item.state == 1"
-                    header-align="left"
-                    align="left"
                     min-width="100"
                     sortable>
                 </el-table-column>
@@ -68,39 +66,29 @@
                     prop="poolname"
                     fixed
                     v-else-if="item.prop == 'poolname' && item.state == 1"
-                    header-align="left"
-                    align="left"
                     min-width="150"
                     sortable>
                 </el-table-column>
                 <el-table-column label="电话"
                     prop="telephone"
                     v-else-if="item.prop == 'telephone' && item.state == 1"
-                    header-align="left"
-                    align="left"
                     sortable>
                 </el-table-column>
                 <el-table-column label="手机"
                     prop="phone"
                     v-else-if="item.prop == 'phone' && item.state == 1"
-                    header-align="left"
-                    align="left"
                     min-width="110"
                     sortable>
                 </el-table-column>
                 <el-table-column label="QQ"
                     prop="qq"
                     v-else-if="item.prop == 'qq' && item.state == 1"
-                    header-align="left"
-                    align="left"
                     sortable>
                 </el-table-column>
                 <el-table-column
                     prop="email"
                     show-overflow-tooltip
                     v-else-if="item.prop == 'email' && item.state == 1"
-                    header-align="left"
-                    align="left"
                     label="邮箱"
                     min-width="95"
                     sortable>
@@ -108,8 +96,6 @@
                 <el-table-column
                     prop="wechat"
                     v-else-if="item.prop == 'wechat' && item.state == 1"
-                    header-align="left"
-                    align="left"
                     label="微信"
                     min-width="95"
                     sortable>
@@ -117,8 +103,6 @@
                 <el-table-column
                     prop="sex"
                     v-else-if="item.prop == 'sex' && item.state == 1"
-                    header-align="left"
-                    align="left"
                     label="性别"
                     min-width="95"
                     sortable>
@@ -126,8 +110,6 @@
                 <el-table-column
                     prop="remark"
                     v-else-if="item.prop == 'remarks' && item.state == 1"
-                    header-align="left"
-                    align="left"
                     label="备注"
                     min-width="95"
                     sortable>
@@ -135,8 +117,6 @@
                 <el-table-column label="最新跟进时间"
                     prop="follow[0].createTime"
                     v-else-if="item.prop == 'follow[0].createTime' && item.state == 1"
-                    header-align="left"
-                    align="left"
                     min-width="130"
                     sortable>
                 </el-table-column>
@@ -144,32 +124,24 @@
                     prop="follow[0].followContent"
                     show-overflow-tooltip
                     v-else-if="item.prop == 'follow[0].followContent' && item.state == 1"
-                    header-align="left"
-                    align="left"
                     min-width="130"
                     sortable>
                 </el-table-column>
                 <el-table-column label="下次联系时间"
                     prop="follow[0].contactTime"
                     v-else-if="item.prop == 'follow[0].contactTime' && item.state == 1"
-                    header-align="left"
-                    align="left"
                     min-width="140"
                     sortable>
                 </el-table-column>
                 <el-table-column label="负责人"
                     prop="private_employee"
                     v-else-if="item.prop == 'private_employee' && item.state == 1"
-                    header-align="left"
-                    align="left"
                     min-width="100"
                     sortable>
                 </el-table-column>
                 <el-table-column
                     prop="deptname"
                     v-if="item.prop == 'deptname' && item.state == 1"
-                    header-align="left"
-                    align="left"
                     label="部门"
                     min-width="110"
                     sortable>
@@ -178,8 +150,6 @@
                     prop="parentname"
                     show-overflow-tooltip
                     v-if="item.prop == 'parentname' && item.state == 1"
-                    header-align="left"
-                    align="left"
                     label="机构"
                     min-width="110"
                     sortable>
@@ -187,8 +157,6 @@
                 <el-table-column
                     prop="countryid"
                     v-else-if="item.prop == 'countryid' && item.state == 1"
-                    header-align="left"
-                    align="left"
                     min-width="150"
                     label="省-市-区"
                     sortable>
@@ -197,8 +165,6 @@
                 <el-table-column
                     prop="createTime"
                     v-if="item.prop == 'createTime' && item.state == 1"
-                    header-align="left"
-                    align="left"
                     label="创建时间"
                     min-width="150"
                     sortable>
@@ -207,7 +173,7 @@
             <el-table-column label="操作"
                 fixed="right"
                 width="150"
-                header-align="left"
+                header-align="center"
                 align="center">
                 <template slot-scope="scope">
                     <el-button

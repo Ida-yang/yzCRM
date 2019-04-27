@@ -33,51 +33,61 @@
                     <div class="aux_ul">
                         <div class="aux_li">
                             <p>
-                                <span style="font-size:20px;line-height:50px;text-align:center;">{{auxList.timeConsuming}}天</span><br>
+                                <span style="font-size:20px;line-height:50px;font-weight:bold">{{auxList.timeConsuming}}天</span><br>
                                 <span style="font-size:12px;color:#666666;line-height:25px">跟踪时间</span><br>
-                                <span style="font-size:14px;color:#333333;line-height:20px">{{auxList.trackProportion}}</span>
+                                <span style="font-size:14px;color:#333333;line-height:20px">{{auxList.trackProportion}}%</span>
                             </p>
-                            <el-progress type="circle" :percentage="27" :width="34" :stroke-width="5" :show-text="false"></el-progress>
+                            <el-progress type="circle" :percentage="a" :width="34" :stroke-width="5" :show-text="false"></el-progress>
                         </div>
                     </div>
                     <div class="aux_ul">
                         <div class="aux_li">
                             <p>
-                                <span style="font-size:20px;line-height:50px;text-align:center;">{{auxList.surplusTime}}天</span><br>
+                                <span style="font-size:20px;line-height:50px;font-weight:bold">{{auxList.surplusTime}}天</span><br>
                                 <span style="font-size:12px;color:#666666;line-height:25px">剩余天数</span><br>
-                                <span style="font-size:14px;color:#333333;line-height:20px">{{auxList.surplusProportion}}</span>
+                                <span style="font-size:14px;color:#333333;line-height:20px">{{auxList.surplusProportion}}%</span>
                             </p>
-                            <el-progress type="circle" :percentage="10" :width="34" :stroke-width="5" :show-text="false"></el-progress>
+                            <el-progress type="circle" :percentage="b" :width="34" :stroke-width="5" :show-text="false"></el-progress>
                         </div>
                     </div>
                     <div class="aux_ul">
                         <div class="aux_li">
                             <p>
-                                <span style="font-size:20px;line-height:50px;text-align:center;">{{auxList.step_probability}}</span><br>
+                                <span style="font-size:20px;line-height:50px;font-weight:bold">{{auxList.step_probability}}%</span><br>
                                 <span style="font-size:12px;color:#666666;line-height:25px">成功率</span><br>
-                                <span style="font-size:14px;color:#333333;line-height:20px">{{auxList.step_probability}}</span>
+                                <span style="font-size:14px;color:#333333;line-height:20px">{{auxList.step_probability}}%</span>
                             </p>
-                            <el-progress type="circle" :percentage="80" :width="34" :stroke-width="5" :show-text="false"></el-progress>
+                            <el-progress type="circle" :percentage="c" :width="34" :stroke-width="5" :show-text="false"></el-progress>
                         </div>
                     </div>
                     <div class="aux_ul">
                         <div class="aux_li">
                             <p>
-                                <span style="font-size:20px;line-height:50px;text-align:center;">{{auxList.competitor}}人</span><br>
+                                <span style="font-size:20px;line-height:50px;font-weight:bold">{{auxList.competitor}}人</span><br>
                                 <span style="font-size:12px;color:#666666;line-height:25px">竞争对手</span><br>
-                                <span style="font-size:14px;color:#333333;line-height:20px">{{auxList.competitorProportion}}</span>
+                                <span style="font-size:14px;color:#333333;line-height:20px">{{auxList.competitorProportion}}%</span>
                             </p>
-                            <el-progress type="circle" :percentage="3" :width="34" :stroke-width="5" :show-text="false"></el-progress>
+                            <el-progress type="circle" :percentage="d" :width="34" :stroke-width="5" :show-text="false"></el-progress>
                         </div>
                     </div>
                     <div class="aux_ul">
                         <div class="aux_li">
                             <p>
-                                <span style="font-size:20px;line-height:50px;text-align:center;">{{auxList.num}}次</span><br>
+                                <span style="font-size:20px;line-height:50px;font-weight:bold">{{auxList.num}}次</span><br>
                                 <span style="font-size:12px;color:#666666;line-height:25px">联系次数</span><br>
-                                <span style="font-size:14px;color:#333333;line-height:20px">{{auxList.numProportion}}</span>
+                                <span style="font-size:14px;color:#333333;line-height:20px">{{auxList.numProportion}}%</span>
                             </p>
-                            <el-progress type="circle" :percentage="20" :width="34" :stroke-width="5" :show-text="false"></el-progress>
+                            <el-progress type="circle" :percentage="f" :width="34" :stroke-width="5" :show-text="false"></el-progress>
+                        </div>
+                    </div>
+                    <div class="aux_ul">
+                        <div class="aux_li">
+                            <p>
+                                <span style="font-size:20px;line-height:50px;font-weight:bold">{{auxList.contacts}}人</span><br>
+                                <span style="font-size:12px;color:#666666;line-height:25px">关键联系人</span><br>
+                                <span style="font-size:14px;color:#333333;line-height:20px">{{auxList.contactsProportion}}%</span>
+                            </p>
+                            <el-progress type="circle" :percentage="g" :width="34" :stroke-width="5" :show-text="false"></el-progress>
                         </div>
                     </div>
                 </div>
@@ -139,31 +149,26 @@
                             style="width: 100%">
                             <el-table-column
                                 prop="name"
-                                header-align="left"
                                 min-width="90"
                                 label="公司名称">
                             </el-table-column>
                             <el-table-column
                                 prop="phone"
-                                header-align="left"
                                 min-width="110"
                                 label="联系人">
                             </el-table-column>
                             <el-table-column
                                 prop="telephone"
-                                header-align="left"
                                 min-width="110"
                                 label="优势">
                             </el-table-column>
                             <el-table-column
                                 prop="email"
-                                header-align="left"
                                 min-width="110"
                                 label="劣势">
                             </el-table-column>
                             <el-table-column
                                 prop="qq"
-                                header-align="left"
                                 min-width="110"
                                 label="常用战术">
                             </el-table-column>
@@ -177,61 +182,52 @@
                             style="width: 100%">
                             <el-table-column
                                 prop="name"
-                                header-align="left"
                                 min-width="90"
                                 label="名称">
                             </el-table-column>
                             <el-table-column
                                 prop="phone"
-                                header-align="left"
                                 min-width="110"
                                 label="手机">
                             </el-table-column>
                             <el-table-column
                                 prop="telephone"
-                                header-align="left"
                                 min-width="110"
                                 label="固话">
                             </el-table-column>
                             <el-table-column
                                 prop="email"
-                                header-align="left"
                                 min-width="110"
                                 label="邮箱">
                             </el-table-column>
                             <el-table-column
                                 prop="qq"
-                                header-align="left"
                                 min-width="110"
                                 label="QQ">
                             </el-table-column>
                             <el-table-column
                                 prop="wechat"
-                                header-align="left"
                                 min-width="110"
                                 label="微信">
                             </el-table-column>
                             <el-table-column
                                 prop="address"
-                                header-align="left"
                                 min-width="140"
                                 label="地址">
                             </el-table-column>
                             <el-table-column
                                 prop="identity"
-                                header-align="left"
+                                show-overflow-tooltip
                                 min-width="90"
                                 label="职务">
                             </el-table-column>
                             <el-table-column
                                 prop="sex"
-                                header-align="left"
                                 min-width="90"
                                 label="性别">
                             </el-table-column>
                             <el-table-column
                                 prop="status"
-                                header-align="left"
                                 min-width="90"
                                 label="是否在职">
                                 <template slot-scope="scope">
@@ -242,7 +238,6 @@
                             </el-table-column>
                             <el-table-column
                                 prop="isCrux"
-                                header-align="left"
                                 min-width="110"
                                 label="是否为关键人">
                                 <template slot-scope="scope">
@@ -253,7 +248,6 @@
                             </el-table-column>
                             <el-table-column
                                 prop="remark"
-                                header-align="left"
                                 min-width="100"
                                 label="备注">
                             </el-table-column>
@@ -367,14 +361,21 @@
 
                 auxindex:'first',
                 auxList:{},
-                auxcontent:true,
+                auxcontent:false,
 
                 record:[],
                 dialogVisible2:false,
                 dialogImageUrl2:null,
 
                 contactData:[],
-                competitorData:[]
+                competitorData:[],
+                
+                a:0,
+                b:0,
+                c:0,
+                d:0,
+                f:0,
+                g:0,
             }
         },
         // mounted(){
@@ -473,6 +474,12 @@
                     url: _this.$store.state.defaultHttp+'opportunity/opportunityAnalysis.do?cId='+_this.$store.state.iscId+'&opportunity_id='+_this.idArr.opportunity_id,
                 }).then(function(res){
                     _this.auxList = res.data.map.opportunity
+                    _this.a = parseFloat(_this.auxList.trackProportion)
+                    _this.b = parseFloat(_this.auxList.surplusProportion)
+                    _this.c = parseFloat(_this.auxList.step_probability)
+                    _this.d = parseFloat(_this.auxList.competitorProportion)
+                    _this.f = parseFloat(_this.auxList.numProportion)
+                    _this.g = parseFloat(_this.auxList.contactsProportion)
                 }).catch(function(err){
                     // console.log(err);
                 });
@@ -736,7 +743,7 @@
         width: 60px
     }
     .aux_li .el-progress{
-        margin-left: 20px;
+        margin-left: 5%;
         margin-top: 40px;
     }
 </style>

@@ -59,8 +59,6 @@
                     prop="id"
                     v-if="item.prop == 'visitTheme' && item.state == 1"
                     fixed
-                    header-align="left"
-                    align="left"
                     min-width="350"
                     label="主要信息"
                     sortable>
@@ -76,8 +74,6 @@
                     prop="phone"
                     v-else-if="item.prop == 'pheone' && item.state == 1"
                     show-overflow-tooltip
-                    header-align="left"
-                    align="left"
                     label="电话"
                     min-width="95"
                     sortable>
@@ -85,8 +81,6 @@
                 <el-table-column
                     prop="visitTime"
                     v-else-if="item.prop == 'visitTime' && item.state == 1"
-                    header-align="left"
-                    align="left"
                     min-width="150"
                     label="计划时间"
                     sortable>
@@ -101,8 +95,6 @@
                     prop="private_employee"
                     v-else-if="item.prop == 'private_employee' && item.state == 1"
                     show-overflow-tooltip
-                    header-align="left"
-                    align="left"
                     label="负责人"
                     min-width="95"
                     sortable>
@@ -110,8 +102,6 @@
                 <el-table-column
                     prop="assistants"
                     v-else-if="item.prop == 'assistants' && item.state == 1"
-                    header-align="left"
-                    align="left"
                     label="协助人"
                     min-width="120"
                     sortable>
@@ -124,8 +114,6 @@
                 <el-table-column
                     prop="approver"
                     v-else-if="item.prop == 'approver' && item.state == 1"
-                    header-align="left"
-                    align="left"
                     min-width="95"
                     label="审批人"
                     sortable>
@@ -133,8 +121,6 @@
                 <el-table-column
                     prop="approverState"
                     v-else-if="item.prop == 'approverState' && item.state == 1"
-                    header-align="left"
-                    align="left"
                     min-width="130"
                     label="审批状态"
                     sortable>
@@ -142,8 +128,6 @@
                 <el-table-column
                     prop="remindTime"
                     v-else-if="item.prop == 'remindTime' && item.state == 1"
-                    header-align="left"
-                    align="left"
                     min-width="150"
                     label="提醒时间"
                     sortable>
@@ -151,8 +135,6 @@
                 <el-table-column
                     prop="state"
                     v-else-if="item.prop == 'state' && item.state == 1"
-                    header-align="left"
-                    align="left"
                     min-width="220"
                     label="状态"
                     sortable>
@@ -167,8 +149,6 @@
                 <el-table-column
                     prop="deptname"
                     v-else-if="item.prop == 'deptname' && item.state == 1"
-                    header-align="left"
-                    align="left"
                     min-width="100"
                     label="部门"
                     sortable>
@@ -177,8 +157,6 @@
                     prop="parentname"
                     v-else-if="item.prop == 'parentname' && item.state == 1"
                     show-overflow-tooltip
-                    header-align="left"
-                    align="left"
                     min-width="100"
                     label="机构"
                     sortable>
@@ -187,7 +165,7 @@
             <el-table-column label="操作"
                 fixed="right"
                 width="150"
-                header-align="left"
+                header-align="center"
                 align="center">
                 <template slot-scope="scope">
                     <el-button

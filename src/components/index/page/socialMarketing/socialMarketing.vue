@@ -38,7 +38,7 @@
                 ref="multipleTable"
                 border
                 stripe
-                style="width:100%;text-align:center"
+                style="width:100%"
                 @selection-change="selectInfo"
                 >
                 <el-table-column
@@ -57,8 +57,6 @@
                         prop="name"
                         fixed
                         v-if="item.prop == 'name' && item.state == 1"
-                        header-align="left"
-                        align="left"
                         min-width="150"
                         label="活动名称"
                         sortable>
@@ -66,8 +64,6 @@
                     <el-table-column
                         prop="private_employee"
                         v-else-if="item.prop == 'private_employee' && item.state == 1"
-                        header-align="left"
-                        align="left"
                         min-width="90"
                         label="负责人"
                         sortable>
@@ -75,8 +71,6 @@
                     <el-table-column
                         prop="clueNum"
                         v-else-if="item.prop == 'clueNum' && item.state == 1"
-                        header-align="left"
-                        align="left"
                         min-width="120"
                         label="线索量"
                         sortable>
@@ -84,8 +78,6 @@
                     <el-table-column
                         prop="createTime"
                         v-else-if="item.prop == 'createTime' && item.state == 1"
-                        header-align="left"
-                        align="left"
                         min-width="150"
                         label="创建时间"
                         sortable>
@@ -93,8 +85,6 @@
                     <el-table-column
                         prop="codeURL"
                         v-else-if="item.prop == 'codeURL' && item.state == 1"
-                        header-align="left"
-                        align="left"
                         min-width="160"
                         label="网址"
                         sortable>
@@ -107,8 +97,6 @@
                     <el-table-column
                         prop="typeName"
                         v-else-if="item.prop == 'typeName' && item.state == 1"
-                        header-align="left"
-                        align="left"
                         min-width="130"
                         label="来源"
                         sortable>
@@ -116,8 +104,6 @@
                     <el-table-column
                         prop="remarks"
                         v-else-if="item.prop == 'remarks' && item.state == 1"
-                        header-align="left"
-                        align="left"
                         min-width="130"
                         label="备注"
                         sortable>

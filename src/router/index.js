@@ -192,11 +192,6 @@ const router =new Router({
           meta: { title: '短信模板',requireAuth:true}
         },
         {
-          path: '/SMSlog',
-          component: resolve => require(['../components/index/page/smstemp/SMSlog.vue'], resolve),
-          meta: { title: '短信日志',name:'SMSlog' ,requireAuth:true}
-        },
-        {
           path: '/SMSradar',
           component: resolve => require(['../components/index/page/smstemp/SMSradar.vue'], resolve),
           meta: { title: '短信雷达',name:'SMSradar' ,requireAuth:true}
@@ -205,11 +200,6 @@ const router =new Router({
           path: '/analysisReport',
           component: resolve => require(['../components/index/page/analysisReport/analysisReport.vue'], resolve),
           meta: { title: '商业智能',requireAuth:true}
-        },
-        {
-          path: '/log',
-          component: resolve => require(['../components/index/page/log/log.vue'], resolve),
-          meta: { title: '操作日志',requireAuth:true}
         },
         {
           path: '/logs',

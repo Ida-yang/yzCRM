@@ -186,52 +186,43 @@
                             style="width: 100%">
                             <el-table-column
                                 prop="name"
-                                header-align="center"
                                 label="名称">
                             </el-table-column>
                             <el-table-column
                                 prop="phone"
-                                header-align="center"
                                 label="手机">
                             </el-table-column>
                             <el-table-column
                                 prop="telephone"
-                                header-align="center"
                                 label="固话">
                             </el-table-column>
                             <el-table-column
                                 prop="email"
-                                header-align="center"
                                 label="邮箱">
                             </el-table-column>
                             <el-table-column
                                 prop="qq"
-                                header-align="center"
                                 label="QQ">
                             </el-table-column>
                             <el-table-column
                                 prop="wechat"
-                                header-align="center"
                                 label="微信">
                             </el-table-column>
                             <el-table-column
                                 prop="contactsAddress"
-                                header-align="center"
+                                show-overflow-tooltip
                                 label="地址">
                             </el-table-column>
                             <el-table-column
                                 prop="identity"
-                                header-align="center"
                                 label="职务">
                             </el-table-column>
                             <el-table-column
                                 prop="sex"
-                                header-align="center"
                                 label="性别">
                             </el-table-column>
                             <el-table-column
                                 prop="status"
-                                header-align="center"
                                 label="是否在职">
                                 <template slot-scope="scope">
                                     <el-tooltip :content="scope.row.status" placement="right">
@@ -241,7 +232,6 @@
                             </el-table-column>
                             <el-table-column
                                 prop="isCrux"
-                                header-align="left"
                                 min-width="110"
                                 label="是否为关键人">
                                 <template slot-scope="scope">
@@ -252,7 +242,6 @@
                             </el-table-column>
                             <el-table-column
                                 prop="remark"
-                                header-align="center"
                                 label="备注">
                             </el-table-column>
                         </el-table>
@@ -268,7 +257,6 @@
                             style="width: 100%">
                             <el-table-column
                                 prop="name"
-                                header-align="left"
                                 min-width="150"
                                 label="附件名称">
                                 <template slot-scope="scope">
@@ -277,12 +265,10 @@
                             </el-table-column>
                             <el-table-column
                                 prop="uploads"
-                                header-align="left"
                                 label="上传者">
                             </el-table-column>
                             <el-table-column
                                 prop="uploadTime"
-                                header-align="left"
                                 label="上传时间">
                             </el-table-column>
                         </el-table>
@@ -675,7 +661,7 @@
                     url:  _this.$store.state.defaultHttp+ 'customerTwo/insert.do?cId='+_this.$store.state.iscId+"&pId="+_this.$store.state.ispId,
                     data:qs.stringify(idArr),
                 }).then(function(res){
-                    if(res.data && res.data == 'success') {
+                    if(res.data.code && res.data.code == 200) {
                         _this.$message({
                             message: '转换成功',
                             type: 'success'

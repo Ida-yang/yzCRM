@@ -52,11 +52,11 @@
             ref="multipleTable"
             border
             stripe
-            style="width:100%;text-align:center"
+            style="width:100%"
             @selection-change="selectInfo">
             <el-table-column
                 fixed
-                header-align="left"
+                header-align="center"
                 align="center"
                 type="selection"
                 width="45"
@@ -80,8 +80,6 @@
                     prop="name"
                     fixed
                     v-if="item.prop == 'name' && item.state == 1"
-                    header-align="left"
-                    align="left"
                     min-width="180"
                     label="公司名称"
                     sortable>
@@ -93,8 +91,6 @@
                     prop="address"
                     show-overflow-tooltip
                     v-else-if="item.prop == 'address' && item.state == 1"
-                    header-align="left"
-                    align="left"
                     label="地址"
                     min-width="160"
                     sortable>
@@ -102,8 +98,6 @@
                 <el-table-column
                     prop="contacts[0].coName"
                     v-if="item.prop == 'contacts[0].coName' && item.state == 1"
-                    header-align="left"
-                    align="left"
                     label="联系人"
                     min-width="100"
                     sortable>
@@ -111,8 +105,6 @@
                 <el-table-column
                     prop="contacts[0].telephone"
                     v-if="item.prop == 'contacts[0].telephone' && item.state == 1"
-                    header-align="left"
-                    align="left"
                     label="电话"
                     width="100"
                     sortable>
@@ -120,8 +112,6 @@
                 <el-table-column
                     prop="contacts[0].phone"
                     v-if="item.prop == 'contacts[0].phone' && item.state == 1"
-                    header-align="left"
-                    align="left"
                     label="手机"
                     width="110"
                     sortable>
@@ -129,8 +119,6 @@
                 <el-table-column
                     prop="contacts[0].qq"
                     v-if="item.prop == 'contacts[0].qq' && item.state == 1"
-                    header-align="left"
-                    align="left"
                     label="QQ"
                     min-width="80"
                     sortable>
@@ -139,8 +127,6 @@
                     prop="contacts[0].email"
                     show-overflow-tooltip
                     v-else-if="item.prop == 'email' && item.state == 1"
-                    header-align="left"
-                    align="left"
                     label="邮箱"
                     min-width="130"
                     sortable>
@@ -148,8 +134,6 @@
                 <el-table-column
                     prop="contacts[0].wechat"
                     v-else-if="item.prop == 'wechat' && item.state == 1"
-                    header-align="left"
-                    align="left"
                     label="微信"
                     min-width="95"
                     sortable>
@@ -157,8 +141,6 @@
                 <el-table-column
                     prop="contacts[0].sex"
                     v-else-if="item.prop == 'sex' && item.state == 1"
-                    header-align="left"
-                    align="left"
                     label="性别"
                     min-width="95"
                     sortable>
@@ -166,8 +148,6 @@
                 <el-table-column
                     prop="contacts[0].remark"
                     v-else-if="item.prop == 'remarks' && item.state == 1"
-                    header-align="left"
-                    align="left"
                     label="备注"
                     min-width="95"
                     sortable>
@@ -175,8 +155,6 @@
                 <el-table-column
                     prop="follow[0].createTime"
                     v-if="item.prop == 'follow[0].createTime' && item.state == 1"
-                    header-align="left"
-                    align="left"
                     label="最新跟进时间"
                     min-width="130"
                     sortable>
@@ -185,8 +163,6 @@
                     prop="follow[0].followContent"
                     v-if="item.prop == 'follow[0].followContent' && item.state == 1"
                     show-overflow-tooltip
-                    header-align="left"
-                    align="left"
                     label="最新跟进记录"
                     min-width="130"
                     sortable>
@@ -194,8 +170,6 @@
                 <el-table-column
                     prop="follow[0].contactTime"
                     v-else-if="item.prop == 'follow[0].contactTime' && item.state == 1"
-                    header-align="left"
-                    align="left"
                     min-width="140"
                     label="下次联系时间"
                     sortable>
@@ -203,8 +177,6 @@
                 <el-table-column
                     prop="privateUser[0].private_employee"
                     v-if="item.prop == 'privateUser[0].private_employee' && item.state == 1"
-                    header-align="left"
-                    align="left"
                     label="前负责人"
                     min-width="110"
                     sortable>
@@ -212,8 +184,6 @@
                 <el-table-column
                     prop="deptname"
                     v-if="item.prop == 'deptname' && item.state == 1"
-                    header-align="left"
-                    align="left"
                     label="部门"
                     min-width="110"
                     sortable>
@@ -221,8 +191,6 @@
                 <el-table-column
                     prop="parentname"
                     v-if="item.prop == 'parentname' && item.state == 1"
-                    header-align="left"
-                    align="left"
                     label="机构"
                     min-width="110"
                     sortable>
@@ -230,8 +198,6 @@
                 <el-table-column
                     prop="countryid"
                     v-else-if="item.prop == 'countryid' && item.state == 1"
-                    header-align="left"
-                    align="left"
                     min-width="150"
                     label="省-市-区"
                     sortable>
@@ -240,8 +206,6 @@
                 <el-table-column
                     prop="createTime"
                     v-if="item.prop == 'createTime' && item.state == 1"
-                    header-align="left"
-                    align="left"
                     label="创建时间"
                     min-width="150"
                     sortable>
@@ -249,8 +213,6 @@
                 <el-table-column
                     prop="status"
                     v-if="item.prop == 'status' && item.state == 1"
-                    header-align="left"
-                    align="left"
                     min-width="100"
                     label="状态"
                     sortable>
@@ -258,8 +220,6 @@
                 <el-table-column
                     prop="levels"
                     v-else-if="item.prop == 'levels' && item.state == 1"
-                    header-align="left"
-                    align="left"
                     min-width="110"
                     label="客户级别"
                     sortable>
@@ -267,8 +227,6 @@
                 <el-table-column
                     prop="source"
                     v-if="item.prop == 'source' && item.state == 1"
-                    header-align="left"
-                    align="left"
                     label="客户来源"
                     min-width="110"
                     sortable>
@@ -276,8 +234,6 @@
                 <el-table-column
                     prop="representative"
                     v-else-if="item.prop == 'representative' && item.state == 1"
-                    header-align="left"
-                    align="left"
                     min-width="110"
                     label="法人代表"
                     sortable>
@@ -286,8 +242,6 @@
                     prop="registrationAuthority"
                     show-overflow-tooltip
                     v-else-if="item.prop == 'registrationAuthority' && item.state == 1"
-                    header-align="left"
-                    align="left"
                     min-width="110"
                     label="登记机关"
                     sortable>
@@ -295,8 +249,6 @@
                 <el-table-column
                     prop="creditCode"
                     v-else-if="item.prop == 'creditCode' && item.state == 1"
-                    header-align="left"
-                    align="left"
                     min-width="150"
                     label="社会信用代码"
                     sortable>
@@ -304,8 +256,6 @@
                 <el-table-column
                     prop="registrationNumber"
                     v-else-if="item.prop == 'registrationNumber' && item.state == 1"
-                    header-align="left"
-                    align="left"
                     min-width="150"
                     label="注册号"
                     sortable>
@@ -313,8 +263,6 @@
                 <el-table-column
                     prop="organizationCode"
                     v-else-if="item.prop == 'organizationCode' && item.state == 1"
-                    header-align="left"
-                    align="left"
                     min-width="130"
                     label="组织机构代码"
                     sortable>
@@ -322,8 +270,6 @@
                 <el-table-column
                     prop="capital"
                     v-else-if="item.prop == 'capital' && item.state == 1"
-                    header-align="left"
-                    align="left"
                     min-width="110"
                     label="注册资金"
                     sortable>
@@ -332,8 +278,6 @@
                 <el-table-column
                     prop="date"
                     v-else-if="item.prop == 'date' && item.state == 1"
-                    header-align="left"
-                    align="left"
                     min-width="110"
                     label="成立时间"
                     sortable>
@@ -341,8 +285,6 @@
                 <el-table-column
                     prop="enterpriseScale"
                     v-else-if="item.prop == 'enterpriseScale' && item.state == 1"
-                    header-align="left"
-                    align="left"
                     min-width="110"
                     label="企业规模"
                     sortable>
@@ -350,8 +292,6 @@
                 <el-table-column
                     prop="financingState"
                     v-else-if="item.prop == 'financingState' && item.state == 1"
-                    header-align="left"
-                    align="left"
                     min-width="110"
                     label="融资状态"
                     sortable>
@@ -360,8 +300,6 @@
                     prop="industryType"
                     show-overflow-tooltip
                     v-else-if="item.prop == 'industryType' && item.state == 1"
-                    header-align="left"
-                    align="left"
                     min-width="110"
                     label="行业"
                     sortable>
@@ -369,8 +307,6 @@
                 <el-table-column
                     prop="companyType"
                     v-else-if="item.prop == 'companyType' && item.state == 1"
-                    header-align="left"
-                    align="left"
                     min-width="110"
                     label="公司类型"
                     sortable>
@@ -378,8 +314,6 @@
                 <el-table-column
                     prop="operatingState"
                     v-else-if="item.prop == 'operatingState' && item.state == 1"
-                    header-align="left"
-                    align="left"
                     min-width="110"
                     label="营业状态"
                     sortable>
@@ -389,7 +323,7 @@
                 label="操作"
                 fixed="right"
                 width="150"
-                header-align="left"
+                header-align="center"
                 align="center">
                 <template slot-scope="scope">
                     <el-button

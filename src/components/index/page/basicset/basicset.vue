@@ -15,11 +15,11 @@
                 :data="tableData"
                 border
                 stripe
-                style="width:100%;text-align:left"
+                style="width:100%"
                 v-show="showtopfour">
                 <el-table-column
-                    header-align="left"
-                    align=""
+                    header-align="center"
+                    align="center"
                     type="selection"
                     width="45"
                     scope.row.id
@@ -27,31 +27,23 @@
                 </el-table-column>
                 <el-table-column
                     prop="sort"
-                    header-align="left"
-                    align="left"
                     label="顺序"
                     sortable>
                 </el-table-column>
                 <el-table-column
                     prop="id"
-                    header-align="left"
-                    align="left"
                     width="100"
                     label="ID"
                     sortable>
                 </el-table-column>
                 <el-table-column
                     prop="typeName"
-                    header-align="left"
-                    align="left"
                     min-width="120"
                     label="名称"
                     sortable>
                 </el-table-column>
                 <el-table-column
                     prop="notes"
-                    header-align="left"
-                    align="left"
                     min-width="120"
                     label="备注"
                     sortable>
@@ -59,7 +51,7 @@
                 <el-table-column label="操作"
                     width="140"
                     header-align="center"
-                    align="left">
+                    align="center">
                     <template slot-scope="scope">
                         <el-button
                         size="mini"
@@ -75,11 +67,11 @@
                 :data="tableData2"
                 border
                 stripe
-                style="width:100%;text-align:left"
+                style="width:100%"
                 v-show="showfive">
                 <el-table-column
-                    header-align="left"
-                    align=""
+                    header-align="center"
+                    align="center"
                     type="selection"
                     width="45"
                     scope.row.id
@@ -87,31 +79,23 @@
                 </el-table-column>
                 <el-table-column
                     prop="sort"
-                    header-align="left"
-                    align="left"
                     label="顺序"
                     sortable>
                 </el-table-column>
                 <el-table-column
                     prop="typeName"
-                    header-align="left"
-                    align="left"
                     min-width="120"
                     label="方式名称"
                     sortable>
                 </el-table-column>
                 <el-table-column
                     prop="content"
-                    header-align="left"
-                    align="left"
                     min-width="120"
                     label="跟进内容"
                     sortable>
                 </el-table-column>
                 <el-table-column
                     prop="notes"
-                    header-align="left"
-                    align="left"
                     min-width="120"
                     label="备注"
                     sortable>
@@ -119,7 +103,7 @@
                 <el-table-column label="操作"
                     width="140"
                     header-align="center"
-                    align="left">
+                    align="center">
                     <template slot-scope="scope">
                         <el-button
                         size="mini"
@@ -135,11 +119,11 @@
                 :data="tableData3"
                 border
                 stripe
-                style="width:100%;text-align:left"
+                style="width:100%"
                 v-show="showsix">
                 <el-table-column
-                    header-align="left"
-                    align=""
+                    header-align="center"
+                    align="center"
                     type="selection"
                     width="45"
                     scope.row.id
@@ -147,23 +131,17 @@
                 </el-table-column>
                 <el-table-column
                     prop="sort"
-                    header-align="left"
-                    align="left"
                     label="顺序"
                     sortable>
                 </el-table-column>
                 <el-table-column
                     prop="step_name"
-                    header-align="left"
-                    align="left"
                     min-width="120"
                     label="状态名称"
                     sortable>
                 </el-table-column>
                 <el-table-column
                     prop="step_probability"
-                    header-align="left"
-                    align="left"
                     min-width="120"
                     label="成功几率"
                     sortable>
@@ -173,8 +151,6 @@
                 </el-table-column>
                 <el-table-column
                     prop="notes"
-                    header-align="left"
-                    align="left"
                     min-width="120"
                     label="备注"
                     sortable>
@@ -182,7 +158,7 @@
                 <el-table-column label="操作"
                     width="140"
                     header-align="center"
-                    align="left">
+                    align="center">
                     <template slot-scope="scope">
                         <el-button
                         size="mini"
@@ -194,6 +170,130 @@
                     </template>
                 </el-table-column>
             </el-table>
+            
+            <el-table
+                :data="tableData4"
+                border
+                stripe
+                style="width:100%"
+                v-show="showeight">
+                <el-table-column
+                    header-align="center"
+                    align="center"
+                    type="selection"
+                    width="45"
+                    scope.row.id
+                    sortable>
+                </el-table-column>
+                <el-table-column
+                    prop="id"
+                    label="编号"
+                    sortable>
+                </el-table-column>
+                <el-table-column
+                    prop="name"
+                    min-width="120"
+                    label="单位名称"
+                    sortable>
+                </el-table-column>
+                <el-table-column
+                    prop="createTime"
+                    min-width="120"
+                    label="创建时间"
+                    sortable>
+                </el-table-column>
+                <el-table-column label="操作"
+                    width="140"
+                    header-align="center"
+                    align="center">
+                    <template slot-scope="scope">
+                        <el-button
+                        size="mini"
+                        @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
+                        <el-button
+                        size="mini"
+                        type="danger"
+                        @click="deleteUnit(scope.$index, scope.row)">删除</el-button>
+                    </template>
+                </el-table-column>
+            </el-table>
+            <el-table
+                :data="tableData5"
+                border
+                stripe
+                style="width:100%"
+                v-show="shownine">
+                <el-table-column
+                    header-align="center"
+                    align="center"
+                    type="selection"
+                    width="45"
+                    scope.row.id
+                    sortable>
+                </el-table-column>
+                <el-table-column
+                    prop="firstChar"
+                    min-width="120"
+                    label="首字母"
+                    sortable>
+                </el-table-column>
+                <el-table-column
+                    prop="name"
+                    label="品牌名称"
+                    sortable>
+                </el-table-column>
+                <el-table-column
+                    prop="createTime"
+                    label="创建时间"
+                    sortable>
+                </el-table-column>
+                <el-table-column label="操作"
+                    width="140"
+                    header-align="center"
+                    align="center">
+                    <template slot-scope="scope">
+                        <el-button
+                        size="mini"
+                        @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
+                        <el-button
+                        size="mini"
+                        type="danger"
+                        @click="deleteBrand(scope.$index, scope.row)">删除</el-button>
+                    </template>
+                </el-table-column>
+            </el-table>
+            <div class="block numberPage" v-show="showeight || shownine">
+                <el-pagination
+                @size-change="handleSizeChange"
+                @current-change="handleCurrentChange"
+                :current-page="page"
+                :page-sizes="[20, 50, 100, 500]"
+                :page-size="20"
+                layout="total, sizes, prev, pager, next, jumper"
+                :total="tableNumber">
+                </el-pagination>
+            </div>
+            <el-tree
+                node-key="deptid"
+                highlight-current
+                accordion
+                :data="proClassData"
+                :props="defaultProps"
+                expand-on-click-node
+                @node-click="handleNodeClick"
+                v-show="showseven">
+                <span class="custom-tree-node" slot-scope="{ node, data }">
+                    <span><i class="el-icon-info">&nbsp;&nbsp;</i>{{ node.label }}</span>
+                    <span class="operation_proclass">
+                        <el-button type="text" size="mini" style="font-size:12px;" @click="proAdd(data)">添加/
+                        </el-button>
+                        <el-button type="text" size="mini" style="font-size:12px;" @click="proEdit(data)">修改/
+                        </el-button>
+                        <el-button type="text" size="mini" style="font-size:12px;" @click="deleteProclass(node,data)">删除
+                        </el-button>
+                    </span>
+                </span>
+            </el-tree>
         </div>
         <el-dialog
             title="添加状态"
@@ -346,6 +446,129 @@
                 <el-button type="primary" @click="updateoppstep()">确 定</el-button>
             </span>
         </el-dialog>
+        
+        <el-dialog
+            title="新增产品分类"
+            :visible.sync="dialogVisible7"
+            width="40%">
+            <el-form ref="newform" :model="newform" :rules="rules" label-width="110px">
+                <el-form-item prop="type" label="状态类别">
+                    <el-input v-model="newform.type" :disabled="true"></el-input>
+                </el-form-item>
+                <el-form-item prop="parentclass_name" label="上级产品分类">
+                    <el-input v-model="newform.parentclass_name" :disabled="true"></el-input>
+                </el-form-item>
+                <el-form-item prop="proclass_name" label="产品分类名称">
+                    <el-input v-model="newform.proclass_name"></el-input>
+                </el-form-item>
+            </el-form>
+            <span slot="footer" class="dialog-footer">
+                <el-button @click="dialogVisible7 = false">取 消</el-button>
+                <el-button type="primary" @click="addProclass()">确 定</el-button>
+            </span>
+        </el-dialog>
+        <el-dialog
+            title="修改产品分类"
+            :visible.sync="dialogVisible8"
+            width="40%">
+            <el-form ref="newform" :model="newform" :rules="rules" label-width="110px">
+                <el-form-item prop="type" label="状态类别">
+                    <el-input v-model="newform.type" :disabled="true"></el-input>
+                </el-form-item>
+                <el-form-item prop="proclass_name" label="产品分类名称">
+                    <el-input v-model="newform.proclass_name"></el-input>
+                </el-form-item>
+            </el-form>
+            <span slot="footer" class="dialog-footer">
+                <el-button @click="dialogVisible8 = false">取 消</el-button>
+                <el-button type="primary" @click="updateProclass()">确 定</el-button>
+            </span>
+        </el-dialog>
+        <el-dialog
+            title="新增单位"
+            :visible.sync="dialogVisible9"
+            width="40%">
+            <el-form ref="newform" :model="newform" :rules="rules" label-width="80px">
+                <el-form-item prop="type" label="状态类别">
+                    <el-input v-model="newform.type" :disabled="true"></el-input>
+                </el-form-item>
+                <el-form-item prop="unit_name" label="单位名称">
+                    <el-input v-model="newform.unit_name"></el-input>
+                </el-form-item>
+            </el-form>
+            <span slot="footer" class="dialog-footer">
+                <el-button @click="dialogVisible9 = false">取 消</el-button>
+                <el-button type="primary" @click="addunit()">确 定</el-button>
+            </span>
+        </el-dialog>
+        <el-dialog
+            title="修改单位"
+            :visible.sync="dialogVisible10"
+            width="40%">
+            <el-form ref="newform" :model="newform" :rules="rules" label-width="80px">
+                <el-form-item prop="type" label="状态类别">
+                    <el-input v-model="newform.type" :disabled="true"></el-input>
+                </el-form-item>
+                <el-form-item prop="unit_name" label="单位名称">
+                    <el-input v-model="newform.unit_name"></el-input>
+                </el-form-item>
+            </el-form>
+            <span slot="footer" class="dialog-footer">
+                <el-button @click="dialogVisible10 = false">取 消</el-button>
+                <el-button type="primary" @click="updateunit()">确 定</el-button>
+            </span>
+        </el-dialog>
+        <el-dialog
+            title="新增品牌"
+            :visible.sync="dialogVisible11"
+            width="40%">
+            <el-form ref="newform" :model="newform" :rules="rules" label-width="100px">
+                <el-form-item prop="type" label="状态类别">
+                    <el-input v-model="newform.type" :disabled="true"></el-input>
+                </el-form-item>
+                <el-form-item prop="brand_name" label="品牌名称">
+                    <el-input v-model="newform.brand_name"></el-input>
+                </el-form-item>
+            </el-form>
+            <span slot="footer" class="dialog-footer">
+                <el-button @click="dialogVisible11 = false">取 消</el-button>
+                <el-button type="primary" @click="addbrand()">确 定</el-button>
+            </span>
+        </el-dialog>
+        <el-dialog
+            title="修改品牌"
+            :visible.sync="dialogVisible12"
+            width="40%">
+            <el-form ref="newform" :model="newform" :rules="rules" label-width="100px">
+                <el-form-item prop="type" label="状态类别">
+                    <el-input v-model="newform.type" :disabled="true"></el-input>
+                </el-form-item>
+                <el-form-item prop="brand_name" label="品牌名称">
+                    <el-input v-model="newform.brand_name"></el-input>
+                </el-form-item>
+            </el-form>
+            <span slot="footer" class="dialog-footer">
+                <el-button @click="dialogVisible12 = false">取 消</el-button>
+                <el-button type="primary" @click="updatebrand()">确 定</el-button>
+            </span>
+        </el-dialog>
+        <el-dialog
+            title="新增产品分类"
+            :visible.sync="dialogVisible13"
+            width="40%">
+            <el-form ref="newform" :model="newform" :rules="rules" label-width="110px">
+                <el-form-item prop="type" label="状态类别">
+                    <el-input v-model="newform.type" :disabled="true"></el-input>
+                </el-form-item>
+                <el-form-item prop="proclass_name" label="产品分类名称">
+                    <el-input v-model="newform.proclass_name"></el-input>
+                </el-form-item>
+            </el-form>
+            <span slot="footer" class="dialog-footer">
+                <el-button @click="dialogVisible13 = false">取 消</el-button>
+                <el-button type="primary" @click="addProclass()">确 定</el-button>
+            </span>
+        </el-dialog>
     </div>
 </template>
 <script>
@@ -365,6 +588,18 @@
             return {
                 tableData2:[],
                 tableData3:[],
+                tableData4:[],
+                tableData5:[],
+                proClassData:[],
+
+                tableNumber:0,
+                defaultProps:{
+                    label:'name',
+                    children:'next',
+                },
+
+                page:1,//默认为第一页
+                limit:20,//默认为20行
 
                 dataList:null,
                 nameList:[
@@ -373,7 +608,10 @@
                     {index:3,name:'客户来源',isActive:false},
                     {index:4,name:'客户级别',isActive:false},
                     {index:5,name:'快捷方式',isActive:false},
-                    {index:6,name:'商机进度',isActive:false}
+                    {index:6,name:'商机进度',isActive:false},
+                    {index:7,name:'产品分类',isActive:false},
+                    {index:8,name:'单位',isActive:false},
+                    {index:9,name:'品牌',isActive:false},
                 ],
                 newform:{
                     type:'线索状态',
@@ -385,6 +623,12 @@
                     quickname:null,
                     quickcontent:null,
                     probability:null,
+                    brand_name:null,
+                    unit_name:null,
+                    parentclass_id:null,
+                    parentclass_name:null,
+                    proclass_id:null,
+                    proclass_name:null,
                 },
 
                 checklist:['顺序','名称','备注'],
@@ -395,6 +639,9 @@
                 showtopfour:true,
                 showfive:false,
                 showsix:false,
+                showseven:false,
+                showeight:false,
+                shownine:false,
 
                 dialogVisible:false,
                 dialogVisible2:false,
@@ -402,6 +649,13 @@
                 dialogVisible4:false,
                 dialogVisible5:false,
                 dialogVisible6:false,
+                dialogVisible7:false,
+                dialogVisible8:false,
+                dialogVisible9:false,
+                dialogVisible10:false,
+                dialogVisible11:false,
+                dialogVisible12:false,
+                dialogVisible13:false,
 
                 rules: {
                     typeName : [{ required: true, message: '名称不能为空', trigger: 'blur' },],
@@ -409,6 +663,10 @@
                     quickname : [{ required: true, message: '快捷方式不能为空', trigger: 'blur' },],
                     quickcontent : [{ required: true, message: '跟进内容不能为空', trigger: 'blur' },],
                     probability : [{ required: true, message: '成功几率不能为空', trigger: 'blur' },],
+                    brand_name:[{ required: true, message: '品牌名称不能为空', trigger: 'blur' },],
+                    unit_name:[{ required: true, message: '单位名称不能为空', trigger: 'blur' },],
+                    proclass_name:[{ required: true, message: '产品分类名称不能为空', trigger: 'blur' },]
+                    
                 },
             }
         },
@@ -451,6 +709,54 @@
                     // console.log(err);
                 });
             },
+            loadproductClass(){
+                const _this = this
+
+                axios({
+                    method: 'get',
+                    url: _this.$store.state.defaultHttp+'classification/getClassificationNodeTree.do?cId='+_this.$store.state.iscId,
+                }).then(function(res){
+                    _this.proClassData = res.data.map.success
+                }).catch(function(err){
+                    // console.log(err);
+                });
+            },
+            loadUnit(){
+                const _this = this
+                let qs = require('querystring')
+                let data = {}
+                data.page = this.page
+                data.limit = this.limit
+
+                axios({
+                    method: 'post',
+                    url: _this.$store.state.defaultHttp+'unit/selectUnitList.do?cId='+_this.$store.state.iscId,
+                    data:qs.stringify(data)
+                }).then(function(res){
+                    _this.tableData4 = res.data.map.units
+                    _this.tableNumber = res.data.count
+                }).catch(function(err){
+                    // console.log(err);
+                });
+            },
+            loadBrand(){
+                const _this = this
+                let qs = require('querystring')
+                let data = {}
+                data.page = this.page
+                data.limit = this.limit
+
+                axios({
+                    method: 'post',
+                    url: _this.$store.state.defaultHttp+'brand/selectBrandList.do?cId='+_this.$store.state.iscId,
+                    data:qs.stringify(data)
+                }).then(function(res){
+                    _this.tableData5 = res.data.map.brands
+                    _this.tableNumber = res.data.count
+                }).catch(function(err){
+                    // console.log(err);
+                });
+            },
             //显示左边对应表格数据
             showTableval(val){
                 const _this = this
@@ -465,17 +771,50 @@
                     _this.showtopfour = true
                     _this.showfive = false
                     _this.showsix = false
+                    _this.showseven = false
+                    _this.showeight = false
+                    _this.shownine = false
                     _this.$options.methods.reloadTable.bind(_this)(true)
                 }else if(i == 5){
                     _this.showtopfour = false
                     _this.showfive = true
                     _this.showsix = false
+                    _this.showseven = false
+                    _this.showeight = false
+                    _this.shownine = false
                     _this.$options.methods.reloadTable.bind(_this)(true)
                 }else if(i == 6){
                     _this.showtopfour = false
                     _this.showfive = false
                     _this.showsix = true
+                    _this.showseven = false
+                    _this.showeight = false
+                    _this.shownine = false
                     _this.$options.methods.loadOppStep.bind(_this)(true)
+                }else if(i == 7){
+                    _this.showtopfour = false
+                    _this.showfive = false
+                    _this.showsix = false
+                    _this.showseven = true
+                    _this.showeight = false
+                    _this.shownine = false
+                    _this.$options.methods.loadproductClass.bind(_this)(true)
+                }else if(i == 8){
+                    _this.showtopfour = false
+                    _this.showfive = false
+                    _this.showsix = false
+                    _this.showseven = false
+                    _this.showeight = true
+                    _this.shownine = false
+                    _this.$options.methods.loadUnit.bind(_this)(true)
+                }else if(i == 9){
+                    _this.showtopfour = false
+                    _this.showfive = false
+                    _this.showsix = false
+                    _this.showseven = false
+                    _this.showeight = false
+                    _this.shownine = true
+                    _this.$options.methods.loadBrand.bind(_this)(true)
                 }
             },
             //添加
@@ -506,12 +845,40 @@
                             _this.newform.typeName = null
                             _this.newform.probability = null
                             _this.dialogVisible5 = true
+                        }else if(i == 7){
+                            _this.newform.parentclass_id = null
+                            _this.newform.parentclass_name = null
+                            _this.newform.proclass_id = null
+                            _this.newform.proclass_name = null
+                            _this.dialogVisible13 = true
+                        }else if(i == 8){
+                            _this.newform.unit_name = null
+                            _this.dialogVisible9 = true
+                        }else if(i == 9){
+                            _this.newform.brand_name = null
+                            _this.dialogVisible11 = true
                         }
                     }
                 }).catch(function(err){
                     // console.log(err);
                 });
                 
+            },
+            proAdd(data){
+                const _this = this
+                console.log(data)
+                _this.newform.parentclass_id = data.id
+                _this.newform.parentclass_name = data.name
+                _this.newform.proclass_id = null
+                _this.newform.proclass_name = null
+                _this.dialogVisible7 = true
+            },
+            proEdit(data){
+                const _this = this
+                console.log(data)
+                _this.newform.proclass_id = data.id
+                _this.newform.proclass_name = data.name
+                this.dialogVisible8 = true
             },
             //添加提交按钮
             addbasicset(){
@@ -642,6 +1009,125 @@
                     _this.$message.error("添加失败,请重新添加");
                 });
             },
+            addProclass(){
+                const _this = this;
+                let qs = require('querystring')
+                let data = {}
+                data.name = this.newform.proclass_name
+                if(this.newform.parentclass_id){
+                    data.parentid = this.newform.parentclass_id
+                    data.parentname = this.newform.parentclass_name
+                }
+                
+                let flag = false;
+                if(!data.name){
+                    _this.$message({
+                        message: "产品分类名称不能为空",
+                        type: 'error'
+                    });
+                    flag = true;
+                }
+                if(flag) return
+
+                axios({
+                    method: 'post',
+                    url: _this.$store.state.defaultHttp+'classification/insertClassification.do?cId='+_this.$store.state.iscId,
+                    data:qs.stringify(data)
+                }).then(function(res){
+                    if(res.data.code && res.data.code == 200){
+                        _this.$message({
+                            message:'添加成功',
+                            type:'success'
+                        })
+                        _this.dialogVisible7 = false
+                        _this.dialogVisible13 = false
+                        _this.$options.methods.loadproductClass.bind(_this)(true);
+                    }else{
+                        _this.$message({
+                            message:res.data.msg,
+                            type:'error'
+                        })
+                    }
+                }).catch(function(err){
+                    _this.$message.error("添加失败,请重新添加");
+                });
+            },
+            addunit(){
+                const _this = this;
+                let qs = require('querystring')
+                let data = {}
+                data.name = this.newform.unit_name
+                
+                let flag = false;
+                if(!data.name){
+                    _this.$message({
+                        message: "单位名称不能为空",
+                        type: 'error'
+                    });
+                    flag = true;
+                }
+                if(flag) return
+
+                axios({
+                    method: 'post',
+                    url: _this.$store.state.defaultHttp+'unit/insertUnit.do?cId='+_this.$store.state.iscId,
+                    data:qs.stringify(data)
+                }).then(function(res){
+                    if(res.data.code && res.data.code == 200){
+                        _this.$message({
+                            message:'添加成功',
+                            type:'success'
+                        })
+                        _this.dialogVisible9 = false
+                        _this.$options.methods.loadUnit.bind(_this)(true);
+                    }else{
+                        _this.$message({
+                            message:res.data.msg,
+                            type:'error'
+                        })
+                    }
+                }).catch(function(err){
+                    _this.$message.error("添加失败,请重新添加");
+                });
+            },
+            addbrand(){
+                const _this = this;
+                let qs = require('querystring')
+                let data = {}
+                data.name = this.newform.brand_name
+                
+                let flag = false;
+                if(!data.name){
+                    _this.$message({
+                        message: "品牌名称不能为空",
+                        type: 'error'
+                    });
+                    flag = true;
+                }
+                if(flag) return
+
+                axios({
+                    method: 'post',
+                    url: _this.$store.state.defaultHttp+'brand/insert.do?cId='+_this.$store.state.iscId,
+                    data:qs.stringify(data)
+                }).then(function(res){
+                    if(res.data.code && res.data.code == 200){
+                        _this.$message({
+                            message:'添加成功',
+                            type:'success'
+                        })
+                        _this.dialogVisible11 = false
+                        _this.$options.methods.loadBrand.bind(_this)(true);
+                    }else{
+                        _this.$message({
+                            message:res.data.msg,
+                            type:'error'
+                        })
+                    }
+                }).catch(function(err){
+                    _this.$message.error("添加失败,请重新添加");
+                });
+            },
             //修改
             handleEdit(index,row){
                 const _this = this
@@ -673,6 +1159,14 @@
                             _this.newform.typeName = row.step_name
                             _this.newform.probability = row.step_probability
                             _this.dialogVisible6 = true
+                        }else if(i == 8){
+                            _this.newform.id = row.id
+                            _this.newform.unit_name = row.name
+                            _this.dialogVisible10 = true
+                        }else if(i == 9){
+                            _this.newform.id = row.id
+                            _this.newform.brand_name = row.name
+                            _this.dialogVisible12 = true
                         }
                     }
                 }).catch(function(err){
@@ -798,7 +1292,7 @@
                 }).then(function(res){
                     if(res.data.code && res.data.code == 200){
                         _this.$message({
-                            message:'添加成功',
+                            message:'修改成功',
                             type:'success'
                         })
                         _this.dialogVisible6 = false
@@ -813,6 +1307,124 @@
                     _this.$message.error("修改失败,请重新修改");
                 });
             },
+            updateProclass(){
+                const _this = this;
+                let qs = require('querystring')
+                let data = {}
+                data.id = this.newform.proclass_id
+                data.name = this.newform.proclass_name
+                
+                let flag = false;
+                if(!data.name){
+                    _this.$message({
+                        message: "产品分类名称不能为空",
+                        type: 'error'
+                    });
+                    flag = true;
+                }
+                if(flag) return
+
+                axios({
+                    method: 'post',
+                    url: _this.$store.state.defaultHttp+'classification/updateClassificationById.do?cId='+_this.$store.state.iscId,
+                    data:qs.stringify(data)
+                }).then(function(res){
+                    if(res.data.code && res.data.code == 200){
+                        _this.$message({
+                            message:'修改成功',
+                            type:'success'
+                        })
+                        _this.dialogVisible8 = false
+                        _this.$options.methods.loadproductClass.bind(_this)(true);
+                    }else{
+                        _this.$message({
+                            message:res.data.msg,
+                            type:'error'
+                        })
+                    }
+                }).catch(function(err){
+                    _this.$message.error("修改失败,请重新添加");
+                });
+            },
+            updateunit(){
+                const _this = this;
+                let qs = require('querystring')
+                let data = {}
+                data.id = this.newform.id
+                data.name = this.newform.unit_name
+                
+                let flag = false;
+                if(!data.name){
+                    _this.$message({
+                        message: "单位名称不能为空",
+                        type: 'error'
+                    });
+                    flag = true;
+                }
+                if(flag) return
+
+                axios({
+                    method: 'post',
+                    url: _this.$store.state.defaultHttp+'unit/updateUnit.do?cId='+_this.$store.state.iscId,
+                    data:qs.stringify(data)
+                }).then(function(res){
+                    if(res.data.code && res.data.code == 200){
+                        _this.$message({
+                            message:'修改成功',
+                            type:'success'
+                        })
+                        _this.dialogVisible10 = false
+                        _this.$options.methods.loadUnit.bind(_this)(true);
+                    }else{
+                        _this.$message({
+                            message:res.data.msg,
+                            type:'error'
+                        })
+                    }
+                }).catch(function(err){
+                    _this.$message.error("修改失败,请重新添加");
+                });
+            },
+            updatebrand(){
+                const _this = this;
+                let qs = require('querystring')
+                let data = {}
+                data.id = this.newform.id
+                data.name = this.newform.brand_name
+                
+                let flag = false;
+                if(!data.name){
+                    _this.$message({
+                        message: "品牌名称不能为空",
+                        type: 'error'
+                    });
+                    flag = true;
+                }
+                if(flag) return
+
+                axios({
+                    method: 'post',
+                    url: _this.$store.state.defaultHttp+'brand/updateByPrimaryKey.do?cId='+_this.$store.state.iscId,
+                    data:qs.stringify(data)
+                }).then(function(res){
+                    if(res.data.code && res.data.code == 200){
+                        _this.$message({
+                            message:'修改成功',
+                            type:'success'
+                        })
+                        _this.dialogVisible12 = false
+                        _this.$options.methods.loadBrand.bind(_this)(true);
+                    }else{
+                        _this.$message({
+                            message:res.data.msg,
+                            type:'error'
+                        })
+                    }
+                }).catch(function(err){
+                    _this.$message.error("修改失败,请重新添加");
+                });
+            },
+            //删除
             handledelete(index,row){
                 const _this = this;
                 let i = this.newform.index
@@ -871,6 +1483,157 @@
                         message: '取消删除'
                     });       
                 });
+            },
+            deleteProclass(node,data){
+                const _this = this
+                let qs =require('querystring')
+                let idArr = {}
+                idArr.id = data.id
+
+                _this.$confirm('确认删除 ['+ data.name +'] 吗？', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                }).then(({ value }) => {
+                    axios({
+                        method: 'post',
+                        url: _this.$store.state.defaultHttp+ 'classification/deleteClassificationById.do?cId='+_this.$store.state.iscId,
+                        data:qs.stringify(idArr),
+                    }).then(function(res){
+                        if(res.data.code && res.data.code == 200) {
+                            _this.$message({
+                                message: '删除成功',
+                                type: 'success'
+                            });
+                            _this.$options.methods.loadproductClass.bind(_this)(true)
+                        } else if(res.data.msg && res.data.msg == 'error'){//删除
+                            _this.$message({
+                                message: '对不起，您没有该权限，请联系管理员开通',
+                                type: 'error'
+                            })
+                        }else {
+                            _this.$message({
+                                message: res.data.msg,
+                                type: 'error'
+                            });
+                        }
+                    }).catch(function(err){
+                        _this.$message.error("删除失败,请重新删除");
+                    });
+                }).catch(() => {
+                    _this.$message({
+                        type: 'info',
+                        message: '取消删除'
+                    });       
+                });
+            },
+            deleteUnit(index,row){
+                const _this = this
+                let qs =require('querystring')
+                let idArr = {}
+                idArr.id = row.id
+
+                _this.$confirm('确认删除 ['+ row.name +'] 吗？', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                }).then(({ value }) => {
+                    axios({
+                        method: 'post',
+                        url: _this.$store.state.defaultHttp+ 'unit/deleteUnit.do?cId='+_this.$store.state.iscId,
+                        data:qs.stringify(idArr),
+                    }).then(function(res){
+                        if(res.data.code && res.data.code == 200) {
+                            _this.$message({
+                                message: '删除成功',
+                                type: 'success'
+                            });
+                            _this.$options.methods.loadUnit.bind(_this)(true)
+                        } else if(res.data.msg && res.data.msg == 'error'){//删除
+                            _this.$message({
+                                message: '对不起，您没有该权限，请联系管理员开通',
+                                type: 'error'
+                            })
+                        }else {
+                            _this.$message({
+                                message: res.data.msg,
+                                type: 'error'
+                            });
+                        }
+                    }).catch(function(err){
+                        _this.$message.error("删除失败,请重新删除");
+                    });
+                }).catch(() => {
+                    _this.$message({
+                        type: 'info',
+                        message: '取消删除'
+                    });       
+                });
+            },
+            deleteBrand(index,row){
+                const _this = this
+                let qs =require('querystring')
+                let idArr = {}
+                idArr.id = row.id
+
+                _this.$confirm('确认删除 ['+ row.name +'] 吗？', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                }).then(({ value }) => {
+                    axios({
+                        method: 'post',
+                        url: _this.$store.state.defaultHttp+ 'brand/deleteByPrimaryKey.do?cId='+_this.$store.state.iscId,
+                        data:qs.stringify(idArr),
+                    }).then(function(res){
+                        if(res.data.code && res.data.code == 200) {
+                            _this.$message({
+                                message: '删除成功',
+                                type: 'success'
+                            });
+                            _this.$options.methods.loadBrand.bind(_this)(true)
+                        } else if(res.data.msg && res.data.msg == 'error'){//删除
+                            _this.$message({
+                                message: '对不起，您没有该权限，请联系管理员开通',
+                                type: 'error'
+                            })
+                        }else {
+                            _this.$message({
+                                message: res.data.msg,
+                                type: 'error'
+                            });
+                        }
+                    }).catch(function(err){
+                        _this.$message.error("删除失败,请重新删除");
+                    });
+                }).catch(() => {
+                    _this.$message({
+                        type: 'info',
+                        message: '取消删除'
+                    });       
+                });
+            },
+            handleNodeClick(data){
+                // console.log(data)
+            },
+            handleSizeChange(val){
+                const _this = this;
+                let i = this.newform.index
+                _this.limit = val;
+                if(i == 8){
+                    _this.$options.methods.loadUnit.bind(_this)(true)
+                }
+                if(i == 9){
+                    _this.$options.methods.loadBrand.bind(_this)(true)
+                }
+            },
+            handleCurrentChange(val){
+                const _this = this;
+                let i = this.newform.index
+                _this.page = val;
+                if(i == 8){
+                    _this.$options.methods.loadUnit.bind(_this)(true)
+                }
+                if(i == 9){
+                    _this.$options.methods.loadBrand.bind(_this)(true)
+                }
             },
         }
     }

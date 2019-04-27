@@ -150,7 +150,7 @@
             border
             stripe
             v-loading.fullscreen.lock="Loading"
-            style="text-align:center"
+            style="width:100%"
             @selection-change="selectInfo">
             <el-table-column
                 header-align="center"
@@ -175,8 +175,6 @@
                 <el-table-column
                     prop="name"
                     v-if="item.prop == 'name' && item.state == 1"
-                    header-align="left"
-                    align="left"
                     min-width="200"
                     label="公司名称"
                     sortable>
@@ -190,8 +188,6 @@
                     prop="address"
                     show-overflow-tooltip
                     v-else-if="item.prop == 'address' && item.state == 1"
-                    header-align="left"
-                    align="left"
                     label="公司地址"
                     min-width="160"
                     sortable>
@@ -199,8 +195,6 @@
                 <el-table-column
                     prop="capital"
                     v-else-if="item.prop == 'capital' && item.state == 1"
-                    header-align="left"
-                    align="left"
                     label="注册资金"
                     width="110"
                     sortable>
@@ -210,8 +204,6 @@
                     prop="representative"
                     show-overflow-tooltip
                     v-else-if="item.prop == 'representative' && item.state == 1"
-                    header-align="left"
-                    align="left"
                     label="法人" 
                     width="80"               
                     sortable>
@@ -219,8 +211,6 @@
                 <el-table-column
                     prop="date"
                     v-else-if="item.prop == 'date' && item.state == 1"
-                    header-align="left"
-                    align="left"
                     label="成立日期"
                     sortable
                     width="120">
@@ -228,8 +218,6 @@
                 <el-table-column
                     prop="phoneId"
                     v-else-if="item.prop == 'coPhone' && item.state == 1"
-                    header-align="left"
-                    align="left"
                     label="手机"
                     width="110"
                     sortable>
@@ -237,8 +225,6 @@
                 <el-table-column
                     prop="telephoneId"
                     v-else-if="item.prop == 'coTelephone' && item.state == 1"
-                    header-align="left"
-                    align="left"
                     label="固话"
                     width="100"
                     sortable>
@@ -247,8 +233,6 @@
                     prop="emailId"
                     show-overflow-tooltip
                     v-else-if="item.prop == 'coEmail' && item.state == 1"
-                    header-align="left"
-                    align="left"
                     label="邮箱"
                     width="130"
                     sortable>
@@ -256,8 +240,6 @@
                 <el-table-column
                     prop="url"
                     v-else-if="item.prop == 'coWebsite' && item.state == 1"
-                    header-align="left"
-                    align="left"
                     label="网站"
                     sortable>
                 </el-table-column>
@@ -265,8 +247,6 @@
                     prop="industryName"
                     show-overflow-tooltip
                     v-else-if="item.prop == 'industryName' && item.state == 1"
-                    header-align="left"
-                    align="left"
                     width="110"
                     label="行业"
                     sortable>
@@ -274,16 +254,12 @@
                 <el-table-column
                     prop="enterpriseScaleName"
                     v-else-if="item.prop == 'enterpriseScaleName' && item.state == 1"
-                    header-align="left"
-                    align="left"
                     label="企业规模"
                     width="110"
                     sortable>
                 </el-table-column>
                 <el-table-column
                     v-else-if="item.prop == 'countryId' && item.state == 1"
-                    header-align="left"
-                    align="left"
                     label="省-市-区"
                     width="150"
                     sortable>
@@ -293,8 +269,6 @@
                     prop="company"
                     show-overflow-tooltip
                     v-else-if="item.prop == 'company' && item.state == 1"
-                    header-align="left"
-                    align="left"
                     label="企业类型"
                     width="130"
                     sortable>
@@ -302,8 +276,6 @@
                 <el-table-column
                     prop="ostate"
                     v-else-if="item.prop == 'ostate' && item.state == 1"
-                    header-align="left"
-                    align="left"
                     label="经营状态"
                     width="110"
                     sortable>
@@ -311,8 +283,6 @@
                 <el-table-column
                     prop="financing"
                     v-else-if="item.prop == 'financing' && item.state == 1"
-                    header-align="left"
-                    align="left"
                     label="融资状态"
                     width="110"
                     sortable>
@@ -320,8 +290,6 @@
                 <el-table-column
                     prop="listed"
                     v-else-if="item.prop == 'listed' && item.state == 1"
-                    header-align="left"
-                    align="left"
                     label="上市信息"
                     width="110"
                     sortable>

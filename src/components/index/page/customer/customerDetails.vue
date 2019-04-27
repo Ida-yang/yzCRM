@@ -188,61 +188,52 @@
                             style="width: 100%">
                             <el-table-column
                                 prop="name"
-                                header-align="left"
                                 min-width="90"
                                 label="名称">
                             </el-table-column>
                             <el-table-column
                                 prop="phone"
-                                header-align="left"
                                 min-width="110"
                                 label="手机">
                             </el-table-column>
                             <el-table-column
                                 prop="telephone"
-                                header-align="left"
                                 min-width="110"
                                 label="固话">
                             </el-table-column>
                             <el-table-column
                                 prop="email"
-                                header-align="left"
                                 min-width="110"
                                 label="邮箱">
                             </el-table-column>
                             <el-table-column
                                 prop="qq"
-                                header-align="left"
                                 min-width="110"
                                 label="QQ">
                             </el-table-column>
                             <el-table-column
                                 prop="wechat"
-                                header-align="left"
                                 min-width="110"
                                 label="微信">
                             </el-table-column>
                             <el-table-column
                                 prop="address"
-                                header-align="left"
+                                show-overflow-tooltip
                                 min-width="140"
                                 label="地址">
                             </el-table-column>
                             <el-table-column
                                 prop="identity"
-                                header-align="left"
                                 min-width="90"
                                 label="职务">
                             </el-table-column>
                             <el-table-column
                                 prop="sex"
-                                header-align="left"
                                 min-width="90"
                                 label="性别">
                             </el-table-column>
                             <el-table-column
                                 prop="status"
-                                header-align="left"
                                 min-width="90"
                                 label="是否在职">
                                 <template slot-scope="scope">
@@ -253,7 +244,6 @@
                             </el-table-column>
                             <el-table-column
                                 prop="isCrux"
-                                header-align="left"
                                 min-width="110"
                                 label="是否为关键人">
                                 <template slot-scope="scope">
@@ -264,7 +254,6 @@
                             </el-table-column>
                             <el-table-column
                                 prop="remark"
-                                header-align="left"
                                 min-width="100"
                                 label="备注">
                             </el-table-column>
@@ -278,13 +267,11 @@
                             style="width: 100%">
                             <el-table-column
                                 prop="opportunity_name"
-                                header-align="left"
                                 min-width="140"
                                 label="商机名称">
                             </el-table-column>
                             <el-table-column
                                 prop="opportunity_achievement"
-                                header-align="left"
                                 min-width="100"
                                 label="商机金额">
                             <template slot-scope="scope">
@@ -295,31 +282,26 @@
                             </el-table-column>
                             <el-table-column
                                 prop="opportunity_deal"
-                                header-align="left"
                                 min-width="145"
                                 label="预计签单时间">
                             </el-table-column>
                             <el-table-column
                                 prop="opportunityProgress[0].progress_name"
-                                header-align="left"
                                 min-width="90"
                                 label="商机阶段">
                             </el-table-column>
                             <el-table-column
                                 prop="opportunityProgress[0].progress_probability"
-                                header-align="left"
                                 min-width="110"
                                 label="预计成功率">
                             </el-table-column>
                             <el-table-column
                                 prop="opportunity_time"
-                                header-align="left"
                                 min-width="145"
                                 label="商机新建时间">
                             </el-table-column>
                             <!-- <el-table-column
                                 prop="address"
-                                header-align="left"
                                 label="耗时天数">
                                 </el-table-column> -->
                         </el-table>
@@ -332,25 +314,21 @@
                             style="width: 100%">
                             <el-table-column
                                 prop="contract_number"
-                                header-align="left"
                                 min-width="100"
                                 label="合同代码">
                             </el-table-column>
                             <el-table-column
                                 prop="contract_name"
-                                header-align="left"
                                 min-width="120"
                                 label="合同名称">
                             </el-table-column>
                             <el-table-column
                                 prop="contract_type"
-                                header-align="left"
                                 min-width="90"
                                 label="合同类型">
                             </el-table-column>
                             <el-table-column
                                 prop="amount"
-                                header-align="left"
                                 min-width="90"
                                 label="合同金额">
                                 <template slot-scope="scope">
@@ -361,25 +339,21 @@
                             </el-table-column>
                             <el-table-column
                                 prop="signatories"
-                                header-align="left"
                                 min-width="90"
                                 label="签约人">
                             </el-table-column>
                             <el-table-column
                                 prop="start_date"
-                                header-align="left"
                                 min-width="145"
                                 label="合同开始时间">
                             </el-table-column>
                             <el-table-column
                                 prop="end_date"
-                                header-align="left"
                                 min-width="145"
                                 label="合同到期时间">
                             </el-table-column>
                             <el-table-column
                                 prop="due_time"
-                                header-align="left"
                                 min-width="90"
                                 label="剩余天数">
                             </el-table-column>
@@ -393,19 +367,16 @@
                             style="width: 100%">
                             <el-table-column
                                 prop="name"
-                                header-align="left"
                                 min-width="180"
                                 label="公司名称">
                             </el-table-column>
                             <el-table-column
                                 prop="creditCode"
-                                header-align="left"
                                 min-width="150"
                                 label="税务登记号">
                             </el-table-column>
                             <el-table-column
                                 prop="address"
-                                header-align="left"
                                 min-width="180"
                                 label="税务地址">
                             </el-table-column>
@@ -419,19 +390,16 @@
                             style="width: 100%">
                             <el-table-column
                                 prop="type"
-                                header-align="left"
                                 min-width="90"
                                 label="类型">
                             </el-table-column>
                             <el-table-column
                                 prop="theme"
-                                header-align="left"
                                 min-width="150"
                                 label="主题">
                             </el-table-column>
                             <el-table-column
                                 prop="startTime"
-                                header-align="left"
                                 min-width="145"
                                 label="时间">
                                 <template slot-scope="scope">
@@ -443,13 +411,11 @@
                             </el-table-column>
                             <el-table-column
                                 prop="private_employee"
-                                header-align="left"
                                 min-width="100"
                                 label="负责人">
                             </el-table-column>
                             <el-table-column
                                 prop="state"
-                                header-align="left"
                                 min-width="100"
                                 label="状态">
                                 <template slot-scope="scope">
@@ -473,7 +439,6 @@
                             style="width: 100%">
                             <el-table-column
                                 prop="name"
-                                header-align="left"
                                 min-width="150"
                                 label="附件名称">
                                 <template slot-scope="scope">
@@ -482,13 +447,11 @@
                             </el-table-column>
                             <el-table-column
                                 prop="uploads"
-                                header-align="left"
                                 min-width="100"
                                 label="上传者">
                             </el-table-column>
                             <el-table-column
                                 prop="uploadTime"
-                                header-align="left"
                                 min-width="150"
                                 label="上传时间">
                             </el-table-column>

@@ -52,7 +52,7 @@
                 ref="multipleTable"
                 border
                 stripe
-                style="width:100%;text-align:center">
+                style="width:100%">
                 <el-table-column
                     fixed
                     header-align="center"
@@ -62,16 +62,12 @@
                 </el-table-column>
                 <el-table-column
                     prop="type"
-                    header-align="left"
-                    align="left"
                     min-width="120"
                     label="类型"
                     sortable>
                 </el-table-column>
                 <el-table-column
                     prop="theme"
-                    header-align="left"
-                    align="left"
                     min-width="120"
                     label="主题"
                     sortable>
@@ -84,16 +80,12 @@
                 <el-table-column
                     prop="describe"
                     show-overflow-tooltip
-                    header-align="left"
-                    align="left"
                     min-width="120"
                     label="描述"
                     sortable>
                 </el-table-column>
                 <el-table-column
                     prop="startTime"
-                    header-align="left"
-                    align="left"
                     min-width="180"
                     label="时间"
                     sortable>
@@ -106,16 +98,12 @@
                 </el-table-column>
                 <el-table-column
                     prop="private_employee"
-                    header-align="left"
-                    align="left"
                     min-width="110"
                     label="负责人"
                     sortable>
                 </el-table-column>
                 <el-table-column
                     prop="state"
-                    header-align="left"
-                    align="left"
                     min-width="90"
                     label="状态"
                     sortable>

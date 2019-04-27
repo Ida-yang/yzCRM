@@ -19,6 +19,7 @@ Vue.use(base)
 Vue.use(VueResource);
 Vue.use(ElementUI);
 Vue.prototype.$axios = axios;
+Vue.prototype.$message = Message;
 
 
 // var lastTime = new Date().getTime();//最后操作时间 
@@ -98,26 +99,72 @@ new Vue({
 });
 
 router.beforeEach((to, from, next) => {
+  const _this = this
   // console.log(localStorage)
   // console.log(to)
   if (to.matched.some(record => record.meta.requireAuth)){ // 判断该路由是否需要登录权限
     // console.log('需要登录');
     if(localStorage.ispId) { // 判断当前的ispId是否存在 ； 登录存入的ispId
       if(to.path === '/organization'){
-        console.log('组织机构')
-        next()
+        axios({
+          method: 'get',
+          url: store.state.defaultHttp+'deptJurisdiction/deptMenu.do',
+        }).then(function(res){
+          if(res.data.msg && res.data.msg == 'error'){
+            Vue.prototype.$message.error('对不起，您没有该权限，请联系管理员开通')
+            next({path:'/index'})
+          }else{
+            next()
+          }
+        })
       }else if(to.path === '/user'){
-        console.log('用户管理')
-        next()
+        axios({
+          method: 'get',
+          url: store.state.defaultHttp+'userJurisdiction/userMenu.do',
+        }).then(function(res){
+          if(res.data.msg && res.data.msg == 'error'){
+            Vue.prototype.$message.error('对不起，您没有该权限，请联系管理员开通')
+            next({path:'/index'})
+          }else{
+            next()
+          }
+        })
       }else if(to.path === '/basicset'){
-        console.log('辅助资料')
-        next()
+        axios({
+          method: 'get',
+          url: store.state.defaultHttp+'typeInfoJurisdiction/typeInfoMenu.do',
+        }).then(function(res){
+          if(res.data.msg && res.data.msg == 'error'){
+            Vue.prototype.$message.error('对不起，您没有该权限，请联系管理员开通')
+            next({path:'/index'})
+          }else{
+            next()
+          }
+        })
       }else if(to.path === '/programme'){
-        console.log('目标')
-        next()
+        axios({
+          method: 'get',
+          url: store.state.defaultHttp+'projectJurisdiction/projectMenu.do',
+        }).then(function(res){
+          if(res.data.msg && res.data.msg == 'error'){
+            Vue.prototype.$message.error('对不起，您没有该权限，请联系管理员开通')
+            next({path:'/index'})
+          }else{
+            next()
+          }
+        })
       }else if(to.path === '/logs'){
-        console.log('日志')
-        next()
+        axios({
+          method: 'get',
+          url: store.state.defaultHttp+'sendRecordJurisdiction/sendRecordMenu.do',
+        }).then(function(res){
+          if(res.data.msg && res.data.msg == 'error'){
+            Vue.prototype.$message.error('对不起，您没有该权限，请联系管理员开通')
+            next({path:'/index'})
+          }else{
+            next()
+          }
+        })
       }else{
         next();
       }

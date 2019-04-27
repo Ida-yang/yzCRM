@@ -357,7 +357,7 @@
                 const _this = this
                 axios({
                     method: 'get',
-                    url: _this.$store.state.defaultHttp+'template/deleteTemplate.do',//编辑短信模板
+                    url: _this.$store.state.defaultHttp+'templateJurisdiction/update.do',//编辑短信模板
                 }).then(function(res){
                     if(res.data.msg && res.data.msg == 'error'){
                         _this.$message({

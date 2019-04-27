@@ -40,37 +40,30 @@
                             style="width: 100%">
                             <el-table-column
                             prop="name"
-                            header-align="center"
                             label="名称">
                             </el-table-column>
                             <el-table-column
                             prop="phone"
-                            header-align="center"
                             label="手机">
                             </el-table-column>
                             <el-table-column
                             prop="email"
-                            header-align="center"
                             label="邮箱">
                             </el-table-column>
                             <el-table-column
                             prop="qq"
-                            header-align="center"
                             label="QQ">
                             </el-table-column>
                             <el-table-column
                             prop="contactsAddress"
-                            header-align="center"
                             label="职务">
                             </el-table-column>
                             <el-table-column
                             prop="contactsAddress"
-                            header-align="center"
                             label="其他">
                             </el-table-column>
                             <el-table-column
                             prop="source"
-                            header-align="center"
                             label="来源">
                             </el-table-column>
                         </el-table>

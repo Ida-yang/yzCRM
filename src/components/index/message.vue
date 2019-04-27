@@ -10,18 +10,14 @@
                     :data="tableData"
                     border
                     stripe
-                    style="width:100%;text-align:center">
+                    style="width:100%">
                     <el-table-column
                         prop="typeName"
-                        header-align="left"
-                        align="left"
                         label="事件"
                         min-width="118">
                     </el-table-column>
                     <el-table-column
                         prop="remindContent"
-                        header-align="left"
-                        align="left"
                         label="待办内容"
                         min-width="250">
                         <template slot-scope="scope">
@@ -40,15 +36,11 @@
                     style="width:100%;text-align:center">
                     <el-table-column
                         prop="typeName"
-                        header-align="left"
-                        align="left"
                         label="事件"
                         min-width="118">
                     </el-table-column>
                     <el-table-column
                         prop="remindContent"
-                        header-align="left"
-                        align="left"
                         label="待审核内容"
                         min-width="250">
                         <template slot-scope="scope">

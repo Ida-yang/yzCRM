@@ -1,4 +1,5 @@
 <template>
+
     <!-- 机构部门及角色 -->
     <div class="organ_content">
         <div class="leftcontent">
@@ -11,7 +12,7 @@
                 :expand-on-click-node="false"
                 @node-click="handleNodeClick">
                 <span class="custom-tree-node" slot-scope="{ node, data }">
-                    <span><i class="el-icon-info">&nbsp;</i>{{ node.label }}</span>
+                    <span><i class="el-icon-info">&nbsp;&nbsp;</i>{{ node.label }}</span>
                     <span class="operation_org">
                         <el-button type="text" size="mini" style="font-size:12px;" @click="handleappend(data)">添加/
                         </el-button>
@@ -32,10 +33,10 @@
                 border
                 stripe
                 :max-height="maxheight"
-                style="width:100%;text-align:left">
+                style="width:100%">
                 <el-table-column
-                    header-align="left"
-                    align=""
+                    header-align="center"
+                    align="center"
                     type="selection"
                     width="45"
                     scope.row.id
@@ -43,29 +44,23 @@
                 </el-table-column>
                 <el-table-column
                     prop="name"
-                    header-align="left"
-                    align="left"
                     label="角色名称"
                     sortable>
                 </el-table-column>
                 <el-table-column
                     prop="deptname"
-                    header-align="left"
-                    align="left"
                     label="部门"
                     sortable>
                 </el-table-column>
                 <el-table-column
                     prop="parentname"
-                    header-align="left"
-                    align="left"
                     label="上级部门"
                     sortable>
                 </el-table-column>
                 <el-table-column label="操作"
                     width="140"
                     header-align="center"
-                    align="left">
+                    align="center">
                     <template slot-scope="scope">
                         <el-button
                         size="mini"
@@ -658,6 +653,131 @@
                                 type:'error'
                             })
                         }else{
+                            _this.cluesData.forEach(i => {//线索
+                                if(i.type1){
+                                    i.type1.forEach(a => {
+                                        a.checked = false
+                                    });
+                                }
+                                if(i.type2){
+                                    i.type2.forEach(a => {
+                                        a.checked = false
+                                    });
+                                }
+                                if(i.type3){
+                                    i.type3.forEach(a => {
+                                        a.checked = false
+                                    });
+                                }
+                            });
+                            _this.cuestomsData.forEach(i => {//客户
+                                if(i.type1){
+                                    i.type1.forEach(a => {
+                                        a.checked = false
+                                    });
+                                }
+                                if(i.type2){
+                                    i.type2.forEach(a => {
+                                        a.checked = false
+                                    });
+                                }
+                            });
+                            _this.contactsData.forEach(i => {//联系人
+                                if(i.type1){
+                                    i.type1.forEach(a => {
+                                        a.checked = false
+                                    });
+                                }
+                            });
+                            _this.opposData.forEach(i => {//商机
+                                if(i.type1){
+                                    i.type1.forEach(a => {
+                                        a.checked = false
+                                    });
+                                }
+                            });
+                            _this.agreesData.forEach(i => {//合同
+                                if(i.type1){
+                                    i.type1.forEach(a => {
+                                        a.checked = false
+                                    });
+                                }
+                            });
+                            _this.activesData.forEach(i => {//社交营销
+                                if(i.type1){
+                                    i.type1.forEach(a => {
+                                        a.checked = false
+                                    });
+                                }
+                                if(i.type2){
+                                    i.type2.forEach(a => {
+                                        a.checked = false
+                                    });
+                                }
+                                if(i.type3){
+                                    i.type3.forEach(a => {
+                                        a.checked = false
+                                    });
+                                }
+                                if(i.type4){
+                                    i.type4.forEach(a => {
+                                        a.checked = false
+                                    });
+                                }
+                            });
+                            _this.setsData.forEach(i => {//系统设置
+                                if(i.type1){
+                                    i.type1.forEach(a => {
+                                        a.checked = false
+                                    });
+                                }
+                                if(i.type2){
+                                    i.type2.forEach(a => {
+                                        a.checked = false
+                                    });
+                                }
+                                if(i.type3){
+                                    i.type3.forEach(a => {
+                                        a.checked = false
+                                    });
+                                }
+                                if(i.type4){
+                                    i.type4.forEach(a => {
+                                        a.checked = false
+                                    });
+                                }
+                                if(i.type5){
+                                    i.type5.forEach(a => {
+                                        a.checked = false
+                                    });
+                                }
+                            });
+                            _this.worksData.forEach(i => {//办公
+                                if(i.type1){
+                                    i.type1.forEach(a => {
+                                        a.checked = false
+                                    });
+                                }
+                                if(i.type2){
+                                    i.type2.forEach(a => {
+                                        a.checked = false
+                                    });
+                                }
+                            });
+                            _this.reportsData.forEach(i => {//商业智能
+                                if(i.type1){
+                                    i.type1.forEach(a => {
+                                        a.checked = false
+                                    });
+                                }
+                            });
+                            _this.menusData.forEach(i => {//菜单栏
+                                if(i.type1){
+                                    i.type1.forEach(a => {
+                                        a.checked = false
+                                    });
+                                }
+                            });
                             _this.roleform.deptname = _this.clickdata.deptname
                             _this.dialogVisible3 = true
                         }
@@ -713,16 +833,6 @@
                         })
                     }else{
                         _this.checkedList = []
-                        _this.roleclues = []
-                        _this.rolecuestoms = []
-                        _this.rolecontacts = []
-                        _this.roleoppos = []
-                        _this.roleagrees = []
-                        _this.roleactives = []
-                        _this.rolesets = []
-                        _this.roleworks = []
-                        _this.rolereports = []
-                        _this.rolemenus = []
                         let ids = val.resources
                         ids.forEach(el => {
                             if(el.id){
@@ -896,7 +1006,7 @@
                                 }
                             });
                         });
-                        console.log(this.checkedList)
+                        // console.log(this.checkedList)
                         _this.roleform.id = val.id
                         _this.roleform.name = val.name
                         _this.roleform.deptid = val.deptid
@@ -1582,21 +1692,6 @@
         padding-left: 10px;
         border-radius: 5px;
     }
-    .custom-tree-node {
-        flex: 1;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        font-size: 14px;
-        padding-right: 8px;
-    }
-    .operation_org{
-        visibility: visible;
-        position: fixed;
-        right: 64%;
-        width: 30%;
-        text-align: right
-    }
     .checkboxclass{
         width: 100px;
         margin-left: 30px;
@@ -1604,7 +1699,4 @@
     /* .checkboxclass{
         margin-left: 30px;
     } */
-    .el-icon-info{
-        font-size: 12px;
-    }
 </style>

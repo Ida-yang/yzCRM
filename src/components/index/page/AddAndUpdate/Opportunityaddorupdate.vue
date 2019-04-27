@@ -101,8 +101,7 @@
                 border
                 stripe
                 :default-sort = "{order: 'ascending'}"
-                max-height="580"
-                style="text-align:center">
+                max-height="580">
                 <el-table-column
                     header-align="center"
                     align="center"
@@ -113,24 +112,18 @@
                 </el-table-column>
                 <el-table-column
                     prop="name"
-                    header-align="left"
-                    align="left"
                     min-width="80"
                     label="公司名称"
                     sortable>
                 </el-table-column>
                 <el-table-column
                     prop="address"
-                    header-align="left"
-                    align="left"
                     min-width="130"
                     label="公司地址"
                     sortable>
                 </el-table-column>
                 <el-table-column
                     prop="representative"
-                    header-align="left"
-                    align="left"
                     min-width="40"
                     label="法人"
                     sortable>
