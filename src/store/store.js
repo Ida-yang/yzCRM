@@ -162,6 +162,11 @@ const state = {
   //短信雷达列表总数
   SMSradarListnumber:0,
 
+  //产品列表
+  productList:[],
+  //产品列表总数
+  productListnumber:0,
+
   //当前时间
   nowtime:null,
 }

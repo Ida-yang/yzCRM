@@ -274,7 +274,7 @@
                 </el-pagination>
             </div>
             <el-tree
-                node-key="deptid"
+                node-key="id"
                 highlight-current
                 accordion
                 :data="proClassData"

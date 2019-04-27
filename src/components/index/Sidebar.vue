@@ -132,6 +132,10 @@
                                 title: '联系人',
                             },
                             {
+                                index: 'product',
+                                title: '产品',
+                            },
+                            {
                                 index: 'businessOpportunity',
                                 title: '商机',
                             },
@@ -179,6 +183,11 @@
                         icon: 'mdi-puzzle',
                         index: 'analysisReport',
                         title: '商业智能',
+                    },
+                    {
+                        icon: 'mdi-puzzle',
+                        index: 'activity',
+                        title: '活动',
                     },
                 ],
                 

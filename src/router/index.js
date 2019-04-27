@@ -206,6 +206,11 @@ const router =new Router({
           component: resolve => require(['../components/index/page/log/logs.vue'], resolve),
           meta: { title: '日志',requireAuth:true}
         },
+        {
+          path: '/product',
+          component: resolve => require(['../components/index/page/product/product.vue'], resolve),
+          meta: { title: '产品',requireAuth:true}
+        },
       ]
     },
         

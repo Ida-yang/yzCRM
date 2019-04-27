@@ -151,14 +151,14 @@
                     </el-table-column>
                     <el-table-column
                         prop="isSynchronization"
-                        v-if="item.prop == 'createTime' && item.state == 1"
+                        v-if="item.prop == 'isSynchronization' && item.state == 1"
                         min-width="110"
                         label="是否同步"
                         sortable>
                     </el-table-column>
                     <el-table-column
                         prop="private_state"
-                        v-if="item.prop == 'createTime' && item.state == 1"
+                        v-if="item.prop == 'private_state' && item.state == 1"
                         min-width="80"
                         label="状态"
                         sortable>
