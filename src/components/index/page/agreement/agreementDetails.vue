@@ -402,63 +402,6 @@
         height: 100px !important;
         color: transparent;
     }
-    .uploadBOX{
-        display: flex;
-        display: -webkit-flex; /* Safari */
-        flex-wrap: wrap;
-        align-content: flex-start;
-	    margin-top: 20px;
-    }
-    .imgbox{
-        flex: 0 0 100px;
-	    margin-left: 10px;
-        margin-bottom: 10px;
-        /* width: 100px;
-        height: 100px; */
-    }
-    .imgbox img{
-        width: 100px;
-        height: 100px;
-    }
-    .filebox{
-        width: 100px;
-        height: 100px;
-        /* background-color: rgb(78, 121, 96); */
-    }
-	.upload {
-	    width: 100px;;
-	    height: 100px;
-	    display: inline-block;
-	    border-radius: 5px;
-	    position: relative;
-	    margin-left: 10px;
-	    background: rgb(255, 255, 255) url('../../../../assets/img/plus.png') center center no-repeat;
-	    background-size: 100px 100px;
-        border: 1px dashed #d9d9d9;
-	}
-	.upload input{
-	    position: relative;
-	    width: 100px;
-	    height: 100px;
-	    top: 0;
-	    left: 0;
-	    opacity: 0;
-	}
-	.filebox img{
-	    width: 100px;
-	    height: 100px;
-	    line-height: 100px;
-	    /* display: block; */
-	    float: left;
-        border-radius: 4px;
-	}
-	.upload i {
-	    position: absolute;
-	    bottom: 0;
-	    left: 100px;
-	    color: rgb(83, 76, 76);
-	    font-size: 24px;
-	}
     .audited{
         position: absolute;
         right: 45%;

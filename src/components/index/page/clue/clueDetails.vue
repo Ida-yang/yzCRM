@@ -144,7 +144,7 @@
                             <li class="verticalline"></li>
                             <li class="recordcontent">
                                 <div class="left_more">
-                                    <p>{{item.private_employee}}于{{item.createTime}}&nbsp;&nbsp;&nbsp;通过{{item.followType}}更新了一条记录&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;客户联系人为：&nbsp;{{item.contacts[0].name}}
+                                    <p>{{item.private_employee}}&nbsp;于&nbsp;{{item.createTime}}&nbsp;&nbsp;&nbsp;通过&nbsp;{{item.followType}}&nbsp;联系了：&nbsp;{{item.contacts[0].name}}
                                         <span v-if="item.contactTime">&nbsp;&nbsp;&nbsp;并约定下次联系时间：{{item.contactTime}}</span>
                                         &nbsp;&nbsp;&nbsp;<span>状态为：{{item.state}} &nbsp;&nbsp;&nbsp;{{item.inputType}}</span> 
                                     </p>
@@ -209,7 +209,7 @@
                                 label="微信">
                             </el-table-column>
                             <el-table-column
-                                prop="contactsAddress"
+                                prop="address"
                                 show-overflow-tooltip
                                 label="地址">
                             </el-table-column>

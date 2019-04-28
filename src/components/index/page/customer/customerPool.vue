@@ -221,7 +221,7 @@
                     prop="levels"
                     v-else-if="item.prop == 'levels' && item.state == 1"
                     min-width="110"
-                    label="客户级别"
+                    label="客户分类"
                     sortable>
                 </el-table-column>
                 <el-table-column

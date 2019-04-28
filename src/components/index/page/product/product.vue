@@ -8,6 +8,7 @@
                 accordion
                 :data="datalist"
                 :props="defaultProps"
+                :default-expanded-keys="defaultkeys"
                 expand-on-click-node
                 @node-click="handleNodeClick">
             </el-tree>
@@ -177,6 +178,8 @@
                     label:'name',
                     children:'next',
                 },
+                defaultkeys:[1],
+                
                 newform:{
                     second_id:null,
                     secondname:null,
@@ -224,13 +227,29 @@
             });
         },
         activated(){
-            this.reloadTable()
+            // this.reloadTable()
+            this.onloads()
         },
         mounted(){
-            this.reloadTable()
+            // this.reloadTable()
             // this.loadData()
+            // this.onloads()
         },
         methods:{
+            
+            onloads(){
+                // let a = [10,30,20]
+                // let b = [5,10]
+                // for(let i = 0; i < a.length; i ++){
+                //     // console.log(a[i])
+                //     for(let j = 0; j < b.length; j ++){
+                //         console.log(a[i]+b[j])
+                //     }
+                // }
+                // let a = '10'
+                // let b = 2220
+                // console.log(a*b/100)
+            },
             reloadTable(){
                 const _this = this
                 let qs = require('querystring')
@@ -315,16 +334,40 @@
                 this.idArr.private_id = newArr;
                 
             },
+            openDetails(index,row){
+                console.log(row)
+            },
             //用户添加
             handleAdd(){
                 const _this = this
+                console.log(this.clickdata)
 
                 if(!this.clickdata){
                     _this.$message({
-                        message:'请先选择部门，再添加用户',
+                        message:'请先选择产品分类，再添加产品',
+                        type:'info'
+                    })
+                }else if(this.clickdata.next.length){
+                    _this.$message({
+                        message:'该产品分类下还有分类，请选择最明细的产品分类',
                         type:'info'
                     })
                 }else{
+                    let productaddOrUpdateData = {}
+                    productaddOrUpdateData.setForm = {
+                        "chanpinmingcheng": '',
+                        "unit": '',
+                        "pinpai": '',
+                        "chanpinfenleiID": this.clickdata.id,
+                        "chanpinfenlei": this.clickdata.name,
+                        "chanpinshuxing": '',
+                        "xiaoshoujiage": '',
+                        "chengpinjia": '',
+                        "miaoshu": '',
+                        "chanpinbiaoqian": '',};
+                    productaddOrUpdateData.submitURL = this.$store.state.defaultHttp+ 'customerTwo/saveClue.do?cId='+this.$store.state.iscId+'&pId='+this.$store.state.ispId,
+                    this.$store.state.productaddOrUpdateData = productaddOrUpdateData;
+                    _this.$router.push({ path: '/productaddorupdate' });
                 }
             },
             //用户修改

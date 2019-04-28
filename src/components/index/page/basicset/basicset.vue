@@ -280,6 +280,7 @@
                 :data="proClassData"
                 :props="defaultProps"
                 expand-on-click-node
+                :default-expanded-keys="defaultkeys"
                 @node-click="handleNodeClick"
                 v-show="showseven">
                 <span class="custom-tree-node" slot-scope="{ node, data }">
@@ -597,6 +598,7 @@
                     label:'name',
                     children:'next',
                 },
+                defaultkeys:[1],
 
                 page:1,//默认为第一页
                 limit:20,//默认为20行
@@ -606,7 +608,7 @@
                     {index:1,name:'线索状态',isActive:true},
                     {index:2,name:'客户状态',isActive:false},
                     {index:3,name:'客户来源',isActive:false},
-                    {index:4,name:'客户级别',isActive:false},
+                    {index:4,name:'客户分类',isActive:false},
                     {index:5,name:'快捷方式',isActive:false},
                     {index:6,name:'商机进度',isActive:false},
                     {index:7,name:'产品分类',isActive:false},
@@ -1017,6 +1019,7 @@
                 if(this.newform.parentclass_id){
                     data.parentid = this.newform.parentclass_id
                     data.parentname = this.newform.parentclass_name
+                    this.defaultkeys = [this.newform.parentclass_id]
                 }
                 
                 let flag = false;
@@ -1313,6 +1316,7 @@
                 let data = {}
                 data.id = this.newform.proclass_id
                 data.name = this.newform.proclass_name
+                this.defaultkeys = [this.newform.proclass_id]
                 
                 let flag = false;
                 if(!data.name){

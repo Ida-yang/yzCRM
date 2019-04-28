@@ -254,6 +254,7 @@
     import store from '../../../../store/store'
     import axios from 'axios'
     import bus from '../../bus';
+    
     export default {
         name:'customeraddorupdate',
         data(){
@@ -300,7 +301,7 @@
                     poolName : [{ required: true, message: '公司名称不能为空', trigger: 'blur' },],
                     contactsName : [{ required: true, message: '联系人名称不能为空', trigger: 'blur' },],
                     phone : [{ required: true, message: '电话不能为空', trigger: 'blur' },],
-                    levelsid : [{ required: true, message: '请选择客户级别', trigger: 'blur' },],
+                    levelsid : [{ required: true, message: '请选择客户分类', trigger: 'blur' },],
                     customerStateid : [{ required: true, message: '请选择客户来源', trigger: 'blur' },],
                 },
 
@@ -357,7 +358,7 @@
                 });
                 
             },
-            //获取右边表格、客户来源和客户级别
+            //获取右边表格、客户来源和客户分类
             loadTable(){
                 const _this = this
                 let qs =require('querystring')
@@ -525,7 +526,7 @@
                     }
                     if(item.inputModel == "levelsid" && !subData[item.inputModel]) {
                         _this.$message({
-                            message: "客户级别不能为空",
+                            message: "客户分类不能为空",
                             type: 'error'
                         });
                         flag = true;

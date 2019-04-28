@@ -143,9 +143,9 @@
                             <li class="verticalline"></li>
                             <li class="recordcontent">
                                 <div class="left_more">
-                                    <p>{{item.private_employee}}&nbsp;&nbsp;于{{item.createTime}}&nbsp;&nbsp;通过{{item.followType}}更新了一条记录<span v-if="item.contacts[0]">&nbsp;&nbsp;&nbsp;客户联系人为：&nbsp;{{item.contacts[0].name}}</span>
+                                    <p>{{item.private_employee}}&nbsp;于&nbsp;{{item.createTime}}&nbsp;&nbsp;&nbsp;通过&nbsp;{{item.followType}}&nbsp;联系了：&nbsp;{{item.contacts[0].name}}
                                         <span v-if="item.contactTime">&nbsp;&nbsp;&nbsp;并约定下次联系时间：{{item.contactTime}}</span>
-                                        <span>&nbsp;&nbsp;&nbsp;状态为：{{item.state}} &nbsp;&nbsp;&nbsp;{{item.inputType}}</span>
+                                        &nbsp;&nbsp;&nbsp;<span>状态为：{{item.state}} &nbsp;&nbsp;&nbsp;{{item.inputType}}</span> 
                                     </p>
                                     <p style="margin-top:15px;margin-bottom:15px;">{{item.followContent}}</p>
                                     <div class="imgbox_two" v-if="item.imgName">
@@ -906,7 +906,7 @@
                         })
                     } else {
                         _this.$message({
-                            message: res.data,
+                            message: res.data.msg,
                             type: 'error'
                         });
                     }

@@ -41,6 +41,7 @@ const state = {
   contaddOrUpdateData:null,
   visitaddOrUpdateData:null,
   missionaddOrUpdateData:null,
+  productaddOrUpdateData:null,
   
   //跳转详情页列表
   cluedetailsData:null,

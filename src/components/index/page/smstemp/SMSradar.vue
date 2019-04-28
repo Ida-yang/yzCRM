@@ -14,7 +14,7 @@
             </el-radio-group>
         </div>
         <div class="searchList" style="width:100%;">
-            <el-input placeholder="请输入联系人或公司名称" v-model="searchList.searchName" style="margin-left:20px;width:400px;" @keyup.enter.native="search">
+            <el-input placeholder="请输入联系人或公司名称" v-model="searchName" style="margin-left:20px;width:400px;" @keyup.enter.native="search">
                 <el-select v-model="searchList.keyType" slot="prepend" placeholder="请选择" style="width:125px"> 
                     <el-option label="联系人名称" value="1"></el-option>
                     <el-option label="公司名称" value="2"></el-option>
@@ -113,8 +113,8 @@
                     label:'1',
                     time:null,
                     keyType:'1',
-                    searchName:null,
                 },
+                searchName:null,
                 pIdData:[
                     {label:'0',value:'全部'},
                     {label:'1',value:'我的'},
@@ -146,6 +146,11 @@
                 const _this = this;
                 let qs =require('querystring')
                 let searchList = {}
+                if(this.searchList.keyType == '1'){
+                    searchList.searchName = this.searchName
+                }else if(this.searchList.keyType == '2'){
+                    searchList.keyWord = this.searchName
+                }
                 if(this.searchList.label == 0 ){
                     searchList.pId = _this.nullvalue
                 }else if(this.searchList.label == 1){
@@ -155,8 +160,6 @@
                 }else if(this.searchList.label == 3){
                     searchList.deptid = _this.$store.state.insid
                 }
-                searchList.keyType = this.searchList.keyType
-                searchList.searchName = this.searchList.searchName
                 searchList.example = this.searchList.time
                 searchList.page = this.page;
                 searchList.limit = this.limit;

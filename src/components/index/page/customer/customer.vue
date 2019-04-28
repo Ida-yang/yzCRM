@@ -7,7 +7,7 @@
                 <el-radio v-for="item in pIdData" :key="item.label" :label="item.label" @change="search()">{{item.value}}</el-radio>
             </el-radio-group>
             <el-radio-group v-model="searchList.keyType">
-                <span class="nameList">客户级别：</span>
+                <span class="nameList">客户分类：</span>
                 <el-radio :label="nullvalue" @change="search()">全部</el-radio>
                 <el-radio v-for="item in labelData" :key="item.id" :label="item.id" @change="search()">{{item.typeName}}</el-radio>
             </el-radio-group>
@@ -246,7 +246,7 @@
                     prop="levels"
                     v-else-if="item.prop == 'levels' && item.state == 1"
                     min-width="110"
-                    label="客户级别"
+                    label="客户分类"
                     sortable>
                 </el-table-column>
                 <el-table-column
@@ -525,7 +525,7 @@
                 }
                 searchList.example = this.searchList.time
                 searchList.stateid = this.searchList.state //客户状态
-                searchList.levelsid = this.searchList.keyType //客户级别
+                searchList.levelsid = this.searchList.keyType //客户分类
                 searchList.customerStateid = this.searchList.keyWord //客户来源
                 searchList.page = this.page;
                 searchList.limit = this.limit;
@@ -620,7 +620,7 @@
                 cusaddOrUpdateData.createForm = [
                     {"label":"客户来源","inputModel":"customerStateid","type":"select"},
                     {"label":"客户名称","inputModel":"poolName","type":"require"},
-                    {"label":"客户级别","inputModel":"levelsid","type":"select"},
+                    {"label":"客户分类","inputModel":"levelsid","type":"select"},
                     {"label":"联系人","inputModel":"contactsName"},
                     {"label":"手机","inputModel":"phone","type":"number"},
                     {"label":"电话","inputModel":"telphone","type":"number"},
@@ -697,7 +697,7 @@
                 cusaddOrUpdateData.createForm = [
                     {"label":"客户来源","inputModel":"customerStateid","type":"select"},
                     {"label":"客户名称","inputModel":"poolName","type":"require"},
-                    {"label":"客户级别","inputModel":"levelsid","type":"select"},
+                    {"label":"客户分类","inputModel":"levelsid","type":"select"},
                     {"label":"联系人","inputModel":"contactsName"},
                     {"label":"手机","inputModel":"phone","type":"number"},
                     {"label":"电话","inputModel":"telphone","type":"number"},
@@ -803,7 +803,7 @@
                             })
                         } else {
                             _this.$message({
-                                message: res.data,
+                                message: res.data.msg,
                                 type: 'error'
                             });
                         }

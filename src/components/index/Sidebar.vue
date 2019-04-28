@@ -184,11 +184,6 @@
                         index: 'analysisReport',
                         title: '商业智能',
                     },
-                    {
-                        icon: 'mdi-puzzle',
-                        index: 'activity',
-                        title: '活动',
-                    },
                 ],
                 
                 itemlast: [
@@ -213,10 +208,6 @@
                                 index: 'programme',
                                 title: '目标',
                             },
-                            // {
-                            //     index: 'log',
-                            //     title: '操作日志',
-                            // },
                             {
                                 index: 'logs',
                                 title: '日志',
@@ -246,7 +237,7 @@
         },
         methods:{
             selectMain(key,path){
-                console.log(key)
+                // console.log(key)
             },
         },
     }
