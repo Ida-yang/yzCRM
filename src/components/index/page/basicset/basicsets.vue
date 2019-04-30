@@ -8,7 +8,7 @@
         </div>
         <div class="centercontent"></div>
         <div class="setrightcontent">
-            <div class="entry">
+            <div class="entry" v-show="addbtn">
                 <el-button class="btn info-btn" size="mini" @click="handleAdd()">新增</el-button>
             </div>
             <el-table
@@ -17,6 +17,14 @@
                 stripe
                 style="width:100%"
                 v-show="showtopfour">
+                <el-table-column
+                    header-align="center"
+                    align="center"
+                    type="selection"
+                    width="45"
+                    scope.row.id
+                    sortable>
+                </el-table-column>
                 <el-table-column
                     prop="sort"
                     label="顺序"
@@ -62,6 +70,14 @@
                 style="width:100%"
                 v-show="showfive">
                 <el-table-column
+                    header-align="center"
+                    align="center"
+                    type="selection"
+                    width="45"
+                    scope.row.id
+                    sortable>
+                </el-table-column>
+                <el-table-column
                     prop="sort"
                     label="顺序"
                     sortable>
@@ -105,6 +121,14 @@
                 stripe
                 style="width:100%"
                 v-show="showsix">
+                <el-table-column
+                    header-align="center"
+                    align="center"
+                    type="selection"
+                    width="45"
+                    scope.row.id
+                    sortable>
+                </el-table-column>
                 <el-table-column
                     prop="sort"
                     label="顺序"
@@ -156,8 +180,15 @@
                 <el-table-column
                     header-align="center"
                     align="center"
-                    type="index"
-                    width="45">
+                    type="selection"
+                    width="45"
+                    scope.row.id
+                    sortable>
+                </el-table-column>
+                <el-table-column
+                    prop="id"
+                    label="编号"
+                    sortable>
                 </el-table-column>
                 <el-table-column
                     prop="name"
@@ -195,8 +226,10 @@
                 <el-table-column
                     header-align="center"
                     align="center"
-                    type="index"
-                    width="45">
+                    type="selection"
+                    width="45"
+                    scope.row.id
+                    sortable>
                 </el-table-column>
                 <el-table-column
                     prop="firstChar"
@@ -229,6 +262,17 @@
                     </template>
                 </el-table-column>
             </el-table>
+            <div class="block numberPage" v-show="showeight || shownine">
+                <el-pagination
+                @size-change="handleSizeChange"
+                @current-change="handleCurrentChange"
+                :current-page="page"
+                :page-sizes="[20, 50, 100, 500]"
+                :page-size="20"
+                layout="total, sizes, prev, pager, next, jumper"
+                :total="tableNumber">
+                </el-pagination>
+            </div>
             <el-tree
                 node-key="id"
                 highlight-current
@@ -251,61 +295,22 @@
                     </span>
                 </span>
             </el-tree>
-            <el-table
-                :data="specData"
-                border
-                stripe
-                style="width:100%"
-                v-show="showten">
-                <el-table-column
-                    header-align="center"
-                    align="center"
-                    type="index"
-                    width="45">
-                </el-table-column>
-                <el-table-column
-                    prop="specName"
-                    min-width="120"
-                    label="规格名称"
-                    sortable>
-                </el-table-column>
-                <el-table-column
-                    prop="name"
-                    label="规格值"
-                    min-width="200"
-                    sortable>
-                </el-table-column>
-                <el-table-column
-                    prop="createTime"
-                    label="创建时间"
-                    min-width="145"
-                    sortable>
-                </el-table-column>
-                <el-table-column label="操作"
-                    width="140"
-                    header-align="center"
-                    align="center">
-                    <template slot-scope="scope">
-                        <el-button
-                        size="mini"
-                        @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
-                        <el-button
-                        size="mini"
-                        type="danger"
-                        @click="deletespec(scope.$index, scope.row)">删除</el-button>
-                    </template>
-                </el-table-column>
-            </el-table>
-            <div class="block numberPage" v-show="showeight || shownine || showten">
-                <el-pagination
-                @size-change="handleSizeChange"
-                @current-change="handleCurrentChange"
-                :current-page="page"
-                :page-sizes="[20, 50, 100, 500]"
-                :page-size="20"
-                layout="total, sizes, prev, pager, next, jumper"
-                :total="tableNumber">
-                </el-pagination>
+            <div class="spec_c" v-show="showten">
+                <div class="spec_l">
+                    <div class="entry">
+                        <el-button class="btn info-btn" size="mini" @click="addspechead()">新增</el-button>
+                        <el-button class="btn info-btn" size="mini" @click="updatespechead()">修改</el-button>
+                    </div>
+                    <ul class="namecontent">
+                        <li v-for="item in specheadList" :key="item.index" :value="item.name" :class="{actived:item.isActive}" @click="showTableval(item)">{{item.name}}</li>
+                    </ul>
+                </div>
+                <div class="spec_m"></div>
+                <div class="spec_r">
+                    <div class="entry">
+                        <el-button class="btn info-btn" size="mini" @click="addspec()">新增</el-button>
+                    </div>
+                </div>
             </div>
         </div>
         
@@ -582,65 +587,73 @@
             </span>
         </el-dialog><!-- 新增产品分类顶级 -->
         <el-dialog
-            title="新增规格"
+            title="新增规格分类"
             :visible.sync="dialogVisible14"
             width="40%">
             <el-form ref="newform" :model="newform" :rules="rules" label-width="110px">
                 <el-form-item prop="type" label="辅助资料类别">
                     <el-input v-model="newform.type" :disabled="true"></el-input>
                 </el-form-item>
-                <el-form-item prop="spec_name" label="规格名称">
-                    <el-input v-model="newform.spec_name"></el-input>
-                </el-form-item>
-                <el-form-item prop="specoption" label="规格值">
-                    <el-select v-model="newform.specoption" multiple filterable allow-create default-first-option style="width:100%" class="select_mul" no-data-text="请输入" @change="changeValue">
-                        <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value"></el-option>
-                    </el-select>
+                <el-form-item prop="proclass_name" label="规格分类名称">
+                    <el-input v-model="newform.proclass_name"></el-input>
                 </el-form-item>
             </el-form>
-            <el-table :data="specList" :key="key" border style="width: 100%">
-                <el-table-column header-align="center" align="center" type="index" width="45"></el-table-column>
-                <el-table-column label="规格值">
-                    <template slot-scope="scope">
-                    {{ scope.row.name }}
-                    </template>
-                </el-table-column>
-            </el-table>
             <span slot="footer" class="dialog-footer">
                 <el-button @click="dialogVisible14 = false">取 消</el-button>
-                <el-button type="primary" @click="addSpec()">确 定</el-button>
+                <el-button type="primary" @click="addProclass()">确 定</el-button>
             </span>
         </el-dialog><!-- 新增规格名称 -->
         <el-dialog
-            title="编辑规格"
+            title="编辑规格分类"
             :visible.sync="dialogVisible15"
             width="40%">
             <el-form ref="newform" :model="newform" :rules="rules" label-width="110px">
                 <el-form-item prop="type" label="辅助资料类别">
                     <el-input v-model="newform.type" :disabled="true"></el-input>
                 </el-form-item>
-                <el-form-item prop="spec_name" label="规格名称">
-                    <el-input v-model="newform.spec_name"></el-input>
-                </el-form-item>
-                <el-form-item prop="specoption" label="规格值">
-                    <el-select v-model="newform.specoption" multiple filterable allow-create default-first-option style="width:100%" class="select_mul" no-data-text="请输入" @change="changeValue">
-                        <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value"></el-option>
-                    </el-select>
+                <el-form-item prop="proclass_name" label="规格分类名称">
+                    <el-input v-model="newform.proclass_name"></el-input>
                 </el-form-item>
             </el-form>
-            <el-table :data="specList" :key="key" border style="width: 100%">
-                <el-table-column header-align="center" align="center" type="index" width="45"></el-table-column>
-                <el-table-column label="规格值">
-                    <template slot-scope="scope">
-                    {{ scope.row.name }}
-                    </template>
-                </el-table-column>
-            </el-table>
             <span slot="footer" class="dialog-footer">
                 <el-button @click="dialogVisible15 = false">取 消</el-button>
-                <el-button type="primary" @click="updateSpec()">确 定</el-button>
+                <el-button type="primary" @click="addProclass()">确 定</el-button>
             </span>
         </el-dialog><!-- 编辑规格名称 -->
+        <el-dialog
+            title="新增规格名称"
+            :visible.sync="dialogVisible16"
+            width="40%">
+            <el-form ref="newform" :model="newform" :rules="rules" label-width="110px">
+                <el-form-item prop="type" label="规格类别">
+                    <el-input v-model="newform.type" :disabled="true"></el-input>
+                </el-form-item>
+                <el-form-item prop="proclass_name" label="规格名称">
+                    <el-input v-model="newform.proclass_name"></el-input>
+                </el-form-item>
+            </el-form>
+            <span slot="footer" class="dialog-footer">
+                <el-button @click="dialogVisible16 = false">取 消</el-button>
+                <el-button type="primary" @click="addProclass()">确 定</el-button>
+            </span>
+        </el-dialog><!-- 新增规格值 -->
+        <el-dialog
+            title="编辑规格名称"
+            :visible.sync="dialogVisible17"
+            width="40%">
+            <el-form ref="newform" :model="newform" :rules="rules" label-width="110px">
+                <el-form-item prop="type" label="规格类别">
+                    <el-input v-model="newform.type" :disabled="true"></el-input>
+                </el-form-item>
+                <el-form-item prop="proclass_name" label="规格名称">
+                    <el-input v-model="newform.proclass_name"></el-input>
+                </el-form-item>
+            </el-form>
+            <span slot="footer" class="dialog-footer">
+                <el-button @click="dialogVisible17 = false">取 消</el-button>
+                <el-button type="primary" @click="addProclass()">确 定</el-button>
+            </span>
+        </el-dialog><!-- 编辑规格值 -->
     </div>
 </template>
 <script>
@@ -665,8 +678,6 @@
                 proClassData:[],
                 specheadList:[],
                 specData:[],
-
-                specIndex:0,
 
                 tableNumber:0,
                 defaultProps:{
@@ -707,18 +718,14 @@
                     parentclass_name:null,
                     proclass_id:null,
                     proclass_name:null,
-                    spec_name:null,
-                    specoption:[]
                 },
-
-                options:[],
-                specList:[],
-                key:1,
 
                 checklist:['顺序','名称','备注'],
                 idArr:{
                     id:null,
                 },
+
+                addbtn:true,
 
                 showtopfour:true,
                 showfive:false,
@@ -754,8 +761,7 @@
                     probability : [{ required: true, message: '成功几率不能为空', trigger: 'blur' },],
                     brand_name:[{ required: true, message: '品牌名称不能为空', trigger: 'blur' },],
                     unit_name:[{ required: true, message: '单位名称不能为空', trigger: 'blur' },],
-                    proclass_name:[{ required: true, message: '产品分类名称不能为空', trigger: 'blur' },],
-                    spec_name:[{ required: true, message: '规格名称不能为空', trigger: 'blur' },]
+                    proclass_name:[{ required: true, message: '产品分类名称不能为空', trigger: 'blur' },]
                     
                 },
             }
@@ -849,17 +855,12 @@
             },
             loadSpec(){
                 const _this = this
-                let qs = require('querystring')
-                let data = {}
-                data.id = this.specID
 
                 axios({
-                    method: 'post',
+                    method: 'get',
                     url: _this.$store.state.defaultHttp+'specification/selectList.do?cId='+_this.$store.state.iscId,
-                    data:qs.stringify(data)
                 }).then(function(res){
-                    _this.specData = res.data.map.specifications
-                    _this.tableNumber = res.data.count
+                    _this.specheadList = res.data.map.specifications
                 }).catch(function(err){
                     // console.log(err);
                 });
@@ -874,6 +875,7 @@
                     obj.isActive = false;
                 });
                 val.isActive = !val.isActive;
+                _this.addbtn = true
                 _this.showtopfour = false
                 _this.showfive = false
                 _this.showsix = false
@@ -900,6 +902,7 @@
                     _this.shownine = true
                     _this.$options.methods.loadBrand.bind(_this)(true)
                 }else if(i == 10){
+                    _this.addbtn = false
                     _this.showten = true
                     _this.$options.methods.loadSpec.bind(_this)(true)
                 }
@@ -944,10 +947,6 @@
                         }else if(i == 9){
                             _this.newform.brand_name = null
                             _this.dialogVisible11 = true
-                        }else if(i == 10){
-                            _this.newform.spec_name = null
-                            _this.newform.specoption = []
-                            _this.dialogVisible14 = true
                         }
                     }
                 }).catch(function(err){
@@ -963,6 +962,14 @@
                 _this.newform.proclass_id = null
                 _this.newform.proclass_name = null
                 _this.dialogVisible7 = true
+            },
+            addspechead(){
+                const _this = this
+                _this.dialogVisible14 = true
+            },
+            addspec(){
+                const _this = this
+                _this.dialogVisible16 = true
             },
             //添加提交按钮
             addbasicset(){
@@ -1212,13 +1219,6 @@
                 }).catch(function(err){
                     _this.$message.error("添加失败,请重新添加");
                 });
-            },
-            addSpec(){
-                const _this = this
-                let data = {}
-                data.name = this.newform.spec_name
-                data.option = this.newform.specoption
-                console.log(data)
             },
             //修改
             handleEdit(index,row){
@@ -1524,7 +1524,10 @@
                     _this.$message.error("修改失败,请重新添加");
                 });
             },
-            updateSpec(){},
+            updatespechead(){
+                const _this = this
+                _this.dialogVisible15 = true
+            },
             //删除
             handledelete(index,row){
                 const _this = this;
@@ -1711,17 +1714,8 @@
                     });       
                 });
             },
-            deletespec(index,row){
-                console.log(row)
-            },
             handleNodeClick(data){
                 // console.log(data)
-            },
-            changeValue(e){
-                this.specList = []
-                for(let i = 0;i < e.length; i ++){
-                    this.specList.push({name:e[i]})
-                }
             },
             handleSizeChange(val){
                 const _this = this;
@@ -1749,7 +1743,20 @@
     }
 </script>
 <style>
-    .select_mul .el-input__inner{
-        height: auto !important
+    .spec_c{
+        width: 100%;
+        height: 100%;
+        display: flex
+    }
+    .spec_l{
+        width: 25%;
+    }
+    .spec_m{
+        width: 1.2%;
+        height: 100%;
+        background-color: #f0f0f0;
+    }
+    .spec_r{
+        width: 73.8%;
     }
 </style>

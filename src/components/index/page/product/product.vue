@@ -55,7 +55,7 @@
                     sortable>
                 </el-table-column>
                 <el-table-column
-                    prop="imgUrl"
+                    prop="image"
                     fixed
                     header-align="center"
                     align="center"
@@ -67,57 +67,56 @@
                             placement="right"
                             width="200"
                             trigger="hover">
-                            <img class="img_portrait_big" v-show="scope.row.imgUrl" :src="scope.row.portrait" alt="头像" width="200" height="200">
-                            <img class="img_portrait" v-show="scope.row.imgUrl" slot="reference" :src="scope.row.portrait" alt="头像" width="50" height="50">
-                            <img class="img_portrait" v-show="!scope.row.imgUrl" slot="reference" src="/upload/staticImg/avatar.jpg" alt="头像" width="50" height="50">
+                            <img class="img_portrait_big" :src="scope.row.image" alt="图片" width="200" height="200">
+                            <img class="img_portrait" slot="reference" :src="scope.row.image" alt="图片" width="50" height="50">
                         </el-popover>
                     </template>
                 </el-table-column>
                 <el-table-column
-                    prop="private_number"
+                    prop="goodsCode"
                     fixed
                     min-width="130"
                     label="产品编码"
                     sortable>
                 </el-table-column>
                 <el-table-column
-                    prop="private_employee"
+                    prop="tbGoods.goodsName"
                     fixed
                     min-width="130"
                     label="产品名称"
                     sortable>
                     <template slot-scope="scope">
                         <div @click="openDetails(scope.$index, scope.row)" class="hoverline">
-                            {{scope.row.private_employee}}
+                            {{scope.row.tbGoods.goodsName}}
                         </div>
                     </template>
                 </el-table-column>
                 <el-table-column
-                    prop="private_username"
+                    prop="title"
                     min-width="120"
                     label="规格型号"
                     sortable>
                 </el-table-column>
                 <el-table-column
-                    prop="name"
+                    prop="unit"
                     min-width="90"
                     label="单位"
                     sortable>
                 </el-table-column>
                 <el-table-column
-                    prop="private_phone"
+                    prop="brand"
                     min-width="90"
                     label="品牌"
                     sortable>
                 </el-table-column>
                 <el-table-column
-                    prop="private_state"
+                    prop="status"
                     min-width="90"
                     label="状态"
                     sortable>
                 </el-table-column>
                 <el-table-column
-                    prop="createTime"
+                    prop="create_time"
                     min-width="150"
                     label="创建时间"
                     sortable>
@@ -227,29 +226,13 @@
             });
         },
         activated(){
-            // this.reloadTable()
-            this.onloads()
+            this.reloadTable()
         },
         mounted(){
-            // this.reloadTable()
+            this.reloadTable()
             // this.loadData()
-            // this.onloads()
         },
         methods:{
-            
-            onloads(){
-                // let a = [10,30,20]
-                // let b = [5,10]
-                // for(let i = 0; i < a.length; i ++){
-                //     // console.log(a[i])
-                //     for(let j = 0; j < b.length; j ++){
-                //         console.log(a[i]+b[j])
-                //     }
-                // }
-                // let a = '10'
-                // let b = 2220
-                // console.log(a*b/100)
-            },
             reloadTable(){
                 const _this = this
                 let qs = require('querystring')
@@ -263,19 +246,19 @@
 
                 axios({
                     method: 'post',
-                    url: _this.$store.state.defaultHttp+'getPrivateUserAll.do?cId='+_this.$store.state.iscId,
+                    url: _this.$store.state.defaultHttp+'goods/search.do?cId='+_this.$store.state.iscId,
                     data:qs.stringify(pageInfo)
                 }).then(function(res){
-                    _this.$store.state.productList = res.data.map.success
+                    _this.$store.state.productList = res.data.map.goods
                     _this.$store.state.productListnumber = res.data.count
-                    let arr = res.data.map.success
-                    arr.forEach(el => {
-                        if(el.imgUrl){
-                            el.portrait = '/upload/'+_this.$store.state.iscId+'/'+el.imgUrl
-                        }else{
-                            return
-                        }
-                    });
+                    // let arr = res.data.map.success
+                    // arr.forEach(el => {
+                    //     if(el.imgUrl){
+                    //         el.portrait = '/upload/'+_this.$store.state.iscId+'/'+el.imgUrl
+                    //     }else{
+                    //         return
+                    //     }
+                    // });
                 }).catch(function(err){
                     // console.log(err);
                 });

@@ -45,23 +45,63 @@
                     </div>
                 </div>
                 <div class="first_bottom">
+                    <p class="pro_title">商品图片</p>
                     <div class="uploadBOX">
-                            <div class="imgbox" v-for="item in fileList" :key="item.id" @mouseenter="mouseenterdiv(item)" @mouseleave="mouseleavediv(item)">
-                                <img :src="item.imgURL" alt="图片" @click="showImg($event,item)">
-                                <div class="imgdel">
-                                    <i class="el-icon-delete" v-if="imgshow" @click="delImg($event,item)"></i>
-                                </div>
+                        <div class="imgbox" v-for="item in fileList" :key="item.id" @mouseenter="mouseenterdiv(item)" @mouseleave="mouseleavediv(item)">
+                            <img :src="item.imgURL" alt="图片" @click="showImg($event,item)">
+                            <div class="imgdel">
+                                <i class="el-icon-delete" v-if="imgshow" @click="delImg($event,item)"></i>
                             </div>
-                            <div class="filebox">
-                                <span class="upload">
-                                    <input type="file" name="file" @change="tirggerFile($event)"/>
-                                </span>
-                            </div>
-                            <el-dialog :visible.sync="dialogVisible">
-                                <img width="100%" :src="dialogImageUrl" alt="">
-                                <!-- <img src="/upload/staticImg/bg.jpg" width="100%" alt="图片"> -->
-                            </el-dialog>
                         </div>
+                        <div class="filebox">
+                            <span class="upload">
+                                <input type="file" name="file" @change="tirggerFile($event)"/>
+                            </span>
+                        </div>
+                        <el-dialog :visible.sync="dialogVisible">
+                            <img width="100%" :src="dialogImageUrl" alt="">
+                        </el-dialog>
+                    </div>
+                </div>
+                <div class="first_bottom">
+                    <p class="pro_title">商品规格</p><br>
+                    <el-table
+                        :data="tableData"
+                        border
+                        stripe
+                        style="width:100%">
+                        <el-table-column
+                            prop="zhutu"
+                            fixed
+                            min-width="130"
+                            label="主图"
+                            sortable>
+                        </el-table-column>
+                        <el-table-column
+                            prop="guige"
+                            min-width="120"
+                            label="规格"
+                            sortable>
+                        </el-table-column>
+                        <el-table-column
+                            prop="shangpinbianma"
+                            min-width="90"
+                            label="商品编码"
+                            sortable>
+                        </el-table-column>
+                        <el-table-column
+                            prop="tiaoxingma"
+                            min-width="90"
+                            label="条形码"
+                            sortable>
+                        </el-table-column>
+                        <el-table-column
+                            prop="duijiema"
+                            min-width="90"
+                            label="ERP对接码"
+                            sortable>
+                        </el-table-column>
+                    </el-table>
                 </div>
             </el-tab-pane>
             <el-tab-pane label="价格资料" name="second">价格资料</el-tab-pane>
@@ -104,6 +144,8 @@
                     chanpinshuxing : [{ required: true, message: '产品属性不能为空', trigger: 'blur' },],
                 },
                 isDisable:false,
+
+                tableData:[],
 
                 page:1,//默认为第一页
                 limit:20,//默认为20行
@@ -186,15 +228,18 @@
 <style>
     .add_c{
         width: 100%;
-        padding-bottom: 60px;
-        box-sizing: border-box
     }
     .first_c{
         width: 100%;
+        padding-bottom: 60px;
+        box-sizing: border-box;
+        background-color: #f0f0f0;
     }
     .first_top{
         width: 100%;
-        display: flex
+        display: flex;
+        margin-bottom: 10px;
+        background-color: #ffffff;
     }
     .first_left{
         width: calc(100% - 300px);
@@ -216,6 +261,16 @@
         display: flex;
         justify-content: center;
         align-items: center;
+    }
+    .first_bottom{
+        width: 100%;
+        margin-bottom: 10px;
+        background-color: #ffffff;
+    }
+    .pro_title{
+        padding: 10px 0 0 10px;
+        font-weight: 800;
+        color: #409EFF
     }
     .submit_btn{
         width: 100%;

@@ -132,16 +132,16 @@
                                 title: '联系人',
                             },
                             {
-                                index: 'product',
-                                title: '产品',
-                            },
-                            {
                                 index: 'businessOpportunity',
                                 title: '商机',
                             },
                             {
                                 index: 'agreement',
                                 title: '合同',
+                            },
+                            {
+                                index: 'product',
+                                title: '产品',
                             },
                         ]
                     },
@@ -184,6 +184,12 @@
                         index: 'analysisReport',
                         title: '商业智能',
                     },
+                    
+                    {
+                        icon: 'mdi-puzzle',
+                        index: 'name',
+                        title: '产品11',
+                    },
                 ],
                 
                 itemlast: [
@@ -203,6 +209,10 @@
                             {
                                 index: 'basicset',
                                 title: '辅助资料'
+                            },
+                            {
+                                index: 'basicsets',
+                                title: '辅助资料2'
                             },
                             {
                                 index: 'programme',

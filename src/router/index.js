@@ -147,6 +147,11 @@ const router =new Router({
           meta: { title: '辅助资料',name:'basicset' ,requireAuth:true}
         },
         {
+          path: '/basicsets',
+          component: resolve => require(['../components/index/page/basicset/basicsets.vue'], resolve),
+          meta: { title: '辅助资料2',name:'basicsets' ,requireAuth:true}
+        },
+        {
           path: '/socialMarketing',
           component: resolve => require(['../components/index/page/socialMarketing/socialMarketing.vue'], resolve),
           meta: { title: '社交营销',name:'socialMarketing' ,requireAuth:true}
@@ -189,7 +194,7 @@ const router =new Router({
         {
           path: '/smstemp',
           component: resolve => require(['../components/index/page/smstemp/smstemp.vue'], resolve),
-          meta: { title: '短信模板',requireAuth:true}
+          meta: { title: '短信模板',name:'smstemp' ,requireAuth:true}
         },
         {
           path: '/SMSradar',
@@ -199,17 +204,17 @@ const router =new Router({
         {
           path: '/analysisReport',
           component: resolve => require(['../components/index/page/analysisReport/analysisReport.vue'], resolve),
-          meta: { title: '商业智能',requireAuth:true}
+          meta: { title: '商业智能',name:'analysisReport' ,requireAuth:true}
         },
         {
           path: '/logs',
           component: resolve => require(['../components/index/page/log/logs.vue'], resolve),
-          meta: { title: '日志',requireAuth:true}
+          meta: { title: '日志',name:'logs' ,requireAuth:true}
         },
         {
           path: '/product',
           component: resolve => require(['../components/index/page/product/product.vue'], resolve),
-          meta: { title: '产品',requireAuth:true}
+          meta: { title: '产品',name:'product' ,requireAuth:true}
         },
         {
           path: '/productdetails',
@@ -220,6 +225,11 @@ const router =new Router({
           path: '/productaddorupdate',
           component: resolve => require(['../components/index/page/AddAndUpdate/productaddorupdate.vue'], resolve),
           meta: { title: '编辑产品',requireAuth:true}
+        },
+        {
+          path: '/name',
+          component: resolve => require(['../components/index/page/product/name.vue'], resolve),
+          meta: { title: '产品11',requireAuth:true}
         },
       ]
     },

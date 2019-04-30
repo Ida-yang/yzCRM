@@ -207,6 +207,7 @@ export default {
         background: #f7f7f7;
         border-bottom: 1px solid #ebeef5;
         padding-left: 4px;
+        box-sizing: border-box;
         clear: both;
         position: relative;
     }
