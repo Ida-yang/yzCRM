@@ -1,7 +1,7 @@
 <template>
     <div class="sidebar" >
-        <el-menu class="sidebar-el-menu" :default-active="onRoutes" :collapse="collapse" background-color="#20222a"
-            text-color="#FFFFFF" active-text-color="#ff6722" unique-opened router @select="selectMain">
+        <el-menu class="sidebar-el-menu" v-if="crmMenu" :default-active="onRoutes" :collapse="collapse" background-color="#20222a"
+            text-color="#FFFFFF" active-text-color="#ff6722" unique-opened router>
             <div id="logo" v-if="showlogo">
                 <span style="font-size:16px">
                     云纵CRM信息平台
@@ -9,6 +9,9 @@
                 </span>
             </div>
             <div id="logo1" v-if="!showlogo">
+                <span style="font-size:16px">
+                    CRM
+                </span>
                 <!-- <img src="../../../static/img/logo_1.png" alt="logo" /> -->
                 <!-- <span style="font-size:16px">云纵CRM信息平台</span> -->
             </div>
@@ -73,6 +76,15 @@
                 </template>
             </template>
         </el-menu>
+        <el-menu class="sidebar-el-menu" v-if="!crmMenu" :default-active="onRoutes" :collapse="collapse" background-color="#20222a"
+            text-color="#FFFFFF" active-text-color="#ff6722" unique-opened router>
+            <div id="logo1" v-if="!showlogo">
+                <span style="font-size:16px">
+                    CRM
+                </span>
+            </div>
+        </el-menu>
+        <div class="switch_menu" :collapse="collapse" @click="switchMenu"></div>
     </div>
 </template>
 
@@ -81,6 +93,7 @@
     export default {
         data() {
             return {
+                crmMenu:true,
                 collapse: false,
                 showlogo:true,
                 itemone: [
@@ -184,12 +197,6 @@
                         index: 'analysisReport',
                         title: '商业智能',
                     },
-                    
-                    {
-                        icon: 'mdi-puzzle',
-                        index: 'name',
-                        title: '产品11',
-                    },
                 ],
                 
                 itemlast: [
@@ -209,10 +216,6 @@
                             {
                                 index: 'basicset',
                                 title: '辅助资料'
-                            },
-                            {
-                                index: 'basicsets',
-                                title: '辅助资料2'
                             },
                             {
                                 index: 'programme',
@@ -246,8 +249,8 @@
             })
         },
         methods:{
-            selectMain(key,path){
-                // console.log(key)
+            switchMenu(){
+                this.crmMenu = !this.crmMenu
             },
         },
     }
@@ -257,9 +260,10 @@
     #logo{
         width:150px;
         height: 60px;
-        padding: 0 10px;
+        padding: 0 8px;
         line-height: 60px;
         color: #ffffff;
+        box-sizing: border-box
     }
     #logo1{
         width: 0;
@@ -276,19 +280,25 @@
         top: 0;
         bottom: 0px;
         background-color: rgb(32, 34, 42);
-        /* border-right: 1px solid #ffff00; */
         /* overflow-y: scroll; */
     }
     .sidebar::-webkit-scrollbar{
         width: 0;
     }
+    .el-menu{
+        border: none
+    }
     .sidebar-el-menu:not(.el-menu--collapse){
         width: 150px;
-        height: auto
+        height: auto;
+    }
+    .el-menu--collapse{
+        width: 65px;
     }
     .sidebar > ul {
         height:100%;
         padding-top: 5px;
+        padding-bottom: 50px;
         box-sizing: border-box
     }
     .title{
@@ -298,5 +308,15 @@
         font-size: 10px;
         padding-left: 18px;
         line-height: 40px;
+    }
+    .switch_menu--collapse{
+        width: 65px;
+    }
+    .switch_menu:not(.switch_menu--collapse){
+        height: 50px;
+        width: 150px;
+        position: fixed;
+        bottom: 0;
+        background-color: rgb(32, 34, 42);
     }
 </style>

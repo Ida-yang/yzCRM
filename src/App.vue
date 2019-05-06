@@ -109,7 +109,7 @@ export default {
         line-height: 40px !important;
     }
     .el-submenu .el-menu-item{
-        min-width: 149px;
+        width: 150px;
     }
     input::-webkit-outer-spin-button,
     input::-webkit-inner-spin-button{
@@ -497,11 +497,12 @@ export default {
     .el-select .el-input__inner {
         cursor: pointer;
         padding-right: 35px;
+        height: 30px;
     }
 
     .el-input__inner {
-        height: 30px !important;
-        line-height: 30px !important;
+        height: 30px;
+        line-height: 30px;
     }
     /*markdown*/
 
@@ -655,12 +656,12 @@ export default {
     }
     .download_down{
         flex: 0 0 50%;
-        color: #292929;
+        color: #20222a;
         /* font-size: 12px; */
     }
     .download_down a{
         font-size: 12px;
-        color: #292929;
+        color: #20222a;
     }
     .upload-demo .el-upload--text{
         flex: 0 0 50%;

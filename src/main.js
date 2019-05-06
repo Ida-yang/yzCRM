@@ -100,12 +100,9 @@ new Vue({
 
 router.beforeEach((to, from, next) => {
   const _this = this
-  // console.log(localStorage)
-  // console.log(to)
   if (to.matched.some(record => record.meta.requireAuth)){ // 判断该路由是否需要登录权限
     // console.log('需要登录');
     if(localStorage.ispId) { // 判断当前的ispId是否存在 ； 登录存入的ispId
-      _hmt.push(['_trackPageview', '/#' + to.fullPath]);
       if(to.path === '/organization'){
         axios({
           method: 'get',
@@ -113,7 +110,7 @@ router.beforeEach((to, from, next) => {
         }).then(function(res){
           if(res.data.msg && res.data.msg == 'error'){
             Vue.prototype.$message.error('对不起，您没有该权限，请联系管理员开通')
-            next({path:'/index'})
+            next({path:'/welcome'})
           }else{
             next()
           }
@@ -125,7 +122,7 @@ router.beforeEach((to, from, next) => {
         }).then(function(res){
           if(res.data.msg && res.data.msg == 'error'){
             Vue.prototype.$message.error('对不起，您没有该权限，请联系管理员开通')
-            next({path:'/index'})
+            next({path:'/welcome'})
           }else{
             next()
           }
@@ -137,7 +134,7 @@ router.beforeEach((to, from, next) => {
         }).then(function(res){
           if(res.data.msg && res.data.msg == 'error'){
             Vue.prototype.$message.error('对不起，您没有该权限，请联系管理员开通')
-            next({path:'/index'})
+            next({path:'/welcome'})
           }else{
             next()
           }
@@ -149,7 +146,7 @@ router.beforeEach((to, from, next) => {
         }).then(function(res){
           if(res.data.msg && res.data.msg == 'error'){
             Vue.prototype.$message.error('对不起，您没有该权限，请联系管理员开通')
-            next({path:'/index'})
+            next({path:'/welcome'})
           }else{
             next()
           }
@@ -161,7 +158,7 @@ router.beforeEach((to, from, next) => {
         }).then(function(res){
           if(res.data.msg && res.data.msg == 'error'){
             Vue.prototype.$message.error('对不起，您没有该权限，请联系管理员开通')
-            next({path:'/index'})
+            next({path:'/welcome'})
           }else{
             next()
           }
@@ -170,7 +167,6 @@ router.beforeEach((to, from, next) => {
         next();
       }
     }else if(to.path === '/activity'){//判断是否为活动页面
-      _hmt.push(['_trackPageview', '/#' + to.fullPath]);
       next()
     }else {
       next({
@@ -182,3 +178,13 @@ router.beforeEach((to, from, next) => {
     next();
   }
 });
+
+router.afterEach( ( to, from, next ) => {
+  var _hmt = _hmt || [];
+  (function() {
+    var hm = document.createElement("script");
+    hm.src = "https://hm.baidu.com/hm.js?419f9fb8b9f5e52971e7e52c328860a8";
+    var s = document.getElementsByTagName("script")[0]; 
+    s.parentNode.insertBefore(hm, s);
+  })();
+ });

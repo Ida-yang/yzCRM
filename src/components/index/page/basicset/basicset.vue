@@ -12,7 +12,7 @@
                 <el-button class="btn info-btn" size="mini" @click="handleAdd()">新增</el-button>
             </div>
             <el-table
-                :data="tableData"
+                :data="statesData"
                 border
                 stripe
                 style="width:100%"
@@ -56,7 +56,45 @@
                 </el-table-column>
             </el-table>
             <el-table
-                :data="tableData2"
+                :data="deliData"
+                border
+                stripe
+                style="width:100%"
+                v-show="showeleven">
+                <el-table-column
+                    header-align="center"
+                    align="center"
+                    type="index"
+                    width="45">
+                </el-table-column>
+                <el-table-column
+                    prop="typeName"
+                    min-width="120"
+                    label="名称"
+                    sortable>
+                </el-table-column>
+                <el-table-column
+                    prop="createTime"
+                    label="创建时间"
+                    sortable>
+                </el-table-column>
+                <el-table-column label="操作"
+                    width="140"
+                    header-align="center"
+                    align="center">
+                    <template slot-scope="scope">
+                        <el-button
+                        size="mini"
+                        @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
+                        <el-button
+                        size="mini"
+                        type="danger"
+                        @click="handledelete(scope.$index, scope.row)">删除</el-button>
+                    </template>
+                </el-table-column>
+            </el-table>
+            <el-table
+                :data="waysData"
                 border
                 stripe
                 style="width:100%"
@@ -100,7 +138,7 @@
                 </el-table-column>
             </el-table>
             <el-table
-                :data="tableData3"
+                :data="oppstepsData"
                 border
                 stripe
                 style="width:100%"
@@ -148,7 +186,7 @@
             </el-table>
             
             <el-table
-                :data="tableData4"
+                :data="unitsData"
                 border
                 stripe
                 style="width:100%"
@@ -187,7 +225,7 @@
                 </el-table-column>
             </el-table>
             <el-table
-                :data="tableData5"
+                :data="brandsData"
                 border
                 stripe
                 style="width:100%"
@@ -270,10 +308,14 @@
                     sortable>
                 </el-table-column>
                 <el-table-column
-                    prop="name"
+                    prop="specValue"
                     label="规格值"
                     min-width="200"
                     sortable>
+                    <template slot-scope="scope">
+                        <span v-for="(a,i) in scope.row.specValue" :key="i">{{a}} , </span>
+                        <!-- {{scope.row.specValue}} -->
+                    </template>
                 </el-table-column>
                 <el-table-column
                     prop="createTime"
@@ -296,7 +338,47 @@
                     </template>
                 </el-table-column>
             </el-table>
-            <div class="block numberPage" v-show="showeight || shownine || showten">
+            <el-table
+                :data="distriData"
+                border
+                stripe
+                style="width:100%"
+                v-show="showtwelve">
+                <el-table-column
+                    prop="sort"
+                    min-width="50"
+                    label="排序"
+                    sortable>
+                </el-table-column>
+                <el-table-column
+                    prop="name"
+                    min-width="120"
+                    label="经销商名称"
+                    sortable>
+                </el-table-column>
+                <el-table-column
+                    prop="discount"
+                    min-width="120"
+                    label="默认折扣"
+                    sortable>
+                    <template slot-scope="scope">{{scope.row.discount}} %</template>
+                </el-table-column>
+                <el-table-column label="操作"
+                    width="140"
+                    header-align="center"
+                    align="center">
+                    <template slot-scope="scope">
+                        <el-button
+                        size="mini"
+                        @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
+                        <el-button
+                        size="mini"
+                        type="danger"
+                        @click="handledelete(scope.$index, scope.row)">删除</el-button>
+                    </template>
+                </el-table-column>
+            </el-table>
+            <div class="block numberPage" v-show="showeight || shownine">
                 <el-pagination
                 @size-change="handleSizeChange"
                 @current-change="handleCurrentChange"
@@ -313,7 +395,7 @@
             title="添加状态"
             :visible.sync="dialogVisible"
             width="40%">
-            <el-form ref="newform" :model="newform" label-width="80px" :rules="rules">
+            <el-form ref="newform" :model="newform" label-width="110px" :rules="rules">
                 <el-form-item prop="type" label="辅助资料类别">
                     <el-input v-model="newform.type" :disabled="true"></el-input>
                 </el-form-item>
@@ -336,7 +418,7 @@
             title="修改状态"
             :visible.sync="dialogVisible2"
             width="40%">
-            <el-form ref="newform" :model="newform" :rules="rules" label-width="80px">
+            <el-form ref="newform" :model="newform" :rules="rules" label-width="110px">
                 <el-form-item prop="type" label="辅助资料类别">
                     <el-input v-model="newform.type" :disabled="true"></el-input>
                 </el-form-item>
@@ -359,7 +441,7 @@
             title="添加快捷方式"
             :visible.sync="dialogVisible3"
             width="40%">
-            <el-form ref="newform" :model="newform" label-width="80px" :rules="rules">
+            <el-form ref="newform" :model="newform" label-width="110px" :rules="rules">
                 <el-form-item prop="type" label="辅助资料类别">
                     <el-input v-model="newform.type" :disabled="true"></el-input>
                 </el-form-item>
@@ -385,7 +467,7 @@
             title="修改快捷方式"
             :visible.sync="dialogVisible4"
             width="40%">
-            <el-form ref="newform" :model="newform" :rules="rules" label-width="80px">
+            <el-form ref="newform" :model="newform" :rules="rules" label-width="110px">
                 <el-form-item prop="type" label="辅助资料类别">
                     <el-input v-model="newform.type" :disabled="true"></el-input>
                 </el-form-item>
@@ -411,7 +493,7 @@
             title="添加商机进度"
             :visible.sync="dialogVisible5"
             width="40%">
-            <el-form ref="newform" :model="newform" label-width="80px" :rules="rules">
+            <el-form ref="newform" :model="newform" label-width="110px" :rules="rules">
                 <el-form-item prop="type" label="辅助资料类别">
                     <el-input v-model="newform.type" :disabled="true"></el-input>
                 </el-form-item>
@@ -437,7 +519,7 @@
             title="修改商机进度"
             :visible.sync="dialogVisible6"
             width="40%">
-            <el-form ref="newform" :model="newform" :rules="rules" label-width="80px">
+            <el-form ref="newform" :model="newform" :rules="rules" label-width="110px">
                 <el-form-item prop="type" label="辅助资料类别">
                     <el-input v-model="newform.type" :disabled="true"></el-input>
                 </el-form-item>
@@ -500,7 +582,7 @@
             title="新增单位"
             :visible.sync="dialogVisible9"
             width="40%">
-            <el-form ref="newform" :model="newform" :rules="rules" label-width="80px">
+            <el-form ref="newform" :model="newform" :rules="rules" label-width="110px">
                 <el-form-item prop="type" label="辅助资料类别">
                     <el-input v-model="newform.type" :disabled="true"></el-input>
                 </el-form-item>
@@ -517,7 +599,7 @@
             title="修改单位"
             :visible.sync="dialogVisible10"
             width="40%">
-            <el-form ref="newform" :model="newform" :rules="rules" label-width="80px">
+            <el-form ref="newform" :model="newform" :rules="rules" label-width="110px">
                 <el-form-item prop="type" label="辅助资料类别">
                     <el-input v-model="newform.type" :disabled="true"></el-input>
                 </el-form-item>
@@ -534,7 +616,7 @@
             title="新增品牌"
             :visible.sync="dialogVisible11"
             width="40%">
-            <el-form ref="newform" :model="newform" :rules="rules" label-width="100px">
+            <el-form ref="newform" :model="newform" :rules="rules" label-width="110px">
                 <el-form-item prop="type" label="辅助资料类别">
                     <el-input v-model="newform.type" :disabled="true"></el-input>
                 </el-form-item>
@@ -551,7 +633,7 @@
             title="修改品牌"
             :visible.sync="dialogVisible12"
             width="40%">
-            <el-form ref="newform" :model="newform" :rules="rules" label-width="100px">
+            <el-form ref="newform" :model="newform" :rules="rules" label-width="110px">
                 <el-form-item prop="type" label="辅助资料类别">
                     <el-input v-model="newform.type" :disabled="true"></el-input>
                 </el-form-item>
@@ -593,8 +675,8 @@
                     <el-input v-model="newform.spec_name"></el-input>
                 </el-form-item>
                 <el-form-item prop="specoption" label="规格值">
-                    <el-select v-model="newform.specoption" multiple filterable allow-create default-first-option style="width:100%" class="select_mul" no-data-text="请输入" @change="changeValue">
-                        <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value"></el-option>
+                    <el-select v-model="newform.specoption" multiple filterable allow-create default-first-option style="width:100%" no-data-text="请输入" placeholder="请输入" @change="changeValue">
+                        <el-option v-for="item in tenoptions" :key="item.value" :label="item.label" :value="item.value"></el-option>
                     </el-select>
                 </el-form-item>
             </el-form>
@@ -623,8 +705,8 @@
                     <el-input v-model="newform.spec_name"></el-input>
                 </el-form-item>
                 <el-form-item prop="specoption" label="规格值">
-                    <el-select v-model="newform.specoption" multiple filterable allow-create default-first-option style="width:100%" class="select_mul" no-data-text="请输入" @change="changeValue">
-                        <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value"></el-option>
+                    <el-select v-model="newform.specoption" multiple filterable allow-create default-first-option style="width:100%" no-data-text="请输入" placeholder="请输入" @change="changeValue">
+                        <el-option v-for="item in tenoptions" :key="item.value" :label="item.label" :value="item.value"></el-option>
                     </el-select>
                 </el-form-item>
             </el-form>
@@ -641,6 +723,86 @@
                 <el-button type="primary" @click="updateSpec()">确 定</el-button>
             </span>
         </el-dialog><!-- 编辑规格名称 -->
+        <el-dialog
+            title="添加交货方式"
+            :visible.sync="dialogVisible16"
+            width="40%">
+            <el-form ref="newform" :model="newform" label-width="110px" :rules="rules">
+                <el-form-item prop="type" label="辅助资料类别">
+                    <el-input v-model="newform.type" :disabled="true"></el-input>
+                </el-form-item>
+                <el-form-item prop="typeName" label="交货方式">
+                    <el-input v-model="newform.typeName" placeholder="请输入交货方式"></el-input>
+                </el-form-item>
+            </el-form>
+            <span slot="footer" class="dialog-footer">
+                <el-button @click="dialogVisible16 = false">取 消</el-button>
+                <el-button type="primary" @click="addbasicset()">确 定</el-button>
+            </span>
+        </el-dialog><!-- 新增交货方式 -->
+        <el-dialog
+            title="修改交货方式"
+            :visible.sync="dialogVisible17"
+            width="40%">
+            <el-form ref="newform" :model="newform" :rules="rules" label-width="110px">
+                <el-form-item prop="type" label="辅助资料类别">
+                    <el-input v-model="newform.type" :disabled="true"></el-input>
+                </el-form-item>
+                <el-form-item prop="typeName" label="交货方式">
+                    <el-input v-model="newform.typeName" placeholder="请输入交货方式"></el-input>
+                </el-form-item>
+            </el-form>
+            <span slot="footer" class="dialog-footer">
+                <el-button @click="dialogVisible17 = false">取 消</el-button>
+                <el-button type="primary" @click="updatebasicset()">确 定</el-button>
+            </span>
+        </el-dialog><!-- 编辑交货方式 -->
+        <el-dialog
+            title="添加经销商级别"
+            :visible.sync="dialogVisible18"
+            width="40%">
+            <el-form ref="newform" :model="newform" label-width="110px" :rules="rules">
+                <el-form-item prop="type" label="辅助资料类别">
+                    <el-input v-model="newform.type" :disabled="true"></el-input>
+                </el-form-item>
+                <el-form-item prop="sort" label="排序编号">
+                    <el-input onkeyup = "value=value.replace(/[^\d]/g,'')" v-model="newform.sort" placeholder="请输入排序编号"></el-input>
+                </el-form-item>
+                <el-form-item prop="distri_name" label="经销商级别">
+                    <el-input v-model="newform.distri_name" placeholder="请输入经销商级别"></el-input>
+                </el-form-item>
+                <el-form-item prop="distri_count" label="经销商折扣">
+                    <el-input v-model="newform.distri_count" placeholder="请输入经销商折扣"><template slot="append">%</template></el-input>
+                </el-form-item>
+            </el-form>
+            <span slot="footer" class="dialog-footer">
+                <el-button @click="dialogVisible18 = false">取 消</el-button>
+                <el-button type="primary" @click="adddistri()">确 定</el-button>
+            </span>
+        </el-dialog><!-- 新增经销商级别 -->
+        <el-dialog
+            title="修改经销商级别"
+            :visible.sync="dialogVisible19"
+            width="40%">
+            <el-form ref="newform" :model="newform" :rules="rules" label-width="110px">
+                <el-form-item prop="type" label="辅助资料类别">
+                    <el-input v-model="newform.type" :disabled="true"></el-input>
+                </el-form-item>
+                <el-form-item prop="sort" label="排序编号">
+                    <el-input onkeyup = "value=value.replace(/[^\d]/g,'')" v-model="newform.sort" placeholder="请输入排序编号"></el-input>
+                </el-form-item>
+                <el-form-item prop="distri_name" label="经销商级别">
+                    <el-input v-model="newform.distri_name" placeholder="请输入经销商级别"></el-input>
+                </el-form-item>
+                <el-form-item prop="distri_count" label="经销商折扣">
+                    <el-input v-model="newform.distri_count" placeholder="请输入经销商折扣"><template slot="append">%</template></el-input>
+                </el-form-item>
+            </el-form>
+            <span slot="footer" class="dialog-footer">
+                <el-button @click="dialogVisible19 = false">取 消</el-button>
+                <el-button type="primary" @click="updatedistri()">确 定</el-button>
+            </span>
+        </el-dialog><!-- 编辑经销商级别 -->
     </div>
 </template>
 <script>
@@ -651,20 +813,18 @@
     export default {
         name:'basicset',
         store,
-        computed: {
-            tableData(){
-                return store.state.stateList;
-            },
-        },
         data(){
             return {
-                tableData2:[],
-                tableData3:[],
-                tableData4:[],
-                tableData5:[],
+                statesData:[],
+                waysData:[],
+                oppstepsData:[],
+                unitsData:[],
+                brandsData:[],
                 proClassData:[],
                 specheadList:[],
                 specData:[],
+                deliData:[],
+                distriData:[],
 
                 specIndex:0,
 
@@ -690,6 +850,8 @@
                     {index:8,name:'单位',isActive:false},
                     {index:9,name:'品牌',isActive:false},
                     {index:10,name:'规格',isActive:false},
+                    {index:11,name:'交货方式',isActive:false},
+                    {index:12,name:'经销商级别',isActive:false},
                 ],
                 newform:{
                     type:'线索状态',
@@ -708,10 +870,12 @@
                     proclass_id:null,
                     proclass_name:null,
                     spec_name:null,
-                    specoption:[]
+                    specoption:[],
+                    distri_name:null,
+                    distri_count:null,
                 },
 
-                options:[],
+                tenoptions:[],
                 specList:[],
                 key:1,
 
@@ -727,6 +891,8 @@
                 showeight:false,
                 shownine:false,
                 showten:false,
+                showeleven:false,
+                showtwelve:false,
 
                 dialogVisible:false,//线索状态、客户状态、客户来源、客户分类
                 dialogVisible2:false,
@@ -741,10 +907,12 @@
                 dialogVisible11:false,//品牌
                 dialogVisible12:false,
                 dialogVisible13:false,//产品分类顶级
-                dialogVisible14:false,//规格名称
+                dialogVisible14:false,//规格分类、规格值
                 dialogVisible15:false,
-                dialogVisible16:false,//规格值
+                dialogVisible16:false,//交货方式
                 dialogVisible17:false,
+                dialogVisible18:false,//经销商级别
+                dialogVisible19:false,
 
                 rules: {
                     typeName : [{ required: true, message: '名称不能为空', trigger: 'blur' },],
@@ -755,8 +923,9 @@
                     brand_name:[{ required: true, message: '品牌名称不能为空', trigger: 'blur' },],
                     unit_name:[{ required: true, message: '单位名称不能为空', trigger: 'blur' },],
                     proclass_name:[{ required: true, message: '产品分类名称不能为空', trigger: 'blur' },],
-                    spec_name:[{ required: true, message: '规格名称不能为空', trigger: 'blur' },]
-                    
+                    spec_name:[{ required: true, message: '规格名称不能为空', trigger: 'blur' },],
+                    distri_name:[{ required: true, message: '经销商级别不能为空', trigger: 'blur' },],
+                    distri_count:[{ required: true, message: '经销商折扣不能为空', trigger: 'blur' },],
                 },
             }
         },
@@ -779,9 +948,11 @@
                     data:qs.stringify(data)
                 }).then(function(res){
                     if(i == 1 || i == 2 || i == 3 || i == 4){
-                        _this.$store.state.stateList = res.data
+                        _this.statesData = res.data
                     }else if(i == 5){
-                        _this.tableData2 = res.data
+                        _this.waysData = res.data
+                    }else if(i == 11){
+                        _this.deliData = res.data
                     }
                 }).catch(function(err){
                     // console.log(err);
@@ -794,7 +965,7 @@
                     method: 'get',
                     url: _this.$store.state.defaultHttp+'addstep/selectAddstep.do?cId='+_this.$store.state.iscId
                 }).then(function(res){
-                    _this.tableData3 = res.data.map.addsteps
+                    _this.oppstepsData = res.data.map.addsteps
                 }).catch(function(err){
                     // console.log(err);
                 });
@@ -823,7 +994,7 @@
                     url: _this.$store.state.defaultHttp+'unit/selectUnitList.do?cId='+_this.$store.state.iscId,
                     data:qs.stringify(data)
                 }).then(function(res){
-                    _this.tableData4 = res.data.map.units
+                    _this.unitsData = res.data.map.units
                     _this.tableNumber = res.data.count
                 }).catch(function(err){
                     // console.log(err);
@@ -841,7 +1012,7 @@
                     url: _this.$store.state.defaultHttp+'brand/selectBrandList.do?cId='+_this.$store.state.iscId,
                     data:qs.stringify(data)
                 }).then(function(res){
-                    _this.tableData5 = res.data.map.brands
+                    _this.brandsData = res.data.map.brands
                     _this.tableNumber = res.data.count
                 }).catch(function(err){
                     // console.log(err);
@@ -849,17 +1020,25 @@
             },
             loadSpec(){
                 const _this = this
-                let qs = require('querystring')
-                let data = {}
-                data.id = this.specID
 
                 axios({
-                    method: 'post',
+                    method: 'get',
                     url: _this.$store.state.defaultHttp+'specification/selectList.do?cId='+_this.$store.state.iscId,
-                    data:qs.stringify(data)
                 }).then(function(res){
-                    _this.specData = res.data.map.specifications
-                    _this.tableNumber = res.data.count
+                    _this.specData = res.data
+                    // _this.tableNumber = res.data.count
+                }).catch(function(err){
+                    // console.log(err);
+                });
+            },
+            loadistri(){
+                const _this = this
+
+                axios({
+                    method: 'get',
+                    url: _this.$store.state.defaultHttp+'distributor/selectDistributor.do?cId='+_this.$store.state.iscId,
+                }).then(function(res){
+                    _this.distriData = res.data.map.distributors
                 }).catch(function(err){
                     // console.log(err);
                 });
@@ -881,6 +1060,8 @@
                 _this.showeight = false
                 _this.shownine = false
                 _this.showten = false
+                _this.showeleven = false
+                _this.showtwelve = false
                 if(i == 1 || i == 2 || i == 3 || i == 4){
                     _this.showtopfour = true
                     _this.$options.methods.reloadTable.bind(_this)(true)
@@ -902,6 +1083,12 @@
                 }else if(i == 10){
                     _this.showten = true
                     _this.$options.methods.loadSpec.bind(_this)(true)
+                }else if(i == 11){
+                    _this.showeleven = true
+                    _this.$options.methods.reloadTable.bind(_this)(true)
+                }else if(i == 12){
+                    _this.showtwelve = true
+                    _this.$options.methods.loadistri.bind(_this)(true)
                 }
             },
             //添加
@@ -947,7 +1134,15 @@
                         }else if(i == 10){
                             _this.newform.spec_name = null
                             _this.newform.specoption = []
+                            _this.tenoptions = []
                             _this.dialogVisible14 = true
+                        }else if(i == 11){
+                            _this.newform.typeName = null
+                            _this.dialogVisible16 = true
+                        }else if(i == 12){
+                            _this.newform.distri_name = null
+                            _this.newform.distri_count = null
+                            _this.dialogVisible18 = true
                         }
                     }
                 }).catch(function(err){
@@ -973,7 +1168,7 @@
                 data.type = this.newform.type
                 data.sort = this.newform.sort
                 data.notes = this.newform.notes
-                if(i == 1 || i == 2 || i == 3 || i == 4){
+                if(i == 1 || i == 2 || i == 3 || i == 4 || i == 11){
                     data.typeName = this.newform.typeName
                 }else if(i == 5){
                     data.typeName = this.newform.quickname
@@ -981,14 +1176,14 @@
                 }
                 
                 let flag = false;
-                if(!data.sort){
-                    _this.$message({
-                        message: "排序编号不能为空",
-                        type: 'error'
-                    });
-                    flag = true;
-                }
                 if(i == 1 || i == 2 || i == 3 || i == 4){
+                    if(!data.sort){
+                        _this.$message({
+                            message: "排序编号不能为空",
+                            type: 'error'
+                        });
+                        flag = true;
+                    }
                     if(!data.typeName){
                         _this.$message({
                             message: "状态名称不能为空",
@@ -997,6 +1192,13 @@
                         flag = true;
                     }
                 }else if(i == 5){
+                    if(!data.sort){
+                        _this.$message({
+                            message: "排序编号不能为空",
+                            type: 'error'
+                        });
+                        flag = true;
+                    }
                     if(!data.content){
                         _this.$message({
                             message: "跟进内容不能为空",
@@ -1007,6 +1209,14 @@
                     if(!data.typeName){
                         _this.$message({
                             message: "快捷方式不能为空",
+                            type: 'error'
+                        });
+                        flag = true;
+                    }
+                }else if(i == 11){
+                    if(!data.typeName){
+                        _this.$message({
+                            message: "交货方式不能为空",
                             type: 'error'
                         });
                         flag = true;
@@ -1026,6 +1236,7 @@
                         })
                         _this.dialogVisible = false
                         _this.dialogVisible3 = false
+                        _this.dialogVisible16 = false
                         _this.$options.methods.reloadTable.bind(_this)(true);
                     }else{
                         _this.$message({
@@ -1215,11 +1426,98 @@
             },
             addSpec(){
                 const _this = this
+                let qs = require('querystring')
                 let data = {}
-                data.name = this.newform.spec_name
-                data.option = this.newform.specoption
+                data.specName = this.newform.spec_name
+                data.specValue = this.newform.specoption
                 console.log(data)
+
+                let flag = false;
+                if(!data.specName){
+                    _this.$message({
+                        message: "规格名称不能为空",
+                        type: 'error'
+                    });
+                    flag = true;
+                }
+                if(flag) return
+
+                axios({
+                    method: 'post',
+                    url: _this.$store.state.defaultHttp+'specification/insert.do?cId='+_this.$store.state.iscId,
+                    data:qs.stringify(data)
+                }).then(function(res){
+                    if(res.data.code && res.data.code == 200){
+                        _this.$message({
+                            message:'添加成功',
+                            type:'success'
+                        })
+                        _this.dialogVisible14 = false
+                        _this.$options.methods.loadSpec.bind(_this)(true);
+                    }else{
+                        _this.$message({
+                            message:res.data.msg,
+                            type:'error'
+                        })
+                    }
+                }).catch(function(err){
+                    _this.$message.error("添加失败,请重新添加");
+                });
             },
+            adddistri(){
+                const _this = this
+                let qs = require('querystring')
+                let data = {}
+                data.sort = this.newform.sort
+                data.name = this.newform.distri_name
+                data.discount = this.newform.distri_count
+                console.log(data)
+
+                let flag = false;
+                if(!data.sort){
+                    _this.$message({
+                        message: "排序编号不能为空",
+                        type: 'error'
+                    });
+                    flag = true;
+                }
+                if(!data.name){
+                    _this.$message({
+                        message: "经销商名称不能为空",
+                        type: 'error'
+                    });
+                    flag = true;
+                }
+                if(!data.discount){
+                    _this.$message({
+                        message: "经销商折扣不能为空",
+                        type: 'error'
+                    });
+                    flag = true;
+                }
+                if(flag) return
+
+                axios({
+                    method: 'post',
+                    url: _this.$store.state.defaultHttp+'distributor/insertDistributor.do?cId='+_this.$store.state.iscId,
+                    data:qs.stringify(data)
+                }).then(function(res){
+                    if(res.data.code && res.data.code == 200){
+                        _this.$message({
+                            message:'添加成功',
+                            type:'success'
+                        })
+                        _this.dialogVisible18 = false
+                        _this.$options.methods.loadistri.bind(_this)(true);
+                    }else{
+                        _this.$message({
+                            message:res.data.msg,
+                            type:'error'
+                        })
+                    }
+                }).catch(function(err){
+                    _this.$message.error("添加失败,请重新添加");
+                });},
             //修改
             handleEdit(index,row){
                 const _this = this
@@ -1259,6 +1557,24 @@
                             _this.newform.id = row.id
                             _this.newform.brand_name = row.name
                             _this.dialogVisible12 = true
+                        }else if(i == 10){
+                            _this.newform.id = row.id
+                            _this.newform.spec_name = row.specName
+                            _this.newform.specoption = row.specValue
+                            _this.specList = []
+                            for(let i = 0;i < row.specValue.length; i ++){
+                                _this.specList.push({name:row.specValue[i]})
+                            }
+                            _this.dialogVisible15 = true
+                        }else if(i == 11){
+                            _this.newform.id = row.id
+                            _this.newform.typeName = row.typeName
+                            _this.dialogVisible17 = true
+                        }else if(i == 12){
+                            _this.newform.id = row.id
+                            _this.newform.distri_name = row.name
+                            _this.newform.distri_count = row.discount
+                            _this.dialogVisible19 = true
                         }
                     }
                 }).catch(function(err){
@@ -1282,25 +1598,22 @@
                 data.type = this.newform.type
                 data.sort = this.newform.sort
                 data.notes = this.newform.notes
-                if(i == 1 || i == 2 || i == 3 || i == 4){
+                if(i == 1 || i == 2 || i == 3 || i == 4 || i == 11){
                     data.typeName = this.newform.typeName
                 }else if(i == 5){
                     data.typeName = this.newform.quickname
                     data.content = this.newform.quickcontent
-                }else if(i == 6){
-                    data.typeName = this.newform.typeName
-                    data.probability = this.newform.probability
                 }
                 
                 let flag = false;
-                if(!data.sort){
-                    _this.$message({
-                        message: "排序编号不能为空",
-                        type: 'error'
-                    });
-                    flag = true;
-                }
                 if(i == 1 || i == 2 || i == 3 || i == 4){
+                    if(!data.sort){
+                        _this.$message({
+                            message: "排序编号不能为空",
+                            type: 'error'
+                        });
+                        flag = true;
+                    }
                     if(!data.typeName){
                         _this.$message({
                             message: "状态名称不能为空",
@@ -1309,6 +1622,13 @@
                         flag = true;
                     }
                 }else if(i == 5){
+                    if(!data.sort){
+                        _this.$message({
+                            message: "排序编号不能为空",
+                            type: 'error'
+                        });
+                        flag = true;
+                    }
                     if(!data.content){
                         _this.$message({
                             message: "跟进内容不能为空",
@@ -1319,6 +1639,14 @@
                     if(!data.typeName){
                         _this.$message({
                             message: "快捷方式不能为空",
+                            type: 'error'
+                        });
+                        flag = true;
+                    }
+                }else if(i == 11){
+                    if(!data.typeName){
+                        _this.$message({
+                            message: "交货方式不能为空",
                             type: 'error'
                         });
                         flag = true;
@@ -1338,6 +1666,7 @@
                         })
                         _this.dialogVisible2 = false
                         _this.dialogVisible4 = false
+                        _this.dialogVisible17 = false
                         _this.$options.methods.reloadTable.bind(_this)(true);
                     }else{
                         _this.$message({
@@ -1524,7 +1853,103 @@
                     _this.$message.error("修改失败,请重新添加");
                 });
             },
-            updateSpec(){},
+            updateSpec(){
+                const _this = this
+                let qs = require('querystring')
+                let data = {}
+                data.id = this.newform.id
+                data.specName = this.newform.spec_name
+                data.specValue = this.newform.specoption
+                console.log(data)
+
+                let flag = false;
+                if(!data.specName){
+                    _this.$message({
+                        message: "规格名称不能为空",
+                        type: 'error'
+                    });
+                    flag = true;
+                }
+                if(flag) return
+
+                axios({
+                    method: 'post',
+                    url: _this.$store.state.defaultHttp+'specification/update.do?cId='+_this.$store.state.iscId,
+                    data:qs.stringify(data)
+                }).then(function(res){
+                    if(res.data.code && res.data.code == 200){
+                        _this.$message({
+                            message:'修改成功',
+                            type:'success'
+                        })
+                        _this.dialogVisible15 = false
+                        _this.$options.methods.loadSpec.bind(_this)(true);
+                    }else{
+                        _this.$message({
+                            message:res.data.msg,
+                            type:'error'
+                        })
+                    }
+                }).catch(function(err){
+                    _this.$message.error("修改失败,请重新添加");
+                });
+            },
+            updatedistri(){
+                const _this = this
+                let qs = require('querystring')
+                let data = {}
+                data.id = this.newform.id
+                data.sort = this.newform.sort
+                data.name = this.newform.distri_name
+                data.discount = this.newform.distri_count
+                console.log(data)
+
+                let flag = false;
+                if(!data.sort){
+                    _this.$message({
+                        message: "排序编号不能为空",
+                        type: 'error'
+                    });
+                    flag = true;
+                }
+                if(!data.name){
+                    _this.$message({
+                        message: "经销商名称不能为空",
+                        type: 'error'
+                    });
+                    flag = true;
+                }
+                if(!data.discount){
+                    _this.$message({
+                        message: "经销商折扣不能为空",
+                        type: 'error'
+                    });
+                    flag = true;
+                }
+                if(flag) return
+
+                axios({
+                    method: 'post',
+                    url: _this.$store.state.defaultHttp+'distributor/updateDistributor.do?cId='+_this.$store.state.iscId,
+                    data:qs.stringify(data)
+                }).then(function(res){
+                    if(res.data.code && res.data.code == 200){
+                        _this.$message({
+                            message:'修改成功',
+                            type:'success'
+                        })
+                        _this.dialogVisible19 = false
+                        _this.$options.methods.loadistri.bind(_this)(true);
+                    }else{
+                        _this.$message({
+                            message:res.data.msg,
+                            type:'error'
+                        })
+                    }
+                }).catch(function(err){
+                    _this.$message.error("修改失败,请重新添加");
+                });
+            },
             //删除
             handledelete(index,row){
                 const _this = this;
@@ -1533,7 +1958,7 @@
                 let idArr = [];
                 let urls = null
                 let val = null
-                if(i == 1 || i == 2 || i == 3 || i == 4 || i == 5){
+                if(i == 1 || i == 2 || i == 3 || i == 4 || i == 5 || i == 11){
                     idArr.id = row.id
                     urls = _this.$store.state.defaultHttp+ 'typeInfo/deleteTypeInfoById.do?cId='+_this.$store.state.iscId // 删除辅助资料
                     val = row.typeName
@@ -1541,6 +1966,10 @@
                     idArr.step_id = row.step_id
                     urls = _this.$store.state.defaultHttp+ 'addstep/deleteByPrimaryKey.do?cId='+_this.$store.state.iscId  // 删除商机进度
                     val = row.step_name
+                }else if(i == 12){
+                    idArr.id = row.id
+                    urls = _this.$store.state.defaultHttp+ 'distributor/deleteDistributor.do?cId='+_this.$store.state.iscId  // 删除商机进度
+                    val = row.name
                 }
                 
 
@@ -1558,10 +1987,12 @@
                                 message: '删除成功',
                                 type: 'success'
                             });
-                            if(i == 1 || i == 2 || i == 3 || i == 4 || i == 5){
+                            if(i == 1 || i == 2 || i == 3 || i == 4 || i == 5 || i == 11){
                                 _this.$options.methods.reloadTable.bind(_this)(true);
                             }else if(i == 6){
                                 _this.$options.methods.loadOppStep.bind(_this)(true);
+                            }else if(i == 12){
+                                _this.$options.methods.loadistri.bind(_this)(true);
                             }
                             
                         } else if(res.data.msg && res.data.msg == 'error'){//删除
@@ -1712,7 +2143,46 @@
                 });
             },
             deletespec(index,row){
-                console.log(row)
+                const _this = this
+                let qs =require('querystring')
+                let idArr = {}
+                idArr.id = row.id
+
+                _this.$confirm('确认删除 ['+ row.specName +'] 吗？', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                }).then(({ value }) => {
+                    axios({
+                        method: 'post',
+                        url: _this.$store.state.defaultHttp+ 'specification/delete.do?cId='+_this.$store.state.iscId,
+                        data:qs.stringify(idArr),
+                    }).then(function(res){
+                        if(res.data.code && res.data.code == 200) {
+                            _this.$message({
+                                message: '删除成功',
+                                type: 'success'
+                            });
+                            _this.$options.methods.loadSpec.bind(_this)(true)
+                        } else if(res.data.msg && res.data.msg == 'error'){//删除
+                            _this.$message({
+                                message: '对不起，您没有该权限，请联系管理员开通',
+                                type: 'error'
+                            })
+                        }else {
+                            _this.$message({
+                                message: res.data.msg,
+                                type: 'error'
+                            });
+                        }
+                    }).catch(function(err){
+                        _this.$message.error("删除失败,请重新删除");
+                    });
+                }).catch(() => {
+                    _this.$message({
+                        type: 'info',
+                        message: '取消删除'
+                    });       
+                });
             },
             handleNodeClick(data){
                 // console.log(data)
@@ -1749,7 +2219,4 @@
     }
 </script>
 <style>
-    .select_mul .el-input__inner{
-        height: auto !important
-    }
 </style>

@@ -103,7 +103,7 @@ export default {
             if(this.remember == true){
                 _this.setlocalStorage(_this.loginFrom.public_username, _this.loginFrom.public_password)
             }else{
-                if(loginInfo.public_username == _this.loginname){
+                if(_this.loginFrom.public_username == _this.loginname){
                     _this.clearlocalStorage()
                 }
             }
@@ -129,7 +129,7 @@ export default {
                     _this.$store.commit('roleid',userData.roleid)
                     _this.$store.commit('insid',userData.private_deptid)
                     _this.$store.commit('portrait',userData.imgUrl)
-                    _this.$router.push({path:'/index'})
+                    _this.$router.push({path:'/welcome'})
                     _this.getData()
                 }else {
                     _this.$message({
@@ -200,7 +200,6 @@ export default {
        padding: 20px;
        position: relative;
        background-image: url('/upload/staticImg/index.jpg');
-       /* background-image: url('../../static/img/index.jpg'); */
        background-repeat: no-repeat;
        background-size: 100% 100%;
    }
@@ -215,20 +214,20 @@ export default {
        transform: translate(-50%,-50%);
    }
    .iconSet{
-       color: #292929;
+       color: #20222a;
    }
     /* .el-form-item__error{
         left: 20% !important;
     } */
     .login_head{
-        color:#292929;
+        color:#20222a;
         font-weight:bold;
         font-size:28px;
         margin-top:15%;
         text-align:center
     }
     .login_wel{
-        color:#292929;
+        color:#20222a;
         font-size:16px;
         margin-top:15%;
         text-align:center;

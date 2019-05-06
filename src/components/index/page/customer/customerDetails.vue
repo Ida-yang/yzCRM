@@ -1237,7 +1237,7 @@
                 if (item) {
                     delItem.path === this.$route.fullPath && this.$router.push('/customer');
                 }else{
-                    this.$router.push('/index');
+                    this.$router.push('/welcome');
                 }
             },
             handleSizeChange(val) {

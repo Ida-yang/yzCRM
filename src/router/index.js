@@ -37,7 +37,7 @@ const router =new Router({
           meta: { title: '首页' ,requireAuth:true}
         },
         {
-          path: '/index',
+          path: '/welcome',
           component: resolve => require(['../components/index/page/welcome.vue'], resolve),
           meta: { title: '首页' ,requireAuth:true}
         },
@@ -147,11 +147,6 @@ const router =new Router({
           meta: { title: '辅助资料',name:'basicset' ,requireAuth:true}
         },
         {
-          path: '/basicsets',
-          component: resolve => require(['../components/index/page/basicset/basicsets.vue'], resolve),
-          meta: { title: '辅助资料2',name:'basicsets' ,requireAuth:true}
-        },
-        {
           path: '/socialMarketing',
           component: resolve => require(['../components/index/page/socialMarketing/socialMarketing.vue'], resolve),
           meta: { title: '社交营销',name:'socialMarketing' ,requireAuth:true}
@@ -225,11 +220,6 @@ const router =new Router({
           path: '/productaddorupdate',
           component: resolve => require(['../components/index/page/AddAndUpdate/productaddorupdate.vue'], resolve),
           meta: { title: '编辑产品',requireAuth:true}
-        },
-        {
-          path: '/name',
-          component: resolve => require(['../components/index/page/product/name.vue'], resolve),
-          meta: { title: '产品11',requireAuth:true}
         },
       ]
     },
