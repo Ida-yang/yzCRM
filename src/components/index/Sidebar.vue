@@ -225,6 +225,10 @@
                                 index: 'logs',
                                 title: '日志',
                             },
+                            {
+                                index: 'name',
+                                title: '名字',
+                            },
                         ]
                     },
                 ],

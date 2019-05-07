@@ -13,6 +13,10 @@ import store from './store/store';
 import VueResource from 'vue-resource';
 
 import base from './base';
+import '../static/UE/ueditor.config.js'
+import '../static/UE/ueditor.all.min.js'
+import '../static/UE/lang/zh-cn/zh-cn.js'
+import '../static/UE/ueditor.parse.min.js'
 
 Vue.use(base)
 

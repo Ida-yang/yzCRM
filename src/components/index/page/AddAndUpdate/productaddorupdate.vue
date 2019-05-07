@@ -45,10 +45,10 @@
                     </div>
                 </div>
                 <div class="first_bottom">
-                    <p class="pro_title">商品图片</p>
+                    <p class="pro_title">产品图片</p>
                     <div class="uploadBOX">
-                        <div class="imgbox" v-for="item in fileList" :key="item.id" @mouseenter="mouseenterdiv(item)" @mouseleave="mouseleavediv(item)">
-                            <img :src="item.imgURL" alt="图片" @click="showImg($event,item)">
+                        <div class="imgbox prod_img" v-for="(item,i) in fileList" :key="i" @mouseenter="mouseenterdiv(item)" @mouseleave="mouseleavediv(item)">
+                            <img :src="item" alt="图片" @click="showImg($event,item)">
                             <div class="imgdel">
                                 <i class="el-icon-delete" v-if="imgshow" @click="delImg($event,item)"></i>
                             </div>
@@ -64,48 +64,54 @@
                     </div>
                 </div>
                 <div class="first_bottom">
-                    <p class="pro_title">商品规格</p><br>
-                    <el-table
-                        :data="tableData"
-                        border
-                        stripe
-                        style="width:100%">
-                        <el-table-column
-                            prop="zhutu"
-                            fixed
-                            min-width="130"
-                            label="主图"
-                            sortable>
+                    <p class="pro_title">产品规格</p><br>
+                    <div class="filter-container">
+                        <el-table :data="tableData1" border stripe style="width: 100%">
+                            <el-table-column type="selection" prop="">
+                                <template slot-scope="scope">
+                                    <i class="el-icon-delete" @click="changeId(scope.row)"></i>
+                                </template>
+                            </el-table-column>
+                            <el-table-column prop="specName" label="规格名称">
+                                <template slot-scope="scope">
+                                    <el-select v-model="scope.row.specName" placeholder="请选择单位" class="inputbox" @change="changeLabel">
+                                        <el-option v-for="item in specsData" :key="item.id" :label="item.specName" :value="item.specName"></el-option>
+                                    </el-select>
+                                </template>
+                            </el-table-column>
+                            <el-table-column prop="specValue" label="规格值" min-width="200">
+                                <template slot-scope="scope">
+                                    <el-select v-model="scope.row.specValue" multiple filterable default-first-option style="width:100%" no-data-text="请输入" @change="changeValue">
+                                        <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value"></el-option>
+                                    </el-select>
+                                </template>
+                            </el-table-column>
+                        </el-table>
+                    </div>
+                    <el-button size="mini" @click="AddId" v-show="addHeadbtn" style="margin-left:20px">添加</el-button>
+                    <el-button size="mini" @click="batchGeneration" style="margin-left:20px">批量生成</el-button>
+                    <br>
+                    <el-table :data="tableData" :key="key" border stripe style="width: 100%" v-show="showspec">
+                        <el-table-column header-align="center" align="center" type="index" min-width="45"></el-table-column>
+                        <el-table-column prop="name" label="主图" min-width="100"/>
+                        <el-table-column v-for="(item,i) in formThead" :key="i" :label="item.label" min-width="100">
+                            <template slot-scope="scope">{{ scope.row[item.value] }}</template>
                         </el-table-column>
-                        <el-table-column
-                            prop="guige"
-                            min-width="120"
-                            label="规格"
-                            sortable>
-                        </el-table-column>
-                        <el-table-column
-                            prop="shangpinbianma"
-                            min-width="90"
-                            label="商品编码"
-                            sortable>
-                        </el-table-column>
-                        <el-table-column
-                            prop="tiaoxingma"
-                            min-width="90"
-                            label="条形码"
-                            sortable>
-                        </el-table-column>
-                        <el-table-column
-                            prop="duijiema"
-                            min-width="90"
-                            label="ERP对接码"
-                            sortable>
-                        </el-table-column>
+                        <el-table-column prop="Code" label="条形码" min-width="130"/>
+                        <el-table-column prop="erpcode" label="ERP对接码" min-width="130"/>
                     </el-table>
                 </div>
             </el-tab-pane>
-            <el-tab-pane label="价格资料" name="second">价格资料</el-tab-pane>
-            <el-tab-pane label="商品详情描述" name="third">商品详情描述</el-tab-pane>
+            <!-- <el-tab-pane label="价格资料" name="second">价格资料</el-tab-pane> -->
+            <el-tab-pane label="商品详情描述" name="second">
+                <div class="components-container ueditor_c">
+                    <!-- <div class="info">UE编辑器示例<br>需要使用编辑器时，调用UE公共组件即可。可设置填充内容defaultMsg，配置信息config(宽度和高度等)，可调用组件中获取内容的方法。</div> -->
+                    <!-- <button @click="getUEContent()">获取内容</button> -->
+                    <div class="editor-container">
+                        <UE :defaultMsg="defaultMsg" :config="config" ref="ue"></UE>
+                    </div>
+                </div>
+            </el-tab-pane>
         </el-tabs>
         <div class="submit_btn">
             <el-button type="primary" :disabled="isDisable" @click="onSubmit">立即提交</el-button>
@@ -119,10 +125,12 @@
     import store from '../../../../store/store'
     import axios from 'axios'
     import bus from '../../bus'
+    import UE from '../../../index/ue.vue';
 
     export default {
         name:'productaddorupdate',
         store,
+        components: {UE},
         data(){
             return{
                 activeName:'first',
@@ -137,6 +145,7 @@
                     chengpinjia:null,
                     miaoshu:null,
                     chanpinbiaoqian:null,
+                    spec:[],
                 },
                 rules:{
                     chanpinmingcheng : [{ required: true, message: '产品名称不能为空', trigger: 'blur' },],
@@ -158,22 +167,46 @@
                 ],
                 unitsData:null,
                 brandsData:null,
+                specsData:null,
 
                 fileList:[
-                    {id:1,imgURL:'../../../../../static/img/index.jpg'},
-                    {id:2,imgURL:'../../../../../static/img/1.jpg'},
-                    {id:3,imgURL:'../../../../../static/img/2.jpg'},
-                    {id:4,imgURL:'../../../../../static/img/3.jpg'},
+                    '../../../../../static/img/index.jpg',
+                    '../../../../../static/img/1.jpg',
                 ],
                 imgshow:false,
 
                 dialogVisible:false,
-                dialogImageUrl:''
+                dialogImageUrl:'',
+
+                showspec:false,
+
+                defaultMsg: '这里是UE测试',
+                config: {
+                    initialFrameWidth: null,
+                    initialFrameHeight: 500
+                },
+
+                tableData1:[],
+                tableData: [],
+                key: 1, // table key
+                formThead: [], // 默认表头 Default header
+                firstID:0,
+                addHeadbtn:true,
+
+                options: [],
             }
+        },
+        watch: {
+            checkboxVal(valArr) {
+                this.tableData.forEach(el => {
+                    console.log(el)
+                });
+            },
         },
         mounted(){
             this.loadData()
             this.loadother()
+            this.loadHead()
         },
         // JSON.parse(JSON.stringify(data))
         methods:{
@@ -207,6 +240,14 @@
                 }).catch(function(err){
                     // console.log(err);
                 });
+                axios({
+                    method: 'get',
+                    url: _this.$store.state.defaultHttp+'specification/selectList.do?cId='+_this.$store.state.iscId,
+                }).then(function(res){
+                    _this.specsData = res.data
+                }).catch(function(err){
+                    // console.log(err);
+                });
             },
             mouseenterdiv(val){
                 this.imgshow = true
@@ -217,8 +258,84 @@
             showImg(){},
             delImg(){},
             tirggerFile(){},
+            specHead(e){
+                console.log(e)
+                // this.specsData.forEach(el => {
+                //     if(el.id == e){
+                //         console.log(el.specValue)
+                //     }
+                // });
+            },
+            loadHead(){
+                this.formThead = []
+                this.tableData1.forEach(el => {
+                    this.formThead.push({label:el.specName,value:el.id})
+                });
+            },
+            changeId(e){
+                console.log(e)
+            },
+            AddId(){
+                // console.log(this.tableData1)
+                this.firstID = this.firstID+1
+                this.tableData1.push({id:'spec'+this.firstID, specName:'', specValue:[]})
+                this.$options.methods.loadHead.bind(this)()
+                if(this.tableData1.length == 3){
+                    this.addHeadbtn = false
+                }
+            },
+            changeLabel(e){
+                // console.log(e)
+                this.specsData.forEach(el => {
+                    if(el.specName == e){
+                        console.log(el.specValue)
+                    }
+                });
+                this.$options.methods.loadHead.bind(this)()
+            },
+            changeValue(e){
+                console.log(e)
+            },
+            batchGeneration(){
+                let arr = this.tableData1
+                this.tableData = []
+                this.showspec = true
+
+                if(arr.length == 1){
+                    let a = arr[0].specValue
+                    for(let i = 0;i < a.length; i ++){
+                        console.log(a)
+                        this.tableData.push({name:'1212',spec1:a[i],proNum:'00',Code: '10-20',erpcode: '10-20',})
+                    }
+                }
+                if(arr.length == 2){
+                    let a = arr[0].specValue
+                    let b = arr[1].specValue
+                    console.log(a,b)
+                    for(let i = 0; i < a.length; i ++){
+                        for(let j = 0; j < b.length; j ++){
+                            this.tableData.push({name:'1212',spec1:a[i], spec2:b[j],proNum:'00',Code: '10-20',erpcode: '10-20',})
+                        }
+                    }
+                }
+                if(arr.length == 3){
+                    let a = arr[0].specValue
+                    let b = arr[1].specValue
+                    let c = arr[2].specValue
+                    console.log(a,b,c)
+                    for(let i = 0; i < a.length; i ++){
+                    for(let j = 0; j < b.length; j ++){
+                        for(let k = 0; k < c.length; k ++){
+                        this.tableData.push({name:'1212',spec1:a[i], spec2:b[j], spec3:c[k],proNum:'00',Code: '10-20',erpcode: '10-20',})
+                        }
+                    }
+                    }
+                }
+            },
             onSubmit(){
+                let content = this.$refs.ue.getUEContent();
                 console.log(this.myform)
+                console.log(content)
             },
             closeTag(){},
         },
@@ -231,7 +348,7 @@
     }
     .first_c{
         width: 100%;
-        padding-bottom: 60px;
+        padding-bottom: 50px;
         box-sizing: border-box;
         background-color: #f0f0f0;
     }
@@ -239,7 +356,7 @@
         width: 100%;
         display: flex;
         margin-bottom: 10px;
-        background-color: #ffffff;
+        background-color: #fdfeff;
     }
     .first_left{
         width: calc(100% - 300px);
@@ -265,11 +382,13 @@
     .first_bottom{
         width: 100%;
         margin-bottom: 10px;
-        background-color: #ffffff;
+        background-color: #fdfeff;
+        padding-bottom: 10px;
+        box-sizing: border-box
     }
     .pro_title{
         padding: 10px 0 0 10px;
-        font-weight: 800;
+        font-weight: 500;
         color: #409EFF
     }
     .submit_btn{
@@ -277,11 +396,18 @@
         height: 60px;
         position: fixed;
         bottom: 0;
-        background-color: #fff;
+        background-color: #fdfeff;
         border-top: 1px solid #e4e7ed;
         display: flex;
         justify-content: center;
         align-items: center;
+    }
+    .ueditor_c{
+        margin: 20px;
+    }
+    .spec_select{
+        padding: 10px 20px;
+        box-sizing: border-box
     }
 </style>
 

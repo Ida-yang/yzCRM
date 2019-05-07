@@ -221,6 +221,11 @@ const router =new Router({
           component: resolve => require(['../components/index/page/AddAndUpdate/productaddorupdate.vue'], resolve),
           meta: { title: '编辑产品',requireAuth:true}
         },
+        {
+          path: '/name',
+          component: resolve => require(['../components/index/page/product/name.vue'], resolve),
+          meta: { title: '名字',requireAuth:true}
+        },
       ]
     },
         

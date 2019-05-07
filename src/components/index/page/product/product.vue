@@ -41,8 +41,7 @@
                 border
                 stripe
                 style="width:100%"
-                @selection-change="selectInfo"
-                >
+                @selection-change="selectInfo">
                 <el-table-column
                     fixed
                     header-align="center"
@@ -75,7 +74,7 @@
                 <el-table-column
                     prop="goodsCode"
                     fixed
-                    min-width="130"
+                    min-width="145"
                     label="产品编码"
                     sortable>
                 </el-table-column>
@@ -212,6 +211,8 @@
                 
                 page:1,
                 limit:20,
+
+                aaaa:[],
             }
         },
         beforeCreate(){
@@ -251,6 +252,7 @@
                 }).then(function(res){
                     _this.$store.state.productList = res.data.map.goods
                     _this.$store.state.productListnumber = res.data.count
+                    _this.aaaa = res.data.map.goods
                     // let arr = res.data.map.success
                     // arr.forEach(el => {
                     //     if(el.imgUrl){
@@ -318,7 +320,15 @@
                 
             },
             openDetails(index,row){
-                console.log(row)
+                // console.log(row)
+                var a = {"name":"LeonWu","age":"18"}
+                var b = '{"name":"yangyi","age":"18"}'
+                var c = {"name":"shazi","age":"18","fileList":['../../../../../static/img/index.jpg','../../../../../static/img/1.jpg'],}
+                
+                // console.log(qs.stringify(a))
+                // console.log(JSON.parse(b))
+                // console.log(JSON.stringify(c))
+                console.log(JSON.parse(JSON.stringify(c)))
             },
             //用户添加
             handleAdd(){
