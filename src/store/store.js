@@ -52,6 +52,7 @@ const state = {
   prodetailsData:null,
   visitdetailsData:null,
   missiondetailsData:null,
+  productdetailsData:null,
 
 
   //线索挖掘列表
@@ -167,6 +168,11 @@ const state = {
   productList:[],
   //产品列表总数
   productListnumber:0,
+
+  //订单列表
+  orderList:[],
+  //订单列表总数
+  orderListnumber:0,
 
   //当前时间
   nowtime:null,

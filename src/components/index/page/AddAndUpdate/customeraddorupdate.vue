@@ -22,6 +22,15 @@
                             auto-complete="off">
                         </el-input>
                         <el-input 
+                            v-if="item.type && item.type == 'url' && item.inputModel == 'url'"
+                            :value="myForm[item.inputModel]"
+                            @input="handleInput($event, item.inputModel)"
+                            style="width:90%;" 
+                            auto-complete="off"
+                            :disabled="item.disabled">
+                            <template slot="prepend">http://</template>
+                        </el-input>
+                        <el-input 
                             v-if="item.type == 'textarea'"
                             type="textarea"
                             rows="5"
@@ -588,6 +597,7 @@
             getRow(index,row){
                 this.myForm.poolName = row.name
                 this.myForm.address = row.address
+                this.myForm.url = row.url
                 this.myForm.representative = row.representative  //法人代表  
                 this.myForm.registrationAuthority = row.registrationAuthority  //登记机关
                 this.myForm.registrationNumber = row.registrationNumber  //注册号

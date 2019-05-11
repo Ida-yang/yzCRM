@@ -156,6 +156,10 @@
                                 index: 'product',
                                 title: '产品',
                             },
+                            {
+                                index: 'order',
+                                title: '订单',
+                            },
                         ]
                     },
                     {

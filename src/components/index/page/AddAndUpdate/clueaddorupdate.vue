@@ -21,6 +21,15 @@
                             auto-complete="off">
                         </el-input>
                         <el-input 
+                            v-if="item.type && item.type == 'url' && item.inputModel == 'url'"
+                            :value="myForm[item.inputModel]"
+                            @input="handleInput($event, item.inputModel)"
+                            style="width:90%;" 
+                            auto-complete="off"
+                            :disabled="item.disabled">
+                            <template slot="prepend">http://</template>
+                        </el-input>
+                        <el-input 
                             v-if="item.type == 'textarea'"
                             type="textarea"
                             rows="5"
@@ -487,7 +496,16 @@
                 let assistForm = _this.clueaddOrUpdateData.assistForm;
                 let flag = false;
                 createForm.forEach(item => {
+                    let reg = /^([a-zA-Z]|[0-9])(\w|\-)+@[a-zA-Z0-9]+\.([a-zA-Z]{2,4})$/
+                    // var reg=/^([hH][tT]{2}[pP]:\/\/|[hH][tT]{2}[pP][sS]:\/\/)(([A-Za-z0-9-~]+)\.)+([A-Za-z0-9-~\/])+$/
                     subData[item.inputModel] = _this.myForm[item.inputModel];
+                    if(item.inputModel == "email" && !reg.test(subData.email)) {
+                        _this.$message({
+                            message: "邮箱格式不正确",
+                            type: 'error'
+                        });
+                        flag = true;
+                    }
                     if(item.inputModel == "contactsName" && !subData[item.inputModel]) {
                         _this.$message({
                             message: "联系人名称不能为空",
@@ -570,6 +588,7 @@
             getRow(index,row){
                 this.myForm.poolName = row.name
                 this.myForm.address = row.address 
+                this.myForm.url = row.url
                 this.myForm.representative = row.representative  //法人代表  
                 this.myForm.registrationAuthority = row.registrationAuthority  //登记机关
                 this.myForm.registrationNumber = row.registrationNumber  //注册号

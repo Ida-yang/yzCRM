@@ -217,9 +217,19 @@ const router =new Router({
           meta: { title: '产品详情页',requireAuth:true}
         },
         {
-          path: '/productaddorupdate',
-          component: resolve => require(['../components/index/page/AddAndUpdate/productaddorupdate.vue'], resolve),
+          path: '/productadd',
+          component: resolve => require(['../components/index/page/AddAndUpdate/productadd.vue'], resolve),
           meta: { title: '编辑产品',requireAuth:true}
+        },
+        {
+          path: '/productupdate',
+          component: resolve => require(['../components/index/page/AddAndUpdate/productupdate.vue'], resolve),
+          meta: { title: '编辑产品',requireAuth:true}
+        },
+        {
+          path: '/order',
+          component: resolve => require(['../components/index/page/order/order.vue'], resolve),
+          meta: { title: '订单',name:'order',requireAuth:true}
         },
         {
           path: '/name',

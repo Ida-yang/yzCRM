@@ -48,20 +48,19 @@
                     align="center"
                     type="selection"
                     width="45"
-                    scope.row.private_id
-                    prop="private_id"
+                    prop="id"
                     @selection-change="selectInfo"
                     sortable>
                 </el-table-column>
                 <el-table-column
-                    prop="image"
+                    prop="unit"
                     fixed
                     header-align="center"
                     align="center"
                     min-width="80"
                     label="图片"
                     sortable>
-                    <template slot-scope="scope">
+                    <!-- <template slot-scope="scope">
                         <el-popover
                             placement="right"
                             width="200"
@@ -69,31 +68,43 @@
                             <img class="img_portrait_big" :src="scope.row.image" alt="图片" width="200" height="200">
                             <img class="img_portrait" slot="reference" :src="scope.row.image" alt="图片" width="50" height="50">
                         </el-popover>
-                    </template>
+                    </template> -->
                 </el-table-column>
-                <el-table-column
+                <!-- <el-table-column
                     prop="goodsCode"
                     fixed
                     min-width="145"
                     label="产品编码"
                     sortable>
-                </el-table-column>
+                </el-table-column> -->
                 <el-table-column
-                    prop="tbGoods.goodsName"
+                    prop="goodsName"
                     fixed
                     min-width="130"
                     label="产品名称"
                     sortable>
                     <template slot-scope="scope">
                         <div @click="openDetails(scope.$index, scope.row)" class="hoverline">
-                            {{scope.row.tbGoods.goodsName}}
+                            {{scope.row.goodsName}}
                         </div>
                     </template>
                 </el-table-column>
-                <el-table-column
+                <!-- <el-table-column
                     prop="title"
                     min-width="120"
                     label="规格型号"
+                    sortable>
+                </el-table-column> -->
+                <el-table-column
+                    prop="price"
+                    min-width="90"
+                    label="价格"
+                    sortable>
+                </el-table-column>
+                <el-table-column
+                    prop="costPrice"
+                    min-width="90"
+                    label="成本价"
                     sortable>
                 </el-table-column>
                 <el-table-column
@@ -115,7 +126,7 @@
                     sortable>
                 </el-table-column>
                 <el-table-column
-                    prop="create_time"
+                    prop="createTime"
                     min-width="150"
                     label="创建时间"
                     sortable>
@@ -181,7 +192,7 @@
                 newform:{
                     second_id:null,
                     secondname:null,
-                    private_id:null,
+                    id:null,
                     role_id:null,
                     private_phone:null,
                     private_password:null,
@@ -204,9 +215,8 @@
                 checklist:null,
 
                 idArr:{
-                    private_id:null,
+                    id:null,
                 },
-                roleList:null,
                 clickdata:null,
                 
                 page:1,
@@ -241,13 +251,11 @@
                 pageInfo.page = this.page
                 pageInfo.limit = this.limit
                 pageInfo.searchName = this.searchList.searchName
-                pageInfo.deptid = this.searchList.deptid
-                let dept = {}
-                dept.deptid = this.searchList.deptid
+                // pageInfo.deptid = this.searchList.deptid
 
                 axios({
                     method: 'post',
-                    url: _this.$store.state.defaultHttp+'goods/search.do?cId='+_this.$store.state.iscId,
+                    url: _this.$store.state.defaultHttp+'goods/searchGoods.do?cId='+_this.$store.state.iscId,
                     data:qs.stringify(pageInfo)
                 }).then(function(res){
                     _this.$store.state.productList = res.data.map.goods
@@ -261,15 +269,6 @@
                     //         return
                     //     }
                     // });
-                }).catch(function(err){
-                    // console.log(err);
-                });
-                axios({
-                    method: 'post',
-                    url: _this.$store.state.defaultHttp+'role/selectRole.do?cId='+_this.$store.state.iscId,
-                    data:qs.stringify(dept)
-                }).then(function(res){
-                    _this.roleList = res.data
                 }).catch(function(err){
                     // console.log(err);
                 });
@@ -312,23 +311,15 @@
                 let arr = val;
                 let newArr = [new Array()];
                 arr.forEach((item) => {
-                    if(item.private_id != 0){
-                        newArr.push(item.private_id)
+                    if(item.id != 0){
+                        newArr.push(item.id)
                     }
                 });
-                this.idArr.private_id = newArr;
-                
+                this.idArr.id = newArr;
             },
             openDetails(index,row){
-                // console.log(row)
-                var a = {"name":"LeonWu","age":"18"}
-                var b = '{"name":"yangyi","age":"18"}'
-                var c = {"name":"shazi","age":"18","fileList":['../../../../../static/img/index.jpg','../../../../../static/img/1.jpg'],}
-                
-                // console.log(qs.stringify(a))
-                // console.log(JSON.parse(b))
-                // console.log(JSON.stringify(c))
-                console.log(JSON.parse(JSON.stringify(c)))
+                this.$store.state.productdetailsData = {submitData:{"id": row.id}};
+                this.$router.push({ path: '/productdetails' });
             },
             //用户添加
             handleAdd(){
@@ -348,33 +339,86 @@
                 }else{
                     let productaddOrUpdateData = {}
                     productaddOrUpdateData.setForm = {
-                        "chanpinmingcheng": '',
-                        "unit": '',
-                        "pinpai": '',
-                        "chanpinfenleiID": this.clickdata.id,
-                        "chanpinfenlei": this.clickdata.name,
-                        "chanpinshuxing": '',
-                        "xiaoshoujiage": '',
-                        "chengpinjia": '',
-                        "miaoshu": '',
-                        "chanpinbiaoqian": '',};
+                        "goodsName": '',
+                        "unitId": '',
+                        "brandId": '',
+                        "classification_id": this.clickdata.id,
+                        "category": this.clickdata.name,
+                        "attribute": '',
+                        "price": '',
+                        "costPrice": '',
+                        "isEnableSpec": '',
+                        "describe": '',};
                     productaddOrUpdateData.submitURL = this.$store.state.defaultHttp+ 'customerTwo/saveClue.do?cId='+this.$store.state.iscId+'&pId='+this.$store.state.ispId,
                     this.$store.state.productaddOrUpdateData = productaddOrUpdateData;
-                    _this.$router.push({ path: '/productaddorupdate' });
+                    _this.$router.push({ path: '/productadd' });
                 }
             },
             //用户修改
             handleEdit(index,row){
                 const _this = this
-                console.log(row)
+                let productaddOrUpdateData = {}
+                productaddOrUpdateData.setForm = {
+                    "id": row.id};
+                productaddOrUpdateData.submitURL = this.$store.state.defaultHttp+ 'goods/update.do?cId='+this.$store.state.iscId+'&pId='+this.$store.state.ispId,
+                this.$store.state.productaddOrUpdateData = productaddOrUpdateData
+                _this.$router.push({ path: '/productupdate' })
             },
             handledeletes(){
                 const _this = this
-                console.log(this.idArr)
+                this.idArr.id.shift(0)
+                let qs = require('querystring')
+                let idArr = []
+                idArr.ids = this.idArr.id
+
+                axios({
+                    method: 'post',
+                    url:  _this.$store.state.defaultHttp+ 'goods/delete.do?cId='+_this.$store.state.iscId,
+                    data:qs.stringify(idArr),
+                }).then(function(res){
+                    if(res.data.code && res.data.code == '200'){
+                        _this.$message({
+                            message: '删除成功',
+                            type:'success'
+                        })
+                    }else{
+                        _this.$message({
+                            message: res.data.msg,
+                            type:'error'
+                        })
+                    }
+                    _this.$options.methods.reloadTable.bind(_this)();
+                }).catch(function(err){
+                    // console.log(err);
+                });
             },
             handledelete(index,row){
                 const _this = this
+                let qs = require('querystring')
                 console.log(row)
+                let idArr = []
+                idArr.ids = row.id
+
+                axios({
+                    method: 'post',
+                    url:  _this.$store.state.defaultHttp+ 'goods/delete.do?cId='+_this.$store.state.iscId,
+                    data:qs.stringify(idArr),
+                }).then(function(res){
+                    if(res.data.code && res.data.code == '200'){
+                        _this.$message({
+                            message: '删除成功',
+                            type:'success'
+                        })
+                    }else{
+                        _this.$message({
+                            message: res.data.msg,
+                            type:'error'
+                        })
+                    }
+                    _this.$options.methods.reloadTable.bind(_this)();
+                }).catch(function(err){
+                    // console.log(err);
+                });
             },
             hangleChange(e,val){
                 const _this = this
@@ -402,17 +446,17 @@
             
             search() {
                 const _this = this
-                // _this.$options.methods.reloadTable.bind(_this)(true);
+                _this.$options.methods.reloadTable.bind(_this)(true);
             },
             handleSizeChange(val) {
                 const _this = this;
                 _this.limit = val;
-                // _this.$options.methods.reloadTable.bind(_this)(false);
+                _this.$options.methods.reloadTable.bind(_this)(false);
             },
             handleCurrentChange(val) {
                 const _this = this;
                 _this.page = val;
-                // _this.$options.methods.reloadTable.bind(_this)(false);
+                _this.$options.methods.reloadTable.bind(_this)(false);
             },
         }
     }

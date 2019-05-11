@@ -36,8 +36,8 @@
 
         //工具栏上的所有的功能按钮和下拉框，可以在new编辑器的实例时选择自己需要的重新定义
         /*
-        *'map', 'gmap', 'simpleupload', 'insertimage', 'insertvideo', 'music', 'scrawl', 'imagenone', 'webapp',
-        * 'snapscreen', 'wordimage', 'print', 'drafts', 'imageleft', 'imageright', 'imagecenter', '|',
+        *'map', 'gmap', 'simpleupload', 'insertimage', 'insertvideo', 'music', 'scrawl', 'webapp',
+        * 'snapscreen', 'wordimage', 'print', 'drafts',
         */
         , toolbars: [[
             'fullscreen', 'source', '|', 'undo', 'redo', '|',
@@ -48,7 +48,7 @@
             'justifyleft', 'justifycenter', 'justifyright', 'justifyjustify', '|', 'touppercase', 'tolowercase', '|',
             'link', 'unlink', 'anchor', '|',
             'emotion', 'attachment', 'insertframe', 'insertcode', 'pagebreak', 'template', 'background', '|',
-            'horizontal', 'date', 'time', 'spechars', '|',
+            'horizontal', 'date', 'time', 'spechars', '|','imagenone', 'imageleft', 'imageright', 'imagecenter', '|',
             'inserttable', 'deletetable', 'insertparagraphbeforetable', 'insertrow', 'deleterow', 'insertcol', 'deletecol', 'mergecells', 'mergeright', 'mergedown', 'splittocells', 'splittorows', 'splittocols', 'charts', '|',
             'preview', 'searchreplace', 'help'
         ]]

@@ -26,7 +26,7 @@
                             </el-form-item>
                             <el-form-item class="first_input" label="产品属性" label-width="90px">
                                 <el-select v-model="myform.attribute" placeholder="请选择产品属性" class="inputbox">
-                                    <el-option v-for="item in attributeList" :key="item.id" :label="item.name" :value="item.id"></el-option>
+                                    <el-option v-for="item in attributeList" :key="item.id" :label="item.name" :value="item.name"></el-option>
                                 </el-select>
                             </el-form-item>
                             <el-form-item class="first_input" label="销售价格" label-width="90px">
@@ -40,51 +40,93 @@
                             </el-form-item> -->
                         </el-form>
                     </div>
-                    <div class="first_right">
+                    <!-- <div class="first_right">
                         <img src="../../../../../static/img/timg.jpg" width="200" height="200">
-                    </div>
+                    </div> -->
                 </div>
                 <div class="first_bottom">
                     <p class="pro_title">产品图片</p>
-                    <div class="uploadBOX">
-                        <div class="imgbox" v-for="item in fileList" :key="item.id">
-                            <img :src="item.imgURL" alt="图片" @click="showImg($event,item)">
-                        </div>
+                    <div class="uploadproImg">
+                        <el-upload
+                            :action="doUpload"
+                            multiple
+                            :file-list="fileList"
+                            list-type="picture-card"
+                            :on-preview="handlePictureCardPreview"
+                            :on-remove="handleRemove"
+                            :on-success="onSuccess"
+                            :before-upload="beforeUploadimg">
+                            <i class="el-icon-plus"></i>
+                        </el-upload>
+                        <el-dialog :visible.sync="dialogVisible">
+                            <img width="100%" :src="dialogImageUrl" alt="">
+                        </el-dialog>
                     </div>
                 </div>
                 <div class="first_bottom">
                     <p class="pro_title">产品规格</p><br>
                     <div class="filter-container">
-                        <el-table :data="tableData1" border stripe style="width: 100%">
-                            <el-table-column header-align="center" align="center" type="index" min-width="45"></el-table-column>
-                            <el-table-column prop="spec_name" label="规格名称"></el-table-column>
+                        <el-table :data="specHeadData" border stripe style="width: 100%">
+                            <el-table-column type="selection" prop="" width="45">
+                                <template slot-scope="scope">
+                                    <i class="el-icon-delete" v-show="scope.row.sign !== 'spec1'" @click="DelId(scope.row)"></i>
+                                </template>
+                            </el-table-column>
+                            <el-table-column prop="specName" label="规格名称">
+                                <template slot-scope="scope">
+                                    <el-select v-model="scope.row.spec_name" placeholder="请选择规格名称" class="inputbox" @change="changeLabel">
+                                        <el-option v-for="item in specsData" :key="item.id" :label="item.specName" :value="item.specName"></el-option>
+                                    </el-select>
+                                </template>
+                            </el-table-column>
                             <el-table-column prop="specValue" label="规格值" min-width="200">
                                 <template slot-scope="scope">
-                                    <el-tag type="info" v-for="(item,i) in scope.row.spec_value" :key="i" style="margin-right:8px;">&nbsp;{{item}}&nbsp;</el-tag>
+                                    <el-select v-model="scope.row.spec_value" multiple filterable default-first-option style="width:100%" no-data-text="请将不需要的规格值删除">
+                                        <el-option v-for="(item,i) in scope.row.options" :key="i" :label="item" :value="item"></el-option>
+                                    </el-select>
                                 </template>
                             </el-table-column>
                         </el-table>
                     </div>
+                    <el-button size="mini" @click="AddId" v-show="addHeadbtn" style="margin-left:20px">添加</el-button>
+                    <el-button size="mini" @click="batchGeneration" v-show="generate" style="margin-left:20px">批量生成</el-button>
+                    <br><br>
                     <el-table :data="tableData" border stripe style="width: 100%" @current-change="handleCurrentChange">
+                        <el-table-column type="selection" prop="" width="45">
+                            <template slot-scope="scope">
+                                <i class="el-icon-delete" @click="Delrow(scope.row)"></i>
+                            </template>
+                        </el-table-column>
                         <el-table-column header-align="center" align="center" type="index" min-width="45"></el-table-column>
                         <el-table-column prop="imgfile" label="主图" width="120">
                             <template slot-scope="scope">
-                                <div>
-                                    <img src="../../../../../static/img/timg.jpg" :alt="scope.row.imgfile" @click="showImg($event,item)" width="100" height="100">
-                                </div>
+                                <el-upload class="avatar-uploader portrait" :action="doUpload" :show-file-list="false" :on-success="handleAvatarSuccess" :before-upload="beforeUploadimg">
+                                    <img v-if="scope.row.imgfile" :src="scope.row.imgfile" class="avatar" width="100" height="100">
+                                    <i v-else class="el-icon-plus avatar-uploader-icon portrait_add"></i>
+                                </el-upload>
                             </template>
                         </el-table-column>
                         <el-table-column v-for="(item,i) in formThead" :key="i" :label="item.label" min-width="100">
                             <template slot-scope="scope">{{ scope.row[item.value] }}</template>
                         </el-table-column>
-                        <el-table-column prop="barcode" label="条形码" min-width="130"></el-table-column>
-                        <el-table-column prop="erpDocking" label="ERP对接码" min-width="130"></el-table-column>
+                        <el-table-column prop="barcode" label="条形码" min-width="130">
+                            <template slot-scope="scope">
+                                <el-input v-model="scope.row.barcode" class="inputbox"></el-input>
+                            </template>
+                        </el-table-column>
+                        <el-table-column prop="erpDocking" label="ERP对接码" min-width="130">
+                            <template slot-scope="scope">
+                                <el-input v-model="scope.row.erpDocking" class="inputbox"></el-input>
+                            </template>
+                        </el-table-column>
                     </el-table>
                 </div>
             </el-tab-pane>
             <!-- <el-tab-pane label="价格资料" name="second">价格资料</el-tab-pane> -->
             <el-tab-pane label="商品详情描述" name="second">
                 <div class="components-container ueditor_c">
+                    <!-- <div class="info">UE编辑器示例<br>需要使用编辑器时，调用UE公共组件即可。可设置填充内容defaultMsg，配置信息config(宽度和高度等)，可调用组件中获取内容的方法。</div> -->
+                    <!-- <button @click="getUEContent()">获取内容</button> -->
                     <div class="editor-container">
                         <UE :defaultMsg="defaultMsg" :config="config" ref="ue"></UE>
                     </div>
@@ -96,10 +138,6 @@
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             <el-button @click="closeTag">取消</el-button>
         </div>
-
-        <el-dialog :visible.sync="dialogVisible">
-            <img width="100%" :src="dialogImageUrl" alt="">
-        </el-dialog>
     </div>
 </template>
 
@@ -110,13 +148,11 @@
     import UE from '../../../index/ue.vue';
 
     export default {
-        name:'productaddorupdate',
+        name:'productadd',
         store,
         components: {UE},
         data(){
             return{
-                detailData:null,
-                updataData:null,
                 activeName:'first',
                 myform:{
                     goodsName:null,
@@ -138,8 +174,6 @@
                 },
                 isDisable:false,
 
-                tableData:[],
-
                 page:1,//默认为第一页
                 limit:20,//默认为20行
 
@@ -153,10 +187,8 @@
                 brandsData:null,
                 specsData:null,
 
-                fileList:[
-                    {id:1,imgURL:'../../../../../static/img/timg.jpg'}
-                ],
-                imgshow:false,
+                fileList:[],
+                imageList:[],
 
                 dialogVisible:false,
                 dialogImageUrl:'',
@@ -167,8 +199,9 @@
                     initialFrameHeight: 500
                 },
 
-                tableData1:[{sign:'spec1', spec_name:'', spec_value:[], options:[]}],
+                specHeadData:[{sign:'spec1', spec_name:'', spec_value:[], options:[]}],
                 tableData: [{index:0,imgfile:'',spec1:'',barcode: '',erpDocking: ''}],
+                // key: 0, // table key
                 formThead: [], // 默认表头 Default header
                 firstID:1,
                 addHeadbtn:true,
@@ -177,18 +210,10 @@
                 options: [],
 
                 currentrow:null,
-                doUpload:this.$store.state.defaultHttp + 'previewAvatar.do?cId=' + this.$store.state.iscId,
+                doUpload:this.$store.state.defaultHttp + 'goods/masterGraph.do?cId=' + this.$store.state.iscId,
+
+
             }
-        },
-        watch: {
-            checkboxVal(valArr) {
-                this.tableData.forEach(el => {
-                    console.log(el)
-                });
-            },
-        },
-        activated(){
-            this.loadData()
         },
         mounted(){
             this.loadData()
@@ -197,25 +222,8 @@
         // JSON.parse(JSON.stringify(data))
         methods:{
             loadData(){
-                const _this = this
-                let qs = require('querystring')
-                this.detailData = this.$store.state.productdetailsData.submitData
-                let data = {}
-                data.goodsId = this.detailData.id
-
-                axios({
-                    method: 'post',
-                    url: _this.$store.state.defaultHttp+'goods/searchByGoodsId.do?cId='+_this.$store.state.iscId,
-                    data:qs.stringify(data)
-                }).then(function(res){
-                    _this.updataData = res.data
-                    _this.myform = res.data.goods
-                    _this.tableData1 = res.data.goodsSpec
-                    _this.tableData = res.data.itemList
-                    _this.$options.methods.loadHead.bind(_this)()
-                }).catch(function(err){
-                    // console.log(err);
-                });
+                let productaddOrUpdateData = this.$store.state.productaddOrUpdateData
+                this.myform = productaddOrUpdateData.setForm
             },
             loadother(){
                 const _this = this
@@ -251,23 +259,56 @@
                     // console.log(err);
                 });
             },
-            showImg(e,val){
-                this.dialogImageUrl = '../../../../../static/img/timg.jpg'
-                this.dialogVisible = true
-            },
-            handleRemove(file, fileList) {
-                console.log(file, fileList);
-            },
-            handlePictureCardPreview(file) {
-                this.dialogImageUrl = file.url;
-                this.dialogVisible = true;
-            },
 
             loadHead(){
                 this.formThead = []
-                this.tableData1.forEach(el => {
+                this.specHeadData.forEach(el => {
                     this.formThead.push({label:el.spec_name,value:el.sign})
                 });
+            },
+            DelId(e){
+                this.addHeadbtn = true
+                if(e.sign == 'spec1'){
+                    this.$message('该行不可删除')
+                }else{
+                    this.specHeadData.forEach((el,i) => {
+                        if(el.sign == e.sign){
+                            this.specHeadData.splice(i,1)
+                        }
+                    });
+                }
+                if(this.specHeadData.length == 2){
+                    this.specHeadData[1].sign = 'spec2'
+                }
+                this.$options.methods.loadHead.bind(this)()
+            },
+            Delrow(e){
+                console.log(e)
+                if(this.tableData.length == 1){
+                    this.$message('该行不可删除')
+                }else{
+                    this.tableData.forEach((el,i) => {
+                        if(el.index == e.index){
+                            this.tableData.splice(i,1)
+                        }
+                    });
+                }
+            },
+            AddId(){
+                var a2 = {sign:'spec2', spec_name:'', spec_value:[], options:[]}
+                var a3 = {sign:'spec3', spec_name:'', spec_value:[], options:[]}
+                // this.firstID = this.firstID+1
+                // this.specHeadData.push({id:'spec'+this.firstID, spec_name:'', spec_value:[], options:[]})
+                this.specHeadData.forEach((el,i) => {
+                    if(this.specHeadData.length == 1){
+                        this.specHeadData.push(a2)
+                    }else if(this.specHeadData.length == 2){
+                        this.specHeadData.push(a3)
+                    }
+                });
+                if(this.specHeadData.length == 3){
+                    this.addHeadbtn = false
+                }
             },
             changeLabel(e){
                 let aa = []
@@ -276,7 +317,7 @@
                 this.specsData.forEach(a => {
                     if(a.specName == e){
                         aa = a.specValue
-                        this.tableData1.forEach(b => {
+                        this.specHeadData.forEach(b => {
                             if(b.spec_name == e){
                                 b.spec_value = aa
                                 b.options = aa
@@ -286,6 +327,41 @@
                 });
                 this.$options.methods.loadHead.bind(this)()
             },
+            batchGeneration(){
+                let arr = this.specHeadData
+                this.tableData = []
+
+                if(arr.length == 1){
+                    let a = arr[0]
+                    for(let i = 0;i < a.spec_value.length; i ++){
+                        this.tableData.push({imgfile:'',spec1:a.spec_value[i],sname1:a.spec_name,barcode: '',erpDocking: '',})
+                    }
+                }
+                if(arr.length == 2){
+                    let a = arr[0]
+                    let b = arr[1]
+                    for(let i = 0; i < a.spec_value.length; i ++){
+                        for(let j = 0; j < b.spec_value.length; j ++){
+                            this.tableData.push({imgfile:'',spec1:a.spec_value[i], spec2:b.spec_value[j], sname1:a.spec_name, sname2:b.spec_name, barcode: '',erpDocking: '',})
+                        }
+                    }
+                }
+                if(arr.length == 3){
+                    let a = arr[0]
+                    let b = arr[1]
+                    let c = arr[2]
+                    for(let i = 0; i < a.spec_value.length; i ++){
+                        for(let j = 0; j < b.spec_value.length; j ++){
+                            for(let k = 0; k < c.spec_value.length; k ++){
+                            this.tableData.push({imgfile:'',spec1:a.spec_value[i], spec2:b.spec_value[j], spec3:c.spec_value[k], sname1:a.spec_name, sname2:b.spec_name, sname3:c.spec_name, barcode: '', erpDocking: '',})
+                            }
+                        }
+                    }
+                }
+
+                console.log(this.specHeadData)
+                this.$options.methods.pushIndex.bind(this)()
+            },
             pushIndex(){
                 let arr = this.tableData
                 arr.forEach((el,i) => {
@@ -294,6 +370,46 @@
             },
             handleCurrentChange(row){
                 this.currentrow = row
+            },
+            handleRemove(file, fileList) {
+                this.imageList.forEach((el,i) => {
+                    if(el.name == file.name){
+                        this.imageList.splice(i,1)
+                    }
+                });
+            },
+            handlePictureCardPreview(file) {
+                this.dialogImageUrl = file.url;
+                this.dialogVisible = true;
+            },
+            onSuccess(res,file,fileList){
+                this.imageList = []
+                fileList.forEach(el => {
+                    this.imageList.push({name:el.name,value:el.response})
+                });
+            },
+            handleAvatarSuccess(res, file) {
+                // console.log(res,file)
+                this.tableData.forEach(el => {
+                    if(el.index == this.currentrow.index){
+                        el.imgfile = URL.createObjectURL(file.raw)
+                        el.image = res
+                    }
+                });
+            },
+            beforeUploadimg(file) {
+                const extension = file.name.split('.')[1] === 'jpg'
+                const extension2 = file.name.split('.')[1] === 'png'
+                const extension3 = file.name.split('.')[1] === 'jpeg'
+                const isLt500k = file.size / 1024 / 1024 < 0.5
+                if (!extension && !extension2 && !extension3) {
+                    this.$message.warning('图片只能是 jpg、png、jpeg格式!')
+                    return
+                }
+                if (!isLt500k) {
+                    this.$message.warning('图片大小不能超过 500KB!')
+                    return
+                }
             },
             onSubmit(){
                 const _this = this
@@ -316,7 +432,7 @@
                     "label" : this.myform.label,
                 }
 
-                data.goodsDesc = {"introduction" : content}
+                data.goodsDesc = {"introduction": content,"itemImages":JSON.stringify(this.imageList)}
 
                 // itemList
                 this.tableData.forEach(el => {
@@ -330,42 +446,52 @@
                     delete obj['key1']
                     delete obj['key2']
                     delete obj['key3']
-                    data.itemList.push({"image":el.imgfile, "erpDocking":el.erpDocking, "barcode":el.barcode, "spec1":el.spec1, "spec2":el.spec2, "spec3":el.spec3, "spec":JSON.stringify(obj)})
+                    data.itemList.push({"image":el.image, "erpDocking":el.erpDocking, "barcode":el.barcode, "spec1":el.spec1, "spec2":el.spec2, "spec3":el.spec3, "sname1":el.sname1, "sname2":el.sname2, "sname3":el.sname3, "spec":JSON.stringify(obj)})
                 });
 
-                this.tableData1.forEach(item => {
+                this.specHeadData.forEach(item => {
                     data.goodsSpec.push({"sign":item.sign,"spec_name":item.spec_name,"spec_value":item.spec_value,"options":item.options})
                 });
+
+                this.isDisable = true
 
                 axios({
                     method: 'post',
                     url: _this.$store.state.defaultHttp+'goods/add.do?cId='+_this.$store.state.iscId,
                     data:data
                 }).then(function(res){
-                    _this.$message({
-                        message: '添加成功',
-                        type:'success'
-                    })
+                    if(res.data.code && res.data.code == '200'){
+                        _this.$message({
+                            message: '添加成功',
+                            type:'success'
+                        })
+                        _this.closeTag();
+                    }else{
+                        _this.$message({
+                            message: res.data.msg,
+                            type:'error'
+                        })
+                    }
+                    _this.isDisable = false
                 }).catch(function(err){
-                    // console.log(err);
+                    _this.$message.error("提交失败，请重新提交");
                 });
             },
             closeTag(){
-                // let ww = '1212'
-                // let a = {abc:ww,def:'3232',jkl:'5656'}
-                // let key = 'yyy';
-                // let obj = {key:ww,def:'3232',jkl:'5656'}
-                // obj[key] = obj['key']
-                // delete obj['key']
-                // console.log(obj)
-                var a = {"name":"LeonWu","age":"18"}
-                var b = '{"name":"yangyi","age":"18"}'
-                var c = {"name":"shazi","age":"18","fileList":['../../../../../static/img/index.jpg','../../../../../static/img/1.jpg'],}
-                
-                // console.log(qs.stringify(a))
-                // console.log(JSON.parse(b))
-                // console.log(JSON.stringify(c))
-                console.log(JSON.parse(c))
+                let tagsList = this.$store.state.tagsList;
+                let index;
+                tagsList.forEach((element, i) => {
+                    if(element.name == this.$options.name) {
+                        index = i;
+                    }
+                });
+                const delItem = this.$store.state.tagsList.splice(index, 1)[0];
+                const item = this.$store.state.tagsList[index] ? this.$store.state.tagsList[index] : this.$store.state.tagsList[index - 1];
+                if (item) {
+                    delItem.path === this.$route.fullPath && this.$router.push('/product');
+                }else{
+                    this.$router.push('/welcome');
+                }
             },
         },
     }
@@ -410,7 +536,6 @@
     }
     .first_bottom{
         width: 100%;
-        min-height: 160px;
         margin-bottom: 10px;
         background-color: #fdfeff;
         padding-bottom: 10px;

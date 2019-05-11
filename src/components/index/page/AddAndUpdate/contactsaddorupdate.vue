@@ -306,7 +306,15 @@
                 let createForm = _this.contaddOrUpdateData.createForm;
                 let flag = false;
                 createForm.forEach(item => {
-                    subData[item.inputModel] = _this.myForm[item.inputModel];
+                    let reg = /^([a-zA-Z]|[0-9])(\w|\-)+@[a-zA-Z0-9]+\.([a-zA-Z]{2,4})$/
+                    subData[item.inputModel] = _this.myForm[item.inputModel]
+                    if(item.inputModel == "email" && !reg.test(subData.email)) {
+                        _this.$message({
+                            message: "邮箱格式不正确",
+                            type: 'error'
+                        });
+                        flag = true;
+                    }
                     if(item.inputModel == "name" && !subData[item.inputModel]) {
                         _this.$message({
                             message: "联系人名称不能为空",
@@ -429,7 +437,7 @@
         margin: 20px 60px;
     }
     .myForm {
-        width: 41%;;
+        width: 41%;
         /* padding: 20px; */
         float: left;
     }
