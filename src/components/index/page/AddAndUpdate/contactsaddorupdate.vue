@@ -381,7 +381,7 @@
                 if (item) {
                     delItem.path === this.$route.fullPath && this.$router.push('/contacts');
                 }else{
-                    this.$router.push('/welcome');
+                    this.$router.push('/index');
                 }
             },
             //获取table的索引和行数据，当该行被点击时，将公司名称地址填充到表单

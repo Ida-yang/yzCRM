@@ -1,0 +1,464 @@
+<template>
+    <div class="orderadd_c">
+        <el-card class="box-card">
+            <div slot="header" class="clearfix">
+                <span style="font-weight:bold">销售订单</span>
+            </div>
+            <div class="orderHead">
+                <el-form :inline="true" ref="myform" :model="myform" :rules="rules">
+                    <el-form-item class="first_input" label="公司名称" label-width="90px">
+                        <el-select v-model="myform.customerpoolId" placeholder="请选择公司名称" class="inputbox" filterable @change="selectCustomer">
+                            <el-option v-for="item in customerList" :key="item.id" :label="item.pName" :value="item.id"></el-option>
+                        </el-select>
+                    </el-form-item>
+                    <el-form-item class="first_input" label="联系人" label-width="90px">
+                        <el-select v-model="myform.lianxiren" placeholder="请选择联系人" class="inputbox">
+                            <el-option v-for="item in contactsList" :key="item.id" :label="item.name" :value="item.id"></el-option>
+                        </el-select>
+                    </el-form-item>
+                    <el-form-item class="first_input" label="订单时间" label-width="90px">
+                        <el-date-picker v-model="myform.orderTime" type="date" placeholder="选择订单时间" format="yyyy-MM-dd" value-format="yyyy-MM-dd" class="inputbox"></el-date-picker>
+                    </el-form-item>
+                    <el-form-item class="first_input" label="结算方式" label-width="90px">
+                        <el-select v-model="myform.Settlement" placeholder="请选择结算方式" class="inputbox">
+                            <el-option v-for="item in settlementMethod" :key="item.id" :label="item.name" :value="item.id"></el-option>
+                        </el-select>
+                    </el-form-item>
+                    <el-form-item class="first_input" label="交货方式" label-width="90px">
+                        <el-select v-model="myform.deliveryMode" placeholder="请选择交货方式" class="inputbox">
+                            <el-option v-for="item in deliveryMethod" :key="item.id" :label="item.typeName" :value="item.id"></el-option>
+                        </el-select>
+                    </el-form-item>
+                    <el-form-item class="first_input" label="交货地址" label-width="90px">
+                        <el-input v-model="myform.deliveryAddress" class="inputbox"></el-input>
+                    </el-form-item>
+                    <el-form-item class="first_input" label="制单人" label-width="90px">
+                        <el-input v-model="myform.user" class="inputbox" :disabled="true"></el-input>
+                    </el-form-item>
+                    <el-form-item class="first_input" label="负责人" label-width="90px">
+                        <el-input v-model="myform.ascription" class="inputbox" :disabled="true"></el-input>
+                    </el-form-item>
+                    <el-form-item class="first_input" label="部门" label-width="90px">
+                        <el-input v-model="myform.department" class="inputbox" :disabled="true"></el-input>
+                    </el-form-item>
+                    <el-form-item class="first_input" label="机构" label-width="90px">
+                        <el-input v-model="myform.mechanism" class="inputbox" :disabled="true"></el-input>
+                    </el-form-item>
+                    <el-form-item class="first_input" label="备注" label-width="90px">
+                        <el-input v-model="myform.remarks" class="inputbox"></el-input>
+                    </el-form-item>
+                </el-form>
+            </div>
+        </el-card>
+        
+        <div class="entry">
+            <el-button class="btn info-btn" size="mini" icon="el-icon-circle-plus-outline" @click="handleAdd"></el-button>
+        </div>
+        <el-table v-loading="listLoading" :data="itemData" border fit highlight-current-row show-summary style="width: 100%">
+            <el-table-column header-align="center" align="center" type="index" min-width="45"></el-table-column>
+            <el-table-column prop="tbGoods.goodsName" width="180px" align="center" label="产品名称">
+                <template slot-scope="scope">
+                    <template v-if="scope.row.edit">
+                        <el-select v-model="scope.row.tbGoods.goodsName" placeholder="请选择" filterable :filter-method="handleFilter">
+                            <el-option class="droplist" :value="scope.row.tbGoods.goodsName">
+                                <el-table :data="selectData" border fit @current-change="handleChange" style="width: 100%">
+                                    <el-table-column header-align="center" align="center" type="index" min-width="45"></el-table-column>
+                                    <el-table-column prop="tbGoods.goodsName" label="产品名称" width="130"></el-table-column>
+                                    <el-table-column prop="tbGoods.describe" show-overflow-tooltip label="描述" width="150"></el-table-column>
+                                    <el-table-column prop="goodspec" label="规格属性" min-width="150">
+                                        <template slot-scope="scope">
+                                            <span v-for="(item,i) in scope.row.goodspec" :key="i">{{item.label + '：' + item.value}}</span>
+                                        </template>
+                                    </el-table-column>
+                                    <el-table-column prop="unit" label="单位" width="90">
+                                    </el-table-column>
+                                </el-table>
+                            </el-option>
+                            <el-button slot="append">%</el-button>
+                        </el-select>
+                    </template>
+                    <span v-else>{{ scope.row.tbGoods.goodsName }}</span>
+                </template>
+            </el-table-column>
+
+            <el-table-column prop="tbGoods.describe" width="120" align="center" label="描述">
+                <template slot-scope="scope">
+                    {{ scope.row.tbGoods.describe }}
+                </template>
+            </el-table-column>
+
+            <el-table-column prop="goodspec" min-width="150" label="规格属性">
+                <template slot-scope="scope">
+                    <span v-for="(item,i) in scope.row.goodspec" :key="i">{{item.label + '：' + item.value}}</span>
+                </template>
+            </el-table-column>
+
+            <el-table-column prop="unit" min-width="120" label="单位"></el-table-column>
+
+            <el-table-column prop="amount" min-width="120" label="数量">
+                <template slot-scope="scope">
+                    <template v-if="scope.row.edit">
+                        <el-input v-model="scope.row.amount" class="edit-input" size="small" @input="handleinput($event,scope.$index,scope.row)"/>
+                    </template>
+                    <span v-else>{{ scope.row.amount }}</span>
+                </template>
+            </el-table-column>
+
+            <el-table-column prop="unitPrice" min-width="120" label="单价">
+                <template slot-scope="scope">
+                    <template v-if="scope.row.edit">
+                        <el-input v-model="scope.row.unitPrice" class="edit-input" size="small" @input="handleinput($event,scope.$index,scope.row)"/>
+                    </template>
+                    <span v-else>{{ scope.row.unitPrice }}</span>
+                </template>
+            </el-table-column>
+
+            <el-table-column prop="amountOfMoney" min-width="120" label="金额">
+                <template slot-scope="scope">
+                    <template v-if="scope.row.edit">
+                        <el-input v-model="scope.row.amountOfMoney" class="edit-input" size="small" @input="handleinput($event,scope.$index,scope.row)"/>
+                    </template>
+                    <span v-else>{{ scope.row.amountOfMoney }}</span>
+                </template>
+            </el-table-column>
+
+            <el-table-column prop="discount" min-width="150" label="折扣">
+                <template slot-scope="scope">
+                    <template v-if="scope.row.edit">
+                        <el-input v-model="scope.row.discount" class="edit-input" size="small" @input="handleinput($event,scope.$index,scope.row)">
+                            <el-button slot="append">%</el-button>
+                        </el-input>
+                    </template>
+                    <span v-else-if="scope.row.discount">{{ scope.row.discount + ' %' }}</span>
+                </template>
+            </el-table-column>
+
+            <el-table-column prop="discountAmount" min-width="120" label="折扣额">
+                <template slot-scope="scope">
+                    <template v-if="scope.row.edit">
+                        <el-input v-model="scope.row.discountAmount" class="edit-input" size="small"/>
+                    </template>
+                    <span v-else>{{ scope.row.discountAmount }}</span>
+                </template>
+            </el-table-column>
+
+            <el-table-column prop="discountAfter" min-width="120" label="折后金额">
+                <template slot-scope="scope">
+                    <template v-if="scope.row.edit">
+                        <el-input v-model="scope.row.discountAfter" class="edit-input" size="small"/>
+                    </template>
+                    <span v-else>{{ scope.row.discountAfter }}</span>
+                </template>
+            </el-table-column>
+
+            <el-table-column prop="taxRate" min-width="150" label="税率">
+                <template slot-scope="scope">
+                    <template v-if="scope.row.edit">
+                        <el-input v-model="scope.row.taxRate" class="edit-input" size="small" @input="handleinput($event,scope.$index,scope.row)">
+                            <el-button slot="append">%</el-button>
+                        </el-input>
+                    </template>
+                    <span v-else>{{ scope.row.taxRate }}</span>
+                </template>
+            </el-table-column>
+
+            <el-table-column prop="taxAmount" min-width="120" label="税额">
+                <template slot-scope="scope">
+                    <template v-if="scope.row.edit">
+                        <el-input v-model="scope.row.taxAmount" class="edit-input" size="small"/>
+                    </template>
+                    <span v-else>{{ scope.row.taxAmount }}</span>
+                </template>
+            </el-table-column>
+
+            <el-table-column prop="taxAfter" min-width="120" label="税后金额">
+                <template slot-scope="scope">
+                    <template v-if="scope.row.edit">
+                        <el-input v-model="scope.row.taxAfter" class="edit-input" size="small"/>
+                    </template>
+                    <span v-else>{{ scope.row.taxAfter }}</span>
+                </template>
+            </el-table-column>
+
+            <el-table-column prop="deliveryDate" width="240" label="交货日期">
+                <template slot-scope="scope">
+                    <template v-if="scope.row.edit">
+                        <el-date-picker v-model="scope.row.deliveryDate" type="date" format="yyyy-MM-dd" value-format="yyyy-MM-dd" size="small"></el-date-picker>
+                    </template>
+                    <span v-else>{{ scope.row.deliveryDate }}</span>
+                </template>
+            </el-table-column>
+
+            <el-table-column prop="brand" min-width="120" label="产品品牌"></el-table-column>
+
+            <el-table-column align="center" label="Actions" width="120" fixed="right">
+                <template slot-scope="scope">
+                    <el-button v-if="scope.row.edit" type="success" plain size="mini" icon="el-icon-circle-check-outline" @click="confirmEdit(scope.row)"></el-button>
+                    <el-button v-else type="warning" plain size="mini" icon="el-icon-edit" @click="handleEdit(scope.$index,scope.row)"></el-button>
+                    <el-button type="danger" plain size="mini" icon="el-icon-delete" @click="handleDelete(scope.$index,scope.row)"></el-button>
+                </template>
+            </el-table-column>
+        </el-table>
+        <div class="submit_btn">
+            <el-button type="primary" :disabled="isDisable" @click="onSubmit" style="margin-right:100px;">立即提交</el-button>
+            <el-button @click="closeTag">取消</el-button>
+        </div>
+    </div>
+</template>
+
+<script>
+    
+    import store from '../../../../store/store'
+    import axios from 'axios'
+    import qs from 'qs'
+
+    export default {
+        name: 'name',
+        data() {
+            return {
+                list: null,
+                listLoading: true,
+                selectData:[],
+                options:[],
+                itemData:[
+                    {id:10,goodspec:{},unit:'',category:'',tbGoods:{  goodsName:'',  describe:'',},edit:false},
+                    {id:11,goodspec:{},unit:'',category:'',tbGoods:{  goodsName:'',  describe:'',},edit:false},
+                    {id:12,goodspec:{},unit:'',category:'',tbGoods:{  goodsName:'',  describe:'',},edit:false},
+                    {id:13,goodspec:{},unit:'',category:'',tbGoods:{  goodsName:'',  describe:'',},edit:false},
+                    {id:14,goodspec:{},unit:'',category:'',tbGoods:{  goodsName:'',  describe:'',},edit:false},
+                ],
+                scopeIndex:null,
+
+                myform:{
+                    customerpoolId:null,
+                    lianxiren:null,
+                    orderTime:null,
+                    Settlement:null,
+                    deliveryMode:null,
+                    deliveryAddress:null,
+                    user:this.$store.state.user,
+                    pId:this.$store.state.ispId,
+                    ascriptionId:null,
+                    ascription:null,
+                    department:null,
+                    mechanism:null,
+                    remarks:null,
+                },
+                rules:{
+                    approverid : [{ required: true, message: '审核人不能为空', trigger: 'blur' },],
+                    our_signatories : [{ required: true, message: '我方签约人不能为空', trigger: 'blur' },],
+                    signatories : [{ required: true, message: '客户签约人不能为空', trigger: 'blur' },],
+                },
+
+                
+                deliveryMethod:[],
+                customerList:[],
+                contactsList:[],
+                brandList:[],
+                settlementMethod:[
+                    {id:101,name:'现金'},
+                    {id:102,name:'发票'},
+                    {id:103,name:'银行卡'},
+                ],
+
+                customerId:null,
+
+                isDisable:false,
+            }
+        },
+        mounted() {
+            this.getList()
+            this.loadOther()
+        },
+        methods: {
+            getList() {
+                const _this = this
+                let qs = require('querystring')
+                let data = {}
+                data.page = 1
+                data.limit = 1000000
+                this.listLoading = true
+                
+                axios({
+                    method: 'post',
+                    url: _this.$store.state.defaultHttp+'goods/search.do?cId='+_this.$store.state.iscId,
+                    data:qs.stringify(data)
+                }).then(function(res){
+                    let items = res.data.map.goods
+                    _this.list = items.map(v => {
+                    _this.$set(v, 'edit', false) // https://vuejs.org/v2/guide/reactivity.html
+                    return v
+                    })
+                    items.forEach(element => {
+                    element.aaa = JSON.parse(element.spec)
+                    element.goodspec = []
+                    for(var key in element.aaa){
+                        if(key !== "null" && key !== "undefined"){
+                        element.goodspec.push({label:key,value:element.aaa[key]})
+                        }
+                    }
+                    });
+                    _this.listLoading = false
+                }).catch(function(err){
+                    // console.log(err);
+                });
+            },
+            loadOther(){
+                const _this = this
+                let qs = require('querystring')
+                let data = {}
+                data.type = '交货方式'
+                let searchList = {}
+                searchList.page = 1
+                searchList.limit = 10000000
+
+                axios({
+                    method: 'post',
+                    url: _this.$store.state.defaultHttp+'typeInfo/getTypeInfoGroupByType.do?cId='+_this.$store.state.iscId,
+                    data:qs.stringify(data)
+                }).then(function(res){
+                    _this.deliveryMethod = res.data
+                }).catch(function(err){
+                    // console.log(err);
+                });
+
+                axios({
+                    method: 'post',
+                    url: _this.$store.state.defaultHttp+'customerpool/query.do?cId='+_this.$store.state.iscId,
+                    data: qs.stringify(searchList),
+                }).then(function(res){
+                    _this.customerList = res.data.map.success
+                }).catch(function(err){
+                    // console.log(err);
+                });
+
+                axios({
+                    method: 'post',
+                    url: _this.$store.state.defaultHttp+'brand/selectBrandList.do?cId='+_this.$store.state.iscId,
+                    data:qs.stringify(searchList)
+                }).then(function(res){
+                    _this.brandList = res.data.map.brands
+                }).catch(function(err){
+                    // console.log(err);
+                });
+            },
+            loadContact(){
+                const _this = this
+                let qs = require('querystring')
+                let data = {}
+                data.customerpool_id = this.customerId
+
+                axios({
+                    method: 'post',
+                    url: _this.$store.state.defaultHttp+'getPoolContactsName.do?cId='+_this.$store.state.iscId,
+                    data: qs.stringify(data)
+                }).then(function(res){
+                    _this.contactsList = res.data.map.success
+                }).catch(function(err){
+                    // console.log(err);
+                });
+            },
+            selectCustomer(e){
+                this.customerId = e
+                this.customerList.forEach(el => {
+                    if(el.id == e){
+                        this.myform.ascriptionId = el.privateUser[0].private_id
+                        this.myform.ascription = el.privateUser[0].private_employee
+                        this.myform.department = el.deptname
+                        this.myform.mechanism = el.parentname
+                    }
+                });
+                this.$options.methods.loadContact.bind(this)()
+            },
+            handleAdd(){
+                this.itemData.push({id:10,goodspec:{},unit:'',category:'',tbGoods:{  goodsName:'',  describe:'',},edit:false})
+            },
+            handleEdit(index,row){
+                row.edit = !row.edit
+                this.scopeIndex = index
+            },
+            handleDelete(index,row){
+                this.itemData.forEach((el,i) => {
+                    if(i == index){
+                    this.itemData.splice(i,1)
+                    }
+                });
+            },
+            confirmEdit(row) {
+                row.edit = false
+                this.$message({
+                    message: 'The title has been edited',
+                    type: 'success'
+                })
+            },
+        
+            handleFilter(val){
+                // console.log(val)
+                this.selectData = []
+                this.list.forEach(el => {
+                    if(el.tbGoods.goodsName.indexOf(val) != -1){
+                    this.selectData.push(el)
+                    }
+                });
+            },
+            handleChange(e){
+                this.itemData.forEach((el,i) => {
+                    if(i == this.scopeIndex){
+                        if(e){
+                            e.edit = true
+                            this.itemData.splice(i,1,e)
+                        }
+                    }
+                });
+            },
+            handleinput(e,index,row){
+                if(row.amount && row.unitPrice){
+                    let z = parseInt(row.amount) * parseInt(row.unitPrice)
+                    row.amountOfMoney = z.toString()
+                }
+                if(row.amountOfMoney && row.discount){
+                    let a = parseInt(row.amountOfMoney) * parseInt(row.discount) / 100
+                    let b = parseInt(row.amountOfMoney) - a
+                    row.discountAmount = b.toString()
+                    row.discountAfter = a.toString()
+                    // console.log(row.discountAmount,row.discountAfter)
+                }
+                if(row.amountOfMoney && row.taxRate){
+                    if(row.discountAfter){
+                        let x = parseInt(row.discountAfter) * parseInt(row.taxRate) / 100
+                        let y = parseInt(row.discountAfter) - x
+                        row.taxAmount = x.toString()
+                        row.taxAfter = y.toString()
+                    }else{
+                        let c = parseInt(row.amountOfMoney) * parseInt(row.taxRate) / 100
+                        let d = parseInt(row.amountOfMoney) - c
+                        row.taxAmount = c.toString()
+                        row.taxAfter = d.toString()
+                    }
+                }
+            },
+            onSubmit(){
+                console.log(this.myform)
+                console.log(this.itemData)
+            },
+            closeTag(){},
+        }
+    }
+</script>
+
+<style>
+    .orderadd_c{
+        padding-bottom: 60px;
+        box-sizing: border-box;
+    }
+    .cancel-btn {
+        position: absolute;
+        right: 15px;
+        top: 10px;
+    }
+    .droplist{
+        height: auto
+    }
+</style>
+
+

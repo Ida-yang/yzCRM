@@ -129,7 +129,7 @@ export default {
                     _this.$store.commit('roleid',userData.roleid)
                     _this.$store.commit('insid',userData.private_deptid)
                     _this.$store.commit('portrait',userData.imgUrl)
-                    _this.$router.push({path:'/welcome'})
+                    _this.$router.push({path:'/index'})
                     _this.getData()
                 }else {
                     _this.$message({

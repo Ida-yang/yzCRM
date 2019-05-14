@@ -37,7 +37,7 @@ const router =new Router({
           meta: { title: '首页' ,requireAuth:true}
         },
         {
-          path: '/welcome',
+          path: '/index',
           component: resolve => require(['../components/index/page/welcome.vue'], resolve),
           meta: { title: '首页' ,requireAuth:true}
         },
@@ -230,6 +230,11 @@ const router =new Router({
           path: '/order',
           component: resolve => require(['../components/index/page/order/order.vue'], resolve),
           meta: { title: '订单',name:'order',requireAuth:true}
+        },
+        {
+          path: '/orderaddorupdate',
+          component: resolve => require(['../components/index/page/AddAndUpdate/orderaddorupdate.vue'], resolve),
+          meta: { title: '编辑订单',requireAuth:true}
         },
         {
           path: '/name',

@@ -50,14 +50,14 @@
                 if (item) {
                     delItem.path === this.$route.fullPath && this.$router.push(item.path);
                 }else{
-                    this.$router.push('/welcome');
+                    this.$router.push('/index');
                 }
                 this.$store.state.tagsList = this.tagsList;
             },
             // 关闭全部标签
             closeAll(){
                 this.tagsList = [];
-                this.$router.push('/welcome');
+                this.$router.push('/index');
                 this.$store.state.tagsList = this.tagsList;
             },
             // 关闭其他标签

@@ -486,7 +486,7 @@
                 if (item) {
                     delItem.path === this.$route.fullPath && this.$router.push('/agreement');
                 }else{
-                    this.$router.push('/welcome');
+                    this.$router.push('/index');
                 }
             },
         }

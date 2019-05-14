@@ -360,7 +360,7 @@
                             type:'error'
                         })
                     }else{
-                        _this.$router.push({ path: '/clueaddorupdate' });
+                        _this.$router.push({ path: '/orderaddorupdate' });
                     }
                 }).catch(function(err){
                     // console.log(err);

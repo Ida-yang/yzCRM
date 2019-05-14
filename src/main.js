@@ -114,7 +114,7 @@ router.beforeEach((to, from, next) => {
         }).then(function(res){
           if(res.data.msg && res.data.msg == 'error'){
             Vue.prototype.$message.error('对不起，您没有该权限，请联系管理员开通')
-            next({path:'/welcome'})
+            next({path:'/index'})
           }else{
             next()
           }
@@ -126,7 +126,7 @@ router.beforeEach((to, from, next) => {
         }).then(function(res){
           if(res.data.msg && res.data.msg == 'error'){
             Vue.prototype.$message.error('对不起，您没有该权限，请联系管理员开通')
-            next({path:'/welcome'})
+            next({path:'/index'})
           }else{
             next()
           }
@@ -138,7 +138,7 @@ router.beforeEach((to, from, next) => {
         }).then(function(res){
           if(res.data.msg && res.data.msg == 'error'){
             Vue.prototype.$message.error('对不起，您没有该权限，请联系管理员开通')
-            next({path:'/welcome'})
+            next({path:'/index'})
           }else{
             next()
           }
@@ -150,7 +150,7 @@ router.beforeEach((to, from, next) => {
         }).then(function(res){
           if(res.data.msg && res.data.msg == 'error'){
             Vue.prototype.$message.error('对不起，您没有该权限，请联系管理员开通')
-            next({path:'/welcome'})
+            next({path:'/index'})
           }else{
             next()
           }
@@ -162,7 +162,7 @@ router.beforeEach((to, from, next) => {
         }).then(function(res){
           if(res.data.msg && res.data.msg == 'error'){
             Vue.prototype.$message.error('对不起，您没有该权限，请联系管理员开通')
-            next({path:'/welcome'})
+            next({path:'/index'})
           }else{
             next()
           }

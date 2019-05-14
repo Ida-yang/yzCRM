@@ -289,7 +289,7 @@ export default {
             if (item) {
                 delItem.path === this.$route.fullPath && this.$router.push('/missionplan');
             }else{
-                this.$router.push('/welcome');
+                this.$router.push('/index');
             }
         },
     },

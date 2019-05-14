@@ -1007,7 +1007,7 @@
                 if (item) {
                     delItem.path === this.$route.fullPath && this.$router.push('/clue');
                 }else{
-                    this.$router.push('/welcome');
+                    this.$router.push('/index');
                 }
             },
             handleSizeChange(val) {

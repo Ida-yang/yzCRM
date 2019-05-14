@@ -5,9 +5,11 @@ Vue.use(Vuex)
 /*配置全局数据*/
 const state = {
   //配置访问地址
-  defaultHttp: 'http://crm.yunzoe.com/yzcrm/', //线上服务器
-  systemHttp: 'http://crm.yunzoe.com/', //线上服务器
+  // defaultHttp: 'http://crm.yunzoe.com/yzcrm/', //线上服务器
+  // systemHttp: 'http://crm.yunzoe.com/', //线上服务器
   // defaultHttp:'http://192.168.1.105:8080/', //测试服务器
+  defaultHttp:'http://crm2019.yunzoe.com/yzcrm/', //测试服务器
+  systemHttp:'http://crm2019.yunzoe.com/', //测试服务器
 
   //作者
   author:'Ida',

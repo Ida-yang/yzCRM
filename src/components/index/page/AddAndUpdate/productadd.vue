@@ -134,8 +134,7 @@
             </el-tab-pane>
         </el-tabs>
         <div class="submit_btn">
-            <el-button type="primary" :disabled="isDisable" @click="onSubmit">立即提交</el-button>
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <el-button type="primary" :disabled="isDisable" @click="onSubmit" style="margin-right:100px;">立即提交</el-button>
             <el-button @click="closeTag">取消</el-button>
         </div>
     </div>
@@ -490,7 +489,7 @@
                 if (item) {
                     delItem.path === this.$route.fullPath && this.$router.push('/product');
                 }else{
-                    this.$router.push('/welcome');
+                    this.$router.push('/index');
                 }
             },
         },
@@ -500,89 +499,6 @@
 <style>
     .add_c{
         width: 100%;
-    }
-    .first_c{
-        width: 100%;
-        padding-bottom: 50px;
-        box-sizing: border-box;
-        background-color: #f0f0f0;
-    }
-    .first_top{
-        width: 100%;
-        display: flex;
-        margin-bottom: 10px;
-        background-color: #fdfeff;
-    }
-    .first_left{
-        width: calc(100% - 300px);
-        padding: 20px;
-        /* background-color: #c5b3b3; */
-    }
-    .first_left .first_input{
-        width: calc(50% - 20px);
-    }
-    .first_left .el-form-item__content{
-        width: calc(100% - 100px);
-    }
-    .first_input .inputbox{
-        width: calc(100% - 20px);
-    }
-    .first_right{
-        width: 350px;
-        /* background-color: #b3c5bb; */
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-    .first_bottom{
-        width: 100%;
-        margin-bottom: 10px;
-        background-color: #fdfeff;
-        padding-bottom: 10px;
-        box-sizing: border-box
-    }
-    .pro_title{
-        padding: 10px 0 0 10px;
-        font-weight: 500;
-        color: #409EFF
-    }
-    .submit_btn{
-        width: 100%;
-        height: 60px;
-        position: fixed;
-        bottom: 0;
-        background-color: #fdfeff;
-        border-top: 1px solid #e4e7ed;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-    .ueditor_c{
-        margin: 20px;
-    }
-    .spec_select{
-        padding: 10px 20px;
-        box-sizing: border-box
-    }
-    .uploadproImg{
-        padding: 20px;
-        box-sizing: border-box
-    }
-    .uploadproImg .el-upload--picture-card{
-        background-color:#ffffff;
-        width: 100px;
-        height: 100px;
-        line-height:100px;
-    }
-    .uploadproImg .el-upload--picture-card i{
-        font-size: 18px;
-    }
-    .uploadproImg .el-upload-list--picture-card .el-upload-list__item{
-        width: 100px;
-        height: 100px;
-    }
-    .uploadproImg .el-progress{
-        stroke-width: 90px;
     }
 </style>
 
