@@ -764,12 +764,12 @@
     .formitemclue:nth-child(11),.formitemclue:nth-child(10){
         margin: 0;
     }
-    .cityseat{
+    .formitemclue .cityseat{
         position: absolute;
         top:-52px;
         left:30%;
     }
-    .areaseat{
+    .formitemclue .areaseat{
         position: absolute;
         top:-52px;
         left:60%;

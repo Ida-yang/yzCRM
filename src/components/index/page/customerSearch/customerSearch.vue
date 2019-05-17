@@ -221,6 +221,10 @@
                     label="手机"
                     width="110"
                     sortable>
+                    <template slot-scope="scope">
+                        <!-- {{scope.row.phoneId}} -->
+                        {{scope.row.phoneId | toTel}}
+                    </template>
                 </el-table-column>
                 <el-table-column
                     prop="telephoneId"
@@ -336,6 +340,15 @@
             tableNumber(){
                return store.state.customerListnumber;     
             },
+        },
+        filters: {
+            toTel(value) {
+                if(value){
+                    let start = value.slice(0, 3)
+                    let end = value.slice(-4)
+                    return `${start}****${end}`
+                }
+            }
         },
         components:{
             vSearch

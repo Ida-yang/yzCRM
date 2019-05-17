@@ -37,7 +37,7 @@
                                 <span style="font-size:12px;color:#666666;line-height:25px">跟踪时间</span><br>
                                 <span style="font-size:14px;color:#333333;line-height:20px">{{auxList.trackProportion}}%</span>
                             </p>
-                            <el-progress type="circle" :percentage="a" :width="34" :stroke-width="5" :show-text="false"></el-progress>
+                            <el-progress type="circle" :percentage="aaa" :width="34" :stroke-width="5" :show-text="false"></el-progress>
                         </div>
                     </div>
                     <div class="aux_ul">
@@ -47,7 +47,7 @@
                                 <span style="font-size:12px;color:#666666;line-height:25px">剩余天数</span><br>
                                 <span style="font-size:14px;color:#333333;line-height:20px">{{auxList.surplusProportion}}%</span>
                             </p>
-                            <el-progress type="circle" :percentage="b" :width="34" :stroke-width="5" :show-text="false"></el-progress>
+                            <el-progress type="circle" :percentage="bbb" :width="34" :stroke-width="5" :show-text="false"></el-progress>
                         </div>
                     </div>
                     <div class="aux_ul">
@@ -57,7 +57,7 @@
                                 <span style="font-size:12px;color:#666666;line-height:25px">成功率</span><br>
                                 <span style="font-size:14px;color:#333333;line-height:20px">{{auxList.step_probability}}%</span>
                             </p>
-                            <el-progress type="circle" :percentage="c" :width="34" :stroke-width="5" :show-text="false"></el-progress>
+                            <el-progress type="circle" :percentage="ccc" :width="34" :stroke-width="5" :show-text="false"></el-progress>
                         </div>
                     </div>
                     <div class="aux_ul">
@@ -67,7 +67,7 @@
                                 <span style="font-size:12px;color:#666666;line-height:25px">竞争对手</span><br>
                                 <span style="font-size:14px;color:#333333;line-height:20px">{{auxList.competitorProportion}}%</span>
                             </p>
-                            <el-progress type="circle" :percentage="d" :width="34" :stroke-width="5" :show-text="false"></el-progress>
+                            <el-progress type="circle" :percentage="ddd" :width="34" :stroke-width="5" :show-text="false"></el-progress>
                         </div>
                     </div>
                     <div class="aux_ul">
@@ -77,7 +77,7 @@
                                 <span style="font-size:12px;color:#666666;line-height:25px">联系次数</span><br>
                                 <span style="font-size:14px;color:#333333;line-height:20px">{{auxList.numProportion}}%</span>
                             </p>
-                            <el-progress type="circle" :percentage="f" :width="34" :stroke-width="5" :show-text="false"></el-progress>
+                            <el-progress type="circle" :percentage="fff" :width="34" :stroke-width="5" :show-text="false"></el-progress>
                         </div>
                     </div>
                     <div class="aux_ul">
@@ -87,7 +87,7 @@
                                 <span style="font-size:12px;color:#666666;line-height:25px">关键联系人</span><br>
                                 <span style="font-size:14px;color:#333333;line-height:20px">{{auxList.contactsProportion}}%</span>
                             </p>
-                            <el-progress type="circle" :percentage="g" :width="34" :stroke-width="5" :show-text="false"></el-progress>
+                            <el-progress type="circle" :percentage="ggg" :width="34" :stroke-width="5" :show-text="false"></el-progress>
                         </div>
                     </div>
                 </div>
@@ -370,12 +370,12 @@
                 contactData:[],
                 competitorData:[],
                 
-                a:0,
-                b:0,
-                c:0,
-                d:0,
-                f:0,
-                g:0,
+                aaa:0,
+                bbb:0,
+                ccc:0,
+                ddd:0,
+                fff:0,
+                ggg:0,
             }
         },
         // mounted(){
@@ -425,6 +425,7 @@
                     _this.stepList.length = _this.opportunitydetail.addstep.length - 1
                     _this.addstep = _this.opportunitydetail.opportunityProgress
                     let addStep = _this.addstep
+                    console.log(addStep)
                     if(addStep){
                         for(var i = 0,length = addStep.length;i < length;i++){
                             _this.stepList[i].createTime = addStep[i].createTime
@@ -451,13 +452,24 @@
                                 _this.isprocess = 'process'
                             }
                             if(i !== 0){
-                                let begintime = new Date(addStep[i].previousTime.replace(/-/g, "/"))
-                                let endtime = new Date(addStep[i].createTime.replace(/-/g, "/"))
-                                _this.showcreate = true
-                                _this.showdurate = true
-                                let dateDiff = endtime.getTime() - begintime.getTime();
-                                let dayDiff = Math.floor(dateDiff / (24 * 3600 * 1000));
-                                _this.stepList[i].duration = '历时：' + dayDiff + '天'
+                                // let begintime = new Date(addStep[i].previousTime.replace(/-/g, "/"))
+                                // let endtime = new Date(addStep[i].createTime.replace(/-/g, "/"))
+                                // _this.showcreate = true
+                                // _this.showdurate = true
+                                // let dateDiff = endtime.getTime() - begintime.getTime();
+                                // let dayDiff = Math.floor(dateDiff / (24 * 3600 * 1000));
+                                if(addStep[i].previousTime){
+                                    let arr = addStep[i].previousTime.split(" ");
+                                    let arr2 = addStep[i].createTime.split(" ");
+                                    let begintime = new Date(arr[0].replace(/-/g, "/"))
+                                    let endtime = new Date(arr2[0].replace(/-/g, "/"))
+                                    _this.showcreate = true
+                                    _this.showdurate = true
+                                    let dateDiff = endtime.getTime() - begintime.getTime();
+                                    let dayDiff = Math.floor(dateDiff / (24 * 3600 * 1000));
+                                    console.log(dayDiff)
+                                    _this.stepList[i].duration = '历时：' + dayDiff + '天'
+                                }
                             }else{
                                 _this.showdurate = false
                                 _this.showcreate = true
@@ -474,12 +486,12 @@
                     url: _this.$store.state.defaultHttp+'opportunity/opportunityAnalysis.do?cId='+_this.$store.state.iscId+'&opportunity_id='+_this.idArr.opportunity_id,
                 }).then(function(res){
                     _this.auxList = res.data.map.opportunity
-                    _this.a = parseFloat(_this.auxList.trackProportion)
-                    _this.b = parseFloat(_this.auxList.surplusProportion)
-                    _this.c = parseFloat(_this.auxList.step_probability)
-                    _this.d = parseFloat(_this.auxList.competitorProportion)
-                    _this.f = parseFloat(_this.auxList.numProportion)
-                    _this.g = parseFloat(_this.auxList.contactsProportion)
+                    _this.aaa = parseFloat(_this.auxList.trackProportion)
+                    _this.bbb = parseFloat(_this.auxList.surplusProportion)
+                    _this.ccc = parseFloat(_this.auxList.step_probability)
+                    _this.ddd = parseFloat(_this.auxList.competitorProportion)
+                    _this.fff = parseFloat(_this.auxList.numProportion)
+                    _this.ggg = parseFloat(_this.auxList.contactsProportion)
                 }).catch(function(err){
                     // console.log(err);
                 });

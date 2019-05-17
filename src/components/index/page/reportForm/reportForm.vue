@@ -6,7 +6,7 @@
         </div>
         <div class="middles">
             <div class="middlebody">
-                <div id="chart3" :style="{width: '500px', height: '400px'}"></div>
+                <div id="chart203" :style="{width: '500px', height: '400px'}"></div>
             </div>
             <div class="middlebody">
                 <el-table
@@ -48,7 +48,7 @@
         </div>
         <div class="middles">
             <div class="middlebody">
-                <div id="chart4" :style="{width: '500px', height: '400px'}"></div>
+                <div id="chart204" :style="{width: '500px', height: '400px'}"></div>
             </div>
             <div class="middlebody">
                 <el-table
@@ -81,7 +81,7 @@
         </div>
         <div class="middles">
             <div class="middlebody">
-                <div id="chart1" :style="{width: '500px', height: '400px'}"></div>
+                <div id="chart201" :style="{width: '500px', height: '400px'}"></div>
             </div>
             <div class="middlebody">
                 <el-table
@@ -114,7 +114,7 @@
         </div>
         <div class="middles">
             <div class="middlebody">
-                <div id="chart2" :style="{width: '500px', height: '400px'}"></div>
+                <div id="chart202" :style="{width: '500px', height: '400px'}"></div>
             </div>
             <div class="middlebody">
                 <el-table
@@ -341,10 +341,10 @@
             },
             drawLine1(){
                 // 基于准备好的dom，初始化echarts实例
-                let chart1 = echarts.init(document.getElementById('chart1'))
+                let chart201 = echarts.init(document.getElementById('chart201'))
                 // 绘制图表
                 //公司规模分析
-                chart1.setOption({
+                chart201.setOption({
                     title: { text: '公司规模分析',left: 'center' },
                     tooltip: {
                         trigger: 'item',
@@ -380,10 +380,10 @@
             },
             drawLine2(){
                 // 基于准备好的dom，初始化echarts实例
-                let chart2 = echarts.init(document.getElementById('chart2'))
+                let chart202 = echarts.init(document.getElementById('chart202'))
                 // 绘制图表
                 //成立年限分析
-                chart2.setOption({
+                chart202.setOption({
                     title: { text: '成立年限分析',left: 'center' },
                     tooltip: {
                         trigger: 'item',
@@ -413,10 +413,10 @@
             },
             drawLine3(){
                 // 基于准备好的dom，初始化echarts实例
-                let chart3 = echarts.init(document.getElementById('chart3'))
+                let chart203 = echarts.init(document.getElementById('chart203'))
                 // 绘制图表
                 //行业占比分析
-                chart3.setOption({
+                chart203.setOption({
                     title: {
                         text: '行业占比分析', // 标题文本
                         left: 'center'
@@ -449,10 +449,10 @@
             },
             drawLine4(){
                 // 基于准备好的dom，初始化echarts实例
-                let chart4 = echarts.init(document.getElementById('chart4'))
+                let chart204 = echarts.init(document.getElementById('chart204'))
                 // 绘制图表
                 //省份分布
-                chart4.setOption({
+                chart204.setOption({
                     title: {
                         text: '省份分布分析', // 标题文本
                         left: 'center'

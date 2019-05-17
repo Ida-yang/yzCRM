@@ -232,8 +232,13 @@ const router =new Router({
           meta: { title: '订单',name:'order',requireAuth:true}
         },
         {
-          path: '/orderaddorupdate',
-          component: resolve => require(['../components/index/page/AddAndUpdate/orderaddorupdate.vue'], resolve),
+          path: '/orderadd',
+          component: resolve => require(['../components/index/page/AddAndUpdate/orderadd.vue'], resolve),
+          meta: { title: '新增订单',requireAuth:true}
+        },
+        {
+          path: '/orderupdate',
+          component: resolve => require(['../components/index/page/AddAndUpdate/orderupdate.vue'], resolve),
           meta: { title: '编辑订单',requireAuth:true}
         },
         {

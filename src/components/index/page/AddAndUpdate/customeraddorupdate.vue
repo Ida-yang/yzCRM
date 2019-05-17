@@ -773,12 +773,12 @@
     .formitemcus:nth-child(11),.formitemcus:nth-child(12){
         margin: 0;
     }
-    .cityseat{
+    .formitemcus .cityseat{
         position: absolute;
         top:-52px;
         left:30%;
     }
-    .areaseat{
+    .formitemcus .areaseat{
         position: absolute;
         top:-52px;
         left:60%;

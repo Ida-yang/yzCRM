@@ -17,7 +17,7 @@
                 <el-radio v-for="item in typeData" :key="item.id" :label="item.id" @change="search()">{{item.typeName}}</el-radio>
             </el-radio-group>
             <el-radio-group v-model="searchList.time">
-                <span class="nameList">时间更新：</span>
+                <span class="nameList">新增时间：</span>
                 <el-radio :label="nullvalue" @change="search()">全部</el-radio>
                 <el-radio v-for="item in timeData" :key="item.id" :label="item.id" @change="search()">{{item.typeName}}</el-radio>
             </el-radio-group>
@@ -27,6 +27,9 @@
             <el-input v-model="searchList.searchName" placeholder="请输入公司名称" style="width:300px;" @keyup.enter.native="search"></el-input>
             &nbsp;&nbsp;
             <el-button icon="el-icon-search" type="primary" size="mini" @click="search()">查询</el-button>
+        </div>
+        <div class="generCharts" @click="generateCharts">
+            <i class="mdi-chart-pie chart_icon"></i>
         </div>
         <div class="entry">
             <el-button class="btn info-btn" size="mini" @click="handleAdd()">新增</el-button>
@@ -97,7 +100,7 @@
                     prop="name"
                     fixed
                     v-else-if="item.prop == 'name' && item.state == 1"
-                    min-width="180"
+                    min-width="200"
                     label="公司名称"
                     sortable>
                     <template slot-scope="scope">
@@ -379,6 +382,7 @@
     import store from '../../../../store/store'
     import axios from 'axios'
     import XLSX from 'xlsx';
+    import bus from '../../bus';
     import qs from 'qs'
 
     export default {
@@ -459,7 +463,15 @@
                 rules: {
                     templateId : [{ required: true, message: '短信模板不能为空', trigger: 'blur' },],
                 },
+
+                
+                collapse3: false,
             }
+        },
+        beforeRouteLeave(to, from , next){
+            this.collapse3 = false;
+            bus.$emit('collapse3', this.collapse3);
+            next()
         },
         beforeCreate(){
             const _this = this
@@ -632,7 +644,6 @@
                     {"label":"手机","inputModel":"phone","type":"number"},
                     {"label":"电话","inputModel":"telphone","type":"number"},
                     {"label":"QQ","inputModel":"qq","type":"number"},
-                    {"label":"邮箱","inputModel":"email"},
                     {"label":"性别","inputModel":"sex","type":"radio"},
                     {"label":"职务","inputModel":"identity"},
                     {"label":"省/市/区","inputModel":"countryid","type":"select","placeholder":"请选择省"},
@@ -710,7 +721,6 @@
                     {"label":"手机","inputModel":"phone","type":"number"},
                     {"label":"电话","inputModel":"telphone","type":"number"},
                     {"label":"QQ","inputModel":"qq","type":"number"},
-                    {"label":"邮箱","inputModel":"email"},
                     {"label":"性别","inputModel":"sex","type":"radio"},
                     {"label":"职务","inputModel":"identity"},
                     {"label":"省/市/区","inputModel":"countryid","type":"select","placeholder":"请选择省"},
@@ -1088,7 +1098,41 @@
                 }).then(function(res){
                 }).catch(function(err){
                 });
-            }
+            },
+            generateCharts(){
+                const _this = this
+                let qs = require('querystring')
+                let data = {}
+                if(this.searchList.label == 1){
+                    data.pId = _this.$store.state.ispId
+                }else if(this.searchList.label == 2){
+                    data.secondid = _this.$store.state.deptid
+                }else if(this.searchList.label == 3){
+                    data.deptid = _this.$store.state.insid
+                }
+
+                axios({
+                    method: 'post',
+                    url: _this.$store.state.defaultHttp+'customerTwo/selectByStateAndSource.do?cId='+_this.$store.state.iscId,
+                    data: qs.stringify(data)
+                }).then(function(res){
+                    if(res.data.code && res.data.code == '200'){
+                        _this.$message({
+                            message:'已生成图表',
+                            type:'success'
+                        })
+                        _this.$store.state.clueChartsData = res.data.map.map
+                        _this.collapse3 = !_this.collapse3
+                        bus.$emit('collapse3', _this.collapse3)
+                    }else{
+                        _this.$message({
+                            message:res.data.msg,
+                            type:'error'
+                        })
+                    }
+                }).catch(function(err){
+                });
+            },
         },
     }
 </script>

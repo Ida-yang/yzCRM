@@ -1083,20 +1083,8 @@
             },
 
             tabClick(val){
-                const _this = this
-                let qs = require('querystring')
-                let data = {}
-                data.company = this.customerdetail.pName
                 if(val.index == 6){
-                    axios({
-                        method: 'post',
-                        url: _this.$store.state.defaultHttp+'website/selectWebsiteByCompany.do',
-                        data: qs.stringify(data)
-                    }).then(function(res){
-                        _this.website = 'http://' + res.data.map.websites[0].url
-                    }).catch(function(err){
-                        // console.log(err);
-                    });
+                    this.website = 'http://' + this.customerdetail.url
                 }
                 if(val.index == 7){
                     this.EnclosureDetails = []

@@ -1,101 +1,73 @@
 <template>
-
-
-  <el-table
-    :data="tableData"
-    border
-    height="200"
-    :summary-method="getSummaries"
-    show-summary
-    style="width: 100%; margin-top: 20px">
-    <el-table-column
-      prop="id"
-      label="ID"
-      width="180">
-    </el-table-column>
-    <el-table-column
-      prop="name"
-      label="姓名">
-    </el-table-column>
-    <el-table-column
-      prop="amount1"
-      label="数值 1（元）">
-    </el-table-column>
-    <el-table-column
-      prop="amount2"
-      label="数值 2（元）">
-    </el-table-column>
-    <el-table-column
-      prop="amount3"
-      label="数值 3（元）">
-    </el-table-column>
-  </el-table>
+  <el-button @click="getDate()">--</el-button>
 </template>
 
 <script>
   export default {
     data() {
       return {
-        tableData: [{
-          id: '12987122',
-          name: '王小虎',
-          amount1: '234',
-          amount2: '3.2',
-          amount3: 10
+        opportunityProgress: [{
+          progress_id: 149,
+          oy_id: 65,
+          progress_name: "初步了解",
+          progress_probability: "10",
+          createTime: "2019-04-28 15:06",
+          previousTime: null,
+          pId: null,
+          deptid: null,
+          secondid: null,
+          stepId: null
         }, {
-          id: '12987123',
-          name: '王小虎',
-          amount1: '165',
-          amount2: '4.43',
-          amount3: 12
+          progress_id: 152,
+          oy_id: 65,
+          progress_name: "拜访",
+          progress_probability: "30",
+          createTime: "2019-05-16 00:33",
+          previousTime: "2019-04-28 15:06",
+          pId: null,
+          deptid: null,
+          secondid: null,
+          stepId: null
         }, {
-          id: '12987124',
-          name: '王小虎',
-          amount1: '324',
-          amount2: '1.9',
-          amount3: 9
+          progress_id: 153,
+          oy_id: 65,
+          progress_name: "需求确认",
+          progress_probability: "50",
+          createTime: "2019-05-17 00:17",
+          previousTime: "2019-05-16 00:33",
+          pId: null,
+          deptid: null,
+          secondid: null,
+          stepId: null
         }, {
-          id: '12987125',
-          name: '王小虎',
-          amount1: '621',
-          amount2: '2.2',
-          amount3: 17
-        }, {
-          id: '12987126',
-          name: '王小虎',
-          amount1: '539',
-          amount2: '4.1',
-          amount3: 15
-        }]
-      };
+          progress_id: 154,
+          oy_id: 65,
+          progress_name: "商务谈判",
+          progress_probability: "80",
+          createTime: "2019-05-17 00:47",
+          previousTime: "2019-05-17 00:17",
+          pId: null,
+          deptid: null,
+          secondid: null,
+          stepId: null
+        }],
+      }
     },
     methods: {
-      getSummaries(param) {
-        const { columns, data } = param;
-        const sums = [];
-        columns.forEach((column, index) => {
-          if (index === 0) {
-            sums[index] = '总价';
-            return;
+      getDate(){
+        for(let i = 0; i < this.opportunityProgress.length; i ++){
+          // console.log(this.opportunityProgress[i].previousTime,this.opportunityProgress[i].createTime)
+          if(this.opportunityProgress[i].previousTime){
+            let arr = this.opportunityProgress[i].previousTime.split(" ");
+            let arr2 = this.opportunityProgress[i].createTime.split(" ");
+            let begintime = new Date(arr[0].replace(/-/g, "/"))
+            let endtime = new Date(arr2[0].replace(/-/g, "/"))
+            let dateDiff = endtime.getTime() - begintime.getTime();
+            let dayDiff = Math.floor(dateDiff / (24 * 3600 * 1000));
+            console.log(dayDiff)
           }
-          const values = data.map(item => Number(item[column.property]));
-          if (!values.every(value => isNaN(value))) {
-            sums[index] = values.reduce((prev, curr) => {
-              const value = Number(curr);
-              if (!isNaN(value)) {
-                return prev + curr;
-              } else {
-                return prev;
-              }
-            }, 0);
-            sums[index] += ' 元';
-          } else {
-            sums[index] = 'N/A';
-          }
-        });
-
-        return sums;
-      }
+        }
+      },
     }
   };
 </script>

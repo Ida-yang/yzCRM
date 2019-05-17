@@ -32,7 +32,7 @@
                             <li>地址：<span>{{cluedetail.address}}</span></li>
                             <li>职务：<span>{{contacts.identity}}</span></li>
                             <li>性别：<span>{{contacts.sex}}</span></li>
-                            <li>网址：<span>{{contacts.url}}</span></li>
+                            <li>网址：<span>{{cluedetail.url}}</span></li>
                             <li>备注：<span>{{cluedetail.remark}}</span></li>
                         </ul>
                     </div>
@@ -855,20 +855,8 @@
             },
 
             tabClick(val){
-                const _this = this
-                let qs = require('querystring')
-                let data = {}
-                data.company = this.cluedetail.name
                 if(val.index == 2){
-                    axios({
-                        method: 'post',
-                        url: _this.$store.state.defaultHttp+'website/selectWebsiteByCompany.do',
-                        data: qs.stringify(data)
-                    }).then(function(res){
-                        _this.website = 'http://' + res.data.map.websites[0].url
-                    }).catch(function(err){
-                        // console.log(err);
-                    });
+                    this.website = 'http://' + this.cluedetail.url
                 }
                 if(val.index == 3){
                     this.Enclosureclue = []

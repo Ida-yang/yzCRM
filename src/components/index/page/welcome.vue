@@ -30,7 +30,7 @@
         </div>
         <div class="welmiddles">
             <div class="welmiddlebody">
-                <div id="chart1" class="funnelwidth"></div>
+                <div id="chart101" class="funnelwidth"></div>
             </div>
             <div class="middleline"></div>
             <div class="welmiddlebody">
@@ -43,7 +43,7 @@
                         @change="search">
                     </el-date-picker>
                 </div>
-                <div id="chart2" class="barwidth"></div>
+                <div id="chart102" class="barwidth"></div>
             </div>
         </div>
         <div class="welfoot">
@@ -114,7 +114,6 @@
 </template>
 
 <script>
-    
     import store from '../../../store/store'
     import axios from 'axios'
     import qs from 'qs'
@@ -261,9 +260,9 @@
             },
             drawfunnel(){
                 // 基于准备好的dom，初始化echarts实例
-                let chart1 = echarts.init(document.getElementById('chart1'))
+                let chart101 = echarts.init(document.getElementById('chart101'))
                 // 绘制图表
-                chart1.setOption({
+                chart101.setOption({
                     title : { text: '商机漏斗' },
                     tooltip : {
                         trigger: 'item',
@@ -290,9 +289,9 @@
             },
             drawbar(){
                 // 基于准备好的dom，初始化echarts实例
-                let chart2 = echarts.init(document.getElementById('chart2'))
+                let chart102 = echarts.init(document.getElementById('chart102'))
                 // 绘制图表
-                chart2.setOption({
+                chart102.setOption({
                     title: { text: '合同金额排行' },
                     tooltip: {},
                     xAxis: [{

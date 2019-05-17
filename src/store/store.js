@@ -5,11 +5,11 @@ Vue.use(Vuex)
 /*配置全局数据*/
 const state = {
   //配置访问地址
-  // defaultHttp: 'http://crm.yunzoe.com/yzcrm/', //线上服务器
-  // systemHttp: 'http://crm.yunzoe.com/', //线上服务器
+  defaultHttp: 'http://crm.yunzoe.com/yzcrm/', //线上服务器
+  systemHttp: 'http://crm.yunzoe.com/', //线上服务器
   // defaultHttp:'http://192.168.1.105:8080/', //测试服务器
-  defaultHttp:'http://crm2019.yunzoe.com/yzcrm/', //测试服务器
-  systemHttp:'http://crm2019.yunzoe.com/', //测试服务器
+  // defaultHttp:'http://crm2019.yunzoe.com/yzcrm/', //测试服务器
+  // systemHttp:'http://crm2019.yunzoe.com/', //测试服务器
 
   //作者
   author:'Ida',
@@ -43,7 +43,10 @@ const state = {
   contaddOrUpdateData:null,
   visitaddOrUpdateData:null,
   missionaddOrUpdateData:null,
-  productaddOrUpdateData:null,
+  productaddData:null,
+  productupdateData:null,
+  orderaddData:null,
+  orderupdateData:null,
   
   //跳转详情页列表
   cluedetailsData:null,
@@ -76,6 +79,8 @@ const state = {
   cluePoolList:[],
   //线索池列表总数
   cluePoolListnumber:0,
+  //线索图表数据
+  clueChartsData:null,
 
   //客户列表
   customerList:[],
@@ -97,6 +102,8 @@ const state = {
   customerPoolList:[],
   //客户池列表总数
   customerPoolListnumber:0,
+  //客户图表数据
+  customerChartsData:null,
 
   //联系人列表
   contactsList:[],

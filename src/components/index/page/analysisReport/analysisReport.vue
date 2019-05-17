@@ -78,10 +78,10 @@
                 showTitle:true,
 
                 nameList:[
-                    {index:1,name:'合同报表',id:'chart1',isActive:false},
-                    {index:2,name:'商机报表',id:'chart2',isActive:false},
-                    {index:3,name:'部门业绩排行榜',id:'chart3',isActive:false},
-                    {index:4,name:'个人业绩排行榜',id:'chart4',isActive:false},
+                    {index:1,name:'合同报表',id:'chart401',isActive:false},
+                    {index:2,name:'商机报表',id:'chart402',isActive:false},
+                    {index:3,name:'部门业绩排行榜',id:'chart403',isActive:false},
+                    {index:4,name:'个人业绩排行榜',id:'chart404',isActive:false},
                 ],
                 index:'',
 
@@ -402,9 +402,9 @@
             },
             drawLine1(){
                 // 基于准备好的dom，初始化echarts实例
-                let chart1 = echarts.init(document.getElementById('chart1'))
+                let chart401 = echarts.init(document.getElementById('chart401'))
                 // 绘制图表
-                chart1.setOption({
+                chart401.setOption({
                     title: { text: '合同报表',left: 'center' },
                     tooltip: {
                         trigger: 'axis',
@@ -437,9 +437,9 @@
             },
             drawLine2(){
                 // 基于准备好的dom，初始化echarts实例
-                let chart2 = echarts.init(document.getElementById('chart2'))
+                let chart402 = echarts.init(document.getElementById('chart402'))
                 // 绘制图表
-                chart2.setOption({
+                chart402.setOption({
                     title : { text: '商机漏斗', left: 'center' },
                     tooltip : {
                         trigger: 'item',
@@ -465,9 +465,9 @@
             },
             drawLine3(){
                 // 基于准备好的dom，初始化echarts实例
-                let chart3 = echarts.init(document.getElementById('chart3'))
+                let chart403 = echarts.init(document.getElementById('chart403'))
                 // 绘制图表
-                chart3.setOption({
+                chart403.setOption({
                     title: { text: '部门业绩排行榜',left: 'center' },
                     tooltip: {
                         trigger: 'item',
@@ -494,9 +494,9 @@
             },
             drawLine4(){
                 // 基于准备好的dom，初始化echarts实例
-                let chart4 = echarts.init(document.getElementById('chart4'))
+                let chart404 = echarts.init(document.getElementById('chart404'))
                 // 绘制图表
-                chart4.setOption({
+                chart404.setOption({
                     title: { text: '个人业绩排行榜',left: 'center' },
                     tooltip: {
                         trigger: 'item',

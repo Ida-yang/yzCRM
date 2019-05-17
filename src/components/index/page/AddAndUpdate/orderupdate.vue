@@ -12,7 +12,7 @@
                         </el-select>
                     </el-form-item>
                     <el-form-item class="first_input" label="联系人" label-width="90px">
-                        <el-select v-model="myform.lianxiren" placeholder="请选择联系人" class="inputbox">
+                        <el-select v-model="myform.contactId" placeholder="请选择联系人" class="inputbox">
                             <el-option v-for="item in contactsList" :key="item.id" :label="item.name" :value="item.id"></el-option>
                         </el-select>
                     </el-form-item>
@@ -20,8 +20,8 @@
                         <el-date-picker v-model="myform.orderTime" type="date" placeholder="选择订单时间" format="yyyy-MM-dd" value-format="yyyy-MM-dd" class="inputbox"></el-date-picker>
                     </el-form-item>
                     <el-form-item class="first_input" label="结算方式" label-width="90px">
-                        <el-select v-model="myform.Settlement" placeholder="请选择结算方式" class="inputbox">
-                            <el-option v-for="item in settlementMethod" :key="item.id" :label="item.name" :value="item.id"></el-option>
+                        <el-select v-model="myform.settlement" placeholder="请选择结算方式" class="inputbox">
+                            <el-option v-for="item in settlementMethod" :key="item.id" :label="item.name" :value="item.name"></el-option>
                         </el-select>
                     </el-form-item>
                     <el-form-item class="first_input" label="交货方式" label-width="90px">
@@ -33,16 +33,16 @@
                         <el-input v-model="myform.deliveryAddress" class="inputbox"></el-input>
                     </el-form-item>
                     <el-form-item class="first_input" label="制单人" label-width="90px">
-                        <el-input v-model="myform.user" class="inputbox" :disabled="true"></el-input>
+                        <el-input v-model="myform.private_employee" class="inputbox" :disabled="true"></el-input>
                     </el-form-item>
                     <el-form-item class="first_input" label="负责人" label-width="90px">
                         <el-input v-model="myform.ascription" class="inputbox" :disabled="true"></el-input>
                     </el-form-item>
                     <el-form-item class="first_input" label="部门" label-width="90px">
-                        <el-input v-model="myform.department" class="inputbox" :disabled="true"></el-input>
+                        <el-input v-model="myform.deptname" class="inputbox" :disabled="true"></el-input>
                     </el-form-item>
                     <el-form-item class="first_input" label="机构" label-width="90px">
-                        <el-input v-model="myform.mechanism" class="inputbox" :disabled="true"></el-input>
+                        <el-input v-model="myform.parentname" class="inputbox" :disabled="true"></el-input>
                     </el-form-item>
                     <el-form-item class="first_input" label="备注" label-width="90px">
                         <el-input v-model="myform.remarks" class="inputbox"></el-input>
@@ -54,7 +54,7 @@
         <div class="entry">
             <el-button class="btn info-btn" size="mini" icon="el-icon-circle-plus-outline" @click="handleAdd"></el-button>
         </div>
-        <el-table v-loading="listLoading" :data="itemData" border fit highlight-current-row show-summary style="width: 100%">
+        <el-table v-loading="listLoading" :data="itemData" border fit highlight-current-row show-summary :summary-method="getSummary" style="width: 100%">
             <el-table-column header-align="center" align="center" type="index" min-width="45"></el-table-column>
             <el-table-column prop="tbGoods.goodsName" width="180px" align="center" label="产品名称">
                 <template slot-scope="scope">
@@ -81,11 +81,7 @@
                 </template>
             </el-table-column>
 
-            <el-table-column prop="tbGoods.describe" width="120" align="center" label="描述">
-                <template slot-scope="scope">
-                    {{ scope.row.tbGoods.describe }}
-                </template>
-            </el-table-column>
+            <el-table-column prop="tbGoods.describe" width="120" align="center" label="描述"></el-table-column>
 
             <el-table-column prop="goodspec" min-width="150" label="规格属性">
                 <template slot-scope="scope">
@@ -95,21 +91,21 @@
 
             <el-table-column prop="unit" min-width="120" label="单位"></el-table-column>
 
-            <el-table-column prop="amount" min-width="120" label="数量">
+            <el-table-column prop="num" min-width="120" label="数量">
                 <template slot-scope="scope">
                     <template v-if="scope.row.edit">
-                        <el-input v-model="scope.row.amount" class="edit-input" size="small" @input="handleinput($event,scope.$index,scope.row)"/>
+                        <el-input v-model="scope.row.num" class="edit-input" size="small" @input="handleinput($event,scope.$index,scope.row)"/>
                     </template>
-                    <span v-else>{{ scope.row.amount }}</span>
+                    <span v-else>{{ scope.row.num }}</span>
                 </template>
             </el-table-column>
 
-            <el-table-column prop="unitPrice" min-width="120" label="单价">
+            <el-table-column prop="price" min-width="120" label="单价">
                 <template slot-scope="scope">
                     <template v-if="scope.row.edit">
-                        <el-input v-model="scope.row.unitPrice" class="edit-input" size="small" @input="handleinput($event,scope.$index,scope.row)"/>
+                        <el-input v-model="scope.row.price" class="edit-input" size="small" @input="handleinput($event,scope.$index,scope.row)"/>
                     </template>
-                    <span v-else>{{ scope.row.unitPrice }}</span>
+                    <span v-else>{{ scope.row.price }}</span>
                 </template>
             </el-table-column>
 
@@ -158,7 +154,7 @@
                             <el-button slot="append">%</el-button>
                         </el-input>
                     </template>
-                    <span v-else>{{ scope.row.taxRate }}</span>
+                    <span v-else-if="scope.row.taxRate">{{ scope.row.taxRate + ' %' }}</span>
                 </template>
             </el-table-column>
 
@@ -180,18 +176,18 @@
                 </template>
             </el-table-column>
 
-            <el-table-column prop="deliveryDate" width="240" label="交货日期">
+            <el-table-column prop="commitTime" width="240" label="交货日期">
                 <template slot-scope="scope">
                     <template v-if="scope.row.edit">
-                        <el-date-picker v-model="scope.row.deliveryDate" type="date" format="yyyy-MM-dd" value-format="yyyy-MM-dd" size="small"></el-date-picker>
+                        <el-date-picker v-model="scope.row.commitTime" type="date" format="yyyy-MM-dd" value-format="yyyy-MM-dd" size="small"></el-date-picker>
                     </template>
-                    <span v-else>{{ scope.row.deliveryDate }}</span>
+                    <span v-else>{{ scope.row.commitTime }}</span>
                 </template>
             </el-table-column>
 
             <el-table-column prop="brand" min-width="120" label="产品品牌"></el-table-column>
 
-            <el-table-column align="center" label="Actions" width="120" fixed="right">
+            <el-table-column align="center" label="操作" width="120" fixed="right">
                 <template slot-scope="scope">
                     <el-button v-if="scope.row.edit" type="success" plain size="mini" icon="el-icon-circle-check-outline" @click="confirmEdit(scope.row)"></el-button>
                     <el-button v-else type="warning" plain size="mini" icon="el-icon-edit" @click="handleEdit(scope.$index,scope.row)"></el-button>
@@ -216,32 +212,29 @@
         name: 'name',
         data() {
             return {
+                updateData:null,
                 list: null,
                 listLoading: true,
                 selectData:[],
                 options:[],
                 itemData:[
-                    {id:10,goodspec:{},unit:'',category:'',tbGoods:{  goodsName:'',  describe:'',},edit:false},
-                    {id:11,goodspec:{},unit:'',category:'',tbGoods:{  goodsName:'',  describe:'',},edit:false},
-                    {id:12,goodspec:{},unit:'',category:'',tbGoods:{  goodsName:'',  describe:'',},edit:false},
-                    {id:13,goodspec:{},unit:'',category:'',tbGoods:{  goodsName:'',  describe:'',},edit:false},
-                    {id:14,goodspec:{},unit:'',category:'',tbGoods:{  goodsName:'',  describe:'',},edit:false},
+                    {id:10,goodspec:{},category:'',tbGoods:{  goodsName:'',  describe:'',},edit:false},
+                    {id:11,goodspec:{},category:'',tbGoods:{  goodsName:'',  describe:'',},edit:false},
                 ],
                 scopeIndex:null,
 
                 myform:{
                     customerpoolId:null,
-                    lianxiren:null,
+                    contactId:null,
                     orderTime:null,
-                    Settlement:null,
+                    settlement:null,
                     deliveryMode:null,
                     deliveryAddress:null,
-                    user:this.$store.state.user,
-                    pId:this.$store.state.ispId,
+                    private_employee:this.$store.state.user,
                     ascriptionId:null,
                     ascription:null,
-                    department:null,
-                    mechanism:null,
+                    deptname:null,
+                    parentname:null,
                     remarks:null,
                 },
                 rules:{
@@ -267,10 +260,48 @@
             }
         },
         mounted() {
+            this.loadData()
             this.getList()
             this.loadOther()
         },
         methods: {
+            loadData(){
+                const _this = this
+                let orderupdateData = this.$store.state.orderupdateData
+                let qs = require('querystring')
+                let data = {}
+                data.id = orderupdateData.setForm.id
+                
+                axios({
+                    method: 'post',
+                    url: _this.$store.state.defaultHttp+'order/selectById.do?cId='+_this.$store.state.iscId,
+                    data:qs.stringify(data)
+                }).then(function(res){
+                    _this.myform = res.data
+                    _this.updateData = res.data.orderDetails
+                    _this.customerId = res.data.customerpoolId
+                    _this.$options.methods.loadContact.bind(_this)()
+                    _this.$options.methods.getData.bind(_this)()
+                }).catch(function(err){
+                    // console.log(err);
+                });
+            },
+            getData(){
+                this.itemData = []
+                if(this.updateData.length !== 0){
+                    this.updateData.forEach((el,i) => {
+                        el.aaa = JSON.parse(el.spec)
+                        el.goodspec = []
+                        for(var key in el.aaa){
+                            if(key !== "null" && key !== "undefined"){
+                                el.goodspec.push({label:key,value:el.aaa[key]})
+                            }
+                        }
+                        this.itemData.push({ amountOfMoney: el.amountOfMoney, commitTime:el.commitTime, brand: el.brand, discount: el.discount, discountAfter: el.discountAfter, discountAmount: el.discountAmount, goodsId: el.goodsId, tbGoods:{ goodsName:el.goodsName, describe:el.describe, }, id: el.itemId, itemId: el.itemId, num: el.num, orderId: el.orderId, price: el.price, taxAfter: el.taxAfter, taxAmount: el.taxAmount, taxRate: el.taxRate, goodspec: el.goodspec, unit: el.unit, edit:false,})
+                    });
+                }
+                
+            },
             getList() {
                 const _this = this
                 let qs = require('querystring')
@@ -286,17 +317,17 @@
                 }).then(function(res){
                     let items = res.data.map.goods
                     _this.list = items.map(v => {
-                    _this.$set(v, 'edit', false) // https://vuejs.org/v2/guide/reactivity.html
+                    _this.$set(v, 'edit', false)
                     return v
                     })
                     items.forEach(element => {
-                    element.aaa = JSON.parse(element.spec)
-                    element.goodspec = []
-                    for(var key in element.aaa){
-                        if(key !== "null" && key !== "undefined"){
-                        element.goodspec.push({label:key,value:element.aaa[key]})
+                        element.aaa = JSON.parse(element.spec)
+                        element.goodspec = []
+                        for(var key in element.aaa){
+                            if(key !== "null" && key !== "undefined"){
+                                element.goodspec.push({label:key,value:element.aaa[key]})
+                            }
                         }
-                    }
                     });
                     _this.listLoading = false
                 }).catch(function(err){
@@ -364,8 +395,8 @@
                     if(el.id == e){
                         this.myform.ascriptionId = el.privateUser[0].private_id
                         this.myform.ascription = el.privateUser[0].private_employee
-                        this.myform.department = el.deptname
-                        this.myform.mechanism = el.parentname
+                        this.myform.deptname = el.deptname
+                        this.myform.parentname = el.parentname
                     }
                 });
                 this.$options.methods.loadContact.bind(this)()
@@ -380,14 +411,14 @@
             handleDelete(index,row){
                 this.itemData.forEach((el,i) => {
                     if(i == index){
-                    this.itemData.splice(i,1)
+                        this.itemData.splice(i,1)
                     }
                 });
             },
             confirmEdit(row) {
                 row.edit = false
                 this.$message({
-                    message: 'The title has been edited',
+                    message: '本地保存成功',
                     type: 'success'
                 })
             },
@@ -412,36 +443,133 @@
                 });
             },
             handleinput(e,index,row){
-                if(row.amount && row.unitPrice){
-                    let z = parseInt(row.amount) * parseInt(row.unitPrice)
+                if(row.num && row.price){
+                    let z = parseFloat(row.num) * parseFloat(row.price)
                     row.amountOfMoney = z.toString()
                 }
                 if(row.amountOfMoney && row.discount){
-                    let a = parseInt(row.amountOfMoney) * parseInt(row.discount) / 100
-                    let b = parseInt(row.amountOfMoney) - a
+                    let a = parseFloat(row.amountOfMoney) * parseFloat(row.discount) / 100
+                    let b = parseFloat(row.amountOfMoney) - a
                     row.discountAmount = b.toString()
                     row.discountAfter = a.toString()
-                    // console.log(row.discountAmount,row.discountAfter)
                 }
                 if(row.amountOfMoney && row.taxRate){
                     if(row.discountAfter){
-                        let x = parseInt(row.discountAfter) * parseInt(row.taxRate) / 100
-                        let y = parseInt(row.discountAfter) - x
+                        let x = parseFloat(row.discountAfter) * parseFloat(row.taxRate) / 100
+                        let y = parseFloat(row.discountAfter) + x
                         row.taxAmount = x.toString()
                         row.taxAfter = y.toString()
                     }else{
-                        let c = parseInt(row.amountOfMoney) * parseInt(row.taxRate) / 100
-                        let d = parseInt(row.amountOfMoney) - c
+                        let c = parseFloat(row.amountOfMoney) * parseFloat(row.taxRate) / 100
+                        let d = parseFloat(row.amountOfMoney) + c
                         row.taxAmount = c.toString()
                         row.taxAfter = d.toString()
                     }
                 }
             },
-            onSubmit(){
-                console.log(this.myform)
-                console.log(this.itemData)
+            getSummary(param){
+                const { columns, data } = param;
+                const sums = [];
+                columns.forEach((column, index) => {
+                    if (index === 0) {
+                        sums[index] = '合计';
+                        return;
+                    }
+                    const values = data.map(item => Number(item[column.property]));
+                    if(column.property == 'num' || column.property == 'price' || column.property == 'amountOfMoney' || column.property == 'discountAmount' || column.property == 'discountAfter' || column.property == 'taxAmount' || column.property == 'taxAfter'){
+                        sums[index] = values.reduce((acc, cur) => (cur + acc), 0)
+                        sums[index] = sums[index].toFixed(2)
+                        let intPart = Math.trunc(sums[index])
+                        let intPartFormat = intPart.toString().replace(/(\d)(?=(?:\d{3})+$)/g, '$1,')
+                        let floatPart = '.00' // 预定义小数部分
+                        let valArray = sums[index].split('.')
+                        if(valArray.length === 2) {
+                            floatPart = valArray[1].toString() // 拿到小数部分
+                            if(floatPart.length === 1) { // 补0,实际上用不着
+                                sums[index] = intPartFormat + '.' + floatPart + '0'
+                            }else{
+                                sums[index] = intPartFormat + '.' + floatPart
+                            }
+                        } else {
+                            sums[index] = intPartFormat + floatPart
+                        }
+                        sums[index] += ' 元';
+                    }else{
+                        sums[index] = '';
+                    }
+                });
+
+                return sums;
             },
-            closeTag(){},
+            onSubmit(){
+                // console.log(this.myform)
+                const _this = this
+                let qs = require('querystring')
+                let totalSum = 0
+                let orderDetails = new Array()
+                this.itemData.forEach((el,i) => {
+                    if(el.goodsId){
+                        totalSum += parseFloat(el.taxAfter)
+                        orderDetails.push({"itemId":el.id,"num":parseInt(el.num),"price":parseFloat(el.price),"commitTime":el.commitTime,"amountOfMoney":el.amountOfMoney ,"discount":el.discount ,"discountAmount":el.discountAmount ,"discountAfter":el.discountAfter ,"taxRate":el.taxRate,"taxAmount":el.taxAmount,"taxAfter":el.taxAfter})
+                    }
+                });
+                let data = {
+                    "id":this.myform.id,
+                    "customerpoolId":this.myform.customerpoolId,
+                    "contactId":this.myform.contactId,
+                    "orderTime":this.myform.orderTime,
+                    "settlement":this.myform.settlement,
+                    "deliveryMode":this.myform.deliveryMode,
+                    "deliveryAddress":this.myform.deliveryAddress,
+                    "pId": parseInt(this.$store.state.ispId),
+                    "ascriptionId":this.myform.ascriptionId,
+                    "remarks":this.myform.remarks,
+                    "totalSum":totalSum,
+                    "orderDetails":orderDetails
+                }                
+                
+                // this.isDisable = true
+                console.log(data)
+
+                axios({
+                    method: 'post',
+                    url: _this.$store.state.defaultHttp+'order/update.do?cId='+_this.$store.state.iscId+'&pId='+_this.$store.state.ispId,
+                    data: data,
+                }).then(function(res){
+                    if(res.data.code && res.data.code == '200'){
+                        _this.$message({
+                            message: '修改成功',
+                            type:'success'
+                        })
+                        _this.closeTag();
+                    }else{
+                        _this.$message({
+                            message: res.data.msg,
+                            type:'error'
+                        })
+                    }
+                    _this.isDisable = false
+                }).catch(function(err){
+                    // console.log(err);
+                    _this.isDisable = false
+                });
+            },
+            closeTag(){
+                let tagsList = this.$store.state.tagsList;
+                let index;
+                tagsList.forEach((element, i) => {
+                    if(element.name == this.$options.name) {
+                        index = i;
+                    }
+                });
+                const delItem = this.$store.state.tagsList.splice(index, 1)[0];
+                const item = this.$store.state.tagsList[index] ? this.$store.state.tagsList[index] : this.$store.state.tagsList[index - 1];
+                if (item) {
+                    delItem.path === this.$route.fullPath && this.$router.push('/order');
+                }else{
+                    this.$router.push('/index');
+                }
+            },
         }
     }
 </script>

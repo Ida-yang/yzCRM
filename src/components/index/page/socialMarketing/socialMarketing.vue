@@ -85,7 +85,7 @@
                     <el-table-column
                         prop="codeURL"
                         v-else-if="item.prop == 'codeURL' && item.state == 1"
-                        min-width="160"
+                        min-width="250"
                         label="网址"
                         sortable>
                         <template slot-scope="scope">

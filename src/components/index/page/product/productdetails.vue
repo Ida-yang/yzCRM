@@ -1,10 +1,10 @@
 <template>
-    <div class="add_c">
+    <div class="detail_c">
         <el-tabs v-model="activeName" type="card">
             <el-tab-pane label="基本资料" name="first" class="first_c">
                 <div class="first_top">
                     <div class="first_left">
-                        <el-form :inline="true" ref="myform" :model="myform" :rules="rules">
+                        <el-form :inline="true" ref="myform" :model="myform">
                             <el-form-item class="first_input" label="产品分类" label-width="90px">
                                 <el-input v-model="myform.category" :disabled="true" class="inputbox"></el-input>
                             </el-form-item>
@@ -65,7 +65,7 @@
                             </el-table-column>
                         </el-table>
                     </div>
-                    <el-table :data="tableData" border stripe style="width: 100%" @current-change="handleCurrentChange">
+                    <el-table :data="tableData" border stripe style="width: 100%">
                         <el-table-column header-align="center" align="center" type="index" min-width="45"></el-table-column>
                         <el-table-column prop="imgfile" label="主图" width="120">
                             <template slot-scope="scope">
@@ -91,11 +91,6 @@
                 </div>
             </el-tab-pane>
         </el-tabs>
-        <div class="submit_btn">
-            <el-button type="primary" :disabled="isDisable" @click="onSubmit">立即提交</el-button>
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            <el-button @click="closeTag">取消</el-button>
-        </div>
 
         <el-dialog :visible.sync="dialogVisible">
             <img width="100%" :src="dialogImageUrl" alt="">
@@ -110,7 +105,7 @@
     import UE from '../../../index/ue.vue';
 
     export default {
-        name:'productaddorupdate',
+        name:'productdetails',
         store,
         components: {UE},
         data(){
@@ -131,14 +126,6 @@
                     chanpinbiaoqian:null,
                     spec:[],
                 },
-                rules:{
-                    goodsName : [{ required: true, message: '产品名称不能为空', trigger: 'blur' },],
-                    unitId : [{ required: true, message: '单位不能为空', trigger: 'blur' },],
-                    attribute : [{ required: true, message: '产品属性不能为空', trigger: 'blur' },],
-                },
-                isDisable:false,
-
-                tableData:[],
 
                 page:1,//默认为第一页
                 limit:20,//默认为20行
@@ -153,9 +140,7 @@
                 brandsData:null,
                 specsData:null,
 
-                fileList:[
-                    {id:1,imgURL:'../../../../../static/img/timg.jpg'}
-                ],
+                fileList:[],
                 imgshow:false,
 
                 dialogVisible:false,
@@ -171,12 +156,7 @@
                 tableData: [{index:0,imgfile:'',spec1:'',barcode: '',erpDocking: ''}],
                 formThead: [], // 默认表头 Default header
                 firstID:1,
-                addHeadbtn:true,
-                generate:false,
 
-                options: [],
-
-                currentrow:null,
                 doUpload:this.$store.state.defaultHttp + 'previewAvatar.do?cId=' + this.$store.state.iscId,
             }
         },
@@ -255,13 +235,6 @@
                 this.dialogImageUrl = '../../../../../static/img/timg.jpg'
                 this.dialogVisible = true
             },
-            handleRemove(file, fileList) {
-                console.log(file, fileList);
-            },
-            handlePictureCardPreview(file) {
-                this.dialogImageUrl = file.url;
-                this.dialogVisible = true;
-            },
 
             loadHead(){
                 this.formThead = []
@@ -269,110 +242,12 @@
                     this.formThead.push({label:el.spec_name,value:el.sign})
                 });
             },
-            changeLabel(e){
-                let aa = []
-                this.generate = true
-                this.myform.isEnableSpec = 1
-                this.specsData.forEach(a => {
-                    if(a.specName == e){
-                        aa = a.specValue
-                        this.tableData1.forEach(b => {
-                            if(b.spec_name == e){
-                                b.spec_value = aa
-                                b.options = aa
-                            }
-                        });
-                    }
-                });
-                this.$options.methods.loadHead.bind(this)()
-            },
-            pushIndex(){
-                let arr = this.tableData
-                arr.forEach((el,i) => {
-                    el.index = i
-                });
-            },
-            handleCurrentChange(row){
-                this.currentrow = row
-            },
-            onSubmit(){
-                const _this = this
-                let content = this.$refs.ue.getUEContent();
-                let data = {}
-                data.goods = new Object();
-                data.goodsDesc = new Object();
-                data.itemList = new Array();
-                data.goodsSpec = new Array();
-                data.goods = {
-                    "goodsName": this.myform.goodsName,
-                    "brandId" : this.myform.brandId,
-                    "classification_id" : this.myform.classification_id,
-                    "unitId" : this.myform.unitId,
-                    "attribute" : this.myform.attribute,
-                    "price" : this.myform.price,
-                    "costPrice" : this.myform.costPrice,
-                    "isEnableSpec" : this.myform.isEnableSpec,
-                    "describe" : this.myform.describe,
-                    "label" : this.myform.label,
-                }
-
-                data.goodsDesc = {"introduction" : content}
-
-                // itemList
-                this.tableData.forEach(el => {
-                    let key1 = el.sname1
-                    let key2 = el.sname2
-                    let key3 = el.sname3
-                    let obj = {key1: el.spec1,key2: el.spec2,key3: el.spec3}
-                    obj[key1] = obj['key1']
-                    obj[key2] = obj['key2']
-                    obj[key3] = obj['key3']
-                    delete obj['key1']
-                    delete obj['key2']
-                    delete obj['key3']
-                    data.itemList.push({"image":el.imgfile, "erpDocking":el.erpDocking, "barcode":el.barcode, "spec1":el.spec1, "spec2":el.spec2, "spec3":el.spec3, "spec":JSON.stringify(obj)})
-                });
-
-                this.tableData1.forEach(item => {
-                    data.goodsSpec.push({"sign":item.sign,"spec_name":item.spec_name,"spec_value":item.spec_value,"options":item.options})
-                });
-
-                axios({
-                    method: 'post',
-                    url: _this.$store.state.defaultHttp+'goods/add.do?cId='+_this.$store.state.iscId,
-                    data:data
-                }).then(function(res){
-                    _this.$message({
-                        message: '添加成功',
-                        type:'success'
-                    })
-                }).catch(function(err){
-                    // console.log(err);
-                });
-            },
-            closeTag(){
-                // let ww = '1212'
-                // let a = {abc:ww,def:'3232',jkl:'5656'}
-                // let key = 'yyy';
-                // let obj = {key:ww,def:'3232',jkl:'5656'}
-                // obj[key] = obj['key']
-                // delete obj['key']
-                // console.log(obj)
-                var a = {"name":"LeonWu","age":"18"}
-                var b = '{"name":"yangyi","age":"18"}'
-                var c = {"name":"shazi","age":"18","fileList":['../../../../../static/img/index.jpg','../../../../../static/img/1.jpg'],}
-                
-                // console.log(qs.stringify(a))
-                // console.log(JSON.parse(b))
-                // console.log(JSON.stringify(c))
-                console.log(JSON.parse(c))
-            },
         },
     }
 </script>
 
 <style>
-    .add_c{
+    .detail_c{
         width: 100%;
     }
 </style>

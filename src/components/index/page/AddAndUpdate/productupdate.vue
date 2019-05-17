@@ -1,5 +1,5 @@
 <template>
-    <div class="add_c">
+    <div class="update_c">
         <el-tabs v-model="activeName" type="card">
             <el-tab-pane label="基本资料" name="first" class="first_c">
                 <div class="first_top">
@@ -221,10 +221,10 @@
             loadData(){
                 const _this = this
                 let qs = require('querystring')
-                let productaddOrUpdateData = this.$store.state.productaddOrUpdateData
-                // console.log(productaddOrUpdateData.setForm)
+                let productupdateData = this.$store.state.productupdateData
+                // console.log(productupdateData.setForm)
                 let data = {}
-                data.goodsId = productaddOrUpdateData.setForm.id
+                data.goodsId = productupdateData.setForm.id
 
                 axios({
                     method: 'post',
@@ -495,10 +495,10 @@
                 const _this = this
                 let content = this.$refs.ue.getUEContent();
                 let data = {}
-                data.goods = new Object();
-                data.goodsDesc = new Object();
-                data.itemList = new Array();
-                data.goodsSpec = new Array();
+                data.goods = new Object()
+                data.goodsDesc = new Object()
+                data.itemList = new Array()
+                data.goodsSpec = new Array()
                 data.goods = {
                     "id": this.myform.id,
                     "goodsName": this.myform.goodsName,
@@ -514,8 +514,7 @@
                 }
 
                 data.goodsDesc = {"introduction" : content,"goodsId":this.myform.id,"itemImages":JSON.stringify(this.imageList)}
-
-                // itemList
+                
                 this.tableData.forEach(el => {
                     let key1 = el.sname1
                     let key2 = el.sname2
@@ -527,7 +526,7 @@
                     delete obj['key1']
                     delete obj['key2']
                     delete obj['key3']
-                    console.log(obj)
+                    delete obj['null']
                     data.itemList.push({"id":el.id,"goodsId":this.myform.id,"image":el.image, "erpDocking":el.erpDocking, "barcode":el.barcode, "spec1":el.spec1, "spec2":el.spec2, "spec3":el.spec3, "sname1":el.sname1, "sname2":el.sname2, "sname3":el.sname3, "spec":JSON.stringify(obj)})
                 });
 
@@ -535,12 +534,13 @@
                     data.goodsSpec.push({"goodsId":this.myform.id,"sign":item.sign,"spec_name":item.spec_name,"spec_value":item.spec_value,"options":item.options})
                 });
 
-                console.log(data)
+
                 this.isDisable = true
+                console.log(data)
 
                 axios({
                     method: 'post',
-                    url: _this.$store.state.defaultHttp+'goods/update.do?cId='+_this.$store.state.iscId,
+                    url: _this.$store.state.defaultHttp+'goods/update.do?cId='+_this.$store.state.iscId+'&pId='+_this.$store.state.ispId,
                     data:data
                 }).then(function(res){
                     if(res.data.code && res.data.code == '200'){
@@ -581,8 +581,10 @@
 </script>
 
 <style>
-    .add_c{
+    .update_c{
         width: 100%;
+        padding-bottom: 50px;
+        box-sizing: border-box;
     }
 </style>
 

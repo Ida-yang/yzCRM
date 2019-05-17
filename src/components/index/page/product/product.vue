@@ -21,8 +21,8 @@
                 <el-button icon="el-icon-search" type="primary" size="mini" @click="search()">查询</el-button>
             </div>
             <div class="entry">
-                <el-button class="btn" size="mini" @click="handledeletes()">删除</el-button>
                 <el-button class="btn info-btn" size="mini" @click="handleAdd()">新增</el-button>
+                <el-button class="btn info-btn" size="mini" @click="handledeletes()">删除</el-button>
                 <div class="totalnum_head">共 <span style="font-weight:bold">{{tableNumber}}</span> 条</div>
                 <el-popover
                     placement="bottom"
@@ -209,6 +209,7 @@
                 searchList:{
                     searchName:null,
                     deptid:null,
+                    classification_id:null,
                 },
                 
                 filterList:null,
@@ -251,7 +252,7 @@
                 pageInfo.page = this.page
                 pageInfo.limit = this.limit
                 pageInfo.searchName = this.searchList.searchName
-                // pageInfo.deptid = this.searchList.deptid
+                pageInfo.classification_id = this.searchList.classification_id
 
                 axios({
                     method: 'post',
@@ -302,9 +303,11 @@
                 });
             },
             handleNodeClick(data){
-                this.searchList.deptid = data.deptid
+                this.searchList.classification_id = data.id
                 this.clickdata = data
-                // this.$options.methods.reloadTable.bind(this)(true);
+                if(data.next.length == 0){
+                    this.$options.methods.reloadTable.bind(this)(true);
+                }
             },
             selectInfo(val){
                 this.multipleSelection = val;
@@ -324,7 +327,6 @@
             //用户添加
             handleAdd(){
                 const _this = this
-                console.log(this.clickdata)
 
                 if(!this.clickdata){
                     _this.$message({
@@ -337,8 +339,8 @@
                         type:'info'
                     })
                 }else{
-                    let productaddOrUpdateData = {}
-                    productaddOrUpdateData.setForm = {
+                    let productaddData = {}
+                    productaddData.setForm = {
                         "goodsName": '',
                         "unitId": '',
                         "brandId": '',
@@ -349,75 +351,101 @@
                         "costPrice": '',
                         "isEnableSpec": '',
                         "describe": '',};
-                    productaddOrUpdateData.submitURL = this.$store.state.defaultHttp+ 'customerTwo/saveClue.do?cId='+this.$store.state.iscId+'&pId='+this.$store.state.ispId,
-                    this.$store.state.productaddOrUpdateData = productaddOrUpdateData;
+                    productaddData.submitURL = this.$store.state.defaultHttp+ 'customerTwo/saveClue.do?cId='+this.$store.state.iscId+'&pId='+this.$store.state.ispId,
+                    this.$store.state.productaddData = productaddData;
                     _this.$router.push({ path: '/productadd' });
                 }
             },
             //用户修改
             handleEdit(index,row){
                 const _this = this
-                let productaddOrUpdateData = {}
-                productaddOrUpdateData.setForm = {
-                    "id": row.id};
-                productaddOrUpdateData.submitURL = this.$store.state.defaultHttp+ 'goods/update.do?cId='+this.$store.state.iscId+'&pId='+this.$store.state.ispId,
-                this.$store.state.productaddOrUpdateData = productaddOrUpdateData
+                let productupdateData = {}
+                productupdateData.setForm = {"id": row.id};
+                productupdateData.submitURL = this.$store.state.defaultHttp+ 'goods/update.do?cId='+this.$store.state.iscId+'&pId='+this.$store.state.ispId,
+                this.$store.state.productupdateData = productupdateData
                 _this.$router.push({ path: '/productupdate' })
             },
             handledeletes(){
                 const _this = this
-                this.idArr.id.shift(0)
                 let qs = require('querystring')
                 let idArr = []
                 idArr.ids = this.idArr.id
 
-                axios({
-                    method: 'post',
-                    url:  _this.$store.state.defaultHttp+ 'goods/delete.do?cId='+_this.$store.state.iscId,
-                    data:qs.stringify(idArr),
-                }).then(function(res){
-                    if(res.data.code && res.data.code == '200'){
-                        _this.$message({
-                            message: '删除成功',
-                            type:'success'
+                if(idArr.ids){
+                    idArr.ids.shift(0)
+                    _this.$confirm('是否确认删除？', '提示', {
+                        confirmButtonText: '确定',
+                        cancelButtonText: '取消',
+                    }).then(({ value }) => {
+                        axios({
+                            method: 'post',
+                            url:  _this.$store.state.defaultHttp+ 'goods/delete.do?cId='+_this.$store.state.iscId,
+                            data:qs.stringify(idArr),
+                        }).then(function(res){
+                            if(res.data.code && res.data.code == '200'){
+                                _this.$message({
+                                    message: '删除成功',
+                                    type:'success'
+                                })
+                            }else{
+                                _this.$message({
+                                    message: res.data.msg,
+                                    type:'error'
+                                })
+                            }
+                            _this.$options.methods.reloadTable.bind(_this)();
+                        }).catch(function(err){
+                            _this.$message.error("删除失败，请重新操作");
                         })
-                    }else{
-                        _this.$message({
-                            message: res.data.msg,
-                            type:'error'
-                        })
-                    }
-                    _this.$options.methods.reloadTable.bind(_this)();
-                }).catch(function(err){
-                    // console.log(err);
-                });
+                    }).catch(() => {
+                        this.$message({
+                            type: 'info',
+                            message: '取消删除'
+                        });       
+                    });
+                }else{
+                    _this.$message({
+                        type: 'error',
+                        message: '请先选择要删除的订单'
+                    }); 
+                }
             },
             handledelete(index,row){
                 const _this = this
                 let qs = require('querystring')
                 console.log(row)
-                let idArr = []
-                idArr.ids = row.id
+                let data = []
+                data.ids = row.id
 
-                axios({
-                    method: 'post',
-                    url:  _this.$store.state.defaultHttp+ 'goods/delete.do?cId='+_this.$store.state.iscId,
-                    data:qs.stringify(idArr),
-                }).then(function(res){
-                    if(res.data.code && res.data.code == '200'){
-                        _this.$message({
-                            message: '删除成功',
-                            type:'success'
-                        })
-                    }else{
-                        _this.$message({
-                            message: res.data.msg,
-                            type:'error'
-                        })
-                    }
-                    _this.$options.methods.reloadTable.bind(_this)();
-                }).catch(function(err){
-                    // console.log(err);
+                _this.$confirm('是否确认删除[' + row.goodsName + ']？', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                }).then(({ value }) => {
+                    axios({
+                        method: 'post',
+                        url:  _this.$store.state.defaultHttp+ 'goods/delete.do?cId='+_this.$store.state.iscId,
+                        data:qs.stringify(data),
+                    }).then(function(res){
+                        if(res.data.code && res.data.code == '200'){
+                            _this.$message({
+                                message: '删除成功',
+                                type:'success'
+                            })
+                        }else{
+                            _this.$message({
+                                message: res.data.msg,
+                                type:'error'
+                            })
+                        }
+                        _this.$options.methods.reloadTable.bind(_this)();
+                    }).catch(function(err){
+                        _this.$message.error("删除失败，请重新操作");
+                    })
+                }).catch(() => {
+                    this.$message({
+                        type: 'info',
+                        message: '取消删除[' + row.goodsName + ']'
+                    });       
                 });
             },
             hangleChange(e,val){

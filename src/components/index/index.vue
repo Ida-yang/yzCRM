@@ -1,6 +1,8 @@
 <template>
     <div class="wrapper">
         <v-message></v-message>
+        <v-cluecharts></v-cluecharts>
+        <v-customercharts></v-customercharts>
         <!-- <v-search></v-search> -->
         <v-head></v-head>
         <v-sidebar></v-sidebar>
@@ -21,6 +23,8 @@
     import vHead from './Header.vue';
     import vSidebar from './Sidebar.vue';
     import vMessage from './message.vue';
+    import vCluecharts from './cluecharts.vue';
+    import vCustomercharts from './customercharts.vue';
     import vTags from './Tags.vue';
     import bus from './bus';
     export default {
@@ -31,7 +35,7 @@
             }
         },
         components:{
-            vHead, vSidebar, vTags, vMessage
+            vHead, vSidebar, vTags, vMessage, vCluecharts, vCustomercharts
         },
         created(){
             bus.$on('collapse', msg => {

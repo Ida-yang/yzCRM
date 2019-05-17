@@ -152,14 +152,14 @@
                                 index: 'agreement',
                                 title: '合同',
                             },
-                            {
-                                index: 'product',
-                                title: '产品',
-                            },
-                            {
-                                index: 'order',
-                                title: '订单',
-                            },
+                            // {
+                            //     index: 'order',
+                            //     title: '订单',
+                            // },
+                            // {
+                            //     index: 'product',
+                            //     title: '产品',
+                            // },
                         ]
                     },
                     {
@@ -229,10 +229,10 @@
                                 index: 'logs',
                                 title: '日志',
                             },
-                            {
-                                index: 'name',
-                                title: '名字',
-                            },
+                            // {
+                            //     index: 'name',
+                            //     title: '名字',
+                            // },
                         ]
                     },
                 ],
@@ -288,7 +288,7 @@
         top: 0;
         bottom: 0px;
         background-color: rgb(32, 34, 42);
-        /* overflow-y: scroll; */
+        overflow-y: scroll;
     }
     .sidebar::-webkit-scrollbar{
         width: 0;

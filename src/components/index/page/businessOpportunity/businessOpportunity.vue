@@ -9,10 +9,15 @@
             <el-radio-group v-model="searchList.state">
                 <span class="nameList">商机进度：</span>
                 <el-radio :label="nullvalue" @change="search()">全部</el-radio>
-                <el-radio v-for="item in stateData" :key="item.step_id" :label="item.step_id" @change="search()">{{item.step_name}}</el-radio>
+                <el-radio v-for="item in stepData" :key="item.step_id" :label="item.step_id" @change="search()">{{item.step_name}}</el-radio>
+            </el-radio-group>
+            <el-radio-group v-model="searchList.keyWord">
+                <span class="nameList">商机状态：</span>
+                <el-radio :label="nullvalue" @change="search()">全部</el-radio>
+                <el-radio v-for="item in stateData" :key="item.id" :label="item.id" @change="search()">{{item.typeName}}</el-radio>
             </el-radio-group>
             <el-radio-group v-model="searchList.time">
-                <span class="nameList">时间更新：</span>
+                <span class="nameList">新增时间：</span>
                 <el-radio :label="nullvalue" @change="search()">全部</el-radio>
                 <el-radio v-for="item in timeData" :key="item.id" :label="item.id" @change="search()">{{item.typeName}}</el-radio>
             </el-radio-group>
@@ -235,12 +240,14 @@
                     searchName:null,
                     time:null,
                     state:null,
+                    keyWord:null,
                     label:'1'
                 },
                 searchListNew:{
                     searchName:null,
                     time:null,
                     state:null,
+                    keyWord:null,
                     label:'1'
                 },
 
@@ -257,9 +264,13 @@
                     {id:'4',typeName:'本月'},
                     {id:'5',typeName:'上月'}
                 ],
+                stepData:[],
                 stateData:[
-                    {id:'1',typeName:'状态1'},
-                    {id:'2',typeName:'状态2'},
+                    {id:'1',typeName:'预计7天成交'},
+                    {id:'2',typeName:'预计15天成交'},
+                    {id:'3',typeName:'本月成交'},
+                    {id:'4',typeName:'下月成交'},
+                    {id:'5',typeName:'异常商机'}
                 ],
 
                 nullvalue:null,
@@ -304,6 +315,7 @@
                 }
                 searchList.example = this.searchList.time
                 searchList.stateid = this.searchList.state
+                searchList.keyWord = this.searchList.keyWord
                 searchList.page = this.page;
                 searchList.limit = this.limit;
                 
@@ -353,7 +365,7 @@
                     method: 'get',
                     url: _this.$store.state.defaultHttp+'addstep/selectAddstep.do?cId='+_this.$store.state.iscId,
                 }).then(function(res){
-                    _this.stateData = res.data.map.addsteps
+                    _this.stepData = res.data.map.addsteps
                 }).catch(function(err){
                     // console.log(err);
                 });

@@ -44,8 +44,11 @@ export default {
         /* overflow: hidden; */
         /* overflow-x: hidden; overflow-y: auto;  */
     }
-    .myForm > .el-form-item,.clueForm > .el-form-item,.auxForm > .el-form-item{
+    /* .myForm > .el-form-item,.clueForm > .el-form-item,.auxForm > .el-form-item{
         margin-bottom: 12px;
+    } */
+    .el-form-item{
+        margin-bottom: 12px
     }
     .searchList{
         width: 100%;
@@ -110,6 +113,7 @@ export default {
     }
     .el-submenu .el-menu-item{
         width: 150px;
+        min-width: 150px;
     }
     input::-webkit-outer-spin-button,
     input::-webkit-inner-spin-button{
@@ -785,8 +789,6 @@ export default {
     
     .first_c{
         width: 100%;
-        padding-bottom: 50px;
-        box-sizing: border-box;
         background-color: #f0f0f0;
     }
     .first_top{
@@ -818,6 +820,8 @@ export default {
     }
     .first_bottom{
         width: 100%;
+        min-height: 150px;
+        height: auto;
         margin-bottom: 10px;
         background-color: #fdfeff;
         padding-bottom: 10px;
@@ -872,5 +876,27 @@ export default {
     }
     .orderHead .el-form-item__content{
         width: calc(100% - 100px);
+    }
+
+    .generCharts{
+        width: 50px;
+        height: 50px;
+        position: fixed;
+        right: 25px;
+        top: 90px;
+        text-align: center;
+        cursor: pointer;
+    }
+    .chart_icon{
+        font-size: 24px;
+        line-height: 50px;
+    }
+    .chart_icon:hover{
+        color: #ff6333;
+    }
+    
+    .charts-collapse{
+        left: 80px;
+        width: calc(100% - 112px);
     }
 </style>

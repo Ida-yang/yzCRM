@@ -221,8 +221,8 @@
         // JSON.parse(JSON.stringify(data))
         methods:{
             loadData(){
-                let productaddOrUpdateData = this.$store.state.productaddOrUpdateData
-                this.myform = productaddOrUpdateData.setForm
+                let productaddData = this.$store.state.productaddData
+                this.myform = productaddData.setForm
             },
             loadother(){
                 const _this = this
@@ -456,7 +456,7 @@
 
                 axios({
                     method: 'post',
-                    url: _this.$store.state.defaultHttp+'goods/add.do?cId='+_this.$store.state.iscId,
+                    url: _this.$store.state.defaultHttp+'goods/add.do?cId='+_this.$store.state.iscId+'&pId='+_this.$store.state.ispId,
                     data:data
                 }).then(function(res){
                     if(res.data.code && res.data.code == '200'){
@@ -499,6 +499,8 @@
 <style>
     .add_c{
         width: 100%;
+        padding-bottom: 50px;
+        box-sizing: border-box;
     }
 </style>
 

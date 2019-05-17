@@ -15,6 +15,7 @@
         </div>
         <div class="entry">
             <el-button class="btn info-btn" size="mini" @click="handleAdd()">新增</el-button>
+            <el-button class="btn info-btn" size="mini" @click="handledeletes()">删除</el-button>
             <div class="totalnum_head">共 <span style="font-weight:bold">{{tableNumber}}</span> 条</div>
             <el-popover
                 placement="bottom"
@@ -47,7 +48,12 @@
                 <el-table-column
                     prop="id"
                     fixed
-                    min-width="120"
+                    label="日期"
+                    sortable>
+                </el-table-column>
+                <el-table-column
+                    prop="id"
+                    fixed
                     label="订单编号"
                     sortable>
                 </el-table-column>
@@ -55,8 +61,7 @@
                     prop="customerName"
                     fixed
                     show-overflow-tooltip
-                    min-width="180"
-                    label="客户名称"
+                    label="公司名称"
                     sortable>
                     <template slot-scope="scope">
                         <div @click="openDetails(scope.$index, scope.row)" class="hoverline">
@@ -65,88 +70,60 @@
                     </template>
                 </el-table-column>
                 <el-table-column
-                    prop="totalSum"
-                    label="订单总金额"
-                    min-width="120"
+                    prop="id"
+                    label="联系人"
                     sortable>
                 </el-table-column>
                 <el-table-column
-                    prop="createTime"
-                    label="制单时间"
-                    min-width="145"
+                    prop="id"
+                    label="结算方式"
                     sortable>
                 </el-table-column>
                 <el-table-column
-                    prop="updateTime"
-                    min-width="145"
-                    label="修改时间"
-                    sortable>
-                </el-table-column>
-                <el-table-column
-                    prop="commitTime"
-                    min-width="145"
-                    label="交货时间"
-                    sortable>
-                </el-table-column>
-                <el-table-column
-                    prop="remarks"
-                    min-width="100"
-                    label="备注"
-                    sortable>
-                </el-table-column>
-                <el-table-column
-                    prop="orderTime"
-                    min-width="145"
-                    label="单据日期"
+                    prop="delivery"
+                    label="交货方式"
                     sortable>
                 </el-table-column>
                 <el-table-column
                     prop="deliveryAddress"
                     show-overflow-tooltip
-                    min-width="150"
                     label="交货地址"
                     sortable>
                 </el-table-column>
                 <el-table-column
                     prop="private_employee"
-                    min-width="120"
                     label="制单人名称"
                     sortable>
                 </el-table-column>
                 <el-table-column
                     prop="ascription"
-                    min-width="120"
                     label="归属人名称"
                     sortable>
                 </el-table-column>
                 <el-table-column
                     prop="deptname"
-                    min-width="120"
                     label="归属人部门"
                     sortable>
                 </el-table-column>
                 <el-table-column
                     prop="parentname"
                     show-overflow-tooltip
-                    min-width="120"
                     label="归属人机构"
-                    sortable>
-                </el-table-column>
-                <el-table-column
-                    prop="delivery"
-                    min-width="110"
-                    label="交货方式"
                     sortable>
                 </el-table-column>
             <el-table-column label="操作"
                 fixed="right"
-                width="80"
+                width="150"
                 header-align="center"
                 align="center">
                 <template slot-scope="scope">
                     <el-button
                     size="mini"
                     @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
+                    <el-button
+                    size="mini"
+                    type="danger"
+                    @click="handledetele(scope.$index, scope.row)">删除</el-button>
                 </template>
             </el-table-column>
             
@@ -231,21 +208,21 @@
         },
 
         methods: {
-            //获取/查询线索列表
+            //获取/查询订单列表
             loadTable() {
                 const _this = this;
                 let qs =require('querystring')
                 let searchList = {}
                 searchList.searchName = this.searchList.searchName;
-                if(this.searchList.label == 0 ){
-                    searchList.pId = _this.nullvalue
-                }else if(this.searchList.label == 1){
-                    searchList.pId = _this.$store.state.ispId
-                }else if(this.searchList.label == 2){
-                    searchList.secondid = _this.$store.state.deptid
-                }else if(this.searchList.label == 3){
-                    searchList.deptid = _this.$store.state.insid
-                }
+                // if(this.searchList.label == 0 ){
+                //     searchList.pId = _this.nullvalue
+                // }else if(this.searchList.label == 1){
+                //     searchList.pId = _this.$store.state.ispId
+                // }else if(this.searchList.label == 2){
+                //     searchList.secondid = _this.$store.state.deptid
+                // }else if(this.searchList.label == 3){
+                //     searchList.deptid = _this.$store.state.insid
+                // }
                 searchList.page = this.page;
                 searchList.limit = this.limit;
                 
@@ -266,9 +243,9 @@
                 const _this = this;
                 let qs =require('querystring')
                 let filterList = {}
-                filterList.type = '线索'
+                filterList.type = '订单'
                 let data = {}
-                data.type = '线索'
+                data.type = '订单'
                 data.state = 1
                 
                 axios({
@@ -294,17 +271,9 @@
                 const _this = this
                 let arr = val;
                 let newArr = [new Array()];
-                this.SMSId = []
-                this.SMSnames = []
-                this.SMSphones = []
-                this.SMScontacts = []
                 arr.forEach((item) => {
                     if(item.id != 0){
                         newArr.push(item.id)
-                        _this.SMSId.push(item.id)
-                        _this.SMSnames.push(item.name)
-                        _this.SMSphones.push(item.contacts[0].phone)
-                        _this.SMScontacts.push(item.contacts[0].coName)
                     }
                 });
                 this.idArr.id = newArr;
@@ -315,41 +284,6 @@
             },
             handleAdd(){
                 const _this = this
-                let clueaddOrUpdateData = {};
-                clueaddOrUpdateData.createForm = [
-                    {"label":"线索来源","inputModel":"cuesid","type":"select"},
-                    {"label":"公司名称","inputModel":"poolName","type":"require"},
-                    {"label":"联系人","inputModel":"contactsName",},
-                    {"label":"手机","inputModel":"phone","type":"number"},
-                    {"label":"电话","inputModel":"telphone","type":"number"},
-                    {"label":"QQ","inputModel":"qq","type":"number"},
-                    {"label":"邮箱","inputModel":"email"},
-                    {"label":"性别","inputModel":"sex","type":"radio"},
-                    {"label":"职务","inputModel":"identity"},
-                    {"label":"省/市/区","inputModel":"countryid","type":"select","placeholder":"请选择省"},
-                    {"label":"","inputModel":"cityid","type":"select","placeholder":"请选择市"},
-                    {"label":"","inputModel":"areaid","type":"select","placeholder":"请选择区"},
-                    {"label":"地址","inputModel":"address"},
-                    {"label":"网址","inputModel":"url","type":"url"},
-                    {"label":"备注","inputModel":"remark","type":'textarea'}];
-                clueaddOrUpdateData.setForm = {
-                    "cuesid": '',
-                    "poolName": '',
-                    "contactsName": '',
-                    "telphone": '',
-                    "phone": '',
-                    "countryid":'',
-                    "cityid":'',
-                    "areaid":'',
-                    "qq": '',
-                    "email": '',
-                    "sex": '',
-                    "identity": '',
-                    "address": '',
-                    "url": '',
-                    "remark":'',};
-                clueaddOrUpdateData.submitURL = this.$store.state.defaultHttp+ 'customerTwo/saveClue.do?cId='+this.$store.state.iscId+'&pId='+this.$store.state.ispId,
-                this.$store.state.clueaddOrUpdateData = clueaddOrUpdateData;
                 axios({
                     method: 'get',
                     url: _this.$store.state.defaultHttp+'clueJurisdiction/insert.do',//新增线索
@@ -360,7 +294,7 @@
                             type:'error'
                         })
                     }else{
-                        _this.$router.push({ path: '/orderaddorupdate' });
+                        _this.$router.push({ path: '/orderadd' });
                     }
                 }).catch(function(err){
                     // console.log(err);
@@ -368,45 +302,9 @@
             },
             handleEdit(index,row){
                 const _this = this
-                let clueaddOrUpdateData = {};
-                clueaddOrUpdateData.createForm = [
-                    {"label":"线索来源","inputModel":"cuesid","type":"select"},
-                    {"label":"客户名称","inputModel":"poolName","type":"require"},
-                    {"label":"联系人","inputModel":"contactsName",},
-                    {"label":"手机","inputModel":"phone","type":"number"},
-                    {"label":"电话","inputModel":"telphone","type":"number"},
-                    {"label":"QQ","inputModel":"qq","type":"number"},
-                    {"label":"邮箱","inputModel":"email"},
-                    {"label":"性别","inputModel":"sex","type":"radio"},
-                    {"label":"职务","inputModel":"identity"},
-                    {"label":"省/市/区","inputModel":"countryid","type":"select","placeholder":"请选择省"},
-                    {"label":"","inputModel":"cityid","type":"select","placeholder":"请选择市"},
-                    {"label":"","inputModel":"areaid","type":"select","placeholder":"请选择区"},
-                    {"label":"地址","inputModel":"address"},
-                    {"label":"网址","inputModel":"url","type":"url"},
-                    {"label":"备注","inputModel":"remark","type":'textarea'}];
-                clueaddOrUpdateData.setForm = {
-                    "cuesid": row.cuesid,
-                    "poolName": row.name,
-                    "contactsName": row.contacts[0].coName,
-                    "telphone": row.contacts[0].telephone,
-                    "phone": row.contacts[0].phone,
-                    "countryid":row.country,
-                    "country":row.countryid,
-                    "cityid":row.city,
-                    "city":row.cityid,
-                    "areaid":row.area,
-                    "area":row.areaid,
-                    "qq": row.contacts[0].qq,
-                    "email": row.contacts[0].email,
-                    "sex": row.contacts[0].sex,
-                    "identity": row.contacts[0].identity,
-                    "address": row.address,
-                    "url": row.url,
-                    "remark": row.remark,};
-                clueaddOrUpdateData.submitData = {"id": row.id,'csId':row.contacts[0].csId};
-                clueaddOrUpdateData.submitURL = this.$store.state.defaultHttp+ 'customerTwo/updateClue.do?cId='+this.$store.state.iscId+'&pId='+this.$store.state.ispId,
-                this.$store.state.clueaddOrUpdateData = clueaddOrUpdateData;
+                let orderupdateData = {}
+                orderupdateData.setForm = {id:row.id}
+                this.$store.state.orderupdateData = orderupdateData;
                 axios({
                     method: 'get',
                     url: _this.$store.state.defaultHttp+'clueJurisdiction/update.do',//修改线索
@@ -417,10 +315,99 @@
                             type:'error'
                         })
                     }else{
-                        _this.$router.push({ path: '/clueaddorupdate' });
+                        _this.$router.push({ path: '/orderupdate' });
                     }
                 }).catch(function(err){
                     // console.log(err);
+                });
+            },
+            handledeletes(){
+                const _this = this
+                // this.
+                let qs = require('querystring')
+                let idArr = []
+                idArr.id = this.idArr.id
+
+                if(idArr.id){
+                    idArr.id.shift(0)
+                    _this.$confirm('是否确认删除订单？', '提示', {
+                        confirmButtonText: '确定',
+                        cancelButtonText: '取消',
+                    }).then(({ value }) => {
+                        axios({
+                            method: 'post',
+                            url:  _this.$store.state.defaultHttp+ 'order/delete.do?cId='+_this.$store.state.iscId,
+                            data:qs.stringify(idArr),
+                        }).then(function(res){
+                            if(res.data.code && res.data.code == '200'){
+                                _this.$message({
+                                    message: '删除成功',
+                                    type:'success'
+                                })
+                            }else{
+                                _this.$message({
+                                    message: res.data.msg,
+                                    type:'error'
+                                })
+                            }
+                            _this.$options.methods.loadTable.bind(_this)();
+                        }).catch(function(err){
+                            console.log(err)
+                            _this.$message.error("删除失败，请重新操作");
+                        })
+                    }).catch(() => {
+                        _this.$message({
+                            type: 'info',
+                            message: '取消删除'
+                        });       
+                    });
+                }else{
+                    _this.$message({
+                        type: 'error',
+                        message: '请先选择要删除的订单'
+                    }); 
+                }
+            },
+            handledetele(index,row){
+                const _this = this
+                let qs = require('querystring')
+                let data = {}
+                data.id = row.id
+
+                _this.$confirm('是否确认删除[' + row.customerName + ']的订单？', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                }).then(({ value }) => {
+                    axios({
+                        method: 'post',
+                        url:  _this.$store.state.defaultHttp+ 'order/delete.do?cId='+_this.$store.state.iscId,
+                        data:qs.stringify(data),
+                    }).then(function(res){
+                        if(res.data.code && res.data.code =="200"){
+                            _this.$message({
+                                message:'删除成功',
+                                type:'success'
+                            })
+                            _this.$options.methods.loadTable.bind(_this)(true);
+                        }else if(res.data.msg && res.data.msg == 'error'){//删除合同
+                            _this.$message({
+                                message: '对不起，您没有该权限，请联系管理员开通',
+                                type: 'error'
+                            })
+                        }else{
+                            _this.$message({
+                                message:res.data.msg,
+                                type:'error'
+                            })
+                        }
+                    }).catch(function(err){
+                        _this.$message.error("删除失败，请重新操作");
+                    })
+                }).catch(() => {
+                    this.$message({
+                        type: 'info',
+                        message: '取消删除[' + row.customerName + ']的订单'
+                    });       
                 });
             },
             hangleChange(e,val){

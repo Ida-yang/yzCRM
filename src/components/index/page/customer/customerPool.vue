@@ -7,7 +7,7 @@
                 <el-radio v-for="item in pIdData" :key="item.label" :label="item.label" @change="search()">{{item.value}}</el-radio>
             </el-radio-group>
             <el-radio-group v-model="searchList.time">
-                <span class="nameList">时间更新：</span>
+                <span class="nameList">新增时间：</span>
                 <el-radio :label="nullvalue" @change="search()">全部</el-radio>
                 <el-radio v-for="item in timeData" :key="item.id" :label="item.id" @change="search()">{{item.typeName}}</el-radio>
             </el-radio-group>
@@ -80,7 +80,7 @@
                     prop="name"
                     fixed
                     v-if="item.prop == 'name' && item.state == 1"
-                    min-width="180"
+                    min-width="200"
                     label="公司名称"
                     sortable>
                     <template slot-scope="scope">

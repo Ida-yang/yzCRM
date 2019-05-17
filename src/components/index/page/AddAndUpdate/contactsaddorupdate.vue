@@ -441,17 +441,17 @@
         /* padding: 20px; */
         float: left;
     }
-    .formitemcont:nth-child(11),.formitemcont:nth-child(10){
+    .formitemcont:nth-child(12),.formitemcont:nth-child(11){
         margin: 0;
     }
-    .cityseat{
+    .formitemcont .cityseat{
         position: absolute;
-        top:-52px;
+        top:-40px;
         left:30%;
     }
-    .areaseat{
+    .formitemcont .areaseat{
         position: absolute;
-        top:-52px;
+        top:-40px;
         left:60%;
     }
 </style>

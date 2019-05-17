@@ -7,7 +7,7 @@
                 <el-radio v-for="item in contactData" :key="item.label" :label="item.label" @change="search()">{{item.value}}</el-radio>
             </el-radio-group>
             <el-radio-group v-model="searchList.time">
-                <span class="nameList">时间更新：</span>
+                <span class="nameList">新增时间：</span>
                 <el-radio :label="nullvalue" @change="search()">全部</el-radio>
                 <el-radio v-for="item in timeData" :key="item.id" :label="item.id" @change="search()">{{item.typeName}}</el-radio>
             </el-radio-group>
@@ -357,6 +357,7 @@
                     {"label":"电话","inputModel":"telephone","type":"number"},
                     {"label":"QQ","inputModel":"qq","type":"number"},
                     {"label":"邮箱","inputModel":"email"},
+                    {"label":"微信","inputModel":"weChat"},
                     {"label":"性别","inputModel":"sex","type":"radio"},
                     {"label":"生日","inputModel":"birthday","type":"date"},
                     {"label":"职务","inputModel":"identity"},
@@ -375,6 +376,7 @@
                     "areaid":'',
                     "qq": '',
                     "email": '',
+                    "weChat": '',
                     "sex": '',
                     "birthday":'',
                     "identity": '',
@@ -409,6 +411,7 @@
                     {"label":"电话","inputModel":"telephone","type":"number"},
                     {"label":"QQ","inputModel":"qq","type":"number"},
                     {"label":"邮箱","inputModel":"email"},
+                    {"label":"微信","inputModel":"weChat"},
                     {"label":"性别","inputModel":"sex","type":"radio"},
                     {"label":"生日","inputModel":"birthday","type":"date"},
                     {"label":"职务","inputModel":"identity"},
@@ -430,6 +433,7 @@
                     "area":row.areaid,
                     "qq": row.qq,
                     "email": row.email,
+                    "weChat": row.weChat,
                     "sex": row.sex,
                     "birthday":row.birthday,
                     "identity": row.identity,

@@ -193,7 +193,7 @@
         width: 400px;
         height: 100%;
         /* margin-top: 80px; */
-        background-color: #ffffff;
+        background-color: #fdfeff;
         z-index: 999;
         border: 1px solid #dddddd;
     }
