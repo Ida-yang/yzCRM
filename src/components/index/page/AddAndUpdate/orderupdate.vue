@@ -55,8 +55,8 @@
             <el-button class="btn info-btn" size="mini" icon="el-icon-circle-plus-outline" @click="handleAdd"></el-button>
         </div>
         <el-table v-loading="listLoading" :data="itemData" border fit highlight-current-row show-summary :summary-method="getSummary" style="width: 100%">
-            <el-table-column header-align="center" align="center" type="index" min-width="45"></el-table-column>
-            <el-table-column prop="tbGoods.goodsName" width="180px" align="center" label="产品名称">
+            <el-table-column header-align="center" align="center" fixed type="index" min-width="45"></el-table-column>
+            <el-table-column prop="tbGoods.goodsName" width="180px" fixed align="center" label="产品名称">
                 <template slot-scope="scope">
                     <template v-if="scope.row.edit">
                         <el-select v-model="scope.row.tbGoods.goodsName" placeholder="请选择" filterable :filter-method="handleFilter">
@@ -527,13 +527,42 @@
                     "totalSum":totalSum,
                     "orderDetails":orderDetails
                 }                
-                
-                // this.isDisable = true
-                console.log(data)
+
+                let flag = false
+                if(!data.orderDetails.length) {
+                    _this.$message({
+                        message: "产品不能为空",
+                        type: 'error'
+                    });
+                    flag = true;
+                }
+                if(!data.settlement) {
+                    _this.$message({
+                        message: "结算方式不能为空",
+                        type: 'error'
+                    });
+                    flag = true;
+                }
+                if(!data.orderTime) {
+                    _this.$message({
+                        message: "订单时间不能为空",
+                        type: 'error'
+                    });
+                    flag = true;
+                }
+                if(!data.customerpoolId) {
+                    _this.$message({
+                        message: "客户名称不能为空",
+                        type: 'error'
+                    });
+                    flag = true;
+                }
+                if(flag) return
+                this.isDisable = true
 
                 axios({
                     method: 'post',
-                    url: _this.$store.state.defaultHttp+'order/update.do?cId='+_this.$store.state.iscId+'&pId='+_this.$store.state.ispId,
+                    url: _this.$store.state.defaultHttp+'order/update.do?cId='+_this.$store.state.iscId,
                     data: data,
                 }).then(function(res){
                     if(res.data.code && res.data.code == '200'){

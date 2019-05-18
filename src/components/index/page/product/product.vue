@@ -321,8 +321,14 @@
                 this.idArr.id = newArr;
             },
             openDetails(index,row){
-                this.$store.state.productdetailsData = {submitData:{"id": row.id}};
-                this.$router.push({ path: '/productdetails' });
+                // this.$store.state.productdetailsData = {submitData:{"id": row.id}};
+                // this.$router.push({ path: '/productdetails' });
+                const _this = this
+                let productupdateData = {}
+                productupdateData.setForm = {"id": row.id};
+                productupdateData.submitURL = this.$store.state.defaultHttp+ 'goods/update.do?cId='+this.$store.state.iscId+'&pId='+this.$store.state.ispId,
+                this.$store.state.productupdateData = productupdateData
+                _this.$router.push({ path: '/productupdate' })
             },
             //用户添加
             handleAdd(){

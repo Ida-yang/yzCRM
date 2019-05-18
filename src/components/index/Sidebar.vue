@@ -152,14 +152,14 @@
                                 index: 'agreement',
                                 title: '合同',
                             },
-                            // {
-                            //     index: 'order',
-                            //     title: '订单',
-                            // },
-                            // {
-                            //     index: 'product',
-                            //     title: '产品',
-                            // },
+                            {
+                                index: 'order',
+                                title: '订单',
+                            },
+                            {
+                                index: 'product',
+                                title: '产品',
+                            },
                         ]
                     },
                     {

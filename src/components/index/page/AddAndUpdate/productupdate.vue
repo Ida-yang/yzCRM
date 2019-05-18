@@ -186,10 +186,7 @@
                 brandsData:null,
                 specsData:null,
 
-                fileList:[
-                    {name:'',url:'../../../../../static/img/1.jpg',value:'fewrewawdewrew4524345.png'},
-                    {name:'',url:'../../../../../static/img/2.jpg',value:'fewrewawdewrew4524345.png'},
-                ],
+                fileList:[],
                 imageList:[],
                 imgshow:false,
 
@@ -202,7 +199,7 @@
                     initialFrameHeight: 500
                 },
 
-                specHeadData:[{sign:'spec1', spec_name:'', spec_value:[], options:[]}],
+                specHeadData:[],
                 tableData: [{index:0,imgfile:'',spec1:'',barcode: '',erpDocking: ''}],
                 formThead: [], // 默认表头 Default header
                 firstID:1,
@@ -231,6 +228,7 @@
                     url: _this.$store.state.defaultHttp+'goods/searchByGoodsId.do?cId='+_this.$store.state.iscId,
                     data:qs.stringify(data)
                 }).then(function(res){
+                    console.log(res.data)
                     _this.updataData = res.data
                     _this.myform = res.data.goods
                     _this.specHeadData = res.data.goodsSpec
@@ -240,7 +238,9 @@
                     _this.despecData = res.data.itemList
                     if(_this.tableData.length){
                         _this.tableData.forEach(el => {
-                            el.imgfile = '/product/'+_this.$store.state.iscId+'/'+el.image
+                            if(el.image){
+                                el.imgfile = '/product/'+_this.$store.state.iscId+'/'+el.image
+                            }
                         });
                     }
                     _this.fileList = []
@@ -291,9 +291,11 @@
 
             loadHead(){
                 this.formThead = []
-                if(this.specHeadData.length && this.specHeadData.length > 0){
+                if(this.specHeadData.length){
                     this.specHeadData.forEach(el => {
-                        this.formThead.push({label:el.spec_name,value:el.sign})
+                        if(el.spec_name){
+                            this.formThead.push({label:el.spec_name,value:el.sign})
+                        }
                     });
                 }
             },
@@ -388,8 +390,6 @@
                     }
                 }
 
-                // console.log(this.tableData)
-                // console.log(this.despecData)
                 this.$options.methods.pushIndex.bind(this)()
                 this.$options.methods.pushValue.bind(this)()
             },

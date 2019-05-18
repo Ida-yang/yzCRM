@@ -46,15 +46,17 @@
                 sortable>
             </el-table-column>
                 <el-table-column
-                    prop="id"
+                    prop="orderTime"
                     fixed
                     label="日期"
+                    min-width="100"
                     sortable>
                 </el-table-column>
                 <el-table-column
-                    prop="id"
+                    prop="orderNo"
                     fixed
                     label="订单编号"
+                    min-width="145"
                     sortable>
                 </el-table-column>
                 <el-table-column
@@ -62,6 +64,7 @@
                     fixed
                     show-overflow-tooltip
                     label="公司名称"
+                    min-width="180"
                     sortable>
                     <template slot-scope="scope">
                         <div @click="openDetails(scope.$index, scope.row)" class="hoverline">
@@ -70,45 +73,53 @@
                     </template>
                 </el-table-column>
                 <el-table-column
-                    prop="id"
+                    prop="contactsName"
                     label="联系人"
+                    min-width="100"
                     sortable>
                 </el-table-column>
                 <el-table-column
-                    prop="id"
+                    prop="settlement"
                     label="结算方式"
+                    min-width="110"
                     sortable>
                 </el-table-column>
                 <el-table-column
                     prop="delivery"
                     label="交货方式"
+                    min-width="110"
                     sortable>
                 </el-table-column>
                 <el-table-column
                     prop="deliveryAddress"
                     show-overflow-tooltip
                     label="交货地址"
+                    min-width="150"
                     sortable>
                 </el-table-column>
                 <el-table-column
                     prop="private_employee"
                     label="制单人名称"
+                    min-width="120"
                     sortable>
                 </el-table-column>
                 <el-table-column
                     prop="ascription"
                     label="归属人名称"
+                    min-width="120"
                     sortable>
                 </el-table-column>
                 <el-table-column
                     prop="deptname"
                     label="归属人部门"
+                    min-width="120"
                     sortable>
                 </el-table-column>
                 <el-table-column
                     prop="parentname"
                     show-overflow-tooltip
                     label="归属人机构"
+                    min-width="120"
                     sortable>
                 </el-table-column>
             <el-table-column label="操作"
@@ -284,42 +295,42 @@
             },
             handleAdd(){
                 const _this = this
-                axios({
-                    method: 'get',
-                    url: _this.$store.state.defaultHttp+'clueJurisdiction/insert.do',//新增线索
-                }).then(function(res){
-                    if(res.data.msg && res.data.msg == 'error'){
-                        _this.$message({
-                            message:'对不起，您没有该权限，请联系管理员开通',
-                            type:'error'
-                        })
-                    }else{
+                // axios({
+                //     method: 'get',
+                //     url: _this.$store.state.defaultHttp+'clueJurisdiction/insert.do',//新增线索
+                // }).then(function(res){
+                //     if(res.data.msg && res.data.msg == 'error'){
+                //         _this.$message({
+                //             message:'对不起，您没有该权限，请联系管理员开通',
+                //             type:'error'
+                //         })
+                //     }else{
                         _this.$router.push({ path: '/orderadd' });
-                    }
-                }).catch(function(err){
-                    // console.log(err);
-                });
+                //     }
+                // }).catch(function(err){
+                //     // console.log(err);
+                // });
             },
             handleEdit(index,row){
                 const _this = this
                 let orderupdateData = {}
                 orderupdateData.setForm = {id:row.id}
                 this.$store.state.orderupdateData = orderupdateData;
-                axios({
-                    method: 'get',
-                    url: _this.$store.state.defaultHttp+'clueJurisdiction/update.do',//修改线索
-                }).then(function(res){
-                    if(res.data.msg && res.data.msg == 'error'){
-                        _this.$message({
-                            message:'对不起，您没有该权限，请联系管理员开通',
-                            type:'error'
-                        })
-                    }else{
+                // axios({
+                //     method: 'get',
+                //     url: _this.$store.state.defaultHttp+'clueJurisdiction/update.do',//修改线索
+                // }).then(function(res){
+                //     if(res.data.msg && res.data.msg == 'error'){
+                //         _this.$message({
+                //             message:'对不起，您没有该权限，请联系管理员开通',
+                //             type:'error'
+                //         })
+                //     }else{
                         _this.$router.push({ path: '/orderupdate' });
-                    }
-                }).catch(function(err){
-                    // console.log(err);
-                });
+                //     }
+                // }).catch(function(err){
+                //     // console.log(err);
+                // });
             },
             handledeletes(){
                 const _this = this

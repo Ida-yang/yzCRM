@@ -54,7 +54,7 @@
         <div class="entry">
             <el-button class="btn info-btn" size="mini" icon="el-icon-circle-plus-outline" @click="handleAdd"></el-button>
         </div>
-        <el-table v-loading="listLoading" :data="itemData" border fit highlight-current-row show-summary :summary-method="getSummary" style="width: 100%">
+        <el-table v-loading="listLoading" :data="itemData" border fit highlight-current-row show-summary :summary-method="getSummary" @current-change="handEdit" style="width: 100%">
             <el-table-column header-align="center" fixed align="center" type="index" min-width="45"></el-table-column>
             <el-table-column prop="tbGoods.goodsName" width="305px" fixed label="产品名称">
                 <template slot-scope="scope">
@@ -264,11 +264,11 @@
                 selectData:[],
                 options:[],
                 itemData:[
-                    {id:10,amountOfMoney: '', commitTime:'', brand: '', discount: '', discountAfter: '', discountAmount: '', tbGoods:{ goodsName:'', describe:'', }, num: null, price: null, taxAfter: '', taxAmount: '', taxRate: '', unit: '', edit:false,},
-                    {id:11,amountOfMoney: '', commitTime:'', brand: '', discount: '', discountAfter: '', discountAmount: '', tbGoods:{ goodsName:'', describe:'', }, num: null, price: null, taxAfter: '', taxAmount: '', taxRate: '', unit: '', edit:false,},
-                    {id:12,amountOfMoney: '', commitTime:'', brand: '', discount: '', discountAfter: '', discountAmount: '', tbGoods:{ goodsName:'', describe:'', }, num: null, price: null, taxAfter: '', taxAmount: '', taxRate: '', unit: '', edit:false,},
-                    {id:13,amountOfMoney: '', commitTime:'', brand: '', discount: '', discountAfter: '', discountAmount: '', tbGoods:{ goodsName:'', describe:'', }, num: null, price: null, taxAfter: '', taxAmount: '', taxRate: '', unit: '', edit:false,},
-                    {id:14,amountOfMoney: '', commitTime:'', brand: '', discount: '', discountAfter: '', discountAmount: '', tbGoods:{ goodsName:'', describe:'', }, num: null, price: null, taxAfter: '', taxAmount: '', taxRate: '', unit: '', edit:false,},
+                    {id:10,amountOfMoney:null, commitTime:null, brand:null, discount:null, discountAfter:null, discountAmount:null, tbGoods:{ goodsName:'', describe:'', }, num: null, price: null, taxAfter:null, taxAmount:null, taxRate:null, unit:null, edit:false,},
+                    {id:11,amountOfMoney:null, commitTime:null, brand:null, discount:null, discountAfter:null, discountAmount:null, tbGoods:{ goodsName:'', describe:'', }, num: null, price: null, taxAfter:null, taxAmount:null, taxRate:null, unit:null, edit:false,},
+                    {id:12,amountOfMoney:null, commitTime:null, brand:null, discount:null, discountAfter:null, discountAmount:null, tbGoods:{ goodsName:'', describe:'', }, num: null, price: null, taxAfter:null, taxAmount:null, taxRate:null, unit:null, edit:false,},
+                    {id:13,amountOfMoney:null, commitTime:null, brand:null, discount:null, discountAfter:null, discountAmount:null, tbGoods:{ goodsName:'', describe:'', }, num: null, price: null, taxAfter:null, taxAmount:null, taxRate:null, unit:null, edit:false,},
+                    {id:14,amountOfMoney:null, commitTime:null, brand:null, discount:null, discountAfter:null, discountAmount:null, tbGoods:{ goodsName:'', describe:'', }, num: null, price: null, taxAfter:null, taxAmount:null, taxRate:null, unit:null, edit:false,},
                 ],
                 itemList:[],
                 tableData:[],
@@ -350,7 +350,7 @@
                             }
                         }
                     });
-                    _this.selectData = items
+                    _this.selectData = _this.list
                     _this.listLoading = false
                 }).catch(function(err){
                     // console.log(err);
@@ -466,7 +466,7 @@
                 this.$options.methods.loadContact.bind(this)()
             },
             handleAdd(){
-                this.itemData.push({id:10,goodspec:{},unit:'',category:'',tbGoods:{  goodsName:'',  describe:'',},edit:false})
+                this.itemData.push({amountOfMoney:null, commitTime:null, brand:null, discount:null, discountAfter:null, discountAmount:null, tbGoods:{ goodsName:'', describe:'', }, num: null, price: null, taxAfter:null, taxAmount:null, taxRate:null, unit:null, edit:false})
             },
             handleEdit(index,row){
                 if(this.myform.customerpoolId){
@@ -479,6 +479,17 @@
                     })
                 }
                 
+            },
+            handEdit(e){
+                // e.edit = false
+                // if(this.myform.customerpoolId){
+                //     e.edit = true
+                // }else{
+                //     this.$message({
+                //         message:'请先选择客户',
+                //         type:'error'
+                //     })
+                // }
             },
             handleDelete(index,row){
                 this.itemData.forEach((el,i) => {
@@ -509,39 +520,52 @@
                     if(i == this.scopeIndex){
                         if(e){
                             e.edit = true
+                            e.price = e.tbGoods.price
                             this.itemData.splice(i,1,e)
                         }
                     }
                 });
+                this.list.forEach((item,j) => {
+                    if(e && e.id == item.id){
+                        this.list.splice(j,1)
+                    }
+                });
+                this.selectData = this.list
             },
             handleinput(e,index,row){
                 if(row.num && row.price){
                     let z = parseFloat(row.num) * parseFloat(row.price)
-                    row.amountOfMoney = z.toString()
+                    row.amountOfMoney = z
                 }
                 if(row.amountOfMoney && row.discount){
                     let a = parseFloat(row.amountOfMoney) * parseFloat(row.discount) / 100
                     let b = parseFloat(row.amountOfMoney) - a
-                    row.discountAmount = b.toString()
-                    row.discountAfter = a.toString()
-                    // console.log(row.discountAmount,row.discountAfter)
+                    row.discountAmount = b
+                    row.discountAfter = a
+                }else{
+                    row.discountAmount = 0
+                    row.discountAfter = 0
                 }
                 if(row.amountOfMoney && row.taxRate){
                     if(row.discountAfter){
                         let x = parseFloat(row.discountAfter) * parseFloat(row.taxRate) / 100
                         let y = parseFloat(row.discountAfter) + x
-                        row.taxAmount = x.toString()
-                        row.taxAfter = y.toString()
+                        row.taxAmount = x
+                        row.taxAfter = y
                     }else{
                         let c = parseFloat(row.amountOfMoney) * parseFloat(row.taxRate) / 100
                         let d = parseFloat(row.amountOfMoney) + c
-                        row.taxAmount = c.toString()
-                        row.taxAfter = d.toString()
+                        row.taxAmount = c
+                        row.taxAfter = d
                     }
+                }else{
+                    row.taxAmount = 0
+                    row.taxAfter = 0
                 }
             },
             showDialog(){
                 this.dialogVisible = true
+                this.$options.methods.getData.bind(this)()
             },
             handleNodeClick(data){
                 this.classification_id = data.id
@@ -554,8 +578,7 @@
                 this.$options.methods.getData.bind(this)()
             },
             selectInfo(val){
-                // console.log(val)
-                let arr2 = new Array()
+                this.itemList = []
                 this.multipleSelection = val;
                 let arr = val;
                 let newArr = new Array();
@@ -564,27 +587,38 @@
                         newArr.push(item.id)
                     }
                 });
-                this.itemData.forEach((el,i) => {
-                    if(!el.goodsId){
-                        this.itemData.splice(i,1)
-                    } 
-                });
                 this.idArr = newArr
-                arr2 = this.itemList.concat(this.multipleSelection)
-                this.itemList = arr2
+                this.itemList = val
+                // console.log(this.itemList)
             },
             handleSubmit(){
-                let hash = []
-                for (let i = 0; i < this.itemList.length; i++) {
-                    if(hash.indexOf(this.itemList[i]) == -1){
-                        hash.push(this.itemList[i]);
+                let arrs = []
+                this.itemData.forEach((el,i) => {
+                    if(el.goodsId){
+                        arrs.push(el)
                     }
-                }
-                this.itemList = hash
-                console.log(this.itemData)
-                // this.itemData = this.itemData.concat(this.itemList)
+                    if(this.itemList.length){
+                        this.itemList.forEach((a,j) => {
+                            if(el.id == a.id){
+                                this.itemList.splice(j,1)
+                            }
+                        });
+                    }
+                });
+                this.itemData = arrs.concat(this.itemList)
 
-                // this.dialogVisible = false
+                this.itemData.forEach((param,y) => {
+                    this.list.forEach((item,x) => {
+                        if(item.id == param.id){
+                            param.price = item.tbGoods.price
+                            param.edit = true
+                            this.list.splice(x,1)
+                        }
+                    });
+                });
+                this.selectData = this.list
+
+                this.dialogVisible = false
             },
             getSummary(param){
                 const { columns, data } = param;
@@ -624,7 +658,7 @@
                 return sums;
             },
             onSubmit(){
-                // console.log(this.myform)
+                console.log(this.itemData)
                 const _this = this
                 let qs = require('querystring')
                 let totalSum = 0
@@ -647,7 +681,38 @@
                     "remarks":this.myform.remarks,
                     "totalSum":totalSum,
                     "orderDetails":orderDetails
-                }                
+                }
+
+                let flag = false
+                if(!data.orderDetails.length) {
+                    _this.$message({
+                        message: "产品不能为空",
+                        type: 'error'
+                    });
+                    flag = true;
+                }
+                if(!data.settlement) {
+                    _this.$message({
+                        message: "结算方式不能为空",
+                        type: 'error'
+                    });
+                    flag = true;
+                }
+                if(!data.orderTime) {
+                    _this.$message({
+                        message: "订单时间不能为空",
+                        type: 'error'
+                    });
+                    flag = true;
+                }
+                if(!data.customerpoolId) {
+                    _this.$message({
+                        message: "客户名称不能为空",
+                        type: 'error'
+                    });
+                    flag = true;
+                }
+                if(flag) return
                 
                 this.isDisable = true
 
@@ -661,9 +726,10 @@
                             message: '添加成功',
                             type:'success'
                         })
-                        // if(res.data.id){
+                        if(res.data.map.id){
                             _this.submitAdd = false
-                        // }
+                            _this.myform.id = res.data.map.id
+                        }
                     }else{
                         _this.$message({
                             message: res.data.msg,
@@ -672,7 +738,6 @@
                     }
                     _this.isDisable = false
                 }).catch(function(err){
-                    // console.log(err);
                     _this.isDisable = false
                 });
             },
@@ -688,7 +753,7 @@
                     }
                 });
                 let data = {
-                    "id":6,
+                    "id":this.myform.id,
                     "customerpoolId":this.myform.customerpoolId,
                     "contactId":this.myform.contactId,
                     "orderTime":this.myform.orderTime,
@@ -701,34 +766,30 @@
                     "totalSum":totalSum,
                     "orderDetails":orderDetails
                 }
-                console.log(data)
                 
-                // this.isDisable = true
+                this.isDisable = true
 
-                // axios({
-                //     method: 'post',
-                //     url: _this.$store.state.defaultHttp+'order/insert.do?cId='+_this.$store.state.iscId,
-                //     data: data,
-                // }).then(function(res){
-                //     if(res.data.code && res.data.code == '200'){
-                //         _this.$message({
-                //             message: '添加成功',
-                //             type:'success'
-                //         })
-                //         if(res.data.id){
-                //             _this.submitAdd = false
-                //         }
-                //     }else{
-                //         _this.$message({
-                //             message: res.data.msg,
-                //             type:'error'
-                //         })
-                //     }
-                //     _this.isDisable = false
-                // }).catch(function(err){
-                //     // console.log(err);
-                //     _this.isDisable = false
-                // });
+                axios({
+                    method: 'post',
+                    url: _this.$store.state.defaultHttp+'order/update.do?cId='+_this.$store.state.iscId,
+                    data: data,
+                }).then(function(res){
+                    if(res.data.code && res.data.code == '200'){
+                        _this.$message({
+                            message: '编辑成功',
+                            type:'success'
+                        })
+                    }else{
+                        _this.$message({
+                            message: res.data.msg,
+                            type:'error'
+                        })
+                    }
+                    _this.isDisable = false
+                }).catch(function(err){
+                    // console.log(err);
+                    _this.isDisable = false
+                });
             },
             submitOrClose(){
                 const _this = this
@@ -753,7 +814,37 @@
                     "remarks":this.myform.remarks,
                     "totalSum":totalSum,
                     "orderDetails":orderDetails
-                }                
+                }
+                let flag = false
+                if(!data.orderDetails.length) {
+                    _this.$message({
+                        message: "产品不能为空",
+                        type: 'error'
+                    });
+                    flag = true;
+                }
+                if(!data.settlement) {
+                    _this.$message({
+                        message: "结算方式不能为空",
+                        type: 'error'
+                    });
+                    flag = true;
+                }
+                if(!data.orderTime) {
+                    _this.$message({
+                        message: "订单时间不能为空",
+                        type: 'error'
+                    });
+                    flag = true;
+                }
+                if(!data.customerpoolId) {
+                    _this.$message({
+                        message: "客户名称不能为空",
+                        type: 'error'
+                    });
+                    flag = true;
+                }
+                if(flag) return             
                 
                 this.isDisable = true
 
