@@ -363,6 +363,13 @@
                     sortable>
                     <template slot-scope="scope">{{scope.row.discount}} %</template>
                 </el-table-column>
+                <el-table-column
+                    prop="taxRate"
+                    min-width="120"
+                    label="税率"
+                    sortable>
+                    <template slot-scope="scope">{{scope.row.taxRate}} %</template>
+                </el-table-column>
                 <el-table-column label="操作"
                     width="140"
                     header-align="center"
@@ -774,6 +781,9 @@
                 <el-form-item prop="distri_count" label="经销商折扣">
                     <el-input v-model="newform.distri_count" placeholder="请输入经销商折扣"><template slot="append">%</template></el-input>
                 </el-form-item>
+                <el-form-item prop="taxRate" label="经销商税率">
+                    <el-input v-model="newform.taxRate" placeholder="请输入经销商税率"><template slot="append">%</template></el-input>
+                </el-form-item>
             </el-form>
             <span slot="footer" class="dialog-footer">
                 <el-button @click="dialogVisible18 = false">取 消</el-button>
@@ -796,6 +806,9 @@
                 </el-form-item>
                 <el-form-item prop="distri_count" label="经销商折扣">
                     <el-input v-model="newform.distri_count" placeholder="请输入经销商折扣"><template slot="append">%</template></el-input>
+                </el-form-item>
+                <el-form-item prop="taxRate" label="经销商税率">
+                    <el-input v-model="newform.taxRate" placeholder="请输入经销商税率"><template slot="append">%</template></el-input>
                 </el-form-item>
             </el-form>
             <span slot="footer" class="dialog-footer">
@@ -873,6 +886,7 @@
                     specoption:[],
                     distri_name:null,
                     distri_count:null,
+                    taxRate:null,
                 },
 
                 tenoptions:[],
@@ -1142,6 +1156,7 @@
                         }else if(i == 12){
                             _this.newform.distri_name = null
                             _this.newform.distri_count = null
+                            _this.newform.taxRate = null
                             _this.dialogVisible18 = true
                         }
                     }
@@ -1471,7 +1486,7 @@
                 data.sort = this.newform.sort
                 data.name = this.newform.distri_name
                 data.discount = this.newform.distri_count
-                console.log(data)
+                data.taxRate = this.newform.taxRate
 
                 let flag = false;
                 if(!data.sort){
@@ -1574,6 +1589,7 @@
                             _this.newform.id = row.id
                             _this.newform.distri_name = row.name
                             _this.newform.distri_count = row.discount
+                            _this.newform.taxRate = row.taxRate
                             _this.dialogVisible19 = true
                         }
                     }
@@ -1902,6 +1918,7 @@
                 data.sort = this.newform.sort
                 data.name = this.newform.distri_name
                 data.discount = this.newform.distri_count
+                data.taxRate = this.newform.taxRate
                 console.log(data)
 
                 let flag = false;
@@ -1994,7 +2011,6 @@
                             }else if(i == 12){
                                 _this.$options.methods.loadistri.bind(_this)(true);
                             }
-                            
                         } else if(res.data.msg && res.data.msg == 'error'){//删除
                             _this.$message({
                                 message: '对不起，您没有该权限，请联系管理员开通',

@@ -899,4 +899,16 @@ export default {
         left: 80px;
         width: calc(100% - 112px);
     }
+
+    .disabledForm{
+        width: 100%;
+        display: flex;
+        flex-wrap: wrap;
+    }
+    .disabledForm .el-form-item{
+        flex: 0 0 calc(25% - 15px);
+    }
+    .disabledForm .el-form-item .el-form-item__content{
+        width: calc(100% - 90px);
+    }
 </style>

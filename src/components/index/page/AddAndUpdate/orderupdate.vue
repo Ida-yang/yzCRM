@@ -32,18 +32,6 @@
                     <el-form-item class="first_input" label="交货地址" label-width="90px">
                         <el-input v-model="myform.deliveryAddress" class="inputbox"></el-input>
                     </el-form-item>
-                    <el-form-item class="first_input" label="制单人" label-width="90px">
-                        <el-input v-model="myform.private_employee" class="inputbox" :disabled="true"></el-input>
-                    </el-form-item>
-                    <el-form-item class="first_input" label="负责人" label-width="90px">
-                        <el-input v-model="myform.ascription" class="inputbox" :disabled="true"></el-input>
-                    </el-form-item>
-                    <el-form-item class="first_input" label="部门" label-width="90px">
-                        <el-input v-model="myform.deptname" class="inputbox" :disabled="true"></el-input>
-                    </el-form-item>
-                    <el-form-item class="first_input" label="机构" label-width="90px">
-                        <el-input v-model="myform.parentname" class="inputbox" :disabled="true"></el-input>
-                    </el-form-item>
                     <el-form-item class="first_input" label="备注" label-width="90px">
                         <el-input v-model="myform.remarks" class="inputbox"></el-input>
                     </el-form-item>
@@ -54,14 +42,14 @@
         <div class="entry">
             <el-button class="btn info-btn" size="mini" icon="el-icon-circle-plus-outline" @click="handleAdd"></el-button>
         </div>
-        <el-table v-loading="listLoading" :data="itemData" border fit highlight-current-row show-summary :summary-method="getSummary" style="width: 100%">
+        <el-table v-loading="listLoading" :data="itemData" border fit highlight-current-row show-summary :summary-method="getSummary" @cell-click="cellClick" style="width: 100%">
             <el-table-column header-align="center" align="center" fixed type="index" min-width="45"></el-table-column>
-            <el-table-column prop="tbGoods.goodsName" width="180px" fixed align="center" label="产品名称">
+            <el-table-column prop="tbGoods.goodsName" width="305px" fixed align="center" label="产品名称">
                 <template slot-scope="scope">
                     <template v-if="scope.row.edit">
-                        <el-select v-model="scope.row.tbGoods.goodsName" placeholder="请选择" filterable :filter-method="handleFilter">
+                        <el-select v-model="scope.row.tbGoods.goodsName" placeholder="请选择" filterable :filter-method="handleFilter" @focus="handleFoces(scope.$index,scope.row)">
                             <el-option class="droplist" :value="scope.row.tbGoods.goodsName">
-                                <el-table :data="selectData" border fit @current-change="handleChange" style="width: 100%">
+                                <el-table :data="selectData" border fit @current-change="currentChange" style="width: 100%">
                                     <el-table-column header-align="center" align="center" type="index" min-width="45"></el-table-column>
                                     <el-table-column prop="tbGoods.goodsName" label="产品名称" width="130"></el-table-column>
                                     <el-table-column prop="tbGoods.describe" show-overflow-tooltip label="描述" width="150"></el-table-column>
@@ -74,8 +62,8 @@
                                     </el-table-column>
                                 </el-table>
                             </el-option>
-                            <el-button slot="append">%</el-button>
                         </el-select>
+                        <el-button class="btn info-btn" size="mini" @click="showDialog()">选择</el-button>
                     </template>
                     <span v-else>{{ scope.row.tbGoods.goodsName }}</span>
                 </template>
@@ -85,11 +73,11 @@
 
             <el-table-column prop="goodspec" min-width="150" label="规格属性">
                 <template slot-scope="scope">
-                    <span v-for="(item,i) in scope.row.goodspec" :key="i">{{item.label + '：' + item.value}}</span>
+                    <span v-for="(item,i) in scope.row.goodspec" :key="i">{{'/' + item.value}}</span>
                 </template>
             </el-table-column>
 
-            <el-table-column prop="unit" min-width="120" label="单位"></el-table-column>
+            <el-table-column prop="unit" width="50" label="单位"></el-table-column>
 
             <el-table-column prop="num" min-width="120" label="数量">
                 <template slot-scope="scope">
@@ -118,11 +106,12 @@
                 </template>
             </el-table-column>
 
-            <el-table-column prop="discount" min-width="150" label="折扣">
+            <el-table-column prop="discount" width="90" label="折扣">
                 <template slot-scope="scope">
                     <template v-if="scope.row.edit">
                         <el-input v-model="scope.row.discount" class="edit-input" size="small" @input="handleinput($event,scope.$index,scope.row)">
-                            <el-button slot="append">%</el-button>
+                            <span slot="suffix" style="margin-right:5px;line-height:34px;">%</span>
+                            <!-- <el-button slot="append">%</el-button> -->
                         </el-input>
                     </template>
                     <span v-else-if="scope.row.discount">{{ scope.row.discount + ' %' }}</span>
@@ -147,11 +136,12 @@
                 </template>
             </el-table-column>
 
-            <el-table-column prop="taxRate" min-width="150" label="税率">
+            <el-table-column prop="taxRate" width="90" label="税率">
                 <template slot-scope="scope">
                     <template v-if="scope.row.edit">
                         <el-input v-model="scope.row.taxRate" class="edit-input" size="small" @input="handleinput($event,scope.$index,scope.row)">
-                            <el-button slot="append">%</el-button>
+                            <span slot="suffix" style="margin-right:5px;line-height:34px;">%</span>
+                            <!-- <el-button slot="append">%</el-button> -->
                         </el-input>
                     </template>
                     <span v-else-if="scope.row.taxRate">{{ scope.row.taxRate + ' %' }}</span>
@@ -185,20 +175,75 @@
                 </template>
             </el-table-column>
 
-            <el-table-column prop="brand" min-width="120" label="产品品牌"></el-table-column>
+            <el-table-column prop="brand" width="80" label="产品品牌"></el-table-column>
 
             <el-table-column align="center" label="操作" width="120" fixed="right">
                 <template slot-scope="scope">
-                    <el-button v-if="scope.row.edit" type="success" plain size="mini" icon="el-icon-circle-check-outline" @click="confirmEdit(scope.row)"></el-button>
-                    <el-button v-else type="warning" plain size="mini" icon="el-icon-edit" @click="handleEdit(scope.$index,scope.row)"></el-button>
-                    <el-button type="danger" plain size="mini" icon="el-icon-delete" @click="handleDelete(scope.$index,scope.row)"></el-button>
+                    <el-button type="success" plain style="width:30px;height:30px;padding:0" :disabled="!scope.row.edit" icon="el-icon-circle-check-outline" @click="confirmEdit(scope.row)"></el-button>
+                    <el-button type="danger" plain style="width:30px;height:30px;padding:0" icon="el-icon-delete" @click="handleDelete(scope.$index,scope.row)"></el-button>
                 </template>
             </el-table-column>
         </el-table>
+
+        <el-form :inline="true" ref="myform" :model="myform" class="disabledForm">
+            <el-form-item label="制单人" label-width="90px">
+                <el-input v-model="myform.private_employee" :disabled="true"></el-input>
+            </el-form-item>
+            <el-form-item label="负责人" label-width="90px">
+                <el-input v-model="myform.ascription" :disabled="true"></el-input>
+            </el-form-item>
+            <el-form-item label="部门" label-width="90px">
+                <el-input v-model="myform.deptname" :disabled="true"></el-input>
+            </el-form-item>
+            <el-form-item label="机构" label-width="90px">
+                <el-input v-model="myform.parentname" :disabled="true"></el-input>
+            </el-form-item>
+        </el-form>
+                
         <div class="submit_btn">
             <el-button type="primary" :disabled="isDisable" @click="onSubmit" style="margin-right:100px;">立即提交</el-button>
             <el-button @click="closeTag">取消</el-button>
         </div>
+        
+        <el-dialog
+            title="选择产品"
+            :visible.sync="dialogVisible"
+            width="80%"
+            class="orderDialog"
+            center>
+            <div class="otherleftcontent">
+                <el-tree
+                    node-key="id"
+                    highlight-current
+                    accordion
+                    :data="datalist"
+                    :props="defaultProps"
+                    :default-expanded-keys="defaultkeys"
+                    expand-on-click-node
+                    @node-click="handleNodeClick">
+                </el-tree>
+            </div>
+            <div class="otherightcontent">
+                <span>产品名称：</span><el-input v-model="goodsName" style="width:200px;" @input="addInput"></el-input>
+                <br><br>
+                <el-table :data="tableData" border fit @selection-change="selectInfo" style="width: 100%">
+                    <el-table-column header-align="center" align="center" type="selection" min-width="45" @selection-change="selectInfo"></el-table-column>
+                    <el-table-column prop="tbGoods.goodsName" label="产品名称" width="130"></el-table-column>
+                    <el-table-column prop="tbGoods.describe" show-overflow-tooltip label="描述" width="150"></el-table-column>
+                    <el-table-column prop="goodspec" label="规格属性" min-width="150">
+                        <template slot-scope="scope">
+                            <span v-for="(item,i) in scope.row.goodspec" :key="i">{{item.label + '：' + item.value}}</span>
+                        </template>
+                    </el-table-column>
+                    <el-table-column prop="unit" label="单位" width="90"></el-table-column>
+                    <el-table-column prop="brand" label="品牌" width="90"></el-table-column>
+                </el-table>
+            </div>
+            <span slot="footer" class="dialog-footer order_foot">
+                <el-button @click="dialogVisible = false">取 消</el-button>
+                <el-button type="primary" @click="handleSubmit()">确 定</el-button>
+            </span>
+        </el-dialog>
     </div>
 </template>
 
@@ -212,25 +257,35 @@
         name: 'name',
         data() {
             return {
+                datalist:[],
+                defaultProps:{
+                    label:'name',
+                    children:'next',
+                },
+                defaultkeys:[1],
+
                 updateData:null,
                 list: null,
                 listLoading: true,
                 selectData:[],
                 options:[],
                 itemData:[
-                    {id:10,goodspec:{},category:'',tbGoods:{  goodsName:'',  describe:'',},edit:false},
-                    {id:11,goodspec:{},category:'',tbGoods:{  goodsName:'',  describe:'',},edit:false},
+                    {id:10,amountOfMoney:null, commitTime:null, brand:null, discount:null, discountAfter:null, discountAmount:null, tbGoods:{ goodsName:'', describe:'', }, num: null, price: null, taxAfter:null, taxAmount:null, taxRate:null, unit:null, edit:false,},
+                    {id:11,amountOfMoney:null, commitTime:null, brand:null, discount:null, discountAfter:null, discountAmount:null, tbGoods:{ goodsName:'', describe:'', }, num: null, price: null, taxAfter:null, taxAmount:null, taxRate:null, unit:null, edit:false,},
                 ],
+                itemList:[],
+                tableData:[],
                 scopeIndex:null,
 
                 myform:{
+                    id:null,
                     customerpoolId:null,
                     contactId:null,
                     orderTime:null,
                     settlement:null,
                     deliveryMode:null,
                     deliveryAddress:null,
-                    private_employee:this.$store.state.user,
+                    private_employee:null,
                     ascriptionId:null,
                     ascription:null,
                     deptname:null,
@@ -249,14 +304,24 @@
                 contactsList:[],
                 brandList:[],
                 settlementMethod:[
-                    {id:101,name:'现金'},
-                    {id:102,name:'发票'},
-                    {id:103,name:'银行卡'},
+                    {id:101,name:'一次性付款'},
+                    {id:102,name:'分次付款'},
+                    {id:103,name:'月结付款'},
                 ],
 
                 customerId:null,
+                cusdiscount:null,
+                custaxRate:null,
 
                 isDisable:false,
+
+                goodsName:'',
+                dialogVisible:false,
+                classification_id:null,
+                idArr:[],
+                multipleSelection:null,
+
+                OKdisabled:true
             }
         },
         mounted() {
@@ -280,27 +345,13 @@
                     _this.myform = res.data
                     _this.updateData = res.data.orderDetails
                     _this.customerId = res.data.customerpoolId
+                    _this.cusdiscount = res.data.orderDetails[0].discount
+                    _this.custaxRate = res.data.orderDetails[0].taxRate
                     _this.$options.methods.loadContact.bind(_this)()
-                    _this.$options.methods.getData.bind(_this)()
+                    _this.$options.methods.getItem.bind(_this)()
                 }).catch(function(err){
                     // console.log(err);
                 });
-            },
-            getData(){
-                this.itemData = []
-                if(this.updateData.length !== 0){
-                    this.updateData.forEach((el,i) => {
-                        el.aaa = JSON.parse(el.spec)
-                        el.goodspec = []
-                        for(var key in el.aaa){
-                            if(key !== "null" && key !== "undefined"){
-                                el.goodspec.push({label:key,value:el.aaa[key]})
-                            }
-                        }
-                        this.itemData.push({ amountOfMoney: el.amountOfMoney, commitTime:el.commitTime, brand: el.brand, discount: el.discount, discountAfter: el.discountAfter, discountAmount: el.discountAmount, goodsId: el.goodsId, tbGoods:{ goodsName:el.goodsName, describe:el.describe, }, id: el.itemId, itemId: el.itemId, num: el.num, orderId: el.orderId, price: el.price, taxAfter: el.taxAfter, taxAmount: el.taxAmount, taxRate: el.taxRate, goodspec: el.goodspec, unit: el.unit, edit:false,})
-                    });
-                }
-                
             },
             getList() {
                 const _this = this
@@ -329,7 +380,41 @@
                             }
                         }
                     });
+                    _this.$options.methods.getSelect.bind(_this)()
                     _this.listLoading = false
+                }).catch(function(err){
+                    // console.log(err);
+                });
+            },
+            getData(){
+                const _this = this
+                let qs = require('querystring')
+                let data = {}
+                data.page = 1
+                data.limit = 1000000
+                data.classification_id = this.classification_id
+                data.searchName = this.goodsName
+                
+                axios({
+                    method: 'post',
+                    url: _this.$store.state.defaultHttp+'goods/search.do?cId='+_this.$store.state.iscId,
+                    data:qs.stringify(data)
+                }).then(function(res){
+                    let items = res.data.map.goods
+                    items.map(v => {
+                        _this.$set(v, 'edit', false)
+                        return v
+                    })
+                    items.forEach(element => {
+                        element.aaa = JSON.parse(element.spec)
+                        element.goodspec = []
+                        for(var key in element.aaa){
+                            if(key !== "null" && key !== "undefined"){
+                                element.goodspec.push({label:key,value:element.aaa[key]})
+                            }
+                        }
+                    });
+                    _this.tableData = items
                 }).catch(function(err){
                     // console.log(err);
                 });
@@ -372,6 +457,15 @@
                 }).catch(function(err){
                     // console.log(err);
                 });
+                
+                axios({
+                    method: 'get',
+                    url: _this.$store.state.defaultHttp+'classification/getClassificationNodeTree.do?cId='+_this.$store.state.iscId,
+                }).then(function(res){
+                    _this.datalist = res.data.map.success
+                }).catch(function(err){
+                    // console.log(err);
+                });
             },
             loadContact(){
                 const _this = this
@@ -389,6 +483,32 @@
                     // console.log(err);
                 });
             },
+            getItem(){
+                this.itemData = []
+                if(this.updateData.length !== 0){
+                    this.updateData.forEach((el,i) => {
+                        el.aaa = JSON.parse(el.spec)
+                        el.goodspec = []
+                        for(var key in el.aaa){
+                            if(key !== "null" && key !== "undefined"){
+                                el.goodspec.push({label:key,value:el.aaa[key]})
+                            }
+                        }
+                        this.itemData.push({ amountOfMoney: el.amountOfMoney, commitTime:el.commitTime, brand: el.brand, discount: el.discount, discountAfter: el.discountAfter, discountAmount: el.discountAmount, goodsId: el.goodsId, tbGoods:{ goodsName:el.goodsName, describe:el.describe, }, id: el.itemId, itemId: el.itemId, num: el.num, orderId: el.orderId, price: el.price, taxAfter: el.taxAfter, taxAmount: el.taxAmount, taxRate: el.taxRate, goodspec: el.goodspec, unit: el.unit, edit:false,})
+                    });
+                }
+                
+            },
+            getSelect(){
+                this.itemData.forEach((a,j) => {
+                    this.list.forEach((el,i) => {
+                        if(el.id == a.id){
+                            this.list.splice(i,1)
+                        }
+                    });
+                });
+                this.selectData = this.list
+            },
             selectCustomer(e){
                 this.customerId = e
                 this.customerList.forEach(el => {
@@ -398,15 +518,28 @@
                         this.myform.deptname = el.deptname
                         this.myform.parentname = el.parentname
                     }
+                    if(el.discount){
+                        this.cusdiscount = el.discount
+                    }
+                    if(el.taxRate){
+                        this.custaxRate = el.taxRate
+                    }
                 });
                 this.$options.methods.loadContact.bind(this)()
             },
             handleAdd(){
-                this.itemData.push({id:10,goodspec:{},unit:'',category:'',tbGoods:{  goodsName:'',  describe:'',},edit:false})
+                this.itemData.push({amountOfMoney:null, commitTime:null, brand:null, discount:null, discountAfter:null, discountAmount:null, tbGoods:{ goodsName:'', describe:'', }, num: null, price: null, taxAfter:null, taxAmount:null, taxRate:null, unit:null, edit:false})
             },
-            handleEdit(index,row){
-                row.edit = !row.edit
-                this.scopeIndex = index
+            cellClick(row, column, cell, event){
+                row.edit = false
+                if(column.label !== '操作'){
+                    row.edit = true
+                    this.itemData.forEach((el,i) => {
+                        if(row.id == el.id){
+                            this.scopeIndex = i
+                        }
+                    });
+                }
             },
             handleDelete(index,row){
                 this.itemData.forEach((el,i) => {
@@ -414,6 +547,7 @@
                         this.itemData.splice(i,1)
                     }
                 });
+                this.$options.methods.getList.bind(this)()
             },
             confirmEdit(row) {
                 row.edit = false
@@ -422,9 +556,10 @@
                     type: 'success'
                 })
             },
-        
+            handleFoces(index,row){
+                this.scopeIndex = index
+            },
             handleFilter(val){
-                // console.log(val)
                 this.selectData = []
                 this.list.forEach(el => {
                     if(el.tbGoods.goodsName.indexOf(val) != -1){
@@ -432,40 +567,118 @@
                     }
                 });
             },
-            handleChange(e){
+            currentChange(e){
                 this.itemData.forEach((el,i) => {
                     if(i == this.scopeIndex){
                         if(e){
                             e.edit = true
+                            e.price = e.tbGoods.price
+                            e.discount = this.cusdiscount
+                            e.taxRate = this.custaxRate
+                            e.num = 1
                             this.itemData.splice(i,1,e)
+                            this.OKdisabled = false
+                            this.$options.methods.handleinput(1,i,e)
                         }
                     }
                 });
+                this.list.forEach((item,j) => {
+                    if(e && e.id == item.id){
+                        this.list.splice(j,1)
+                    }
+                });
+                this.selectData = this.list
             },
             handleinput(e,index,row){
                 if(row.num && row.price){
-                    let z = parseFloat(row.num) * parseFloat(row.price)
-                    row.amountOfMoney = z.toString()
+                    let z = parseInt(row.num) * parseFloat(row.price)
+                    row.amountOfMoney = z.toFixed(2)
                 }
                 if(row.amountOfMoney && row.discount){
                     let a = parseFloat(row.amountOfMoney) * parseFloat(row.discount) / 100
                     let b = parseFloat(row.amountOfMoney) - a
-                    row.discountAmount = b.toString()
-                    row.discountAfter = a.toString()
+                    row.discountAmount = b.toFixed(2)
+                    row.discountAfter = a.toFixed(2)
+                }else{
+                    row.discountAmount = 0
+                    row.discountAfter = 0
                 }
                 if(row.amountOfMoney && row.taxRate){
                     if(row.discountAfter){
                         let x = parseFloat(row.discountAfter) * parseFloat(row.taxRate) / 100
                         let y = parseFloat(row.discountAfter) + x
-                        row.taxAmount = x.toString()
-                        row.taxAfter = y.toString()
+                        row.taxAmount = x.toFixed(2)
+                        row.taxAfter = y.toFixed(2)
                     }else{
                         let c = parseFloat(row.amountOfMoney) * parseFloat(row.taxRate) / 100
                         let d = parseFloat(row.amountOfMoney) + c
-                        row.taxAmount = c.toString()
-                        row.taxAfter = d.toString()
+                        row.taxAmount = c.toFixed(2)
+                        row.taxAfter = d.toFixed(2)
                     }
+                }else{
+                    row.taxAmount = 0
+                    row.taxAfter = 0
                 }
+            },
+            showDialog(){
+                this.dialogVisible = true
+                this.$options.methods.getData.bind(this)()
+            },
+            handleNodeClick(data){
+                this.classification_id = data.id
+                if(data.next.length == 0){
+                    this.$options.methods.getData.bind(this)()
+                }
+            },
+            addInput(val){
+                this.goodsName = val
+                this.$options.methods.getData.bind(this)()
+            },
+            selectInfo(val){
+                this.itemList = []
+                this.multipleSelection = val;
+                let arr = val;
+                let newArr = new Array();
+                arr.forEach((item) => {
+                    if(item.id != 0){
+                        newArr.push(item.id)
+                    }
+                });
+                this.idArr = newArr
+                this.itemList = val
+            },
+            handleSubmit(){
+                let arrs = []
+                this.itemData.forEach((el,i) => {
+                    if(el.goodsId){
+                        arrs.push(el)
+                    }
+                    if(this.itemList.length){
+                        this.itemList.forEach((a,j) => {
+                            a.edit = true
+                            if(el.id == a.id){
+                                this.itemList.splice(j,1)
+                            }
+                        });
+                    }
+                });
+                this.itemData = arrs.concat(this.itemList)
+
+                this.itemData.forEach((param,y) => {
+                    this.list.forEach((item,x) => {
+                        if(item.id == param.id){
+                            param.price = item.tbGoods.price
+                            param.discount = this.cusdiscount
+                            param.taxRate = this.custaxRate
+                            param.num = 1
+                            this.list.splice(x,1)
+                            this.$options.methods.handleinput(1,y,param)
+                        }
+                    });
+                });
+                this.selectData = this.list
+
+                this.dialogVisible = false
             },
             getSummary(param){
                 const { columns, data } = param;
@@ -476,7 +689,7 @@
                         return;
                     }
                     const values = data.map(item => Number(item[column.property]));
-                    if(column.property == 'num' || column.property == 'price' || column.property == 'amountOfMoney' || column.property == 'discountAmount' || column.property == 'discountAfter' || column.property == 'taxAmount' || column.property == 'taxAfter'){
+                    if(column.property == 'price' || column.property == 'amountOfMoney' || column.property == 'discountAmount' || column.property == 'discountAfter' || column.property == 'taxAmount' || column.property == 'taxAfter'){
                         sums[index] = values.reduce((acc, cur) => (cur + acc), 0)
                         sums[index] = sums[index].toFixed(2)
                         let intPart = Math.trunc(sums[index])
@@ -494,6 +707,9 @@
                             sums[index] = intPartFormat + floatPart
                         }
                         sums[index] += ' 元';
+                    }else if(column.property == 'num'){
+                        sums[index] = values.reduce((acc, cur) => (cur + acc), 0)
+                        sums[index]
                     }else{
                         sums[index] = '';
                     }
@@ -579,7 +795,6 @@
                     }
                     _this.isDisable = false
                 }).catch(function(err){
-                    // console.log(err);
                     _this.isDisable = false
                 });
             },
@@ -615,6 +830,10 @@
     }
     .droplist{
         height: auto
+    }
+    .orderDialog .el-dialog{
+        min-height: 750px;
+        margin-top:10vh;
     }
 </style>
 

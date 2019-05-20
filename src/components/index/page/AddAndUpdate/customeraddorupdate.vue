@@ -74,6 +74,14 @@
                             style="width:90%;">
                             <el-option v-for="o in levelList" :key="o.id" :label="o.typeName" :value="o.id"></el-option>
                         </el-select>
+                        <el-select
+                            v-else-if="item.inputModel == 'distributorId'"
+                            v-model="myForm[item.inputModel]"
+                            @change="handleInput($event, item.inputModel)"
+                            :placeholder="item.placeholder"
+                            style="width:90%;">
+                            <el-option v-for="o in distributorList" :key="o.id" :label="o.name" :value="o.id"></el-option>
+                        </el-select>
                         <el-select 
                             v-else-if="item.inputModel == 'countryid'"
                             v-model="myForm[item.inputModel]"
@@ -283,6 +291,7 @@
                 operatingStateList:null, //经营状态
                 financingStateList:null, //融资状态
                 listedList:null, //上市信息
+                distributorList:null,//经销商级别
 
                 cuesList:null,
                 levelList:null,
@@ -388,10 +397,17 @@
                     method: 'get',
                     url: _this.$store.state.defaultHttp+'typeInfo/getTypeInfoByType.do?cId='+_this.$store.state.iscId,
                 }).then(function(res){
-
                     _this.cuesList = res.data.name3001
                     _this.levelList = res.data.name4001
                 }).catch(function(err){
+                });
+                axios({
+                    method: 'get',
+                    url: _this.$store.state.defaultHttp+'distributor/selectDistributor.do?cId='+_this.$store.state.iscId,
+                }).then(function(res){
+                    _this.distributorList = res.data.map.distributors
+                }).catch(function(err){
+                    // console.log(err);
                 });
             },
             //加载或重载页面
@@ -770,7 +786,7 @@
     .auxForm{
         width: 100%;
     }
-    .formitemcus:nth-child(11),.formitemcus:nth-child(12){
+    .formitemcus:nth-child(13),.formitemcus:nth-child(12){
         margin: 0;
     }
     .formitemcus .cityseat{
