@@ -52,7 +52,7 @@
                     @selection-change="selectInfo"
                     sortable>
                 </el-table-column>
-                <el-table-column
+                <!-- <el-table-column
                     prop="unit"
                     fixed
                     header-align="center"
@@ -60,7 +60,7 @@
                     min-width="80"
                     label="图片"
                     sortable>
-                    <!-- <template slot-scope="scope">
+                    <template slot-scope="scope">
                         <el-popover
                             placement="right"
                             width="200"
@@ -68,8 +68,8 @@
                             <img class="img_portrait_big" :src="scope.row.image" alt="图片" width="200" height="200">
                             <img class="img_portrait" slot="reference" :src="scope.row.image" alt="图片" width="50" height="50">
                         </el-popover>
-                    </template> -->
-                </el-table-column>
+                    </template>
+                </el-table-column> -->
                 <!-- <el-table-column
                     prop="goodsCode"
                     fixed

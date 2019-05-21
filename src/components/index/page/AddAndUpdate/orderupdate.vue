@@ -2,11 +2,11 @@
     <div class="orderadd_c">
         <el-card class="box-card">
             <div slot="header" class="clearfix">
-                <span style="font-weight:bold">销售订单</span>
+                <span style="font-weight:bold">销售订单<span style="font-weight:bold">：{{myform.orderNo}}</span></span>
             </div>
             <div class="orderHead">
                 <el-form :inline="true" ref="myform" :model="myform" :rules="rules">
-                    <el-form-item class="first_input" label="公司名称" label-width="90px">
+                    <el-form-item prop="customerpoolId" class="first_input" label="公司名称" label-width="90px">
                         <el-select v-model="myform.customerpoolId" placeholder="请选择公司名称" class="inputbox" filterable @change="selectCustomer">
                             <el-option v-for="item in customerList" :key="item.id" :label="item.pName" :value="item.id"></el-option>
                         </el-select>
@@ -16,10 +16,10 @@
                             <el-option v-for="item in contactsList" :key="item.id" :label="item.name" :value="item.id"></el-option>
                         </el-select>
                     </el-form-item>
-                    <el-form-item class="first_input" label="订单时间" label-width="90px">
+                    <el-form-item prop="orderTime" class="first_input" label="订单时间" label-width="90px">
                         <el-date-picker v-model="myform.orderTime" type="date" placeholder="选择订单时间" format="yyyy-MM-dd" value-format="yyyy-MM-dd" class="inputbox"></el-date-picker>
                     </el-form-item>
-                    <el-form-item class="first_input" label="结算方式" label-width="90px">
+                    <el-form-item prop="settlement" class="first_input" label="结算方式" label-width="90px">
                         <el-select v-model="myform.settlement" placeholder="请选择结算方式" class="inputbox">
                             <el-option v-for="item in settlementMethod" :key="item.id" :label="item.name" :value="item.name"></el-option>
                         </el-select>
@@ -44,7 +44,7 @@
         </div>
         <el-table v-loading="listLoading" :data="itemData" border fit highlight-current-row show-summary :summary-method="getSummary" @cell-click="cellClick" style="width: 100%">
             <el-table-column header-align="center" align="center" fixed type="index" min-width="45"></el-table-column>
-            <el-table-column prop="tbGoods.goodsName" width="305px" fixed align="center" label="产品名称">
+            <el-table-column prop="tbGoods.goodsName" width="280px" class="table_required" fixed label="产品名称">
                 <template slot-scope="scope">
                     <template v-if="scope.row.edit">
                         <el-select v-model="scope.row.tbGoods.goodsName" placeholder="请选择" filterable :filter-method="handleFilter" @focus="handleFoces(scope.$index,scope.row)">
@@ -63,15 +63,15 @@
                                 </el-table>
                             </el-option>
                         </el-select>
-                        <el-button class="btn info-btn" size="mini" @click="showDialog()">选择</el-button>
+                        <el-button class="btn info-btn" size="mini" icon="el-icon-more" style="width:30px;height:28px;padding:0" @click="showDialog()"></el-button>
                     </template>
                     <span v-else>{{ scope.row.tbGoods.goodsName }}</span>
                 </template>
             </el-table-column>
 
-            <el-table-column prop="tbGoods.describe" width="120" align="center" label="描述"></el-table-column>
+            <el-table-column prop="tbGoods.describe" width="120" label="描述"></el-table-column>
 
-            <el-table-column prop="goodspec" min-width="150" label="规格属性">
+            <el-table-column prop="goodspec" min-width="100" label="规格属性">
                 <template slot-scope="scope">
                     <span v-for="(item,i) in scope.row.goodspec" :key="i">{{'/' + item.value}}</span>
                 </template>
@@ -79,7 +79,7 @@
 
             <el-table-column prop="unit" width="50" label="单位"></el-table-column>
 
-            <el-table-column prop="num" min-width="120" label="数量">
+            <el-table-column prop="num" min-width="120" class-name="table_required" label="数量">
                 <template slot-scope="scope">
                     <template v-if="scope.row.edit">
                         <el-input v-model="scope.row.num" class="edit-input" size="small" @input="handleinput($event,scope.$index,scope.row)"/>
@@ -88,7 +88,7 @@
                 </template>
             </el-table-column>
 
-            <el-table-column prop="price" min-width="120" label="单价">
+            <el-table-column prop="price" min-width="120" class-name="table_required" label="单价">
                 <template slot-scope="scope">
                     <template v-if="scope.row.edit">
                         <el-input v-model="scope.row.price" class="edit-input" size="small" @input="handleinput($event,scope.$index,scope.row)"/>
@@ -166,10 +166,10 @@
                 </template>
             </el-table-column>
 
-            <el-table-column prop="commitTime" width="240" label="交货日期">
+            <el-table-column prop="commitTime" width="170" label="交货日期">
                 <template slot-scope="scope">
                     <template v-if="scope.row.edit">
-                        <el-date-picker v-model="scope.row.commitTime" type="date" format="yyyy-MM-dd" value-format="yyyy-MM-dd" size="small"></el-date-picker>
+                        <el-date-picker v-model="scope.row.commitTime" type="date" format="yyyy-MM-dd" value-format="yyyy-MM-dd" size="small" class="table_date"></el-date-picker>
                     </template>
                     <span v-else>{{ scope.row.commitTime }}</span>
                 </template>
@@ -177,7 +177,7 @@
 
             <el-table-column prop="brand" width="80" label="产品品牌"></el-table-column>
 
-            <el-table-column align="center" label="操作" width="120" fixed="right">
+            <el-table-column align="center" label="操作" width="90" fixed="right">
                 <template slot-scope="scope">
                     <el-button type="success" plain style="width:30px;height:30px;padding:0" :disabled="!scope.row.edit" icon="el-icon-circle-check-outline" @click="confirmEdit(scope.row)"></el-button>
                     <el-button type="danger" plain style="width:30px;height:30px;padding:0" icon="el-icon-delete" @click="handleDelete(scope.$index,scope.row)"></el-button>
@@ -293,9 +293,9 @@
                     remarks:null,
                 },
                 rules:{
-                    approverid : [{ required: true, message: '审核人不能为空', trigger: 'blur' },],
-                    our_signatories : [{ required: true, message: '我方签约人不能为空', trigger: 'blur' },],
-                    signatories : [{ required: true, message: '客户签约人不能为空', trigger: 'blur' },],
+                    customerpoolId : [{ required: true, message: '公司名称不能为空', trigger: 'blur' },],
+                    orderTime : [{ required: true, message: '订单时间不能为空', trigger: 'blur' },],
+                    settlement : [{ required: true, message: '结算方式不能为空', trigger: 'blur' },],
                 },
 
                 
@@ -689,7 +689,7 @@
                         return;
                     }
                     const values = data.map(item => Number(item[column.property]));
-                    if(column.property == 'price' || column.property == 'amountOfMoney' || column.property == 'discountAmount' || column.property == 'discountAfter' || column.property == 'taxAmount' || column.property == 'taxAfter'){
+                    if(column.property == 'amountOfMoney' || column.property == 'discountAmount' || column.property == 'discountAfter' || column.property == 'taxAmount' || column.property == 'taxAfter'){
                         sums[index] = values.reduce((acc, cur) => (cur + acc), 0)
                         sums[index] = sums[index].toFixed(2)
                         let intPart = Math.trunc(sums[index])
@@ -834,6 +834,14 @@
     .orderDialog .el-dialog{
         min-height: 750px;
         margin-top:10vh;
+    }
+    .table_date.el-date-editor.el-input{
+        width: 150px;
+    }
+    th.table_required .cell::before{
+        content: '*';
+        margin-right: 4px;
+        color: #f56c6c;
     }
 </style>
 

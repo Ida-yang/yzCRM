@@ -2,7 +2,7 @@
     <div class="orderadd_c">
         <el-card class="box-card">
             <div slot="header" class="clearfix">
-                <span style="font-weight:bold">销售订单</span>
+                <span style="font-weight:bold">销售订单<span v-if="orderNo" style="font-weight:bold">：{{orderNo}}</span></span>
             </div>
             <div class="orderHead">
                 <el-form :inline="true" ref="myform" :model="myform" :rules="rules">
@@ -44,7 +44,7 @@
         </div>
         <el-table :data="itemData" border fit highlight-current-row show-summary :summary-method="getSummary" @cell-click="cellClick" style="width: 100%">
             <el-table-column header-align="center" fixed align="center" type="index" min-width="45"></el-table-column>
-            <el-table-column prop="tbGoods.goodsName" width="305px" fixed label="产品名称">
+            <el-table-column prop="tbGoods.goodsName" width="280px" class-name="table_required" fixed label="产品名称">
                 <template slot-scope="scope">
                     <template v-if="scope.row.edit">
                         <el-select v-model="scope.row.tbGoods.goodsName" placeholder="请选择" filterable :filter-method="handleFilter" @focus="handleFoces(scope.$index,scope.row)">
@@ -62,7 +62,7 @@
                                 </el-table>
                             </el-option>
                         </el-select>
-                        <el-button class="btn info-btn" size="mini" @click="showDialog()">选择</el-button>
+                        <el-button class="btn info-btn" size="mini" icon="el-icon-more" style="width:30px;height:28px;padding:0" @click="showDialog()"></el-button>
                     </template>
                     <span v-else>{{ scope.row.tbGoods.goodsName }}</span>
                 </template>
@@ -70,7 +70,7 @@
 
             <el-table-column prop="tbGoods.describe" width="120" label="描述"></el-table-column>
 
-            <el-table-column prop="goodspec" min-width="150" label="规格属性">
+            <el-table-column prop="goodspec" min-width="100" label="规格属性">
                 <template slot-scope="scope">
                     <!-- <span v-for="(item,i) in scope.row.goodspec" :key="i">{{item.label + ':' + item.value +','}}</span> -->
                     <span v-for="(item,i) in scope.row.goodspec" :key="i">{{item.value +'/'}}</span>
@@ -79,7 +79,7 @@
 
             <el-table-column prop="unit" width="50" label="单位"></el-table-column>
 
-            <el-table-column prop="num" min-width="120" label="数量">
+            <el-table-column prop="num" min-width="100" class-name="table_required" label="数量">
                 <template slot-scope="scope">
                     <template v-if="scope.row.edit">
                         <el-input v-model="scope.row.num" onkeyup="value=value.replace(/[^\d]/g,'')" class="edit-input" size="small" @input="handleinput($event,scope.$index,scope.row)"/>
@@ -88,7 +88,7 @@
                 </template>
             </el-table-column>
 
-            <el-table-column prop="price" min-width="120" label="单价">
+            <el-table-column prop="price" min-width="120" class-name="table_required" label="单价">
                 <template slot-scope="scope">
                     <template v-if="scope.row.edit">
                         <el-input v-model="scope.row.price" onkeyup="value=value.replace(/[^\d]/g,'')" class="edit-input" size="small" @input="handleinput($event,scope.$index,scope.row)"/>
@@ -111,7 +111,6 @@
                     <template v-if="scope.row.edit">
                         <el-input v-model="scope.row.discount" onkeyup="value=value.replace(/[^\d]/g,'')" class="edit-input" size="small" @input="handleinput($event,scope.$index,scope.row)">
                             <span slot="suffix" style="margin-right:5px;line-height:34px;">%</span>
-                            <!-- <el-button slot="append">%</el-button> -->
                         </el-input>
                     </template>
                     <span v-else-if="scope.row.discount">{{ scope.row.discount + ' %' }}</span>
@@ -141,7 +140,6 @@
                     <template v-if="scope.row.edit">
                         <el-input v-model="scope.row.taxRate" onkeyup="value=value.replace(/[^\d]/g,'')" class="edit-input" size="small" @input="handleinput($event,scope.$index,scope.row)">
                             <span slot="suffix" style="margin-right:5px;line-height:34px;">%</span>
-                            <!-- <el-button slot="append">%</el-button> -->
                         </el-input>
                     </template>
                     <span v-else>{{ scope.row.taxRate }}</span>
@@ -166,10 +164,10 @@
                 </template>
             </el-table-column>
 
-            <el-table-column prop="commitTime" width="240" label="交货日期">
+            <el-table-column prop="commitTime" width="170" label="交货日期">
                 <template slot-scope="scope">
                     <template v-if="scope.row.edit">
-                        <el-date-picker v-model="scope.row.commitTime" type="date" format="yyyy-MM-dd" value-format="yyyy-MM-dd" size="small"></el-date-picker>
+                        <el-date-picker v-model="scope.row.commitTime" type="date" format="yyyy-MM-dd" value-format="yyyy-MM-dd" size="small" class="table_date"></el-date-picker>
                     </template>
                     <span v-else>{{ scope.row.commitTime }}</span>
                 </template>
@@ -259,6 +257,8 @@
         name: 'name',
         data() {
             return {
+                orderNo:null,
+
                 datalist:[],
                 defaultProps:{
                     label:'name',
@@ -276,9 +276,11 @@
                     {id:13,amountOfMoney:null, commitTime:null, brand:null, discount:null, discountAfter:null, discountAmount:null, tbGoods:{ goodsName:'', describe:'', }, num: null, price: null, taxAfter:null, taxAmount:null, taxRate:null, unit:null, edit:false,},
                     {id:14,amountOfMoney:null, commitTime:null, brand:null, discount:null, discountAfter:null, discountAmount:null, tbGoods:{ goodsName:'', describe:'', }, num: null, price: null, taxAfter:null, taxAmount:null, taxRate:null, unit:null, edit:false,},
                 ],
+                selectList:[],
                 itemList:[],
                 tableData:[],
                 scopeIndex:null,
+                nodeChange:false,
 
                 myform:{
                     customerpoolId:null,
@@ -546,7 +548,6 @@
                 });
             },
             currentChange(e){
-                console.log(e)
                 this.itemData.forEach((el,i) => {
                     if(i == this.scopeIndex){
                         if(e){
@@ -606,6 +607,7 @@
             handleNodeClick(data){
                 this.classification_id = data.id
                 if(data.next.length == 0){
+                    this.nodeChange = true
                     this.$options.methods.getData.bind(this)()
                 }
             },
@@ -625,7 +627,21 @@
                 });
                 this.idArr = newArr
                 this.itemList = val
-                // console.log(this.itemList)
+                // this.$options.methods.selectItem.bind(this)()
+            },
+            selectItem(){
+                // console.log(this.selectList)
+                if(this.selectList.length){
+                    this.selectList.forEach((el,i) => {
+                        this.itemList.push(el)
+                        this.itemList.forEach((item,j) => {
+                            if(el.id == item.id){
+                                console.log(item)
+                                this.itemList.splice(j,1)
+                            }
+                        });
+                    });
+                }
             },
             handleSubmit(){
                 let arrs = []
@@ -765,9 +781,10 @@
                             message: '添加成功',
                             type:'success'
                         })
-                        if(res.data.map.id){
+                        if(res.data.map.order){
                             _this.submitAdd = false
-                            _this.myform.id = res.data.map.id
+                            _this.myform.id = res.data.map.order.id
+                            _this.orderNo = res.data.map.order.orderNo
                         }
                         _this.itemData.forEach(o => {
                             o.edit = false
@@ -949,12 +966,14 @@
         min-height: 750px;
         margin-top:10vh;
     }
-    /* .order_foot{
-        position: absolute;
-        bottom: 10px;
-        left: 0;
-        width: 100%;
-    } */
+    .table_date.el-date-editor.el-input{
+        width: 150px;
+    }
+    th.table_required .cell::before{
+        content: '*';
+        margin-right: 4px;
+        color: #f56c6c;
+    }
 </style>
 
 

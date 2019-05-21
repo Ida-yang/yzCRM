@@ -58,6 +58,11 @@
                     label="订单编号"
                     min-width="145"
                     sortable>
+                    <template slot-scope="scope">
+                        <div @click="handleEdit(scope.$index, scope.row)" class="hoverline">
+                            {{scope.row.orderNo}}
+                        </div>
+                    </template>
                 </el-table-column>
                 <el-table-column
                     prop="customerName"
@@ -66,11 +71,6 @@
                     label="公司名称"
                     min-width="180"
                     sortable>
-                    <template slot-scope="scope">
-                        <div @click="openDetails(scope.$index, scope.row)" class="hoverline">
-                            {{scope.row.customerName}}
-                        </div>
-                    </template>
                 </el-table-column>
                 <el-table-column
                     prop="contactsName"

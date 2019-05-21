@@ -15,7 +15,45 @@
         <div class="centercontent"></div>
         <div class="otherightcontent">
             <el-tabs v-model="activename" type="card">
-                <el-tab-pane label="方案目标" name="first">
+                <el-tab-pane label="部门/个人目标" name="first">
+                    <el-table :data="depGoalsData" border stripe style="width:100%">
+                        <el-table-column prop="deptname" fixed min-width="100" label="部门" sortable></el-table-column>
+                        <el-table-column prop="one" min-width="90" label="一月" sortable></el-table-column>
+                        <el-table-column prop="two" min-width="90" label="二月" sortable></el-table-column>
+                        <el-table-column prop="three" min-width="90" label="三月" sortable></el-table-column>
+                        <el-table-column prop="four" min-width="90" label="四月" sortable></el-table-column>
+                        <el-table-column prop="five" min-width="90" label="五月" sortable></el-table-column>
+                        <el-table-column prop="six" min-width="90" label="六月" sortable></el-table-column>
+                        <el-table-column prop="seven" min-width="90" label="七月" sortable></el-table-column>
+                        <el-table-column prop="eight" min-width="90" label="八月" sortable></el-table-column>
+                        <el-table-column prop="nine" min-width="90" label="九月" sortable></el-table-column>
+                        <el-table-column prop="ten" min-width="90" label="十月" sortable></el-table-column>
+                        <el-table-column prop="eleven" min-width="90" label="十一月" sortable></el-table-column>
+                        <el-table-column prop="twelve" min-width="90" label="十二月" sortable></el-table-column>
+                    </el-table>
+
+                    <el-table :data="goalsData" border stripe style="width:100%">
+                        <el-table-column prop="private_employee" fixed min-width="100" label="员工" sortable></el-table-column>
+                        <el-table-column prop="one" min-width="90" label="一月" sortable></el-table-column>
+                        <el-table-column prop="two" min-width="90" label="二月" sortable></el-table-column>
+                        <el-table-column prop="three" min-width="90" label="三月" sortable></el-table-column>
+                        <el-table-column prop="four" min-width="90" label="四月" sortable></el-table-column>
+                        <el-table-column prop="five" min-width="90" label="五月" sortable></el-table-column>
+                        <el-table-column prop="six" min-width="90" label="六月" sortable></el-table-column>
+                        <el-table-column prop="seven" min-width="90" label="七月" sortable></el-table-column>
+                        <el-table-column prop="eight" min-width="90" label="八月" sortable></el-table-column>
+                        <el-table-column prop="nine" min-width="90" label="九月" sortable></el-table-column>
+                        <el-table-column prop="ten" min-width="90" label="十月" sortable></el-table-column>
+                        <el-table-column prop="eleven" min-width="90" label="十一月" sortable></el-table-column>
+                        <el-table-column prop="twelve" min-width="90" label="十二月" sortable></el-table-column>
+                        <el-table-column label="操作" fixed="right" width="90" header-align="center" align="center">
+                            <template slot-scope="scope">
+                                <el-button size="mini" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
+                            </template>
+                        </el-table-column>
+                    </el-table>
+                </el-tab-pane>
+                <el-tab-pane label="方案目标" name="second">
                     <div class="radioList">
                         <el-radio-group v-model="searchList.state">
                             <span class="nameList">方案状态：</span>
@@ -47,17 +85,7 @@
                         stripe
                         style="width:100%"
                         @selection-change="selectInfo">
-                        <el-table-column
-                            fixed
-                            header-align="center"
-                            align="center"
-                            type="selection"
-                            width="45"
-                            scope.row.id
-                            prop="id"
-                            @selection-change="selectInfo"
-                            sortable>
-                        </el-table-column>
+                        <el-table-column fixed header-align="center" align="center" type="selection" width="45" scope.row.id prop="id" @selection-change="selectInfo" sortable></el-table-column>
                         <div v-for="(item,index) in filterList" :key="index" >
                             <el-table-column
                                 prop="projectName"
@@ -123,7 +151,7 @@
                             <template slot-scope="scope">
                                 <el-button
                                 size="mini"
-                                @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
+                                @click="handleUpdate(scope.$index, scope.row)">编辑</el-button>
                                 <el-button
                                 size="mini"
                                 type="danger"
@@ -143,7 +171,7 @@
                         </el-pagination>
                     </div>
                 </el-tab-pane>
-                <el-tab-pane label="线索客户参数" name="second">
+                <el-tab-pane label="线索客户参数" name="third">
                     <div class="entry">
                         <p class="dept_name" v-show="showparams">{{depts}}</p>
                         <p class="dept_name" v-show="!showparams">请选择部门，查看限制参数</p>
@@ -216,6 +244,57 @@
                 <el-button type="primary" @click="updateprogramme()">确 定</el-button>
             </span>
         </el-dialog>
+        <el-dialog
+            title="个人目标"
+            :visible.sync="dialogVisible3"
+            width="40%"
+            class="dialogform">
+            <el-form ref="goalsForm" :model="goalsForm" :rules="rules" label-width="80px">
+                <el-form-item prop="user" label="员工">
+                    <el-input v-model="goalsForm.user" :disabled="true"></el-input>
+                </el-form-item>
+                <el-form-item prop="one" label="一月">
+                    <el-input v-model="goalsForm.one" onkeyup="value=value.replace(/[^\d]/g,'')" placeholder="请输入一月份目标"></el-input>
+                </el-form-item>
+                <el-form-item prop="two" label="二月">
+                    <el-input v-model="goalsForm.two" onkeyup="value=value.replace(/[^\d]/g,'')" placeholder="请输入二月份目标"></el-input>
+                </el-form-item>
+                <el-form-item prop="three" label="三月">
+                    <el-input v-model="goalsForm.three" onkeyup="value=value.replace(/[^\d]/g,'')" placeholder="请输入三月份目标"></el-input>
+                </el-form-item>
+                <el-form-item prop="four" label="四月">
+                    <el-input v-model="goalsForm.four" onkeyup="value=value.replace(/[^\d]/g,'')" placeholder="请输入四月份目标"></el-input>
+                </el-form-item>
+                <el-form-item prop="five" label="五月">
+                    <el-input v-model="goalsForm.five" onkeyup="value=value.replace(/[^\d]/g,'')" placeholder="请输入五月份目标"></el-input>
+                </el-form-item>
+                <el-form-item prop="six" label="六月">
+                    <el-input v-model="goalsForm.six" onkeyup="value=value.replace(/[^\d]/g,'')" placeholder="请输入六月份目标"></el-input>
+                </el-form-item>
+                <el-form-item prop="seven" label="七月">
+                    <el-input v-model="goalsForm.seven" onkeyup="value=value.replace(/[^\d]/g,'')" placeholder="请输入七月份目标"></el-input>
+                </el-form-item>
+                <el-form-item prop="eight" label="八月">
+                    <el-input v-model="goalsForm.eight" onkeyup="value=value.replace(/[^\d]/g,'')" placeholder="请输入八月份目标"></el-input>
+                </el-form-item>
+                <el-form-item prop="nine" label="九月">
+                    <el-input v-model="goalsForm.nine" onkeyup="value=value.replace(/[^\d]/g,'')" placeholder="请输入九月份目标"></el-input>
+                </el-form-item>
+                <el-form-item prop="ten" label="十月">
+                    <el-input v-model="goalsForm.ten" onkeyup="value=value.replace(/[^\d]/g,'')" placeholder="请输入十月份目标"></el-input>
+                </el-form-item>
+                <el-form-item prop="eleven" label="十一月">
+                    <el-input v-model="goalsForm.eleven" onkeyup="value=value.replace(/[^\d]/g,'')" placeholder="请输入十一月份目标"></el-input>
+                </el-form-item>
+                <el-form-item prop="twelve" label="十二月">
+                    <el-input v-model="goalsForm.twelve" onkeyup="value=value.replace(/[^\d]/g,'')" placeholder="请输入十二月份目标"></el-input>
+                </el-form-item>
+            </el-form>
+            <span slot="footer" class="dialog-footer">
+                <el-button @click="dialogVisible3 = false">取 消</el-button>
+                <el-button type="primary" @click="updategoals()">确 定</el-button>
+            </span>
+        </el-dialog>
     </div>
 </template>
 <script>
@@ -247,6 +326,9 @@
 
                 activename:'first',
 
+                depGoalsData:[{deptname:null,one:null,two:null,three:null,four:null,five:null,six:null,seven:null,eight:null,nine:null,ten:null,eleven:null,twelve:null}],
+                goalsData:[],
+
                 newform:{
                     second_id:null,
                     secondname:null,
@@ -262,6 +344,9 @@
                     customerNum:0,
                     // opportunityDay:0,
                     opportunityNum:0,
+                },
+                goalsForm:{
+                    userId:null, user:null, one:null, two:null, three:null, four:null, five:null, six:null, seven:null, eight:null, nine:null, ten:null, eleven:null, twelve:null,
                 },
                 searchList:{
                     state:null,
@@ -280,6 +365,7 @@
                 limit:20,
                 dialogVisible:false,
                 dialogVisible2:false,
+                dialogVisible3:false,
                 rules: {
                     projectName : [{ required: true, message: '方案名称不能为空', trigger: 'blur' },],
                     time : [{ required: true, message: '请选择年份', trigger: 'blur' }],
@@ -293,10 +379,10 @@
             }
         },
         activated(){
-            this.reloadTable()
+            this.loadGoals()
         },
         mounted(){
-            this.reloadTable()
+            this.loadGoals()
             this.loadData()
         },
         methods:{
@@ -333,6 +419,7 @@
                     url: _this.$store.state.defaultHttp+'dept/getDeptNodeTree.do?cId='+_this.$store.state.iscId,
                 }).then(function(res){
                     _this.datalist = res.data.map.success
+                    _this.depGoalsData[0].deptname = res.data.map.success[0].deptname
                 }).catch(function(err){
                     // console.log(err);
                 });
@@ -354,6 +441,26 @@
                 }).then(function(res){
                     _this.$store.state.programmeList = res.data.map.success
                     _this.$store.state.programmeListnumber = res.data.count
+                }).catch(function(err){
+                    // console.log(err);
+                });
+            },
+            //加载个人目标
+            loadGoals(){
+                const _this = this
+                let qs = require('querystring')
+                let pageInfo = {}
+                pageInfo.page = 1
+                pageInfo.limit = 10000
+                pageInfo.deptid = this.searchList.secondid
+
+                axios({
+                    method: 'post',
+                    url: _this.$store.state.defaultHttp+'getPrivateUserAll.do?cId='+_this.$store.state.iscId,
+                    data:qs.stringify(pageInfo)
+                }).then(function(res){
+                    _this.userList = res.data.map.success
+                    _this.goalsData = res.data.map.success
                 }).catch(function(err){
                     // console.log(err);
                 });
@@ -381,8 +488,11 @@
                 this.newform.second_id = data.deptid
                 this.newform.secondname = data.deptname
                 if(this.activename == 'first'){
+                    this.depGoalsData = [{deptname:data.deptname,one:null,two:null,three:null,four:null,five:null,six:null,seven:null,eight:null,nine:null,ten:null,eleven:null,twelve:null}]
+                    this.$options.methods.loadGoals.bind(this)(true);
+                }else if(this.activename == 'second'){
                     this.$options.methods.reloadTable.bind(this)(true);
-                }else{
+                }else if(this.activename == 'third'){
                     this.$options.methods.reloadNum.bind(this)(true)
                     this.showparams = true
                 }
@@ -488,7 +598,7 @@
                 // alert('添加成功')
             },
             //方案修改
-            handleEdit(index,row){
+            handleUpdate(index,row){
                 const _this = this
                 let data = {}
 
@@ -731,6 +841,14 @@
                 }).catch(function(err){
                     // console.log(err);
                 });
+            },
+            handleEdit(index,row){
+                console.log(row)
+                this.goalsForm = {userId:row.private_id, user:row.private_employee, one:null, two:null, three:null, four:null, five:null, six:null, seven:null, eight:null, nine:null, ten:null, eleven:null, twelve:null,}
+                this.dialogVisible3 = true
+            },
+            updategoals(){
+                console.log(this.goalsForm)
             },
             search() {
                 this.$options.methods.reloadTable.bind(this)(true);

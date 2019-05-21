@@ -229,7 +229,7 @@ const router =new Router({
         {
           path: '/order',
           component: resolve => require(['../components/index/page/order/order.vue'], resolve),
-          meta: { title: '订单',name:'order',requireAuth:true}
+          meta: { title: '销售订单',name:'order',requireAuth:true}
         },
         {
           path: '/orderadd',

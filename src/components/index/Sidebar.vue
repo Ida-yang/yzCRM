@@ -154,7 +154,7 @@
                             },
                             {
                                 index: 'order',
-                                title: '订单',
+                                title: '销售订单',
                             },
                             {
                                 index: 'product',

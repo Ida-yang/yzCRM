@@ -786,7 +786,7 @@
     .auxForm{
         width: 100%;
     }
-    .formitemcus:nth-child(13),.formitemcus:nth-child(12){
+    .formitemcus:nth-child(13),.formitemcus:nth-child(14){
         margin: 0;
     }
     .formitemcus .cityseat{

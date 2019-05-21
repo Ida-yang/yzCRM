@@ -385,6 +385,34 @@
                     </template>
                 </el-table-column>
             </el-table>
+            
+            <el-table
+                :data="codeData"
+                border
+                stripe
+                style="width:100%"
+                v-show="showthirteen">
+                <el-table-column
+                    prop="module"
+                    label="编号模块"
+                    sortable>
+                </el-table-column>
+                <el-table-column
+                    prop="prefix"
+                    label="编号前缀"
+                    sortable>
+                </el-table-column>
+                <el-table-column label="操作"
+                    width="90"
+                    header-align="center"
+                    align="center">
+                    <template slot-scope="scope">
+                        <el-button
+                        size="mini"
+                        @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
+                    </template>
+                </el-table-column>
+            </el-table>
             <div class="block numberPage" v-show="showeight || shownine">
                 <el-pagination
                 @size-change="handleSizeChange"
@@ -816,6 +844,27 @@
                 <el-button type="primary" @click="updatedistri()">确 定</el-button>
             </span>
         </el-dialog><!-- 编辑经销商级别 -->
+        
+        <el-dialog
+            title="修改编号规则"
+            :visible.sync="dialogVisible20"
+            width="40%">
+            <el-form ref="newform" :model="newform" :rules="rules" label-width="110px">
+                <el-form-item prop="type" label="辅助资料类别">
+                    <el-input v-model="newform.type" :disabled="true"></el-input>
+                </el-form-item>
+                <el-form-item prop="module" label="编号模块">
+                    <el-input v-model="newform.module" :disabled="true"></el-input>
+                </el-form-item>
+                <el-form-item prop="prefix" label="编号前缀">
+                    <el-input v-model="newform.prefix" placeholder="请输入编号前缀"></el-input>
+                </el-form-item>
+            </el-form>
+            <span slot="footer" class="dialog-footer">
+                <el-button @click="dialogVisible20 = false">取 消</el-button>
+                <el-button type="primary" @click="updateCode()">确 定</el-button>
+            </span>
+        </el-dialog><!-- 编辑经销商级别 -->
     </div>
 </template>
 <script>
@@ -838,6 +887,7 @@
                 specData:[],
                 deliData:[],
                 distriData:[],
+                codeData:[],
 
                 specIndex:0,
 
@@ -865,6 +915,7 @@
                     {index:10,name:'规格',isActive:false},
                     {index:11,name:'交货方式',isActive:false},
                     {index:12,name:'经销商级别',isActive:false},
+                    {index:13,name:'编号规则',isActive:false},
                 ],
                 newform:{
                     type:'线索状态',
@@ -887,6 +938,8 @@
                     distri_name:null,
                     distri_count:null,
                     taxRate:null,
+                    prefix:null,
+                    createTime:null,
                 },
 
                 tenoptions:[],
@@ -907,6 +960,7 @@
                 showten:false,
                 showeleven:false,
                 showtwelve:false,
+                showthirteen:false,
 
                 dialogVisible:false,//线索状态、客户状态、客户来源、客户分类
                 dialogVisible2:false,
@@ -927,6 +981,7 @@
                 dialogVisible17:false,
                 dialogVisible18:false,//经销商级别
                 dialogVisible19:false,
+                dialogVisible20:false,//编号规则
 
                 rules: {
                     typeName : [{ required: true, message: '名称不能为空', trigger: 'blur' },],
@@ -940,6 +995,7 @@
                     spec_name:[{ required: true, message: '规格名称不能为空', trigger: 'blur' },],
                     distri_name:[{ required: true, message: '经销商级别不能为空', trigger: 'blur' },],
                     distri_count:[{ required: true, message: '经销商折扣不能为空', trigger: 'blur' },],
+                    prefix:[{ required: true, message: '编号前缀不能为空', trigger: 'blur' },],
                 },
             }
         },
@@ -1057,6 +1113,18 @@
                     // console.log(err);
                 });
             },
+            loadCode(){
+                const _this = this
+
+                axios({
+                    method: 'get',
+                    url: _this.$store.state.defaultHttp+'serialNumber/select.do?cId='+_this.$store.state.iscId,
+                }).then(function(res){
+                    _this.codeData = res.data
+                }).catch(function(err){
+                    // console.log(err);
+                });
+            },
             //显示左边对应表格数据
             showTableval(val){
                 const _this = this
@@ -1103,6 +1171,9 @@
                 }else if(i == 12){
                     _this.showtwelve = true
                     _this.$options.methods.loadistri.bind(_this)(true)
+                }else if(i == 13){
+                    _this.showthirteen = true
+                    _this.$options.methods.loadCode.bind(_this)(true)
                 }
             },
             //添加
@@ -1591,6 +1662,11 @@
                             _this.newform.distri_count = row.discount
                             _this.newform.taxRate = row.taxRate
                             _this.dialogVisible19 = true
+                        }else if(i == 13){
+                            _this.newform.id = row.id
+                            _this.newform.module = row.module
+                            _this.newform.prefix = row.prefix
+                            _this.dialogVisible20 = true
                         }
                     }
                 }).catch(function(err){
@@ -1788,7 +1864,7 @@
                         })
                     }
                 }).catch(function(err){
-                    _this.$message.error("修改失败,请重新添加");
+                    _this.$message.error("修改失败,请重新修改");
                 });
             },
             updateunit(){
@@ -1827,7 +1903,7 @@
                         })
                     }
                 }).catch(function(err){
-                    _this.$message.error("修改失败,请重新添加");
+                    _this.$message.error("修改失败,请重新修改");
                 });
             },
             updatebrand(){
@@ -1866,7 +1942,7 @@
                         })
                     }
                 }).catch(function(err){
-                    _this.$message.error("修改失败,请重新添加");
+                    _this.$message.error("修改失败,请重新修改");
                 });
             },
             updateSpec(){
@@ -1907,7 +1983,7 @@
                         })
                     }
                 }).catch(function(err){
-                    _this.$message.error("修改失败,请重新添加");
+                    _this.$message.error("修改失败,请重新修改");
                 });
             },
             updatedistri(){
@@ -1919,7 +1995,6 @@
                 data.name = this.newform.distri_name
                 data.discount = this.newform.distri_count
                 data.taxRate = this.newform.taxRate
-                console.log(data)
 
                 let flag = false;
                 if(!data.sort){
@@ -1964,7 +2039,47 @@
                         })
                     }
                 }).catch(function(err){
-                    _this.$message.error("修改失败,请重新添加");
+                    _this.$message.error("修改失败,请重新修改");
+                });
+            },
+            updateCode(){
+                const _this = this
+                let qs = require('querystring')
+                let data = {}
+                data.id = this.newform.id
+                data.prefix = this.newform.prefix
+                // data.createTime = this.newform.createTime
+
+                let flag = false;
+                if(!data.prefix){
+                    _this.$message({
+                        message: "编号前缀不能为空",
+                        type: 'error'
+                    });
+                    flag = true;
+                }
+                if(flag) return
+
+                axios({
+                    method: 'post',
+                    url: _this.$store.state.defaultHttp+'serialNumber/update.do?cId='+_this.$store.state.iscId,
+                    data:qs.stringify(data)
+                }).then(function(res){
+                    if(res.data.code && res.data.code == 200){
+                        _this.$message({
+                            message:'修改成功',
+                            type:'success'
+                        })
+                        _this.dialogVisible20 = false
+                        _this.$options.methods.loadCode.bind(_this)(true);
+                    }else{
+                        _this.$message({
+                            message:res.data.msg,
+                            type:'error'
+                        })
+                    }
+                }).catch(function(err){
+                    _this.$message.error("修改失败,请重新修改");
                 });
             },
             //删除
