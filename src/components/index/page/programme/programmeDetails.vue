@@ -139,7 +139,7 @@
                     </div>
                 </el-card>
             </div>
-            <div class="top">
+            <!-- <div class="top">
                 <el-card class="box-card">
                     <div slot="header" class="clearfix">
                         <span>合同金额</span>
@@ -175,7 +175,7 @@
                         </el-table>
                     </div>
                 </el-card>
-            </div>
+            </div> -->
         </el-col>
         
         <el-col :span="6" style="padding:10px;" class="right">

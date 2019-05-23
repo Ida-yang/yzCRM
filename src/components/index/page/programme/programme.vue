@@ -14,38 +14,39 @@
         </div>
         <div class="centercontent"></div>
         <div class="otherightcontent">
-            <el-tabs v-model="activename" type="card">
+            <el-tabs v-model="activename" type="card" @tab-click="tabClick">
+                <el-date-picker v-model="goalsyear" type="year" format="yyyy" value-format="yyyy" placeholder="选择年份" @change="changeYear"></el-date-picker>
                 <el-tab-pane label="部门/个人目标" name="first">
                     <el-table :data="depGoalsData" border stripe style="width:100%">
                         <el-table-column prop="deptname" fixed min-width="100" label="部门" sortable></el-table-column>
-                        <el-table-column prop="one" min-width="90" label="一月" sortable></el-table-column>
-                        <el-table-column prop="two" min-width="90" label="二月" sortable></el-table-column>
-                        <el-table-column prop="three" min-width="90" label="三月" sortable></el-table-column>
-                        <el-table-column prop="four" min-width="90" label="四月" sortable></el-table-column>
-                        <el-table-column prop="five" min-width="90" label="五月" sortable></el-table-column>
-                        <el-table-column prop="six" min-width="90" label="六月" sortable></el-table-column>
-                        <el-table-column prop="seven" min-width="90" label="七月" sortable></el-table-column>
-                        <el-table-column prop="eight" min-width="90" label="八月" sortable></el-table-column>
-                        <el-table-column prop="nine" min-width="90" label="九月" sortable></el-table-column>
-                        <el-table-column prop="ten" min-width="90" label="十月" sortable></el-table-column>
-                        <el-table-column prop="eleven" min-width="90" label="十一月" sortable></el-table-column>
-                        <el-table-column prop="twelve" min-width="90" label="十二月" sortable></el-table-column>
+                        <el-table-column prop="month1" min-width="90" label="一月" sortable></el-table-column>
+                        <el-table-column prop="month2" min-width="90" label="二月" sortable></el-table-column>
+                        <el-table-column prop="month3" min-width="90" label="三月" sortable></el-table-column>
+                        <el-table-column prop="month4" min-width="90" label="四月" sortable></el-table-column>
+                        <el-table-column prop="month5" min-width="90" label="五月" sortable></el-table-column>
+                        <el-table-column prop="month6" min-width="90" label="六月" sortable></el-table-column>
+                        <el-table-column prop="month7" min-width="90" label="七月" sortable></el-table-column>
+                        <el-table-column prop="month8" min-width="90" label="八月" sortable></el-table-column>
+                        <el-table-column prop="month9" min-width="90" label="九月" sortable></el-table-column>
+                        <el-table-column prop="month10" min-width="90" label="十月" sortable></el-table-column>
+                        <el-table-column prop="month11" min-width="90" label="十一月" sortable></el-table-column>
+                        <el-table-column prop="month12" min-width="90" label="十二月" sortable></el-table-column>
                     </el-table>
 
                     <el-table :data="goalsData" border stripe style="width:100%">
                         <el-table-column prop="private_employee" fixed min-width="100" label="员工" sortable></el-table-column>
-                        <el-table-column prop="one" min-width="90" label="一月" sortable></el-table-column>
-                        <el-table-column prop="two" min-width="90" label="二月" sortable></el-table-column>
-                        <el-table-column prop="three" min-width="90" label="三月" sortable></el-table-column>
-                        <el-table-column prop="four" min-width="90" label="四月" sortable></el-table-column>
-                        <el-table-column prop="five" min-width="90" label="五月" sortable></el-table-column>
-                        <el-table-column prop="six" min-width="90" label="六月" sortable></el-table-column>
-                        <el-table-column prop="seven" min-width="90" label="七月" sortable></el-table-column>
-                        <el-table-column prop="eight" min-width="90" label="八月" sortable></el-table-column>
-                        <el-table-column prop="nine" min-width="90" label="九月" sortable></el-table-column>
-                        <el-table-column prop="ten" min-width="90" label="十月" sortable></el-table-column>
-                        <el-table-column prop="eleven" min-width="90" label="十一月" sortable></el-table-column>
-                        <el-table-column prop="twelve" min-width="90" label="十二月" sortable></el-table-column>
+                        <el-table-column prop="month1" min-width="90" label="一月" sortable></el-table-column>
+                        <el-table-column prop="month2" min-width="90" label="二月" sortable></el-table-column>
+                        <el-table-column prop="month3" min-width="90" label="三月" sortable></el-table-column>
+                        <el-table-column prop="month4" min-width="90" label="四月" sortable></el-table-column>
+                        <el-table-column prop="month5" min-width="90" label="五月" sortable></el-table-column>
+                        <el-table-column prop="month6" min-width="90" label="六月" sortable></el-table-column>
+                        <el-table-column prop="month7" min-width="90" label="七月" sortable></el-table-column>
+                        <el-table-column prop="month8" min-width="90" label="八月" sortable></el-table-column>
+                        <el-table-column prop="month9" min-width="90" label="九月" sortable></el-table-column>
+                        <el-table-column prop="month10" min-width="90" label="十月" sortable></el-table-column>
+                        <el-table-column prop="month11" min-width="90" label="十一月" sortable></el-table-column>
+                        <el-table-column prop="month12" min-width="90" label="十二月" sortable></el-table-column>
                         <el-table-column label="操作" fixed="right" width="90" header-align="center" align="center">
                             <template slot-scope="scope">
                                 <el-button size="mini" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
@@ -250,44 +251,44 @@
             width="40%"
             class="dialogform">
             <el-form ref="goalsForm" :model="goalsForm" :rules="rules" label-width="80px">
-                <el-form-item prop="user" label="员工">
-                    <el-input v-model="goalsForm.user" :disabled="true"></el-input>
+                <el-form-item prop="private_employee" label="员工">
+                    <el-input v-model="goalsForm.private_employee" :disabled="true"></el-input>
                 </el-form-item>
-                <el-form-item prop="one" label="一月">
-                    <el-input v-model="goalsForm.one" onkeyup="value=value.replace(/[^\d]/g,'')" placeholder="请输入一月份目标"></el-input>
+                <el-form-item prop="month1" label="一月">
+                    <el-input v-model="goalsForm.month1" onkeyup="value=value.replace(/[^\d]/g,'')" placeholder="请输入一月份目标"></el-input>
                 </el-form-item>
-                <el-form-item prop="two" label="二月">
-                    <el-input v-model="goalsForm.two" onkeyup="value=value.replace(/[^\d]/g,'')" placeholder="请输入二月份目标"></el-input>
+                <el-form-item prop="month2" label="二月">
+                    <el-input v-model="goalsForm.month2" onkeyup="value=value.replace(/[^\d]/g,'')" placeholder="请输入二月份目标"></el-input>
                 </el-form-item>
-                <el-form-item prop="three" label="三月">
-                    <el-input v-model="goalsForm.three" onkeyup="value=value.replace(/[^\d]/g,'')" placeholder="请输入三月份目标"></el-input>
+                <el-form-item prop="month3" label="三月">
+                    <el-input v-model="goalsForm.month3" onkeyup="value=value.replace(/[^\d]/g,'')" placeholder="请输入三月份目标"></el-input>
                 </el-form-item>
-                <el-form-item prop="four" label="四月">
-                    <el-input v-model="goalsForm.four" onkeyup="value=value.replace(/[^\d]/g,'')" placeholder="请输入四月份目标"></el-input>
+                <el-form-item prop="month4" label="四月">
+                    <el-input v-model="goalsForm.month4" onkeyup="value=value.replace(/[^\d]/g,'')" placeholder="请输入四月份目标"></el-input>
                 </el-form-item>
-                <el-form-item prop="five" label="五月">
-                    <el-input v-model="goalsForm.five" onkeyup="value=value.replace(/[^\d]/g,'')" placeholder="请输入五月份目标"></el-input>
+                <el-form-item prop="month5" label="五月">
+                    <el-input v-model="goalsForm.month5" onkeyup="value=value.replace(/[^\d]/g,'')" placeholder="请输入五月份目标"></el-input>
                 </el-form-item>
-                <el-form-item prop="six" label="六月">
-                    <el-input v-model="goalsForm.six" onkeyup="value=value.replace(/[^\d]/g,'')" placeholder="请输入六月份目标"></el-input>
+                <el-form-item prop="month6" label="六月">
+                    <el-input v-model="goalsForm.month6" onkeyup="value=value.replace(/[^\d]/g,'')" placeholder="请输入六月份目标"></el-input>
                 </el-form-item>
-                <el-form-item prop="seven" label="七月">
-                    <el-input v-model="goalsForm.seven" onkeyup="value=value.replace(/[^\d]/g,'')" placeholder="请输入七月份目标"></el-input>
+                <el-form-item prop="month7" label="七月">
+                    <el-input v-model="goalsForm.month7" onkeyup="value=value.replace(/[^\d]/g,'')" placeholder="请输入七月份目标"></el-input>
                 </el-form-item>
-                <el-form-item prop="eight" label="八月">
-                    <el-input v-model="goalsForm.eight" onkeyup="value=value.replace(/[^\d]/g,'')" placeholder="请输入八月份目标"></el-input>
+                <el-form-item prop="month8" label="八月">
+                    <el-input v-model="goalsForm.month8" onkeyup="value=value.replace(/[^\d]/g,'')" placeholder="请输入八月份目标"></el-input>
                 </el-form-item>
-                <el-form-item prop="nine" label="九月">
-                    <el-input v-model="goalsForm.nine" onkeyup="value=value.replace(/[^\d]/g,'')" placeholder="请输入九月份目标"></el-input>
+                <el-form-item prop="month9" label="九月">
+                    <el-input v-model="goalsForm.month9" onkeyup="value=value.replace(/[^\d]/g,'')" placeholder="请输入九月份目标"></el-input>
                 </el-form-item>
-                <el-form-item prop="ten" label="十月">
-                    <el-input v-model="goalsForm.ten" onkeyup="value=value.replace(/[^\d]/g,'')" placeholder="请输入十月份目标"></el-input>
+                <el-form-item prop="month10" label="十月">
+                    <el-input v-model="goalsForm.month10" onkeyup="value=value.replace(/[^\d]/g,'')" placeholder="请输入十月份目标"></el-input>
                 </el-form-item>
-                <el-form-item prop="eleven" label="十一月">
-                    <el-input v-model="goalsForm.eleven" onkeyup="value=value.replace(/[^\d]/g,'')" placeholder="请输入十一月份目标"></el-input>
+                <el-form-item prop="month11" label="十一月">
+                    <el-input v-model="goalsForm.month11" onkeyup="value=value.replace(/[^\d]/g,'')" placeholder="请输入十一月份目标"></el-input>
                 </el-form-item>
-                <el-form-item prop="twelve" label="十二月">
-                    <el-input v-model="goalsForm.twelve" onkeyup="value=value.replace(/[^\d]/g,'')" placeholder="请输入十二月份目标"></el-input>
+                <el-form-item prop="month12" label="十二月">
+                    <el-input v-model="goalsForm.month12" onkeyup="value=value.replace(/[^\d]/g,'')" placeholder="请输入十二月份目标"></el-input>
                 </el-form-item>
             </el-form>
             <span slot="footer" class="dialog-footer">
@@ -326,7 +327,7 @@
 
                 activename:'first',
 
-                depGoalsData:[{deptname:null,one:null,two:null,three:null,four:null,five:null,six:null,seven:null,eight:null,nine:null,ten:null,eleven:null,twelve:null}],
+                depGoalsData:[],
                 goalsData:[],
 
                 newform:{
@@ -342,12 +343,11 @@
                     customerDay:0,
                     clueNum:0,
                     customerNum:0,
-                    // opportunityDay:0,
                     opportunityNum:0,
                 },
-                goalsForm:{
-                    userId:null, user:null, one:null, two:null, three:null, four:null, five:null, six:null, seven:null, eight:null, nine:null, ten:null, eleven:null, twelve:null,
-                },
+                goalsForm:{},
+                goalsyear:null,
+
                 searchList:{
                     state:null,
                     secondid:null,
@@ -382,6 +382,9 @@
             this.loadGoals()
         },
         mounted(){
+            let myDate = new Date()
+            let year = myDate.getFullYear() //获取完整的年份(4位,1970-????)
+            this.goalsyear = year.toString()
             this.loadGoals()
             this.loadData()
         },
@@ -450,17 +453,17 @@
                 const _this = this
                 let qs = require('querystring')
                 let pageInfo = {}
-                pageInfo.page = 1
-                pageInfo.limit = 10000
-                pageInfo.deptid = this.searchList.secondid
+                pageInfo.secondid = this.searchList.secondid
+                pageInfo.year = this.goalsyear
 
                 axios({
                     method: 'post',
-                    url: _this.$store.state.defaultHttp+'getPrivateUserAll.do?cId='+_this.$store.state.iscId,
+                    url: _this.$store.state.defaultHttp+'contractMoneyProject/selectByYearAndSecondid.do?cId='+_this.$store.state.iscId,
                     data:qs.stringify(pageInfo)
                 }).then(function(res){
-                    _this.userList = res.data.map.success
-                    _this.goalsData = res.data.map.success
+                    _this.userList = res.data.contractMoneyProject
+                    _this.goalsData = res.data.contractMoneyProject
+                    _this.depGoalsData = [res.data.statistics]
                 }).catch(function(err){
                     // console.log(err);
                 });
@@ -476,7 +479,10 @@
                     url: _this.$store.state.defaultHttp+'restrictiveConditions/selectBySecondid.do?cId='+_this.$store.state.iscId,
                     data:qs.stringify(pageInfo)
                 }).then(function(res){
-                    _this.paramList = res.data.map.restrictiveConditions
+                    let data = res.data.map.restrictiveConditions
+                    if(data){
+                        _this.paramList = data
+                    }
                 }).catch(function(err){
                     // console.log(err);
                 });
@@ -488,10 +494,10 @@
                 this.newform.second_id = data.deptid
                 this.newform.secondname = data.deptname
                 if(this.activename == 'first'){
-                    this.depGoalsData = [{deptname:data.deptname,one:null,two:null,three:null,four:null,five:null,six:null,seven:null,eight:null,nine:null,ten:null,eleven:null,twelve:null}]
-                    this.$options.methods.loadGoals.bind(this)(true);
+                    // this.depGoalsData = [{deptname:data.deptname,month1:null,month2:null,month3:null,month4:null,month5:null,month6:null,month7:null,month8:null,month9:null,month10:null,month11:null,month12:null}]
+                    this.$options.methods.loadGoals.bind(this)(true)
                 }else if(this.activename == 'second'){
-                    this.$options.methods.reloadTable.bind(this)(true);
+                    this.$options.methods.reloadTable.bind(this)(true)
                 }else if(this.activename == 'third'){
                     this.$options.methods.reloadNum.bind(this)(true)
                     this.showparams = true
@@ -842,13 +848,30 @@
                     // console.log(err);
                 });
             },
+            changeYear(e){
+                this.goalsyear = e
+                this.$options.methods.loadGoals.bind(this)()
+            },
             handleEdit(index,row){
                 console.log(row)
-                this.goalsForm = {userId:row.private_id, user:row.private_employee, one:null, two:null, three:null, four:null, five:null, six:null, seven:null, eight:null, nine:null, ten:null, eleven:null, twelve:null,}
+                this.goalsForm = row
                 this.dialogVisible3 = true
             },
             updategoals(){
+                const _this = this
+                let qs = require('querystring')
+                let data = {}
                 console.log(this.goalsForm)
+            },
+            tabClick(e){
+                // console.log(e)
+                if(e.index == 0){
+                    this.$options.methods.loadGoals.bind(this)()
+                }else if(e.index == 1){
+                    this.$options.methods.reloadTable.bind(this)()
+                }else if(e.index == 2){
+                    this.$options.methods.reloadNum.bind(this)()
+                }
             },
             search() {
                 this.$options.methods.reloadTable.bind(this)(true);

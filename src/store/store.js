@@ -47,6 +47,8 @@ const state = {
   productupdateData:null,
   orderaddData:null,
   orderupdateData:null,
+  approvaladdData:null,
+  approvalupdateData:null,
   
   //跳转详情页列表
   cluedetailsData:null,
@@ -182,6 +184,11 @@ const state = {
   orderList:[],
   //订单列表总数
   orderListnumber:0,
+
+  //审批流程列表
+  approvalProcessList:[],
+  //审批流程列表总数
+  approvalProcessListnumber:0,
 
   //当前时间
   nowtime:null,

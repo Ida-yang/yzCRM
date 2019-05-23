@@ -222,6 +222,10 @@
                                 title: '辅助资料'
                             },
                             {
+                                index: 'approvalProcess',
+                                title: '审批流程'
+                            },
+                            {
                                 index: 'programme',
                                 title: '目标',
                             },
