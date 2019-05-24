@@ -15,44 +15,50 @@
         <div class="centercontent"></div>
         <div class="otherightcontent">
             <el-tabs v-model="activename" type="card" @tab-click="tabClick">
-                <el-date-picker v-model="goalsyear" type="year" format="yyyy" value-format="yyyy" placeholder="选择年份" @change="changeYear"></el-date-picker>
                 <el-tab-pane label="部门/个人目标" name="first">
-                    <el-table :data="depGoalsData" border stripe style="width:100%">
-                        <el-table-column prop="deptname" fixed min-width="100" label="部门" sortable></el-table-column>
-                        <el-table-column prop="month1" min-width="90" label="一月" sortable></el-table-column>
-                        <el-table-column prop="month2" min-width="90" label="二月" sortable></el-table-column>
-                        <el-table-column prop="month3" min-width="90" label="三月" sortable></el-table-column>
-                        <el-table-column prop="month4" min-width="90" label="四月" sortable></el-table-column>
-                        <el-table-column prop="month5" min-width="90" label="五月" sortable></el-table-column>
-                        <el-table-column prop="month6" min-width="90" label="六月" sortable></el-table-column>
-                        <el-table-column prop="month7" min-width="90" label="七月" sortable></el-table-column>
-                        <el-table-column prop="month8" min-width="90" label="八月" sortable></el-table-column>
-                        <el-table-column prop="month9" min-width="90" label="九月" sortable></el-table-column>
-                        <el-table-column prop="month10" min-width="90" label="十月" sortable></el-table-column>
-                        <el-table-column prop="month11" min-width="90" label="十一月" sortable></el-table-column>
-                        <el-table-column prop="month12" min-width="90" label="十二月" sortable></el-table-column>
-                    </el-table>
+                    <!-- <div v-show="!showGoals">请点击左边部门</div> -->
+                    <div class="entry" v-show="!showGoals">
+                        <p class="dept_name" v-show="!showparams">请选择部门，查看部门/个人目标</p>
+                    </div>
+                    <div v-show="showGoals">
+                        <el-date-picker v-model="goalsyear" type="year" format="yyyy" value-format="yyyy" placeholder="选择年份" @change="changeYear"></el-date-picker>
+                        <el-table :data="depGoalsData" border stripe style="width:100%">
+                            <el-table-column prop="deptname" fixed min-width="100" label="部门" sortable></el-table-column>
+                            <el-table-column prop="month1" min-width="90" label="一月" sortable></el-table-column>
+                            <el-table-column prop="month2" min-width="90" label="二月" sortable></el-table-column>
+                            <el-table-column prop="month3" min-width="90" label="三月" sortable></el-table-column>
+                            <el-table-column prop="month4" min-width="90" label="四月" sortable></el-table-column>
+                            <el-table-column prop="month5" min-width="90" label="五月" sortable></el-table-column>
+                            <el-table-column prop="month6" min-width="90" label="六月" sortable></el-table-column>
+                            <el-table-column prop="month7" min-width="90" label="七月" sortable></el-table-column>
+                            <el-table-column prop="month8" min-width="90" label="八月" sortable></el-table-column>
+                            <el-table-column prop="month9" min-width="90" label="九月" sortable></el-table-column>
+                            <el-table-column prop="month10" min-width="90" label="十月" sortable></el-table-column>
+                            <el-table-column prop="month11" min-width="90" label="十一月" sortable></el-table-column>
+                            <el-table-column prop="month12" min-width="90" label="十二月" sortable></el-table-column>
+                        </el-table>
 
-                    <el-table :data="goalsData" border stripe style="width:100%">
-                        <el-table-column prop="private_employee" fixed min-width="100" label="员工" sortable></el-table-column>
-                        <el-table-column prop="month1" min-width="90" label="一月" sortable></el-table-column>
-                        <el-table-column prop="month2" min-width="90" label="二月" sortable></el-table-column>
-                        <el-table-column prop="month3" min-width="90" label="三月" sortable></el-table-column>
-                        <el-table-column prop="month4" min-width="90" label="四月" sortable></el-table-column>
-                        <el-table-column prop="month5" min-width="90" label="五月" sortable></el-table-column>
-                        <el-table-column prop="month6" min-width="90" label="六月" sortable></el-table-column>
-                        <el-table-column prop="month7" min-width="90" label="七月" sortable></el-table-column>
-                        <el-table-column prop="month8" min-width="90" label="八月" sortable></el-table-column>
-                        <el-table-column prop="month9" min-width="90" label="九月" sortable></el-table-column>
-                        <el-table-column prop="month10" min-width="90" label="十月" sortable></el-table-column>
-                        <el-table-column prop="month11" min-width="90" label="十一月" sortable></el-table-column>
-                        <el-table-column prop="month12" min-width="90" label="十二月" sortable></el-table-column>
-                        <el-table-column label="操作" fixed="right" width="90" header-align="center" align="center">
-                            <template slot-scope="scope">
-                                <el-button size="mini" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
-                            </template>
-                        </el-table-column>
-                    </el-table>
+                        <el-table :data="goalsData" border stripe style="width:100%">
+                            <el-table-column prop="private_employee" fixed min-width="100" label="员工" sortable></el-table-column>
+                            <el-table-column prop="month1" min-width="90" label="一月" sortable></el-table-column>
+                            <el-table-column prop="month2" min-width="90" label="二月" sortable></el-table-column>
+                            <el-table-column prop="month3" min-width="90" label="三月" sortable></el-table-column>
+                            <el-table-column prop="month4" min-width="90" label="四月" sortable></el-table-column>
+                            <el-table-column prop="month5" min-width="90" label="五月" sortable></el-table-column>
+                            <el-table-column prop="month6" min-width="90" label="六月" sortable></el-table-column>
+                            <el-table-column prop="month7" min-width="90" label="七月" sortable></el-table-column>
+                            <el-table-column prop="month8" min-width="90" label="八月" sortable></el-table-column>
+                            <el-table-column prop="month9" min-width="90" label="九月" sortable></el-table-column>
+                            <el-table-column prop="month10" min-width="90" label="十月" sortable></el-table-column>
+                            <el-table-column prop="month11" min-width="90" label="十一月" sortable></el-table-column>
+                            <el-table-column prop="month12" min-width="90" label="十二月" sortable></el-table-column>
+                            <el-table-column label="操作" fixed="right" width="90" header-align="center" align="center">
+                                <template slot-scope="scope">
+                                    <el-button size="mini" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
+                                </template>
+                            </el-table-column>
+                        </el-table>
+                    </div>
                 </el-tab-pane>
                 <el-tab-pane label="方案目标" name="second">
                     <div class="radioList">
@@ -375,7 +381,8 @@
                 paramList:{},
 
                 depts:null,
-                showparams:false
+                showparams:false,
+                showGoals:false
             }
         },
         activated(){
@@ -422,7 +429,7 @@
                     url: _this.$store.state.defaultHttp+'dept/getDeptNodeTree.do?cId='+_this.$store.state.iscId,
                 }).then(function(res){
                     _this.datalist = res.data.map.success
-                    _this.depGoalsData[0].deptname = res.data.map.success[0].deptname
+                    // _this.depGoalsData[0].deptname = res.data.map.success[0].deptname
                 }).catch(function(err){
                     // console.log(err);
                 });
@@ -461,9 +468,20 @@
                     url: _this.$store.state.defaultHttp+'contractMoneyProject/selectByYearAndSecondid.do?cId='+_this.$store.state.iscId,
                     data:qs.stringify(pageInfo)
                 }).then(function(res){
-                    _this.userList = res.data.contractMoneyProject
-                    _this.goalsData = res.data.contractMoneyProject
-                    _this.depGoalsData = [res.data.statistics]
+                    if(res.data.contractMoneyProject.length){
+                        if(_this.searchList.secondid){
+                            _this.goalsData = res.data.contractMoneyProject
+                            _this.depGoalsData = [res.data.statistics]
+                        }else{
+                            
+                        }
+                    }else{
+                        if(_this.searchList.secondid){
+                            _this.goalsData = []
+                            _this.depGoalsData = [{deptname:_this.newform.secondname,month1:0,month2:0,month3:0,month4:0,month5:0,month6:0,month7:0,month8:0,month9:0,month10:0,month11:0,month12:0}]
+                        }
+                    }
+                    
                 }).catch(function(err){
                     // console.log(err);
                 });
@@ -483,6 +501,9 @@
                     if(data){
                         _this.paramList = data
                     }
+                    if(_this.searchList.secondid){
+                        _this.showparams = true
+                    }
                 }).catch(function(err){
                     // console.log(err);
                 });
@@ -496,6 +517,7 @@
                 if(this.activename == 'first'){
                     // this.depGoalsData = [{deptname:data.deptname,month1:null,month2:null,month3:null,month4:null,month5:null,month6:null,month7:null,month8:null,month9:null,month10:null,month11:null,month12:null}]
                     this.$options.methods.loadGoals.bind(this)(true)
+                    this.showGoals = true
                 }else if(this.activename == 'second'){
                     this.$options.methods.reloadTable.bind(this)(true)
                 }else if(this.activename == 'third'){
@@ -853,15 +875,49 @@
                 this.$options.methods.loadGoals.bind(this)()
             },
             handleEdit(index,row){
-                console.log(row)
-                this.goalsForm = row
+                this.goalsForm.id = row.id
+                this.goalsForm.pId = row.pId
+                this.goalsForm.private_employee = row.private_employee
+                this.goalsForm.month1 = row.month1
+                this.goalsForm.month2 = row.month2
+                this.goalsForm.month3 = row.month3
+                this.goalsForm.month4 = row.month4
+                this.goalsForm.month5 = row.month5
+                this.goalsForm.month6 = row.month6
+                this.goalsForm.month7 = row.month7
+                this.goalsForm.month8 = row.month8
+                this.goalsForm.month9 = row.month9
+                this.goalsForm.month10 = row.month10
+                this.goalsForm.month11 = row.month11
+                this.goalsForm.month12= row.month12
                 this.dialogVisible3 = true
             },
             updategoals(){
                 const _this = this
                 let qs = require('querystring')
-                let data = {}
-                console.log(this.goalsForm)
+                let data = this.goalsForm
+
+                axios({
+                    method: 'post',
+                    url: _this.$store.state.defaultHttp+'contractMoneyProject/updateContractMoneyProject.do?cId='+_this.$store.state.iscId,
+                    data:qs.stringify(data)
+                }).then(function(res){
+                    if(res.data.code && res.data.code == '200'){
+                        _this.$message({
+                            message: '编辑成功',
+                            type: 'success'
+                        })
+                        _this.dialogVisible3 = false
+                        _this.$options.methods.loadGoals.bind(_this)()
+                    }else{
+                        _this.$message({
+                            message: res.data.msg,
+                            type: 'error'
+                        })
+                    }
+                }).catch(function(err){
+                    // console.log(err);
+                });
             },
             tabClick(e){
                 // console.log(e)
