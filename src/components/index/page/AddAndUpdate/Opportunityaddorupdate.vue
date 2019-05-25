@@ -164,7 +164,6 @@
                 page: 1,//默认第一页
                 limit: 15,//默认15条
                 rules: {
-                    opportunity_number : [{ required: true, message: '商机编号不能为空', trigger: 'blur' },],
                     opportunity_name : [{ required: true, message: '商机名称不能为空', trigger: 'blur' },],
                     customerpool_id : [{ required: true, message: '关联客户不能为空', trigger: 'blur' },],
                     contacts_id : [{ required: true, message: '决策人不能为空', trigger: 'blur' },],
@@ -291,13 +290,6 @@
                 createForm.forEach(item => {
                     subData[item.inputModel] = _this.myForm[item.inputModel];
                     subData.customerpool_id = this.formid
-                    if(item.inputModel == "opportunity_number" && !subData[item.inputModel]) {//商机编号不能为空
-                        _this.$message({
-                            message: "商机编号不能为空",
-                            type: 'error'
-                        });
-                        flag = true;
-                    }
                     if(item.inputModel == "opportunity_name" && !subData[item.inputModel]) {//商机名称不能为空
                         _this.$message({
                             message: "商机名称不能为空",

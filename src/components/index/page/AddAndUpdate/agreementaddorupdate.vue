@@ -201,7 +201,6 @@
                     customerpool_id : [{ required: true, message: '客户不能为空', trigger: 'blur' },],
                     contract_type : [{ required: true, message: '合同类型不能为空', trigger: 'blur' },],
                     contract_name : [{ required: true, message: '合同名称不能为空', trigger: 'blur' },],
-                    contract_number : [{ required: true, message: '合同编号不能为空', trigger: 'blur' },],
                 },
 
                 tableData:null,
@@ -414,13 +413,6 @@
                     if(item.inputModel == "customerpool_id" && !subData[item.inputModel]) {
                         _this.$message({
                             message: "客户不能为空",
-                            type: 'error'
-                        });
-                        flag = true;
-                    }
-                    if(item.inputModel == "contract_number" && !subData[item.inputModel]) {
-                        _this.$message({
-                            message: "合同编号不能为空",
                             type: 'error'
                         });
                         flag = true;

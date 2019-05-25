@@ -6,21 +6,25 @@
         </div>
         <el-table :data="tableData" border stripe style="width:100%">
             <el-table-column prop="name" fixed min-width="110" label="审批流程" sortable></el-table-column>
-            <el-table-column prop="one" min-width="110" label="审批类型" sortable></el-table-column>
-            <el-table-column prop="two" min-width="90" label="二月" sortable></el-table-column>
-            <el-table-column prop="three" min-width="90" label="三月" sortable></el-table-column>
-            <el-table-column prop="four" min-width="90" label="四月" sortable></el-table-column>
-            <el-table-column prop="five" min-width="90" label="五月" sortable></el-table-column>
-            <el-table-column prop="six" min-width="90" label="六月" sortable></el-table-column>
-            <el-table-column prop="seven" min-width="90" label="七月" sortable></el-table-column>
-            <el-table-column prop="eight" min-width="90" label="八月" sortable></el-table-column>
-            <el-table-column prop="nine" min-width="90" label="九月" sortable></el-table-column>
-            <el-table-column prop="ten" min-width="90" label="十月" sortable></el-table-column>
-            <el-table-column prop="eleven" min-width="90" label="十一月" sortable></el-table-column>
-            <el-table-column prop="twelve" min-width="90" label="十二月" sortable></el-table-column>
+            <el-table-column prop="categoryType" min-width="110" label="关联对象" sortable></el-table-column>
+            <el-table-column prop="deptIdLs" min-width="130" label="应用部门" sortable>
+                <template slot-scope="scope">
+                    <span v-for="item in scope.row.deptIdLs" :key="item.id">{{item.name}},</span>
+                </template>
+            </el-table-column>
+            <el-table-column prop="status" min-width="110" label="启用状态" sortable>
+                <template slot-scope="scope">
+                    <el-tooltip :content="scope.row.statusname" placement="top">
+                        <el-switch v-model="scope.row.status" active-color="#13ce66" inactive-color="#bbbbbb" :active-value="1" :inactive-value="0" @change="changeStatus(scope.row)"></el-switch>
+                    </el-tooltip>
+                </template>
+            </el-table-column>
+            <el-table-column prop="remarks" min-width="110" label="备注" sortable></el-table-column>
+            <el-table-column prop="updateUserName" min-width="110" label="最后修改人" sortable></el-table-column>
+            <el-table-column prop="createTime" min-width="110" label="创建时间" sortable></el-table-column>
             <el-table-column label="操作" fixed="right" width="90" header-align="center" align="center">
                 <template slot-scope="scope">
-                    <el-button size="mini" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
+                    <el-button type="danger" size="mini" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
                 </template>
             </el-table-column>
         </el-table>
@@ -79,8 +83,16 @@
                     url: _this.$store.state.defaultHttp+'examine/queryAllExamine.do?cId='+_this.$store.state.iscId,
                     data: qs.stringify(data)
                 }).then(function(res){
-                    _this.store.state.approvalProcessList = res.data.map.list
-                    _this.store.state.approvalProcessListnumber = res.data.count
+                    let data = res.data.map.list
+                    data.forEach(el => {
+                        if(el.status == 1){
+                            el.statusname = '启用'
+                        }else if(el.status == 0){
+                            el.statusname = '禁用'
+                        }
+                    });
+                    _this.$store.state.approvalProcessList = data
+                    _this.$store.state.approvalProcessListnumber = res.data.count
                 }).catch(function(err){
                 });
 
@@ -88,7 +100,74 @@
             handleAdd(){
                 this.$router.push({ path: '/approvalProcessadd' })
             },
-            handleEdit(){},
+            handleDelete(index,row){
+                const _this = this
+                let qs = require('querystring')
+                let data = {}
+                data.id = row.id
+                data.status = 2
+                data.pId = this.$store.state.ispId
+
+                _this.$confirm('是否确认删除【'+ row.name +'】？', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                }).then(({ value }) => {
+                    axios({
+                        method: 'post',
+                        url: _this.$store.state.defaultHttp+'examine/updateStatus.do?cId='+_this.$store.state.iscId,
+                        data: qs.stringify(data)
+                    }).then(function(res){
+                        if(res.data.code && res.data.code == '200'){
+                            _this.$message({
+                                message:'删除成功',
+                                type:'success'
+                            })
+                            _this.$options.methods.loadTable.bind(_this)()
+                        }else{
+                            _this.$message({
+                                message:res.data.msg,
+                                type:'error'
+                            })
+                        }
+                    }).catch(function(err){
+                        _this.$message.error("删除失败,请重新删除");
+                    });
+                }).catch(() => {
+                    this.$message({
+                        type: 'info',
+                        message: '取消删除【' + row.name + '】'
+                    });       
+                });
+            },
+            changeStatus(row){
+                const _this = this
+                let qs = require('querystring')
+                let data = {}
+                data.id = row.id
+                data.status = row.status
+                data.pId = this.$store.state.ispId
+
+                axios({
+                    method: 'post',
+                    url: _this.$store.state.defaultHttp+'examine/updateStatus.do?cId='+_this.$store.state.iscId,
+                    data: qs.stringify(data)
+                }).then(function(res){
+                    if(res.data.code && res.data.code == '200'){
+                        _this.$message({
+                            message:'修改状态成功',
+                            type:'success'
+                        })
+                        _this.$options.methods.loadTable.bind(_this)()
+                    }else{
+                        _this.$message({
+                            message:res.data.msg,
+                            type:'error'
+                        })
+                    }
+                }).catch(function(err){
+                    _this.$message.error("修改状态失败,请重新修改");
+                });
+            },
             handleSizeChange(val){
                 const _this = this;
                 _this.limit = val;

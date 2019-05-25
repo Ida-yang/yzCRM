@@ -483,7 +483,6 @@
                         {"okey":'3',"olabel":"代理合同","ovalue":"代理合同"},
                         {"okey":'4',"olabel":"其他","ovalue":"其他"},
                     ]},
-                    {"label":"合同编号","inputModel":"contract_number",},
                     {"label":"合同名称","inputModel":"contract_name",},
                     {"label":"客户","inputModel":"customerpool_id","type":"require"},
                     {"label":"对应商机","inputModel":"opportunity_id","type":"select"},
@@ -496,7 +495,6 @@
                     {"label":"备注","inputModel":"remarks","type":'textarea'}];
                 agreeaddOrUpdateData.setForm = {
                     "contract_type": '',
-                    "contract_number": '',
                     "contract_name": '',
                     "customerpool_id": '',
                     "opportunity_id": '',
@@ -536,7 +534,6 @@
                         {"okey":'3',"olabel":"代理合同","ovalue":"代理合同"},
                         {"okey":'4',"olabel":"其他","ovalue":"其他"},
                     ]},
-                    {"label":"合同编号","inputModel":"contract_number","prop":"contract_number",},
                     {"label":"合同名称","inputModel":"contract_name",},
                     {"label":"客户","inputModel":"customerpool_id","type":"require"},
                     {"label":"对应商机","inputModel":"opportunity_id","type":"select"},
@@ -549,7 +546,6 @@
                     {"label":"备注","inputModel":"remarks","type":'textarea'}];
                 agreeaddOrUpdateData.setForm = {
                     "contract_type": row.contract_type,
-                    "contract_number": row.contract_number,
                     "contract_name": row.contract_name,
                     "customerpool_id": row.customerpool_id,
                     "poolName": row.poolName,

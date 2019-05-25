@@ -391,7 +391,6 @@
                 let oppaddOrUpdateData = {};
                 const _this = this
                 oppaddOrUpdateData.createForm = [
-                    {"label":"商机编号","inputModel":"opportunity_number",},
                     {"label":"商机名称","inputModel":"opportunity_name"},
                     {"label":"公司名称","inputModel":"customerpool_id","type":"require"},
                     {"label":"客户决策人","inputModel":"contacts_id","type":"select"},
@@ -400,7 +399,6 @@
                     {"label":"负责人","inputModel":"user_id","disabled":true},
                     {"label":"备注","inputModel":"opportunity_remarks","type":'textarea'}];
                 oppaddOrUpdateData.setForm = {
-                    "opportunity_number": '',
                     "opportunity_name": '',
                     "customerpool_id": '',
                     "customerpool_name": '',
@@ -433,7 +431,6 @@
                 const _this = this
                 let oppaddOrUpdateData = {};
                 oppaddOrUpdateData.createForm = [
-                    {"label":"商机编号","inputModel":"opportunity_number",},
                     {"label":"商机名称","inputModel":"opportunity_name"},
                     {"label":"公司名称","inputModel":"customerpool_id","type":"require"},
                     {"label":"客户决策人","inputModel":"contacts_id","type":"select"},
@@ -442,7 +439,6 @@
                     {"label":"负责人","inputModel":"user_id","disabled":true},
                     {"label":"备注","inputModel":"opportunity_remarks","type":'textarea'}];
                 oppaddOrUpdateData.setForm = {
-                    "opportunity_number": row.opportunity_number,
                     "opportunity_name": row.opportunity_name,
                     "customerpool_id": row.customerpool[0].id,
                     "customerpool_name": row.customerpool[0].name,

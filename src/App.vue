@@ -870,7 +870,7 @@ export default {
     .uploadproImg .el-progress{
         stroke-width: 90px;
     }
-
+    
     .orderHead .first_input{
         width: calc(33% - 20px);
     }
@@ -910,5 +910,33 @@ export default {
     }
     .disabledForm .el-form-item .el-form-item__content{
         width: calc(100% - 90px);
+    }
+    .ap_top{
+        padding: 20px 0 0 20px;
+        box-sizing: border-box;
+        border-bottom: 10px solid #f0f0f0;
+    }
+    .ap_bottom{
+        padding-top: 20px;
+        box-sizing: border-box;
+    }
+    .ap_level{
+        margin-bottom: 12px;
+    }
+    .ap_del{
+        display: inline-block;
+        margin-left: 30px;
+        width: 20px;
+        height: 20px;
+        background-color: #f56c6c;
+        border: 1px solid #f56c6c;
+        border-radius: 10px;
+        line-height: 20px;
+        text-align: center;
+        cursor: pointer;
+    }
+    .ap_del .el-icon-delete{
+        font-size: 14px;
+        color: #ffffff;
     }
 </style>

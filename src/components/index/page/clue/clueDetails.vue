@@ -1096,9 +1096,6 @@
         background-color: #f7f7f7;
         height: auto;
     }
-    .number{
-        padding: 0;
-    }
     .right{
         height: auto;
         background-color: #fff;

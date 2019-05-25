@@ -282,7 +282,6 @@
                 this.$options.methods.loadHead.bind(this)()
             },
             Delrow(e){
-                console.log(e)
                 if(this.tableData.length == 1){
                     this.$message('该行不可删除')
                 }else{

@@ -581,7 +581,7 @@
                 }).catch(() => {
                     this.$message({
                         type: 'info',
-                        message: '取消删除[' + row.name + ']'
+                        message: '取消删除【' + row.name + '】'
                     });       
                 });
             },

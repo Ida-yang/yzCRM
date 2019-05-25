@@ -499,7 +499,12 @@
                     }).catch(function(err){
                         _this.$message.error("删除失败,请重新删除");
                     });
-                })
+                }).catch(() => {
+                    this.$message({
+                        type: 'info',
+                        message: '取消删除【' + val.title + '】'
+                    });       
+                });
             },
             handleSend(e,val){
                 const _this = this;

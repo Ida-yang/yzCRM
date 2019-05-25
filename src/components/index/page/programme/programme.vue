@@ -18,10 +18,14 @@
                 <el-tab-pane label="部门/个人目标" name="first">
                     <!-- <div v-show="!showGoals">请点击左边部门</div> -->
                     <div class="entry" v-show="!showGoals">
-                        <p class="dept_name" v-show="!showparams">请选择部门，查看部门/个人目标</p>
+                        <p class="entry_name">请选择部门，查看部门/个人目标</p>
                     </div>
                     <div v-show="showGoals">
-                        <el-date-picker v-model="goalsyear" type="year" format="yyyy" value-format="yyyy" placeholder="选择年份" @change="changeYear"></el-date-picker>
+                        <span class="nameList">年份：</span><el-date-picker v-model="goalsyear" type="year" format="yyyy" value-format="yyyy" placeholder="选择年份" @change="changeYear"></el-date-picker>
+                        <p>&nbsp;</p>
+                        <div class="entry">
+                            <p class="entry_name">{{goalsyear + '年' + depGoalsName + '全年目标业绩为' + depGoalsNum + '元'}}</p>
+                        </div>
                         <el-table :data="depGoalsData" border stripe style="width:100%">
                             <el-table-column prop="deptname" fixed min-width="100" label="部门" sortable></el-table-column>
                             <el-table-column prop="month1" min-width="90" label="一月" sortable></el-table-column>
@@ -37,7 +41,9 @@
                             <el-table-column prop="month11" min-width="90" label="十一月" sortable></el-table-column>
                             <el-table-column prop="month12" min-width="90" label="十二月" sortable></el-table-column>
                         </el-table>
-
+                        <div class="entry">
+                            <p class="entry_name">{{depGoalsName + '成员' + goalsyear + '年目标明细'}}</p>
+                        </div>
                         <el-table :data="goalsData" border stripe style="width:100%">
                             <el-table-column prop="private_employee" fixed min-width="100" label="员工" sortable></el-table-column>
                             <el-table-column prop="month1" min-width="90" label="一月" sortable></el-table-column>
@@ -81,7 +87,6 @@
                             <el-checkbox-group class="checklist" v-model="checklist">
                                 <el-checkbox class="checkone" v-for="item in filterList" :key="item.id" :label="item.name" :value="item.state" @change="hangleChange($event,item)"></el-checkbox>
                             </el-checkbox-group>
-                            <!-- <el-button slot="reference" icon="el-icon-more-outline" type="mini">筛选列表</el-button> -->
                             <el-button slot="reference" icon="el-icon-more" class="info-btn screen" type="mini"></el-button>
                         </el-popover>
                     </div>
@@ -180,8 +185,8 @@
                 </el-tab-pane>
                 <el-tab-pane label="线索客户参数" name="third">
                     <div class="entry">
-                        <p class="dept_name" v-show="showparams">{{depts}}</p>
-                        <p class="dept_name" v-show="!showparams">请选择部门，查看限制参数</p>
+                        <p class="entry_name" v-show="showparams">{{depts}}</p>
+                        <p class="entry_name" v-show="!showparams">请选择部门，查看限制参数</p>
                         <!-- <el-button class="btn info-btn" size="mini" @click="editParam()">编辑</el-button> -->
                     </div>
                     <div class="param_c" v-show="showparams">
@@ -335,6 +340,8 @@
 
                 depGoalsData:[],
                 goalsData:[],
+                depGoalsName:null,
+                depGoalsNum:null,
 
                 newform:{
                     second_id:null,
@@ -470,15 +477,18 @@
                 }).then(function(res){
                     if(res.data.contractMoneyProject.length){
                         if(_this.searchList.secondid){
+                            let objs = res.data.statistics
                             _this.goalsData = res.data.contractMoneyProject
                             _this.depGoalsData = [res.data.statistics]
-                        }else{
-                            
+                            _this.depGoalsName = objs.deptname
+                            _this.depGoalsNum = objs.month1 + objs.month2 + objs.month3 + objs.month4 + objs.month5 + objs.month6 + objs.month7 + objs.month8 + objs.month9 + objs.month10 + objs.month11 + objs.month12
                         }
                     }else{
                         if(_this.searchList.secondid){
                             _this.goalsData = []
                             _this.depGoalsData = [{deptname:_this.newform.secondname,month1:0,month2:0,month3:0,month4:0,month5:0,month6:0,month7:0,month8:0,month9:0,month10:0,month11:0,month12:0}]
+                            _this.depGoalsName = _this.newform.secondname
+                            _this.depGoalsNum = 0
                         }
                     }
                     
@@ -965,11 +975,10 @@
     }
     .inputnum .el-input__inner{
         text-align: center;
-        /* color: brown; */
         color: #409EFF;
         font-weight: bold
     }
-    .dept_name{
+    .entry_name{
         width: 100%;
         line-height: 50px;
         text-align: center;
