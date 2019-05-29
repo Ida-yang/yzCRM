@@ -6,6 +6,11 @@
                 <span class="nameList">数据授权：</span>
                 <el-radio v-for="item in pIdData" :key="item.label" :label="item.label" @change="search()">{{item.value}}</el-radio>
             </el-radio-group>
+            <el-radio-group v-model="searchList.example">
+                <span class="nameList">计划时间：</span>
+                <el-radio :label="nullvalue" @change="search()">全部</el-radio>
+                <el-radio v-for="item in timeData" :key="item.id" :label="item.id" @change="search()">{{item.name}}</el-radio>
+            </el-radio-group>
         </div>
         <div class="searchList">
             <span class="nameList">公司名称：</span>
@@ -180,6 +185,7 @@
                     state:null,
                     type:null,
                     time:null,
+                    example:null,
                 },
                 searchListNew:{
                     searchName:null,
@@ -187,6 +193,7 @@
                     state:null,
                     type:null,
                     time:null,
+                    example:null,
                 },
                 page:1,//默认第一页
                 limit:20,//默认20条
@@ -202,6 +209,13 @@
                     {label:'1',value:'我的'},
                     {label:'2',value:'本组'},
                     {label:'3',value:'本机构'}
+                ],
+                timeData:[
+                    {id:'1',name:'今天'},
+                    {id:'2',name:'昨天'},
+                    {id:'3',name:'本周'},
+                    {id:'4',name:'本月'},
+                    {id:'5',name:'上月'},
                 ],
 
                 nullvalue:null,
@@ -225,15 +239,16 @@
                 let qs =require('querystring')
                 let searchList = {}
                 searchList.searchName = this.searchList.searchName;
-                // if(this.searchList.label == 0 ){
-                //     searchList.pId = _this.nullvalue
-                // }else if(this.searchList.label == 1){
-                //     searchList.pId = _this.$store.state.ispId
-                // }else if(this.searchList.label == 2){
-                //     searchList.secondid = _this.$store.state.deptid
-                // }else if(this.searchList.label == 3){
-                //     searchList.deptid = _this.$store.state.insid
-                // }
+                if(this.searchList.label == 0 ){
+                    searchList.pId = _this.nullvalue
+                }else if(this.searchList.label == 1){
+                    searchList.pId = _this.$store.state.ispId
+                }else if(this.searchList.label == 2){
+                    searchList.secondid = _this.$store.state.deptid
+                }else if(this.searchList.label == 3){
+                    searchList.deptid = _this.$store.state.insid
+                }
+                searchList.example = this.searchList.example
                 searchList.page = this.page;
                 searchList.limit = this.limit;
                 

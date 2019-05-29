@@ -8,8 +8,6 @@
                         <span>{{agreementdetail.poolName}}</span>
                         <el-button style="float:right;margin-left:10px;" class="info-btn" size="mini" @click="retract()" v-show="retracts">收起</el-button>
                         <el-button style="float:right;margin-left:10px;" class="info-btn" size="mini" @click="retract()" v-show="!retracts">显示</el-button>
-                        <el-button style="float:right;margin-left:10px;" class="info-btn" size="mini" @click="toexamine($event)" v-if="isexa" v-show="examines">审核</el-button>
-                        <el-button style="float:right;margin-left:10px;" class="info-btn" size="mini" @click="toexamine($event)" v-if="isexa" v-show="!examines">反审核</el-button>
                     </div>
                     <div class="text item" v-show="thisshow">
                         <ul>
@@ -32,6 +30,44 @@
                     <div v-show="!thisshow"></div>
                 </el-card>
             </div>
+            <div class="top">
+                <el-card class="box-card" v-model="agreementdetail">
+                    <div slot="header" class="clearfix">
+                        <span>审批流程</span>
+                        <el-button style="float:right;margin-left:10px;" class="info-btn" size="mini" @click="retract()" v-show="retracts">收起</el-button>
+                        <el-button style="float:right;margin-left:10px;" class="info-btn" size="mini" @click="retract()" v-show="!retracts">显示</el-button>
+                    </div>
+                    <div class="text item">
+                        <div class="examine_c">
+                            <div v-for="(item,index) in examineList" :key="index" class="examine_item">
+                                <!-- <span>{{item}}</span> -->
+                                <el-popover placement="top-start" title="审批流程" width="200" trigger="hover" class="examine_cont">
+                                    <div class="examine_c1">
+                                        1212121
+                                    </div>
+                                    <div slot="reference" style="width:100%;">
+                                        <span class="examine_po">
+                                            <img :src="item.headPortrait" width="50" />
+                                        </span>
+                                        <br>
+                                        <span v-if="item.examineUserName" class="examine_type">{{item.examineUserName}}</span>
+                                        <span v-if="item.stepType == 2" class="examine_type">{{item.userLength + '人或签'}}</span>
+                                        <span v-if="item.stepType == 3" class="examine_type">{{item.userLength + '人会签'}}</span>
+                                        <br>
+                                        <span v-if="item.examineStatus == 0" class="examine_status">未审核</span>
+                                        <span v-if="item.examineStatus == 2" class="examine_status">审核拒绝</span>
+                                        <span v-if="item.examineStatus == 3" class="examine_status">审核中</span>
+                                        <span v-if="item.examineStatus == 4" class="examine_status">已撤回</span>
+                                        <span v-if="item.examineStatus == 5" class="examine_status">发起</span>
+                                        <!-- <span class="examine_time">2019-05-29 18:23:56</span> -->
+                                    </div>
+                                </el-popover>
+                                <span v-if="index !== examineList.length - 1" class="examine_next"><i class="el-icon-d-arrow-right"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                </el-card>
+            </div>
             <div class="bottom">
                 <el-tabs v-model="activeName2" type="card">
                     <el-tab-pane label="跟进记录" name="first">
@@ -47,7 +83,6 @@
                             </div>
                             <el-dialog :visible.sync="dialogVisible">
                                 <img width="100%" :src="dialogImageUrl" alt="">
-                                <!-- <img src="/upload/staticImg/bg.jpg" width="100%" alt="图片"> -->
                             </el-dialog>
                         </div>
                         <div class="text" style="height:150px;">
@@ -57,9 +92,6 @@
                                 <li>创建人机构：<span>{{agreementdetail.private_employee}}</span></li>
                                 <li>创建时间：<span>{{agreementdetail.create_time}}</span></li>
                                 <li>修改时间：<span>{{agreementdetail.update_time}}</span></li>
-                                <li></li>
-                                <li>审核状态：<span>{{agreementdetail.state}}</span></li>
-                                <li>审核时间：<span>{{agreementdetail.signatories}}</span></li>
                             </ul>
                             <p>&nbsp;</p>
                         </div>
@@ -112,20 +144,13 @@
     export default {
         name:'agreementDetails',
         store,
-        // computed: {
-        //     agreementDetails(){
-        //         return store.state.agreementDetails;
-        //     }
-        // },
         data(){
             return {
                 detailData:null,
                 searchList:{
                     keyword:null,
                 },
-                agreementdetail:{
-                    // name:'',
-                },
+                agreementdetail:{},
                 record:null,
                 fastcontactList:null,
                 contactList:null,
@@ -147,19 +172,17 @@
                 imgshow:false,
 
                 retracts:true,
-                examines:true,
-                isexa:false,
-                showaudited:false
+                showaudited:false,
+
+                examineList:[],
+                hasCheck:null,   //是否有审批权
+                hasRecheck:null,   //是否有撤回权
             }
         },
         activated(){
             this.loadData();
             this.loadIMG()
         },
-        // mounted(){
-        //     this.loadData();
-        //     this.loadIMG()
-        // },
         methods: {
             loadData() {
                 const _this = this
@@ -181,9 +204,9 @@
                 });
             },
             loadIMG(){
+                const _this = this
                 this.detailData = this.$store.state.agreedetailsData.submitData;
                 this.idArr.id = this.$store.state.agreedetailsData.submitData.id
-                const _this = this
                 _this.fileList = []
                 let qs = require('querystring')
                 let data = {}
@@ -213,11 +236,6 @@
                     url:_this.$store.state.defaultHttp+'getContractById.do?cId='+_this.$store.state.iscId+'&contractId='+this.detailData.id,
                 }).then(function(res){
                     _this.agreementdetail = res.data
-                    if(res.data.approverid == _this.$store.state.ispId){
-                        _this.isexa = true
-                    }else{
-                        _this.isexa = false
-                    }
                     if(res.data.state == '已审核'){
                         _this.examines = false
                         _this.showaudited = true
@@ -225,44 +243,31 @@
                         _this.examines = true
                         _this.showaudited = false
                     }
+                    //加载审批流程
+                    axios({
+                        method:'get',
+                        url:_this.$store.state.defaultHttp+'examineRecord/queryExamineRecordList.do?cId='+_this.$store.state.iscId+'&pId='+_this.$store.state.ispId + '&recordId='+_this.agreementdetail.examineRecordId,
+                    }).then(function(res){
+                        _this.examineList = res.data.steps
+                        _this.examineList.forEach(el => {
+                            el.userLength = el.userList.length
+                            el.userList.forEach((a,i) => {
+                                if(a.img){
+                                    // console.log(a.img)
+                                    el.headPortrait = '/upload/'+_this.$store.state.iscId+'/'+a.img
+                                }else{
+                                    el.headPortrait = '/upload/staticImg/avatar.jpg'
+                                }
+                                // console.log(a)
+                            });
+                        });
+                        _this.hasCheck = res.data.isCheck  //是否有审批权
+                        _this.hasRecheck = res.data.isRecheck  //是否有撤回权
+                    }).catch(function(err){
+                        // console.log(err);
+                    });
                 }).catch(function(err){
                     // console.log(err);
-                });
-            },
-            toexamine(e){
-                const _this = this
-                let qs = require('querystring')
-                let val = e.target.innerText
-                let data = {}
-                data.contract_id = this.detailData.id
-                data.contract_name = this.agreementdetail.contract_name
-                if(val == '审核'){
-                    data.state = '已审核'
-                }else{
-                    data.state = '未审核'
-                }
-
-                axios({
-                    method: 'post',
-                    url: _this.$store.state.defaultHttp+'updateContract.do?cId='+_this.$store.state.iscId,
-                    data: qs.stringify(data),
-                }).then(function(res){
-                    if(res.data && res.data == 'success') {
-                        _this.$message({
-                            message: '操作成功',
-                            type: 'success'
-                        });
-                        _this.examines = !_this.examines
-                        _this.showaudited = !_this.showaudited
-                        _this.$options.methods.loadIMG.bind(_this)(true)
-                    } else {
-                        _this.$message({
-                            message: res.data.msg,
-                            type: 'error'
-                        });
-                    }
-                }).catch(function(err){
-                    _this.$message.error("操作失败,请重新进入页面");
                 });
             },
             tirggerFile (event) {

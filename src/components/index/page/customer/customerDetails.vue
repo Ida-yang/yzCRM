@@ -1198,6 +1198,10 @@
                                 }
                                 _this.followform.contactTime = ''
                                 _this.followform.followContent = ''
+                                _this.followform.imgName = ''
+                                _this.followform.enclosureName = ''
+                                _this.fileList = []
+                                _this.imgList = []
                                 _this.$store.state.cusdetailsData.submitData = {"id":_this.detailData.id}
                                 _this.$options.methods.loadData.bind(_this)(true);
                             }).catch(function(err){

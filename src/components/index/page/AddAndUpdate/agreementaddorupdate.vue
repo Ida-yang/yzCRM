@@ -67,17 +67,6 @@
                     <el-option v-for="item in contactslist" :key="item.id" :label="item.name" :value="item.id"></el-option>
                 </el-select>
                 <el-select 
-                    v-else-if="item.inputModel == 'approverid'"
-                    filterable
-                    :multiple="item.multiple"
-                    :collapse-tags="item.multiple"
-                    v-model="myForm[item.inputModel]"
-                    @change="handleInput($event, item.inputModel)"
-                    :placeholder="item.placeholder"
-                    style="width:90%;">
-                    <el-option v-for="item in pIdlist" :key="item.private_id" :label="item.private_employee" :value="item.private_id"></el-option>
-                </el-select>
-                <el-select 
                     v-else-if="item.type && item.type == 'select'"
                     :multiple="item.multiple"
                     :collapse-tags="item.multiple"
@@ -192,7 +181,6 @@
                 limit: 15,//默认15条
 
                 rules: {
-                    approverid : [{ required: true, message: '审核人不能为空', trigger: 'blur' },],
                     our_signatories : [{ required: true, message: '我方签约人不能为空', trigger: 'blur' },],
                     signatories : [{ required: true, message: '客户签约人不能为空', trigger: 'blur' },],
                     end_date : [{ required: true, message: '合同结束时间不能为空', trigger: 'blur' },],
@@ -204,7 +192,6 @@
                 },
 
                 tableData:null,
-                pIdlist:[],
 
                 formid:null,
                 searchvalue:null,
@@ -216,7 +203,7 @@
         //     this.loadData();
         //     this.loadOpp()
         // },
-        activated() {
+        mounted() {
             this.loadData();
             this.loadTable()
             this.loadpId()
@@ -301,18 +288,6 @@
                     // console.log(err);
                 });
             },
-            loadpId(){
-                const _this = this
-                
-                axios({
-                    method: 'get',
-                    url: _this.$store.state.defaultHttp+'getNameAndId.do?cId='+_this.$store.state.iscId,
-                }).then(function(res){
-                    _this.pIdlist = res.data
-                }).catch(function(err){
-                    // console.log(err);
-                });
-            },
             handleInput(val, key) {
                 this.myForm[key] = val;
             },
@@ -368,13 +343,6 @@
                 let flag = false;
                 createForm.forEach(item => {
                     subData[item.inputModel] = _this.myForm[item.inputModel];
-                    if(item.inputModel == "approverid" && !subData[item.inputModel]) {
-                        _this.$message({
-                            message: "审核人不能为空",
-                            type: 'error'
-                        });
-                        flag = true;
-                    }
                     if(item.inputModel == "our_signatories" && !subData[item.inputModel]) {
                         _this.$message({
                             message: "我方签约人不能为空",

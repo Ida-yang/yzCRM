@@ -61,7 +61,7 @@
                     prop="contract_number"
                     fixed
                     v-if="item.prop == 'contract_number' && item.state == 1"
-                    min-width="110"
+                    min-width="145"
                     label="合同编号"
                     sortable>
                 </el-table-column>
@@ -491,7 +491,6 @@
                     {"label":"结束时间","inputModel":"end_date","type":"date"},
                     {"label":"客户签约人","inputModel":"signatories","type":"select"},
                     {"label":"我方签约人","inputModel":"our_signatories","disabled":true},
-                    {"label":"审批人","inputModel":"approverid","type":"select"},
                     {"label":"备注","inputModel":"remarks","type":'textarea'}];
                 agreeaddOrUpdateData.setForm = {
                     "contract_type": '',
@@ -503,7 +502,6 @@
                     "end_date": '',
                     "signatories": '',
                     "our_signatories": this.$store.state.user,
-                    "approverid": '',
                     "remarks": ''};
                 agreeaddOrUpdateData.submitURL = this.$store.state.defaultHttp+ 'insertContract.do?cId='+this.$store.state.iscId+'&pId='+this.$store.state.ispId,
                 this.$store.state.agreeaddOrUpdateData = agreeaddOrUpdateData;
@@ -542,7 +540,6 @@
                     {"label":"结束时间","inputModel":"end_date","type":"date"},
                     {"label":"客户签约人","inputModel":"signatories","type":"select"},
                     {"label":"我方签约人","inputModel":"our_signatories","disabled":true},
-                    {"label":"审批人","inputModel":"approverid","type":"select"},
                     {"label":"备注","inputModel":"remarks","type":'textarea'}];
                 agreeaddOrUpdateData.setForm = {
                     "contract_type": row.contract_type,
@@ -557,7 +554,6 @@
                     "signatories": row.signatories,
                     "our_signatories": row.our_signatories,
                     "our_signatoriesId": row.pId,
-                    "approverid": row.approverid,
                     "remarks": row.remarks};
                 agreeaddOrUpdateData.submitData = {"id": row.contract_id};
                 agreeaddOrUpdateData.submitURL = this.$store.state.defaultHttp+ 'updateContract.do?cId='+this.$store.state.iscId,

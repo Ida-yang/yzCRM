@@ -305,9 +305,9 @@
             handleNodeClick(data){
                 this.searchList.classification_id = data.id
                 this.clickdata = data
-                if(data.next.length == 0){
+                // if(data.next.length == 0){
                     this.$options.methods.reloadTable.bind(this)(true);
-                }
+                // }
             },
             selectInfo(val){
                 this.multipleSelection = val;

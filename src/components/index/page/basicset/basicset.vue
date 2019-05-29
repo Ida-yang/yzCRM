@@ -8,7 +8,7 @@
         </div>
         <div class="centercontent"></div>
         <div class="setrightcontent">
-            <div class="entry">
+            <div class="entry" v-show="newform.index !== 13">
                 <el-button class="btn info-btn" size="mini" @click="handleAdd()">新增</el-button>
             </div>
             <el-table
@@ -830,7 +830,7 @@
                 <el-button @click="dialogVisible19 = false">取 消</el-button>
                 <el-button type="primary" @click="updatedistri()">确 定</el-button>
             </span>
-        </el-dialog><!-- 编辑经销商级别 -->
+        </el-dialog><!-- 编辑编号规则 -->
         
         <el-dialog
             title="修改编号规则"
@@ -851,7 +851,7 @@
                 <el-button @click="dialogVisible20 = false">取 消</el-button>
                 <el-button type="primary" @click="updateCode()">确 定</el-button>
             </span>
-        </el-dialog><!-- 编辑经销商级别 -->
+        </el-dialog><!-- 编辑编号规则 -->
     </div>
 </template>
 <script>
@@ -1130,6 +1130,7 @@
                 _this.showten = false
                 _this.showeleven = false
                 _this.showtwelve = false
+                _this.showthirteen = false
                 if(i == 1 || i == 2 || i == 3 || i == 4){
                     _this.showtopfour = true
                     _this.$options.methods.reloadTable.bind(_this)(true)

@@ -871,6 +871,10 @@ export default {
         stroke-width: 90px;
     }
     
+    .orderHead{
+        padding-top: 20px;
+        box-sizing: border-box;
+    }
     .orderHead .first_input{
         width: calc(33% - 20px);
     }
@@ -938,5 +942,49 @@ export default {
     .ap_del .el-icon-delete{
         font-size: 14px;
         color: #ffffff;
+    }
+    .examine_c{
+        padding: 20px;
+        box-sizing: border-box;
+        display: flex;
+        flex-wrap: wrap;
+    }
+    .examine_c .examine_item{
+        flex: 0 0 100px;
+        height: 100px;
+        margin-right: 10px;
+        display: flex;
+        flex-wrap: wrap;
+    }
+    .examine_c .examine_item .examine_cont{
+        flex: 0 0 70px;
+        text-align: center;
+        /* background-color: rgb(146, 115, 115); */
+    }
+    .examine_c .examine_item .examine_next{
+        flex: 0 0 30px;
+        height: 100px;
+        line-height: 100px;
+        text-align: center;
+    }
+    .examine_c .examine_po{
+        display: inline-block;
+        width: 50px;
+        height: 50px;
+        line-height: 50px;
+        text-align: center;
+        border-radius: 25px;
+        background-color: rgb(211, 211, 211);
+    }
+    .examine_c .examine_type{
+        line-height: 30px;
+        font-size: 14px;
+    }
+    .examine_c .examine_status{
+        font-size: 14px;
+    }
+    .examine_c .examine_time{
+        line-height: 20px;
+        font-size: 12px;
     }
 </style>

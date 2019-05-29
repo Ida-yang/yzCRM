@@ -11,7 +11,7 @@
                     </el-select>
                 </el-form-item>
                 <el-form-item label="备注" label-width="90px">
-                    <el-input v-model="myform.name" size="mini" style="width:200px;"></el-input>
+                    <el-input v-model="myform.remarks" size="mini" style="width:200px;"></el-input>
                 </el-form-item>
                 <el-form-item label="应用部门" label-width="90px">
                     <el-select v-model="myform.deptNames" multiple placeholder="请选择应用部门" size="mini" class="dept_select">
@@ -34,7 +34,7 @@
             </el-form>
         </div>
         <div class="ap_bottom">
-            <div class="ap_level" v-for="item in levelList" :key="item.id" @mouseover="onmouseover(item)" @mouseleave="onmouseleave(item)">
+            <div class="ap_level" v-for="item in levelList" :key="item.index" @mouseover="onmouseover(item)" @mouseleave="onmouseleave(item)">
                 <span class="nameList">{{item.name}}</span>
                 <el-select v-model="item.stepType" size="mini">
                     <el-option v-for="item in stepTypeList" :key="item.id" :label="item.stepName" :value="item.id"></el-option>
@@ -74,13 +74,14 @@
                     deptNames:[],
                     deptIds:[],
                     remarks:null,
+                    id:null,
                 },
                 AssociatedList:[
                     {id:1,name:'合同'},
                     {id:2,name:'订单'},
                 ],
                 levelList:[
-                    {id:1, name:'第 1 级', stepType:2, checkUserId:[], del:false},
+                    {index:1, name:'第 1 级', stepType:2, checkUserId:[], del:false},
                 ],
                 stepTypeList:[
                     {id:2,stepName:'多人或签'},
@@ -95,11 +96,12 @@
         },
         mounted(){
             this.loadData()
-            this.loadpId()
+            this.setMyForm()
         },
         methods:{
             loadData(){
                 const _this = this
+                
                 axios({
                     method: 'get',
                     url: _this.$store.state.defaultHttp+'dept/getDeptNodeTree.do?cId='+_this.$store.state.iscId,
@@ -107,31 +109,70 @@
                     _this.datalist = res.data.map.success
                 }).catch(function(err){
                 });
-            },
-            loadpId(){
-                const _this = this;
-
                 axios({
                     method: 'get',
                     url: _this.$store.state.defaultHttp+'getNameAndId.do?cId='+_this.$store.state.iscId,
                 }).then(function(res){
                     _this.userList = res.data
                 }).catch(function(err){
-                    // console.log(err);
                 });
             },
+            setMyForm(){
+                const _this = this
+                let objs = _this.$store.state.approvalupdateData
+
+                _this.myform.deptIds = []
+                _this.myform.deptNames = []
+                if(objs){
+                    _this.myform.id = objs.id
+                    _this.myform.name = objs.name
+                    _this.myform.categoryType = objs.categoryType
+                    _this.myform.remarks = objs.remarks
+                    _this.levelList = objs.levelList
+                    objs.deptIdLs.forEach(el => {
+                        _this.myform.deptIds.push(el.id)
+                        _this.myform.deptNames.push(el.name)
+                    });
+                    _this.$refs.tree.setCheckedKeys(_this.myform.deptIds)
+                }
+            },
             handlecheck(data,val){
+                const _this = this
+                let qs = require('querystring')
                 this.myform.deptNames = []
                 val.checkedNodes.forEach((el,i) => {
                     this.myform.deptNames.push(el.deptname)
                 });
                 this.myform.deptIds = val.checkedKeys
+                
+                let datas = {}
+                datas.id = this.myform.id
+                datas.categoryType = this.myform.categoryType
+                if(this.myform.deptIds.length){
+                    datas.secondid = this.myform.deptIds
+                }else{
+                    datas.secondid = null
+                }
+
+                axios({
+                    method: 'post',
+                    url: _this.$store.state.defaultHttp+'examine/queryExaminByDeptId.do?cId='+_this.$store.state.iscId,
+                    data:qs.stringify(datas)
+                }).then(function(res){
+                    if(res.data.code && res.data.code == '20001'){
+                        _this.$message({
+                            message:res.data.msg,
+                            type:'error'
+                        })
+                    }
+                }).catch(function(err){
+                });
             },
             addStepType(){
                 this.levelList.forEach((el,i) => {
                     if(i == this.levelList.length - 1){
-                        let a = el.id + 1
-                        this.levelList.push({id:a, name:'第 ' + a + ' 级', stepType:2, checkUserId:[], del:false})
+                        let a = el.index + 1
+                        this.levelList.push({index:a, name:'第 ' + a + ' 级', stepType:2, checkUserId:[], del:false})
                     }
                 });
                 if(this.levelList.length < 6){
@@ -148,7 +189,7 @@
             },
             delStep(val){
                 const _this = this
-                let valId = val.id
+                let valId = val.index
                 
                 if(this.levelList.length == 1){
                     _this.$message({
@@ -157,7 +198,7 @@
                     })
                 }else{
                     this.levelList.forEach((el,i) => {
-                        if(val.id == el.id){
+                        if(val.index == el.index){
                             this.levelList.splice(i,1)
                         }
                     });
@@ -166,9 +207,9 @@
             },
             rescheduling(val){
                 this.levelList.forEach((el,i) => {
-                    if(el.id > val){
-                        let a = el.id - 1
-                        el.id = a
+                    if(el.index > val){
+                        let a = el.index - 1
+                        el.index = a
                         el.name = '第 ' + a + ' 级'
                     }
                 });
@@ -187,6 +228,7 @@
                     arr.push({stepType:el.stepType,checkUserId:el.checkUserId})
                 });
                 let data = {
+                    "id": this.myform.id,
                     "categoryType":this.myform.categoryType,
                     "deptIds":this.myform.deptIds,
                     "name":this.myform.name,

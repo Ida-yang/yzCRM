@@ -12,18 +12,19 @@
                     <span v-for="item in scope.row.deptIdLs" :key="item.id">{{item.name}},</span>
                 </template>
             </el-table-column>
-            <el-table-column prop="status" min-width="110" label="启用状态" sortable>
+            <!-- <el-table-column prop="status" min-width="110" label="启用状态" sortable>
                 <template slot-scope="scope">
                     <el-tooltip :content="scope.row.statusname" placement="top">
                         <el-switch v-model="scope.row.status" active-color="#13ce66" inactive-color="#bbbbbb" :active-value="1" :inactive-value="0" @change="changeStatus(scope.row)"></el-switch>
                     </el-tooltip>
                 </template>
-            </el-table-column>
+            </el-table-column> -->
             <el-table-column prop="remarks" min-width="110" label="备注" sortable></el-table-column>
             <el-table-column prop="updateUserName" min-width="110" label="最后修改人" sortable></el-table-column>
             <el-table-column prop="createTime" min-width="110" label="创建时间" sortable></el-table-column>
-            <el-table-column label="操作" fixed="right" width="90" header-align="center" align="center">
+            <el-table-column label="操作" fixed="right" width="150" header-align="center" align="center">
                 <template slot-scope="scope">
+                    <el-button size="mini" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
                     <el-button type="danger" size="mini" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
                 </template>
             </el-table-column>
@@ -98,6 +99,20 @@
 
             },
             handleAdd(){
+                this.$store.state.approvalupdateData = null
+                this.$router.push({ path: '/approvalProcessadd' })
+            },
+            handleEdit(index,row){
+                // console.log(row)
+                row.levelList = []
+                row.stepList.forEach(el => {
+                    el.checkUserId = []
+                    el.userList.forEach(a => {
+                        el.checkUserId.push(a.userId)
+                    });
+                    row.levelList.push({index:el.stepNum,stepType:el.stepType,name:'第 ' + el.stepNum + ' 级',checkUserId:el.checkUserId,del:false})
+                });
+                this.$store.state.approvalupdateData = row
                 this.$router.push({ path: '/approvalProcessadd' })
             },
             handleDelete(index,row){
