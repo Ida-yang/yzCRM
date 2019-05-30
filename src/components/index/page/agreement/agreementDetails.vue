@@ -281,30 +281,30 @@
                             
                             if(index == 0){
                                 if(el.userList[0].img){
-                                    // el.headPortrait = '../../../../static/img/17.jpg'
-                                    el.headPortrait = '/upload/'+_this.$store.state.iscId+'/'+el.userList[0].img
+                                    el.headPortrait = '../../../../static/img/17.jpg'
+                                    // el.headPortrait = '/upload/'+_this.$store.state.iscId+'/'+el.userList[0].img
                                 }else{
-                                    // el.headPortrait = '../../../../static/img/timg.jpg'
-                                    el.headPortrait = '/upload/staticImg/avatar.jpg'
+                                    el.headPortrait = '../../../../static/img/timg.jpg'
+                                    // el.headPortrait = '/upload/staticImg/avatar.jpg'
                                 }
                             }
                             if(el.stepType ==2){
                                 for(let i = 0; i < el.userList.length; i ++){
                                     if(el.userList[i].img && el.userList[i].examineStatus !== 0){
-                                        // el.headPortrait = '../../../../static/img/17.jpg'
-                                        el.headPortrait = '/upload/'+_this.$store.state.iscId+'/'+el.userList[i].img
+                                        el.headPortrait = '../../../../static/img/17.jpg'
+                                        // el.headPortrait = '/upload/'+_this.$store.state.iscId+'/'+el.userList[i].img
                                         break
                                     }else if(!el.userList[i].img && el.userList[i].examineStatus !== 0){
-                                        // el.headPortrait = '../../../../static/img/timg.jpg'
-                                        el.headPortrait = '/upload/staticImg/avatar.jpg'
+                                        el.headPortrait = '../../../../static/img/timg.jpg'
+                                        // el.headPortrait = '/upload/staticImg/avatar.jpg'
                                         break
                                     }else if(el.userList[i].img && el.userList[i].examineStatus == 0){
-                                        // el.headPortrait = '../../../../static/img/17.jpg'
-                                        el.headPortrait = '/upload/'+_this.$store.state.iscId+'/'+el.userList[i].img
+                                        el.headPortrait = '../../../../static/img/17.jpg'
+                                        // el.headPortrait = '/upload/'+_this.$store.state.iscId+'/'+el.userList[i].img
                                         break
                                     }else if(!el.userList[i].img && el.userList[i].examineStatus == 0){
-                                        // el.headPortrait = '../../../../static/img/timg.jpg'
-                                        el.headPortrait = '/upload/staticImg/avatar.jpg'
+                                        el.headPortrait = '../../../../static/img/timg.jpg'
+                                        // el.headPortrait = '/upload/staticImg/avatar.jpg'
                                         break
                                     }
                                 }
@@ -312,11 +312,11 @@
                             if(el.stepType == 3){
                                 el.userList.forEach((a,i) => {
                                     if(a.img){
-                                        // a.headPortrait = '../../../../static/img/17.jpg'
-                                        a.headPortrait = '/upload/'+_this.$store.state.iscId+'/'+a.img
+                                        a.headPortrait = '../../../../static/img/17.jpg'
+                                        // a.headPortrait = '/upload/'+_this.$store.state.iscId+'/'+a.img
                                     }else{
-                                        // a.headPortrait = '../../../../static/img/timg.jpg'
-                                        a.headPortrait = '/upload/staticImg/avatar.jpg'
+                                        a.headPortrait = '../../../../static/img/timg.jpg'
+                                        // a.headPortrait = '/upload/staticImg/avatar.jpg'
                                     }
                                 })
                             }
