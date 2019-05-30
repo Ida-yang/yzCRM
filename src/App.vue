@@ -950,31 +950,41 @@ export default {
         flex-wrap: wrap;
     }
     .examine_c .examine_item{
-        flex: 0 0 100px;
+        flex: 0;
         height: 100px;
-        margin-right: 10px;
+        /* margin-right: 10px; */
         display: flex;
-        flex-wrap: wrap;
     }
     .examine_c .examine_item .examine_cont{
-        flex: 0 0 70px;
+        flex: 0;
         text-align: center;
         /* background-color: rgb(146, 115, 115); */
     }
     .examine_c .examine_item .examine_next{
-        flex: 0 0 30px;
+        flex: 0;
+        width: 30px;
         height: 100px;
         line-height: 100px;
+        display: inline-block;
         text-align: center;
     }
-    .examine_c .examine_po{
+    .examine_c .examine_po,.examine_c .examine_po1,.examine_c .examine_po2{
         display: inline-block;
         width: 50px;
         height: 50px;
         line-height: 50px;
         text-align: center;
-        border-radius: 25px;
-        background-color: rgb(211, 211, 211);
+        border-radius: 50%;
+        background-color: rgb(161, 161, 161);
+    }
+    .examine_c .examine_po,.examine_c .examine_po1{
+        margin: 0 15px;
+    }
+    .examine_c .examine_po2:not(:first-child){
+        margin-left: -30px;
+    }
+    .examine_c .examine_img{
+        border-radius: 50%;
     }
     .examine_c .examine_type{
         line-height: 30px;
@@ -986,5 +996,21 @@ export default {
     .examine_c .examine_time{
         line-height: 20px;
         font-size: 12px;
+    }
+    .examine_c .examine_popover{
+        width: 200px;
+        display: flex;
+        flex-direction: column;
+    }
+    .examine_popover .examine_ico{
+        flex: 0 0 50px;
+        line-height: 50px;
+        /* background-color: rgb(176, 209, 168); */
+    }
+    .examine_popover .examint_msg{
+        display: inline-block;
+        flex: 0;
+        margin-left: 10px;
+        /* background-color: rgb(168, 182, 209); */
     }
 </style>

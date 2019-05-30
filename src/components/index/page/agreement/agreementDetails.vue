@@ -41,20 +41,36 @@
                         <div class="examine_c">
                             <div v-for="(item,index) in examineList" :key="index" class="examine_item">
                                 <!-- <span>{{item}}</span> -->
-                                <el-popover placement="top-start" title="审批流程" width="200" trigger="hover" class="examine_cont">
-                                    <div class="examine_c1">
-                                        1212121
+                                <el-popover placement="bottom" width="200" trigger="hover" class="examine_cont">
+                                    <div class="examine_popover" v-for="(b,j) in item.userList" :key="j">
+                                        <span class="examine_ico">
+                                            <i v-if="b.examineStatus == 0" class="el-icon-time" style="font-size:20px"></i>
+                                            <i v-if="b.examineStatus == 1" class="el-icon-circle-check-outline" style="color:#67c23a;font-size:20px"></i>
+                                            <i v-if="b.examineStatus == 2" class="el-icon-circle-close-outline" style="color:#f56c6c;font-size:20px"></i>
+                                            <i v-if="b.examineStatus == 3" class="el-icon-time" style="color:#e6a23c;font-size:20px"></i>
+                                            <i v-if="b.examineStatus == 5" class="el-icon-circle-plus-outline" style="color:#67c23a;font-size:20px"></i>
+                                        </span>
+                                        <div class="examint_msg">111111111</div>
                                     </div>
                                     <div slot="reference" style="width:100%;">
-                                        <span class="examine_po">
-                                            <img :src="item.headPortrait" width="50" />
+                                        <span class="examine_po" v-if="item.examineStatus == 5">
+                                            <img class="examine_img" :src="item.headPortrait" width="50" height="50" />
                                         </span>
+                                        <span class="examine_po1" v-if="item.stepType == 2">
+                                            <img class="examine_img" :class="{'mohu':item.examineStatus !== 1}" :src="item.headPortrait" width="50" height="50" />
+                                        </span>
+                                        <div v-if="item.stepType == 3" style="display:inline-block;margin:0 15px;" :style="item.type_style">
+                                            <span class="examine_po2" v-for="(a,i) in item.userList" :key="i">
+                                                <img class="examine_img" :class="{'mohu':a.examineStatus == 0}" :src="a.headPortrait" width="50" height="50" />
+                                            </span>
+                                        </div>
                                         <br>
                                         <span v-if="item.examineUserName" class="examine_type">{{item.examineUserName}}</span>
                                         <span v-if="item.stepType == 2" class="examine_type">{{item.userLength + '人或签'}}</span>
                                         <span v-if="item.stepType == 3" class="examine_type">{{item.userLength + '人会签'}}</span>
                                         <br>
                                         <span v-if="item.examineStatus == 0" class="examine_status">未审核</span>
+                                        <span v-if="item.examineStatus == 1" class="examine_status">审核通过</span>
                                         <span v-if="item.examineStatus == 2" class="examine_status">审核拒绝</span>
                                         <span v-if="item.examineStatus == 3" class="examine_status">审核中</span>
                                         <span v-if="item.examineStatus == 4" class="examine_status">已撤回</span>
@@ -62,7 +78,7 @@
                                         <!-- <span class="examine_time">2019-05-29 18:23:56</span> -->
                                     </div>
                                 </el-popover>
-                                <span v-if="index !== examineList.length - 1" class="examine_next"><i class="el-icon-d-arrow-right"></i></span>
+                                <span v-if="index !== examineList.length - 1" class="examine_next"><i class="el-icon-arrow-right"></i></span>
                             </div>
                         </div>
                     </div>
@@ -249,17 +265,61 @@
                         url:_this.$store.state.defaultHttp+'examineRecord/queryExamineRecordList.do?cId='+_this.$store.state.iscId+'&pId='+_this.$store.state.ispId + '&recordId='+_this.agreementdetail.examineRecordId,
                     }).then(function(res){
                         _this.examineList = res.data.steps
-                        _this.examineList.forEach(el => {
+                        _this.examineList.forEach((el,index) => {
                             el.userLength = el.userList.length
-                            el.userList.forEach((a,i) => {
-                                if(a.img){
-                                    // console.log(a.img)
-                                    el.headPortrait = '/upload/'+_this.$store.state.iscId+'/'+a.img
+                            if(el.userLength == 1){
+                                el.type_style = 'width:50px;'
+                            }else if(el.userLength == 2){
+                                el.type_style = 'width:75px;'
+                            }else if(el.userLength == 3){
+                                el.type_style = 'width:100px;'
+                            }else if(el.userLength == 4){
+                                el.type_style = 'width:125px;'
+                            }else if(el.userLength == 5){
+                                el.type_style = 'width:150px;'
+                            }
+                            
+                            if(index == 0){
+                                if(el.userList[0].img){
+                                    // el.headPortrait = '../../../../static/img/17.jpg'
+                                    el.headPortrait = '/upload/'+_this.$store.state.iscId+'/'+el.userList[0].img
                                 }else{
+                                    // el.headPortrait = '../../../../static/img/timg.jpg'
                                     el.headPortrait = '/upload/staticImg/avatar.jpg'
                                 }
-                                // console.log(a)
-                            });
+                            }
+                            if(el.stepType ==2){
+                                for(let i = 0; i < el.userList.length; i ++){
+                                    if(el.userList[i].img && el.userList[i].examineStatus !== 0){
+                                        // el.headPortrait = '../../../../static/img/17.jpg'
+                                        el.headPortrait = '/upload/'+_this.$store.state.iscId+'/'+el.userList[i].img
+                                        break
+                                    }else if(!el.userList[i].img && el.userList[i].examineStatus !== 0){
+                                        // el.headPortrait = '../../../../static/img/timg.jpg'
+                                        el.headPortrait = '/upload/staticImg/avatar.jpg'
+                                        break
+                                    }else if(el.userList[i].img && el.userList[i].examineStatus == 0){
+                                        // el.headPortrait = '../../../../static/img/17.jpg'
+                                        el.headPortrait = '/upload/'+_this.$store.state.iscId+'/'+el.userList[i].img
+                                        break
+                                    }else if(!el.userList[i].img && el.userList[i].examineStatus == 0){
+                                        // el.headPortrait = '../../../../static/img/timg.jpg'
+                                        el.headPortrait = '/upload/staticImg/avatar.jpg'
+                                        break
+                                    }
+                                }
+                            }
+                            if(el.stepType == 3){
+                                el.userList.forEach((a,i) => {
+                                    if(a.img){
+                                        // a.headPortrait = '../../../../static/img/17.jpg'
+                                        a.headPortrait = '/upload/'+_this.$store.state.iscId+'/'+a.img
+                                    }else{
+                                        // a.headPortrait = '../../../../static/img/timg.jpg'
+                                        a.headPortrait = '/upload/staticImg/avatar.jpg'
+                                    }
+                                })
+                            }
                         });
                         _this.hasCheck = res.data.isCheck  //是否有审批权
                         _this.hasRecheck = res.data.isRecheck  //是否有撤回权
@@ -413,5 +473,11 @@
         width: 150px;
         height: 75px;
         transform: rotate(-10deg)
+    }
+    .qingxi{
+        opacity: 1;
+    }
+    .mohu{
+        opacity: 0.3;
     }
 </style>
