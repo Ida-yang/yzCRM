@@ -39,7 +39,7 @@
                 <el-select v-model="item.stepType" size="mini">
                     <el-option v-for="item in stepTypeList" :key="item.id" :label="item.stepName" :value="item.id"></el-option>
                 </el-select>
-                <el-select v-model="item.checkUserId" multiple placeholder="请选择审批人员" filterable size="mini" class="ap_check">
+                <el-select v-model="item.checkUserId" multiple placeholder="请选择审批人员" :multiple-limit="5" filterable size="mini" class="ap_check">
                     <el-option v-for="item in userList" :key="item.private_id" :label="item.private_employee" :value="item.private_id"></el-option>
                 </el-select>
                 <span v-show="item.del" class="ap_del" @click="delStep(item)"><i class="el-icon-delete"></i></span>

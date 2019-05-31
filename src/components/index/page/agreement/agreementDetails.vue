@@ -33,14 +33,36 @@
             <div class="top">
                 <el-card class="box-card" v-model="agreementdetail">
                     <div slot="header" class="clearfix">
-                        <span>审批流程</span>
-                        <el-button style="float:right;margin-left:10px;" class="info-btn" size="mini" @click="retract()" v-show="retracts">收起</el-button>
-                        <el-button style="float:right;margin-left:10px;" class="info-btn" size="mini" @click="retract()" v-show="!retracts">显示</el-button>
+                        <el-popover placement="right-start" width="200" trigger="click">
+                            <div style="max-height:400px;overflow-y:overlay">
+                                <div class="examine_popover" v-for="(b,j) in examineLog" :key="j">
+                                    <span class="examine_ico">
+                                        <i v-if="b.examineStatus == 0" class="el-icon-time" style="font-size:20px"></i>
+                                        <i v-if="b.examineStatus == 1" class="el-icon-circle-check-outline" style="color:#67c23a;font-size:20px"></i>
+                                        <i v-if="b.examineStatus == 2" class="el-icon-circle-close-outline" style="color:#f56c6c;font-size:20px"></i>
+                                        <i v-if="b.examineStatus == 3" class="el-icon-time" style="color:#e6a23c;font-size:20px"></i>
+                                        <i v-if="b.examineStatus == 5" class="el-icon-circle-plus-outline" style="color:#67c23a;font-size:20px"></i>
+                                    </span>
+                                    <div class="examint_msg">
+                                        <p style="font-size:13px;color:#aaaaaa">{{b.examineTime}}</p>
+                                        <p v-if="b.examineStatus == 1">{{b.realname + ' 通过了此申请'}}</p>
+                                        <p v-if="b.examineStatus == 2">{{b.realname + ' 拒绝了此申请'}}</p>
+                                        <p v-if="b.examineStatus == 5">{{b.realname + ' 创建了此申请'}}</p>
+                                        <!-- <p>{{b.remarks}}</p> -->
+                                        <div class="examint_remark"><p>{{b.remarks}}</p></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <span slot="reference" style="font-size:14px;">查看审批历史</span>
+                        </el-popover>
+                        <el-button style="float:right;" class="info-btn" size="mini" @click="showexamine(1)" v-show="hasCheck">通过</el-button>
+                        <el-button style="float:right;" type="danger" size="mini" @click="showexamine(2)" v-show="hasCheck">拒绝</el-button>
+                        <el-button style="float:right;" class="info-btn" size="mini" @click="showexamine(4)" v-show="hasCheck">驳回</el-button>
+                        <!-- <el-button style="float:right;" class="info-btn" size="mini" @click="showexamine(4)" v-show="hasRecheck">审批撤回</el-button> -->
                     </div>
                     <div class="text item">
                         <div class="examine_c">
                             <div v-for="(item,index) in examineList" :key="index" class="examine_item">
-                                <!-- <span>{{item}}</span> -->
                                 <el-popover placement="bottom" width="200" trigger="hover" class="examine_cont">
                                     <div class="examine_popover" v-for="(b,j) in item.userList" :key="j">
                                         <span class="examine_ico">
@@ -50,10 +72,17 @@
                                             <i v-if="b.examineStatus == 3" class="el-icon-time" style="color:#e6a23c;font-size:20px"></i>
                                             <i v-if="b.examineStatus == 5" class="el-icon-circle-plus-outline" style="color:#67c23a;font-size:20px"></i>
                                         </span>
-                                        <div class="examint_msg">111111111</div>
+                                        <div class="examint_msg">
+                                            <p style="font-size:13px;color:#aaaaaa">{{b.examineTime}}</p>
+                                            <p>{{b.realname + '(' + b.phone + ')'}}</p>
+                                            <p v-if="b.examineStatus == 0">未审批此申请</p>
+                                            <p v-if="b.examineStatus == 1">通过此申请</p>
+                                            <p v-if="b.examineStatus == 2">拒绝此申请</p>
+                                            <p v-if="b.examineStatus == 5">创建此申请</p>
+                                        </div>
                                     </div>
                                     <div slot="reference" style="width:100%;">
-                                        <span class="examine_po" v-if="item.examineStatus == 5">
+                                        <span class="examine_po" v-if="item.examineStatus == 5 || item.examineStatus == 4">
                                             <img class="examine_img" :src="item.headPortrait" width="50" height="50" />
                                         </span>
                                         <span class="examine_po1" v-if="item.stepType == 2">
@@ -69,13 +98,14 @@
                                         <span v-if="item.stepType == 2" class="examine_type">{{item.userLength + '人或签'}}</span>
                                         <span v-if="item.stepType == 3" class="examine_type">{{item.userLength + '人会签'}}</span>
                                         <br>
-                                        <span v-if="item.examineStatus == 0" class="examine_status">未审核</span>
-                                        <span v-if="item.examineStatus == 1" class="examine_status">审核通过</span>
-                                        <span v-if="item.examineStatus == 2" class="examine_status">审核拒绝</span>
+                                        <span v-if="item.examineStatus == 0 && index == 1" class="examine_status">一级审核</span>
+                                        <span v-if="item.examineStatus == 0 && index == 2" class="examine_status">二级审核</span>
+                                        <span v-if="item.examineStatus == 0 && index == 3" class="examine_status">三级审核</span>
+                                        <span v-if="item.examineStatus == 0 && index == 5" class="examine_status">五级审核</span>
+                                        <span v-if="item.examineStatus == 1" class="examine_status">已通过</span>
+                                        <span v-if="item.examineStatus == 2" class="examine_status">已拒绝</span>
                                         <span v-if="item.examineStatus == 3" class="examine_status">审核中</span>
-                                        <span v-if="item.examineStatus == 4" class="examine_status">已撤回</span>
                                         <span v-if="item.examineStatus == 5" class="examine_status">发起</span>
-                                        <!-- <span class="examine_time">2019-05-29 18:23:56</span> -->
                                     </div>
                                 </el-popover>
                                 <span v-if="index !== examineList.length - 1" class="examine_next"><i class="el-icon-arrow-right"></i></span>
@@ -149,6 +179,20 @@
                 </el-pagination>
             </div>
         </el-col>
+        <el-dialog
+            title="审批意见"
+            :visible.sync="dialogVisible"
+            width="40%">
+            <el-form ref="myform" :model="myform" :rules="rules">
+                <el-form-item prop="remarks">
+                    <el-input v-model="myform.remarks" type="textarea" rows="5" placeholder="请输入审批意见（必填）"></el-input>
+                </el-form-item>
+            </el-form>
+            <span slot="footer" class="dialog-footer">
+                <el-button @click="dialogVisible = false">取 消</el-button>
+                <el-button type="primary" @click="toexamine()">确 定</el-button>
+            </span>
+        </el-dialog>
     </el-row>
 </template>
 
@@ -193,6 +237,17 @@
                 examineList:[],
                 hasCheck:null,   //是否有审批权
                 hasRecheck:null,   //是否有撤回权
+
+                examineLog:[],
+
+                dialogVisible:false,
+                myform:{
+                    status:null,
+                    remarks:null,
+                },
+                rules:{
+                    remarks:[{ required: true, message: '审批意见不能为空', trigger: 'blur' }]
+                },
             }
         },
         activated(){
@@ -281,30 +336,30 @@
                             
                             if(index == 0){
                                 if(el.userList[0].img){
-                                    el.headPortrait = '../../../../static/img/17.jpg'
-                                    // el.headPortrait = '/upload/'+_this.$store.state.iscId+'/'+el.userList[0].img
+                                    // el.headPortrait = '../../../../static/img/17.jpg'
+                                    el.headPortrait = '/upload/'+_this.$store.state.iscId+'/'+el.userList[0].img
                                 }else{
-                                    el.headPortrait = '../../../../static/img/timg.jpg'
-                                    // el.headPortrait = '/upload/staticImg/avatar.jpg'
+                                    // el.headPortrait = '../../../../static/img/timg.jpg'
+                                    el.headPortrait = '/upload/staticImg/avatar.jpg'
                                 }
                             }
                             if(el.stepType ==2){
                                 for(let i = 0; i < el.userList.length; i ++){
                                     if(el.userList[i].img && el.userList[i].examineStatus !== 0){
-                                        el.headPortrait = '../../../../static/img/17.jpg'
-                                        // el.headPortrait = '/upload/'+_this.$store.state.iscId+'/'+el.userList[i].img
+                                        // el.headPortrait = '../../../../static/img/17.jpg'
+                                        el.headPortrait = '/upload/'+_this.$store.state.iscId+'/'+el.userList[i].img
                                         break
                                     }else if(!el.userList[i].img && el.userList[i].examineStatus !== 0){
-                                        el.headPortrait = '../../../../static/img/timg.jpg'
-                                        // el.headPortrait = '/upload/staticImg/avatar.jpg'
+                                        // el.headPortrait = '../../../../static/img/timg.jpg'
+                                        el.headPortrait = '/upload/staticImg/avatar.jpg'
                                         break
                                     }else if(el.userList[i].img && el.userList[i].examineStatus == 0){
-                                        el.headPortrait = '../../../../static/img/17.jpg'
-                                        // el.headPortrait = '/upload/'+_this.$store.state.iscId+'/'+el.userList[i].img
+                                        // el.headPortrait = '../../../../static/img/17.jpg'
+                                        el.headPortrait = '/upload/'+_this.$store.state.iscId+'/'+el.userList[i].img
                                         break
                                     }else if(!el.userList[i].img && el.userList[i].examineStatus == 0){
-                                        el.headPortrait = '../../../../static/img/timg.jpg'
-                                        // el.headPortrait = '/upload/staticImg/avatar.jpg'
+                                        // el.headPortrait = '../../../../static/img/timg.jpg'
+                                        el.headPortrait = '/upload/staticImg/avatar.jpg'
                                         break
                                     }
                                 }
@@ -312,11 +367,11 @@
                             if(el.stepType == 3){
                                 el.userList.forEach((a,i) => {
                                     if(a.img){
-                                        a.headPortrait = '../../../../static/img/17.jpg'
-                                        // a.headPortrait = '/upload/'+_this.$store.state.iscId+'/'+a.img
+                                        // a.headPortrait = '../../../../static/img/17.jpg'
+                                        a.headPortrait = '/upload/'+_this.$store.state.iscId+'/'+a.img
                                     }else{
-                                        a.headPortrait = '../../../../static/img/timg.jpg'
-                                        // a.headPortrait = '/upload/staticImg/avatar.jpg'
+                                        // a.headPortrait = '../../../../static/img/timg.jpg'
+                                        a.headPortrait = '/upload/staticImg/avatar.jpg'
                                     }
                                 })
                             }
@@ -326,9 +381,19 @@
                     }).catch(function(err){
                         // console.log(err);
                     });
+                    //加载审批历史
+                    axios({
+                        method:'get',
+                        url:_this.$store.state.defaultHttp+'examineLog/queryExamineLogList.do?cId='+_this.$store.state.iscId+'&recordId='+_this.agreementdetail.examineRecordId,
+                    }).then(function(res){
+                        _this.examineLog = res.data
+                    }).catch(function(err){
+                        // console.log(err);
+                    });
                 }).catch(function(err){
                     // console.log(err);
                 });
+                
             },
             tirggerFile (event) {
                 const _this = this;
@@ -405,6 +470,54 @@
             retract(){
                 this.thisshow = !this.thisshow
                 this.retracts = !this.retracts
+            },
+            showexamine(e){
+                this.myform.status = e
+                this.dialogVisible = true
+            },
+            toexamine(){
+                const _this = this
+                let qs = require('querystring')
+                let data = {}
+                data.id = this.detailData.id
+                data.recordId = this.agreementdetail.examineRecordId
+                data.pId = this.$store.state.ispId
+                data.status = this.myform.status
+                data.remarks = this.myform.remarks
+                console.log(data)
+
+                let flag = false
+                if(!data.remarks){
+                    _this.$message({
+                        message:'审批意见不能为空',
+                        type:'error'
+                    })
+                    flag = true
+                }
+                if(flag) return
+
+                axios({
+                    method:'post',
+                    url:_this.$store.state.defaultHttp+'examineRecord/auditExamine.do?cId='+_this.$store.state.iscId,
+                    data:qs.stringify(data)
+                }).then(function(res){
+                    if(res.data.code && res.data.code == '200'){
+                        _this.$message({
+                            message:'操作成功',
+                            type:'success'
+                        })
+                        _this.dialogVisible = false
+                        _this.myform.status = null
+                        _this.myform.remarks = null
+                        _this.$options.methods.loadIMG.bind(_this)()
+                    }else{
+                        _this.$message({
+                            message:res.data.msg
+                        })
+                    }
+                }).catch(function(err){
+                    _this.$message.error("审批失败，请稍后再试");
+                });
             },
             getRow(index,row){
                 this.$store.state.agreedetailsData.submitData = {"id":row.contract_id}

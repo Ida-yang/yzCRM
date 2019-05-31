@@ -35,6 +35,7 @@
                             <li>网址：<span>{{cluedetail.url}}</span></li>
                             <li>备注：<span>{{cluedetail.remark}}</span></li>
                         </ul>
+                        <p>&nbsp;</p>
                     </div>
                     <!-- <div v-show="!thisshow"></div> -->
                 </el-card>

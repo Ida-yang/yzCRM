@@ -206,7 +206,6 @@
         mounted() {
             this.loadData();
             this.loadTable()
-            this.loadpId()
             this.loadOpp()
         },
         methods:{
