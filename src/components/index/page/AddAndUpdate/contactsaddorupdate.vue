@@ -308,7 +308,7 @@
                 createForm.forEach(item => {
                     let reg = /^([a-zA-Z]|[0-9])(\w|\-)+@[a-zA-Z0-9]+\.([a-zA-Z]{2,4})$/
                     subData[item.inputModel] = _this.myForm[item.inputModel]
-                    if(item.inputModel == "email" && !reg.test(subData.email)) {
+                    if(item.inputModel == "email" && subData[item.inputModel] && !reg.test(subData.email)) {
                         _this.$message({
                             message: "邮箱格式不正确",
                             type: 'error'

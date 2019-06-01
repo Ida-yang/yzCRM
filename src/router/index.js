@@ -244,7 +244,7 @@ const router =new Router({
         {
           path: '/approvalProcess',
           component: resolve => require(['../components/index/page/approvalProcess/approvalProcess.vue'], resolve),
-          meta: { title: '审批流程',name:'approvalProcess',requireAuth:true}
+          meta: { title: '审核流程',name:'approvalProcess',requireAuth:true}
         },
         {
           path: '/approvalProcessadd',

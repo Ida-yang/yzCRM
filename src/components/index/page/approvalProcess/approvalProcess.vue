@@ -5,20 +5,13 @@
             <div class="totalnum_head">共 <span style="font-weight:bold">{{tableNumber}}</span> 条</div>
         </div>
         <el-table :data="tableData" border stripe style="width:100%">
-            <el-table-column prop="name" fixed min-width="110" label="审批流程" sortable></el-table-column>
+            <el-table-column prop="name" fixed min-width="110" label="审核流程" sortable></el-table-column>
             <el-table-column prop="categoryType" min-width="110" label="关联对象" sortable></el-table-column>
             <el-table-column prop="deptIdLs" min-width="130" label="应用部门" sortable>
                 <template slot-scope="scope">
                     <span v-for="item in scope.row.deptIdLs" :key="item.id">{{item.name}},</span>
                 </template>
             </el-table-column>
-            <!-- <el-table-column prop="status" min-width="110" label="启用状态" sortable>
-                <template slot-scope="scope">
-                    <el-tooltip :content="scope.row.statusname" placement="top">
-                        <el-switch v-model="scope.row.status" active-color="#13ce66" inactive-color="#bbbbbb" :active-value="1" :inactive-value="0" @change="changeStatus(scope.row)"></el-switch>
-                    </el-tooltip>
-                </template>
-            </el-table-column> -->
             <el-table-column prop="remarks" min-width="110" label="备注" sortable></el-table-column>
             <el-table-column prop="updateUserName" min-width="110" label="最后修改人" sortable></el-table-column>
             <el-table-column prop="createTime" min-width="110" label="创建时间" sortable></el-table-column>
@@ -110,7 +103,7 @@
                     el.userList.forEach(a => {
                         el.checkUserId.push(a.userId)
                     });
-                    row.levelList.push({index:el.stepNum,stepType:el.stepType,name:'第 ' + el.stepNum + ' 级',checkUserId:el.checkUserId,del:false})
+                    row.levelList.push({index:el.stepNum,stepType:el.stepType,name:'第 ' + el.stepNum + ' 级',checkUserId:el.checkUserId, remarks:el.remarks, del:false})
                 });
                 this.$store.state.approvalupdateData = row
                 this.$router.push({ path: '/approvalProcessadd' })

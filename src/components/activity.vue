@@ -47,36 +47,30 @@
                     contactsName:[{require:true,message: '请填写姓名', trigger: 'blur'}],
                     phone:[{require:true,message: '请填写手机号码', trigger: 'blur'}],
                 },
-                url:null,
                 title:null,
-                cId:null,
-                pId:null,
-                resourceid:null,
+                p:null,
             }
         },
         mounted(){
-            this.url = window.location.hash
             this.getSearchString()
         },
         methods:{
             //key(需要检错的键） url（传入的需要分割的url地址）
             getSearchString() {
             // 获取URL中?之后的字符
-                var str = this.url;
-                str = str.substring(11,str.length);
-                // 以&分隔字符串，获得类似name=xiaoli这样的元素数组
-                var arr = str.split("&");
-                var obj = new Object();
-
-                // 将每一个数组元素以=分隔并赋给obj对象 
-                for(var i = 0; i < arr.length; i++) {
-                    var tmp_arr = arr[i].split("=");
-                    obj[decodeURIComponent(tmp_arr[0])] = decodeURIComponent(tmp_arr[1]);
-                }
-                this.title = obj.n
-                this.cId = obj.c
-                this.pId = obj.p
-                this.resourceid = obj.re
+                var str = window.location.hash;
+                let strs = str.substring(11,str.length);
+                this.p = strs
+                let _this = this
+                let qs = require('querystring')
+                
+                axios({
+                    method: 'get',
+                    url: _this.$store.state.defaultHttp+'customerTwo/deCryptAndDecode.do?'+_this.p
+                }).then(function(res){
+                    _this.title = res.data.name
+                }).catch(function(err){
+                });
             },
             addactivity(){
                 const _this = this;
@@ -86,8 +80,6 @@
                 data.contactsName = this.newform.contactsName
                 data.phone = this.newform.phone
                 data.qq = this.newform.qq
-                data.remark = this.title
-                data.cuesid = this.resourceid
 
                 let arr = [this.newform]
                 let flag = false;
@@ -126,7 +118,7 @@
 
                 axios({
                     method: 'post',
-                    url: _this.$store.state.defaultHttp+'customerTwo/addActivityClue.do?cId='+_this.cId+'&pId='+_this.pId,
+                    url: _this.$store.state.defaultHttp+'customerTwo/addActivityClue.do?'+_this.p,
                     data:qs.stringify(data)
                 }).then(function(res){
                     if(res.data.code && res.data.code == 200){

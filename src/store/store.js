@@ -185,9 +185,9 @@ const state = {
   //订单列表总数
   orderListnumber:0,
 
-  //审批流程列表
+  //审核流程列表
   approvalProcessList:[],
-  //审批流程列表总数
+  //审核流程列表总数
   approvalProcessListnumber:0,
 
   //当前时间

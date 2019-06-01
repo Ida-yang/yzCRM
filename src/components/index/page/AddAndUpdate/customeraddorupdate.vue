@@ -3,7 +3,7 @@
     <div class="content">
         <el-tabs class="formtabs" v-model="activeName" type="card">
             <el-tab-pane label="主要数据" name="first">
-                <el-form :model="myForm" ref="myForm" class="clueForm" :rules="rules">
+                <el-form :model="myForm" ref="myForm" class="cusForm" :rules="rules">
                     <!-- <h3>{{cusaddOrUpdateData.title}}</h3> -->
                     <el-form-item
                         class="formitemcus"
@@ -74,14 +74,6 @@
                             style="width:90%;">
                             <el-option v-for="o in levelList" :key="o.id" :label="o.typeName" :value="o.id"></el-option>
                         </el-select>
-                        <el-select
-                            v-else-if="item.inputModel == 'distributorId'"
-                            v-model="myForm[item.inputModel]"
-                            @change="handleInput($event, item.inputModel)"
-                            :placeholder="item.placeholder"
-                            style="width:90%;">
-                            <el-option v-for="o in distributorList" :key="o.id" :label="o.name" :value="o.id"></el-option>
-                        </el-select>
                         <el-select 
                             v-else-if="item.inputModel == 'countryid'"
                             v-model="myForm[item.inputModel]"
@@ -121,7 +113,7 @@
                 </el-form>
             </el-tab-pane>
             <el-tab-pane label="辅助资料" name="second">
-                <el-form :model="myForm" ref="myForm" class="auxForm" :rules="rules">
+                <el-form :model="myForm" ref="myForm" class="cusForm" :rules="rules">
                     <!-- <h3>{{cusaddOrUpdateData.title}}</h3> -->
                     <el-form-item
                         label-width="130px"
@@ -216,6 +208,45 @@
                     </el-form-item>
                 </el-form>
             </el-tab-pane>
+            <el-tab-pane label="订货资料" name="third">
+                <el-form :model="myForm" ref="myForm" class="cusForm" :rules="rules">
+                    <!-- <h3>{{cusaddOrUpdateData.title}}</h3> -->
+                    <el-form-item
+                        label-width="130px"
+                        v-for="item in cusaddOrUpdateData.orderForm"
+                        :label="item.label"
+                        :key="item.inputModel"
+                        :prop="item.inputModel">
+
+                        <el-input 
+                            v-if="!item.type || item.type == 'input'"
+                            :value="myForm[item.inputModel]"
+                            @input="handleInput($event, item.inputModel)"
+                            style="width:90%;" 
+                            auto-complete="off">
+                        </el-input>
+                        <!-- 税率 -->
+                        <el-input 
+                            v-else-if="item.inputModel == 'taxRate'"
+                            onkeyup = "value=value.replace(/[^\d]/g,'')"
+                            :value="myForm[item.inputModel]"
+                            @input="handleinput($event, item.inputModel)"
+                            style="width:90%;" 
+                            auto-complete="off">
+                            <span slot="suffix" style="margin-right:20px">%</span>
+                        </el-input>
+                        <!-- 经销商级别 -->
+                        <el-select
+                            v-else-if="item.type && item.type == 'select' && item.inputModel == 'distributorId'"
+                            v-model="myForm[item.inputModel]"
+                            @change="handleInput($event, item.inputModel)"
+                            :placeholder="item.placeholder"
+                            style="width:90%;">
+                            <el-option v-for="o in distributorList" :key="o.id" :label="o.name" :value="o.id"></el-option>
+                        </el-select>
+                    </el-form-item>
+                </el-form>
+            </el-tab-pane>
         </el-tabs>
         <div class="line"></div>
         <div class="formlist">
@@ -252,17 +283,6 @@
                     sortable>
                 </el-table-column>
             </el-table>
-            <!-- <div class="block numberPage">
-                <el-pagination
-                @size-change="handleSizeChange"
-                @current-change="handleCurrentChange"
-                :current-page="page"
-                :page-sizes="[15, 30, 50, 100]"
-                :page-size="15"
-                layout="total, sizes, prev, pager, next, jumper"
-                :total="tableNumber">
-                </el-pagination>
-            </div> -->
         </div>
     </div>
 </template>
@@ -425,6 +445,7 @@
                 // 设置默认值
                 let createForm = this.cusaddOrUpdateData.createForm;
                 let assistForm = this.cusaddOrUpdateData.assistForm;
+                let orderForm = this.cusaddOrUpdateData.orderForm;
                 let setForm = this.cusaddOrUpdateData.setForm;
                 if(setForm) {
                     createForm.forEach((item, index) => {
@@ -444,6 +465,13 @@
                         } else if(item.type && item.type == 'date'){
                             this.$set(this.myForm, item.inputModel, setForm[item.inputModel]);
                         } else {
+                            this.myForm[item.inputModel] = setForm[item.inputModel];
+                        }
+                    });
+                    orderForm.forEach((item, index) => {
+                        if(item.type && item.type == 'select') {
+                            this.$set(this.myForm, item.inputModel, setForm[item.inputModel]);
+                        }else {
                             this.myForm[item.inputModel] = setForm[item.inputModel];
                         }
                     });
@@ -756,17 +784,6 @@
                     // console.log(err);
                 });
             },
-
-            handleSizeChange(val) {
-                const _this = this;
-                _this.limit = val;
-                _this.$options.methods.loadTable.bind(_this)(true);
-            },
-            handleCurrentChange(val) {
-                const _this = this;
-                _this.page = val;
-                _this.$options.methods.loadTable.bind(_this)(true);
-            },
         }
         
     }
@@ -780,13 +797,10 @@
         width: 41%;
         float: left;
     }
-    .clueForm {
+    .cusForm {
         width: 100%;
     }
-    .auxForm{
-        width: 100%;
-    }
-    .formitemcus:nth-child(13),.formitemcus:nth-child(14){
+    .formitemcus:nth-child(11),.formitemcus:nth-child(12){
         margin: 0;
     }
     .formitemcus .cityseat{

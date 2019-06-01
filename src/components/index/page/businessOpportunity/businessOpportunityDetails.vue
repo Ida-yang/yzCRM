@@ -96,7 +96,7 @@
                 <el-card class="box-card step_process">
                     <div slot="header" class="clearfix">
                         <span>{{opportunitydetail.opportunity_name}}</span>
-                        <el-button class="info-btn" size="mini" style="float:right;" @click="nextStep()" v-if="shownext">下一步</el-button>
+                        <el-button class="info-btn" size="mini" style="float:right;" @click="showNextDialog()" v-if="shownext">下一步</el-button>
                         <el-button class="info-btn" size="mini" style="float:right;" @click="endStep()" v-if="shownext">失败关闭</el-button>
                         <span style="line-height:20px;float:right;font-size:14px;" v-if="showfail">该商机已关闭</span>
                         <span style="line-height:20px;float:right;font-size:14px;" v-if="showsuccess">签约成功！</span>
@@ -279,6 +279,18 @@
                 </el-card>
             </div>
         </el-col>
+        <el-dialog
+            :visible.sync="dialogVisible"
+            width="40%">
+            <span>确认修改商机进度吗？一旦确定将不可撤回</span>
+            <br><br>
+            <span style="margin-right:10px;font-size:14px;">预计成交时间:</span>
+            <el-date-picker v-model="opportunityDeal" align="right" type="date" format="yyyy-MM-dd" value-format="yyyy-MM-dd"></el-date-picker>
+            <span slot="footer" class="dialog-footer">
+                <el-button @click="closeDialog()">取 消</el-button>
+                <el-button type="primary" @click="nextStep()">确 定</el-button>
+            </span>
+        </el-dialog>
         
         <el-col :span="6" style="padding:10px;" class="right">
             <div class="searchList" style="width:100%;">
@@ -376,6 +388,9 @@
                 ddd:0,
                 fff:0,
                 ggg:0,
+
+                dialogVisible:false,
+                opportunityDeal:null,
             }
         },
         // mounted(){
@@ -420,12 +435,12 @@
                     _this.contacts = res.data.map.success[0].contacts[0]
                     _this.privateUser = res.data.map.success[0].privateUser[0]
                     _this.customerpool = res.data.map.success[0].customerpool[0]
+                    _this.opportunityDeal = res.data.map.success[0].opportunity_deal
                     _this.customerId = _this.customerpool.id
                     _this.stepList = _this.opportunitydetail.addstep
                     _this.stepList.length = _this.opportunitydetail.addstep.length - 1
                     _this.addstep = _this.opportunitydetail.opportunityProgress
                     let addStep = _this.addstep
-                    console.log(addStep)
                     if(addStep){
                         for(var i = 0,length = addStep.length;i < length;i++){
                             _this.stepList[i].createTime = addStep[i].createTime
@@ -452,12 +467,6 @@
                                 _this.isprocess = 'process'
                             }
                             if(i !== 0){
-                                // let begintime = new Date(addStep[i].previousTime.replace(/-/g, "/"))
-                                // let endtime = new Date(addStep[i].createTime.replace(/-/g, "/"))
-                                // _this.showcreate = true
-                                // _this.showdurate = true
-                                // let dateDiff = endtime.getTime() - begintime.getTime();
-                                // let dayDiff = Math.floor(dateDiff / (24 * 3600 * 1000));
                                 if(addStep[i].previousTime){
                                     let arr = addStep[i].previousTime.split(" ");
                                     let arr2 = addStep[i].createTime.split(" ");
@@ -467,7 +476,6 @@
                                     _this.showdurate = true
                                     let dateDiff = endtime.getTime() - begintime.getTime();
                                     let dayDiff = Math.floor(dateDiff / (24 * 3600 * 1000));
-                                    console.log(dayDiff)
                                     _this.stepList[i].duration = '历时：' + dayDiff + '天'
                                 }
                             }else{
@@ -542,49 +550,51 @@
                 this.dialogImageUrl2 = '/upload/'+this.$store.state.iscId+'/'+val.imgName
                 this.dialogVisible2 = true
             },
+            showNextDialog(){
+                this.dialogVisible = true
+            },
+            closeDialog(){
+                this.dialogVisible = false
+                this.shownext = true
+            },
             nextStep(){
+                const _this = this
+                let qs =require('querystring')
                 for(var i = 0,length = this.stepList.length;i < length;i++){
-                    const _this = this;
-                    let qs =require('querystring')
                     let data = {}
                     data.previousTime = this.steptime + ':00'
                     data.deptid = this.$store.state.insid
                     data.secondid = this.$store.state.deptid
                     data.oy_id = this.idArr.opportunity_id
+                    data.opportunityDeal = this.opportunityDeal
                     if(_this.active == i){
                         data.stepId = this.stepList[i].step_id
                         data.progress_probability = this.stepList[i].step_probability
                         if(data.progress_probability == '100'){
                             _this.shownext = false
                         }
-                        _this.$confirm('确认修改商机进度吗？一旦确定将不可撤回','提示',{
-                            confirmButtonText:'确定',
-                            cancelButtonText:'取消',
-                        }).then(({value}) =>{
-                            axios({
-                                method:'post',
-                                url:_this.$store.state.defaultHttp+ 'saveOpportunityProgress.do?cId='+_this.$store.state.iscId+'&pId='+_this.$store.state.ispId,
-                                data:qs.stringify(data),
-                            }).then(function(res){
-                                if(res.data.code && res.data.code == 200) {
-                                    _this.$message({
-                                        message: '修改成功',
-                                        type: 'success'
-                                    });
-                                    _this.active += 1
-                                    _this.$options.methods.loadData.bind(_this)(true);
-                                } else {
-                                    _this.$message({
-                                        message: res.data.msg,
-                                        type: 'error'
-                                    });
-                                }
-                            }).catch(function(err){
-                                _this.$message.error("修改失败,请重新修改");
-                            })
-                        }).catch(() => {
-                            _this.shownext = true      
-                        });
+                        axios({
+                            method:'post',
+                            url:_this.$store.state.defaultHttp+ 'saveOpportunityProgress.do?cId='+_this.$store.state.iscId+'&pId='+_this.$store.state.ispId,
+                            data:qs.stringify(data),
+                        }).then(function(res){
+                            if(res.data.code && res.data.code == 200) {
+                                _this.$message({
+                                    message: '修改成功',
+                                    type: 'success'
+                                });
+                                _this.active += 1
+                                _this.dialogVisible = false
+                                _this.$options.methods.loadData.bind(_this)(true);
+                            } else {
+                                _this.$message({
+                                    message: res.data.msg,
+                                    type: 'error'
+                                });
+                            }
+                        }).catch(function(err){
+                            _this.$message.error("修改失败,请重新修改");
+                        })
                     }
                 }
             },

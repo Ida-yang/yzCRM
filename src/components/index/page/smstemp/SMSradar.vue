@@ -133,13 +133,21 @@
                 page:1,//默认第一页
                 limit:100,//默认100条
 
+                clearTimeSet:null,
+
             }
+        },
+        beforeRouteLeave(to, from , next){
+            clearInterval(this.clearTimeSet)
+            this.clearTimeSet = null
+            next()
         },
         mounted(){
             this.loadTable()
         },
         activated(){
             this.loadTable()
+            this.setTime()
         },
         methods:{
             loadTable(){
@@ -175,6 +183,11 @@
                 }).catch(function(err){
                     // console.log(err);
                 });
+            },
+            setTime(){
+                this.clearTimeSet = setInterval(() => {
+                    this.$options.methods.loadTable.bind(this)()
+                }, 60000);
             },
             search(){
                 const _this = this
@@ -221,6 +234,10 @@
                 _this.page = val;
                 _this.$options.methods.loadTable.bind(_this)(false);
             },
+        },
+        destroyed(){
+            clearInterval(this.clearTimeSet)
+            this.clearTimeSet = null
         },
     }
 </script>

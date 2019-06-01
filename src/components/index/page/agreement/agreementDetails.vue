@@ -14,7 +14,7 @@
                             <li>合同代码：<span>{{agreementdetail.contract_number}}</span></li>
                             <li>合同名称：<span>{{agreementdetail.contract_name}}</span></li>
                             <li>商机名称：<span>{{agreementdetail.opportunity_name}}</span></li>
-                            <li>合同金额：<span>{{agreementdetail.amount}}</span></li>
+                            <li>合同金额：<span style="font-weight:bold;font-size:16px">{{agreementdetail.amount | commaing}} 元</span></li>
                             <li>合同类型：<span>{{agreementdetail.contract_type}}</span></li>
                             <li>客户签约人：<span>{{agreementdetail.signatories}}</span></li>
                             <li>我方签约人：<span>{{agreementdetail.our_signatories}}</span></li>
@@ -23,8 +23,14 @@
                             <li>剩余天数：<span>{{agreementdetail.due_time}}</span></li>
                         </ul>
                         <p>&nbsp;</p>
-                        <div class="audited" v-if="showaudited">
+                        <div class="audited" v-if="agreementdetail.checkStatus == 1">
+                            <img class="audited_img" src="/upload/staticImg/examine.png" alt="审核中">
+                        </div>
+                        <div class="audited" v-if="agreementdetail.checkStatus == 2">
                             <img class="audited_img" src="/upload/staticImg/examine.png" alt="已审核">
+                        </div>
+                        <div class="audited" v-if="agreementdetail.checkStatus == 3">
+                            <img class="audited_img" src="/upload/staticImg/approve.png" alt="未通过">
                         </div>
                     </div>
                     <div v-show="!thisshow"></div>
@@ -45,20 +51,17 @@
                                     </span>
                                     <div class="examint_msg">
                                         <p style="font-size:13px;color:#aaaaaa">{{b.examineTime}}</p>
-                                        <p v-if="b.examineStatus == 1">{{b.realname + ' 通过了此申请'}}</p>
-                                        <p v-if="b.examineStatus == 2">{{b.realname + ' 拒绝了此申请'}}</p>
-                                        <p v-if="b.examineStatus == 5">{{b.realname + ' 创建了此申请'}}</p>
-                                        <!-- <p>{{b.remarks}}</p> -->
+                                        <p v-if="b.examineStatus == 1">{{b.realname + ' 已审核'}}</p>
+                                        <p v-if="b.examineStatus == 2">{{b.realname + ' 已拒绝'}}</p>
                                         <div class="examint_remark"><p>{{b.remarks}}</p></div>
                                     </div>
                                 </div>
                             </div>
-                            <span slot="reference" style="font-size:14px;">查看审批历史</span>
+                            <span slot="reference" style="font-size:14px;">查看审核历史</span>
                         </el-popover>
                         <el-button style="float:right;" class="info-btn" size="mini" @click="showexamine(1)" v-show="hasCheck">通过</el-button>
-                        <el-button style="float:right;" type="danger" size="mini" @click="showexamine(2)" v-show="hasCheck">拒绝</el-button>
+                        <el-button style="float:right;" class="info-btn" size="mini" @click="showexamine(2)" v-show="hasCheck">拒绝</el-button>
                         <el-button style="float:right;" class="info-btn" size="mini" @click="showexamine(4)" v-show="hasCheck">驳回</el-button>
-                        <!-- <el-button style="float:right;" class="info-btn" size="mini" @click="showexamine(4)" v-show="hasRecheck">审批撤回</el-button> -->
                     </div>
                     <div class="text item">
                         <div class="examine_c">
@@ -67,15 +70,15 @@
                                     <div class="examine_popover" v-for="(b,j) in item.userList" :key="j">
                                         <span class="examine_ico">
                                             <i v-if="b.examineStatus == 0" class="el-icon-time" style="font-size:20px"></i>
-                                            <i v-if="b.examineStatus == 1" class="el-icon-circle-check-outline" style="color:#67c23a;font-size:20px"></i>
-                                            <i v-if="b.examineStatus == 2" class="el-icon-circle-close-outline" style="color:#f56c6c;font-size:20px"></i>
+                                            <i v-if="b.examineStatus == 1" class="el-icon-success" style="color:#67c23a;font-size:18px"></i>
+                                            <i v-if="b.examineStatus == 2" class="el-icon-circle-close" style="color:#f56c6c;font-size:20px"></i>
                                             <i v-if="b.examineStatus == 3" class="el-icon-time" style="color:#e6a23c;font-size:20px"></i>
-                                            <i v-if="b.examineStatus == 5" class="el-icon-circle-plus-outline" style="color:#67c23a;font-size:20px"></i>
+                                            <i v-if="b.examineStatus == 5" class="el-icon-circle-plus" style="color:#67c23a;font-size:20px"></i>
                                         </span>
                                         <div class="examint_msg">
                                             <p style="font-size:13px;color:#aaaaaa">{{b.examineTime}}</p>
                                             <p>{{b.realname + '(' + b.phone + ')'}}</p>
-                                            <p v-if="b.examineStatus == 0">未审批此申请</p>
+                                            <p v-if="b.examineStatus == 0">未审核此申请</p>
                                             <p v-if="b.examineStatus == 1">通过此申请</p>
                                             <p v-if="b.examineStatus == 2">拒绝此申请</p>
                                             <p v-if="b.examineStatus == 5">创建此申请</p>
@@ -101,11 +104,13 @@
                                         <span v-if="item.examineStatus == 0 && index == 1" class="examine_status">一级审核</span>
                                         <span v-if="item.examineStatus == 0 && index == 2" class="examine_status">二级审核</span>
                                         <span v-if="item.examineStatus == 0 && index == 3" class="examine_status">三级审核</span>
+                                        <span v-if="item.examineStatus == 0 && index == 4" class="examine_status">四级审核</span>
                                         <span v-if="item.examineStatus == 0 && index == 5" class="examine_status">五级审核</span>
-                                        <span v-if="item.examineStatus == 1" class="examine_status">已通过</span>
-                                        <span v-if="item.examineStatus == 2" class="examine_status">已拒绝</span>
-                                        <span v-if="item.examineStatus == 3" class="examine_status">审核中</span>
-                                        <span v-if="item.examineStatus == 5" class="examine_status">发起</span>
+                                        <span v-if="item.examineStatus == 0 && index == 6" class="examine_status">六级审核</span>
+                                        <span v-if="item.examineStatus == 1" class="examine_status"><i class="el-icon-success" style="color:#67c23a;font-size:15px"></i> 已通过</span>
+                                        <span v-if="item.examineStatus == 2" class="examine_status"><i class="el-icon-circle-close" style="color:#f56c6c;font-size:18px"></i> 已拒绝</span>
+                                        <span v-if="item.examineStatus == 3" class="examine_status"><i class="el-icon-time" style="color:#e6a23c;font-size:18px"></i> 审核中</span>
+                                        <span v-if="item.examineStatus == 5" class="examine_status"><i class="el-icon-circle-plus" style="color:#67c23a;font-size:18px"></i> 发起</span>
                                     </div>
                                 </el-popover>
                                 <span v-if="index !== examineList.length - 1" class="examine_next"><i class="el-icon-arrow-right"></i></span>
@@ -116,7 +121,7 @@
             </div>
             <div class="bottom">
                 <el-tabs v-model="activeName2" type="card">
-                    <el-tab-pane label="跟进记录" name="first">
+                    <el-tab-pane label="合同详情" name="first">
                         <div class="uploadBOX">
                             <div class="imgbox" v-for="item in fileList" :key="item.id" @mouseenter="mouseenterdiv(item)" @mouseleave="mouseleavediv(item)">
                                 <img :src="item.imgURL" alt="图片" @click="showImg($event,item)">
@@ -134,8 +139,8 @@
                         <div class="text" style="height:150px;">
                             <ul>
                                 <li>创建人：<span>{{agreementdetail.private_employee}}</span></li>
-                                <li>创建人部门：<span>{{agreementdetail.private_employee}}</span></li>
-                                <li>创建人机构：<span>{{agreementdetail.private_employee}}</span></li>
+                                <li>创建人部门：<span>{{agreementdetail.deptname}}</span></li>
+                                <li>创建人机构：<span>{{agreementdetail.parentname}}</span></li>
                                 <li>创建时间：<span>{{agreementdetail.create_time}}</span></li>
                                 <li>修改时间：<span>{{agreementdetail.update_time}}</span></li>
                             </ul>
@@ -180,16 +185,16 @@
             </div>
         </el-col>
         <el-dialog
-            title="审批意见"
-            :visible.sync="dialogVisible"
+            title="审核意见"
+            :visible.sync="dialogVisible2"
             width="40%">
             <el-form ref="myform" :model="myform" :rules="rules">
                 <el-form-item prop="remarks">
-                    <el-input v-model="myform.remarks" type="textarea" rows="5" placeholder="请输入审批意见（必填）"></el-input>
+                    <el-input v-model="myform.remarks" type="textarea" rows="5" placeholder="请输入审核意见（必填）"></el-input>
                 </el-form-item>
             </el-form>
             <span slot="footer" class="dialog-footer">
-                <el-button @click="dialogVisible = false">取 消</el-button>
+                <el-button @click="dialogVisible2 = false">取 消</el-button>
                 <el-button type="primary" @click="toexamine()">确 定</el-button>
             </span>
         </el-dialog>
@@ -204,6 +209,13 @@
     export default {
         name:'agreementDetails',
         store,
+        filters:{
+            commaing(value){
+                let intPart = Math.trunc(value) //获取整数部分
+                let intPartFormat = intPart.toString().replace(/(\d)(?=(?:\d{3})+$)/g, '$1,') // 将整数部分逢三一断
+                return intPartFormat
+            },
+        },
         data(){
             return {
                 detailData:null,
@@ -232,21 +244,20 @@
                 imgshow:false,
 
                 retracts:true,
-                showaudited:false,
 
                 examineList:[],
-                hasCheck:null,   //是否有审批权
+                hasCheck:null,   //是否有审核权
                 hasRecheck:null,   //是否有撤回权
 
                 examineLog:[],
 
-                dialogVisible:false,
+                dialogVisible2:false,
                 myform:{
                     status:null,
                     remarks:null,
                 },
                 rules:{
-                    remarks:[{ required: true, message: '审批意见不能为空', trigger: 'blur' }]
+                    remarks:[{ required: true, message: '审核意见不能为空', trigger: 'blur' }]
                 },
             }
         },
@@ -307,14 +318,7 @@
                     url:_this.$store.state.defaultHttp+'getContractById.do?cId='+_this.$store.state.iscId+'&contractId='+this.detailData.id,
                 }).then(function(res){
                     _this.agreementdetail = res.data
-                    if(res.data.state == '已审核'){
-                        _this.examines = false
-                        _this.showaudited = true
-                    }else{
-                        _this.examines = true
-                        _this.showaudited = false
-                    }
-                    //加载审批流程
+                    //加载审核流程
                     axios({
                         method:'get',
                         url:_this.$store.state.defaultHttp+'examineRecord/queryExamineRecordList.do?cId='+_this.$store.state.iscId+'&pId='+_this.$store.state.ispId + '&recordId='+_this.agreementdetail.examineRecordId,
@@ -376,12 +380,12 @@
                                 })
                             }
                         });
-                        _this.hasCheck = res.data.isCheck  //是否有审批权
+                        _this.hasCheck = res.data.isCheck  //是否有审核权
                         _this.hasRecheck = res.data.isRecheck  //是否有撤回权
                     }).catch(function(err){
                         // console.log(err);
                     });
-                    //加载审批历史
+                    //加载审核历史
                     axios({
                         method:'get',
                         url:_this.$store.state.defaultHttp+'examineLog/queryExamineLogList.do?cId='+_this.$store.state.iscId+'&recordId='+_this.agreementdetail.examineRecordId,
@@ -473,7 +477,7 @@
             },
             showexamine(e){
                 this.myform.status = e
-                this.dialogVisible = true
+                this.dialogVisible2 = true
             },
             toexamine(){
                 const _this = this
@@ -489,7 +493,7 @@
                 let flag = false
                 if(!data.remarks){
                     _this.$message({
-                        message:'审批意见不能为空',
+                        message:'审核意见不能为空',
                         type:'error'
                     })
                     flag = true
@@ -506,7 +510,7 @@
                             message:'操作成功',
                             type:'success'
                         })
-                        _this.dialogVisible = false
+                        _this.dialogVisible2 = false
                         _this.myform.status = null
                         _this.myform.remarks = null
                         _this.$options.methods.loadIMG.bind(_this)()
@@ -516,7 +520,7 @@
                         })
                     }
                 }).catch(function(err){
-                    _this.$message.error("审批失败，请稍后再试");
+                    _this.$message.error("审核失败，请稍后再试");
                 });
             },
             getRow(index,row){

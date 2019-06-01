@@ -130,7 +130,7 @@
                     prop="expireDay"
                     v-else-if="item.prop == 'expireDay' && item.state == 1"
                     min-width="130"
-                    label="过期天数"
+                    label="剩余天数"
                     sortable>
                 </el-table-column>
                 <el-table-column
@@ -148,17 +148,10 @@
                     sortable>
                 </el-table-column>
                 <el-table-column
-                    prop="approver"
-                    v-else-if="item.prop == 'approver' && item.state == 1"
-                    min-width="130"
-                    label="审核人"
-                    sortable>
-                </el-table-column>
-                <el-table-column
-                    prop="state"
+                    prop="approvalStatus"
                     v-else-if="item.prop == 'state' && item.state == 1"
                     min-width="150"
-                    label="审批状态"
+                    label="审核状态"
                     sortable>
                 </el-table-column>
                 <el-table-column
@@ -289,13 +282,13 @@
                     searchName:null,
                     type:null,
                     label:'1',
-                    example:null
+                    example:'0'
                 },
                 searchListNew:{
                     searchName:null,
                     type:null,
                     label:'1',
-                    example:null
+                    example:'0'
                 },
 
                 agreementData:[
@@ -370,8 +363,15 @@
                     _this.$store.state.agreementListnumber = res.data.count;
                     let array = _this.$store.state.agreementList
                     array.forEach(el => {
-                        if(el.state == '已审核'){
+                        if(el.checkStatus == 0){
+                            el.approvalStatus = '未审核'
+                        }else if(el.checkStatus == 1){
+                            el.approvalStatus = '审核中'
+                        }else if(el.checkStatus == 2){
+                            el.approvalStatus = '审核通过'
                             el.disabledBtn = true
+                        }else if(el.checkStatus == 3){
+                            el.approvalStatus = '未通过'
                         }
                     });
                 }).catch(function(err){

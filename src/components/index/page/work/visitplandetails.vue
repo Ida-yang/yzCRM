@@ -37,8 +37,8 @@
                             <li>结束时间：<span>{{visitdetails.endTime}}</span></li>
                             <li></li>
                             <li>协助人员：<span v-for="(item,index) in visitdetails.assistants" :key="index">{{item}} , </span></li>
-                            <li>审批人：<span>{{visitdetails.approver}}</span></li>
-                            <li>审批状态：<span>{{visitdetails.approver}}</span></li>
+                            <li>审核人：<span>{{visitdetails.approver}}</span></li>
+                            <li>审核状态：<span>{{visitdetails.approver}}</span></li>
                             <li>负责人：<span>{{visitdetails.private_employee}}</span></li>
                             <li>部门：<span>{{visitdetails.deptname}}</span></li>
                             <li>机构：<span>{{visitdetails.parentname}}</span></li>

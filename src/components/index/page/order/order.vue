@@ -104,26 +104,26 @@
                 </el-table-column>
                 <el-table-column
                     prop="private_employee"
-                    label="制单人名称"
+                    label="制单人"
                     min-width="120"
                     sortable>
                 </el-table-column>
                 <el-table-column
                     prop="ascription"
-                    label="归属人名称"
+                    label="业务员"
                     min-width="120"
                     sortable>
                 </el-table-column>
                 <el-table-column
                     prop="deptname"
-                    label="归属人部门"
+                    label="部门"
                     min-width="120"
                     sortable>
                 </el-table-column>
                 <el-table-column
                     prop="parentname"
                     show-overflow-tooltip
-                    label="归属人机构"
+                    label="机构"
                     min-width="120"
                     sortable>
                 </el-table-column>

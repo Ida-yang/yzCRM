@@ -134,7 +134,7 @@ export default {
                 contactsid : [{ required: true, message: '拜访对象不能为空', trigger: 'blur' }],
                 visitTheme : [{ required: true, message: '拜访主题不能为空', trigger: 'blur' }],
                 visitObjective : [{ required: true, message: '拜访目的不能为空', trigger: 'blur' }],
-                approverid : [{ required: true, message: '审批人不能为空', trigger: 'blur' }],
+                approverid : [{ required: true, message: '审核人不能为空', trigger: 'blur' }],
             },
 
             tableData:null,
@@ -320,7 +320,7 @@ export default {
                 }
                 if(item.inputModel == "approverid" && !subData[item.inputModel]) {
                     _this.$message({
-                        message: "审批人不能为空",
+                        message: "审核人不能为空",
                         type: 'error'
                     });
                     flag = true;

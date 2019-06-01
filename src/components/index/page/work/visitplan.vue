@@ -115,14 +115,14 @@
                     prop="approver"
                     v-else-if="item.prop == 'approver' && item.state == 1"
                     min-width="95"
-                    label="审批人"
+                    label="审核人"
                     sortable>
                 </el-table-column>
                 <el-table-column
                     prop="approverState"
                     v-else-if="item.prop == 'approverState' && item.state == 1"
                     min-width="130"
-                    label="审批状态"
+                    label="审核状态"
                     sortable>
                 </el-table-column>
                 <el-table-column
@@ -454,7 +454,7 @@ export default {
                 {"label":"拜访主题","inputModel":"visitTheme"},
                 {"label":"拜访目的","inputModel":"visitObjective","type":"textarea"},
                 {"label":"协助人员","inputModel":"assistantsid","type":"select","multiple":true},
-                {"label":"审批人员","inputModel":"approverid","type":"select"},
+                {"label":"审核人员","inputModel":"approverid","type":"select"},
                 {"label":"备注","inputModel":"remarks","type":"textarea"}]
             visitaddOrUpdateData.setForm = {
                 "customerName": '',
@@ -497,7 +497,7 @@ export default {
                 {"label":"拜访主题","inputModel":"visitTheme"},
                 {"label":"拜访目的","inputModel":"visitObjective","type":"textarea"},
                 {"label":"协助人员","inputModel":"assistantsid","type":"select","multiple":true},
-                {"label":"审批人员","inputModel":"approverid","type":"select"},
+                {"label":"审核人员","inputModel":"approverid","type":"select"},
                 {"label":"备注","inputModel":"remarks","type":"textarea"}]
             visitaddOrUpdateData.setForm = {
                 "customerpoolid": row.customerpoolid,

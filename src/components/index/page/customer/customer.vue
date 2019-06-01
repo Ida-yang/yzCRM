@@ -632,8 +632,6 @@
                     {"label":"客户来源","inputModel":"customerStateid","type":"select"},
                     {"label":"客户名称","inputModel":"poolName","type":"require"},
                     {"label":"客户分类","inputModel":"levelsid","type":"select"},
-                    {"label":"经销商级别","inputModel":"distributorId","type":"select"},
-                    {"label":"税率","inputModel":"taxRate"},
                     {"label":"联系人","inputModel":"contactsName"},
                     {"label":"手机","inputModel":"phone","type":"number"},
                     {"label":"电话","inputModel":"telphone","type":"number"},
@@ -659,12 +657,15 @@
                     {"label":"行业","inputModel":"industryId","type":"select"},
                     {"label":"公司类型","inputModel":"companyId","type":"select"},
                     {"label":"经营状态","inputModel":"operatingStateId","type":"select"},]
+                cusaddOrUpdateData.orderForm = [
+                    {"label":"税率","inputModel":"taxRate"},
+                    {"label":"经销商级别","inputModel":"distributorId","type":"select"},]
                 cusaddOrUpdateData.setForm = {
                     "customerStateid": '',
                     "poolName": '',
                     "levelsid": '',
-                    "distributorId": '',
                     "taxRate": '',
+                    "distributorId": '',
                     "contactsName": '',
                     "telphone": '',
                     "phone": '',
@@ -716,8 +717,6 @@
                     {"label":"客户来源","inputModel":"customerStateid","type":"select"},
                     {"label":"客户名称","inputModel":"poolName","type":"require"},
                     {"label":"客户分类","inputModel":"levelsid","type":"select"},
-                    {"label":"经销商级别","inputModel":"distributorId","type":"select"},
-                    {"label":"税率","inputModel":"taxRate"},
                     {"label":"联系人","inputModel":"contactsName"},
                     {"label":"手机","inputModel":"phone","type":"number"},
                     {"label":"电话","inputModel":"telphone","type":"number"},
@@ -743,13 +742,16 @@
                     {"label":"行业","inputModel":"industryId","type":"select"},
                     {"label":"公司类型","inputModel":"companyId","type":"select"},
                     {"label":"经营状态","inputModel":"operatingStateId","type":"select"},]
+                cusaddOrUpdateData.orderForm = [
+                    {"label":"税率","inputModel":"taxRate"},
+                    {"label":"经销商级别","inputModel":"distributorId","type":"select"},]
                 cusaddOrUpdateData.setForm = {
                     "customerStateid": row.sourceid,
                     "poolName": row.pName,
                     "levelsid": row.levels,
                     "levels": row.levelsid,
-                    "distributorId": row.distributorId,
                     "taxRate": row.taxRate,
+                    "distributorId": row.distributorId,
                     "contactsName": row.contacts[0].coName,
                     "telphone": row.contacts[0].telephone,
                     "phone": row.contacts[0].phone,

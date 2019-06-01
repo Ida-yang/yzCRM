@@ -12,7 +12,7 @@
                 <el-radio v-for="item in stepData" :key="item.step_id" :label="item.step_id" @change="search()">{{item.step_name}}</el-radio>
             </el-radio-group>
             <el-radio-group v-model="searchList.keyWord">
-                <span class="nameList">商机状态：</span>
+                <span class="nameList">商机预测：</span>
                 <el-radio :label="nullvalue" @change="search()">全部</el-radio>
                 <el-radio v-for="item in stateData" :key="item.id" :label="item.id" @change="search()">{{item.typeName}}</el-radio>
             </el-radio-group>
@@ -67,7 +67,7 @@
                     prop="opportunity_number"
                     fixed
                     v-if="item.prop == 'opportunity_number' && item.state == 1"
-                    min-width="110"
+                    min-width="145"
                     label="商机编号"
                     sortable>
                 </el-table-column>
@@ -119,6 +119,9 @@
                     min-width="110"
                     label="成功几率"
                     sortable>
+                    <template slot-scope="scope">
+                        {{scope.row.opportunityProgress[0].progress_probability + ' %'}}
+                    </template>
                 </el-table-column>
                 <el-table-column
                     prop="opportunity_achievement"
@@ -268,8 +271,8 @@
                 stateData:[
                     {id:'1',typeName:'预计7天成交'},
                     {id:'2',typeName:'预计15天成交'},
-                    {id:'3',typeName:'本月成交'},
-                    {id:'4',typeName:'下月成交'},
+                    {id:'3',typeName:'预计本月成交'},
+                    {id:'4',typeName:'预计下月成交'},
                     {id:'5',typeName:'异常商机'}
                 ],
 

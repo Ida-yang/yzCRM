@@ -223,7 +223,7 @@
                             },
                             {
                                 index: 'approvalProcess',
-                                title: '审批流程'
+                                title: '审核流程'
                             },
                             {
                                 index: 'programme',

@@ -2,7 +2,7 @@
     <div>
         <div class="ap_top">
             <el-form :inline="true" ref="myform" :model="myform" :rules="rules">
-                <el-form-item label="审批流名称" label-width="90px">
+                <el-form-item label="审核流名称" label-width="90px">
                     <el-input v-model="myform.name" size="mini" style="width:200px;"></el-input>
                 </el-form-item>
                 <el-form-item label="关联对象" label-width="90px">
@@ -39,12 +39,17 @@
                 <el-select v-model="item.stepType" size="mini">
                     <el-option v-for="item in stepTypeList" :key="item.id" :label="item.stepName" :value="item.id"></el-option>
                 </el-select>
-                <el-select v-model="item.checkUserId" multiple placeholder="请选择审批人员" :multiple-limit="5" filterable size="mini" class="ap_check">
+                <el-select v-model="item.checkUserId" multiple placeholder="请选择审核人员" :multiple-limit="5" filterable size="mini" class="ap_check">
                     <el-option v-for="item in userList" :key="item.private_id" :label="item.private_employee" :value="item.private_id"></el-option>
                 </el-select>
+                <el-input v-model="item.remarks" size="mini" style="width:200px;margin-left: 20px;" placeholder="备注信息"></el-input>
                 <span v-show="item.del" class="ap_del" @click="delStep(item)"><i class="el-icon-delete"></i></span>
             </div>
-            <el-button v-show="showaddStep" type="text" size="mini" @click="addStepType" style="margin-left:45px;">+ 新增审批层级</el-button>
+            <el-button v-show="showaddStep" type="text" size="mini" @click="addStepType" style="margin-left:45px;">+ 新增审核层级</el-button>
+        </div>
+        <div class="ap_remark">
+            <p>* 多人或签：表示指定用户中任意一人审核即可。 </p>
+            <p>* 多人会签：指定用户中所有人都要审核才算通过。</p>
         </div>
         <div class="submit_btn">
             <el-button type="primary" :disabled="isDisable" @click="onSubmit" style="margin-right:100px;">立即提交</el-button>
@@ -81,7 +86,7 @@
                     {id:2,name:'订单'},
                 ],
                 levelList:[
-                    {index:1, name:'第 1 级', stepType:2, checkUserId:[], del:false},
+                    {index:1, name:'第 1 级', stepType:2, checkUserId:[], remarks:null, del:false},
                 ],
                 stepTypeList:[
                     {id:2,stepName:'多人或签'},
@@ -172,7 +177,7 @@
                 this.levelList.forEach((el,i) => {
                     if(i == this.levelList.length - 1){
                         let a = el.index + 1
-                        this.levelList.push({index:a, name:'第 ' + a + ' 级', stepType:2, checkUserId:[], del:false})
+                        this.levelList.push({index:a, name:'第 ' + a + ' 级', stepType:2, checkUserId:[], remarks:null, del:false})
                     }
                 });
                 if(this.levelList.length < 6){
@@ -225,7 +230,7 @@
                 let qs = require('querystring')
                 let arr = []
                 this.levelList.forEach((el,i) => {
-                    arr.push({stepType:el.stepType,checkUserId:el.checkUserId})
+                    arr.push({stepType:el.stepType,checkUserId:el.checkUserId,remarks:el.remarks})
                 });
                 let data = {
                     "id": this.myform.id,
@@ -290,15 +295,18 @@
     .dept_select{
         width: 502px;
     }
-    .dept_select .el-select__tags,.ap_check .el-select__tags{
+    .dept_select .el-select__tags{
         max-width: 502px;
+    }
+    .ap_check .el-select__tags{
+        max-width: 402px;
     }
     .dept_select .el-tag__close{
         display: none
     }
     .ap_check{
         margin-left: 20px;
-        width: 502px;
+        width: 402px;
     }
 </style>
 

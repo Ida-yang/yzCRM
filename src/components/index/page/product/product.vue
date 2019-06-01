@@ -23,6 +23,7 @@
             <div class="entry">
                 <el-button class="btn info-btn" size="mini" @click="handleAdd()">新增</el-button>
                 <el-button class="btn info-btn" size="mini" @click="handledeletes()">删除</el-button>
+                <el-button class="btn info-btn" size="mini" @click="showALL()">显示全部</el-button>
                 <div class="totalnum_head">共 <span style="font-weight:bold">{{tableNumber}}</span> 条</div>
                 <el-popover
                     placement="bottom"
@@ -31,7 +32,6 @@
                     <el-checkbox-group class="checklist" v-model="checklist">
                         <el-checkbox class="checkone" v-for="item in filterList" :key="item.id" :label="item.name" :value="item.state" @change="hangleChange($event,item)"></el-checkbox>
                     </el-checkbox-group>
-                    <!-- <el-button slot="reference" icon="el-icon-more-outline" type="mini">筛选列表</el-button> -->
                     <el-button slot="reference" icon="el-icon-more" class="info-btn screen" type="mini"></el-button>
                 </el-popover>
             </div>
@@ -52,31 +52,6 @@
                     @selection-change="selectInfo"
                     sortable>
                 </el-table-column>
-                <!-- <el-table-column
-                    prop="unit"
-                    fixed
-                    header-align="center"
-                    align="center"
-                    min-width="80"
-                    label="图片"
-                    sortable>
-                    <template slot-scope="scope">
-                        <el-popover
-                            placement="right"
-                            width="200"
-                            trigger="hover">
-                            <img class="img_portrait_big" :src="scope.row.image" alt="图片" width="200" height="200">
-                            <img class="img_portrait" slot="reference" :src="scope.row.image" alt="图片" width="50" height="50">
-                        </el-popover>
-                    </template>
-                </el-table-column> -->
-                <!-- <el-table-column
-                    prop="goodsCode"
-                    fixed
-                    min-width="145"
-                    label="产品编码"
-                    sortable>
-                </el-table-column> -->
                 <el-table-column
                     prop="goodsName"
                     fixed
@@ -89,12 +64,6 @@
                         </div>
                     </template>
                 </el-table-column>
-                <!-- <el-table-column
-                    prop="title"
-                    min-width="120"
-                    label="规格型号"
-                    sortable>
-                </el-table-column> -->
                 <el-table-column
                     prop="price"
                     min-width="90"
@@ -262,14 +231,6 @@
                     _this.$store.state.productList = res.data.map.goods
                     _this.$store.state.productListnumber = res.data.count
                     _this.aaaa = res.data.map.goods
-                    // let arr = res.data.map.success
-                    // arr.forEach(el => {
-                    //     if(el.imgUrl){
-                    //         el.portrait = '/upload/'+_this.$store.state.iscId+'/'+el.imgUrl
-                    //     }else{
-                    //         return
-                    //     }
-                    // });
                 }).catch(function(err){
                     // console.log(err);
                 });
@@ -321,14 +282,16 @@
                 this.idArr.id = newArr;
             },
             openDetails(index,row){
-                // this.$store.state.productdetailsData = {submitData:{"id": row.id}};
-                // this.$router.push({ path: '/productdetails' });
                 const _this = this
                 let productupdateData = {}
                 productupdateData.setForm = {"id": row.id};
                 productupdateData.submitURL = this.$store.state.defaultHttp+ 'goods/update.do?cId='+this.$store.state.iscId+'&pId='+this.$store.state.ispId,
                 this.$store.state.productupdateData = productupdateData
                 _this.$router.push({ path: '/productupdate' })
+            },
+            showALL(){
+                this.searchList.classification_id = null
+                this.$options.methods.reloadTable.bind(this)()
             },
             //用户添加
             handleAdd(){

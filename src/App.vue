@@ -944,6 +944,11 @@ export default {
         font-size: 14px;
         color: #ffffff;
     }
+    .ap_remark{
+        padding: 45px;
+        font-size: 12px;
+        color: red;
+    }
     .examine_c{
         padding: 20px;
         box-sizing: border-box;
@@ -1008,6 +1013,7 @@ export default {
         left: 10px;
     }
     .examine_popover .examint_msg{
+        width: 140px;
         display: inline-block;
         margin-left: 40px;
     }
@@ -1016,6 +1022,7 @@ export default {
         line-height: 30px;
         padding-left: 5px;
         box-sizing: border-box;
-        background-color: rgb(209, 222, 236)
+        /* color: rgb(149, 149, 255) */
+        background-color: #f0f0f0
     }
 </style>

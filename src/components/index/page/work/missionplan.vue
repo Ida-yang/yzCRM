@@ -99,9 +99,9 @@
                     sortable>
                     <template slot-scope="scope">
                         <el-button-group>
-                            <el-button size="mini" :disabled="scope.row.progressBtn" :type="scope.row.progress" @click="changeState($event, scope.row)">未完成</el-button>
-                            <el-button size="mini" :disabled="scope.row.completedBtn" :type="scope.row.completed" @click="changeState($event, scope.row)">已完成</el-button>
-                            <el-button size="mini" :disabled="scope.row.nullifyBtn" :type="scope.row.nullify" @click="changeState($event, scope.row)">作废</el-button>
+                            <el-button size="mini" plain :disabled="scope.row.progressBtn" :type="scope.row.progress" @click="changeState($event, scope.row)">未完成</el-button>
+                            <el-button size="mini" plain :disabled="scope.row.completedBtn" :type="scope.row.completed" @click="changeState($event, scope.row)">已完成</el-button>
+                            <el-button size="mini" plain :disabled="scope.row.nullifyBtn" :type="scope.row.nullify" @click="changeState($event, scope.row)">作废</el-button>
                         </el-button-group>
                     </template>
                 </el-table-column>
@@ -289,7 +289,7 @@ export default {
                         el.nullify = ''
                     }else if(el.state == '已完成'){
                         el.progress = ''
-                        el.completed = 'warning'
+                        el.completed = 'success'
                         el.nullify = ''
                         if(usedTime > 7200000){
                             el.progressBtn = true
