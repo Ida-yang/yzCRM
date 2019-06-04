@@ -1117,10 +1117,6 @@
                     data: qs.stringify(data)
                 }).then(function(res){
                     if(res.data.code && res.data.code == '200'){
-                        _this.$message({
-                            message:'已生成图表',
-                            type:'success'
-                        })
                         _this.$store.state.clueChartsData = res.data.map.map
                         _this.collapse3 = !_this.collapse3
                         bus.$emit('collapse3', _this.collapse3)

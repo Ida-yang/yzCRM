@@ -75,8 +75,7 @@
                             <el-table-column prop="specName" label="规格名称">
                                 <template slot-scope="scope">
                                     <el-select v-model="scope.row.spec_name" placeholder="请选择规格名称" class="inputbox" @change="changeLabel">
-                                        <el-option v-for="item in specsData" :key="item.id" :label="item.specName" :value="item.specName"></el-option>
-                                    </el-select>
+                                        <el-option v-for="item in specsData" :key="item.id" :label="item.specName" :value="item.specName" :disabled="item.disabled"></el-option>                                    </el-select>
                                 </template>
                             </el-table-column>
                             <el-table-column prop="specValue" label="规格值" min-width="200">
@@ -123,10 +122,10 @@
                 </div>
             </el-tab-pane>
             <!-- <el-tab-pane label="价格资料" name="second">价格资料</el-tab-pane> -->
-            <el-tab-pane label="商品详情描述" name="second">
+            <el-tab-pane label="产品详情描述" name="second">
                 <div class="components-container ueditor_c">
                     <div class="editor-container">
-                        <UE :defaultMsg="defaultMsg" :config="config" ref="ue"></UE>
+                        <UE :defaultMsg="DescData.introduction" :config="config" ref="ue"></UE>
                     </div>
                 </div>
             </el-tab-pane>
@@ -213,13 +212,11 @@
             this.loadData()
             this.loadother()
         },
-        // JSON.parse(JSON.stringify(data))
         methods:{
             loadData(){
                 const _this = this
                 let qs = require('querystring')
                 let productupdateData = this.$store.state.productupdateData
-                // console.log(productupdateData.setForm)
                 let data = {}
                 data.goodsId = productupdateData.setForm.id
 
@@ -228,7 +225,6 @@
                     url: _this.$store.state.defaultHttp+'goods/searchByGoodsId.do?cId='+_this.$store.state.iscId,
                     data:qs.stringify(data)
                 }).then(function(res){
-                    console.log(res.data)
                     _this.updataData = res.data
                     _this.myform = res.data.goods
                     _this.specHeadData = res.data.goodsSpec
@@ -287,6 +283,9 @@
                 }).catch(function(err){
                     // console.log(err);
                 });
+                setTimeout(() => {
+                    this.$options.methods.disabledSome.bind(this)()
+                }, 1000);
             },
 
             loadHead(){
@@ -314,6 +313,7 @@
                     this.specHeadData[1].sign = 'spec2'
                 }
                 this.$options.methods.loadHead.bind(this)()
+                this.$options.methods.disabledSome.bind(this)()
             },
             Delrow(e){
                 if(this.tableData.length == 1){
@@ -329,8 +329,6 @@
             AddId(){
                 var a2 = {sign:'spec2', spec_name:'', spec_value:[], options:[]}
                 var a3 = {sign:'spec3', spec_name:'', spec_value:[], options:[]}
-                // this.firstID = this.firstID+1
-                // this.specHeadData.push({id:'spec'+this.firstID, spec_name:'', spec_value:[], options:[]})
                 this.specHeadData.forEach((el,i) => {
                     if(this.specHeadData.length == 1){
                         this.specHeadData.push(a2)
@@ -357,6 +355,18 @@
                     }
                 });
                 this.$options.methods.loadHead.bind(this)()
+                this.$options.methods.disabledSome.bind(this)()
+            },
+            disabledSome(){
+                this.specsData.forEach(a => {
+                    a.disabled = false
+                    this.specHeadData.forEach(b => {
+                        if(a.specName == b.spec_name){
+                            console.log(a)
+                            a.disabled = true
+                        }
+                    });
+                });
             },
             batchGeneration(){
                 let arr = this.specHeadData
@@ -401,14 +411,12 @@
             },
             pushValue(){
                 let arr1 = this.tableData
-                console.log(arr1)
                 let arr2 = this.despecData
 
                 if(arr1.length !== arr2.length){
-                    // console.log("111111111")
                     arr1.forEach(item => {
                         if(item.sname1 && item.sname2 == undefined){
-                            console.log('长度不一样，没有添加规格名称，只添加了规格值【添加值进去】')
+                            // console.log('长度不一样，没有添加规格名称，只添加了规格值【添加值进去】')
                             arr2.forEach(a => {
                                 if(item.spec1 == a.spec1 && item.spec2 == a.spec2 && item.spec3 == a.spec3){
                                     item.id = a.id
@@ -421,13 +429,10 @@
                                     item.sname3 = a.sname3
                                 }
                             });
-                        // }else{
-                        //     console.log('长度不一样，添加了规格名称，规格值不止选择了一个【不添加值】')
                         }
                     });
                 }else{
                     arr1.forEach(el => {
-                        // console.log(el)
                         if(el.sname1 && el.sname2 == undefined){
                             // console.log('长度一样，没有添加规格名称，也没有添加规格值【添加值进去】')
                             arr2.forEach(b => {
@@ -442,8 +447,6 @@
                                     el.sname3 = b.sname3
                                 }
                             });
-                        // }else{
-                        //     console.log('长度一样，添加了规格名称，规格值只有一个（不管添加了一个还是两个规格名称）【不添加值】')
                         }
                     });
                 }
@@ -533,10 +536,8 @@
                 this.specHeadData.forEach(item => {
                     data.goodsSpec.push({"goodsId":this.myform.id,"sign":item.sign,"spec_name":item.spec_name,"spec_value":item.spec_value,"options":item.options})
                 });
-
-
+                
                 this.isDisable = true
-                console.log(data)
 
                 axios({
                     method: 'post',

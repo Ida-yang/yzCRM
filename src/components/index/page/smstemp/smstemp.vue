@@ -36,7 +36,7 @@
                                 <img class="approve_img" src="/upload/staticImg/examine.png" alt="已审核">
                             </div>
                             <div class="approve" v-show="item.status == 3">
-                                <img class="approve_img" src="/upload/staticImg/approve.png" alt="审核未通过">
+                                <img class="approve_img" src="/upload/staticImg/refuse.png" alt="审核未通过">
                             </div>
                         </div>
                         <div class="sms_f">

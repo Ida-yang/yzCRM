@@ -1090,10 +1090,6 @@
                     data: qs.stringify(data)
                 }).then(function(res){
                     if(res.data.code && res.data.code == '200'){
-                        _this.$message({
-                            message:'已生成图表，可再次点击查看',
-                            type:'success'
-                        })
                         _this.$store.state.customerChartsData = res.data.map.map
                         _this.collapse4 = !_this.collapse4;
                         bus.$emit('collapse4', _this.collapse4);

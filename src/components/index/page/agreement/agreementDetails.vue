@@ -24,13 +24,13 @@
                         </ul>
                         <p>&nbsp;</p>
                         <div class="audited" v-if="agreementdetail.checkStatus == 1">
-                            <img class="audited_img" src="/upload/staticImg/examine.png" alt="审核中">
+                            <img class="audited_img" src="/upload/staticImg/inaudit.png" alt="审核中">
                         </div>
                         <div class="audited" v-if="agreementdetail.checkStatus == 2">
                             <img class="audited_img" src="/upload/staticImg/examine.png" alt="已审核">
                         </div>
                         <div class="audited" v-if="agreementdetail.checkStatus == 3">
-                            <img class="audited_img" src="/upload/staticImg/approve.png" alt="未通过">
+                            <img class="audited_img" src="/upload/staticImg/refuse.png" alt="未通过">
                         </div>
                     </div>
                     <div v-show="!thisshow"></div>
@@ -57,7 +57,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <span slot="reference" style="font-size:14px;">查看审核历史</span>
+                            <span slot="reference" style="font-size:14px;;text-decoration:underline">查看审核历史</span>
                         </el-popover>
                         <el-button style="float:right;" class="info-btn" size="mini" @click="showexamine(1)" v-show="hasCheck">通过</el-button>
                         <el-button style="float:right;" class="info-btn" size="mini" @click="showexamine(2)" v-show="hasCheck">拒绝</el-button>
@@ -188,9 +188,9 @@
             title="审核意见"
             :visible.sync="dialogVisible2"
             width="40%">
-            <el-form ref="myform" :model="myform" :rules="rules">
+            <el-form ref="exaform" :model="exaform" :rules="rules">
                 <el-form-item prop="remarks">
-                    <el-input v-model="myform.remarks" type="textarea" rows="5" placeholder="请输入审核意见（必填）"></el-input>
+                    <el-input v-model="exaform.remarks" type="textarea" rows="5" placeholder="请输入审核意见（必填）"></el-input>
                 </el-form-item>
             </el-form>
             <span slot="footer" class="dialog-footer">
@@ -252,7 +252,7 @@
                 examineLog:[],
 
                 dialogVisible2:false,
-                myform:{
+                exaform:{
                     status:null,
                     remarks:null,
                 },
@@ -476,7 +476,7 @@
                 this.retracts = !this.retracts
             },
             showexamine(e){
-                this.myform.status = e
+                this.exaform.status = e
                 this.dialogVisible2 = true
             },
             toexamine(){
@@ -486,9 +486,8 @@
                 data.id = this.detailData.id
                 data.recordId = this.agreementdetail.examineRecordId
                 data.pId = this.$store.state.ispId
-                data.status = this.myform.status
-                data.remarks = this.myform.remarks
-                console.log(data)
+                data.status = this.exaform.status
+                data.remarks = this.exaform.remarks
 
                 let flag = false
                 if(!data.remarks){
@@ -511,12 +510,13 @@
                             type:'success'
                         })
                         _this.dialogVisible2 = false
-                        _this.myform.status = null
-                        _this.myform.remarks = null
+                        _this.exaform.status = null
+                        _this.exaform.remarks = null
                         _this.$options.methods.loadIMG.bind(_this)()
                     }else{
                         _this.$message({
-                            message:res.data.msg
+                            message:res.data.msg,
+                            type:'error'
                         })
                     }
                 }).catch(function(err){

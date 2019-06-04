@@ -257,6 +257,21 @@ const router =new Router({
           meta: { title: '编辑流程',requireAuth:true}
         },
         {
+          path: '/workOrder',
+          component: resolve => require(['../components/index/page/workOrder/workOrder.vue'], resolve),
+          meta: { title: '工单',name:'workOrder',requireAuth:true}
+        },
+        {
+          path: '/jobClassification',
+          component: resolve => require(['../components/index/page/workOrder/jobClassification.vue'], resolve),
+          meta: { title: '新增工单',name:'jobClassification',requireAuth:true}
+        },
+        {
+          path: '/workOrderadd',
+          component: resolve => require(['../components/index/page/AddAndUpdate/workOrderadd.vue'], resolve),
+          meta: { title: '编辑工单',requireAuth:true}
+        },
+        {
           path: '/name',
           component: resolve => require(['../components/index/page/product/name.vue'], resolve),
           meta: { title: '名字',requireAuth:true}

@@ -8,13 +8,13 @@
                             <el-form-item class="first_input" label="产品分类" label-width="90px">
                                 <el-input v-model="myform.category" :disabled="true" class="inputbox"></el-input>
                             </el-form-item>
-                            <el-form-item class="first_input" label="产品名称" label-width="90px">
+                            <el-form-item prop="goodsName" class="first_input" label="产品名称" label-width="90px">
                                 <el-input v-model="myform.goodsName" class="inputbox"></el-input>
                             </el-form-item>
                             <el-form-item class="first_input" label="描述" label-width="90px">
                                 <el-input v-model="myform.describe" class="inputbox"></el-input>
                             </el-form-item>
-                            <el-form-item class="first_input" label="单位" label-width="90px">
+                            <el-form-item prop="unitId" class="first_input" label="单位" label-width="90px">
                                 <el-select v-model="myform.unitId" placeholder="请选择单位" class="inputbox">
                                     <el-option v-for="item in unitsData" :key="item.id" :label="item.name" :value="item.id"></el-option>
                                 </el-select>
@@ -24,7 +24,7 @@
                                     <el-option v-for="item in brandsData" :key="item.id" :label="item.name" :value="item.id"></el-option>
                                 </el-select>
                             </el-form-item>
-                            <el-form-item class="first_input" label="产品属性" label-width="90px">
+                            <el-form-item prop="attribute" class="first_input" label="产品属性" label-width="90px">
                                 <el-select v-model="myform.attribute" placeholder="请选择产品属性" class="inputbox">
                                     <el-option v-for="item in attributeList" :key="item.id" :label="item.name" :value="item.name"></el-option>
                                 </el-select>
@@ -35,9 +35,6 @@
                             <el-form-item class="first_input" label="标准成品价" label-width="90px">
                                 <el-input v-model="myform.costPrice" class="inputbox"></el-input>
                             </el-form-item>
-                            <!-- <el-form-item class="first_input" label="产品标签" label-width="90px">
-                                <el-input v-model="myform.chanpinbiaoqian" class="inputbox"></el-input>
-                            </el-form-item> -->
                         </el-form>
                     </div>
                     <!-- <div class="first_right">
@@ -75,7 +72,7 @@
                             <el-table-column prop="specName" label="规格名称">
                                 <template slot-scope="scope">
                                     <el-select v-model="scope.row.spec_name" placeholder="请选择规格名称" class="inputbox" @change="changeLabel">
-                                        <el-option v-for="item in specsData" :key="item.id" :label="item.specName" :value="item.specName"></el-option>
+                                        <el-option v-for="item in specsData" :key="item.id" :label="item.specName" :value="item.specName" :disabled="item.disabled"></el-option>
                                     </el-select>
                                 </template>
                             </el-table-column>
@@ -122,11 +119,8 @@
                     </el-table>
                 </div>
             </el-tab-pane>
-            <!-- <el-tab-pane label="价格资料" name="second">价格资料</el-tab-pane> -->
-            <el-tab-pane label="商品详情描述" name="second">
+            <el-tab-pane label="产品详情描述" name="second">
                 <div class="components-container ueditor_c">
-                    <!-- <div class="info">UE编辑器示例<br>需要使用编辑器时，调用UE公共组件即可。可设置填充内容defaultMsg，配置信息config(宽度和高度等)，可调用组件中获取内容的方法。</div> -->
-                    <!-- <button @click="getUEContent()">获取内容</button> -->
                     <div class="editor-container">
                         <UE :defaultMsg="defaultMsg" :config="config" ref="ue"></UE>
                     </div>
@@ -144,7 +138,7 @@
     import store from '../../../../store/store'
     import axios from 'axios'
     import bus from '../../bus'
-    import UE from '../../../index/ue.vue';
+    import UE from '../../ue.vue';
 
     export default {
         name:'productadd',
@@ -192,7 +186,7 @@
                 dialogVisible:false,
                 dialogImageUrl:'',
 
-                defaultMsg: '这里是UE测试',
+                defaultMsg: '填写产品详情描述前请把这句话删掉',
                 config: {
                     initialFrameWidth: null,
                     initialFrameHeight: 500
@@ -218,7 +212,6 @@
             this.loadData()
             this.loadother()
         },
-        // JSON.parse(JSON.stringify(data))
         methods:{
             loadData(){
                 let productaddData = this.$store.state.productaddData
@@ -295,8 +288,6 @@
             AddId(){
                 var a2 = {sign:'spec2', spec_name:'', spec_value:[], options:[]}
                 var a3 = {sign:'spec3', spec_name:'', spec_value:[], options:[]}
-                // this.firstID = this.firstID+1
-                // this.specHeadData.push({id:'spec'+this.firstID, spec_name:'', spec_value:[], options:[]})
                 this.specHeadData.forEach((el,i) => {
                     if(this.specHeadData.length == 1){
                         this.specHeadData.push(a2)
@@ -324,6 +315,17 @@
                     }
                 });
                 this.$options.methods.loadHead.bind(this)()
+                this.$options.methods.disabledSome.bind(this)()
+            },
+            disabledSome(){
+                this.specsData.forEach(a => {
+                    a.disabled = false
+                    this.specHeadData.forEach(b => {
+                        if(a.specName == b.spec_name){
+                            a.disabled = true
+                        }
+                    });
+                });
             },
             batchGeneration(){
                 let arr = this.specHeadData
@@ -356,8 +358,6 @@
                         }
                     }
                 }
-
-                console.log(this.specHeadData)
                 this.$options.methods.pushIndex.bind(this)()
             },
             pushIndex(){
@@ -387,7 +387,6 @@
                 });
             },
             handleAvatarSuccess(res, file) {
-                // console.log(res,file)
                 this.tableData.forEach(el => {
                     if(el.index == this.currentrow.index){
                         el.imgfile = URL.createObjectURL(file.raw)

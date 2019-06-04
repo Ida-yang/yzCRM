@@ -2,106 +2,281 @@
     <!-- 基础设置页面 -->
     <div class="contentall">
         <div class="setleftcontent">
-            <el-menu default-active="1" class="el-menu-vertical-demo base_menu">
-                <el-submenu index="1">
-                    <span slot="title">CRM参数</span>
-                    <el-menu-item v-for="item in crmparam" :key="item.index" :index="item.slotindex" @click="showTableval(item)">{{item.name}}</el-menu-item>
-                </el-submenu>
-                <el-submenu index="2">
-                    <span slot="title">订货参数</span>
-                    <el-menu-item v-for="item in orderparam" :key="item.index" :index="item.slotindex" @click="showTableval(item)">{{item.name}}</el-menu-item>
-                </el-submenu>
-                <el-submenu index="3">
-                    <span slot="title">办公参数</span>
-                    <el-menu-item v-for="item in workparam" :key="item.index" :index="item.slotindex" @click="showTableval(item)">{{item.name}}</el-menu-item>
-                </el-submenu>
-                <el-submenu index="4">
-                    <span slot="title">基础参数</span>
-                    <el-menu-item v-for="item in baseparam" :key="item.index" :index="item.slotindex" @click="showTableval(item)">{{item.name}}</el-menu-item>
-                </el-submenu>
-            </el-menu>
+            <ul class="namecontent">
+                <li v-for="item in nameList" :key="item.index" :value="item.name" :class="{actived:item.isActive}" @click="showTableval(item)">{{item.name}}</li>
+            </ul>
         </div>
         <div class="centercontent"></div>
         <div class="setrightcontent">
             <div class="entry" v-show="newform.index !== 13">
                 <el-button class="btn info-btn" size="mini" @click="handleAdd()">新增</el-button>
             </div>
-            <el-table :data="statesData" border stripe style="width:100%" v-show="showtopfour">
-                <el-table-column prop="sort" label="顺序" sortable />
-                <el-table-column prop="id" width="100" label="ID" sortable />
-                <el-table-column prop="typeName" min-width="120" label="名称" sortable />
-                <el-table-column prop="notes" min-width="120" label="备注" sortable />
-                <el-table-column label="操作" width="140" header-align="center" align="center">
+            <el-table
+                :data="statesData"
+                border
+                stripe
+                style="width:100%"
+                v-show="showtopfour">
+                <el-table-column
+                    prop="sort"
+                    label="顺序"
+                    sortable>
+                </el-table-column>
+                <el-table-column
+                    prop="id"
+                    width="100"
+                    label="ID"
+                    sortable>
+                </el-table-column>
+                <el-table-column
+                    prop="typeName"
+                    min-width="120"
+                    label="名称"
+                    sortable>
+                </el-table-column>
+                <el-table-column
+                    prop="notes"
+                    min-width="120"
+                    label="备注"
+                    sortable>
+                </el-table-column>
+                <el-table-column label="操作"
+                    width="140"
+                    header-align="center"
+                    align="center">
                     <template slot-scope="scope">
-                        <el-button size="mini" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
-                        <el-button size="mini" type="danger" @click="handledelete(scope.$index, scope.row)">删除</el-button>
+                        <el-button
+                        size="mini"
+                        @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
+                        <el-button
+                        size="mini"
+                        type="danger"
+                        @click="handledelete(scope.$index, scope.row)">删除</el-button>
                     </template>
                 </el-table-column>
             </el-table>
-            <el-table :data="deliData" border stripe style="width:100%" v-show="showeleven">
-                <el-table-column header-align="center" align="center" type="index" width="45" />
-                <el-table-column prop="typeName" min-width="120" label="名称" sortable />
-                <el-table-column prop="createTime" label="创建时间" sortable />
-                <el-table-column label="操作" width="140" header-align="center" align="center">
+            <el-table
+                :data="deliData"
+                border
+                stripe
+                style="width:100%"
+                v-show="showeleven">
+                <el-table-column
+                    header-align="center"
+                    align="center"
+                    type="index"
+                    width="45">
+                </el-table-column>
+                <el-table-column
+                    prop="typeName"
+                    min-width="120"
+                    label="名称"
+                    sortable>
+                </el-table-column>
+                <el-table-column
+                    prop="createTime"
+                    label="创建时间"
+                    sortable>
+                </el-table-column>
+                <el-table-column label="操作"
+                    width="140"
+                    header-align="center"
+                    align="center">
                     <template slot-scope="scope">
-                        <el-button size="mini" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
-                        <el-button size="mini" type="danger" @click="handledelete(scope.$index, scope.row)">删除</el-button>
+                        <el-button
+                        size="mini"
+                        @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
+                        <el-button
+                        size="mini"
+                        type="danger"
+                        @click="handledelete(scope.$index, scope.row)">删除</el-button>
                     </template>
                 </el-table-column>
             </el-table>
-            <el-table :data="waysData" border stripe style="width:100%" v-show="showfive">
-                <el-table-column prop="sort" label="顺序" sortable />
-                <el-table-column prop="typeName" min-width="120" label="方式名称" sortable />
-                <el-table-column prop="content" min-width="120" label="跟进内容" sortable />
-                <el-table-column prop="notes" min-width="120" label="备注" sortable />
-                <el-table-column label="操作" width="140" header-align="center" align="center">
+            <el-table
+                :data="waysData"
+                border
+                stripe
+                style="width:100%"
+                v-show="showfive">
+                <el-table-column
+                    prop="sort"
+                    label="顺序"
+                    sortable>
+                </el-table-column>
+                <el-table-column
+                    prop="typeName"
+                    min-width="120"
+                    label="方式名称"
+                    sortable>
+                </el-table-column>
+                <el-table-column
+                    prop="content"
+                    min-width="120"
+                    label="跟进内容"
+                    sortable>
+                </el-table-column>
+                <el-table-column
+                    prop="notes"
+                    min-width="120"
+                    label="备注"
+                    sortable>
+                </el-table-column>
+                <el-table-column label="操作"
+                    width="140"
+                    header-align="center"
+                    align="center">
                     <template slot-scope="scope">
-                        <el-button size="mini" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
-                        <el-button size="mini" type="danger" @click="handledelete(scope.$index, scope.row)">删除</el-button>
+                        <el-button
+                        size="mini"
+                        @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
+                        <el-button
+                        size="mini"
+                        type="danger"
+                        @click="handledelete(scope.$index, scope.row)">删除</el-button>
                     </template>
                 </el-table-column>
             </el-table>
-            <el-table :data="oppstepsData" border stripe style="width:100%" v-show="showsix">
-                <el-table-column prop="sort" label="顺序" sortable />
-                <el-table-column prop="step_name" min-width="120" label="状态名称" sortable />
-                <el-table-column prop="step_probability" min-width="120" label="成功几率" sortable>
+            <el-table
+                :data="oppstepsData"
+                border
+                stripe
+                style="width:100%"
+                v-show="showsix">
+                <el-table-column
+                    prop="sort"
+                    label="顺序"
+                    sortable>
+                </el-table-column>
+                <el-table-column
+                    prop="step_name"
+                    min-width="120"
+                    label="状态名称"
+                    sortable>
+                </el-table-column>
+                <el-table-column
+                    prop="step_probability"
+                    min-width="120"
+                    label="成功几率"
+                    sortable>
                     <template slot-scope="scope">
                         <div>{{scope.row.step_probability}} %</div>
                     </template>
                 </el-table-column>
-                <el-table-column prop="notes" min-width="120" label="备注" sortable />
-                <el-table-column label="操作" width="140" header-align="center" align="center">
+                <el-table-column
+                    prop="notes"
+                    min-width="120"
+                    label="备注"
+                    sortable>
+                </el-table-column>
+                <el-table-column label="操作"
+                    width="140"
+                    header-align="center"
+                    align="center">
                     <template slot-scope="scope">
-                        <el-button size="mini" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
-                        <el-button size="mini" type="danger" @click="handledelete(scope.$index, scope.row)">删除</el-button>
+                        <el-button
+                        size="mini"
+                        @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
+                        <el-button
+                        size="mini"
+                        type="danger"
+                        @click="handledelete(scope.$index, scope.row)">删除</el-button>
                     </template>
                 </el-table-column>
             </el-table>
             
-            <el-table :data="unitsData" border stripe style="width:100%" v-show="showeight">
-                <el-table-column header-align="center" align="center" type="index" width="45" />
-                <el-table-column prop="name" min-width="120" label="单位名称" sortable />
-                <el-table-column prop="createTime" min-width="120" label="创建时间" sortable />
-                <el-table-column label="操作" width="140" header-align="center" align="center">
+            <el-table
+                :data="unitsData"
+                border
+                stripe
+                style="width:100%"
+                v-show="showeight">
+                <el-table-column
+                    header-align="center"
+                    align="center"
+                    type="index"
+                    width="45">
+                </el-table-column>
+                <el-table-column
+                    prop="name"
+                    min-width="120"
+                    label="单位名称"
+                    sortable>
+                </el-table-column>
+                <el-table-column
+                    prop="createTime"
+                    min-width="120"
+                    label="创建时间"
+                    sortable>
+                </el-table-column>
+                <el-table-column label="操作"
+                    width="140"
+                    header-align="center"
+                    align="center">
                     <template slot-scope="scope">
-                        <el-button size="mini" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
-                        <el-button size="mini" type="danger" @click="deleteUnit(scope.$index, scope.row)">删除</el-button>
+                        <el-button
+                        size="mini"
+                        @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
+                        <el-button
+                        size="mini"
+                        type="danger"
+                        @click="deleteUnit(scope.$index, scope.row)">删除</el-button>
                     </template>
                 </el-table-column>
             </el-table>
-            <el-table :data="brandsData" border stripe style="width:100%" v-show="shownine">
-                <el-table-column header-align="center" align="center" type="index" width="45" />
-                <el-table-column prop="firstChar" min-width="120" label="首字母" sortable />
-                <el-table-column prop="name" label="品牌名称" sortable />
-                <el-table-column prop="createTime" label="创建时间" sortable />
-                <el-table-column label="操作" width="140" header-align="center" align="center">
+            <el-table
+                :data="brandsData"
+                border
+                stripe
+                style="width:100%"
+                v-show="shownine">
+                <el-table-column
+                    header-align="center"
+                    align="center"
+                    type="index"
+                    width="45">
+                </el-table-column>
+                <el-table-column
+                    prop="firstChar"
+                    min-width="120"
+                    label="首字母"
+                    sortable>
+                </el-table-column>
+                <el-table-column
+                    prop="name"
+                    label="品牌名称"
+                    sortable>
+                </el-table-column>
+                <el-table-column
+                    prop="createTime"
+                    label="创建时间"
+                    sortable>
+                </el-table-column>
+                <el-table-column label="操作"
+                    width="140"
+                    header-align="center"
+                    align="center">
                     <template slot-scope="scope">
-                        <el-button size="mini" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
-                        <el-button size="mini" type="danger" @click="deleteBrand(scope.$index, scope.row)">删除</el-button>
+                        <el-button
+                        size="mini"
+                        @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
+                        <el-button
+                        size="mini"
+                        type="danger"
+                        @click="deleteBrand(scope.$index, scope.row)">删除</el-button>
                     </template>
                 </el-table-column>
             </el-table>
-            <el-tree node-key="id" highlight-current accordion :data="proClassData" :props="defaultProps" expand-on-click-node :default-expanded-keys="defaultkeys" v-show="showseven">
+            <el-tree
+                node-key="id"
+                highlight-current
+                accordion
+                :data="proClassData"
+                :props="defaultProps"
+                expand-on-click-node
+                :default-expanded-keys="defaultkeys"
+                @node-click="handleNodeClick"
+                v-show="showseven">
                 <span class="custom-tree-node" slot-scope="{ node, data }">
                     <span><i class="el-icon-info">&nbsp;&nbsp;</i>{{ node.label }}</span>
                     <span class="operation_proclass">
@@ -114,62 +289,140 @@
                     </span>
                 </span>
             </el-tree>
-            <el-table :data="specData" border stripe style="width:100%" v-show="showten">
-                <el-table-column header-align="center" align="center" type="index" width="45" />
-                <el-table-column prop="specName" min-width="120" label="规格名称" sortable />
-                <el-table-column prop="specValue" label="规格值" min-width="200" sortable>
+            <el-table
+                :data="specData"
+                border
+                stripe
+                style="width:100%"
+                v-show="showten">
+                <el-table-column
+                    header-align="center"
+                    align="center"
+                    type="index"
+                    width="45">
+                </el-table-column>
+                <el-table-column
+                    prop="specName"
+                    min-width="120"
+                    label="规格名称"
+                    sortable>
+                </el-table-column>
+                <el-table-column
+                    prop="specValue"
+                    label="规格值"
+                    min-width="200"
+                    sortable>
                     <template slot-scope="scope">
                         <span v-for="(a,i) in scope.row.specValue" :key="i">{{a}} , </span>
+                        <!-- {{scope.row.specValue}} -->
                     </template>
                 </el-table-column>
-                <el-table-column prop="createTime" label="创建时间" min-width="145" sortable />
-                <el-table-column label="操作" width="140" header-align="center" align="center">
+                <el-table-column
+                    prop="createTime"
+                    label="创建时间"
+                    min-width="145"
+                    sortable>
+                </el-table-column>
+                <el-table-column label="操作"
+                    width="140"
+                    header-align="center"
+                    align="center">
                     <template slot-scope="scope">
-                        <el-button size="mini" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
-                        <el-button size="mini" type="danger" @click="deletespec(scope.$index, scope.row)">删除</el-button>
+                        <el-button
+                        size="mini"
+                        @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
+                        <el-button
+                        size="mini"
+                        type="danger"
+                        @click="deletespec(scope.$index, scope.row)">删除</el-button>
                     </template>
                 </el-table-column>
             </el-table>
-            <el-table :data="distriData" border stripe style="width:100%" v-show="showtwelve">
-                <el-table-column prop="sort" min-width="50" label="排序" sortable />
-                <el-table-column prop="name" min-width="120" label="经销商名称" sortable />
-                <el-table-column prop="discount" min-width="120" label="默认折扣" sortable>
+            <el-table
+                :data="distriData"
+                border
+                stripe
+                style="width:100%"
+                v-show="showtwelve">
+                <el-table-column
+                    prop="sort"
+                    min-width="50"
+                    label="排序"
+                    sortable>
+                </el-table-column>
+                <el-table-column
+                    prop="name"
+                    min-width="120"
+                    label="经销商名称"
+                    sortable>
+                </el-table-column>
+                <el-table-column
+                    prop="discount"
+                    min-width="120"
+                    label="默认折扣"
+                    sortable>
                     <template slot-scope="scope">{{scope.row.discount}} %</template>
                 </el-table-column>
-                <el-table-column label="操作" width="140" header-align="center" align="center">
+                <el-table-column label="操作"
+                    width="140"
+                    header-align="center"
+                    align="center">
                     <template slot-scope="scope">
-                        <el-button size="mini" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
-                        <el-button size="mini" type="danger" @click="handledelete(scope.$index, scope.row)">删除</el-button>
+                        <el-button
+                        size="mini"
+                        @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
+                        <el-button
+                        size="mini"
+                        type="danger"
+                        @click="handledelete(scope.$index, scope.row)">删除</el-button>
                     </template>
                 </el-table-column>
             </el-table>
             
-            <el-table :data="codeData" border stripe style="width:100%" v-show="showthirteen">
-                <el-table-column prop="module" label="编号模块" sortable>
+            <el-table
+                :data="codeData"
+                border
+                stripe
+                style="width:100%"
+                v-show="showthirteen">
+                <el-table-column
+                    prop="module"
+                    label="编号模块"
+                    sortable>
                 </el-table-column>
-                <el-table-column prop="prefix" label="编号前缀" sortable>
+                <el-table-column
+                    prop="prefix"
+                    label="编号前缀"
+                    sortable>
                 </el-table-column>
-                <el-table-column label="操作" width="90" header-align="center" align="center">
+                <el-table-column label="操作"
+                    width="90"
+                    header-align="center"
+                    align="center">
                     <template slot-scope="scope">
-                        <el-button size="mini" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
+                        <el-button
+                        size="mini"
+                        @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
                     </template>
                 </el-table-column>
             </el-table>
             <div class="block numberPage" v-show="showeight || shownine">
                 <el-pagination
-                    @size-change="handleSizeChange"
-                    @current-change="handleCurrentChange"
-                    :current-page="page"
-                    :page-sizes="[20, 50, 100, 500]"
-                    :page-size="20"
-                    layout="total, sizes, prev, pager, next, jumper"
-                    :total="tableNumber">
+                @size-change="handleSizeChange"
+                @current-change="handleCurrentChange"
+                :current-page="page"
+                :page-sizes="[20, 50, 100, 500]"
+                :page-size="20"
+                layout="total, sizes, prev, pager, next, jumper"
+                :total="tableNumber">
                 </el-pagination>
             </div>
         </div>
         
-        <!-- 新增线索状态、客户状态、客户来源、客户分类 -->
-        <el-dialog title="添加状态" :visible.sync="dialogVisible" width="40%">
+        <el-dialog
+            title="添加状态"
+            :visible.sync="dialogVisible"
+            width="40%">
             <el-form ref="newform" :model="newform" label-width="110px" :rules="rules">
                 <el-form-item prop="type" label="辅助资料类别">
                     <el-input v-model="newform.type" :disabled="true"></el-input>
@@ -188,9 +441,11 @@
                 <el-button @click="dialogVisible = false">取 消</el-button>
                 <el-button type="primary" @click="addbasicset()">确 定</el-button>
             </span>
-        </el-dialog>
-        <!-- 编辑线索状态、客户状态、客户来源、客户分类 -->
-        <el-dialog title="修改状态" :visible.sync="dialogVisible2" width="40%">
+        </el-dialog><!-- 新增线索状态、客户状态、客户来源、客户分类 -->
+        <el-dialog
+            title="修改状态"
+            :visible.sync="dialogVisible2"
+            width="40%">
             <el-form ref="newform" :model="newform" :rules="rules" label-width="110px">
                 <el-form-item prop="type" label="辅助资料类别">
                     <el-input v-model="newform.type" :disabled="true"></el-input>
@@ -209,9 +464,11 @@
                 <el-button @click="dialogVisible2 = false">取 消</el-button>
                 <el-button type="primary" @click="updatebasicset()">确 定</el-button>
             </span>
-        </el-dialog>
-        <!-- 新增快捷方式 -->
-        <el-dialog title="添加快捷方式" :visible.sync="shortcutadd" width="40%">
+        </el-dialog><!-- 编辑线索状态、客户状态、客户来源、客户分类 -->
+        <el-dialog
+            title="添加快捷方式"
+            :visible.sync="dialogVisible3"
+            width="40%">
             <el-form ref="newform" :model="newform" label-width="110px" :rules="rules">
                 <el-form-item prop="type" label="辅助资料类别">
                     <el-input v-model="newform.type" :disabled="true"></el-input>
@@ -230,12 +487,14 @@
                 </el-form-item>
             </el-form>
             <span slot="footer" class="dialog-footer">
-                <el-button @click="shortcutadd = false">取 消</el-button>
+                <el-button @click="dialogVisible3 = false">取 消</el-button>
                 <el-button type="primary" @click="addbasicset()">确 定</el-button>
             </span>
-        </el-dialog>
-        <!-- 编辑快捷方式 -->
-        <el-dialog title="修改快捷方式" :visible.sync="shortcutupdate" width="40%">
+        </el-dialog><!-- 新增快捷方式 -->
+        <el-dialog
+            title="修改快捷方式"
+            :visible.sync="dialogVisible4"
+            width="40%">
             <el-form ref="newform" :model="newform" :rules="rules" label-width="110px">
                 <el-form-item prop="type" label="辅助资料类别">
                     <el-input v-model="newform.type" :disabled="true"></el-input>
@@ -249,14 +508,19 @@
                 <el-form-item prop="sort" label="排序编号">
                     <el-input onkeyup = "value=value.replace(/[^\d]/g,'')" v-model="newform.sort" placeholder="请输入排序编号"></el-input>
                 </el-form-item>
+                <!-- <el-form-item prop="notes" label="备注">
+                    <el-input v-model="newform.notes" placeholder="请输入备注"></el-input>
+                </el-form-item> -->
             </el-form>
             <span slot="footer" class="dialog-footer">
-                <el-button @click="shortcutupdate = false">取 消</el-button>
+                <el-button @click="dialogVisible4 = false">取 消</el-button>
                 <el-button type="primary" @click="updatebasicset()">确 定</el-button>
             </span>
-        </el-dialog>
-        <!-- 新增商机进度 -->
-        <el-dialog title="添加商机进度" :visible.sync="businessproadd" width="40%">
+        </el-dialog><!-- 编辑快捷方式 -->
+        <el-dialog
+            title="添加商机进度"
+            :visible.sync="dialogVisible5"
+            width="40%">
             <el-form ref="newform" :model="newform" label-width="110px" :rules="rules">
                 <el-form-item prop="type" label="辅助资料类别">
                     <el-input v-model="newform.type" :disabled="true"></el-input>
@@ -270,14 +534,19 @@
                 <el-form-item prop="sort" label="排序编号">
                     <el-input onkeyup = "value=value.replace(/[^\d]/g,'')" v-model="newform.sort" placeholder="请输入排序编号"></el-input>
                 </el-form-item>
+                <!-- <el-form-item prop="notes" label="备注">
+                    <el-input v-model="newform.notes" placeholder="请输入备注"></el-input>
+                </el-form-item> -->
             </el-form>
             <span slot="footer" class="dialog-footer">
-                <el-button @click="businessproadd = false">取 消</el-button>
+                <el-button @click="dialogVisible5 = false">取 消</el-button>
                 <el-button type="primary" @click="addoppstep()">确 定</el-button>
             </span>
-        </el-dialog>
-        <!-- 修改商机进度 -->
-        <el-dialog title="修改商机进度" :visible.sync="businessproupdate" width="40%">
+        </el-dialog><!-- 新增商机进度 -->
+        <el-dialog
+            title="修改商机进度"
+            :visible.sync="dialogVisible6"
+            width="40%">
             <el-form ref="newform" :model="newform" :rules="rules" label-width="110px">
                 <el-form-item prop="type" label="辅助资料类别">
                     <el-input v-model="newform.type" :disabled="true"></el-input>
@@ -296,27 +565,14 @@
                 </el-form-item>
             </el-form>
             <span slot="footer" class="dialog-footer">
-                <el-button @click="businessproupdate = false">取 消</el-button>
+                <el-button @click="dialogVisible6 = false">取 消</el-button>
                 <el-button type="primary" @click="updateoppstep()">确 定</el-button>
             </span>
-        </el-dialog>
-        <!-- 新增产品顶级分类 -->
-        <el-dialog title="新增产品分类" :visible.sync="topLeveladd" width="40%">
-            <el-form ref="newform" :model="newform" :rules="rules" label-width="110px">
-                <el-form-item prop="type" label="辅助资料类别">
-                    <el-input v-model="newform.type" :disabled="true"></el-input>
-                </el-form-item>
-                <el-form-item prop="proclass_name" label="产品分类名称">
-                    <el-input v-model="newform.proclass_name"></el-input>
-                </el-form-item>
-            </el-form>
-            <span slot="footer" class="dialog-footer">
-                <el-button @click="topLeveladd = false">取 消</el-button>
-                <el-button type="primary" @click="addProclass()">确 定</el-button>
-            </span>
-        </el-dialog>
-        <!-- 新增产品分类子集 -->
-        <el-dialog title="新增产品分类" :visible.sync="prodClassadd" width="40%">
+        </el-dialog><!-- 编辑商机进度 -->
+        <el-dialog
+            title="新增产品分类"
+            :visible.sync="dialogVisible7"
+            width="40%">
             <el-form ref="newform" :model="newform" :rules="rules" label-width="110px">
                 <el-form-item prop="type" label="辅助资料类别">
                     <el-input v-model="newform.type" :disabled="true"></el-input>
@@ -329,12 +585,14 @@
                 </el-form-item>
             </el-form>
             <span slot="footer" class="dialog-footer">
-                <el-button @click="prodClassadd = false">取 消</el-button>
+                <el-button @click="dialogVisible7 = false">取 消</el-button>
                 <el-button type="primary" @click="addProclass()">确 定</el-button>
             </span>
-        </el-dialog>
-        <!-- 编辑产品分类子集 -->
-        <el-dialog title="修改产品分类" :visible.sync="prodClassupdate" width="40%">
+        </el-dialog><!-- 新增产品分类子集 -->
+        <el-dialog
+            title="修改产品分类"
+            :visible.sync="dialogVisible8"
+            width="40%">
             <el-form ref="newform" :model="newform" :rules="rules" label-width="110px">
                 <el-form-item prop="type" label="辅助资料类别">
                     <el-input v-model="newform.type" :disabled="true"></el-input>
@@ -344,12 +602,14 @@
                 </el-form-item>
             </el-form>
             <span slot="footer" class="dialog-footer">
-                <el-button @click="prodClassupdate = false">取 消</el-button>
+                <el-button @click="dialogVisible8 = false">取 消</el-button>
                 <el-button type="primary" @click="updateProclass()">确 定</el-button>
             </span>
-        </el-dialog>
-        <!-- 新增单位 -->
-        <el-dialog title="新增单位" :visible.sync="unitadd" width="40%">
+        </el-dialog><!-- 编辑产品分类子集 -->
+        <el-dialog
+            title="新增单位"
+            :visible.sync="dialogVisible9"
+            width="40%">
             <el-form ref="newform" :model="newform" :rules="rules" label-width="110px">
                 <el-form-item prop="type" label="辅助资料类别">
                     <el-input v-model="newform.type" :disabled="true"></el-input>
@@ -359,12 +619,14 @@
                 </el-form-item>
             </el-form>
             <span slot="footer" class="dialog-footer">
-                <el-button @click="unitadd = false">取 消</el-button>
+                <el-button @click="dialogVisible9 = false">取 消</el-button>
                 <el-button type="primary" @click="addunit()">确 定</el-button>
             </span>
-        </el-dialog>
-        <!-- 编辑单位 -->
-        <el-dialog title="修改单位" :visible.sync="unitupdate" width="40%">
+        </el-dialog><!-- 新增单位 -->
+        <el-dialog
+            title="修改单位"
+            :visible.sync="dialogVisible10"
+            width="40%">
             <el-form ref="newform" :model="newform" :rules="rules" label-width="110px">
                 <el-form-item prop="type" label="辅助资料类别">
                     <el-input v-model="newform.type" :disabled="true"></el-input>
@@ -374,12 +636,14 @@
                 </el-form-item>
             </el-form>
             <span slot="footer" class="dialog-footer">
-                <el-button @click="unitupdate = false">取 消</el-button>
+                <el-button @click="dialogVisible10 = false">取 消</el-button>
                 <el-button type="primary" @click="updateunit()">确 定</el-button>
             </span>
-        </el-dialog>
-        <!-- 新增品牌 -->
-        <el-dialog title="新增品牌" :visible.sync="brandadd" width="40%">
+        </el-dialog><!-- 编辑单位 -->
+        <el-dialog
+            title="新增品牌"
+            :visible.sync="dialogVisible11"
+            width="40%">
             <el-form ref="newform" :model="newform" :rules="rules" label-width="110px">
                 <el-form-item prop="type" label="辅助资料类别">
                     <el-input v-model="newform.type" :disabled="true"></el-input>
@@ -389,12 +653,14 @@
                 </el-form-item>
             </el-form>
             <span slot="footer" class="dialog-footer">
-                <el-button @click="brandadd = false">取 消</el-button>
+                <el-button @click="dialogVisible11 = false">取 消</el-button>
                 <el-button type="primary" @click="addbrand()">确 定</el-button>
             </span>
-        </el-dialog>
-        <!-- 编辑品牌 -->
-        <el-dialog title="修改品牌" :visible.sync="brandupdate" width="40%">
+        </el-dialog><!-- 新增品牌 -->
+        <el-dialog
+            title="修改品牌"
+            :visible.sync="dialogVisible12"
+            width="40%">
             <el-form ref="newform" :model="newform" :rules="rules" label-width="110px">
                 <el-form-item prop="type" label="辅助资料类别">
                     <el-input v-model="newform.type" :disabled="true"></el-input>
@@ -404,12 +670,31 @@
                 </el-form-item>
             </el-form>
             <span slot="footer" class="dialog-footer">
-                <el-button @click="brandupdate = false">取 消</el-button>
+                <el-button @click="dialogVisible12 = false">取 消</el-button>
                 <el-button type="primary" @click="updatebrand()">确 定</el-button>
             </span>
-        </el-dialog>
-        <!-- 新增规格名称 -->
-        <el-dialog title="新增规格" :visible.sync="specadd" width="40%">
+        </el-dialog><!-- 编辑品牌 -->
+        <el-dialog
+            title="新增产品分类"
+            :visible.sync="dialogVisible13"
+            width="40%">
+            <el-form ref="newform" :model="newform" :rules="rules" label-width="110px">
+                <el-form-item prop="type" label="辅助资料类别">
+                    <el-input v-model="newform.type" :disabled="true"></el-input>
+                </el-form-item>
+                <el-form-item prop="proclass_name" label="产品分类名称">
+                    <el-input v-model="newform.proclass_name"></el-input>
+                </el-form-item>
+            </el-form>
+            <span slot="footer" class="dialog-footer">
+                <el-button @click="dialogVisible13 = false">取 消</el-button>
+                <el-button type="primary" @click="addProclass()">确 定</el-button>
+            </span>
+        </el-dialog><!-- 新增产品分类顶级 -->
+        <el-dialog
+            title="新增规格"
+            :visible.sync="dialogVisible14"
+            width="40%">
             <el-form ref="newform" :model="newform" :rules="rules" label-width="110px">
                 <el-form-item prop="type" label="辅助资料类别">
                     <el-input v-model="newform.type" :disabled="true"></el-input>
@@ -432,12 +717,14 @@
                 </el-table-column>
             </el-table>
             <span slot="footer" class="dialog-footer">
-                <el-button @click="specadd = false">取 消</el-button>
+                <el-button @click="dialogVisible14 = false">取 消</el-button>
                 <el-button type="primary" @click="addSpec()">确 定</el-button>
             </span>
-        </el-dialog>
-        <!-- 编辑规格名称 -->
-        <el-dialog title="编辑规格" :visible.sync="specupdate" width="40%">
+        </el-dialog><!-- 新增规格名称 -->
+        <el-dialog
+            title="编辑规格"
+            :visible.sync="dialogVisible15"
+            width="40%">
             <el-form ref="newform" :model="newform" :rules="rules" label-width="110px">
                 <el-form-item prop="type" label="辅助资料类别">
                     <el-input v-model="newform.type" :disabled="true"></el-input>
@@ -460,12 +747,14 @@
                 </el-table-column>
             </el-table>
             <span slot="footer" class="dialog-footer">
-                <el-button @click="specupdate = false">取 消</el-button>
+                <el-button @click="dialogVisible15 = false">取 消</el-button>
                 <el-button type="primary" @click="updateSpec()">确 定</el-button>
             </span>
-        </el-dialog>
-        <!-- 新增交货方式 -->
-        <el-dialog title="新增交货方式" :visible.sync="deliveryadd" width="40%">
+        </el-dialog><!-- 编辑规格名称 -->
+        <el-dialog
+            title="添加交货方式"
+            :visible.sync="dialogVisible16"
+            width="40%">
             <el-form ref="newform" :model="newform" label-width="110px" :rules="rules">
                 <el-form-item prop="type" label="辅助资料类别">
                     <el-input v-model="newform.type" :disabled="true"></el-input>
@@ -475,12 +764,14 @@
                 </el-form-item>
             </el-form>
             <span slot="footer" class="dialog-footer">
-                <el-button @click="deliveryadd = false">取 消</el-button>
+                <el-button @click="dialogVisible16 = false">取 消</el-button>
                 <el-button type="primary" @click="addbasicset()">确 定</el-button>
             </span>
-        </el-dialog>
-        <!-- 编辑交货方式 -->
-        <el-dialog title="修改交货方式" :visible.sync="deliveryupdate" width="40%">
+        </el-dialog><!-- 新增交货方式 -->
+        <el-dialog
+            title="修改交货方式"
+            :visible.sync="dialogVisible17"
+            width="40%">
             <el-form ref="newform" :model="newform" :rules="rules" label-width="110px">
                 <el-form-item prop="type" label="辅助资料类别">
                     <el-input v-model="newform.type" :disabled="true"></el-input>
@@ -490,12 +781,14 @@
                 </el-form-item>
             </el-form>
             <span slot="footer" class="dialog-footer">
-                <el-button @click="deliveryupdate = false">取 消</el-button>
+                <el-button @click="dialogVisible17 = false">取 消</el-button>
                 <el-button type="primary" @click="updatebasicset()">确 定</el-button>
             </span>
-        </el-dialog>
-        <!-- 新增经销商级别 -->
-        <el-dialog title="添加经销商级别" :visible.sync="cusleveladd" width="40%">
+        </el-dialog><!-- 编辑交货方式 -->
+        <el-dialog
+            title="添加经销商级别"
+            :visible.sync="dialogVisible18"
+            width="40%">
             <el-form ref="newform" :model="newform" label-width="110px" :rules="rules">
                 <el-form-item prop="type" label="辅助资料类别">
                     <el-input v-model="newform.type" :disabled="true"></el-input>
@@ -511,12 +804,14 @@
                 </el-form-item>
             </el-form>
             <span slot="footer" class="dialog-footer">
-                <el-button @click="cusleveladd = false">取 消</el-button>
+                <el-button @click="dialogVisible18 = false">取 消</el-button>
                 <el-button type="primary" @click="adddistri()">确 定</el-button>
             </span>
-        </el-dialog>
-        <!-- 编辑编号规则 -->
-        <el-dialog title="修改经销商级别" :visible.sync="cuslevelupdate" width="40%">
+        </el-dialog><!-- 新增经销商级别 -->
+        <el-dialog
+            title="修改经销商级别"
+            :visible.sync="dialogVisible19"
+            width="40%">
             <el-form ref="newform" :model="newform" :rules="rules" label-width="110px">
                 <el-form-item prop="type" label="辅助资料类别">
                     <el-input v-model="newform.type" :disabled="true"></el-input>
@@ -532,12 +827,15 @@
                 </el-form-item>
             </el-form>
             <span slot="footer" class="dialog-footer">
-                <el-button @click="cuslevelupdate = false">取 消</el-button>
+                <el-button @click="dialogVisible19 = false">取 消</el-button>
                 <el-button type="primary" @click="updatedistri()">确 定</el-button>
             </span>
-        </el-dialog>
-        <!-- 编辑编号规则 -->
-        <el-dialog title="修改编号规则" :visible.sync="numruleupdate" width="40%">
+        </el-dialog><!-- 编辑编号规则 -->
+        
+        <el-dialog
+            title="修改编号规则"
+            :visible.sync="dialogVisible20"
+            width="40%">
             <el-form ref="newform" :model="newform" :rules="rules" label-width="110px">
                 <el-form-item prop="type" label="辅助资料类别">
                     <el-input v-model="newform.type" :disabled="true"></el-input>
@@ -550,10 +848,10 @@
                 </el-form-item>
             </el-form>
             <span slot="footer" class="dialog-footer">
-                <el-button @click="numruleupdate = false">取 消</el-button>
+                <el-button @click="dialogVisible20 = false">取 消</el-button>
                 <el-button type="primary" @click="updateCode()">确 定</el-button>
             </span>
-        </el-dialog>
+        </el-dialog><!-- 编辑编号规则 -->
     </div>
 </template>
 <script>
@@ -591,25 +889,20 @@
                 limit:20,//默认为20行
 
                 dataList:null,
-                crmparam:[
-                    {index:1,slotindex:'1',name:'线索状态',isActive:true},
-                    {index:2,slotindex:'2',name:'客户状态',isActive:false},
-                    {index:3,slotindex:'3',name:'客户来源',isActive:false},
-                    {index:4,slotindex:'4',name:'客户分类',isActive:false},
-                    {index:5,slotindex:'5',name:'快捷方式',isActive:false},
-                    {index:6,slotindex:'6',name:'商机进度',isActive:false},
-                ],
-                orderparam:[
-                    {index:7,slotindex:'7',name:'产品分类',isActive:false},
-                    {index:8,slotindex:'8',name:'单位',isActive:false},
-                    {index:9,slotindex:'9',name:'品牌',isActive:false},
-                    {index:10,slotindex:'10',name:'规格',isActive:false},
-                    {index:11,slotindex:'11',name:'交货方式',isActive:false},
-                    {index:12,slotindex:'12',name:'经销商级别',isActive:false},
-                ],
-                workparam:[],
-                baseparam:[
-                    {index:13,slotindex:'13',name:'编号规则',isActive:false},
+                nameList:[
+                    {index:1,name:'线索状态',isActive:true},
+                    {index:2,name:'客户状态',isActive:false},
+                    {index:3,name:'客户来源',isActive:false},
+                    {index:4,name:'客户分类',isActive:false},
+                    {index:5,name:'快捷方式',isActive:false},
+                    {index:6,name:'商机进度',isActive:false},
+                    {index:7,name:'产品分类',isActive:false},
+                    {index:8,name:'单位',isActive:false},
+                    {index:9,name:'品牌',isActive:false},
+                    {index:10,name:'规格',isActive:false},
+                    {index:11,name:'交货方式',isActive:false},
+                    {index:12,name:'经销商级别',isActive:false},
+                    {index:13,name:'编号规则',isActive:false},
                 ],
                 newform:{
                     type:'线索状态',
@@ -618,27 +911,19 @@
                     sort:null,
                     typeName:null,
                     notes:null,
-
                     quickname:null,
                     quickcontent:null,
-
                     probability:null,
-
                     brand_name:null,
-
                     unit_name:null,
-
                     parentclass_id:null,
                     parentclass_name:null,
                     proclass_id:null,
                     proclass_name:null,
-
                     spec_name:null,
                     specoption:[],
-
                     distri_name:null,
                     distri_count:null,
-
                     prefix:null,
                     createTime:null,
                 },
@@ -646,7 +931,8 @@
                 tenoptions:[],
                 specList:[],
                 key:1,
-                
+
+                checklist:['顺序','名称','备注'],
                 idArr:{
                     id:null,
                 },
@@ -664,24 +950,24 @@
 
                 dialogVisible:false,//线索状态、客户状态、客户来源、客户分类
                 dialogVisible2:false,
-                shortcutadd:false,//快捷方式
-                shortcutupdate:false,
-                businessproadd:false,//商机进度
-                businessproupdate:false,
-                prodClassadd:false,//产品分类子集
-                prodClassupdate:false,
-                unitadd:false,//单位
-                unitupdate:false,
-                brandadd:false,//品牌
-                brandupdate:false,
-                topLeveladd:false,//产品分类顶级
-                specadd:false,//规格分类、规格值
-                specupdate:false,
-                deliveryadd:false,//交货方式
-                deliveryupdate:false,
-                cusleveladd:false,//经销商级别
-                cuslevelupdate:false,
-                numruleupdate:false,//编号规则
+                dialogVisible3:false,//快捷方式
+                dialogVisible4:false,
+                dialogVisible5:false,//商机进度
+                dialogVisible6:false,
+                dialogVisible7:false,//产品分类子集
+                dialogVisible8:false,
+                dialogVisible9:false,//单位
+                dialogVisible10:false,
+                dialogVisible11:false,//品牌
+                dialogVisible12:false,
+                dialogVisible13:false,//产品分类顶级
+                dialogVisible14:false,//规格分类、规格值
+                dialogVisible15:false,
+                dialogVisible16:false,//交货方式
+                dialogVisible17:false,
+                dialogVisible18:false,//经销商级别
+                dialogVisible19:false,
+                dialogVisible20:false,//编号规则
 
                 rules: {
                     typeName : [{ required: true, message: '名称不能为空', trigger: 'blur' },],
@@ -796,6 +1082,7 @@
                     url: _this.$store.state.defaultHttp+'specification/selectList.do?cId='+_this.$store.state.iscId,
                 }).then(function(res){
                     _this.specData = res.data
+                    // _this.tableNumber = res.data.count
                 }).catch(function(err){
                     // console.log(err);
                 });
@@ -830,7 +1117,9 @@
                 let i = val.index
                 this.newform.type = val.name
                 this.newform.index = val.index
-
+                this.nameList.forEach(function(obj){
+                    obj.isActive = false;
+                });
                 val.isActive = !val.isActive;
                 _this.showtopfour = false
                 _this.showfive = false
@@ -897,35 +1186,35 @@
                         }else if(i == 5){
                             _this.newform.quickname = null
                             _this.newform.quickcontent = null
-                            _this.shortcutadd = true
+                            _this.dialogVisible3 = true
                         }else if(i == 6){
                             _this.newform.typeName = null
                             _this.newform.probability = null
-                            _this.businessproadd = true
+                            _this.dialogVisible5 = true
                         }else if(i == 7){
                             _this.newform.parentclass_id = null
                             _this.newform.parentclass_name = null
                             _this.newform.proclass_id = null
                             _this.newform.proclass_name = null
-                            _this.topLeveladd = true
+                            _this.dialogVisible13 = true
                         }else if(i == 8){
                             _this.newform.unit_name = null
-                            _this.unitadd = true
+                            _this.dialogVisible9 = true
                         }else if(i == 9){
                             _this.newform.brand_name = null
-                            _this.brandadd = true
+                            _this.dialogVisible11 = true
                         }else if(i == 10){
                             _this.newform.spec_name = null
                             _this.newform.specoption = []
                             _this.tenoptions = []
-                            _this.specadd = true
+                            _this.dialogVisible14 = true
                         }else if(i == 11){
                             _this.newform.typeName = null
-                            _this.deliveryadd = true
+                            _this.dialogVisible16 = true
                         }else if(i == 12){
                             _this.newform.distri_name = null
                             _this.newform.distri_count = null
-                            _this.cusleveladd = true
+                            _this.dialogVisible18 = true
                         }
                     }
                 }).catch(function(err){
@@ -935,11 +1224,12 @@
             },
             proAdd(data){
                 const _this = this
+                console.log(data)
                 _this.newform.parentclass_id = data.id
                 _this.newform.parentclass_name = data.name
                 _this.newform.proclass_id = null
                 _this.newform.proclass_name = null
-                _this.prodClassadd = true
+                _this.dialogVisible7 = true
             },
             //添加提交按钮
             addbasicset(){
@@ -1017,8 +1307,8 @@
                             type:'success'
                         })
                         _this.dialogVisible = false
-                        _this.shortcutadd = false
-                        _this.deliveryadd = false
+                        _this.dialogVisible3 = false
+                        _this.dialogVisible16 = false
                         _this.$options.methods.reloadTable.bind(_this)(true);
                     }else{
                         _this.$message({
@@ -1074,7 +1364,7 @@
                             message:'添加成功',
                             type:'success'
                         })
-                        _this.businessproadd = false
+                        _this.dialogVisible5 = false
                         _this.$options.methods.loadOppStep.bind(_this)(true);
                     }else{
                         _this.$message({
@@ -1117,8 +1407,8 @@
                             message:'添加成功',
                             type:'success'
                         })
-                        _this.prodClassadd = false
-                        _this.topLeveladd = false
+                        _this.dialogVisible7 = false
+                        _this.dialogVisible13 = false
                         _this.$options.methods.loadproductClass.bind(_this)(true);
                     }else{
                         _this.$message({
@@ -1156,7 +1446,7 @@
                             message:'添加成功',
                             type:'success'
                         })
-                        _this.unitadd = false
+                        _this.dialogVisible9 = false
                         _this.$options.methods.loadUnit.bind(_this)(true);
                     }else{
                         _this.$message({
@@ -1194,7 +1484,7 @@
                             message:'添加成功',
                             type:'success'
                         })
-                        _this.brandadd = false
+                        _this.dialogVisible11 = false
                         _this.$options.methods.loadBrand.bind(_this)(true);
                     }else{
                         _this.$message({
@@ -1212,6 +1502,7 @@
                 let data = {}
                 data.specName = this.newform.spec_name
                 data.specValue = this.newform.specoption
+                console.log(data)
 
                 let flag = false;
                 if(!data.specName){
@@ -1233,7 +1524,7 @@
                             message:'添加成功',
                             type:'success'
                         })
-                        _this.specadd = false
+                        _this.dialogVisible14 = false
                         _this.$options.methods.loadSpec.bind(_this)(true);
                     }else{
                         _this.$message({
@@ -1287,7 +1578,7 @@
                             message:'添加成功',
                             type:'success'
                         })
-                        _this.cusleveladd = false
+                        _this.dialogVisible18 = false
                         _this.$options.methods.loadistri.bind(_this)(true);
                     }else{
                         _this.$message({
@@ -1323,20 +1614,20 @@
                             _this.newform.id = row.id
                             _this.newform.quickname = row.typeName
                             _this.newform.quickcontent = row.content
-                            _this.shortcutupdate = true
+                            _this.dialogVisible4 = true
                         }else if(i == 6){
                             _this.newform.id = row.step_id
                             _this.newform.typeName = row.step_name
                             _this.newform.probability = row.step_probability
-                            _this.businessproupdate = true
+                            _this.dialogVisible6 = true
                         }else if(i == 8){
                             _this.newform.id = row.id
                             _this.newform.unit_name = row.name
-                            _this.unitupdate = true
+                            _this.dialogVisible10 = true
                         }else if(i == 9){
                             _this.newform.id = row.id
                             _this.newform.brand_name = row.name
-                            _this.brandupdate = true
+                            _this.dialogVisible12 = true
                         }else if(i == 10){
                             _this.newform.id = row.id
                             _this.newform.spec_name = row.specName
@@ -1345,31 +1636,33 @@
                             for(let i = 0;i < row.specValue.length; i ++){
                                 _this.specList.push({name:row.specValue[i]})
                             }
-                            _this.specupdate = true
+                            _this.dialogVisible15 = true
                         }else if(i == 11){
                             _this.newform.id = row.id
                             _this.newform.typeName = row.typeName
-                            _this.deliveryupdate = true
+                            _this.dialogVisible17 = true
                         }else if(i == 12){
                             _this.newform.id = row.id
                             _this.newform.distri_name = row.name
                             _this.newform.distri_count = row.discount
-                            _this.cuslevelupdate = true
+                            _this.dialogVisible19 = true
                         }else if(i == 13){
                             _this.newform.id = row.id
                             _this.newform.module = row.module
                             _this.newform.prefix = row.prefix
-                            _this.numruleupdate = true
+                            _this.dialogVisible20 = true
                         }
                     }
                 }).catch(function(err){
+                    // console.log(err);
                 });
             },
             proEdit(data){
                 const _this = this
+                console.log(data)
                 _this.newform.proclass_id = data.id
                 _this.newform.proclass_name = data.name
-                this.prodClassupdate = true
+                this.dialogVisible8 = true
             },
             //修改提交按钮
             updatebasicset(){
@@ -1448,8 +1741,8 @@
                             type:'success'
                         })
                         _this.dialogVisible2 = false
-                        _this.shortcutupdate = false
-                        _this.deliveryupdate = false
+                        _this.dialogVisible4 = false
+                        _this.dialogVisible17 = false
                         _this.$options.methods.reloadTable.bind(_this)(true);
                     }else{
                         _this.$message({
@@ -1506,7 +1799,7 @@
                             message:'修改成功',
                             type:'success'
                         })
-                        _this.businessproupdate = false
+                        _this.dialogVisible6 = false
                         _this.$options.methods.loadOppStep.bind(_this)(true);
                     }else{
                         _this.$message({
@@ -1546,7 +1839,7 @@
                             message:'修改成功',
                             type:'success'
                         })
-                        _this.prodClassupdate = false
+                        _this.dialogVisible8 = false
                         _this.$options.methods.loadproductClass.bind(_this)(true);
                     }else{
                         _this.$message({
@@ -1585,7 +1878,7 @@
                             message:'修改成功',
                             type:'success'
                         })
-                        _this.unitupdate = false
+                        _this.dialogVisible10 = false
                         _this.$options.methods.loadUnit.bind(_this)(true);
                     }else{
                         _this.$message({
@@ -1624,7 +1917,7 @@
                             message:'修改成功',
                             type:'success'
                         })
-                        _this.brandupdate = false
+                        _this.dialogVisible12 = false
                         _this.$options.methods.loadBrand.bind(_this)(true);
                     }else{
                         _this.$message({
@@ -1643,6 +1936,7 @@
                 data.id = this.newform.id
                 data.specName = this.newform.spec_name
                 data.specValue = this.newform.specoption
+                console.log(data)
 
                 let flag = false;
                 if(!data.specName){
@@ -1664,7 +1958,7 @@
                             message:'修改成功',
                             type:'success'
                         })
-                        _this.specupdate = false
+                        _this.dialogVisible15 = false
                         _this.$options.methods.loadSpec.bind(_this)(true);
                     }else{
                         _this.$message({
@@ -1719,7 +2013,7 @@
                             message:'修改成功',
                             type:'success'
                         })
-                        _this.cuslevelupdate = false
+                        _this.dialogVisible19 = false
                         _this.$options.methods.loadistri.bind(_this)(true);
                     }else{
                         _this.$message({
@@ -1759,7 +2053,7 @@
                             message:'修改成功',
                             type:'success'
                         })
-                        _this.numruleupdate = false
+                        _this.dialogVisible20 = false
                         _this.$options.methods.loadCode.bind(_this)(true);
                     }else{
                         _this.$message({
@@ -2003,6 +2297,9 @@
                         message: '取消删除'
                     });       
                 });
+            },
+            handleNodeClick(data){
+                // console.log(data)
             },
             changeValue(e){
                 this.specList = []

@@ -1,7 +1,7 @@
 /*!
  * UEditor
  * version: ueditor
- * build: Wed Aug 10 2016 11:06:02 GMT+0800 (CST)
+ * build: Wed Aug 10 2016 11:06:16 GMT+0800 (CST)
  */
 
 (function(){
@@ -24507,7 +24507,7 @@ UE.plugin.register('simpleupload', function (){
             domUtils.on(input, 'change', function(){
                 if(!input.value) return;
                 var loadingId = 'loading_' + (+new Date()).toString(36);
-                var params = utils.serializeParam(me.queryCommandValue('serverparam')) || '';
+                // var params = utils.serializeParam(me.queryCommandValue('serverparam')) || '';
 
                 var imageActionUrl = me.getActionUrl(me.getOpt('imageActionName'));
                 var allowFiles = me.getOpt('imageAllowFiles');
@@ -24515,30 +24515,79 @@ UE.plugin.register('simpleupload', function (){
                 me.focus();
                 me.execCommand('inserthtml', '<img class="loadingclass" id="' + loadingId + '" src="' + me.options.themePath + me.options.theme +'/images/spacer.gif" title="' + (me.getLang('simpleupload.loading') || '') + '" >');
 
-                function callback(){
-                    try{
-                        var link, json, loader,
-                            body = (iframe.contentDocument || iframe.contentWindow.document).body,
-                            result = body.innerText || body.textContent || '';
+                /* 判断后端配置是否没有加载成功 */
+                if(!me.getOpt('imageActionName')){
+                    errorHandler(me.getLang('autoupload.errorLoadConfig'))
+                    return
+                }
+                
+                // 判断文件格式是否错误
+                var filename = input.value,
+                    fileext = filename ? filename.substr(filename.lastIndexOf('.')):'';
+                if (!fileext || (allowFiles && (allowFiles.join('') + '.').indexOf(fileext.toLowerCase() + '.') == -1)) {
+                    showErrorLoader(me.getLang('simpleupload.exceedTypeError'));
+                    return;
+                }
+
+                var params = utils.serializeParam(me.queryCommandValue('serverparam')) || '';
+                var action = utils.formatUrl(imageActionUrl + (imageActionUrl.indexOf('?') == -1 ? '?' : '&') + params);
+
+                var formData = new FormData();
+                formData.append("upfile", form[0].files[0] );
+                $.ajax({
+                    url: action,
+                    type:'POST',
+                    cache: false,
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function(data){
+                        data.JSON.parse(data);
+                        var link, loader,
+                        body = (iframe.contentDocument || iframe.contentWindow.document).body,
+                        result = body.innerText || body.textContent || '';
                         json = (new Function("return " + result))();
-                        link = me.options.imageUrlPrefix + json.url;
-                        if(json.state == 'SUCCESS' && json.url) {
+                        link = me.options.imageUrlPrefix + data.url;
+
+                        if(data.state == 'SUCCESS' && data.url) {
                             loader = me.document.getElementById(loadingId);
                             loader.setAttribute('src', link);
                             loader.setAttribute('_src', link);
-                            loader.setAttribute('title', json.title || '');
-                            loader.setAttribute('alt', json.original || '');
+                            loader.setAttribute('title', data.title || '');
+                            loader.setAttribute('alt', data.original || '');
                             loader.removeAttribute('id');
                             domUtils.removeClasses(loader, 'loadingclass');
-                        } else {
-                            showErrorLoader && showErrorLoader(json.state);
+                        }else{
+                            showErrorLoader && showErrorLoader(data.state);
                         }
-                    }catch(er){
-                        showErrorLoader && showErrorLoader(me.getLang('simpleupload.loadError'));
-                    }
-                    form.reset();
-                    domUtils.un(iframe, 'load', callback);
-                }
+                        form.reset();
+                    },
+                });
+
+                // function callback(){
+                //     try{
+                //         var link, json, loader,
+                //             body = (iframe.contentDocument || iframe.contentWindow.document).body,
+                //             result = body.innerText || body.textContent || '';
+                //         json = (new Function("return " + result))();
+                //         link = me.options.imageUrlPrefix + json.url;
+                //         if(json.state == 'SUCCESS' && json.url) {
+                //             loader = me.document.getElementById(loadingId);
+                //             loader.setAttribute('src', link);
+                //             loader.setAttribute('_src', link);
+                //             loader.setAttribute('title', json.title || '');
+                //             loader.setAttribute('alt', json.original || '');
+                //             loader.removeAttribute('id');
+                //             domUtils.removeClasses(loader, 'loadingclass');
+                //         } else {
+                //             showErrorLoader && showErrorLoader(json.state);
+                //         }
+                //     }catch(er){
+                //         showErrorLoader && showErrorLoader(me.getLang('simpleupload.loadError'));
+                //     }
+                //     form.reset();
+                //     domUtils.un(iframe, 'load', callback);
+                // }
                 function showErrorLoader(title){
                     if(loadingId) {
                         var loader = me.document.getElementById(loadingId);
@@ -24552,18 +24601,7 @@ UE.plugin.register('simpleupload', function (){
                     }
                 }
 
-                /* 判断后端配置是否没有加载成功 */
-                if (!me.getOpt('imageActionName')) {
-                    errorHandler(me.getLang('autoupload.errorLoadConfig'));
-                    return;
-                }
-                // 判断文件格式是否错误
-                var filename = input.value,
-                    fileext = filename ? filename.substr(filename.lastIndexOf('.')):'';
-                if (!fileext || (allowFiles && (allowFiles.join('') + '.').indexOf(fileext.toLowerCase() + '.') == -1)) {
-                    showErrorLoader(me.getLang('simpleupload.exceedTypeError'));
-                    return;
-                }
+                
 
                 domUtils.on(iframe, 'load', callback);
                 form.action = utils.formatUrl(imageActionUrl + (imageActionUrl.indexOf('?') == -1 ? '?':'&') + params);

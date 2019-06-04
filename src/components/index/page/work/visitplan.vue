@@ -174,7 +174,7 @@
                     @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
                     <el-button
                     size="mini"
-                    type="primary"
+                    type="danger"
                     :disabled="scope.row.deleteBtn"
                     @click="handledelete(scope.$index, scope.row)">删除</el-button>
                 </template>

@@ -185,10 +185,15 @@ const state = {
   //订单列表总数
   orderListnumber:0,
 
-  //审核流程列表
+  //审批流程列表
   approvalProcessList:[],
-  //审核流程列表总数
+  //审批流程列表总数
   approvalProcessListnumber:0,
+
+  //工单列表
+  workOrderList:[],
+  //工单列表总数
+  workOrderListnumber:0,
 
   //当前时间
   nowtime:null,

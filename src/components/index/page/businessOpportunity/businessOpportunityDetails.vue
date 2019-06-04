@@ -281,11 +281,11 @@
         </el-col>
         <el-dialog
             :visible.sync="dialogVisible"
-            width="40%">
+            width="400px">
             <span>确认修改商机进度吗？一旦确定将不可撤回</span>
             <br><br>
             <span style="margin-right:10px;font-size:14px;">预计成交时间:</span>
-            <el-date-picker v-model="opportunityDeal" align="right" type="date" format="yyyy-MM-dd" value-format="yyyy-MM-dd"></el-date-picker>
+            <el-date-picker v-model="opportunityDeal" align="right" type="date" :picker-options="pickerOptions" format="yyyy-MM-dd" value-format="yyyy-MM-dd"></el-date-picker>
             <span slot="footer" class="dialog-footer">
                 <el-button @click="closeDialog()">取 消</el-button>
                 <el-button type="primary" @click="nextStep()">确 定</el-button>
@@ -335,6 +335,11 @@
         store,
         data(){
             return {
+                pickerOptions:{
+                    disabledDate(time) {
+                        return time.getTime() < Date.now() - 8.64e7;
+                    },
+                },
                 searchList:{
                     keyword:null,
                 },

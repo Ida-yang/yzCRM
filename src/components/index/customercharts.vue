@@ -365,6 +365,8 @@
         height: 100%;
         display: flex;
         flex-wrap: wrap;
+        justify-content: center;
+        align-items: center
     }
     .customercharts_b .customercharts_b_c{
         flex: 0 0 calc(33% - 10px);

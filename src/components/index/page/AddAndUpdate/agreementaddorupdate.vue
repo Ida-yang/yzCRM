@@ -414,7 +414,7 @@
                     url: _this.agreeaddOrUpdateData.submitURL,
                     data: qs.stringify(subData)
                 }).then(function(res){
-                    if(res.data && res.data == "success") {
+                    if(res.data.code && res.data.code == "200") {
                         _this.$message({
                             message: '成功',
                             type: 'success'

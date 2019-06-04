@@ -83,7 +83,7 @@
                 </div>
             </el-tab-pane>
             <!-- <el-tab-pane label="价格资料" name="second">价格资料</el-tab-pane> -->
-            <el-tab-pane label="商品详情描述" name="second">
+            <el-tab-pane label="产品详情描述" name="second">
                 <div class="components-container ueditor_c">
                     <div class="editor-container">
                         <UE :defaultMsg="defaultMsg" :config="config" ref="ue"></UE>

@@ -78,13 +78,39 @@
         </el-menu>
         <el-menu class="sidebar-el-menu" v-if="!crmMenu" :default-active="onRoutes" :collapse="collapse" background-color="#20222a"
             text-color="#FFFFFF" active-text-color="#ff6722" unique-opened router>
+            <div id="logo" v-if="showlogo">
+                <span style="font-size:16px">
+                    云纵CRM信息平台
+                    <!-- <img src="../../../static/img/logo_2.png" alt="logo" /> -->
+                </span>
+            </div>
             <div id="logo1" v-if="!showlogo">
                 <span style="font-size:16px">
                     CRM
                 </span>
             </div>
+            <span class="title">办公</span>
+            <template v-for="item in itema">
+                <template v-if="item.subs">
+                    <el-submenu :index="item.index" :key="item.index">
+                        <template slot="title">
+                            <i :class="item.icon" style="color:#fff"> </i>&nbsp;
+                            <span slot="title" style="color:#fff">{{ item.title }}</span>
+                        </template>
+                        <el-menu-item v-for="(subItem,i) in item.subs" :key="i" :index="subItem.index">
+                            {{ subItem.title }}
+                        </el-menu-item>
+                    </el-submenu>
+                </template>
+                <template v-else>
+                    <el-menu-item :index="item.index" :key="item.index">
+                        <i :class="item.icon" style="color:#fff" ></i>&nbsp;
+                        <span slot="title"  style="color:#fff">{{ item.title }}</span>
+                    </el-menu-item>
+                </template>
+            </template>
         </el-menu>
-        <div class="switch_menu" :collapse="collapse" @click="switchMenu"></div>
+        <div :class="collapse?'s_menu':'switch_menu'" @click="switchMenu"></div>
     </div>
 </template>
 
@@ -96,6 +122,7 @@
                 crmMenu:true,
                 collapse: false,
                 showlogo:true,
+                // switch_menu:null,
                 itemone: [
                     {
                         icon: 'mdi-airplay',
@@ -182,20 +209,35 @@
                         ]
                     },
                     {
-                        icon: 'mdi-account-outline',
+                        icon: 'mdi-vector-triangle',
                         index: '5',
-                        title: '办公',
+                        title: '服务支持',
                         subs: [
                             {
-                                index: 'visitplan',
-                                title: '外勤',
+                                index: 'workOrder',
+                                title: '工单',
                             },
                             {
-                                index: 'missionplan',
-                                title: '任务',
+                                index: 'jobClassification',
+                                title: '新增工单',
                             },
                         ]
                     },
+                    // {
+                    //     icon: 'mdi-account-outline',
+                    //     index: '6',
+                    //     title: '办公',
+                    //     subs: [
+                    //         {
+                    //             index: 'visitplan',
+                    //             title: '外勤',
+                    //         },
+                    //         {
+                    //             index: 'missionplan',
+                    //             title: '任务',
+                    //         },
+                    //     ]
+                    // },
                     {
                         icon: 'mdi-puzzle',
                         index: 'analysisReport',
@@ -206,7 +248,7 @@
                 itemlast: [
                     {
                         icon: 'mdi-settings',
-                        index: '7',
+                        index: '8',
                         title: '系统设置',
                         subs: [
                             {
@@ -223,7 +265,7 @@
                             },
                             {
                                 index: 'approvalProcess',
-                                title: '审核流程'
+                                title: '审批流程'
                             },
                             {
                                 index: 'programme',
@@ -237,6 +279,23 @@
                             //     index: 'name',
                             //     title: '名字',
                             // },
+                        ]
+                    },
+                ],
+                itema:[
+                    {
+                        icon: 'mdi-account-outline',
+                        index: '1',
+                        title: '办公',
+                        subs: [
+                            {
+                                index: 'visitplan',
+                                title: '外勤',
+                            },
+                            {
+                                index: 'missionplan',
+                                title: '任务',
+                            },
                         ]
                     },
                 ],
@@ -254,8 +313,10 @@
                 this.collapse = msg;
                 if(msg == true){
                     this.showlogo = false
+                    // this.switch_menu = 'width: 65px;height: 50px;position: fixed;bottom: 0;background-color: rgb(192, 140, 140);transition:width .6s;'
                 }else{
                     this.showlogo = true
+                    // this.switch_menu = 'width:150px;height: 50px;position: fixed;bottom: 0;background-color: rgb(225, 201, 102);transition:width .3s;'
                 }
                 // this.showlogo = !this.showlogo
             })
@@ -321,14 +382,22 @@
         padding-left: 18px;
         line-height: 40px;
     }
-    .switch_menu--collapse{
-        width: 65px;
-    }
-    .switch_menu:not(.switch_menu--collapse){
+    .switch_menu{
+        width:150px;
         height: 50px;
-        width: 150px;
         position: fixed;
         bottom: 0;
-        background-color: rgb(32, 34, 42);
+        /* background-color: rgb(191, 192, 140); */
+        -webkit-transition: width .3s;
+        transition:width .3s;
+    }
+    .s_menu{
+        width: 65px;
+        height: 50px;
+        position: fixed;
+        bottom: 0;
+        /* background-color: rgb(192, 140, 140); */
+        -webkit-transition: width .6s;
+        transition:width .6s;
     }
 </style>

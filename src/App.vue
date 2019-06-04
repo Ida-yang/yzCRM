@@ -66,14 +66,11 @@ export default {
         display: flex;
         flex-direction: column;
         justify-content: center;
-        /* align-items: center; */
     }
     .radioList > .el-radio-group{
         flex: 1;
         display: flex;
         flex-wrap: wrap;
-        /* justify-content: center; */
-        /* align-items: center; */
     }
     .radioList > .el-radio-group > .el-radio{
         flex: 0 0 10%;
@@ -111,9 +108,10 @@ export default {
         height: 40px !important;
         line-height: 40px !important;
     }
-    .el-submenu .el-menu-item{
+    .sidebar .el-submenu .el-menu-item, .sidebar .el-menu-item.is-active{
         width: 150px;
         min-width: 150px;
+        box-sizing: border-box
     }
     input::-webkit-outer-spin-button,
     input::-webkit-inner-spin-button{
@@ -601,12 +599,14 @@ export default {
         height: 100%;
         padding-top:30px;
         box-sizing: border-box;
+        overflow-y: scroll;
+        overflow-x: hidden
     }
     .setrightcontent{
         flex: 0 0 79%;
         height: 100%;
         box-sizing: border-box;
-        overflow-y: scroll;
+        overflow-y: overlay;
         overflow-x: hidden
     }
     .namecontent{
@@ -625,23 +625,25 @@ export default {
         background-color: #f0f0f0;
         color: #409EFF
     }
-    .centercontent{
+    /* .centercontent{
         flex: 0 0 1%;
         box-sizing: border-box;
         background-color: #f0f0f0;
-    }
+    } */
     .otherleftcontent{
         width: 20%;
         height: 100%;
         float: left;
         box-sizing: border-box;
+        overflow-y: scroll;
+        overflow-x: hidden
     }
     .otherightcontent{
         width: 79%;
         height: 100%;
         float: left;
         box-sizing: border-box;
-        overflow-y: scroll;
+        overflow-y: overlay;
         overflow-x: hidden
     }
     .el-tree{
@@ -946,8 +948,9 @@ export default {
     }
     .ap_remark{
         padding: 45px;
-        font-size: 12px;
-        color: red;
+        font-size: 14px;
+        line-height: 35px;
+        color: #606266
     }
     .examine_c{
         padding: 20px;
