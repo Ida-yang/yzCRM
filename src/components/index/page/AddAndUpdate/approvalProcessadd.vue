@@ -298,11 +298,11 @@
     .dept_select .el-select__tags{
         max-width: 502px;
     }
-    .ap_check .el-select__tags{
-        max-width: 402px;
-    }
     .dept_select .el-tag__close{
         display: none
+    }
+    .ap_check .el-select__tags{
+        max-width: 402px;
     }
     .ap_check{
         margin-left: 20px;

@@ -164,6 +164,7 @@
                     costPrice:null,
                     describe:null,
                     label:null,
+                    isEnableSpec:'0',
                 },
                 rules:{
                     goodsName : [{ required: true, message: '产品名称不能为空', trigger: 'blur' },],
@@ -342,7 +343,6 @@
             },
             changeLabel(e){
                 let aa = []
-                this.myform.isEnableSpec = 1
                 this.specsData.forEach(a => {
                     if(a.specName == e){
                         aa = a.specValue
@@ -371,6 +371,7 @@
             batchGeneration(){
                 let arr = this.specHeadData
                 this.tableData = []
+                this.myform.isEnableSpec = '1'
 
                 if(arr.length == 1){
                     let a = arr[0]
@@ -546,7 +547,7 @@
                 }).then(function(res){
                     if(res.data.code && res.data.code == '200'){
                         _this.$message({
-                            message: '添加成功',
+                            message: '修改成功',
                             type:'success'
                         })
                         _this.closeTag();

@@ -122,7 +122,6 @@
                 crmMenu:true,
                 collapse: false,
                 showlogo:true,
-                // switch_menu:null,
                 itemone: [
                     {
                         icon: 'mdi-airplay',
@@ -208,33 +207,18 @@
                             },
                         ]
                     },
-                    {
-                        icon: 'mdi-vector-triangle',
-                        index: '5',
-                        title: '服务支持',
-                        subs: [
-                            {
-                                index: 'workOrder',
-                                title: '工单',
-                            },
-                            {
-                                index: 'jobClassification',
-                                title: '新增工单',
-                            },
-                        ]
-                    },
                     // {
-                    //     icon: 'mdi-account-outline',
-                    //     index: '6',
-                    //     title: '办公',
+                    //     icon: 'mdi-vector-triangle',
+                    //     index: '5',
+                    //     title: '服务支持',
                     //     subs: [
                     //         {
-                    //             index: 'visitplan',
-                    //             title: '外勤',
+                    //             index: 'workOrder',
+                    //             title: '工单',
                     //         },
                     //         {
-                    //             index: 'missionplan',
-                    //             title: '任务',
+                    //             index: 'jobClassification',
+                    //             title: '新增工单',
                     //         },
                     //     ]
                     // },

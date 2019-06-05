@@ -255,7 +255,62 @@
                     </el-tab-pane>
                 </el-tabs>
             </div>
-            <div class="top">
+            
+            <div class="bottom">
+                <el-tabs v-model="baseindex" type="card">
+                    <el-tab-pane label="基本信息" name="first">
+                        <div class="text">
+                            <ul>
+                            <li>负责人：<span>{{privateUser.private_employee}}</span></li>
+                            <li>负责人部门：<span>{{opportunitydetail.deptname}}</span></li>
+                            <li>负责人机构：<span>{{opportunitydetail.parentname}}</span></li>
+                            <li>客户决策人：<span>{{contacts.coName}}</span></li>
+                            <li>创建时间：<span>{{opportunitydetail.opportunity_time}}</span></li>
+                            <li>签约时间：<span>{{contractTime}}</span></li>
+                            <li>失败时间：<span>{{failTime}}</span></li>
+                            <li>预计成交金额：<span>{{opportunitydetail.opportunity_achievement}}</span></li>
+                            <li>预计成交时间：<span>{{opportunitydetail.opportunity_deal}}</span></li>
+                            <li>备注：<span>{{opportunitydetail.opportunity_remarks}}</span></li>
+                        </ul>
+                            <p>&nbsp;</p>
+                        </div>
+                    </el-tab-pane>
+                    <el-tab-pane label="产品" name="second">
+                        <el-table
+                            :data="productData"
+                            border
+                            stripe
+                            style="width: 100%">
+                            <el-table-column
+                                prop="name"
+                                min-width="90"
+                                label="公司名称">
+                            </el-table-column>
+                            <el-table-column
+                                prop="phone"
+                                min-width="110"
+                                label="联系人">
+                            </el-table-column>
+                            <el-table-column
+                                prop="telephone"
+                                min-width="110"
+                                label="优势">
+                            </el-table-column>
+                            <el-table-column
+                                prop="email"
+                                min-width="110"
+                                label="劣势">
+                            </el-table-column>
+                            <el-table-column
+                                prop="qq"
+                                min-width="110"
+                                label="常用战术">
+                            </el-table-column>
+                        </el-table>
+                    </el-tab-pane>
+                </el-tabs>
+            </div>
+            <!-- <div class="top">
                 <el-card class="box-card">
                     <div slot="header" class="clearfix">
                         <span>基本信息</span>
@@ -271,13 +326,12 @@
                             <li>失败时间：<span>{{failTime}}</span></li>
                             <li>预计成交金额：<span>{{opportunitydetail.opportunity_achievement}}</span></li>
                             <li>预计成交时间：<span>{{opportunitydetail.opportunity_deal}}</span></li>
-                            <!-- <li>预计成交几率：<span>{{opportunitydetail.opportunityProgress.progress_probability}} %</span></li> -->
                             <li>备注：<span>{{opportunitydetail.opportunity_remarks}}</span></li>
                         </ul>
                         <p>&nbsp;</p>
                     </div>
                 </el-card>
-            </div>
+            </div> -->
         </el-col>
         <el-dialog
             :visible.sync="dialogVisible"
@@ -396,6 +450,9 @@
 
                 dialogVisible:false,
                 opportunityDeal:null,
+
+                baseindex:'first',
+                productData:[],
             }
         },
         // mounted(){

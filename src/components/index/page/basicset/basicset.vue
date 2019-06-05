@@ -155,6 +155,22 @@
                     </template>
                 </el-table-column>
             </el-table>
+
+            
+            <el-tree node-key="id" highlight-current accordion :data="classData" :props="defaultProps" expand-on-click-node :default-expanded-keys="defaultkeys" v-show="showfourteen">
+                <span class="custom-tree-node" slot-scope="{ node, data }">
+                    <span><i class="el-icon-info">&nbsp;&nbsp;</i>{{ node.label }}</span>
+                    <span class="operation_proclass">
+                        <el-button type="text" size="mini" style="font-size:12px;" v-if="data.parentid == 0" @click="jobClassAdd(data)">添加/
+                        </el-button>
+                        <el-button type="text" size="mini" style="font-size:12px;" @click="jobClassEdit(data)">修改/
+                        </el-button>
+                        <el-button type="text" size="mini" style="font-size:12px;" @click="jobClassDelete(node,data)">删除
+                        </el-button>
+                    </span>
+                </span>
+            </el-tree>
+
             <div class="block numberPage" v-show="showeight || shownine">
                 <el-pagination
                     @size-change="handleSizeChange"
@@ -301,7 +317,7 @@
             </span>
         </el-dialog>
         <!-- 新增产品顶级分类 -->
-        <el-dialog title="新增产品分类" :visible.sync="topLeveladd" width="40%">
+        <el-dialog title="新增产品分类" :visible.sync="topProClassadd" width="40%">
             <el-form ref="newform" :model="newform" :rules="rules" label-width="110px">
                 <el-form-item prop="type" label="辅助资料类别">
                     <el-input v-model="newform.type" :disabled="true"></el-input>
@@ -311,7 +327,7 @@
                 </el-form-item>
             </el-form>
             <span slot="footer" class="dialog-footer">
-                <el-button @click="topLeveladd = false">取 消</el-button>
+                <el-button @click="topProClassadd = false">取 消</el-button>
                 <el-button type="primary" @click="addProclass()">确 定</el-button>
             </span>
         </el-dialog>
@@ -554,6 +570,101 @@
                 <el-button type="primary" @click="updateCode()">确 定</el-button>
             </span>
         </el-dialog>
+        
+        <!-- 新增工单顶级分类 -->
+        <el-dialog title="新增工单分类" :visible.sync="topJobClassadd" width="40%">
+            <el-form ref="newform" :model="newform" :rules="rules" label-width="110px">
+                <el-form-item prop="type" label="辅助资料类别">
+                    <el-input v-model="newform.type" :disabled="true"></el-input>
+                </el-form-item>
+                <el-form-item prop="jobclassdeptName" label="负责部门">
+                    <el-select v-model="newform.jobclassdeptName" placeholder="请选择负责部门" size="mini" class="dept_selec">
+                        <el-option class="droplist" :value="newform.jobclassdeptName">
+                            <el-tree
+                                node-key="deptid"
+                                highlight-current
+                                default-expand-all
+                                ref="tree"
+                                :data="treedatalist"
+                                :props="deptProps"
+                                :expand-on-click-node="false"
+                                @current-change="handlecheck"
+                                class="drop_tree">
+                            </el-tree>
+                        </el-option>
+                    </el-select>
+                </el-form-item>
+                <el-form-item prop="jobclassName" label="工单分类名称">
+                    <el-input v-model="newform.jobclassName"></el-input>
+                </el-form-item>
+                <el-form-item prop="jobclassRemark" label="备注">
+                    <el-input type="textarea" rows="5" v-model="newform.jobclassRemark"></el-input>
+                </el-form-item>
+            </el-form>
+            <span slot="footer" class="dialog-footer">
+                <el-button @click="topJobClassadd = false">取 消</el-button>
+                <el-button type="primary" @click="addJobclass()">确 定</el-button>
+            </span>
+        </el-dialog>
+        <!-- 新增工单分类子集 -->
+        <el-dialog title="新增工单分类" :visible.sync="jobclassadd" width="40%">
+            <el-form ref="newform" :model="newform" :rules="rules" label-width="110px">
+                <el-form-item prop="type" label="辅助资料类别">
+                    <el-input v-model="newform.type" :disabled="true"></el-input>
+                </el-form-item>
+                <el-form-item label="负责部门">
+                    <el-input v-model="newform.jobclassdeptName" :disabled="true"></el-input>
+                </el-form-item>
+                <el-form-item prop="jobclassPname" label="上级工单分类">
+                    <el-input v-model="newform.jobclassPname" :disabled="true"></el-input>
+                </el-form-item>
+                <el-form-item prop="jobclassName" label="工单分类名称">
+                    <el-input v-model="newform.jobclassName"></el-input>
+                </el-form-item>
+                <el-form-item prop="jobclassRemark" label="备注">
+                    <el-input type="textarea" rows="5" v-model="newform.jobclassRemark"></el-input>
+                </el-form-item>
+            </el-form>
+            <span slot="footer" class="dialog-footer">
+                <el-button @click="jobclassadd = false">取 消</el-button>
+                <el-button type="primary" @click="addJobclass()">确 定</el-button>
+            </span>
+        </el-dialog>
+        <!-- 编辑工单分类子集 -->
+        <el-dialog title="修改工单分类" :visible.sync="jobclassupdate" width="40%">
+            <el-form ref="newform" :model="newform" :rules="rules" label-width="110px">
+                <el-form-item prop="type" label="辅助资料类别">
+                    <el-input v-model="newform.type" :disabled="true"></el-input>
+                </el-form-item>
+                <el-form-item prop="jobclassdeptName" label="负责部门" v-if="newform.showdeptinput">
+                    <el-select v-model="newform.jobclassdeptName" placeholder="请选择负责部门" size="mini" class="dept_selec">
+                        <el-option class="droplist" :value="newform.jobclassdeptName">
+                            <el-tree
+                                node-key="deptid"
+                                highlight-current
+                                default-expand-all
+                                ref="tree"
+                                :data="treedatalist"
+                                :props="deptProps"
+                                :expand-on-click-node="false"
+                                @current-change="handlecheck"
+                                class="drop_tree">
+                            </el-tree>
+                        </el-option>
+                    </el-select>
+                </el-form-item>
+                <el-form-item prop="jobclassName" label="工单分类名称">
+                    <el-input v-model="newform.jobclassName"></el-input>
+                </el-form-item>
+                <el-form-item prop="jobclassRemark" label="备注">
+                    <el-input type="textarea" rows="5" v-model="newform.jobclassRemark"></el-input>
+                </el-form-item>
+            </el-form>
+            <span slot="footer" class="dialog-footer">
+                <el-button @click="jobclassupdate = false">取 消</el-button>
+                <el-button type="primary" @click="updateProclass()">确 定</el-button>
+            </span>
+        </el-dialog>
     </div>
 </template>
 <script>
@@ -577,6 +688,9 @@
                 deliData:[],
                 distriData:[],
                 codeData:[],
+                classData:[],
+
+                treedatalist:[],
 
                 specIndex:0,
 
@@ -586,6 +700,10 @@
                     children:'next',
                 },
                 defaultkeys:[1],
+                deptProps:{
+                    label:'deptname',
+                    children:'next',
+                },
 
                 page:1,//默认为第一页
                 limit:20,//默认为20行
@@ -598,6 +716,7 @@
                     {index:4,slotindex:'4',name:'客户分类',isActive:false},
                     {index:5,slotindex:'5',name:'快捷方式',isActive:false},
                     {index:6,slotindex:'6',name:'商机进度',isActive:false},
+                    {index:14,slotindex:'14',name:'工单分类',isActive:false},
                 ],
                 orderparam:[
                     {index:7,slotindex:'7',name:'产品分类',isActive:false},
@@ -619,28 +738,36 @@
                     typeName:null,
                     notes:null,
 
-                    quickname:null,
+                    quickname:null,//快捷方式
                     quickcontent:null,
 
-                    probability:null,
+                    probability:null,//商机进度
 
-                    brand_name:null,
+                    brand_name:null,//品牌
 
-                    unit_name:null,
+                    unit_name:null,//单位
 
-                    parentclass_id:null,
+                    parentclass_id:null, //产品分类
                     parentclass_name:null,
                     proclass_id:null,
                     proclass_name:null,
 
-                    spec_name:null,
+                    spec_name:null,//规格
                     specoption:[],
 
-                    distri_name:null,
+                    distri_name:null,//经销商几倍
                     distri_count:null,
 
-                    prefix:null,
-                    createTime:null,
+                    prefix:null,//编号前缀参数
+
+                    jobclassPid:null,
+                    jobclassPname:null,
+                    jobclassId:null,
+                    jobclassName:null,
+                    jobclassRemark:null,
+                    jobclassdeptId:null,
+                    jobclassdeptName:null,
+                    showdeptinput:false,
                 },
 
                 tenoptions:[],
@@ -661,12 +788,14 @@
                 showeleven:false,
                 showtwelve:false,
                 showthirteen:false,
+                showfourteen:false,
 
                 dialogVisible:false,//线索状态、客户状态、客户来源、客户分类
                 dialogVisible2:false,
                 shortcutadd:false,//快捷方式
                 shortcutupdate:false,
                 businessproadd:false,//商机进度
+                topProClassadd:false,//产品分类顶级
                 businessproupdate:false,
                 prodClassadd:false,//产品分类子集
                 prodClassupdate:false,
@@ -674,7 +803,6 @@
                 unitupdate:false,
                 brandadd:false,//品牌
                 brandupdate:false,
-                topLeveladd:false,//产品分类顶级
                 specadd:false,//规格分类、规格值
                 specupdate:false,
                 deliveryadd:false,//交货方式
@@ -682,6 +810,9 @@
                 cusleveladd:false,//经销商级别
                 cuslevelupdate:false,
                 numruleupdate:false,//编号规则
+                topJobClassadd:false,//工单分类顶级
+                jobclassadd:false,
+                jobclassupdate:false,//工单分类子集
 
                 rules: {
                     typeName : [{ required: true, message: '名称不能为空', trigger: 'blur' },],
@@ -696,6 +827,8 @@
                     distri_name:[{ required: true, message: '经销商级别不能为空', trigger: 'blur' },],
                     distri_count:[{ required: true, message: '经销商折扣不能为空', trigger: 'blur' },],
                     prefix:[{ required: true, message: '编号前缀不能为空', trigger: 'blur' },],
+                    jobclassdeptName:[{ required: true, message: '负责部门不能为空', trigger: 'blur' }],
+                    jobclassName:[{ required: true, message: '工单名称不能为空', trigger: 'blur' }],
                 },
             }
         },
@@ -706,6 +839,7 @@
             this.reloadTable()
         },
         methods:{
+            //加载1,2,3,4,5,11，的数据
             reloadTable(){
                 const _this = this
                 let qs = require('querystring')
@@ -728,6 +862,7 @@
                     // console.log(err);
                 });
             },
+            //加载商机进度
             loadOppStep(){
                 const _this = this
 
@@ -740,6 +875,7 @@
                     // console.log(err);
                 });
             },
+            //加载产品分类
             loadproductClass(){
                 const _this = this
 
@@ -752,6 +888,7 @@
                     // console.log(err);
                 });
             },
+            //加载单位
             loadUnit(){
                 const _this = this
                 let qs = require('querystring')
@@ -770,6 +907,7 @@
                     // console.log(err);
                 });
             },
+            //加载品牌
             loadBrand(){
                 const _this = this
                 let qs = require('querystring')
@@ -788,6 +926,7 @@
                     // console.log(err);
                 });
             },
+            //加载规格
             loadSpec(){
                 const _this = this
 
@@ -800,6 +939,7 @@
                     // console.log(err);
                 });
             },
+            //加载经销商级别
             loadistri(){
                 const _this = this
 
@@ -812,6 +952,7 @@
                     // console.log(err);
                 });
             },
+            //加载编号前缀参数
             loadCode(){
                 const _this = this
 
@@ -824,7 +965,27 @@
                     // console.log(err);
                 });
             },
-            //显示左边对应表格数据
+            //加载工单分类
+            loadjobClass(){
+                const _this = this
+
+                axios({
+                    method: 'get',
+                    url: _this.$store.state.defaultHttp+'serviceType/getServiceTypeNodeTree.do?cId='+_this.$store.state.iscId,
+                }).then(function(res){
+                    _this.classData = res.data.map.success
+                }).catch(function(err){
+                    // console.log(err);
+                });
+                axios({
+                    method: 'get',
+                    url: _this.$store.state.defaultHttp+'dept/getDeptNodeTree.do?cId='+_this.$store.state.iscId,
+                }).then(function(res){
+                    _this.treedatalist = res.data.map.success
+                }).catch(function(err){
+                });
+            },
+            //显示左边对应表格和数据
             showTableval(val){
                 const _this = this
                 let i = val.index
@@ -842,6 +1003,7 @@
                 _this.showeleven = false
                 _this.showtwelve = false
                 _this.showthirteen = false
+                _this.showfourteen = false
                 if(i == 1 || i == 2 || i == 3 || i == 4){
                     _this.showtopfour = true
                     _this.$options.methods.reloadTable.bind(_this)(true)
@@ -872,9 +1034,12 @@
                 }else if(i == 13){
                     _this.showthirteen = true
                     _this.$options.methods.loadCode.bind(_this)(true)
+                }else if(i == 14){
+                    _this.showfourteen = true
+                    _this.$options.methods.loadjobClass.bind(_this)(true)
                 }
             },
-            //添加
+            //添加基础资料弹框
             handleAdd(){
                 const _this = this
                 let i = this.newform.index
@@ -907,7 +1072,7 @@
                             _this.newform.parentclass_name = null
                             _this.newform.proclass_id = null
                             _this.newform.proclass_name = null
-                            _this.topLeveladd = true
+                            _this.topProClassadd = true
                         }else if(i == 8){
                             _this.newform.unit_name = null
                             _this.unitadd = true
@@ -926,6 +1091,15 @@
                             _this.newform.distri_name = null
                             _this.newform.distri_count = null
                             _this.cusleveladd = true
+                        }else if(i == 14){
+                            _this.newform.jobclassdeptId = null
+                            _this.newform.jobclassdeptName = null
+                            _this.newform.jobclassPid = null
+                            _this.newform.jobclassPname = null
+                            _this.newform.jobclassId = null
+                            _this.newform.jobclassName = null
+                            _this.newform.jobclassRemark = null
+                            _this.topJobClassadd = true
                         }
                     }
                 }).catch(function(err){
@@ -933,6 +1107,7 @@
                 });
                 
             },
+            //添加产品分类弹框
             proAdd(data){
                 const _this = this
                 _this.newform.parentclass_id = data.id
@@ -940,6 +1115,18 @@
                 _this.newform.proclass_id = null
                 _this.newform.proclass_name = null
                 _this.prodClassadd = true
+            },
+            // 添加工单分类弹框
+            jobClassAdd(data){
+                const _this = this
+                _this.newform.jobclassPid = data.id
+                _this.newform.jobclassPname = data.name
+                _this.newform.jobclassdeptId = data.secondid
+                _this.newform.jobclassdeptName = data.deptName
+                _this.newform.jobclassId = null
+                _this.newform.jobclassName = null
+                _this.newform.jobclassRemark = null
+                _this.jobclassadd = true
             },
             //添加提交按钮
             addbasicset(){
@@ -1030,6 +1217,7 @@
                     _this.$message.error("添加失败,请重新添加");
                 });
             },
+            //添加商机进度
             addoppstep(){
                 const _this = this;
                 let qs = require('querystring')
@@ -1086,6 +1274,7 @@
                     _this.$message.error("添加失败,请重新添加");
                 });
             },
+            //添加产品分类
             addProclass(){
                 const _this = this;
                 let qs = require('querystring')
@@ -1118,7 +1307,7 @@
                             type:'success'
                         })
                         _this.prodClassadd = false
-                        _this.topLeveladd = false
+                        _this.topProClassadd = false
                         _this.$options.methods.loadproductClass.bind(_this)(true);
                     }else{
                         _this.$message({
@@ -1130,6 +1319,7 @@
                     _this.$message.error("添加失败,请重新添加");
                 });
             },
+            //添加单位
             addunit(){
                 const _this = this;
                 let qs = require('querystring')
@@ -1168,6 +1358,7 @@
                     _this.$message.error("添加失败,请重新添加");
                 });
             },
+            //添加品牌
             addbrand(){
                 const _this = this;
                 let qs = require('querystring')
@@ -1206,6 +1397,7 @@
                     _this.$message.error("添加失败,请重新添加");
                 });
             },
+            //添加规格
             addSpec(){
                 const _this = this
                 let qs = require('querystring')
@@ -1245,6 +1437,7 @@
                     _this.$message.error("添加失败,请重新添加");
                 });
             },
+            //添加经销商级别
             adddistri(){
                 const _this = this
                 let qs = require('querystring')
@@ -1297,8 +1490,63 @@
                     }
                 }).catch(function(err){
                     _this.$message.error("添加失败,请重新添加");
-                });},
-            //修改
+                });
+            },
+            //添加工单分类
+            addJobclass(){
+                const _this = this;
+                let qs = require('querystring')
+                let data = {}
+                data.name = this.newform.jobclassName
+                data.secondid = this.newform.jobclassdeptId
+                data.remarks = this.newform.jobclassRemark
+                if(this.newform.jobclassPid){
+                    data.parentid = this.newform.jobclassPid
+                    data.parentname = this.newform.jobclassPname
+                    this.defaultkeys = [this.newform.jobclassPid]
+                }
+                
+                let flag = false;
+                if(!data.secondid){
+                    _this.$message({
+                        message: "负责部门不能为空",
+                        type: 'error'
+                    });
+                    flag = true;
+                }
+                if(!data.name){
+                    _this.$message({
+                        message: "工单分类名称不能为空",
+                        type: 'error'
+                    });
+                    flag = true;
+                }
+                if(flag) return
+
+                axios({
+                    method: 'post',
+                    url: _this.$store.state.defaultHttp+'serviceType/insertServiceType.do?cId='+_this.$store.state.iscId,
+                    data:qs.stringify(data)
+                }).then(function(res){
+                    if(res.data.code && res.data.code == 200){
+                        _this.$message({
+                            message:'添加成功',
+                            type:'success'
+                        })
+                        _this.jobclassadd = false
+                        _this.topJobClassadd = false
+                        _this.$options.methods.loadjobClass.bind(_this)(true);
+                    }else{
+                        _this.$message({
+                            message:res.data.msg,
+                            type:'error'
+                        })
+                    }
+                }).catch(function(err){
+                    _this.$message.error("添加失败,请重新添加");
+                });
+            },
+            //修改填写弹出框内容
             handleEdit(index,row){
                 const _this = this
                 let i = this.newform.index
@@ -1365,11 +1613,30 @@
                 }).catch(function(err){
                 });
             },
+            //修改产品分类弹出框
             proEdit(data){
                 const _this = this
                 _this.newform.proclass_id = data.id
                 _this.newform.proclass_name = data.name
                 this.prodClassupdate = true
+            },
+            //修改工单分类弹出框
+            jobClassEdit(data){
+                console.log(data)
+                const _this = this
+                if(data.parentid == 0){
+                    _this.newform.showdeptinput = true
+                }else{
+                    _this.newform.showdeptinput = false
+                }
+                _this.newform.jobclassPid = data.parentid
+                _this.newform.jobclassPname = data.parentname
+                _this.newform.jobclassdeptId = data.secondid
+                _this.newform.jobclassdeptName = data.deptName
+                _this.newform.jobclassId = data.id
+                _this.newform.jobclassName = data.name
+                _this.newform.jobclassRemark = data.remarks
+                _this.jobclassupdate = true
             },
             //修改提交按钮
             updatebasicset(){
@@ -1461,6 +1728,7 @@
                     _this.$message.error("修改失败,请重新修改");
                 });
             },
+            //修改商机进度
             updateoppstep(){
                 const _this = this;
                 let qs = require('querystring')
@@ -1518,6 +1786,7 @@
                     _this.$message.error("修改失败,请重新修改");
                 });
             },
+            //修改产品分类
             updateProclass(){
                 const _this = this;
                 let qs = require('querystring')
@@ -1558,6 +1827,7 @@
                     _this.$message.error("修改失败,请重新修改");
                 });
             },
+            //修改单位
             updateunit(){
                 const _this = this;
                 let qs = require('querystring')
@@ -1597,6 +1867,7 @@
                     _this.$message.error("修改失败,请重新修改");
                 });
             },
+            //修改品牌
             updatebrand(){
                 const _this = this;
                 let qs = require('querystring')
@@ -1636,6 +1907,7 @@
                     _this.$message.error("修改失败,请重新修改");
                 });
             },
+            //修改规格
             updateSpec(){
                 const _this = this
                 let qs = require('querystring')
@@ -1676,6 +1948,7 @@
                     _this.$message.error("修改失败,请重新修改");
                 });
             },
+            //修改经销商级别
             updatedistri(){
                 const _this = this
                 let qs = require('querystring')
@@ -1731,13 +2004,13 @@
                     _this.$message.error("修改失败,请重新修改");
                 });
             },
+            //修改编号前缀参数
             updateCode(){
                 const _this = this
                 let qs = require('querystring')
                 let data = {}
                 data.id = this.newform.id
                 data.prefix = this.newform.prefix
-                // data.createTime = this.newform.createTime
 
                 let flag = false;
                 if(!data.prefix){
@@ -1771,7 +2044,57 @@
                     _this.$message.error("修改失败,请重新修改");
                 });
             },
-            //删除
+            // 修改工单分类
+            updateProclass(){
+                const _this = this;
+                let qs = require('querystring')
+                let data = {}
+                data.id = this.newform.jobclassId
+                data.name = this.newform.jobclassName
+                data.secondid = this.newform.jobclassdeptId
+                data.remarks = this.newform.jobclassRemark
+                this.defaultkeys = [this.newform.jobclassId]
+                
+                let flag = false;
+                if(!data.secondid){
+                    _this.$message({
+                        message: "负责部门不能为空",
+                        type: 'error'
+                    });
+                    flag = true;
+                }
+                if(!data.name){
+                    _this.$message({
+                        message: "产品分类名称不能为空",
+                        type: 'error'
+                    });
+                    flag = true;
+                }
+                if(flag) return
+
+                axios({
+                    method: 'post',
+                    url: _this.$store.state.defaultHttp+'serviceType/updateServiceTypeById.do?cId='+_this.$store.state.iscId,
+                    data:qs.stringify(data)
+                }).then(function(res){
+                    if(res.data.code && res.data.code == 200){
+                        _this.$message({
+                            message:'修改成功',
+                            type:'success'
+                        })
+                        _this.jobclassupdate = false
+                        _this.$options.methods.loadjobClass.bind(_this)(true);
+                    }else{
+                        _this.$message({
+                            message:res.data.msg,
+                            type:'error'
+                        })
+                    }
+                }).catch(function(err){
+                    _this.$message.error("修改失败,请重新修改");
+                });
+            },
+            //删除1,2,3,4,5,6,11,12
             handledelete(index,row){
                 const _this = this;
                 let i = this.newform.index
@@ -1836,6 +2159,7 @@
                     });       
                 });
             },
+            //删除产品分类
             deleteProclass(node,data){
                 const _this = this
                 let qs =require('querystring')
@@ -1878,6 +2202,7 @@
                     });       
                 });
             },
+            //删除单位
             deleteUnit(index,row){
                 const _this = this
                 let qs =require('querystring')
@@ -1920,6 +2245,7 @@
                     });       
                 });
             },
+            //删除品牌
             deleteBrand(index,row){
                 const _this = this
                 let qs =require('querystring')
@@ -1962,6 +2288,7 @@
                     });       
                 });
             },
+            //删除规格
             deletespec(index,row){
                 const _this = this
                 let qs =require('querystring')
@@ -2004,11 +2331,61 @@
                     });       
                 });
             },
+            //删除工单分类
+            jobClassDelete(node,data){
+                const _this = this
+                let qs =require('querystring')
+                let idArr = {}
+                idArr.id = data.id
+
+                _this.$confirm('确认删除 ['+ data.name +'] 吗？', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                }).then(({ value }) => {
+                    axios({
+                        method: 'post',
+                        url: _this.$store.state.defaultHttp+ 'serviceType/deleteServiceTypeById.do?cId='+_this.$store.state.iscId,
+                        data:qs.stringify(idArr),
+                    }).then(function(res){
+                        if(res.data.code && res.data.code == 200) {
+                            _this.$message({
+                                message: '删除成功',
+                                type: 'success'
+                            });
+                            _this.$options.methods.loadjobClass.bind(_this)(true)
+                        } else if(res.data.msg && res.data.msg == 'error'){//删除
+                            _this.$message({
+                                message: '对不起，您没有该权限，请联系管理员开通',
+                                type: 'error'
+                            })
+                        }else {
+                            _this.$message({
+                                message: res.data.msg,
+                                type: 'error'
+                            });
+                        }
+                    }).catch(function(err){
+                        _this.$message.error("删除失败,请重新删除");
+                    });
+                }).catch(() => {
+                    _this.$message({
+                        type: 'info',
+                        message: '取消删除'
+                    });       
+                });
+            },
+            // 选择规格值
             changeValue(e){
                 this.specList = []
                 for(let i = 0;i < e.length; i ++){
                     this.specList.push({name:e[i]})
                 }
+            },
+            //选择树形结构下拉框
+            handlecheck(data,val){
+                console.log(data,val)
+                this.newform.jobclassdeptId = data.deptid
+                this.newform.jobclassdeptName = data.deptname
             },
             handleSizeChange(val){
                 const _this = this;
@@ -2036,4 +2413,14 @@
     }
 </script>
 <style>
+    .droplist{
+        padding: 0;
+        height: auto
+    }
+    .drop_tree{
+        margin: 0
+    }
+    .dept_selec{
+        width: 100%;
+    }
 </style>

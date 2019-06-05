@@ -109,8 +109,7 @@ export default {
         line-height: 40px !important;
     }
     .sidebar .el-submenu .el-menu-item, .sidebar .el-menu-item.is-active{
-        width: 150px;
-        min-width: 150px;
+        min-width: 65px;
         box-sizing: border-box
     }
     input::-webkit-outer-spin-button,

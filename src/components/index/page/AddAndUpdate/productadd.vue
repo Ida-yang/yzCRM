@@ -159,6 +159,7 @@
                     describe:null,
                     chanpinbiaoqian:null,
                     spec:[],
+                    isEnableSpec:'0',
                 },
                 rules:{
                     goodsName : [{ required: true, message: '产品名称不能为空', trigger: 'blur' },],
@@ -302,7 +303,6 @@
             changeLabel(e){
                 let aa = []
                 this.generate = true
-                this.myform.isEnableSpec = 1
                 this.specsData.forEach(a => {
                     if(a.specName == e){
                         aa = a.specValue
@@ -330,6 +330,7 @@
             batchGeneration(){
                 let arr = this.specHeadData
                 this.tableData = []
+                this.myform.isEnableSpec = '1'
 
                 if(arr.length == 1){
                     let a = arr[0]

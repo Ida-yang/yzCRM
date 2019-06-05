@@ -150,6 +150,9 @@
                     <el-tab-pane label="回款计划" name="second">
                         <span style="text-align:center;">暂无计划</span>
                     </el-tab-pane>
+                    <el-tab-pane label="产品" name="third">
+                        <span style="text-align:center;">暂无计划</span>
+                    </el-tab-pane>
                 </el-tabs>
             </div>
         </el-col>
