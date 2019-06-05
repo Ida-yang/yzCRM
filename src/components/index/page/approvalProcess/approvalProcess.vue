@@ -1,37 +1,45 @@
 <template>
-    <div>
-        <div class="entry">
-            <el-button class="btn info-btn" size="mini" @click="handleAdd()">新增</el-button>
-            <div class="totalnum_head">共 <span style="font-weight:bold">{{tableNumber}}</span> 条</div>
+    <div class="contentall">
+        <div class="setleftcontent">
+            <ul class="namecontent">
+                <li v-for="item in searchList" :key="item.index" :value="item.name" :class="{actived:item.isActive}" @click="showTableval(item)">{{item.name}}</li>
+            </ul>
         </div>
-        <el-table :data="tableData" border stripe style="width:100%">
-            <el-table-column prop="name" fixed min-width="110" label="审核流程" sortable></el-table-column>
-            <el-table-column prop="categoryType" min-width="110" label="关联对象" sortable></el-table-column>
-            <el-table-column prop="deptIdLs" min-width="130" label="应用部门" sortable>
-                <template slot-scope="scope">
-                    <span v-for="item in scope.row.deptIdLs" :key="item.id">{{item.name}},</span>
-                </template>
-            </el-table-column>
-            <el-table-column prop="remarks" min-width="110" label="备注" sortable></el-table-column>
-            <el-table-column prop="updateUserName" min-width="110" label="最后修改人" sortable></el-table-column>
-            <el-table-column prop="createTime" min-width="110" label="创建时间" sortable></el-table-column>
-            <el-table-column label="操作" fixed="right" width="150" header-align="center" align="center">
-                <template slot-scope="scope">
-                    <el-button size="mini" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
-                    <el-button type="danger" size="mini" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
-                </template>
-            </el-table-column>
-        </el-table>
-        <div class="block numberPage">
-            <el-pagination
-            @size-change="handleSizeChange"
-            @current-change="handleCurrentChange"
-            :current-page="page"
-            :page-sizes="[20, 50, 100, 500]"
-            :page-size="20"
-            layout="total, sizes, prev, pager, next, jumper"
-            :total="tableNumber">
-            </el-pagination>
+        <div class="centercontent"></div>
+        <div class="setrightcontent">
+            <div class="entry">
+                <el-button class="btn info-btn" size="mini" @click="handleAdd()">新增</el-button>
+                <div class="totalnum_head">共 <span style="font-weight:bold">{{tableNumber}}</span> 条</div>
+            </div>
+            <el-table :data="tableData" border stripe style="width:100%">
+                <el-table-column prop="name" fixed min-width="110" label="审核流程" sortable></el-table-column>
+                <el-table-column prop="categoryType" min-width="110" label="关联对象" sortable></el-table-column>
+                <el-table-column prop="deptIdLs" min-width="130" label="应用部门" sortable>
+                    <template slot-scope="scope">
+                        <span v-for="item in scope.row.deptIdLs" :key="item.id">{{item.name}},</span>
+                    </template>
+                </el-table-column>
+                <el-table-column prop="remarks" min-width="110" label="备注" sortable></el-table-column>
+                <el-table-column prop="updateUserName" min-width="110" label="最后修改人" sortable></el-table-column>
+                <el-table-column prop="createTime" min-width="110" label="创建时间" sortable></el-table-column>
+                <el-table-column label="操作" fixed="right" width="150" header-align="center" align="center">
+                    <template slot-scope="scope">
+                        <el-button size="mini" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
+                        <el-button type="danger" size="mini" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+                    </template>
+                </el-table-column>
+            </el-table>
+            <div class="block numberPage">
+                <el-pagination
+                @size-change="handleSizeChange"
+                @current-change="handleCurrentChange"
+                :current-page="page"
+                :page-sizes="[20, 50, 100, 500]"
+                :page-size="20"
+                layout="total, sizes, prev, pager, next, jumper"
+                :total="tableNumber">
+                </el-pagination>
+            </div>
         </div>
     </div>
 </template>
@@ -55,7 +63,13 @@
         data(){
             return{
                 page:1, //默认第1页
-                limit:20 //默认20行
+                limit:20, //默认20行
+                keyType:'1',
+
+                searchList:[
+                    {index:'1',name:'合同',isActive:true},
+                    {index:'2',name:'订单',isActive:false},
+                ],
             }
         },
         activated(){
@@ -71,6 +85,7 @@
                 let data = {}
                 data.page = this.page
                 data.limit = this.limit
+                data.keyType = this.keyType
 
                 axios({
                     method: 'post',
@@ -90,6 +105,14 @@
                 }).catch(function(err){
                 });
 
+            },
+            showTableval(val){
+                this.keyType = val.index
+                this.searchList.forEach(function(obj){
+                    obj.isActive = false;
+                });
+                val.isActive = !val.isActive;
+                this.$options.methods.loadTable.bind(this)()
             },
             handleAdd(){
                 this.$store.state.approvalupdateData = null

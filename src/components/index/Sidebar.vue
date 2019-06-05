@@ -207,21 +207,21 @@
                             },
                         ]
                     },
-                    // {
-                    //     icon: 'mdi-vector-triangle',
-                    //     index: '5',
-                    //     title: '服务支持',
-                    //     subs: [
-                    //         {
-                    //             index: 'workOrder',
-                    //             title: '工单',
-                    //         },
-                    //         {
-                    //             index: 'jobClassification',
-                    //             title: '新增工单',
-                    //         },
-                    //     ]
-                    // },
+                    {
+                        icon: 'mdi-vector-triangle',
+                        index: '5',
+                        title: '服务支持',
+                        subs: [
+                            {
+                                index: 'workOrder',
+                                title: '工单',
+                            },
+                            {
+                                index: 'jobClassification',
+                                title: '新增工单',
+                            },
+                        ]
+                    },
                     {
                         icon: 'mdi-puzzle',
                         index: 'analysisReport',

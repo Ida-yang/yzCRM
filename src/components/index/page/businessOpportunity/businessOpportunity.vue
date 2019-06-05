@@ -120,7 +120,8 @@
                     label="成功几率"
                     sortable>
                     <template slot-scope="scope">
-                        {{scope.row.opportunityProgress[0].progress_probability + ' %'}}
+                        <el-progress :text-inside="true" :stroke-width="20" :percentage="parseInt(scope.row.opportunityProgress[0].progress_probability)" :color="scope.row.stepcolor"></el-progress>
+                        <!-- {{scope.row.opportunityProgress[0].progress_probability + ' %'}} -->
                     </template>
                 </el-table-column>
                 <el-table-column
@@ -327,8 +328,18 @@
                     url: _this.$store.state.defaultHttp+'opportunity/query.do?cId='+_this.$store.state.iscId,
                     data: qs.stringify(searchList),
                 }).then(function(res){
-                    _this.$store.state.businessOpportunityList = res.data.map.success
-                    _this.$store.state.businessOpportunityListnumber = res.data.count;
+                    let data = res.data.map.success
+                    data.forEach((el) => {
+                        if(el.opportunityProgress[0].progress_probability == '100'){
+                            el.stepcolor = '#67c23a'
+                        }else if(el.opportunityProgress[0].progress_probability < '50'){
+                            el.stepcolor = '#909399'
+                        }else{
+                            el.stepcolor = '#f56c6c'
+                        }
+                    });
+                    _this.$store.state.businessOpportunityList = data
+                    _this.$store.state.businessOpportunityListnumber = res.data.count
                 }).catch(function(err){
                     // console.log(err);
                 });
@@ -372,6 +383,15 @@
                 }).catch(function(err){
                     // console.log(err);
                 });
+            },
+            colorMethod(percentage){
+                if(percentage < 50) {
+                    return '#909399';
+                }else if(percentage < 100) {
+                    return '#f56c6c';
+                }else{
+                    return '#67c23a';
+                }
             },
             selectInfo(val){
                 this.multipleSelection = val;
