@@ -116,7 +116,7 @@
                     prop="opportunityProgress[0].progress_probability"
                     show-overflow-tooltip
                     v-else-if="item.prop == 'opportunityProgress[0].progress_probability' && item.state == 1"
-                    min-width="110"
+                    min-width="130"
                     label="成功几率"
                     sortable>
                     <template slot-scope="scope">

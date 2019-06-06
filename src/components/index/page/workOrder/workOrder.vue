@@ -10,10 +10,10 @@
                 <el-radio :label="nullvalue" @change="search()">全部</el-radio>
                 <el-radio v-for="item in timeData" :key="item.index" :label="item.index" @change="search()">{{item.name}}</el-radio>
             </el-radio-group>
-            <el-radio-group v-model="searchList.state">
+            <el-radio-group v-model="searchList.keyType">
                 <span class="nameList">工单状态：</span>
                 <el-radio :label="nullvalue" @change="search()">全部</el-radio>
-                <el-radio v-for="item in stateData" :key="item.index" :label="item.name" @change="search()">{{item.name}}</el-radio>
+                <el-radio v-for="item in keyTypeData" :key="item.index" :label="item.index" @change="search()">{{item.name}}</el-radio>
             </el-radio-group>
         </div>
         <div class="searchList" style="width:100%;">
@@ -23,21 +23,32 @@
             <el-button icon="el-icon-search" type="primary" size="mini" @click="search()">查询</el-button>
         </div>
         <div class="entry">
-            <el-button class="btn info-btn" size="mini" @click="handleAdd()">新增</el-button>
+            <!-- <el-button class="btn info-btn" size="mini" @click="handleAdd()">新增</el-button> -->
             <div class="totalnum_head">共 <span style="font-weight:bold">{{tableNumber}}</span> 条</div>
         </div>
         <el-table :data="tableData" border stripe style="width:100%">
-            <el-table-column prop="customerpool" fixed min-width="150" label="公司名称" sortable></el-table-column>
+            <el-table-column prop="problem" fixed min-width="150" label="问题" show-overflow-tooltip sortable>
+                <template slot-scope="scope">
+                    <div @click="openDetails(scope.$index, scope.row)" class="hoverline">
+                        {{scope.row.problem}}
+                    </div>
+                </template>
+            </el-table-column>
+            <el-table-column prop="describe" fixed min-width="150" label="描述" show-overflow-tooltip sortable></el-table-column>
+            <el-table-column prop="enclosureOldNames" min-width="180" label="附件" sortable>
+                <template slot-scope="scope">
+                    <p v-for="(item,i) in scope.row.enclosureOldNames" :key="i">{{item + ','}}</p>
+                </template>
+            </el-table-column>
+            <el-table-column prop="serviceState" min-width="150" label="状态" sortable></el-table-column>
+            <el-table-column prop="customerpool" min-width="180" label="公司名称" sortable></el-table-column>
             <el-table-column prop="contacts" min-width="90" label="联系人" sortable></el-table-column>
             <el-table-column prop="phone" min-width="110" label="电话" sortable></el-table-column>
             <el-table-column prop="feedbackTime" min-width="145" label="反馈时间" sortable></el-table-column>
             <el-table-column prop="feedbackType" min-width="110" label="反馈方式" sortable></el-table-column>
-            <el-table-column prop="acceptance" min-width="90" label="受理人" sortable></el-table-column>
+            <el-table-column prop="acceptanceName" min-width="90" label="受理人" sortable></el-table-column>
             <el-table-column prop="serviceTypeName" min-width="110" label="工单类型" sortable></el-table-column>
-            <el-table-column prop="orderId" min-width="145" label="销售单号" sortable></el-table-column>
-            <el-table-column prop="problem" min-width="150" label="问题" show-overflow-tooltip="" sortable></el-table-column>
-            <el-table-column prop="describe" min-width="150" label="描述" show-overflow-tooltip="" sortable></el-table-column>
-            <el-table-column prop="enclosure" min-width="120" label="附件" sortable></el-table-column>
+            <el-table-column prop="orderNo" min-width="145" label="销售单号" sortable></el-table-column>
             <el-table-column prop="private_employee" min-width="90" label="制单人" sortable></el-table-column>
             <el-table-column prop="ascription" min-width="90" label="业务员" sortable></el-table-column>
             <el-table-column prop="deptname" min-width="110" label="部门" sortable></el-table-column>
@@ -89,7 +100,7 @@
                     searchName:null,
                     label:1,
                     time:null,
-                    state:null,
+                    keyType:2,
                 },
                 pIdData:[
                     {index:0,name:'全部'},
@@ -100,13 +111,11 @@
                 timeData:[
                     {index:1,name:'今天'},
                     {index:2,name:'昨天'},
-                    {index:3,name:'明天'},
-                    {index:4,name:'本周'},
-                    {index:5,name:'本月'},
-                    {index:6,name:'上月'},
-                    {index:7,name:'下月'},
+                    {index:3,name:'本周'},
+                    {index:4,name:'本月'},
+                    {index:5,name:'上月'},
                 ],
-                stateData:[
+                keyTypeData:[
                     {index:1,name:'已解决'},
                     {index:2,name:'未解决'},
                     {index:3,name:'超过3天未解决'},
@@ -139,15 +148,13 @@
                 }else{
                     data.pId = _this.$store.state.ispId
                 }
-                if(this.searchList.state !== this.nullvalue){
-                    data.state = this.searchList.state
+                if(this.searchList.keyType !== this.nullvalue){
+                    data.keyType = this.searchList.keyType
                 }
                 data.page = this.page
                 data.limit = this.limit
                 data.example = this.searchList.time
                 data.searchName = this.searchList.searchName
-                data.page = this.page
-                data.limit = this.limit
 
                 axios({
                     method: 'post',
@@ -155,17 +162,70 @@
                     data: qs.stringify(data)
                 }).then(function(res){
                     let data = res.data.map.success
+                    data.forEach(el => {
+                        if(!el.solution){
+                            el.serviceState = '待解决'
+                        }else if(el.solution){
+                            el.serviceState = '待评价'
+                        }
+                    });
                     _this.$store.state.workOrderList = data
                     _this.$store.state.workOrderListnumber = res.data.count
                 }).catch(function(err){
                 });
             },
-            handleAdd(){},
+            openDetails(index,row){
+                this.$store.state.workOrderdetaildsData = {id:row.id}
+                this.$router.push({ path: '/workOrderDetail' });
+            },
             handleEdit(index,row){
-                console.log(index.row)
+                const _this = this
+                let datas = {}
+                datas.setform = row
+                datas.submitUrl = this.$store.state.defaultHttp + 'workOrder/update.do?cId='+_this.$store.state.iscId,
+                this.$store.state.workOrderaddorUpdateData = datas
+                _this.$router.push({ path: '/workOrderaddorupdate' });
             },
             handleDelete(index,row){
-                console.log(index,row)
+                const _this = this
+                let qs =require('querystring')
+                let idArr = [];
+                idArr.id = row.id
+
+                _this.$confirm('确认删除 ['+ row.problem +'] 这个问题吗？', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                }).then(({ value }) => {
+                    axios({
+                        method: 'post',
+                        url:  _this.$store.state.defaultHttp+ 'workOrder/delete.do?cId='+_this.$store.state.iscId,
+                        data:qs.stringify(idArr),
+                    }).then(function(res){
+                        if(res.data.code && res.data.code == 200) {
+                            _this.$message({
+                                message: '删除成功',
+                                type: 'success'
+                            });
+                            _this.$options.methods.loadTable.bind(_this)(true);
+                        }else if(res.data.msg && res.data.msg == 'error'){//同步用户
+                            _this.$message({
+                                message: '对不起，您没有该权限，请联系管理员开通',
+                                type: 'error'
+                            })
+                        } else {
+                            _this.$message({
+                                message: res.data.msg,
+                                type: 'error'
+                            });
+                        }
+                    }).catch(function(err){
+                        _this.$message.error("删除失败,请重新删除");
+                    });
+                });
+            },
+            search(){
+                const _this = this
+                this.$options.methods.loadTable.bind(this)()
             },
             handleSizeChange(val){
                 this.limit = val

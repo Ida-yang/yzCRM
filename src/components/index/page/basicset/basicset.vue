@@ -597,7 +597,7 @@
                 <el-form-item prop="jobclassName" label="工单分类名称">
                     <el-input v-model="newform.jobclassName"></el-input>
                 </el-form-item>
-                <el-form-item prop="jobclassRemark" label="备注">
+                <el-form-item prop="jobclassRemark" label="描述">
                     <el-input type="textarea" rows="5" v-model="newform.jobclassRemark"></el-input>
                 </el-form-item>
             </el-form>
@@ -621,7 +621,7 @@
                 <el-form-item prop="jobclassName" label="工单分类名称">
                     <el-input v-model="newform.jobclassName"></el-input>
                 </el-form-item>
-                <el-form-item prop="jobclassRemark" label="备注">
+                <el-form-item prop="jobclassRemark" label="描述">
                     <el-input type="textarea" rows="5" v-model="newform.jobclassRemark"></el-input>
                 </el-form-item>
             </el-form>
@@ -656,7 +656,7 @@
                 <el-form-item prop="jobclassName" label="工单分类名称">
                     <el-input v-model="newform.jobclassName"></el-input>
                 </el-form-item>
-                <el-form-item prop="jobclassRemark" label="备注">
+                <el-form-item prop="jobclassRemark" label="描述">
                     <el-input type="textarea" rows="5" v-model="newform.jobclassRemark"></el-input>
                 </el-form-item>
             </el-form>
@@ -828,7 +828,8 @@
                     distri_count:[{ required: true, message: '经销商折扣不能为空', trigger: 'blur' },],
                     prefix:[{ required: true, message: '编号前缀不能为空', trigger: 'blur' },],
                     jobclassdeptName:[{ required: true, message: '负责部门不能为空', trigger: 'blur' }],
-                    jobclassName:[{ required: true, message: '工单名称不能为空', trigger: 'blur' }],
+                    jobclassName:[{ required: true, message: '工单分类名称不能为空', trigger: 'blur' }],
+                    jobclassRemark:[{ required: true, message: '工单分类描述不能为空', trigger: 'blur' }],
                 },
             }
         },
@@ -1521,6 +1522,13 @@
                     });
                     flag = true;
                 }
+                if(!data.remarks){
+                    _this.$message({
+                        message: "工单分类描述不能为空",
+                        type: 'error'
+                    });
+                    flag = true;
+                }
                 if(flag) return
 
                 axios({
@@ -1622,7 +1630,6 @@
             },
             //修改工单分类弹出框
             jobClassEdit(data){
-                console.log(data)
                 const _this = this
                 if(data.parentid == 0){
                     _this.newform.showdeptinput = true
@@ -2065,7 +2072,14 @@
                 }
                 if(!data.name){
                     _this.$message({
-                        message: "产品分类名称不能为空",
+                        message: "工单分类名称不能为空",
+                        type: 'error'
+                    });
+                    flag = true;
+                }
+                if(!data.remarks){
+                    _this.$message({
+                        message: "工单分类描述不能为空",
                         type: 'error'
                     });
                     flag = true;

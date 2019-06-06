@@ -49,7 +49,7 @@ const state = {
   orderupdateData:null,
   approvaladdData:null,
   approvalupdateData:null,
-  workOrderaddData:null,
+  workOrderaddorUpdateData:null,
   
   //跳转详情页列表
   cluedetailsData:null,
@@ -61,6 +61,7 @@ const state = {
   visitdetailsData:null,
   missiondetailsData:null,
   productdetailsData:null,
+  workOrderdetaildsData:null,
 
 
   //线索挖掘列表

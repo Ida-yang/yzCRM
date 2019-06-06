@@ -83,8 +83,11 @@
             },
             checkjobClass(e,val){
                 const _this = this
-                this.$store.state.workOrderaddData = val
-                _this.$router.push({ path: '/workOrderadd' });
+                let datas = {}
+                datas.setform = val
+                datas.submitUrl = this.$store.state.defaultHttp + 'workOrder/insert.do?cId='+_this.$store.state.iscId,
+                this.$store.state.workOrderaddorUpdateData = datas
+                _this.$router.push({ path: '/workOrderaddorupdate' });
             },
         },
     }
