@@ -23,36 +23,35 @@
             <el-button icon="el-icon-search" type="primary" size="mini" @click="search()">查询</el-button>
         </div>
         <div class="entry">
-            <!-- <el-button class="btn info-btn" size="mini" @click="handleAdd()">新增</el-button> -->
             <div class="totalnum_head">共 <span style="font-weight:bold">{{tableNumber}}</span> 条</div>
         </div>
         <el-table :data="tableData" border stripe style="width:100%">
-            <el-table-column prop="problem" fixed min-width="150" label="问题" show-overflow-tooltip sortable>
+            <el-table-column label="问题" prop="problem" fixed min-width="150" show-overflow-tooltip sortable>
                 <template slot-scope="scope">
                     <div @click="openDetails(scope.$index, scope.row)" class="hoverline">
                         {{scope.row.problem}}
                     </div>
                 </template>
             </el-table-column>
-            <el-table-column prop="describe" fixed min-width="150" label="描述" show-overflow-tooltip sortable></el-table-column>
+            <el-table-column label="描述" prop="describe" fixed min-width="150" show-overflow-tooltip sortable></el-table-column>
             <el-table-column prop="enclosureOldNames" min-width="180" label="附件" sortable>
                 <template slot-scope="scope">
                     <p v-for="(item,i) in scope.row.enclosureOldNames" :key="i">{{item + ','}}</p>
                 </template>
             </el-table-column>
-            <el-table-column prop="serviceState" min-width="150" label="状态" sortable></el-table-column>
-            <el-table-column prop="customerpool" min-width="180" label="公司名称" sortable></el-table-column>
-            <el-table-column prop="contacts" min-width="90" label="联系人" sortable></el-table-column>
-            <el-table-column prop="phone" min-width="110" label="电话" sortable></el-table-column>
-            <el-table-column prop="feedbackTime" min-width="145" label="反馈时间" sortable></el-table-column>
-            <el-table-column prop="feedbackType" min-width="110" label="反馈方式" sortable></el-table-column>
-            <el-table-column prop="acceptanceName" min-width="90" label="受理人" sortable></el-table-column>
-            <el-table-column prop="serviceTypeName" min-width="110" label="工单类型" sortable></el-table-column>
-            <el-table-column prop="orderNo" min-width="145" label="销售单号" sortable></el-table-column>
-            <el-table-column prop="private_employee" min-width="90" label="制单人" sortable></el-table-column>
-            <el-table-column prop="ascription" min-width="90" label="业务员" sortable></el-table-column>
-            <el-table-column prop="deptname" min-width="110" label="部门" sortable></el-table-column>
-            <el-table-column prop="parentname" min-width="130" label="机构" show-overflow-tooltip="" sortable></el-table-column>
+            <el-table-column label="状态" prop="serviceState" min-width="150" sortable></el-table-column>
+            <el-table-column label="公司名称" prop="customerpool" min-width="180" sortable></el-table-column>
+            <el-table-column label="联系人" prop="contacts" min-width="90" sortable></el-table-column>
+            <el-table-column label="电话" prop="phone" min-width="110" sortable></el-table-column>
+            <el-table-column label="反馈时间" prop="feedbackTime" min-width="145" sortable></el-table-column>
+            <el-table-column label="反馈方式" prop="feedbackType" min-width="110" sortable></el-table-column>
+            <el-table-column label="受理人" prop="acceptanceName" min-width="90" sortable></el-table-column>
+            <el-table-column label="工单类型" prop="serviceTypeName" min-width="110" sortable></el-table-column>
+            <el-table-column label="销售单号" prop="orderNo" min-width="145" sortable></el-table-column>
+            <el-table-column label="制单人" prop="private_employee" min-width="90" sortable></el-table-column>
+            <el-table-column label="业务员" prop="ascription" min-width="90" sortable></el-table-column>
+            <el-table-column label="部门" prop="deptname" min-width="110" sortable></el-table-column>
+            <el-table-column label="机构" prop="parentname" min-width="130" show-overflow-tooltip="" sortable></el-table-column>
             <el-table-column label="操作" fixed="right" width="150" header-align="center" align="center">
                 <template slot-scope="scope">
                     <el-button size="mini" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
@@ -62,13 +61,13 @@
         </el-table>
         <div class="block numberPage">
             <el-pagination
-            @size-change="handleSizeChange"
-            @current-change="handleCurrentChange"
-            :current-page="page"
-            :page-sizes="[20, 50, 100, 500]"
-            :page-size="20"
-            layout="total, sizes, prev, pager, next, jumper"
-            :total="tableNumber">
+                @size-change="handleSizeChange"
+                @current-change="handleCurrentChange"
+                :current-page="page"
+                :page-sizes="[20, 50, 100, 500]"
+                :page-size="20"
+                layout="total, sizes, prev, pager, next, jumper"
+                :total="tableNumber">
             </el-pagination>
         </div>
     </div>

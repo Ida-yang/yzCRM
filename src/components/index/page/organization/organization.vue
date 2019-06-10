@@ -5,8 +5,7 @@
         <div class="leftcontent">
             <el-tree
                 node-key="deptid"
-                highlight-current
-                default-expand-all
+                highlight-current default-expand-all
                 :data="datalist"
                 :props="defaultProps"
                 :expand-on-click-node="false"
@@ -14,12 +13,9 @@
                 <span class="custom-tree-node" slot-scope="{ node, data }">
                     <span><i class="el-icon-info">&nbsp;&nbsp;</i>{{ node.label }}</span>
                     <span class="operation_org">
-                        <el-button type="text" size="mini" style="font-size:12px;" @click="handleappend(data)">添加/
-                        </el-button>
-                        <el-button type="text" size="mini" style="font-size:12px;" @click="handleUpdate(data)">修改/
-                        </el-button>
-                        <el-button type="text" size="mini" style="font-size:12px;" @click="deletedept(node,data)">删除
-                        </el-button>
+                        <el-button type="text" size="mini" style="font-size:12px;" @click="handleappend(data)">添加/</el-button>
+                        <el-button type="text" size="mini" style="font-size:12px;" @click="handleUpdate(data)">修改/</el-button>
+                        <el-button type="text" size="mini" style="font-size:12px;" @click="deletedept(node,data)">删除</el-button>
                     </span>
                 </span>
             </el-tree>
@@ -28,55 +24,20 @@
             <div class="entry">
                 <el-button class="btn info-btn" size="mini" @click="handleAdd()">新增</el-button>
             </div>
-            <el-table
-                :data="roleList"
-                border
-                stripe
-                :max-height="maxheight"
-                style="width:100%">
-                <el-table-column
-                    header-align="center"
-                    align="center"
-                    type="selection"
-                    width="45"
-                    scope.row.id
-                    sortable>
-                </el-table-column>
-                <el-table-column
-                    prop="name"
-                    label="角色名称"
-                    sortable>
-                </el-table-column>
-                <el-table-column
-                    prop="deptname"
-                    label="部门"
-                    sortable>
-                </el-table-column>
-                <el-table-column
-                    prop="parentname"
-                    label="上级部门"
-                    sortable>
-                </el-table-column>
-                <el-table-column label="操作"
-                    width="140"
-                    header-align="center"
-                    align="center">
+            <el-table :data="roleList" border stripe :max-height="maxheight" style="width:100%">
+                <el-table-column header-align="center" align="center" type="selection" width="45" sortable />
+                <el-table-column label="角色名称" prop="name" sortable />
+                <el-table-column label="部门" prop="deptname" sortable />
+                <el-table-column label="上级部门" prop="parentname" sortable />
+                <el-table-column label="操作" width="150" header-align="center" align="center">
                     <template slot-scope="scope">
-                        <el-button
-                        size="mini"
-                        @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
-                        <el-button
-                        size="mini"
-                        type="danger"
-                        @click="handledelete(scope.$index, scope.row)">删除</el-button>
+                        <el-button size="mini" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
+                        <el-button size="mini" type="danger" @click="handledelete(scope.$index, scope.row)">删除</el-button>
                     </template>
                 </el-table-column>
             </el-table>
         </div>
-        <el-dialog
-            title="添加"
-            :visible.sync="dialogVisible"
-            width="50%">
+        <el-dialog title="添加" :visible.sync="dialogVisible" width="50%">
             <el-form ref="newform" :model="newform" label-width="80px">
                 <el-form-item label="上级部门">
                     <el-input v-model="newform.parentname" :disabled="true" style="200px;"></el-input>
@@ -90,10 +51,7 @@
                 <el-button type="primary" @click="appenddept()">确 定</el-button>
             </span>
         </el-dialog>
-        <el-dialog
-            title="修改"
-            :visible.sync="dialogVisible2"
-            width="50%">
+        <el-dialog title="修改" :visible.sync="dialogVisible2" width="50%">
             <el-form ref="newform" :model="newform" label-width="80px">
                 <el-form-item label="上级部门">
                     <el-input v-model="newform.parentname" :disabled="true" style="200px;"></el-input>
@@ -107,10 +65,7 @@
                 <el-button type="primary" @click="updatedept()">确 定</el-button>
             </span>
         </el-dialog>
-        <el-dialog
-            title="添加角色"
-            :visible.sync="dialogVisible3"
-            width="70%">
+        <el-dialog title="添加角色" :visible.sync="dialogVisible3" width="70%">
             <el-form ref="roleform" :model="roleform" label-width="80px">
                 <el-form-item label="所属部门">
                     <el-input v-model="roleform.deptname" :disabled="true" style="200px;"></el-input>
@@ -211,10 +166,7 @@
                 <el-button type="primary" @click="addrole()">确 定</el-button>
             </span>
         </el-dialog>
-        <el-dialog
-            title="修改角色"
-            :visible.sync="dialogVisible4"
-            width="50%">
+        <el-dialog title="修改角色" :visible.sync="dialogVisible4" width="50%">
             <el-form ref="roleform" :model="roleform" label-width="80px">
                 <el-form-item label="所属部门">
                     <el-input v-model="roleform.deptname" :disabled="true" style="200px;"></el-input>

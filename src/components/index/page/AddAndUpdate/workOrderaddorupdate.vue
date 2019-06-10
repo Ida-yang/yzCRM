@@ -19,9 +19,6 @@
                     <el-form-item prop="phone" class="first_input" label="电话" label-width="90px">
                         <el-input v-model="myform.phone" class="inputbox" onkeyup="value=value.replace(/[^\d]/g,'')"></el-input>
                     </el-form-item>
-                    <!-- <el-form-item prop="feedbackTime" class="first_input" label="反馈时间" label-width="90px">
-                        <el-date-picker v-model="myform.feedbackTime" type="datetime" placeholder="选择反馈时间" format="yyyy-MM-dd HH:mm:ss" value-format="yyyy-MM-dd HH:mm:ss" default-time="12:00:00" class="inputbox"></el-date-picker>
-                    </el-form-item> -->
                     <el-form-item prop="feedbackType" class="first_input" label="反馈方式" label-width="90px">
                         <el-select v-model="myform.feedbackType" placeholder="请选择反馈方式" class="inputbox">
                             <el-option v-for="item in feedbackTypeList" :key="item.index" :label="item.name" :value="item.name"></el-option>
@@ -267,7 +264,7 @@
                 let arr = this.myform.enclosures
                 let arr2 = this.myform.enclosureOldNames
                 arr.forEach((a,i) => {
-                    this.fileList.push({url:this.$store.state.systemHttp + 'upload/' + this.$store.state.iscId + a,name:''})
+                    this.fileList.push({url:this.$store.state.systemHttp + 'upload/' + this.$store.state.iscId + '/' + a,name:'',response:a})
                 });
                 arr2.forEach((b,j) => {
                     this.fileList.forEach((c,k) => {
@@ -278,7 +275,7 @@
                 });
             },
             handleAvatarSuccess(res, file, fileList) {
-                console.log(fileList)
+                console.log(res, file, fileList)
                 this.myform.enclosures = []
                 this.myform.enclosureOldNames = []
                 fileList.forEach(el => {
@@ -419,11 +416,14 @@
         min-height: 80px;
         padding: 20px 40px;
     }
-    .jobclass_upload .el-upload-list__item-status-label,
+    /* .jobclass_upload .el-upload-list__item-status-label,
     .jobclass_upload .el-upload-list__item .el-icon-close,
     .jobclass_upload .el-upload-list__item .el-icon-close-tip{
         left: 500px;
         right: auto;
+    } */
+    .jobclass_upload .el-upload-list__item{
+        width: 60%;
     }
 </style>
 

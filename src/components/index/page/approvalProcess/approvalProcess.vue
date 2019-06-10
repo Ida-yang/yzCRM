@@ -12,16 +12,16 @@
                 <div class="totalnum_head">共 <span style="font-weight:bold">{{tableNumber}}</span> 条</div>
             </div>
             <el-table :data="tableData" border stripe style="width:100%">
-                <el-table-column prop="name" fixed min-width="110" label="审核流程" sortable></el-table-column>
-                <el-table-column prop="categoryType" min-width="110" label="关联对象" sortable></el-table-column>
-                <el-table-column prop="deptIdLs" min-width="130" label="应用部门" sortable>
+                <el-table-column label="审核流程" prop="name" fixed min-width="110" sortable></el-table-column>
+                <el-table-column label="关联对象" prop="categoryTypeName" min-width="110" sortable></el-table-column>
+                <el-table-column label="应用部门" prop="deptIdLs" min-width="130" sortable>
                     <template slot-scope="scope">
                         <span v-for="item in scope.row.deptIdLs" :key="item.id">{{item.name}},</span>
                     </template>
                 </el-table-column>
-                <el-table-column prop="remarks" min-width="110" label="备注" sortable></el-table-column>
-                <el-table-column prop="updateUserName" min-width="110" label="最后修改人" sortable></el-table-column>
-                <el-table-column prop="createTime" min-width="110" label="创建时间" sortable></el-table-column>
+                <el-table-column label="备注" prop="remarks" min-width="110" sortable></el-table-column>
+                <el-table-column label="最后修改人" prop="updateUserName" min-width="110" sortable></el-table-column>
+                <el-table-column label="创建时间" prop="createTime" min-width="145" sortable></el-table-column>
                 <el-table-column label="操作" fixed="right" width="150" header-align="center" align="center">
                     <template slot-scope="scope">
                         <el-button size="mini" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
@@ -67,8 +67,10 @@
                 keyType:'1',
 
                 searchList:[
-                    {index:'1',name:'合同',isActive:true},
-                    {index:'2',name:'订单',isActive:false},
+                    {index:'1',name:'合同流程设置',isActive:true},
+                    {index:'2',name:'销售订单流程设置',isActive:false},
+                    {index:'3',name:'回款流程设置',isActive:false},
+                    {index:'4',name:'办公流程设置',isActive:false},
                 ],
             }
         },
@@ -116,7 +118,7 @@
             },
             handleAdd(){
                 this.$store.state.approvalupdateData = null
-                this.$router.push({ path: '/approvalProcessadd' })
+                this.$router.push({ path: '/approvalProcessaddorupdate' })
             },
             handleEdit(index,row){
                 // console.log(row)
@@ -129,7 +131,7 @@
                     row.levelList.push({index:el.stepNum,stepType:el.stepType,name:'第 ' + el.stepNum + ' 级',checkUserId:el.checkUserId, remarks:el.remarks, del:false})
                 });
                 this.$store.state.approvalupdateData = row
-                this.$router.push({ path: '/approvalProcessadd' })
+                this.$router.push({ path: '/approvalProcessaddorupdate' })
             },
             handleDelete(index,row){
                 const _this = this

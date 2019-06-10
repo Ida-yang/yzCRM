@@ -27,200 +27,59 @@
             <el-button class="btn" size="mini" @click="handleDeletes()">删除</el-button>
             <!-- <el-button class="btn info-btn" size="mini" @click="Receivables()">收款</el-button> -->
             <div class="totalnum_head">共 <span style="font-weight:bold">{{tableNumber}}</span> 条</div>
-            <el-popover
-            placement="bottom"
-            width="100"
-            trigger="click">
-            <el-checkbox-group class="checklist" v-model="checklist">
-                <el-checkbox class="checkone" v-for="item in filterList" :key="item.id" :label="item.name" :value="item.state" @change="hangleChange($event,item)"></el-checkbox>
-            </el-checkbox-group>
-            <el-button slot="reference" icon="el-icon-more" class="info-btn screen" type="mini"></el-button>
+            <el-popover placement="bottom" width="100" trigger="click">
+                <el-checkbox-group class="checklist" v-model="checklist" style="max-height:600px;overflow-y:overlay;overflow-x:hidden">
+                    <el-checkbox class="checkone" v-for="item in filterList" :key="item.id" :label="item.name" :value="item.state" @change="hangleChange($event,item)"></el-checkbox>
+                </el-checkbox-group>
+                <el-button slot="reference" icon="el-icon-more" class="info-btn screen" type="mini"></el-button>
             </el-popover>
         </div>
-        <el-table
-            :data="tableData"
-            ref="multipleTable"
-            border
-            stripe
-            :summary-method="getSummaries"
-            show-summary
-            style="width:100%;text-align:left"
-            @selection-change="selectInfo">
-            <el-table-column
-                fixed
-                header-align="center"
-                align="center"
-                type="selection"
-                width="45"
-                scope.row.contract_id
-                prop="contract_id"
-                @selection-change="selectInfo">
-            </el-table-column>
+        <el-table :data="tableData" ref="multipleTable" border stripe :summary-method="getSummaries" show-summary style="width:100%;text-align:left" @selection-change="selectInfo">
+            <el-table-column fixed header-align="center" align="center" type="selection" width="45" scope.row.contract_id prop="contract_id" @selection-change="selectInfo" />
             <div v-for="(item,index) in filterList" :key="index" >
-                <el-table-column
-                    prop="contract_number"
-                    fixed
-                    v-if="item.prop == 'contract_number' && item.state == 1"
-                    min-width="145"
-                    label="合同编号"
-                    sortable>
-                </el-table-column>
-                <el-table-column
-                    prop="contract_name"
-                    fixed
-                    v-else-if="item.prop == 'contract_name' && item.state == 1"
-                    min-width="150"
-                    label="合同名称"
-                    sortable>
+                <el-table-column label="合同编号" prop="contract_number" fixed v-if="item.prop == 'contract_number' && item.state == 1" min-width="145" sortable />
+                <el-table-column label="合同名称" prop="contract_name" fixed v-else-if="item.prop == 'contract_name' && item.state == 1" min-width="150" sortable>
                     <template slot-scope="scope">
                         <div @click="openDetails(scope.$index, scope.row)" class="hoverline">
                             {{scope.row.contract_name}}
                         </div>
                     </template>
                 </el-table-column>
-                <el-table-column
-                    prop="contract_type"
-                    v-else-if="item.prop == 'contract_type' && item.state == 1"
-                    min-width="110"
-                    label="合同类型"
-                    sortable>
-                </el-table-column>
-                <el-table-column
-                    prop="poolName"
-                    v-else-if="item.prop == 'poolName' && item.state == 1"
-                    min-width="180"
-                    label="公司名称"
-                    sortable>
-                </el-table-column>
-                <el-table-column
-                    prop="opportunity_name"
-                    v-else-if="item.prop == 'opportunity_id' && item.state == 1"
-                    min-width="120"
-                    label="商机名称"
-                    sortable>
-                </el-table-column>
-                <el-table-column
-                    prop="amount"
-                    v-else-if="item.prop == 'amount' && item.state == 1"
-                    min-width="125"
-                    label="合同金额"
-                    sortable>
+                <el-table-column label="合同类型" prop="contract_type" v-else-if="item.prop == 'contract_type' && item.state == 1" min-width="110" sortable />
+                <el-table-column label="公司名称" prop="poolName" v-else-if="item.prop == 'poolName' && item.state == 1" min-width="180" sortable />
+                <el-table-column label="商机名称" prop="opportunity_name" v-else-if="item.prop == 'opportunity_id' && item.state == 1" min-width="120" sortable />
+                <el-table-column label="合同金额" prop="amount" v-else-if="item.prop == 'amount' && item.state == 1" min-width="125" sortable>
                     <template slot-scope="scope">
                         <div>
                             {{scope.row.amount | rounding}}
                         </div>
                     </template>
                 </el-table-column>
-                <el-table-column
-                    prop="start_date"
-                    v-else-if="item.prop == 'start_date' && item.state == 1"
-                    min-width="130"
-                    label="合同开始日期"
-                    sortable>
-                </el-table-column>
-                <el-table-column
-                    prop="end_date"
-                    show-overflow-tooltip
-                    v-else-if="item.prop == 'end_date' && item.state == 1"
-                    min-width="130"
-                    label="合同到期日期"
-                    sortable>
-                </el-table-column>
-                <el-table-column
-                    prop="expireDay"
-                    v-else-if="item.prop == 'expireDay' && item.state == 1"
-                    min-width="130"
-                    label="剩余天数"
-                    sortable>
-                </el-table-column>
-                <el-table-column
-                    prop="signatories"
-                    v-else-if="item.prop == 'signatories' && item.state == 1"
-                    min-width="130"
-                    label="客户签约人"
-                    sortable>
-                </el-table-column>
-                <el-table-column
-                    prop="our_signatories"
-                    v-else-if="item.prop == 'our_signatories' && item.state == 1"
-                    min-width="130"
-                    label="我方签约人"
-                    sortable>
-                </el-table-column>
-                <el-table-column
-                    prop="approvalStatus"
-                    v-else-if="item.prop == 'state' && item.state == 1"
-                    min-width="150"
-                    label="审核状态"
-                    sortable>
-                </el-table-column>
-                <el-table-column
-                    prop="deptname"
-                    v-else-if="item.prop == 'deptname' && item.state == 1"
-                    min-width="100"
-                    label="部门"
-                    sortable>
-                </el-table-column>
-                <el-table-column
-                    prop="parentname"
-                    v-else-if="item.prop == 'parentname' && item.state == 1"
-                    min-width="130"
-                    label="机构"
-                    sortable>
-                </el-table-column>
-                <el-table-column
-                    prop="create_time"
-                    v-else-if="item.prop == 'createTime' && item.state == 1"
-                    min-width="150"
-                    label="创建时间"
-                    sortable>
-                </el-table-column>
-                <el-table-column
-                    prop="remarks"
-                    v-else-if="item.prop == 'remarks' && item.state == 1"
-                    label="备注"
-                    sortable>
-                </el-table-column>
-                <el-table-column
-                    prop="already"
-                    v-else-if="item.prop == 'already' && item.state == 1"
-                    min-width="130"
-                    label="已回款金额"
-                    sortable>
+                <el-table-column label="合同开始日期" prop="start_date" v-else-if="item.prop == 'start_date' && item.state == 1" min-width="130" sortable />
+                <el-table-column label="合同到期日期" prop="end_date" show-overflow-tooltip v-else-if="item.prop == 'end_date' && item.state == 1" min-width="130" sortable />
+                <el-table-column label="剩余天数" prop="expireDay" v-else-if="item.prop == 'expireDay' && item.state == 1" min-width="130" sortable />
+                <el-table-column label="客户签约人" prop="signatories" v-else-if="item.prop == 'signatories' && item.state == 1" min-width="130" sortable />
+                <el-table-column label="我方签约人" prop="our_signatories" v-else-if="item.prop == 'our_signatories' && item.state == 1" min-width="130" sortable />
+                <el-table-column label="审核状态" prop="approvalStatus" v-else-if="item.prop == 'state' && item.state == 1" min-width="150" sortable />
+                <el-table-column label="部门" prop="deptname" v-else-if="item.prop == 'deptname' && item.state == 1" min-width="100" sortable />
+                <el-table-column label="机构" prop="parentname" v-else-if="item.prop == 'parentname' && item.state == 1" min-width="130" sortable />
+                <el-table-column label="创建时间" prop="create_time" v-else-if="item.prop == 'createTime' && item.state == 1" min-width="150" sortable />
+                <el-table-column label="备注" prop="remarks" v-else-if="item.prop == 'remarks' && item.state == 1" sortable />
+                <el-table-column label="已回款金额" prop="already" v-else-if="item.prop == 'already' && item.state == 1" min-width="130" sortable>
                     <template slot-scope="scope">
-                        <div>
-                            {{scope.row.already | rounding}}
-                        </div>
+                        <div>{{scope.row.already | rounding}}</div>
                     </template>
                 </el-table-column>
-                <el-table-column
-                    prop="surplus"
-                    v-else-if="item.prop == 'surplus' && item.state == 1"
-                    min-width="130"
-                    label="剩余款项金额"
-                    sortable>
+                <el-table-column label="剩余款项金额" prop="surplus" v-else-if="item.prop == 'surplus' && item.state == 1" min-width="130" sortable>
                     <template slot-scope="scope">
-                        <div>
-                            {{scope.row.surplus | rounding}}
-                        </div>
+                        <div>{{scope.row.surplus | rounding}}</div>
                     </template>
                 </el-table-column>
             </div>
-            <el-table-column label="操作"
-                fixed="right"
-                width="150"
-                header-align="center"
-                align="center">
+            <el-table-column label="操作" fixed="right" width="150" header-align="center" align="center">
                 <template slot-scope="scope">
-                    <el-button
-                    size="mini"
-                    :disabled="scope.row.disabledBtn"
-                    @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
-                    <el-button
-                    size="mini"
-                    :disabled="scope.row.disabledBtn"
-                    type="danger"
-                    @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+                    <el-button size="mini" :disabled="scope.row.disabledBtn" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
+                    <el-button size="mini" :disabled="scope.row.disabledBtn" type="danger" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
                 </template>
             </el-table-column>
         </el-table>

@@ -1,7 +1,6 @@
 <template>
 <!-- 数据中心详情页 -->
     <div class="engine_c" v-if="showdetails">
-        <!-- <div class="engine_top"><span @click="closeDetail"><i class="el-icon-circle-close-outline"></i></span></div> -->
         <div class="top">
                 <el-card class="box-card">
                     <div slot="header" class="clearfix">
@@ -33,43 +32,17 @@
             <div class="bottom engine_bottom">
                 <el-tabs v-model="activeName2" type="card" @tab-click="tabClick">
                     <el-tab-pane label="联系人" name="first">
-                        <el-table
-                            :data="contacts"
-                            border
-                            stripe
-                            style="width: 100%">
-                            <el-table-column
-                            prop="name"
-                            label="名称">
-                            </el-table-column>
-                            <el-table-column
-                            prop="phone"
-                            label="手机">
-                            </el-table-column>
-                            <el-table-column
-                            prop="email"
-                            label="邮箱">
-                            </el-table-column>
-                            <el-table-column
-                            prop="qq"
-                            label="QQ">
-                            </el-table-column>
-                            <el-table-column
-                            prop="contactsAddress"
-                            label="职务">
-                            </el-table-column>
-                            <el-table-column
-                            prop="contactsAddress"
-                            label="其他">
-                            </el-table-column>
-                            <el-table-column
-                            prop="source"
-                            label="来源">
-                            </el-table-column>
+                        <el-table :data="contacts" border stripe style="width: 100%">
+                            <el-table-column label="名称" prop="name" min-width="110" />
+                            <el-table-column label="手机" prop="phone" min-width="110" />
+                            <el-table-column label="邮箱" prop="email" min-width="130" />
+                            <el-table-column label="QQ" prop="qq" min-width="110" />
+                            <el-table-column label="职务" prop="contactsAddress" min-width="110" />
+                            <el-table-column label="其他" prop="contactsAddress" min-width="110" />
+                            <el-table-column label="来源" prop="source" min-width="110" />
                         </el-table>
                     </el-tab-pane>
                     <el-tab-pane label="官网" name="second">
-                        <!-- <p style="margin-left:30px;font-size:12px;">暂无数据</p> -->
                         <iframe class="engine_iframe" :src="website"/>
                     </el-tab-pane>
                 </el-tabs>

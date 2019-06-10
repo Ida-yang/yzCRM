@@ -74,38 +74,15 @@
         </el-form>
         <div class="line"></div>
         <div class="formlist">
-            <el-table
-                :data="tableData"
-                border
-                stripe
-                :default-sort = "{order: 'ascending'}"
-                max-height="580">
-                <el-table-column
-                    header-align="center"
-                    align="center"
-                    width="35">
+            <el-table :data="tableData" border stripe :default-sort = "{order: 'ascending'}" max-height="580">
+                <el-table-column header-align="center" align="center" width="35">
                     <template slot-scope="scope">
                         <el-button style="width:15px;height:15px;padding:0;border-radius:50%;" @click="getRow(scope.$index,scope.row)">&nbsp;</el-button>
                     </template>
                 </el-table-column>
-                <el-table-column
-                    prop="name"
-                    min-width="80"
-                    label="公司名称"
-                    sortable>
-                </el-table-column>
-                <el-table-column
-                    prop="address"
-                    min-width="130"
-                    label="公司地址"
-                    sortable>
-                </el-table-column>
-                <el-table-column
-                    prop="representative"
-                    min-width="40"
-                    label="法人"
-                    sortable>
-                </el-table-column>
+                <el-table-column prop="name" min-width="80" label="公司名称" sortable />
+                <el-table-column prop="address" min-width="130" label="公司地址" sortable />
+                <el-table-column prop="representative" min-width="40" label="法人" sortable />
             </el-table>
         </div>
     </div>

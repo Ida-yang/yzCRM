@@ -276,35 +276,16 @@
                         </div>
                     </el-tab-pane>
                     <el-tab-pane label="产品" name="second">
-                        <el-table
-                            :data="productData"
-                            border
-                            stripe
-                            style="width: 100%">
-                            <el-table-column
-                                prop="name"
-                                min-width="90"
-                                label="公司名称">
+                        <el-table :data="productData" border stripe style="width: 100%">
+                            <el-table-column prop="name" min-width="90" label="公司名称">
                             </el-table-column>
-                            <el-table-column
-                                prop="phone"
-                                min-width="110"
-                                label="联系人">
+                            <el-table-column prop="phone" min-width="110" label="联系人">
                             </el-table-column>
-                            <el-table-column
-                                prop="telephone"
-                                min-width="110"
-                                label="优势">
+                            <el-table-column prop="telephone" min-width="110" label="优势">
                             </el-table-column>
-                            <el-table-column
-                                prop="email"
-                                min-width="110"
-                                label="劣势">
+                            <el-table-column prop="email" min-width="110" label="劣势">
                             </el-table-column>
-                            <el-table-column
-                                prop="qq"
-                                min-width="110"
-                                label="常用战术">
+                            <el-table-column prop="qq" min-width="110" label="常用战术">
                             </el-table-column>
                         </el-table>
                     </el-tab-pane>
@@ -333,9 +314,7 @@
                 </el-card>
             </div> -->
         </el-col>
-        <el-dialog
-            :visible.sync="dialogVisible"
-            width="400px">
+        <el-dialog :visible.sync="dialogVisible" width="400px">
             <span>确认修改商机进度吗？一旦确定将不可撤回</span>
             <br><br>
             <span style="margin-right:10px;font-size:14px;">预计成交时间:</span>
@@ -351,12 +330,8 @@
                 <el-input  v-model="searchList.keyword" placeholder="请输入公司名称" style="width:80%;" @keyup.enter.native="search"></el-input>
                 <el-button icon="el-icon-search" type="primary" size="mini" @click="search()"></el-button>
             </div>
-            <el-table
-            :data="tableData"
-            style="width: 100%">
-                <el-table-column
-                prop="customerpool[0].name"
-                label="公司名称">
+            <el-table :data="tableData" style="width: 100%">
+                <el-table-column prop="customerpool[0].name" label="公司名称">
                     <template slot-scope="scope">
                         <div @click="getRow(scope.$index, scope.row)">
                             {{scope.row.customerpool[0].name}}

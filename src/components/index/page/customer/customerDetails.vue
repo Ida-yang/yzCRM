@@ -8,7 +8,6 @@
                         <span>{{customerdetail.pName}}</span>
                         <el-button style="float:right;" class="info-btn" size="mini" @click="retract()" v-show="!retracts">收起</el-button>
                         <el-button style="float:right;" class="info-btn" size="mini" @click="retract()" v-show="retracts">显示</el-button>
-                        <!-- <el-button style="float:right;" class="info-btn" size="mini" @click="showsend()">发送短信</el-button> -->
                         <el-popover placement="bottom" width="100" trigger="click">
                             <el-select v-model="SMSform.templateId" placeholder="请选择" style="width:100%">
                                 <el-option v-for="item in templateList" :key="item.templateId" :label="item.title" :value="item.templateId"></el-option>
@@ -108,15 +107,7 @@
                                 </el-select>
                             </el-form-item>
                             <el-form-item label="下次联系时间" style="width:310px;">
-                                <el-date-picker
-                                v-model="followform.contactTime"
-                                type="datetime"
-                                format="yyyy-MM-dd HH:mm:ss"
-                                value-format="yyyy-MM-dd HH:mm:ss"
-                                default-time="12:00:00"
-                                :picker-options="pickerOptions"
-                                placeholder="选择日期时间" style="width:200px;">
-                                </el-date-picker>
+                                <el-date-picker v-model="followform.contactTime" type="datetime" format="yyyy-MM-dd HH:mm:ss" value-format="yyyy-MM-dd HH:mm:ss" default-time="12:00:00" :picker-options="pickerOptions" placeholder="选择日期时间" style="width:200px;"></el-date-picker>
                             </el-form-item>
                             <el-form-item label="快捷沟通" style="width:80%;">
                                 <el-radio v-model="followform.followContent" v-for="item in fastcontactList" :key="item.id" :label="item.content">{{item.typeName}}</el-radio>
@@ -173,257 +164,90 @@
                         <div class="pricon">
                             <span>首要联系人</span>
                             <el-select class="pricon_sel" v-model="contacts_id" placeholder="请选择" @change="choosePri">
-                                <el-option
-                                    v-for="item in priconList"
-                                    :key="item.id"
-                                    :label="item.name"
-                                    :value="item.id">
-                                </el-option>
+                                <el-option v-for="item in priconList" :key="item.id" :label="item.name" :value="item.id"></el-option>
                             </el-select>
                         </div>
-                        <el-table
-                            :data="cusConsDetails"
-                            border
-                            stripe
-                            style="width: 100%">
-                            <el-table-column
-                                prop="name"
-                                min-width="90"
-                                label="名称">
-                            </el-table-column>
-                            <el-table-column
-                                prop="phone"
-                                min-width="110"
-                                label="手机">
-                            </el-table-column>
-                            <el-table-column
-                                prop="telephone"
-                                min-width="110"
-                                label="固话">
-                            </el-table-column>
-                            <el-table-column
-                                prop="email"
-                                min-width="110"
-                                label="邮箱">
-                            </el-table-column>
-                            <el-table-column
-                                prop="qq"
-                                min-width="110"
-                                label="QQ">
-                            </el-table-column>
-                            <el-table-column
-                                prop="wechat"
-                                min-width="110"
-                                label="微信">
-                            </el-table-column>
-                            <el-table-column
-                                prop="address"
-                                show-overflow-tooltip
-                                min-width="140"
-                                label="地址">
-                            </el-table-column>
-                            <el-table-column
-                                prop="identity"
-                                min-width="90"
-                                label="职务">
-                            </el-table-column>
-                            <el-table-column
-                                prop="sex"
-                                min-width="90"
-                                label="性别">
-                            </el-table-column>
-                            <el-table-column
-                                prop="status"
-                                min-width="90"
-                                label="是否在职">
+                        <el-table :data="cusConsDetails" border stripe style="width: 100%">
+                            <el-table-column label="名称" prop="name" min-width="90" />
+                            <el-table-column label="手机" prop="phone" min-width="110" />
+                            <el-table-column label="固话" prop="telephone" min-width="110" />
+                            <el-table-column label="邮箱" prop="email" min-width="110" />
+                            <el-table-column label="QQ" prop="qq" min-width="110" />
+                            <el-table-column label="微信" prop="wechat" min-width="110" />
+                            <el-table-column label="地址" prop="address" show-overflow-tooltip min-width="140" />
+                            <el-table-column label="职务" prop="identity" min-width="90" />
+                            <el-table-column label="性别" prop="sex" min-width="90" />
+                            <el-table-column label="是否在职" prop="status" min-width="90">
                                 <template slot-scope="scope">
                                     <el-tooltip :content="scope.row.status" placement="right">
                                         <el-switch v-model="scope.row.status" active-value="在职" inactive-value="离职" active-color="#13ce66" inactive-color="#bbbbbb" @change="changeState(scope.row)"></el-switch>
                                     </el-tooltip>
                                 </template>
                             </el-table-column>
-                            <el-table-column
-                                prop="isCrux"
-                                min-width="110"
-                                label="是否为关键人">
+                            <el-table-column label="是否为关键人" prop="isCrux" min-width="110">
                                 <template slot-scope="scope">
                                     <el-tooltip :content="scope.row.isCrux" placement="right">
                                         <el-switch v-model="scope.row.isCrux" active-value="是" inactive-value="否" active-color="#13ce66" inactive-color="#bbbbbb" @change="changePrimary(scope.row)"></el-switch>
                                     </el-tooltip>
                                 </template>
                             </el-table-column>
-                            <el-table-column
-                                prop="remark"
-                                min-width="100"
-                                label="备注">
-                            </el-table-column>
+                            <el-table-column label="备注" prop="remark" min-width="100" />
                         </el-table>
                     </el-tab-pane>
                     <el-tab-pane label="商机管理" name="third">
-                        <el-table
-                            :data="opportunityDetails"
-                            border
-                            stripe
-                            style="width: 100%">
-                            <el-table-column
-                                prop="opportunity_name"
-                                min-width="140"
-                                label="商机名称">
+                        <el-table :data="opportunityDetails" border stripe style="width: 100%">
+                            <el-table-column label="商机名称" prop="opportunity_name" min-width="140" />
+                            <el-table-column label="商机金额" prop="opportunity_achievement" min-width="100">
+                                <template slot-scope="scope">
+                                    {{scope.row.opportunity_achievement | rounding}}
+                                </template>
                             </el-table-column>
-                            <el-table-column
-                                prop="opportunity_achievement"
-                                min-width="100"
-                                label="商机金额">
-                            <template slot-scope="scope">
-                                <div>
-                                    {{scope.row.opportunity_achievement}}
-                                </div>
-                            </template>
-                            </el-table-column>
-                            <el-table-column
-                                prop="opportunity_deal"
-                                min-width="145"
-                                label="预计签单时间">
-                            </el-table-column>
-                            <el-table-column
-                                prop="opportunityProgress[0].progress_name"
-                                min-width="90"
-                                label="商机阶段">
-                            </el-table-column>
-                            <el-table-column
-                                prop="opportunityProgress[0].progress_probability"
-                                min-width="110"
-                                label="预计成功率">
-                            </el-table-column>
-                            <el-table-column
-                                prop="opportunity_time"
-                                min-width="145"
-                                label="商机新建时间">
-                            </el-table-column>
-                            <!-- <el-table-column
-                                prop="address"
-                                label="耗时天数">
-                                </el-table-column> -->
+                            <el-table-column label="预计签单时间" prop="opportunity_deal" min-width="145" />
+                            <el-table-column label="商机阶段" prop="opportunityProgress[0].progress_name" min-width="90" />
+                            <el-table-column label="预计成功率" prop="opportunityProgress[0].progress_probability" min-width="110" />
+                            <el-table-column label="商机新建时间" prop="opportunity_time" min-width="145" />
                         </el-table>
                     </el-tab-pane>
                     <el-tab-pane label="合同管理" name="fouth">
-                        <el-table
-                            :data="agreementDetails"
-                            border
-                            stripe
-                            style="width: 100%">
-                            <el-table-column
-                                prop="contract_number"
-                                min-width="100"
-                                label="合同代码">
-                            </el-table-column>
-                            <el-table-column
-                                prop="contract_name"
-                                min-width="120"
-                                label="合同名称">
-                            </el-table-column>
-                            <el-table-column
-                                prop="contract_type"
-                                min-width="90"
-                                label="合同类型">
-                            </el-table-column>
-                            <el-table-column
-                                prop="amount"
-                                min-width="90"
-                                label="合同金额">
+                        <el-table :data="agreementDetails" border stripe style="width: 100%">
+                            <el-table-column label="合同代码" prop="contract_number" min-width="100" />
+                            <el-table-column label="合同名称" prop="contract_name" min-width="120" />
+                            <el-table-column label="合同类型" prop="contract_type" min-width="90" />
+                            <el-table-column label="合同金额" prop="amount" min-width="90">
                                 <template slot-scope="scope">
-                                    <div>
-                                        {{scope.row.amount | rounding}}
-                                    </div>
+                                    {{scope.row.amount | rounding}}
                                 </template>
                             </el-table-column>
-                            <el-table-column
-                                prop="signatories"
-                                min-width="90"
-                                label="签约人">
-                            </el-table-column>
-                            <el-table-column
-                                prop="start_date"
-                                min-width="145"
-                                label="合同开始时间">
-                            </el-table-column>
-                            <el-table-column
-                                prop="end_date"
-                                min-width="145"
-                                label="合同到期时间">
-                            </el-table-column>
-                            <el-table-column
-                                prop="due_time"
-                                min-width="90"
-                                label="剩余天数">
-                            </el-table-column>
+                            <el-table-column label="签约人" prop="signatories" min-width="90" />
+                            <el-table-column label="合同开始时间" prop="start_date" min-width="145" />
+                            <el-table-column label="合同到期时间" prop="end_date" min-width="145" />
+                            <el-table-column label="剩余天数" prop="due_time" min-width="90" />
                         </el-table>
                     </el-tab-pane>
                     <el-tab-pane label="开票资料" name="fifth">
-                        <el-table
-                            :data="InvoiceDetails"
-                            border
-                            stripe
-                            style="width: 100%">
-                            <el-table-column
-                                prop="name"
-                                min-width="180"
-                                label="公司名称">
-                            </el-table-column>
-                            <el-table-column
-                                prop="creditCode"
-                                min-width="150"
-                                label="税务登记号">
-                            </el-table-column>
-                            <el-table-column
-                                prop="address"
-                                min-width="180"
-                                label="税务地址">
-                            </el-table-column>
+                        <el-table :data="InvoiceDetails" border stripe style="width: 100%">
+                            <el-table-column label="公司名称" prop="name" min-width="180" />
+                            <el-table-column label="税务登记号" prop="creditCode" min-width="150" />
+                            <el-table-column label="税务地址" prop="address" min-width="180" />
                         </el-table>
                     </el-tab-pane>
                     <el-tab-pane label="外勤任务" name="sixth">
-                        <el-table
-                            :data="FielDutyDetails"
-                            border
-                            stripe
-                            style="width: 100%">
-                            <el-table-column
-                                prop="type"
-                                min-width="90"
-                                label="类型">
-                            </el-table-column>
-                            <el-table-column
-                                prop="theme"
-                                min-width="150"
-                                label="主题">
-                            </el-table-column>
-                            <el-table-column
-                                prop="startTime"
-                                min-width="145"
-                                label="时间">
+                        <el-table :data="FielDutyDetails" border stripe style="width: 100%">
+                            <el-table-column label="类型" prop="type" min-width="90" />
+                            <el-table-column label="主题" prop="theme" min-width="150" />
+                            <el-table-column label="时间" prop="startTime" min-width="145">
                                 <template slot-scope="scope">
-                                    <div>
-                                        <p>{{scope.row.startTime}}</p>
-                                        <p>{{scope.row.endTime}}</p>
-                                    </div>
+                                    <p>{{scope.row.startTime}}</p>
+                                    <p>{{scope.row.endTime}}</p>
                                 </template>
                             </el-table-column>
-                            <el-table-column
-                                prop="private_employee"
-                                min-width="100"
-                                label="负责人">
+                            <el-table-column label="负责人" prop="private_employee" min-width="100">
                             </el-table-column>
-                            <el-table-column
-                                prop="state"
-                                min-width="100"
-                                label="状态">
+                            <el-table-column label="状态" prop="state" min-width="100">
                                 <template slot-scope="scope">
-                                    <div>
-                                        <span v-if="scope.row.state == '已完成'" style="color:#e6a23c">{{scope.row.state}}</span>
-                                        <span v-if="scope.row.state == '未完成'" style="color:#909399">{{scope.row.state}}</span>
-                                        <span v-if="scope.row.state == '作废'" style="color:#f56c6c">{{scope.row.state}}</span>
-                                    </div>
+                                    <span v-if="scope.row.state == '已完成'" style="color:#e6a23c">{{scope.row.state}}</span>
+                                    <span v-if="scope.row.state == '未完成'" style="color:#909399">{{scope.row.state}}</span>
+                                    <span v-if="scope.row.state == '作废'" style="color:#f56c6c">{{scope.row.state}}</span>
                                 </template>
                             </el-table-column>
                         </el-table>
@@ -432,28 +256,15 @@
                         <iframe class="tab_iframe" :src="website"/>
                     </el-tab-pane>
                     <el-tab-pane label="附件" name="eighth">
-                        <el-table
-                            :data="EnclosureDetails"
-                            border
-                            stripe
-                            style="width: 100%">
-                            <el-table-column
-                                prop="name"
-                                min-width="150"
-                                label="附件名称">
+                        <el-table :data="EnclosureDetails" border stripe style="width: 100%">
+                            <el-table-column label="附件名称" prop="name" min-width="150">
                                 <template slot-scope="scope">
                                     <a :href="scope.row.src" download>{{scope.row.name}}</a>
                                 </template>
                             </el-table-column>
-                            <el-table-column
-                                prop="uploads"
-                                min-width="100"
-                                label="上传者">
+                            <el-table-column label="上传者" prop="uploads" min-width="100">
                             </el-table-column>
-                            <el-table-column
-                                prop="uploadTime"
-                                min-width="150"
-                                label="上传时间">
+                            <el-table-column label="上传时间" prop="uploadTime" min-width="150">
                             </el-table-column>
                         </el-table>
                     </el-tab-pane>
@@ -466,28 +277,24 @@
                 <el-input  v-model="searchList.keyword" placeholder="请输入公司名称" style="width:80%;" @keyup.enter.native="search"></el-input>
                 <el-button icon="el-icon-search" type="primary" size="mini" @click="search()"></el-button>
             </div>
-            <el-table
-            :data="tableData"
-            style="width: 100%">
-                <el-table-column
-                prop="name"
-                label="公司名称">
+            <el-table :data="tableData" style="width: 100%">
+                <el-table-column label="公司名称" prop="name">
                     <template slot-scope="scope">
-                    <div @click="getRow(scope.$index, scope.row)">
-                        {{scope.row.name}}
-                    </div>
-                </template>
+                        <div @click="getRow(scope.$index, scope.row)">
+                            {{scope.row.name}}
+                        </div>
+                    </template>
                 </el-table-column>
             </el-table>
             <div class="block numberPage number">
                 <el-pagination
-                @size-change="handleSizeChange"
-                @current-change="handleCurrentChange"
-                :current-page="page"
-                :page-sizes="[20, 30, 50, 100]"
-                :page-size="20"
-                layout="total, sizes, prev, pager, next"
-                :total="tableNumber">
+                    @size-change="handleSizeChange"
+                    @current-change="handleCurrentChange"
+                    :current-page="page"
+                    :page-sizes="[20, 30, 50, 100]"
+                    :page-size="20"
+                    layout="total, sizes, prev, pager, next"
+                    :total="tableNumber">
                 </el-pagination>
             </div>
         </el-col>

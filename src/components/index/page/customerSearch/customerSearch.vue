@@ -132,185 +132,72 @@
         </div>
         <div class="entry">
             <el-button class="btn info-btn" size="mini" @click="transfers()">转移至线索</el-button>
+
             <div class="totalnum_head">共 <span style="font-weight:bold">{{tableNumber}}</span> 条</div>
-            <el-popover
-            placement="bottom"
-            width="100"
-            trigger="click">
-            <el-checkbox-group class="checklist" v-model="checklist">
-                <el-checkbox class="checkone" v-for="item in filterList" :key="item.id" :label="item.name" :value="item.state" @change="hangleChange($event,item)"></el-checkbox>
-            </el-checkbox-group>
-            <!-- <el-button slot="reference" class="info-btn" type="mini">筛选列表</el-button> -->
-            <el-button slot="reference" class="info-btn screen" icon="el-icon-more-outline" type="mini"></el-button>
+
+            <el-popover placement="bottom" width="100" trigger="click">
+                <el-checkbox-group class="checklist" v-model="checklist" style="max-height:600px;overflow-y:overlay;overflow-x:hidden">
+                    <el-checkbox class="checkone" v-for="item in filterList" :key="item.id" :label="item.name" :value="item.state" @change="hangleChange($event,item)"></el-checkbox>
+                </el-checkbox-group>
+                <el-button slot="reference" class="info-btn screen" icon="el-icon-more-outline" type="mini"></el-button>
             </el-popover>
         </div>
-        <el-table
-            :data="tableData"
-            ref="multipleTable"
-            border
-            stripe
-            v-loading.fullscreen.lock="Loading"
-            style="width:100%"
-            @selection-change="selectInfo">
-            <el-table-column
-                header-align="center"
-                fixed
-                align="center"
-                type="selection"
-                width="45"
-                scope.row.id
-                @selection-change="selectInfo">
-            </el-table-column>
-            <el-table-column
-                header-align="center"
-                fixed
-                align="center"
-                label="转移"
-                width="45">
+        <el-table :data="tableData" ref="multipleTable" border stripe v-loading.fullscreen.lock="Loading" style="width:100%" @selection-change="selectInfo">
+            <el-table-column header-align="center" fixed align="center" type="selection" width="45" scope.row.id @selection-change="selectInfo" />
+            <el-table-column label="转移" header-align="center" fixed align="center" width="45">
                 <template slot-scope="scope">
                     <span class="arrowdown" @click="transfer(scope.$index, scope.row)"><i class="mdi-arrow-down"></i></span>
                 </template>
             </el-table-column>
             <div v-for="(item,index) in filterList" :key="index" >
-                <el-table-column
-                    prop="name"
-                    v-if="item.prop == 'name' && item.state == 1"
-                    min-width="200"
-                    label="公司名称"
-                    sortable>
+                <el-table-column label="公司名称" prop="name" v-if="item.prop == 'name' && item.state == 1" min-width="200" sortable>
                     <template slot-scope="scope">
                         <div @click="openDetails(scope.$index, scope.row)" class="hoverline">
                             {{scope.row.name}}
                         </div>
                     </template>
                 </el-table-column>
-                <el-table-column
-                    prop="address"
-                    show-overflow-tooltip
-                    v-else-if="item.prop == 'address' && item.state == 1"
-                    label="公司地址"
-                    min-width="160"
-                    sortable>
-                </el-table-column>
-                <el-table-column
-                    prop="capital"
-                    v-else-if="item.prop == 'capital' && item.state == 1"
-                    label="注册资金"
-                    width="110"
-                    sortable>
-                    <template slot-scope="scope">{{scope.row.capital}} 万元</template>
-                </el-table-column>
-                <el-table-column
-                    prop="representative"
-                    show-overflow-tooltip
-                    v-else-if="item.prop == 'representative' && item.state == 1"
-                    label="法人" 
-                    width="80"               
-                    sortable>
-                </el-table-column>
-                <el-table-column
-                    prop="date"
-                    v-else-if="item.prop == 'date' && item.state == 1"
-                    label="成立日期"
-                    sortable
-                    width="120">
-                </el-table-column>
-                <el-table-column
-                    prop="phoneId"
-                    v-else-if="item.prop == 'coPhone' && item.state == 1"
-                    label="手机"
-                    width="110"
-                    sortable>
+                <el-table-column label="公司地址" prop="address" show-overflow-tooltip v-else-if="item.prop == 'address' && item.state == 1" min-width="160" sortable />
+                <el-table-column label="注册资金" prop="capital" v-else-if="item.prop == 'capital' && item.state == 1" width="110" sortable>
                     <template slot-scope="scope">
-                        <!-- {{scope.row.phoneId}} -->
+                        {{scope.row.capital + '万元'}}
+                    </template>
+                </el-table-column>
+                <el-table-column label="法人"  prop="representative" show-overflow-tooltip v-else-if="item.prop == 'representative' && item.state == 1" width="80"                sortable />
+                <el-table-column label="成立日期" prop="date" v-else-if="item.prop == 'date' && item.state == 1" sortable width="120">
+                </el-table-column>
+                <el-table-column label="手机" prop="phoneId" v-else-if="item.prop == 'coPhone' && item.state == 1" width="110" sortable>
+                    <template slot-scope="scope">
                         {{scope.row.phoneId | toTel}}
                     </template>
                 </el-table-column>
-                <el-table-column
-                    prop="telephoneId"
-                    v-else-if="item.prop == 'coTelephone' && item.state == 1"
-                    label="固话"
-                    width="100"
-                    sortable>
+                <el-table-column label="电话" prop="telephoneId" v-else-if="item.prop == 'coTelephone' && item.state == 1" width="100" sortable />
+                <el-table-column label="邮箱" prop="emailId" show-overflow-tooltip v-else-if="item.prop == 'coEmail' && item.state == 1" width="130" sortable />
+                <el-table-column label="网站" prop="url" v-else-if="item.prop == 'coWebsite' && item.state == 1" sortable />
+                <el-table-column label="行业" prop="industryName" show-overflow-tooltip v-else-if="item.prop == 'industryName' && item.state == 1" width="110" sortable />
+                <el-table-column label="企业规模" prop="enterpriseScaleName" v-else-if="item.prop == 'enterpriseScaleName' && item.state == 1" width="110" sortable />
+                <el-table-column label="省-市-区" v-else-if="item.prop == 'countryId' && item.state == 1" width="150" sortable>
+                    <template slot-scope="scope">
+                        {{scope.row.countryId}}-{{scope.row.city}}-{{scope.row.area}}
+                    </template>
                 </el-table-column>
-                <el-table-column
-                    prop="emailId"
-                    show-overflow-tooltip
-                    v-else-if="item.prop == 'coEmail' && item.state == 1"
-                    label="邮箱"
-                    width="130"
-                    sortable>
-                </el-table-column>
-                <el-table-column
-                    prop="url"
-                    v-else-if="item.prop == 'coWebsite' && item.state == 1"
-                    label="网站"
-                    sortable>
-                </el-table-column>
-                <el-table-column
-                    prop="industryName"
-                    show-overflow-tooltip
-                    v-else-if="item.prop == 'industryName' && item.state == 1"
-                    width="110"
-                    label="行业"
-                    sortable>
-                </el-table-column>
-                <el-table-column
-                    prop="enterpriseScaleName"
-                    v-else-if="item.prop == 'enterpriseScaleName' && item.state == 1"
-                    label="企业规模"
-                    width="110"
-                    sortable>
-                </el-table-column>
-                <el-table-column
-                    v-else-if="item.prop == 'countryId' && item.state == 1"
-                    label="省-市-区"
-                    width="150"
-                    sortable>
-                    <template slot-scope="scope">{{scope.row.countryId}}-{{scope.row.city}}-{{scope.row.area}}</template>
-                </el-table-column>
-                <el-table-column
-                    prop="company"
-                    show-overflow-tooltip
-                    v-else-if="item.prop == 'company' && item.state == 1"
-                    label="企业类型"
-                    width="130"
-                    sortable>
-                </el-table-column>
-                <el-table-column
-                    prop="ostate"
-                    v-else-if="item.prop == 'ostate' && item.state == 1"
-                    label="经营状态"
-                    width="110"
-                    sortable>
-                </el-table-column>
-                <el-table-column
-                    prop="financing"
-                    v-else-if="item.prop == 'financing' && item.state == 1"
-                    label="融资状态"
-                    width="110"
-                    sortable>
-                </el-table-column>
-                <el-table-column
-                    prop="listed"
-                    v-else-if="item.prop == 'listed' && item.state == 1"
-                    label="上市信息"
-                    width="110"
-                    sortable>
-                </el-table-column>
+                <el-table-column label="企业类型" prop="company" show-overflow-tooltip v-else-if="item.prop == 'company' && item.state == 1" width="130" sortable />
+                <el-table-column label="经营状态" prop="ostate" v-else-if="item.prop == 'ostate' && item.state == 1" width="110" sortable />
+                <el-table-column label="融资状态" prop="financing" v-else-if="item.prop == 'financing' && item.state == 1" width="110" sortable />
+                <el-table-column label="上市信息" prop="listed" v-else-if="item.prop == 'listed' && item.state == 1" width="110" sortable />
             </div>
         </el-table>
         <div class="block numberPage">
             <div class="totalnum">共 {{tableNumber}} 条</div>
             <el-pagination
-            class="pagination"
-            @size-change="handleSizeChange"
-            @current-change="handleCurrentChange"
-            :current-page="page"
-            :page-sizes="[15, 30, 50, 100]"
-            :page-size="15"
-            layout="sizes, prev, pager, next, jumper"
-            :total="tablesize">
+                class="pagination"
+                @size-change="handleSizeChange"
+                @current-change="handleCurrentChange"
+                :current-page="page"
+                :page-sizes="[15, 30, 50, 100]"
+                :page-size="15"
+                layout="sizes, prev, pager, next, jumper"
+                :total="tablesize">
             </el-pagination>
         </div>
         <!-- <keep-alive> -->

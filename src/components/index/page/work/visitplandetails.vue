@@ -66,7 +66,6 @@
                                 </div>
                                 <el-dialog :visible.sync="dialogVisible">
                                     <img width="100%" src="/upload/staticImg/test.png" alt="">
-                                    <!-- <img src="/upload/staticImg/bg.jpg" width="100%" alt="图片"> -->
                                 </el-dialog>
                             </li>
                         </ul>
@@ -89,12 +88,8 @@
                 <el-input  v-model="searchName" placeholder="请输入公司名称" style="width:80%;" @keyup.enter.native="search"></el-input>
                 <el-button icon="el-icon-search" type="primary" size="mini" @click="search()"></el-button>
             </div>
-            <el-table
-                :data="tableData"
-                style="width: 100%">
-                <el-table-column
-                    prop="customerName"
-                    label="公司名称">
+            <el-table :data="tableData" style="width: 100%">
+                <el-table-column prop="customerName" label="公司名称">
                     <template slot-scope="scope">
                     <div @click="getRow(scope.$index, scope.row)">
                         {{scope.row.customerName}}
@@ -104,13 +99,13 @@
             </el-table>
             <div class="block numberPage number">
                 <el-pagination
-                @size-change="handleSizeChange"
-                @current-change="handleCurrentChange"
-                :current-page="page"
-                :page-sizes="[20, 30, 50, 100]"
-                :page-size="20"
-                layout="total, sizes, prev, pager, next"
-                :total="tableNumber">
+                    @size-change="handleSizeChange"
+                    @current-change="handleCurrentChange"
+                    :current-page="page"
+                    :page-sizes="[20, 30, 50, 100]"
+                    :page-size="20"
+                    layout="total, sizes, prev, pager, next"
+                    :total="tableNumber">
                 </el-pagination>
             </div>
         </el-col>
@@ -154,11 +149,6 @@ export default {
             showverify:false
         }
     },
-    // mounted(){
-        // this.loadData()
-        // this.loadTable()
-        // this.reload()
-    // },
     activated(){
         this.loadData()
         this.loadTable()

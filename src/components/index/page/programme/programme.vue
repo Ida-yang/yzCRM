@@ -4,8 +4,7 @@
         <div class="otherleftcontent">
             <el-tree
                 node-key="deptid"
-                highlight-current
-                default-expand-all
+                highlight-current default-expand-all
                 :data="datalist"
                 :props="defaultProps"
                 :expand-on-click-node="false"
@@ -27,37 +26,37 @@
                             <p class="entry_name">{{goalsyear + '年' + depGoalsName + '全年目标业绩为' + depGoalsNum + '元'}}</p>
                         </div>
                         <el-table :data="depGoalsData" border stripe style="width:100%">
-                            <el-table-column prop="deptname" fixed min-width="100" label="部门" sortable></el-table-column>
-                            <el-table-column prop="month1" min-width="90" label="一月" sortable></el-table-column>
-                            <el-table-column prop="month2" min-width="90" label="二月" sortable></el-table-column>
-                            <el-table-column prop="month3" min-width="90" label="三月" sortable></el-table-column>
-                            <el-table-column prop="month4" min-width="90" label="四月" sortable></el-table-column>
-                            <el-table-column prop="month5" min-width="90" label="五月" sortable></el-table-column>
-                            <el-table-column prop="month6" min-width="90" label="六月" sortable></el-table-column>
-                            <el-table-column prop="month7" min-width="90" label="七月" sortable></el-table-column>
-                            <el-table-column prop="month8" min-width="90" label="八月" sortable></el-table-column>
-                            <el-table-column prop="month9" min-width="90" label="九月" sortable></el-table-column>
-                            <el-table-column prop="month10" min-width="90" label="十月" sortable></el-table-column>
-                            <el-table-column prop="month11" min-width="90" label="十一月" sortable></el-table-column>
-                            <el-table-column prop="month12" min-width="90" label="十二月" sortable></el-table-column>
+                            <el-table-column prop="deptname" fixed min-width="100" label="部门" sortable />
+                            <el-table-column prop="month1" min-width="90" label="一月" sortable />
+                            <el-table-column prop="month2" min-width="90" label="二月" sortable />
+                            <el-table-column prop="month3" min-width="90" label="三月" sortable />
+                            <el-table-column prop="month4" min-width="90" label="四月" sortable />
+                            <el-table-column prop="month5" min-width="90" label="五月" sortable />
+                            <el-table-column prop="month6" min-width="90" label="六月" sortable />
+                            <el-table-column prop="month7" min-width="90" label="七月" sortable />
+                            <el-table-column prop="month8" min-width="90" label="八月" sortable />
+                            <el-table-column prop="month9" min-width="90" label="九月" sortable />
+                            <el-table-column prop="month10" min-width="90" label="十月" sortable />
+                            <el-table-column prop="month11" min-width="90" label="十一月" sortable />
+                            <el-table-column prop="month12" min-width="90" label="十二月" sortable />
                         </el-table>
                         <div class="entry">
                             <p class="entry_name">{{depGoalsName + '成员' + goalsyear + '年目标明细'}}</p>
                         </div>
                         <el-table :data="goalsData" border stripe style="width:100%">
-                            <el-table-column prop="private_employee" fixed min-width="100" label="员工" sortable></el-table-column>
-                            <el-table-column prop="month1" min-width="90" label="一月" sortable></el-table-column>
-                            <el-table-column prop="month2" min-width="90" label="二月" sortable></el-table-column>
-                            <el-table-column prop="month3" min-width="90" label="三月" sortable></el-table-column>
-                            <el-table-column prop="month4" min-width="90" label="四月" sortable></el-table-column>
-                            <el-table-column prop="month5" min-width="90" label="五月" sortable></el-table-column>
-                            <el-table-column prop="month6" min-width="90" label="六月" sortable></el-table-column>
-                            <el-table-column prop="month7" min-width="90" label="七月" sortable></el-table-column>
-                            <el-table-column prop="month8" min-width="90" label="八月" sortable></el-table-column>
-                            <el-table-column prop="month9" min-width="90" label="九月" sortable></el-table-column>
-                            <el-table-column prop="month10" min-width="90" label="十月" sortable></el-table-column>
-                            <el-table-column prop="month11" min-width="90" label="十一月" sortable></el-table-column>
-                            <el-table-column prop="month12" min-width="90" label="十二月" sortable></el-table-column>
+                            <el-table-column prop="private_employee" fixed min-width="100" label="员工" sortable />
+                            <el-table-column prop="month1" min-width="90" label="一月" sortable />
+                            <el-table-column prop="month2" min-width="90" label="二月" sortable />
+                            <el-table-column prop="month3" min-width="90" label="三月" sortable />
+                            <el-table-column prop="month4" min-width="90" label="四月" sortable />
+                            <el-table-column prop="month5" min-width="90" label="五月" sortable />
+                            <el-table-column prop="month6" min-width="90" label="六月" sortable />
+                            <el-table-column prop="month7" min-width="90" label="七月" sortable />
+                            <el-table-column prop="month8" min-width="90" label="八月" sortable />
+                            <el-table-column prop="month9" min-width="90" label="九月" sortable />
+                            <el-table-column prop="month10" min-width="90" label="十月" sortable />
+                            <el-table-column prop="month11" min-width="90" label="十一月" sortable />
+                            <el-table-column prop="month12" min-width="90" label="十二月" sortable />
                             <el-table-column label="操作" fixed="right" width="90" header-align="center" align="center">
                                 <template slot-scope="scope">
                                     <el-button size="mini" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
@@ -79,107 +78,50 @@
                     <div class="entry">
                         <el-button class="btn info-btn" size="mini" @click="handleAdd()">新增</el-button>
                         <el-button class="btn" size="mini" @click="handledeletes()">删除</el-button>
+
                         <div class="totalnum_head">共 <span style="font-weight:bold">{{tableNumber}}</span> 条</div>
-                        <el-popover
-                            placement="bottom"
-                            width="100"
-                            trigger="click">
-                            <el-checkbox-group class="checklist" v-model="checklist">
+
+                        <el-popover placement="bottom" width="100" trigger="click">
+                            <el-checkbox-group class="checklist" v-model="checklist" style="max-height:600px;overflow-y:overlay;overflow-x:hidden">
                                 <el-checkbox class="checkone" v-for="item in filterList" :key="item.id" :label="item.name" :value="item.state" @change="hangleChange($event,item)"></el-checkbox>
                             </el-checkbox-group>
                             <el-button slot="reference" icon="el-icon-more" class="info-btn screen" type="mini"></el-button>
                         </el-popover>
                     </div>
-                    <el-table
-                        :data="tableData"
-                        ref="multipleTable"
-                        border
-                        stripe
-                        style="width:100%"
+                    <el-table :data="tableData" ref="multipleTable" border stripe style="width:100%"
                         @selection-change="selectInfo">
-                        <el-table-column fixed header-align="center" align="center" type="selection" width="45" scope.row.id prop="id" @selection-change="selectInfo" sortable></el-table-column>
+                        <el-table-column fixed header-align="center" align="center" type="selection" width="45" scope.row.id prop="id" @selection-change="selectInfo" sortable />
                         <div v-for="(item,index) in filterList" :key="index" >
-                            <el-table-column
-                                prop="projectName"
-                                fixed
-                                v-if="item.prop == 'projectName' && item.state == 1"
-                                min-width="150"
-                                label="方案名称"
-                                sortable>
+                            <el-table-column label="方案名称" prop="projectName" fixed v-if="item.prop == 'projectName' && item.state == 1" min-width="150" sortable>
                                 <template slot-scope="scope">
                                     <div @click="openDetails(scope.$index, scope.row)" class="hoverline">
                                         {{scope.row.projectName}}
                                     </div>
                                 </template>
                             </el-table-column>
-                            <el-table-column
-                                prop="time"
-                                v-else-if="item.prop == 'time' && item.state == 1"
-                                min-width="90"
-                                label="年份"
-                                sortable>
-                            </el-table-column>
-                            <el-table-column
-                                prop="private_employee"
-                                v-else-if="item.prop == 'private_employee' && item.state == 1"
-                                min-width="100"
-                                label="负责人"
-                                sortable>
-                            </el-table-column>
-                            <el-table-column
-                                prop="deptname"
-                                v-else-if="item.prop == 'deptname' && item.state == 1"
-                                min-width="120"
-                                label="部门"
-                                sortable>
-                            </el-table-column>
-                            <el-table-column
-                                prop="parentname"
-                                v-else-if="item.prop == 'parentname' && item.state == 1"
-                                min-width="130"
-                                label="机构"
-                                sortable>
-                            </el-table-column>
-                            <el-table-column
-                                prop="createTime"
-                                v-else-if="item.prop == 'createTime' && item.state == 1"
-                                min-width="150"
-                                label="创建时间"
-                                sortable>
-                            </el-table-column>
-                            <el-table-column
-                                prop="state"
-                                v-else-if="item.prop == 'state' && item.state == 1"
-                                min-width="80"
-                                label="状态"
-                                sortable>
-                            </el-table-column>
+                            <el-table-column label="年份" prop="time" v-else-if="item.prop == 'time' && item.state == 1" min-width="90" sortable />
+                            <el-table-column label="负责人" prop="private_employee" v-else-if="item.prop == 'private_employee' && item.state == 1" min-width="100" sortable />
+                            <el-table-column label="部门" prop="deptname" v-else-if="item.prop == 'deptname' && item.state == 1" min-width="120" sortable />
+                            <el-table-column label="机构" prop="parentname" v-else-if="item.prop == 'parentname' && item.state == 1" min-width="130" sortable />
+                            <el-table-column label="创建时间" prop="createTime" v-else-if="item.prop == 'createTime' && item.state == 1" min-width="150" sortable />
+                            <el-table-column label="状态" prop="state" v-else-if="item.prop == 'state' && item.state == 1" min-width="80" sortable />
                         </div>
-                        <el-table-column label="操作"
-                            fixed="right"
-                            width="140"
-                            header-align="center"
-                            align="center">
+                        <el-table-column label="操作" fixed="right" width="140" header-align="center" align="center">
                             <template slot-scope="scope">
-                                <el-button
-                                size="mini"
-                                @click="handleUpdate(scope.$index, scope.row)">编辑</el-button>
-                                <el-button
-                                size="mini"
-                                type="danger"
-                                @click="handledelete(scope.$index, scope.row)">删除</el-button>
+                                <el-button size="mini" @click="handleUpdate(scope.$index, scope.row)">编辑</el-button>
+                                <el-button size="mini" type="danger" @click="handledelete(scope.$index, scope.row)">删除</el-button>
                             </template>
                         </el-table-column>
                     </el-table>
                     <div class="block numberPage">
                         <el-pagination
-                        @size-change="handleSizeChange"
-                        @current-change="handleCurrentChange"
-                        :current-page="page"
-                        :page-sizes="[20, 50, 100, 500]"
-                        :page-size="20"
-                        layout="total, sizes, prev, pager, next, jumper"
-                        :total="tableNumber">
+                            @size-change="handleSizeChange"
+                            @current-change="handleCurrentChange"
+                            :current-page="page"
+                            :page-sizes="[20, 50, 100, 500]"
+                            :page-size="20"
+                            layout="total, sizes, prev, pager, next, jumper"
+                            :total="tableNumber">
                         </el-pagination>
                     </div>
                 </el-tab-pane>

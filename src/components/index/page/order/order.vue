@@ -20,139 +20,50 @@
         </div>
         <div class="entry">
             <el-button class="btn info-btn" size="mini" @click="handleAdd()">新增</el-button>
-            <!-- <el-button class="btn info-btn" size="mini" @click="handledeletes()">删除</el-button> -->
             <div class="totalnum_head">共 <span style="font-weight:bold">{{tableNumber}}</span> 条</div>
-            <el-popover
-                placement="bottom"
-                width="100"
-                trigger="click">
-                <el-checkbox-group class="checklist" v-model="checklist">
+            <el-popover placement="bottom" width="100" trigger="click">
+                <el-checkbox-group class="checklist" v-model="checklist" style="max-height:600px;overflow-y:overlay;overflow-x:hidden">
                     <el-checkbox class="checkone" v-for="item in filterList" :key="item.id" :label="item.name" :value="item.state" @change="hangleChange($event,item)"></el-checkbox>
                 </el-checkbox-group>
                 <el-button slot="reference" icon="el-icon-more" class="info-btn screen" type="mini"></el-button>
             </el-popover>
         </div>
-        <el-table
-            :data="tableData"
-            ref="multipleTable"
-            border
-            stripe
-            style="width:100%;"
-            @selection-change="selectInfo">
-            <el-table-column
-                fixed
-                header-align="center"
-                align="center"
-                type="selection"
-                width="45"
-                scope.row.id
-                prop="id"
-                @selection-change="selectInfo"
-                sortable>
-            </el-table-column>
-                <el-table-column
-                    prop="orderTime"
-                    fixed
-                    label="日期"
-                    min-width="100"
-                    sortable>
-                </el-table-column>
-                <el-table-column
-                    prop="orderNo"
-                    fixed
-                    label="订单编号"
-                    min-width="145"
-                    sortable>
+        <el-table :data="tableData" ref="multipleTable" border stripe style="width:100%;" @selection-change="selectInfo">
+            <el-table-column fixed header-align="center" align="center" type="selection" width="45" scope.row.id prop="id" @selection-change="selectInfo" sortable />
+                <el-table-column label="日期" prop="orderTime" fixed min-width="100" sortable />
+                <el-table-column label="订单编号" prop="orderNo" fixed min-width="145" sortable>
                     <template slot-scope="scope">
                         <div @click="handleEdit(scope.$index, scope.row)" class="hoverline">
                             {{scope.row.orderNo}}
                         </div>
                     </template>
                 </el-table-column>
-                <el-table-column
-                    prop="customerName"
-                    fixed
-                    show-overflow-tooltip
-                    label="公司名称"
-                    min-width="180"
-                    sortable>
-                </el-table-column>
-                <el-table-column
-                    prop="contactsName"
-                    label="联系人"
-                    min-width="100"
-                    sortable>
-                </el-table-column>
-                <el-table-column
-                    prop="settlement"
-                    label="结算方式"
-                    min-width="110"
-                    sortable>
-                </el-table-column>
-                <el-table-column
-                    prop="delivery"
-                    label="交货方式"
-                    min-width="110"
-                    sortable>
-                </el-table-column>
-                <el-table-column
-                    prop="deliveryAddress"
-                    show-overflow-tooltip
-                    label="交货地址"
-                    min-width="150"
-                    sortable>
-                </el-table-column>
-                <el-table-column
-                    prop="private_employee"
-                    label="制单人"
-                    min-width="120"
-                    sortable>
-                </el-table-column>
-                <el-table-column
-                    prop="ascription"
-                    label="业务员"
-                    min-width="120"
-                    sortable>
-                </el-table-column>
-                <el-table-column
-                    prop="deptname"
-                    label="部门"
-                    min-width="120"
-                    sortable>
-                </el-table-column>
-                <el-table-column
-                    prop="parentname"
-                    show-overflow-tooltip
-                    label="机构"
-                    min-width="120"
-                    sortable>
-                </el-table-column>
-            <el-table-column label="操作"
-                fixed="right"
-                width="150"
-                header-align="center"
-                align="center">
+                <el-table-column label="公司名称" prop="customerName" fixed show-overflow-tooltip min-width="180" sortable />
+                <el-table-column label="联系人" prop="contactsName" min-width="100" sortable />
+                <el-table-column label="结算方式" prop="settlement" min-width="110" sortable />
+                <el-table-column label="交货方式" prop="delivery" min-width="110" sortable />
+                <el-table-column label="交货地址" prop="deliveryAddress" show-overflow-tooltip min-width="150" sortable />
+                <el-table-column label="制单人" prop="private_employee" min-width="120" sortable />
+                <el-table-column label="业务员" prop="ascription" min-width="120" sortable />
+                <el-table-column label="部门" prop="deptname" min-width="120" sortable />
+                <el-table-column label="机构" prop="parentname" show-overflow-tooltip min-width="120" sortable />
+            <el-table-column label="操作" fixed="right" width="150" header-align="center" align="center">
                 <template slot-scope="scope">
-                    <el-button
-                    size="mini"
-                    @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
-                    <el-button
-                    size="mini"
-                    type="danger"
-                    @click="handledetele(scope.$index, scope.row)">删除</el-button>
+                    <el-button size="mini" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
+                    <el-button size="mini" type="danger" @click="handledetele(scope.$index, scope.row)">删除</el-button>
                 </template>
             </el-table-column>
             
         </el-table>
         <div class="block numberPage">
             <el-pagination
-            @size-change="handleSizeChange"
-            @current-change="handleCurrentChange"
-            :current-page="page"
-            :page-sizes="[20, 50, 100, 500]"
-            :page-size="20"
-            layout="total, sizes, prev, pager, next, jumper"
-            :total="tableNumber">
+                @size-change="handleSizeChange"
+                @current-change="handleCurrentChange"
+                :current-page="page"
+                :page-sizes="[20, 50, 100, 500]"
+                :page-size="20"
+                layout="total, sizes, prev, pager, next, jumper"
+                :total="tableNumber">
             </el-pagination>
         </div>
     </div>

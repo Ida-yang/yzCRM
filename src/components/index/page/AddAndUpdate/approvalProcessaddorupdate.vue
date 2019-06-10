@@ -16,15 +16,13 @@
                 <el-form-item label="应用部门" label-width="90px">
                     <el-select v-model="myform.deptNames" multiple placeholder="请选择应用部门" size="mini" class="dept_select">
                         <el-option class="droplist" :value="myform.deptNames">
-                            <el-tree
-                                node-key="deptid"
-                                highlight-current
-                                default-expand-all
-                                show-checkbox
+                            <el-tree 
+                                node-key="deptid" 
+                                highlight-current default-expand-all show-checkbox
                                 ref="tree"
+                                :expand-on-click-node="false"
                                 :data="datalist"
                                 :props="defaultProps"
-                                :expand-on-click-node="false"
                                 @check="handlecheck"
                                 class="drop_tree">
                             </el-tree>

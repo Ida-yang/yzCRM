@@ -201,50 +201,16 @@
         
         <div class="line"></div>
         <div class="formlist">
-            <el-table
-                :data="tableData"
-                border
-                stripe
-                :default-sort = "{order: 'ascending'}"
-                max-height="680">
-                <el-table-column
-                    header-align="center"
-                    align="center"
-                    width="35">
+            <el-table :data="tableData" border stripe :default-sort = "{order: 'ascending'}" max-height="680">
+                <el-table-column header-align="center" align="center" width="35">
                     <template slot-scope="scope">
                         <el-button style="width:15px;height:15px;padding:0;border-radius:50%;" @click="getRow(scope.$index,scope.row)">&nbsp;</el-button>
                     </template>
                 </el-table-column>
-                <el-table-column
-                    prop="name"
-                    min-width="80"
-                    label="公司名称"
-                    sortable>
-                </el-table-column>
-                <el-table-column
-                    prop="address"
-                    min-width="130"
-                    label="公司地址"
-                    sortable>
-                </el-table-column>
-                <el-table-column
-                    prop="representative"
-                    min-width="40"
-                    label="法人"
-                    sortable>
-                </el-table-column>
+                <el-table-column prop="name" min-width="80" label="公司名称" sortable />
+                <el-table-column prop="address" min-width="130" label="公司地址" sortable />
+                <el-table-column prop="representative" min-width="40" label="法人" sortable />
             </el-table>
-            <!-- <div class="block numberPage">
-                <el-pagination
-                @size-change="handleSizeChange"
-                @current-change="handleCurrentChange"
-                :current-page="page"
-                :page-sizes="[15, 30, 50, 100]"
-                :page-size="15"
-                layout="total, sizes, prev, pager, next, jumper"
-                :total="tableNumber">
-                </el-pagination>
-            </div> -->
         </div>
     </div>
 </template>
@@ -296,7 +262,6 @@
                 page: 1,//默认第一页
                 limit: 15,//默认15条
                 selectData: null,
-                tableNumber: null,
                 rules: {
                     poolName : [{ required: true, message: '公司名称不能为空', trigger: 'blur' },],
                     contactsName : [{ required: true, message: '联系人名称不能为空', trigger: 'blur' },],
@@ -372,7 +337,6 @@
                     data: qs.stringify(pageInfo),
                 }).then(function(res){
                     _this.tableData = res.data.rows
-                    _this.tableNumber = res.data.total;
                 }).catch(function(err){
                 });
                 axios({
@@ -468,7 +432,6 @@
                     data: qs.stringify(pageInfo),
                 }).then(function(res){
                     _this.tableData = res.data.rows
-                    _this.tableNumber = res.data.total;
                 }).catch(function(err){
                 });
             },
@@ -730,17 +693,6 @@
                 }).catch(function(err){
                     // console.log(err);
                 });
-            },
-
-            handleSizeChange(val) {
-                const _this = this;
-                _this.limit = val;
-                _this.$options.methods.loadTable.bind(_this)(true);
-            },
-            handleCurrentChange(val) {
-                const _this = this;
-                _this.page = val;
-                _this.$options.methods.loadTable.bind(_this)(true);
             },
         }
         

@@ -25,68 +25,24 @@
                 <el-date-picker v-model="searchList2.yearrange" type="daterange" format="yyyy-MM-dd" value-format="yyyy-MM-dd" start-placeholder="开始日期" end-placeholder="结束日期" @change="oplogDatepick"></el-date-picker>
             </div>
             <div class="searchList" style="width:100%;"></div>
-            <el-table
-                :data="oplogData"
-                ref="multipleTable"
-                border
-                stripe
-                style="width:100%;">
-                <el-table-column
-                    fixed
-                    header-align="center"
-                    align="center"
-                    type="index"
-                    width="45">
-                </el-table-column>
-                <el-table-column
-                    prop="model"
-                    fixed
-                    min-width="100"
-                    label="模块"
-                    sortable>
-                </el-table-column>
-                <el-table-column
-                    prop="workName"
-                    show-overflow-tooltip
-                    label="对象"
-                    min-width="160"
-                    sortable>
-                </el-table-column>
-                <el-table-column
-                    prop="type"
-                    label="操作类型"
-                    min-width="130"
-                    sortable>
-                </el-table-column>
-                <el-table-column
-                    prop="private_employee"
-                    label="用户"
-                    min-width="100"
-                    sortable>
-                </el-table-column>
-                <el-table-column
-                    prop="startDate"
-                    label="时间"
-                    min-width="140"
-                    sortable>
-                </el-table-column>
-                <el-table-column
-                    prop="ip"
-                    show-overflow-tooltip
-                    label="IP地址"
-                    min-width="160"
-                    sortable>
-                </el-table-column>
+            <el-table :data="oplogData" ref="multipleTable" border stripe style="width:100%;">
+                <el-table-column fixed header-align="center" align="center" type="index" width="45" />
+                <el-table-column label="模块" prop="model" fixed min-width="100" sortable />
+                <el-table-column label="对象" prop="workName" show-overflow-tooltip min-width="160" sortable />
+                <el-table-column label="操作类型" prop="type" min-width="130" sortable />
+                <el-table-column label="用户" prop="private_employee" min-width="100" sortable />
+                <el-table-column label="时间" prop="startDate" min-width="140" sortable />
+                <el-table-column label="IP地址" prop="ip" show-overflow-tooltip min-width="160" sortable />
             </el-table>
             <div class="block numberPage">
                 <el-pagination
-                @size-change="oplogSizeChange"
-                @current-change="oplogCurrentChange"
-                :current-page="page"
-                :page-sizes="[100, 300, 500]"
-                :page-size="100"
-                layout="total, sizes, prev, pager, next, jumper"
-                :total="oplogNumber">
+                    @size-change="oplogSizeChange"
+                    @current-change="oplogCurrentChange"
+                    :current-page="page"
+                    :page-sizes="[100, 300, 500]"
+                    :page-size="100"
+                    layout="total, sizes, prev, pager, next, jumper"
+                    :total="oplogNumber">
                 </el-pagination>
             </div>
         </div>
@@ -112,95 +68,28 @@
                 <el-button icon="el-icon-search" type="primary" size="mini" @click="searchSMSlog()">查询</el-button>
             </div>
             <div class="searchList" style="width:100%;"></div>
-            <el-table
-                :data="SMSlogData"
-                ref="multipleTable"
-                border
-                stripe
-                style="width:100%;">
-                <el-table-column
-                    fixed
-                    header-align="center"
-                    align="center"
-                    type="index"
-                    width="45">
-                </el-table-column>
-                <el-table-column
-                    prop="workname"
-                    show-overflow-tooltip
-                    label="公司名称"
-                    min-width="160"
-                    sortable>
-                </el-table-column>
-                <el-table-column
-                    prop="contact"
-                    label="联系人"
-                    min-width="130"
-                    sortable>
-                </el-table-column>
-                <el-table-column
-                    prop="phone"
-                    label="电话"
-                    min-width="100"
-                    sortable>
-                </el-table-column>
-                <el-table-column
-                    prop="title"
-                    label="模板标题"
-                    min-width="130"
-                    sortable>
-                </el-table-column>
-                <el-table-column
-                    prop="content"
-                    show-overflow-tooltip
-                    label="模板内容"
-                    min-width="180"
-                    sortable>
-                </el-table-column>
-                <el-table-column
-                    prop="explain"
-                    show-overflow-tooltip
-                    label="短信说明"
-                    min-width="180"
-                    sortable>
-                </el-table-column>
-                <el-table-column
-                    prop="private_employee"
-                    label="发送者"
-                    min-width="140"
-                    sortable>
-                </el-table-column>
-                <el-table-column
-                    prop="deptname"
-                    show-overflow-tooltip
-                    label="部门"
-                    min-width="160"
-                    sortable>
-                </el-table-column>
-                <el-table-column
-                    prop="parentname"
-                    show-overflow-tooltip
-                    label="机构"
-                    min-width="160"
-                    sortable>
-                </el-table-column>
-                <el-table-column
-                    prop="createTime"
-                    show-overflow-tooltip
-                    label="发送时间"
-                    min-width="160"
-                    sortable>
-                </el-table-column>
+            <el-table :data="SMSlogData" ref="multipleTable" border stripe style="width:100%;">
+                <el-table-column fixed header-align="center" align="center" type="index" width="45" />
+                <el-table-column label="公司名称" prop="workname" show-overflow-tooltip min-width="160" sortable />
+                <el-table-column label="联系人" prop="contact" min-width="130" sortable />
+                <el-table-column label="电话" prop="phone" min-width="110" sortable />
+                <el-table-column label="模板标题" prop="title" min-width="130" sortable />
+                <el-table-column label="模板内容" prop="content" show-overflow-tooltip min-width="180" sortable />
+                <el-table-column label="短信说明" prop="explain" show-overflow-tooltip min-width="180" sortable />
+                <el-table-column label="发送者" prop="private_employee" min-width="140" sortable />
+                <el-table-column label="部门" prop="deptname" show-overflow-tooltip min-width="160" sortable />
+                <el-table-column label="机构" prop="parentname" show-overflow-tooltip min-width="160" sortable />
+                <el-table-column label="发送时间" prop="createTime" show-overflow-tooltip min-width="160" sortable />
             </el-table>
             <div class="block numberPage">
                 <el-pagination
-                @size-change="SMSlogSizeChange"
-                @current-change="SMSlogCurrentChange"
-                :current-page="page"
-                :page-sizes="[100, 300, 500]"
-                :page-size="100"
-                layout="total, sizes, prev, pager, next, jumper"
-                :total="SMSlogNumber">
+                    @size-change="SMSlogSizeChange"
+                    @current-change="SMSlogCurrentChange"
+                    :current-page="page"
+                    :page-sizes="[100, 300, 500]"
+                    :page-size="100"
+                    layout="total, sizes, prev, pager, next, jumper"
+                    :total="SMSlogNumber">
                 </el-pagination>
             </div>
         </div>

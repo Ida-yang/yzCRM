@@ -247,14 +247,9 @@ const router =new Router({
           meta: { title: '审核流程',name:'approvalProcess',requireAuth:true}
         },
         {
-          path: '/approvalProcessadd',
-          component: resolve => require(['../components/index/page/AddAndUpdate/approvalProcessadd.vue'], resolve),
-          meta: { title: '新增流程',requireAuth:true}
-        },
-        {
-          path: '/approvalProcessupdate',
-          component: resolve => require(['../components/index/page/AddAndUpdate/approvalProcessupdate.vue'], resolve),
-          meta: { title: '编辑流程',requireAuth:true}
+          path: '/approvalProcessaddorupdate',
+          component: resolve => require(['../components/index/page/AddAndUpdate/approvalProcessaddorupdate.vue'], resolve),
+          meta: { title: '编辑审核流程',requireAuth:true}
         },
         {
           path: '/workOrder',

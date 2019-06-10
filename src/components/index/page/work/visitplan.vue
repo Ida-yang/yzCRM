@@ -26,42 +26,18 @@
         <div class="entry">
             <el-button class="btn info-btn" size="mini" @click="handleAdd()">新增</el-button>
             <div class="totalnum_head">共 <span style="font-weight:bold">{{tableNumber}}</span> 条</div>
-            <el-popover
-                placement="bottom"
-                width="100"
-                trigger="click">
-            <el-checkbox-group class="checklist" v-model="checklist">
-                <el-checkbox class="checkone" v-for="item in filterList" :key="item.id" :label="item.name" :value="item.state" @change="hangleChange($event,item)"></el-checkbox>
-            </el-checkbox-group>
+            <el-popover placement="bottom" width="100" trigger="click">
+                <el-checkbox-group class="checklist" v-model="checklist" style="max-height:600px;overflow-y:overlay;overflow-x:hidden">
+                    <el-checkbox class="checkone" v-for="item in filterList" :key="item.id" :label="item.name" :value="item.state" @change="hangleChange($event,item)"></el-checkbox>
+                </el-checkbox-group>
                 <el-button slot="reference" icon="el-icon-more" class="info-btn screen" type="mini"></el-button>
             </el-popover>
         </div>
-        <el-table
-            :data="tableData"
-            ref="multipleTable"
-            border
-            stripe
-            style="width:100%;"
-            @selection-change="selectInfo">
-            <el-table-column
-                fixed
-                header-align="center"
-                align="center"
-                type="selection"
-                width="45"
-                scope.row.id
-                prop="id"
-                @selection-change="selectInfo"
-                sortable>
+        <el-table :data="tableData" ref="multipleTable" border stripe style="width:100%;" @selection-change="selectInfo">
+            <el-table-column fixed header-align="center" align="center" type="selection" width="45" scope.row.id prop="id" @selection-change="selectInfo" sortable>
             </el-table-column>
             <div v-for="(item,index) in filterList" :key="index" >
-                <el-table-column
-                    prop="id"
-                    v-if="item.prop == 'visitTheme' && item.state == 1"
-                    fixed
-                    min-width="350"
-                    label="主要信息"
-                    sortable>
+                <el-table-column label="主要信息" prop="id" v-if="item.prop == 'visitTheme' && item.state == 1" fixed min-width="350" sortable>
                     <template slot-scope="scope">
                         <div class="visit_info">
                             <span @click="openDetails(scope.$index, scope.row)" class="visit_theme visit_customer hoverline">{{scope.row.customerName}}</span>
@@ -70,20 +46,8 @@
                         <div class="visit_info">{{scope.row.visitTheme}}</div>
                     </template>
                 </el-table-column>
-                <el-table-column
-                    prop="phone"
-                    v-else-if="item.prop == 'pheone' && item.state == 1"
-                    show-overflow-tooltip
-                    label="电话"
-                    min-width="95"
-                    sortable>
-                </el-table-column>
-                <el-table-column
-                    prop="visitTime"
-                    v-else-if="item.prop == 'visitTime' && item.state == 1"
-                    min-width="150"
-                    label="计划时间"
-                    sortable>
+                <el-table-column label="电话" prop="phone" v-else-if="item.prop == 'pheone' && item.state == 1" min-width="110" sortable />
+                <el-table-column label="计划时间" prop="visitTime" v-else-if="item.prop == 'visitTime' && item.state == 1" min-width="150" sortable>
                     <template slot-scope="scope">
                         <div>
                             <p>{{scope.row.visitTime}}</p>
@@ -91,53 +55,18 @@
                         </div>
                     </template>
                 </el-table-column>
-                <el-table-column
-                    prop="private_employee"
-                    v-else-if="item.prop == 'private_employee' && item.state == 1"
-                    show-overflow-tooltip
-                    label="负责人"
-                    min-width="95"
-                    sortable>
-                </el-table-column>
-                <el-table-column
-                    prop="assistants"
-                    v-else-if="item.prop == 'assistants' && item.state == 1"
-                    label="协助人"
-                    min-width="120"
-                    sortable>
+                <el-table-column label="负责人" prop="private_employee" v-else-if="item.prop == 'private_employee' && item.state == 1" min-width="110" sortable />
+                <el-table-column label="协助人" prop="assistants" v-else-if="item.prop == 'assistants' && item.state == 1" min-width="120" sortable>
                     <template slot-scope="scope">
                         <div>
                             <span v-for="(item,index) in scope.row.assistants" :key="index" :label="item">{{item}} , </span>
                         </div>
                     </template>
                 </el-table-column>
-                <el-table-column
-                    prop="approver"
-                    v-else-if="item.prop == 'approver' && item.state == 1"
-                    min-width="95"
-                    label="审核人"
-                    sortable>
-                </el-table-column>
-                <el-table-column
-                    prop="approverState"
-                    v-else-if="item.prop == 'approverState' && item.state == 1"
-                    min-width="130"
-                    label="审核状态"
-                    sortable>
-                </el-table-column>
-                <el-table-column
-                    prop="remindTime"
-                    v-else-if="item.prop == 'remindTime' && item.state == 1"
-                    min-width="150"
-                    label="提醒时间"
-                    sortable>
-                </el-table-column>
-                <el-table-column
-                    prop="state"
-                    v-else-if="item.prop == 'state' && item.state == 1"
-                    min-width="220"
-                    label="状态"
-                    sortable>
+                <el-table-column label="审核人" prop="approver" v-else-if="item.prop == 'approver' && item.state == 1" min-width="95" sortable />
+                <el-table-column label="审核状态" prop="approverState" v-else-if="item.prop == 'approverState' && item.state == 1" min-width="130" sortable />
+                <el-table-column label="提醒时间" prop="remindTime" v-else-if="item.prop == 'remindTime' && item.state == 1" min-width="150" sortable />
+                <el-table-column label="状态" prop="state" v-else-if="item.prop == 'state' && item.state == 1" min-width="220" sortable>
                     <template slot-scope="scope">
                         <el-button-group>
                             <el-button size="mini" :disabled="scope.row.progressBtn" :type="scope.row.progress" @click="changeState($event, scope.row)">未完成</el-button>
@@ -146,50 +75,26 @@
                         </el-button-group>
                     </template>
                 </el-table-column>
-                <el-table-column
-                    prop="deptname"
-                    v-else-if="item.prop == 'deptname' && item.state == 1"
-                    min-width="100"
-                    label="部门"
-                    sortable>
-                </el-table-column>
-                <el-table-column
-                    prop="parentname"
-                    v-else-if="item.prop == 'parentname' && item.state == 1"
-                    show-overflow-tooltip
-                    min-width="100"
-                    label="机构"
-                    sortable>
-                </el-table-column>
+                <el-table-column label="部门" prop="deptname" v-else-if="item.prop == 'deptname' && item.state == 1" min-width="100" sortable />
+                <el-table-column label="机构" prop="parentname" v-else-if="item.prop == 'parentname' && item.state == 1" show-overflow-tooltip min-width="100" sortable />
             </div>
-            <el-table-column label="操作"
-                fixed="right"
-                width="150"
-                header-align="center"
-                align="center">
+            <el-table-column label="操作" fixed="right" width="150" header-align="center" align="center">
                 <template slot-scope="scope">
-                    <el-button
-                    size="mini"
-                    :disabled="scope.row.editBtn"
-                    @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
-                    <el-button
-                    size="mini"
-                    type="danger"
-                    :disabled="scope.row.deleteBtn"
-                    @click="handledelete(scope.$index, scope.row)">删除</el-button>
+                    <el-button size="mini" :disabled="scope.row.editBtn" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
+                    <el-button size="mini" type="danger" :disabled="scope.row.deleteBtn" @click="handledelete(scope.$index, scope.row)">删除</el-button>
                 </template>
             </el-table-column>
             
         </el-table>
         <div class="block numberPage">
             <el-pagination
-            @size-change="handleSizeChange"
-            @current-change="handleCurrentChange"
-            :current-page="page"
-            :page-sizes="[20, 50, 100, 500]"
-            :page-size="20"
-            layout="total, sizes, prev, pager, next, jumper"
-            :total="tableNumber">
+                @size-change="handleSizeChange"
+                @current-change="handleCurrentChange"
+                :current-page="page"
+                :page-sizes="[20, 50, 100, 500]"
+                :page-size="20"
+                layout="total, sizes, prev, pager, next, jumper"
+                :total="tableNumber">
             </el-pagination>
         </div>
     </div>

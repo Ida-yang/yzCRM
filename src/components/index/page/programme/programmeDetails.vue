@@ -29,40 +29,15 @@
                         <span>线索和每日考核目标</span>
                     </div>
                     <div class="text item">
-                        <el-table
-                            :data="cLueProjects"
-                            border
-                            strip
-                            style="width: 100%">
-                            <el-table-column
-                                prop="name"
-                                label="岗位">
-                            </el-table-column>
-                            <el-table-column
-                                prop="addClue"
-                                min-width="100"
-                                label="线索/客户新增目标">
-                            </el-table-column>
-                            <el-table-column
-                                prop="toUpdate"
-                                label="线索更新目标">
-                            </el-table-column>
-                            <el-table-column
-                                prop="monthNum"
-                                label="每月">
-                            </el-table-column>
-                            <el-table-column
-                                prop="weekNum"
-                                label="每周">
-                            </el-table-column>
-                            <el-table-column label="操作"
-                                width="80"
-                                header-align="center"
-                                align="center">
+                        <el-table :data="cLueProjects" border strip style="width: 100%">
+                            <el-table-column label="岗位" prop="name" />
+                            <el-table-column label="线索/客户新增目标" prop="addClue" min-width="100" />
+                            <el-table-column label="线索更新目标" prop="toUpdate" />
+                            <el-table-column label="每月" prop="monthNum" />
+                            <el-table-column label="每周" prop="weekNum" />
+                            <el-table-column label="操作" width="80" header-align="center" align="center">
                                 <template slot-scope="scope">
-                                    <el-button
-                                    size="mini"
-                                    @click="handleclue(scope.$index, scope.row)">编辑</el-button>
+                                    <el-button size="mini" @click="handleclue(scope.$index, scope.row)">编辑</el-button>
                                 </template>
                             </el-table-column>
                         </el-table>
@@ -75,31 +50,13 @@
                         <span>拜访周目标</span>
                     </div>
                     <div class="text item">
-                        <el-table
-                            :data="visitprojects"
-                            border
-                            strip
-                            style="width: 100%">
-                            <el-table-column
-                                prop="name"
-                                label="岗位">
-                            </el-table-column>
-                            <el-table-column
-                                prop="visitNum"
-                                label="拜访目标">
-                            </el-table-column>
-                            <el-table-column
-                                prop="monthMinimum"
-                                label="每月最低">
-                            </el-table-column>
-                            <el-table-column label="操作"
-                                width="80"
-                                header-align="center"
-                                align="center">
+                        <el-table :data="visitprojects" border strip style="width: 100%">
+                            <el-table-column label="岗位" prop="name" />
+                            <el-table-column label="拜访目标" prop="visitNum" />
+                            <el-table-column label="每月最低" prop="monthMinimum" />
+                            <el-table-column label="操作" width="80" header-align="center" align="center">
                                 <template slot-scope="scope">
-                                    <el-button
-                                    size="mini"
-                                    @click="handlevisit(scope.$index, scope.row)">编辑</el-button>
+                                    <el-button size="mini" @click="handlevisit(scope.$index, scope.row)">编辑</el-button>
                                 </template>
                             </el-table-column>
                         </el-table>
@@ -112,70 +69,18 @@
                         <span>每日商机考核</span>
                     </div>
                     <div class="text item">
-                        <el-table
-                            :data="opportunityProjects"
-                            border
-                            strip
-                            style="width: 100%">
-                            <el-table-column
-                                prop="name"
-                                label="岗位">
-                            </el-table-column>
-                            <el-table-column
-                                prop="opportunityNum"
-                                label="商机新增目标">
-                            </el-table-column>
-                            <el-table-column label="操作"
-                                width="80"
-                                header-align="center"
-                                align="center">
+                        <el-table :data="opportunityProjects" border strip style="width: 100%">
+                            <el-table-column label="岗位" prop="name" />
+                            <el-table-column label="商机新增目标" prop="opportunityNum" />
+                            <el-table-column label="操作" width="80" header-align="center" align="center">
                                 <template slot-scope="scope">
-                                    <el-button
-                                    size="mini"
-                                    @click="handleopportunity(scope.$index, scope.row)">编辑</el-button>
+                                    <el-button size="mini" @click="handleopportunity(scope.$index, scope.row)">编辑</el-button>
                                 </template>
                             </el-table-column>
                         </el-table>
                     </div>
                 </el-card>
             </div>
-            <!-- <div class="top">
-                <el-card class="box-card">
-                    <div slot="header" class="clearfix">
-                        <span>合同金额</span>
-                    </div>
-                    <div class="text item">
-                        <el-table
-                            :data="contractProjects"
-                            border
-                            strip
-                            style="width: 100%">
-                            <el-table-column
-                                prop="name"
-                                label="岗位">
-                            </el-table-column>
-                            <el-table-column
-                                prop="monthMoney"
-                                label="每月">
-                            </el-table-column>
-                            <el-table-column
-                                prop="weekMoney"
-                                label="每周">
-                            </el-table-column>
-                            <el-table-column label="操作"
-                                width="80"
-                                header-align="center"
-                                align="center">
-                                <template slot-scope="scope">
-                                    <el-button
-                                    size="mini"
-                                    @click="handlecontract(scope.$index, scope.row)">编辑</el-button>
-                                </template>
-                            </el-table-column>
-                        </el-table>
-                    </div>
-                </el-card>
-            </div> -->
         </el-col>
         
         <el-col :span="6" style="padding:10px;" class="right">
@@ -183,12 +88,8 @@
                 <el-input  v-model="searchList.keyword" placeholder="请输入公司名称" style="width:80%;" @keyup.enter.native="search"></el-input>
                 <el-button icon="el-icon-search" type="primary" size="mini" @click="search()"></el-button>
             </div>
-            <el-table
-                :data="tableData"
-                style="width: 100%">
-                <el-table-column
-                prop="projectName"
-                label="方案名称">
+            <el-table :data="tableData" style="width: 100%">
+                <el-table-column label="方案名称" prop="projectName">
                     <template slot-scope="scope">
                         <div @click="getRow(scope.$index, scope.row)">
                             {{scope.row.projectName}}
@@ -198,21 +99,17 @@
             </el-table>
             <div class="block numberPage number">
                 <el-pagination
-                @size-change="handleSizeChange"
-                @current-change="handleCurrentChange"
-                :current-page="page"
-                :page-sizes="[20, 30, 50, 100]"
-                :page-size="20"
-                layout="total, sizes, prev, pager, next"
-                :total="tableNumber">
+                    @size-change="handleSizeChange"
+                    @current-change="handleCurrentChange"
+                    :current-page="page"
+                    :page-sizes="[20, 30, 50, 100]"
+                    :page-size="20"
+                    layout="total, sizes, prev, pager, next"
+                    :total="tableNumber">
                 </el-pagination>
             </div>
         </el-col>
-        <el-dialog
-            title="线索和每日考核方案"
-            :visible.sync="dialogVisible"
-            width="40%">
-            <!-- <span>这是一段信息</span> -->
+        <el-dialog title="线索和每日考核方案" :visible.sync="dialogVisible" width="40%">
             <el-form label-width="130px" :model="updateList">
                 <el-form-item label="线索/客户新增目标">
                     <el-input onkeyup = "value=value.replace(/[^\d]/g,'')" class="oppinput" v-model="updateList.addClue"></el-input>
@@ -232,10 +129,7 @@
                 <el-button type="primary" @click="addcLue()">确 定</el-button>
             </span>
         </el-dialog>
-        <el-dialog
-            title="拜访周目标"
-            :visible.sync="dialogVisible2"
-            width="40%">
+        <el-dialog title="拜访周目标" :visible.sync="dialogVisible2" width="40%">
             <!-- <span>这是一段信息</span> -->
             <el-form label-width="80px" :model="updateList">
                 <el-form-item label="拜访目标">
@@ -250,10 +144,7 @@
                 <el-button type="primary" @click="addvisit()">确 定</el-button>
             </span>
         </el-dialog>
-        <el-dialog
-            title="每周商机考核"
-            :visible.sync="dialogVisible3"
-            width="40%">
+        <el-dialog title="每周商机考核" :visible.sync="dialogVisible3" width="40%">
             <!-- <span>这是一段信息</span> -->
             <el-form label-width="100px" :model="updateList">
                 <el-form-item label="商机新增目标">
@@ -265,10 +156,7 @@
                 <el-button type="primary" @click="addopportunity()">确 定</el-button>
             </span>
         </el-dialog>
-        <el-dialog
-            title="合同金额"
-            :visible.sync="dialogVisible4"
-            width="40%">
+        <el-dialog title="合同金额" :visible.sync="dialogVisible4" width="40%">
             <!-- <span>这是一段信息</span> -->
             <el-form label-width="80px" :model="updateList">
                 <el-form-item label="每月">

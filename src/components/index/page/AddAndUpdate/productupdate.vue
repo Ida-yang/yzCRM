@@ -48,8 +48,7 @@
                     <p class="pro_title">产品图片</p>
                     <div class="uploadproImg">
                         <el-upload
-                            :action="doUpload"
-                            multiple
+                            :action="doUpload" multiple
                             :file-list="fileList"
                             list-type="picture-card"
                             :on-preview="handlePictureCardPreview"

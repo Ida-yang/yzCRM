@@ -57,8 +57,8 @@
                     <div class="filter-container">
                         <el-table :data="tableData1" border stripe style="width: 100%">
                             <el-table-column header-align="center" align="center" type="index" min-width="45"></el-table-column>
-                            <el-table-column prop="spec_name" label="规格名称"></el-table-column>
-                            <el-table-column prop="specValue" label="规格值" min-width="200">
+                            <el-table-column label="规格名称" prop="spec_name"></el-table-column>
+                            <el-table-column label="规格值" prop="specValue" min-width="200">
                                 <template slot-scope="scope">
                                     <el-tag type="info" v-for="(item,i) in scope.row.spec_value" :key="i" style="margin-right:8px;">&nbsp;{{item}}&nbsp;</el-tag>
                                 </template>
@@ -67,18 +67,16 @@
                     </div>
                     <el-table :data="tableData" border stripe style="width: 100%">
                         <el-table-column header-align="center" align="center" type="index" min-width="45"></el-table-column>
-                        <el-table-column prop="imgfile" label="主图" width="120">
+                        <el-table-column label="主图" prop="imgfile" width="120">
                             <template slot-scope="scope">
-                                <div>
-                                    <img src="../../../../../static/img/timg.jpg" :alt="scope.row.imgfile" @click="showImg($event,item)" width="100" height="100">
-                                </div>
+                                <img src="../../../../../static/img/timg.jpg" :alt="scope.row.imgfile" @click="showImg($event,item)" width="100" height="100">
                             </template>
                         </el-table-column>
                         <el-table-column v-for="(item,i) in formThead" :key="i" :label="item.label" min-width="100">
                             <template slot-scope="scope">{{ scope.row[item.value] }}</template>
                         </el-table-column>
-                        <el-table-column prop="barcode" label="条形码" min-width="130"></el-table-column>
-                        <el-table-column prop="erpDocking" label="ERP对接码" min-width="130"></el-table-column>
+                        <el-table-column label="条形码" prop="barcode" min-width="130"></el-table-column>
+                        <el-table-column label="ERP对接码" prop="erpDocking" min-width="130"></el-table-column>
                     </el-table>
                 </div>
             </el-tab-pane>

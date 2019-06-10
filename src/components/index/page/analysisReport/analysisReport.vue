@@ -38,19 +38,9 @@
                 <div :id="item.id" :style="bar_style"></div>
             </div>
             <div class="report_b">
-                <el-table
-                    :data="tableData"
-                    border
-                    stripe
-                    style="width:100%">
+                <el-table :data="tableData" border stripe style="width:100%">
                     <template v-for="item in colList">
-                        <el-table-column
-                            :key="item.index"
-                            :prop="item.col"
-                            show-overflow-tooltip
-                            :min-width="item.width"
-                            :label="item.name">
-                        </el-table-column>
+                        <el-table-column :label="item.name" :prop="item.col" :key="item.index" show-overflow-tooltip :min-width="item.width"></el-table-column>
                     </template>
                 </el-table>
             </div>

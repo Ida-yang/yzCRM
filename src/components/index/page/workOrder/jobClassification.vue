@@ -3,7 +3,6 @@
         <p class="aaaa">新增工单分类</p>
         <el-carousel :autoplay="false" indicator-position="outside">
             <el-carousel-item v-for="(item,index) in classList" :key="index">
-                <!-- <h3 class="small">{{ item }}</h3> -->
                 <ul class="jobclass_ul">
                     <li class="jobclass_li" v-for="a in item" :key="a.id" @click="checkItem($event,a)">
                         <p class="p1">{{a.name}}</p>
@@ -18,7 +17,6 @@
             <ul class="jobclass2_ul">
                 <li class="jobclass2_li" v-for="b in jobData" :key="b.id" @click="checkjobClass($event,b)">
                     <p class="p4">{{b.name}}</p>
-                    <!-- <p class="p2">{{a.remarks}}</p> -->
                 </li>
             </ul>
         </div>

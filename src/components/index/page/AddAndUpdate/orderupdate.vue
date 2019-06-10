@@ -206,7 +206,6 @@
                     <template v-if="scope.row.edit">
                         <el-input v-model="scope.row.discount" class="edit-input" size="small" @input="handleinput($event,scope.$index,scope.row)">
                             <span slot="suffix" style="margin-right:5px;line-height:34px;">%</span>
-                            <!-- <el-button slot="append">%</el-button> -->
                         </el-input>
                     </template>
                     <span v-else-if="scope.row.discount">{{ scope.row.discount + ' %' }}</span>
@@ -236,7 +235,6 @@
                     <template v-if="scope.row.edit">
                         <el-input v-model="scope.row.taxRate" class="edit-input" size="small" @input="handleinput($event,scope.$index,scope.row)">
                             <span slot="suffix" style="margin-right:5px;line-height:34px;">%</span>
-                            <!-- <el-button slot="append">%</el-button> -->
                         </el-input>
                     </template>
                     <span v-else-if="scope.row.taxRate">{{ scope.row.taxRate + ' %' }}</span>
@@ -300,21 +298,13 @@
             <el-button @click="closeTag">取消</el-button>
         </div>
         
-        <el-dialog
-            title="选择产品"
-            :visible.sync="dialogVisible"
-            width="80%"
-            class="orderDialog"
-            center>
+        <el-dialog title="选择产品" :visible.sync="dialogVisible" width="80%" class="orderDialog">
             <div class="otherleftcontent">
                 <el-tree
-                    node-key="id"
-                    highlight-current
-                    accordion
+                    node-key="id" highlight-current accordion expand-on-click-node
                     :data="datalist"
                     :props="defaultProps"
                     :default-expanded-keys="defaultkeys"
-                    expand-on-click-node
                     @node-click="handleNodeClick">
                 </el-tree>
             </div>
@@ -340,10 +330,7 @@
             </span>
         </el-dialog>
         
-        <el-dialog
-            title="审核意见"
-            :visible.sync="dialogVisible2"
-            width="40%">
+        <el-dialog title="审核意见" :visible.sync="dialogVisible2" width="40%">
             <el-form ref="exaform" :model="exaform" :rules="rules">
                 <el-form-item prop="remarks">
                     <el-input v-model="exaform.remarks" type="textarea" rows="5" placeholder="请输入审核意见（必填）"></el-input>

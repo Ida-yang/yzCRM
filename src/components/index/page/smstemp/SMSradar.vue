@@ -1,5 +1,4 @@
 <template>
-    <!-- <div>{{msg}}</div> -->
     <!-- 短信雷达 -->
     <div>
         <div class="radioList">
@@ -24,67 +23,24 @@
             <el-button icon="el-icon-search" type="primary" size="mini" @click="search()">查询</el-button>
             <br><br>
         </div>
-        <el-table
-            :data="tableData"
-            ref="multipleTable"
-            border
-            stripe
-            style="width:100%">
-            <el-table-column
-                fixed
-                header-align="center"
-                align="center"
-                type="index"
-                width="45">
-            </el-table-column>
-            <el-table-column
-                prop="phone"
-                fixed
-                label="手机号码"
-                min-width="100"
-                sortable>
-            </el-table-column>
-            <el-table-column
-                prop="name"
-                label="联系人"
-                min-width="100"
-                sortable>
-            </el-table-column>
-            <el-table-column
-                prop="workName"
-                min-width="180"
-                label="公司名称"
-                sortable>
-            </el-table-column>
-            <el-table-column
-                prop="createTime"
-                label="时间"
-                min-width="145"
-                sortable>
-            </el-table-column>
-            <el-table-column
-                prop="content"
-                show-overflow-tooltip
-                label="内容"
-                min-width="160"
-                sortable>
-            </el-table-column>
-            <el-table-column
-                prop="ip"
-                label="IP"
-                min-width="140"
-                sortable>
-            </el-table-column>
+        <el-table :data="tableData" ref="multipleTable" border stripe style="width:100%">
+            <el-table-column fixed header-align="center" align="center" type="index" width="45" />
+            <el-table-column label="手机号码" prop="phone" fixed min-width="100" sortable />
+            <el-table-column label="联系人" prop="name" min-width="100" sortable />
+            <el-table-column label="公司名称" prop="workName" min-width="180" sortable />
+            <el-table-column label="时间" prop="createTime" min-width="145" sortable />
+            <el-table-column label="内容" prop="content" show-overflow-tooltip min-width="160" sortable />
+            <el-table-column prop="ip" label="IP" min-width="140" sortable />
         </el-table>
         <div class="block numberPage">
             <el-pagination
-            @size-change="handleSizeChange"
-            @current-change="handleCurrentChange"
-            :current-page="page"
-            :page-sizes="[100, 300, 500]"
-            :page-size="100"
-            layout="total, sizes, prev, pager, next, jumper"
-            :total="tableNumber">
+                @size-change="handleSizeChange"
+                @current-change="handleCurrentChange"
+                :current-page="page"
+                :page-sizes="[100, 300, 500]"
+                :page-size="100"
+                layout="total, sizes, prev, pager, next, jumper"
+                :total="tableNumber">
             </el-pagination>
         </div>
     </div>

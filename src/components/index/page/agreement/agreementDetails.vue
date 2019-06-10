@@ -162,12 +162,8 @@
                 <el-input  v-model="searchList.keyword" placeholder="请输入公司名称" style="width:80%;" @keyup.enter.native="search"></el-input>
                 <el-button icon="el-icon-search" type="primary" size="mini" @click="search()"></el-button>
             </div>
-            <el-table
-            :data="tableData"
-            style="width: 100%">
-                <el-table-column
-                prop="poolName"
-                label="公司名称">
+            <el-table :data="tableData" style="width: 100%">
+                <el-table-column label="公司名称" prop="poolName">
                     <template slot-scope="scope">
                     <div @click="getRow(scope.$index, scope.row)">
                         {{scope.row.poolName}}
@@ -177,20 +173,17 @@
             </el-table>
             <div class="block numberPage number">
                 <el-pagination
-                @size-change="handleSizeChange"
-                @current-change="handleCurrentChange"
-                :current-page="page"
-                :page-sizes="[20, 30, 50, 100]"
-                :page-size="20"
-                layout="total, sizes, prev, pager, next"
-                :total="tableNumber">
+                    @size-change="handleSizeChange"
+                    @current-change="handleCurrentChange"
+                    :current-page="page"
+                    :page-sizes="[20, 30, 50, 100]"
+                    :page-size="20"
+                    layout="total, sizes, prev, pager, next"
+                    :total="tableNumber">
                 </el-pagination>
             </div>
         </el-col>
-        <el-dialog
-            title="审核意见"
-            :visible.sync="dialogVisible2"
-            width="40%">
+        <el-dialog title="审核意见" :visible.sync="dialogVisible2" width="40%">
             <el-form ref="exaform" :model="exaform" :rules="rules">
                 <el-form-item prop="remarks">
                     <el-input v-model="exaform.remarks" type="textarea" rows="5" placeholder="请输入审核意见（必填）"></el-input>

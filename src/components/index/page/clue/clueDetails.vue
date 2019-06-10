@@ -110,15 +110,7 @@
                                 </el-select>
                             </el-form-item>
                             <el-form-item label="下次联系时间" style="width:300px;">
-                                <el-date-picker
-                                v-model="followform.contactTime"
-                                type="datetime"
-                                format="yyyy-MM-dd HH:mm:ss"
-                                value-format="yyyy-MM-dd HH:mm:ss"
-                                default-time="12:00:00"
-                                :picker-options="pickerOptions"
-                                placeholder="选择日期时间" style="width:200px;">
-                                </el-date-picker>
+                                <el-date-picker v-model="followform.contactTime" type="datetime" format="yyyy-MM-dd HH:mm:ss" value-format="yyyy-MM-dd HH:mm:ss" default-time="12:00:00" :picker-options="pickerOptions" placeholder="选择日期时间" style="width:200px;"></el-date-picker>
                             </el-form-item>
                             <el-form-item label="快捷沟通" style="width:100%;">
                                 <el-radio v-model="followform.followContent" v-for="item in fastcontactList" :key="item.id" :label="item.content">{{item.typeName}}</el-radio>
@@ -172,106 +164,48 @@
                         <div class="pricon">
                             <span>首要联系人</span>
                             <el-select class="pricon_sel" v-model="contacts_id" placeholder="请选择" @change="choosePri">
-                                <el-option
-                                    v-for="item in priconList"
-                                    :key="item.id"
-                                    :label="item.name"
-                                    :value="item.id">
-                                </el-option>
+                                <el-option v-for="item in priconList" :key="item.id" :label="item.name" :value="item.id"></el-option>
                             </el-select>
                         </div>
-                        <el-table
-                            :data="clueDetails"
-                            border
-                            stripe
-                            style="width: 100%">
-                            <el-table-column
-                                prop="name"
-                                label="名称">
-                            </el-table-column>
-                            <el-table-column
-                                prop="phone"
-                                label="手机">
-                            </el-table-column>
-                            <el-table-column
-                                prop="telephone"
-                                label="固话">
-                            </el-table-column>
-                            <el-table-column
-                                prop="email"
-                                label="邮箱">
-                            </el-table-column>
-                            <el-table-column
-                                prop="qq"
-                                label="QQ">
-                            </el-table-column>
-                            <el-table-column
-                                prop="wechat"
-                                label="微信">
-                            </el-table-column>
-                            <el-table-column
-                                prop="address"
-                                show-overflow-tooltip
-                                label="地址">
-                            </el-table-column>
-                            <el-table-column
-                                prop="identity"
-                                label="职务">
-                            </el-table-column>
-                            <el-table-column
-                                prop="sex"
-                                label="性别">
-                            </el-table-column>
-                            <el-table-column
-                                prop="status"
-                                label="是否在职">
+                        <el-table :data="clueDetails" border stripe style="width: 100%">
+                            <el-table-column label="名称" min-width="110" prop="name" />
+                            <el-table-column label="手机" min-width="110" prop="phone" />
+                            <el-table-column label="固话" min-width="110" prop="telephone" />
+                            <el-table-column label="邮箱" min-width="130" prop="email" />
+                            <el-table-column label="QQ" min-width="130" prop="qq" />
+                            <el-table-column label="微信" min-width="110" prop="wechat" />
+                            <el-table-column label="地址" prop="address" min-width="150" show-overflow-tooltip />
+                            <el-table-column label="职务" min-width="110" prop="identity" />
+                            <el-table-column label="性别" min-width="90" prop="sex" />
+                            <el-table-column label="是否在职" min-width="110" prop="status">
                                 <template slot-scope="scope">
                                     <el-tooltip :content="scope.row.status" placement="right">
                                         <el-switch v-model="scope.row.status" active-value="在职" inactive-value="离职" active-color="#13ce66" inactive-color="#bbbbbb" @change="changeState(scope.row)"></el-switch>
                                     </el-tooltip>
                                 </template>
                             </el-table-column>
-                            <el-table-column
-                                prop="isCrux"
-                                min-width="110"
-                                label="是否为关键人">
+                            <el-table-column label="是否为关键人" min-width="110" prop="isCrux">
                                 <template slot-scope="scope">
                                     <el-tooltip :content="scope.row.isCrux" placement="right">
                                         <el-switch v-model="scope.row.isCrux" active-value="是" inactive-value="否" active-color="#13ce66" inactive-color="#bbbbbb" @change="changePrimary(scope.row)"></el-switch>
                                     </el-tooltip>
                                 </template>
                             </el-table-column>
-                            <el-table-column
-                                prop="remark"
-                                label="备注">
-                            </el-table-column>
+                            <el-table-column label="备注" min-width="110" prop="remark" />
                         </el-table>
                     </el-tab-pane>
                     <el-tab-pane label="官网" name="third">
                         <iframe class="tab_iframe" :src="website"/>
                     </el-tab-pane>
                     <el-tab-pane label="附件" name="fourth">
-                        <el-table
-                            :data="Enclosureclue"
-                            border
-                            stripe
-                            style="width: 100%">
-                            <el-table-column
-                                prop="name"
-                                min-width="150"
-                                label="附件名称">
+                        <el-table :data="Enclosureclue" border stripe style="width: 100%">
+                            <el-table-column label="附件名称" prop="name" min-width="150">
                                 <template slot-scope="scope">
                                     <a :href="scope.row.src" download>{{scope.row.name}}</a>
                                 </template>
                             </el-table-column>
-                            <el-table-column
-                                prop="uploads"
-                                label="上传者">
-                            </el-table-column>
-                            <el-table-column
-                                prop="uploadTime"
-                                label="上传时间">
-                            </el-table-column>
+                            <el-table-column label="上传者" prop="uploads" min-width="110" />
+                            <el-table-column label="上传时间" prop="uploadTime" min-width="145" />
                         </el-table>
                     </el-tab-pane>
                 </el-tabs>

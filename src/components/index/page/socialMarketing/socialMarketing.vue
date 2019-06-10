@@ -22,138 +22,57 @@
             <div class="entry">
                 <el-button class="btn info-btn" size="mini" @click="handleAdd()">新增</el-button>
                 <div class="totalnum_head">共 <span style="font-weight:bold">{{tableNumber}}</span> 条</div>
-                <el-popover
-                    placement="bottom"
-                    width="100"
-                    trigger="click">
-                    <el-checkbox-group class="checklist" v-model="checklist">
+                <el-popover placement="bottom" width="100" trigger="click">
+                    <el-checkbox-group class="checklist" v-model="checklist" style="max-height:600px;overflow-y:overlay;overflow-x:hidden">
                         <el-checkbox class="checkone" v-for="item in filterList" :key="item.id" :label="item.name" :value="item.state" @change="hangleChange($event,item)"></el-checkbox>
                     </el-checkbox-group>
                     <!-- <el-button slot="reference" icon="el-icon-more-outline" type="mini">筛选列表</el-button> -->
                     <el-button slot="reference" icon="el-icon-more" class="info-btn screen" type="mini"></el-button>
                 </el-popover>
             </div>
-            <el-table
-                :data="tableData"
-                ref="multipleTable"
-                border
-                stripe
-                style="width:100%"
-                @selection-change="selectInfo"
-                >
-                <el-table-column
-                    fixed
-                    header-align="center"
-                    align="center"
-                    type="selection"
-                    width="45"
-                    scope.row.id
-                    prop="id"
-                    @selection-change="selectInfo"
-                    sortable>
+            <el-table :data="tableData" ref="multipleTable" border stripe style="width:100%" @selection-change="selectInfo" >
+                <el-table-column fixed header-align="center" align="center" type="selection" width="45" scope.row.id prop="id" @selection-change="selectInfo" sortable>
                 </el-table-column>
                 <div v-for="(item,index) in filterList" :key="index" >
-                    <el-table-column
-                        prop="name"
-                        fixed
-                        v-if="item.prop == 'name' && item.state == 1"
-                        min-width="150"
-                        label="活动名称"
-                        sortable>
-                    </el-table-column>
-                    <el-table-column
-                        prop="private_employee"
-                        v-else-if="item.prop == 'private_employee' && item.state == 1"
-                        min-width="90"
-                        label="负责人"
-                        sortable>
-                    </el-table-column>
-                    <el-table-column
-                        prop="clueNum"
-                        v-else-if="item.prop == 'clueNum' && item.state == 1"
-                        min-width="120"
-                        label="线索量"
-                        sortable>
-                    </el-table-column>
-                    <el-table-column
-                        prop="createTime"
-                        v-else-if="item.prop == 'createTime' && item.state == 1"
-                        min-width="150"
-                        label="创建时间"
-                        sortable>
-                    </el-table-column>
-                    <el-table-column
-                        prop="codeURL"
-                        v-else-if="item.prop == 'codeURL' && item.state == 1"
-                        min-width="250"
-                        label="网址"
-                        sortable>
+                    <el-table-column label="活动名称" prop="name" fixed v-if="item.prop == 'name' && item.state == 1" min-width="150" sortable />
+                    <el-table-column label="负责人" prop="private_employee" v-else-if="item.prop == 'private_employee' && item.state == 1" min-width="90" sortable />
+                    <el-table-column label="线索量" prop="clueNum" v-else-if="item.prop == 'clueNum' && item.state == 1" min-width="120" sortable />
+                    <el-table-column label="创建时间" prop="createTime" v-else-if="item.prop == 'createTime' && item.state == 1" min-width="150" sortable />
+                    <el-table-column label="网址" prop="codeURL" v-else-if="item.prop == 'codeURL' && item.state == 1" min-width="250" sortable>
                         <template slot-scope="scope">
-                            <a :href="scope.row.codeURL" target="_blank">
-                                {{scope.row.codeURL}}
-                            </a>
+                            <a :href="scope.row.codeURL" target="_blank"> {{scope.row.codeURL}}</a>
                         </template>
                     </el-table-column>
-                    <el-table-column
-                        prop="typeName"
-                        v-else-if="item.prop == 'typeName' && item.state == 1"
-                        min-width="130"
-                        label="来源"
-                        sortable>
-                    </el-table-column>
-                    <el-table-column
-                        prop="remarks"
-                        v-else-if="item.prop == 'remarks' && item.state == 1"
-                        min-width="130"
-                        label="备注"
-                        sortable>
-                    </el-table-column>
+                    <el-table-column label="来源" prop="typeName" v-else-if="item.prop == 'typeName' && item.state == 1" min-width="130" sortable />
+                    <el-table-column label="备注" prop="remarks" v-else-if="item.prop == 'remarks' && item.state == 1" min-width="130" sortable />
                 </div>
-                <el-table-column 
-                    label="二维码"
-                    fixed="right"
-                    width="120"
-                    header-align="center"
-                    align="center">
+                <el-table-column label="二维码" fixed="right" width="120" header-align="center" align="center">
                     <template slot-scope="scope">
-                        <el-popover
-                            placement="right"
-                            width="200"
-                            trigger="hover">
+                        <el-popover placement="right" width="200" trigger="hover">
                             <img :src="scope.row.qrcode" alt="图片" width="200" height="200">
                             <img slot="reference" :src="scope.row.qrcode" alt="图片" width="50" height="50">
                         </el-popover>
                     </template>
                 </el-table-column>
-                <el-table-column label="操作"
-                    width="80"
-                    fixed="right"
-                    header-align="center"
-                    align="center">
+                <el-table-column label="操作" width="80" fixed="right" header-align="center" align="center">
                     <template slot-scope="scope">
-                        <el-button
-                        size="mini"
-                        type="danger"
-                        @click="handledelete(scope.$index, scope.row)">删除</el-button>
+                        <el-button size="mini" type="danger" @click="handledelete(scope.$index, scope.row)">删除</el-button>
                     </template>
                 </el-table-column>
             </el-table>
             <div class="block numberPage">
                 <el-pagination
-                @size-change="handleSizeChange"
-                @current-change="handleCurrentChange"
-                :current-page="page"
-                :page-sizes="[20, 50, 100, 500]"
-                :page-size="20"
-                layout="total, sizes, prev, pager, next, jumper"
-                :total="tableNumber">
+                    @size-change="handleSizeChange"
+                    @current-change="handleCurrentChange"
+                    :current-page="page"
+                    :page-sizes="[20, 50, 100, 500]"
+                    :page-size="20"
+                    layout="total, sizes, prev, pager, next, jumper"
+                    :total="tableNumber">
                 </el-pagination>
             </div>
         </div>
-        <el-dialog
-            title="添加活动"
-            :visible.sync="dialogVisible"
-            width="40%">
+        <el-dialog title="添加活动" :visible.sync="dialogVisible" width="40%">
             <el-form ref="newform" :model="newform" label-width="80px" :rules="rules">
                 <el-form-item prop="resourceid" label="来源">
                     <el-select v-model="newform.resourceid" placeholder="请选择来源" style="width:80%;">
@@ -172,10 +91,7 @@
                 <el-button type="primary" @click="adduser()">确 定</el-button>
             </span>
         </el-dialog>
-        <el-dialog
-            title="修改活动"
-            :visible.sync="dialogVisible2"
-            width="40%">
+        <el-dialog title="修改活动" :visible.sync="dialogVisible2" width="40%">
             <el-form ref="newform" :model="newform" :rules="rules" label-width="80px">
                 <el-form-item prop="resourceid" label="来源">
                     <el-select v-model="newform.resourceid" placeholder="请选择来源" style="width:80%;">

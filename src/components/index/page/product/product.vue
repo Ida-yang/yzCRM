@@ -24,107 +24,47 @@
                 <el-button class="btn info-btn" size="mini" @click="handleAdd()">新增</el-button>
                 <el-button class="btn info-btn" size="mini" @click="handledeletes()">删除</el-button>
                 <el-button class="btn info-btn" size="mini" @click="showALL()">显示全部</el-button>
+
                 <div class="totalnum_head">共 <span style="font-weight:bold">{{tableNumber}}</span> 条</div>
-                <el-popover
-                    placement="bottom"
-                    width="100"
-                    trigger="click">
-                    <el-checkbox-group class="checklist" v-model="checklist">
+
+                <el-popover placement="bottom" width="100" trigger="click">
+                    <el-checkbox-group class="checklist" v-model="checklist" style="max-height:600px;overflow-y:overlay;overflow-x:hidden">
                         <el-checkbox class="checkone" v-for="item in filterList" :key="item.id" :label="item.name" :value="item.state" @change="hangleChange($event,item)"></el-checkbox>
                     </el-checkbox-group>
                     <el-button slot="reference" icon="el-icon-more" class="info-btn screen" type="mini"></el-button>
                 </el-popover>
             </div>
-            <el-table
-                :data="tableData"
-                ref="multipleTable"
-                border
-                stripe
-                style="width:100%"
-                @selection-change="selectInfo">
-                <el-table-column
-                    fixed
-                    header-align="center"
-                    align="center"
-                    type="selection"
-                    width="45"
-                    prop="id"
-                    @selection-change="selectInfo"
-                    sortable>
-                </el-table-column>
-                <el-table-column
-                    prop="goodsName"
-                    fixed
-                    min-width="130"
-                    label="产品名称"
-                    sortable>
+            <el-table :data="tableData" ref="multipleTable" border stripe style="width:100%" @selection-change="selectInfo">
+                <el-table-column fixed header-align="center" align="center" type="selection" width="45" prop="id" @selection-change="selectInfo" sortable />
+                <el-table-column label="产品名称" prop="goodsName" fixed min-width="130" sortable>
                     <template slot-scope="scope">
                         <div @click="openDetails(scope.$index, scope.row)" class="hoverline">
                             {{scope.row.goodsName}}
                         </div>
                     </template>
                 </el-table-column>
-                <el-table-column
-                    prop="price"
-                    min-width="90"
-                    label="价格"
-                    sortable>
-                </el-table-column>
-                <el-table-column
-                    prop="costPrice"
-                    min-width="90"
-                    label="成本价"
-                    sortable>
-                </el-table-column>
-                <el-table-column
-                    prop="unit"
-                    min-width="90"
-                    label="单位"
-                    sortable>
-                </el-table-column>
-                <el-table-column
-                    prop="brand"
-                    min-width="90"
-                    label="品牌"
-                    sortable>
-                </el-table-column>
-                <el-table-column
-                    prop="status"
-                    min-width="90"
-                    label="状态"
-                    sortable>
-                </el-table-column>
-                <el-table-column
-                    prop="createTime"
-                    min-width="150"
-                    label="创建时间"
-                    sortable>
-                </el-table-column>
-                <el-table-column label="操作"
-                    fixed="right"
-                    width="140"
-                    header-align="center"
-                    align="center">
+                <el-table-column label="价格" prop="price" min-width="90" sortable />
+                <el-table-column label="成本价" prop="costPrice" min-width="90" sortable />
+                <el-table-column label="单位" prop="unit" min-width="90" sortable />
+                <el-table-column label="品牌" prop="brand" min-width="90" sortable />
+                <el-table-column label="状态" prop="status" min-width="90" sortable />
+                <el-table-column label="创建时间" prop="createTime" min-width="150" sortable />
+                <el-table-column label="操作" fixed="right" width="140" header-align="center" align="center">
                     <template slot-scope="scope">
-                        <el-button
-                        size="mini"
-                        @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
-                        <el-button
-                        size="mini"
-                        type="danger"
-                        @click="handledelete(scope.$index, scope.row)">删除</el-button>
+                        <el-button size="mini" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
+                        <el-button size="mini" type="danger" @click="handledelete(scope.$index, scope.row)">删除</el-button>
                     </template>
                 </el-table-column>
             </el-table>
             <div class="block numberPage">
                 <el-pagination
-                @size-change="handleSizeChange"
-                @current-change="handleCurrentChange"
-                :current-page="page"
-                :page-sizes="[20, 50, 100, 500]"
-                :page-size="20"
-                layout="total, sizes, prev, pager, next, jumper"
-                :total="tableNumber">
+                    @size-change="handleSizeChange"
+                    @current-change="handleCurrentChange"
+                    :current-page="page"
+                    :page-sizes="[20, 50, 100, 500]"
+                    :page-size="20"
+                    layout="total, sizes, prev, pager, next, jumper"
+                    :total="tableNumber">
                 </el-pagination>
             </div>
         </div>

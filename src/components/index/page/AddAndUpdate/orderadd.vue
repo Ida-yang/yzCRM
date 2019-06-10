@@ -214,12 +214,10 @@
             <div class="otherleftcontent">
                 <el-tree
                     node-key="id"
-                    highlight-current
-                    accordion
+                    highlight-current accordion expand-on-click-node
                     :data="datalist"
                     :props="defaultProps"
                     :default-expanded-keys="defaultkeys"
-                    expand-on-click-node
                     @node-click="handleNodeClick">
                 </el-tree>
             </div>
