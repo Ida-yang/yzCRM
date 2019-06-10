@@ -38,41 +38,39 @@
             <el-table-column fixed header-align="center" align="center" type="selection" width="45" scope.row.contract_id prop="contract_id" @selection-change="selectInfo" />
             <div v-for="(item,index) in filterList" :key="index" >
                 <el-table-column label="合同编号" prop="contract_number" fixed v-if="item.prop == 'contract_number' && item.state == 1" min-width="145" sortable />
-                <el-table-column label="合同名称" prop="contract_name" fixed v-else-if="item.prop == 'contract_name' && item.state == 1" min-width="150" sortable>
+                <el-table-column label="合同名称" prop="contract_name" fixed v-if="item.prop == 'contract_name' && item.state == 1" min-width="150" sortable>
                     <template slot-scope="scope">
                         <div @click="openDetails(scope.$index, scope.row)" class="hoverline">
                             {{scope.row.contract_name}}
                         </div>
                     </template>
                 </el-table-column>
-                <el-table-column label="合同类型" prop="contract_type" v-else-if="item.prop == 'contract_type' && item.state == 1" min-width="110" sortable />
-                <el-table-column label="公司名称" prop="poolName" v-else-if="item.prop == 'poolName' && item.state == 1" min-width="180" sortable />
-                <el-table-column label="商机名称" prop="opportunity_name" v-else-if="item.prop == 'opportunity_id' && item.state == 1" min-width="120" sortable />
-                <el-table-column label="合同金额" prop="amount" v-else-if="item.prop == 'amount' && item.state == 1" min-width="125" sortable>
+                <el-table-column label="合同类型" prop="contract_type" v-if="item.prop == 'contract_type' && item.state == 1" min-width="110" sortable />
+                <el-table-column label="公司名称" prop="poolName" v-if="item.prop == 'poolName' && item.state == 1" min-width="180" sortable />
+                <el-table-column label="商机名称" prop="opportunity_name" v-if="item.prop == 'opportunity_id' && item.state == 1" min-width="120" sortable />
+                <el-table-column label="合同金额" prop="amount" v-if="item.prop == 'amount' && item.state == 1" min-width="125" sortable>
                     <template slot-scope="scope">
-                        <div>
-                            {{scope.row.amount | rounding}}
-                        </div>
+                        {{scope.row.amount | rounding}}
                     </template>
                 </el-table-column>
-                <el-table-column label="合同开始日期" prop="start_date" v-else-if="item.prop == 'start_date' && item.state == 1" min-width="130" sortable />
-                <el-table-column label="合同到期日期" prop="end_date" show-overflow-tooltip v-else-if="item.prop == 'end_date' && item.state == 1" min-width="130" sortable />
-                <el-table-column label="剩余天数" prop="expireDay" v-else-if="item.prop == 'expireDay' && item.state == 1" min-width="130" sortable />
-                <el-table-column label="客户签约人" prop="signatories" v-else-if="item.prop == 'signatories' && item.state == 1" min-width="130" sortable />
-                <el-table-column label="我方签约人" prop="our_signatories" v-else-if="item.prop == 'our_signatories' && item.state == 1" min-width="130" sortable />
-                <el-table-column label="审核状态" prop="approvalStatus" v-else-if="item.prop == 'state' && item.state == 1" min-width="150" sortable />
-                <el-table-column label="部门" prop="deptname" v-else-if="item.prop == 'deptname' && item.state == 1" min-width="100" sortable />
-                <el-table-column label="机构" prop="parentname" v-else-if="item.prop == 'parentname' && item.state == 1" min-width="130" sortable />
-                <el-table-column label="创建时间" prop="create_time" v-else-if="item.prop == 'createTime' && item.state == 1" min-width="150" sortable />
-                <el-table-column label="备注" prop="remarks" v-else-if="item.prop == 'remarks' && item.state == 1" sortable />
-                <el-table-column label="已回款金额" prop="already" v-else-if="item.prop == 'already' && item.state == 1" min-width="130" sortable>
+                <el-table-column label="合同开始日期" prop="start_date" v-if="item.prop == 'start_date' && item.state == 1" min-width="130" sortable />
+                <el-table-column label="合同到期日期" prop="end_date" show-overflow-tooltip v-if="item.prop == 'end_date' && item.state == 1" min-width="130" sortable />
+                <el-table-column label="剩余天数" prop="expireDay" v-if="item.prop == 'expireDay' && item.state == 1" min-width="130" sortable />
+                <el-table-column label="客户签约人" prop="signatories" v-if="item.prop == 'signatories' && item.state == 1" min-width="130" sortable />
+                <el-table-column label="我方签约人" prop="our_signatories" v-if="item.prop == 'our_signatories' && item.state == 1" min-width="130" sortable />
+                <el-table-column label="审核状态" prop="approvalStatus" v-if="item.prop == 'state' && item.state == 1" min-width="150" sortable />
+                <el-table-column label="部门" prop="deptname" v-if="item.prop == 'deptname' && item.state == 1" min-width="100" sortable />
+                <el-table-column label="机构" prop="parentname" v-if="item.prop == 'parentname' && item.state == 1" min-width="130" sortable />
+                <el-table-column label="创建时间" prop="create_time" v-if="item.prop == 'createTime' && item.state == 1" min-width="150" sortable />
+                <el-table-column label="备注" prop="remarks" v-if="item.prop == 'remarks' && item.state == 1" sortable />
+                <el-table-column label="已回款金额" prop="already" v-if="item.prop == 'already' && item.state == 1" min-width="130" sortable>
                     <template slot-scope="scope">
-                        <div>{{scope.row.already | rounding}}</div>
+                        {{scope.row.already | rounding}}
                     </template>
                 </el-table-column>
-                <el-table-column label="剩余款项金额" prop="surplus" v-else-if="item.prop == 'surplus' && item.state == 1" min-width="130" sortable>
+                <el-table-column label="剩余款项金额" prop="surplus" v-if="item.prop == 'surplus' && item.state == 1" min-width="130" sortable>
                     <template slot-scope="scope">
-                        <div>{{scope.row.surplus | rounding}}</div>
+                        {{scope.row.surplus | rounding}}
                     </template>
                 </el-table-column>
             </div>
@@ -218,9 +216,7 @@
                     url: _this.$store.state.defaultHttp+'getContractAll.do?cId='+_this.$store.state.iscId,
                     data: qs.stringify(searchList),
                 }).then(function(res){
-                    _this.$store.state.agreementList = res.data.map.success
-                    _this.$store.state.agreementListnumber = res.data.count;
-                    let array = _this.$store.state.agreementList
+                    let array = res.data.map.success
                     array.forEach(el => {
                         if(el.checkStatus == 0){
                             el.approvalStatus = '未审核'
@@ -233,6 +229,8 @@
                             el.approvalStatus = '未通过'
                         }
                     });
+                    _this.$store.state.agreementList = array
+                    _this.$store.state.agreementListnumber = res.data.count;
                 }).catch(function(err){
                     // console.log(err)
                 });

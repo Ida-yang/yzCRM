@@ -28,29 +28,37 @@
                 <el-button slot="reference" icon="el-icon-more" class="info-btn screen" type="mini"></el-button>
             </el-popover>
         </div>
-        <el-table :data="tableData" ref="multipleTable" border stripe style="width:100%;" @selection-change="selectInfo">
+        <el-table :data="tableData" ref="multipleTable" border stripe :summary-method="getSummaries" show-summary style="width:100%;" @selection-change="selectInfo">
             <el-table-column fixed header-align="center" align="center" type="selection" width="45" scope.row.id prop="id" @selection-change="selectInfo" sortable />
-                <el-table-column label="日期" prop="orderTime" fixed min-width="100" sortable />
-                <el-table-column label="订单编号" prop="orderNo" fixed min-width="145" sortable>
+            <div v-for="(item,index) in filterList" :key="index">
+                <el-table-column label="日期" prop="orderTime" fixed v-if="item.prop == 'createTime' && item.state == 1" min-width="100" sortable />
+                <el-table-column label="订单编号" prop="orderNo" fixed v-if="item.prop == 'orderNo' && item.state == 1" min-width="145" sortable>
                     <template slot-scope="scope">
                         <div @click="handleEdit(scope.$index, scope.row)" class="hoverline">
                             {{scope.row.orderNo}}
                         </div>
                     </template>
                 </el-table-column>
-                <el-table-column label="公司名称" prop="customerName" fixed show-overflow-tooltip min-width="180" sortable />
-                <el-table-column label="联系人" prop="contactsName" min-width="100" sortable />
-                <el-table-column label="结算方式" prop="settlement" min-width="110" sortable />
-                <el-table-column label="交货方式" prop="delivery" min-width="110" sortable />
-                <el-table-column label="交货地址" prop="deliveryAddress" show-overflow-tooltip min-width="150" sortable />
-                <el-table-column label="制单人" prop="private_employee" min-width="120" sortable />
-                <el-table-column label="业务员" prop="ascription" min-width="120" sortable />
-                <el-table-column label="部门" prop="deptname" min-width="120" sortable />
-                <el-table-column label="机构" prop="parentname" show-overflow-tooltip min-width="120" sortable />
+                <el-table-column label="公司名称" prop="customerName" fixed show-overflow-tooltip v-if="item.prop == 'customerName' && item.state == 1" min-width="180" sortable />
+                <el-table-column label="总金额" prop="totalSum" v-if="item.prop == 'totalSum' && item.state == 1" min-width="150" sortable>
+                    <template slot-scope="scope">
+                        {{scope.row.totalSum | rounding}}
+                    </template>
+                </el-table-column>
+                <el-table-column label="审核状态" prop="approvalStatus" v-if="item.prop == 'checkStatus' && item.state == 1" min-width="150" sortable />
+                <el-table-column label="联系人" prop="contactsName" v-if="item.prop == 'contactsName' && item.state == 1" min-width="100" sortable />
+                <el-table-column label="结算方式" prop="settlement" v-if="item.prop == 'settlement' && item.state == 1" min-width="110" sortable />
+                <el-table-column label="交货方式" prop="delivery" v-if="item.prop == 'delivery' && item.state == 1" min-width="110" sortable />
+                <el-table-column label="交货地址" prop="deliveryAddress" show-overflow-tooltip v-if="item.prop == 'address' && item.state == 1" min-width="150" sortable />
+                <el-table-column label="制单人" prop="private_employee" v-if="item.prop == 'private_employee' && item.state == 1" min-width="120" sortable />
+                <el-table-column label="业务员" prop="ascription" v-if="item.prop == 'ascription' && item.state == 1" min-width="120" sortable />
+                <el-table-column label="部门" prop="deptname" v-if="item.prop == 'deptname' && item.state == 1" min-width="120" sortable />
+                <el-table-column label="机构" prop="parentname" show-overflow-tooltip v-if="item.prop == 'parentname' && item.state == 1" min-width="120" sortable />
+            </div>
             <el-table-column label="操作" fixed="right" width="150" header-align="center" align="center">
                 <template slot-scope="scope">
-                    <el-button size="mini" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
-                    <el-button size="mini" type="danger" @click="handledetele(scope.$index, scope.row)">删除</el-button>
+                    <el-button size="mini" :disabled="scope.row.disabledBtn" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
+                    <el-button size="mini" :disabled="scope.row.disabledBtn" type="danger" @click="handledetele(scope.$index, scope.row)">删除</el-button>
                 </template>
             </el-table-column>
             
@@ -87,6 +95,25 @@
             tableNumber(){
                return store.state.orderListnumber;     
             },
+        },
+        filters: {
+            rounding (value) {
+                value = value.toFixed(2)
+                let intPart = Math.trunc(value) //获取整数部分
+                let intPartFormat = intPart.toString().replace(/(\d)(?=(?:\d{3})+$)/g, '$1,') // 将整数部分逢三一断
+                let floatPart = '.00' // 预定义小数部分
+                let valArray = value.split('.')
+                if(valArray.length === 2) {
+                    floatPart = valArray[1].toString() // 拿到小数部分
+                    if(floatPart.length === 1) { // 补0,实际上用不着
+                        return intPartFormat + '.' + floatPart + '0'
+                    }else{
+                        return intPartFormat + '.' + floatPart
+                    }
+                } else {
+                    return intPartFormat + floatPart
+                }
+            }
         },
         data(){
             return {
@@ -168,7 +195,20 @@
                     url: _this.$store.state.defaultHttp+'order/selectOrderList.do?cId='+_this.$store.state.iscId,
                     data: qs.stringify(searchList),
                 }).then(function(res){
-                    _this.$store.state.orderList = res.data.map.orders
+                    let array = res.data.map.orders
+                    array.forEach(el => {
+                        if(el.checkStatus == 0){
+                            el.approvalStatus = '未审核'
+                        }else if(el.checkStatus == 1){
+                            el.approvalStatus = '审核中'
+                        }else if(el.checkStatus == 2){
+                            el.approvalStatus = '审核通过'
+                            el.disabledBtn = true
+                        }else if(el.checkStatus == 3){
+                            el.approvalStatus = '未通过'
+                        }
+                    });
+                    _this.$store.state.orderList = array
                     _this.$store.state.orderListnumber = res.data.count
                 }).catch(function(err){
                     // console.log(err);
@@ -180,9 +220,9 @@
                 const _this = this;
                 let qs =require('querystring')
                 let filterList = {}
-                filterList.type = '订单'
+                filterList.type = '销售订单'
                 let data = {}
-                data.type = '订单'
+                data.type = '销售订单'
                 data.state = 1
                 
                 axios({
@@ -346,6 +386,41 @@
                         message: '取消删除[' + row.customerName + ']的订单'
                     });       
                 });
+            },
+            
+            getSummaries(param){
+                const { columns, data } = param;
+                const sums = [];
+                columns.forEach((column, index) => {
+                    if (index === 0) {
+                        sums[index] = '合计';
+                        return;
+                    }
+                    const values = data.map(item => Number(item[column.property]));
+                    if(column.property == 'totalSum'){
+                        sums[index] = values.reduce((acc, cur) => (cur + acc), 0)
+                        sums[index] = sums[index].toFixed(2)
+                        let intPart = Math.trunc(sums[index])
+                        let intPartFormat = intPart.toString().replace(/(\d)(?=(?:\d{3})+$)/g, '$1,')
+                        let floatPart = '.00' // 预定义小数部分
+                        let valArray = sums[index].split('.')
+                        if(valArray.length === 2) {
+                            floatPart = valArray[1].toString() // 拿到小数部分
+                            if(floatPart.length === 1) { // 补0,实际上用不着
+                                sums[index] = intPartFormat + '.' + floatPart + '0'
+                            }else{
+                                sums[index] = intPartFormat + '.' + floatPart
+                            }
+                        } else {
+                            sums[index] = intPartFormat + floatPart
+                        }
+                        sums[index] += ' 元';
+                    }else{
+                        sums[index] = '';
+                    }
+                });
+
+                return sums;
             },
             hangleChange(e,val){
                 const _this = this

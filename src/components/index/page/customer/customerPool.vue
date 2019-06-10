@@ -59,46 +59,46 @@
                         {{scope.row.name}}
                     </template>
                 </el-table-column>
-                <el-table-column label="地址" prop="address" show-overflow-tooltip v-else-if="item.prop == 'address' && item.state == 1" min-width="160" sortable />
+                <el-table-column label="地址" prop="address" show-overflow-tooltip v-if="item.prop == 'address' && item.state == 1" min-width="160" sortable />
                 <el-table-column label="联系人" prop="contacts[0].coName" v-if="item.prop == 'contacts[0].coName' && item.state == 1" min-width="100" sortable />
                 <el-table-column label="电话" prop="contacts[0].telephone" v-if="item.prop == 'contacts[0].telephone' && item.state == 1" width="100" sortable />
                 <el-table-column label="手机" prop="contacts[0].phone" v-if="item.prop == 'contacts[0].phone' && item.state == 1" width="110" sortable />
                 <el-table-column label="QQ" prop="contacts[0].qq" v-if="item.prop == 'contacts[0].qq' && item.state == 1" min-width="80" sortable />
-                <el-table-column label="邮箱" prop="contacts[0].email" show-overflow-tooltip v-else-if="item.prop == 'email' && item.state == 1" min-width="130" sortable />
-                <el-table-column label="微信" prop="contacts[0].wechat" v-else-if="item.prop == 'wechat' && item.state == 1" min-width="95" sortable />
-                <el-table-column label="性别" prop="contacts[0].sex" v-else-if="item.prop == 'sex' && item.state == 1" min-width="95" sortable />
-                <el-table-column label="备注" prop="contacts[0].remark" v-else-if="item.prop == 'remarks' && item.state == 1" min-width="95" sortable />
+                <el-table-column label="邮箱" prop="contacts[0].email" show-overflow-tooltip v-if="item.prop == 'email' && item.state == 1" min-width="130" sortable />
+                <el-table-column label="微信" prop="contacts[0].wechat" v-if="item.prop == 'wechat' && item.state == 1" min-width="95" sortable />
+                <el-table-column label="性别" prop="contacts[0].sex" v-if="item.prop == 'sex' && item.state == 1" min-width="95" sortable />
+                <el-table-column label="备注" prop="contacts[0].remark" v-if="item.prop == 'remarks' && item.state == 1" min-width="95" sortable />
                 <el-table-column label="最新跟进时间" prop="follow[0].createTime" v-if="item.prop == 'follow[0].createTime' && item.state == 1" min-width="130" sortable />
                 <el-table-column label="最新跟进记录" prop="follow[0].followContent" show-overflow-tooltip v-if="item.prop == 'follow[0].followContent' && item.state == 1" min-width="130" sortable />
-                <el-table-column label="下次联系时间" prop="follow[0].contactTime" v-else-if="item.prop == 'follow[0].contactTime' && item.state == 1" min-width="140" sortable />
+                <el-table-column label="下次联系时间" prop="follow[0].contactTime" v-if="item.prop == 'follow[0].contactTime' && item.state == 1" min-width="140" sortable />
                 <el-table-column label="前负责人" prop="privateUser[0].private_employee" v-if="item.prop == 'privateUser[0].private_employee' && item.state == 1" min-width="110" sortable />
                 <el-table-column label="部门" prop="deptname" v-if="item.prop == 'deptname' && item.state == 1" min-width="110" sortable />
                 <el-table-column label="机构" prop="parentname" v-if="item.prop == 'parentname' && item.state == 1" min-width="110" sortable />
-                <el-table-column label="省-市-区" prop="countryid" v-else-if="item.prop == 'countryid' && item.state == 1" min-width="150" sortable>
+                <el-table-column label="省-市-区" prop="countryid" v-if="item.prop == 'countryid' && item.state == 1" min-width="150" sortable>
                     <template slot-scope="scope">
                         {{scope.row.country}}-{{scope.row.city}}-{{scope.row.area}}
                     </template>
                 </el-table-column>
                 <el-table-column label="创建时间" prop="createTime" v-if="item.prop == 'createTime' && item.state == 1" min-width="150" sortable />
                 <el-table-column label="状态" prop="status" v-if="item.prop == 'status' && item.state == 1" min-width="100" sortable />
-                <el-table-column label="客户分类" prop="levels" v-else-if="item.prop == 'levels' && item.state == 1" min-width="110" sortable />
+                <el-table-column label="客户分类" prop="levels" v-if="item.prop == 'levels' && item.state == 1" min-width="110" sortable />
                 <el-table-column min-width="110" prop="source" v-if="item.prop == 'source' && item.state == 1" label="客户来源" sortable />
-                <el-table-column label="法人代表" prop="representative" v-else-if="item.prop == 'representative' && item.state == 1" min-width="110" sortable />
-                <el-table-column label="登记机关" prop="registrationAuthority" show-overflow-tooltip v-else-if="item.prop == 'registrationAuthority' && item.state == 1" min-width="110" sortable />
-                <el-table-column label="社会信用代码" prop="creditCode" v-else-if="item.prop == 'creditCode' && item.state == 1" min-width="150" sortable />
-                <el-table-column label="注册号" prop="registrationNumber" v-else-if="item.prop == 'registrationNumber' && item.state == 1" min-width="150" sortable />
-                <el-table-column label="组织机构代码" prop="organizationCode" v-else-if="item.prop == 'organizationCode' && item.state == 1" min-width="130" sortable />
-                <el-table-column label="注册资金" prop="capital" v-else-if="item.prop == 'capital' && item.state == 1" min-width="110" sortable>
+                <el-table-column label="法人代表" prop="representative" v-if="item.prop == 'representative' && item.state == 1" min-width="110" sortable />
+                <el-table-column label="登记机关" prop="registrationAuthority" show-overflow-tooltip v-if="item.prop == 'registrationAuthority' && item.state == 1" min-width="110" sortable />
+                <el-table-column label="社会信用代码" prop="creditCode" v-if="item.prop == 'creditCode' && item.state == 1" min-width="150" sortable />
+                <el-table-column label="注册号" prop="registrationNumber" v-if="item.prop == 'registrationNumber' && item.state == 1" min-width="150" sortable />
+                <el-table-column label="组织机构代码" prop="organizationCode" v-if="item.prop == 'organizationCode' && item.state == 1" min-width="130" sortable />
+                <el-table-column label="注册资金" prop="capital" v-if="item.prop == 'capital' && item.state == 1" min-width="110" sortable>
                     <template slot-scope="scope">
                         {{scope.row.capital +'万元'}}
                     </template>
                 </el-table-column>
-                <el-table-column label="成立时间" prop="date" v-else-if="item.prop == 'date' && item.state == 1" min-width="110" sortable />
-                <el-table-column label="企业规模" prop="enterpriseScale" v-else-if="item.prop == 'enterpriseScale' && item.state == 1" min-width="110" sortable />
-                <el-table-column label="融资状态" prop="financingState" v-else-if="item.prop == 'financingState' && item.state == 1" min-width="110" sortable />
-                <el-table-column label="行业" prop="industryType" show-overflow-tooltip v-else-if="item.prop == 'industryType' && item.state == 1" min-width="110" sortable />
-                <el-table-column label="公司类型" prop="companyType" v-else-if="item.prop == 'companyType' && item.state == 1" min-width="110" sortable />
-                <el-table-column label="营业状态" prop="operatingState" v-else-if="item.prop == 'operatingState' && item.state == 1" min-width="110" sortable />
+                <el-table-column label="成立时间" prop="date" v-if="item.prop == 'date' && item.state == 1" min-width="110" sortable />
+                <el-table-column label="企业规模" prop="enterpriseScale" v-if="item.prop == 'enterpriseScale' && item.state == 1" min-width="110" sortable />
+                <el-table-column label="融资状态" prop="financingState" v-if="item.prop == 'financingState' && item.state == 1" min-width="110" sortable />
+                <el-table-column label="行业" prop="industryType" show-overflow-tooltip v-if="item.prop == 'industryType' && item.state == 1" min-width="110" sortable />
+                <el-table-column label="公司类型" prop="companyType" v-if="item.prop == 'companyType' && item.state == 1" min-width="110" sortable />
+                <el-table-column label="营业状态" prop="operatingState" v-if="item.prop == 'operatingState' && item.state == 1" min-width="110" sortable />
             </div>
             <el-table-column label="操作" fixed="right" width="150" header-align="center" align="center">
                 <template slot-scope="scope">

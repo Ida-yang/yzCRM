@@ -36,19 +36,21 @@
             </div>
             <el-table :data="tableData" ref="multipleTable" border stripe style="width:100%" @selection-change="selectInfo">
                 <el-table-column fixed header-align="center" align="center" type="selection" width="45" prop="id" @selection-change="selectInfo" sortable />
-                <el-table-column label="产品名称" prop="goodsName" fixed min-width="130" sortable>
-                    <template slot-scope="scope">
-                        <div @click="openDetails(scope.$index, scope.row)" class="hoverline">
-                            {{scope.row.goodsName}}
-                        </div>
-                    </template>
-                </el-table-column>
-                <el-table-column label="价格" prop="price" min-width="90" sortable />
-                <el-table-column label="成本价" prop="costPrice" min-width="90" sortable />
-                <el-table-column label="单位" prop="unit" min-width="90" sortable />
-                <el-table-column label="品牌" prop="brand" min-width="90" sortable />
-                <el-table-column label="状态" prop="status" min-width="90" sortable />
-                <el-table-column label="创建时间" prop="createTime" min-width="150" sortable />
+                <div v-for="(item,index) in filterList" :key="index">
+                    <el-table-column label="产品名称" prop="goodsName" fixed v-if="item.prop == 'goodsName' && item.state == 1" min-width="130" sortable>
+                        <template slot-scope="scope">
+                            <div @click="openDetails(scope.$index, scope.row)" class="hoverline">
+                                {{scope.row.goodsName}}
+                            </div>
+                        </template>
+                    </el-table-column>
+                    <el-table-column label="价格" prop="price" v-if="item.prop == 'price' && item.state == 1" min-width="90" sortable />
+                    <el-table-column label="成本价" prop="costPrice" v-if="item.prop == 'costPrice' && item.state == 1" min-width="90" sortable />
+                    <el-table-column label="单位" prop="unit" v-if="item.prop == 'unit' && item.state == 1" min-width="90" sortable />
+                    <el-table-column label="品牌" prop="brand" v-if="item.prop == 'brand' && item.state == 1" min-width="90" sortable />
+                    <el-table-column label="状态" prop="status" v-if="item.prop == 'status' && item.state == 1" min-width="90" sortable />
+                    <el-table-column label="创建时间" prop="createTime" v-if="item.prop == 'createTime' && item.state == 1" min-width="150" sortable />
+                </div>
                 <el-table-column label="操作" fixed="right" width="140" header-align="center" align="center">
                     <template slot-scope="scope">
                         <el-button size="mini" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
@@ -151,7 +153,7 @@
         },
         mounted(){
             this.reloadTable()
-            // this.loadData()
+            this.reloadData()
         },
         methods:{
             reloadTable(){
@@ -175,13 +177,13 @@
                     // console.log(err);
                 });
             },
-            loadData(){
+            reloadData(){
                 const _this = this
                 let qs = require('querystring')
                 let filterList = {}
-                filterList.type = '用户'
+                filterList.type = '产品'
                 let data = {}
-                data.type = '用户'
+                data.type = '产品'
                 data.state = 1
                 
                 axios({
@@ -374,7 +376,7 @@
                     data:qs.stringify(data),
                 }).then(function(res){
                     if(res.data && res.data =="success"){
-                        // _this.$options.methods.loadData.bind(_this)(true);
+                        _this.$options.methods.reloadData.bind(_this)(true);
                     }
                 }).catch(function(err){
                     // console.log(err);

@@ -99,12 +99,12 @@
                                     </div>
                                 </template>
                             </el-table-column>
-                            <el-table-column label="年份" prop="time" v-else-if="item.prop == 'time' && item.state == 1" min-width="90" sortable />
-                            <el-table-column label="负责人" prop="private_employee" v-else-if="item.prop == 'private_employee' && item.state == 1" min-width="100" sortable />
-                            <el-table-column label="部门" prop="deptname" v-else-if="item.prop == 'deptname' && item.state == 1" min-width="120" sortable />
-                            <el-table-column label="机构" prop="parentname" v-else-if="item.prop == 'parentname' && item.state == 1" min-width="130" sortable />
-                            <el-table-column label="创建时间" prop="createTime" v-else-if="item.prop == 'createTime' && item.state == 1" min-width="150" sortable />
-                            <el-table-column label="状态" prop="state" v-else-if="item.prop == 'state' && item.state == 1" min-width="80" sortable />
+                            <el-table-column label="年份" prop="time" v-if="item.prop == 'time' && item.state == 1" min-width="90" sortable />
+                            <el-table-column label="负责人" prop="private_employee" v-if="item.prop == 'private_employee' && item.state == 1" min-width="100" sortable />
+                            <el-table-column label="部门" prop="deptname" v-if="item.prop == 'deptname' && item.state == 1" min-width="120" sortable />
+                            <el-table-column label="机构" prop="parentname" v-if="item.prop == 'parentname' && item.state == 1" min-width="130" sortable />
+                            <el-table-column label="创建时间" prop="createTime" v-if="item.prop == 'createTime' && item.state == 1" min-width="150" sortable />
+                            <el-table-column label="状态" prop="state" v-if="item.prop == 'state' && item.state == 1" min-width="80" sortable />
                         </div>
                         <el-table-column label="操作" fixed="right" width="140" header-align="center" align="center">
                             <template slot-scope="scope">
