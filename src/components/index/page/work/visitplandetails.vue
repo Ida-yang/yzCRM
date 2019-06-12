@@ -331,11 +331,7 @@ export default {
     .visitdetcontent{
         background-color: #f7f7f7;
         height: auto;
-    }
-    .right{
-        height: auto;
-        background-color: #fff;
-        padding-bottom: 5px;
+        min-height: 100%;
     }
     .item_body{
         padding: 2px 20px;

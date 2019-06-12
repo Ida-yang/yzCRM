@@ -72,7 +72,6 @@
 
             <el-table-column prop="goodspec" min-width="100" label="规格属性">
                 <template slot-scope="scope">
-                    <!-- <span v-for="(item,i) in scope.row.goodspec" :key="i">{{item.label + ':' + item.value +','}}</span> -->
                     <span v-for="(item,i) in scope.row.goodspec" :key="i">{{item.value +'/'}}</span>
                 </template>
             </el-table-column>
@@ -205,12 +204,7 @@
             <el-button @click="closeTag">取消</el-button>
         </div>
 
-        <el-dialog
-            title="选择产品"
-            :visible.sync="dialogVisible"
-            width="80%"
-            class="orderDialog"
-            center>
+        <el-dialog title="选择产品" :visible.sync="dialogVisible" width="80%" class="orderDialog" center>
             <div class="otherleftcontent">
                 <el-tree
                     node-key="id"
@@ -507,7 +501,6 @@
                         this.itemData.forEach((el,i) => {
                             if(row.id == el.id){
                                 this.scopeIndex = i
-                                console.log(i)
                             }
                         });
                     }else{
@@ -537,7 +530,6 @@
                 this.scopeIndex = index
             },
             handleFilter(val){
-                // console.log(val)
                 this.selectData = []
                 this.list.forEach(el => {
                     if(el.tbGoods.goodsName.indexOf(val) != -1){
@@ -956,21 +948,6 @@
         position: absolute;
         right: 15px;
         top: 10px;
-    }
-    .droplist{
-        height: auto
-    }
-    .orderDialog .el-dialog{
-        min-height: 750px;
-        margin-top:10vh;
-    }
-    .table_date.el-date-editor.el-input{
-        width: 150px;
-    }
-    th.table_required .cell::before{
-        content: '*';
-        margin-right: 4px;
-        color: #f56c6c;
     }
 </style>
 

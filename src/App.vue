@@ -202,6 +202,13 @@ export default {
         margin: 0 !important;
     }
 
+    
+    .right{
+        height: auto;
+        background-color: #fff;
+        padding-bottom: 5px;
+    }
+
     .entry{
         width: 100%;
         height: 50px;
@@ -882,6 +889,21 @@ export default {
     }
     .orderHead .el-form-item__content{
         width: calc(100% - 100px);
+    }
+    .droplist{
+        height: auto
+    }
+    .orderDialog .el-dialog{
+        min-height: 750px;
+        margin-top:10vh;
+    }
+    .table_date.el-date-editor.el-input{
+        width: 150px;
+    }
+    th.table_required .cell::before{
+        content: '*';
+        margin-right: 4px;
+        color: #f56c6c;
     }
 
     .generCharts{

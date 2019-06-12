@@ -33,12 +33,12 @@
                     </div>
                 </template>
             </el-table-column>
-            <el-table-column label="描述" prop="describe" fixed min-width="150" show-overflow-tooltip sortable></el-table-column>
+            <!-- <el-table-column label="描述" prop="describe" fixed min-width="150" show-overflow-tooltip sortable></el-table-column>
             <el-table-column prop="enclosureOldNames" min-width="180" label="附件" sortable>
                 <template slot-scope="scope">
                     <p v-for="(item,i) in scope.row.enclosureOldNames" :key="i">{{item + ','}}</p>
                 </template>
-            </el-table-column>
+            </el-table-column> -->
             <el-table-column label="状态" prop="serviceState" min-width="150" sortable></el-table-column>
             <el-table-column label="公司名称" prop="customerpool" min-width="180" sortable></el-table-column>
             <el-table-column label="联系人" prop="contacts" min-width="90" sortable></el-table-column>

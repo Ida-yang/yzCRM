@@ -770,11 +770,7 @@
     .oppdetcontent{
         background-color: #f7f7f7;
         height: auto;
-    }
-    .right{
-        height: auto;
-        background-color: #fff;
-        padding-bottom: 5px;
+        min-height: 100%;
     }
     .el-card__body{
         padding: 0;

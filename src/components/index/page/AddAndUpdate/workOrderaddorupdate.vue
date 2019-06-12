@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="wo_aou">
         <el-card class="box-card">
             <div slot="header" class="clearfix">
                 <span style="font-weight:bold">服务工单</span>
@@ -43,33 +43,38 @@
                     </el-form-item>
                     <br>
                     <el-form-item prop="describe" class="first_input" label="问题描述" label-width="90px">
-                        <el-input type="textarea" rows="5" v-model="myform.describe" style="width:610px;"></el-input>
+                        <!-- <el-input type="textarea" rows="5" v-model="myform.describe" style="width:610px;"></el-input> -->
+                        
+                        <div class="editor-container">
+                            <UE :defaultMsg="defaultMsg" :config="config" ref="ue"></UE>
+                        </div>
                     </el-form-item>
                 </el-form>
             </div>
+            <el-form :inline="true" class="disabledForm">
+                <el-form-item label="制单人" label-width="90px">
+                    <el-input v-model="myform.user" :disabled="true"></el-input>
+                </el-form-item>
+                <el-form-item label="负责人" label-width="90px">
+                    <el-input v-model="myform.ascription" :disabled="true"></el-input>
+                </el-form-item>
+                <el-form-item label="部门" label-width="90px">
+                    <el-input v-model="myform.department" :disabled="true"></el-input>
+                </el-form-item>
+                <el-form-item label="机构" label-width="90px">
+                    <el-input v-model="myform.mechanism" :disabled="true"></el-input>
+                </el-form-item>
+            </el-form>
         </el-card>
         
-        <div class="jobclass_enclosure">
+        <!-- <div class="jobclass_enclosure">
             <el-upload class="upload-demo jobclass_upload" :action="doUpload" :on-success="handleAvatarSuccess" :on-remove="handleRemove" :before-remove="beforeRemove" multiple :limit="3" :on-exceed="handleExceed" :file-list="fileList">
                 <el-button size="small">上传附件</el-button>
                 <div slot="tip" class="el-upload__tip">只能上传3个大小不超过5M的附件，支持格式JPG，JPEG，PNG，TXT，DOC，DOCX，XLS，XLSX，PDF</div>
             </el-upload>
-        </div>
+        </div> -->
 
-        <el-form :inline="true" class="disabledForm">
-            <el-form-item label="制单人" label-width="90px">
-                <el-input v-model="myform.user" :disabled="true"></el-input>
-            </el-form-item>
-            <el-form-item label="负责人" label-width="90px">
-                <el-input v-model="myform.ascription" :disabled="true"></el-input>
-            </el-form-item>
-            <el-form-item label="部门" label-width="90px">
-                <el-input v-model="myform.department" :disabled="true"></el-input>
-            </el-form-item>
-            <el-form-item label="机构" label-width="90px">
-                <el-input v-model="myform.mechanism" :disabled="true"></el-input>
-            </el-form-item>
-        </el-form>
+        
         
         <div class="submit_btn">
             <el-button type="primary" :disabled="isDisable" @click="onSubmit" style="margin-right:100px;">立即提交</el-button>
@@ -82,9 +87,11 @@
     import store from '../../../../store/store'
     import axios from 'axios'
     import qs from 'qs'
+    import UE from '../../ue.vue'
 
     export default {
         store,
+        components: {UE},
         data(){
             return{
                 msg:'新增工单',
@@ -141,6 +148,22 @@
 
                 isDisable:false,
 
+                activeName:'first',
+                defaultMsg: '填写说明前请把这句话删掉',
+                config: {
+                    initialFrameWidth: 610,
+                    initialFrameHeight: 500,
+                    toolbars:[[
+                        'undo', 'redo', '|',
+                        'bold', 'italic', 'underline', 'strikethrough', 'forecolor', 'backcolor', '|',
+                        'formatmatch', 'autotypeset', 'insertorderedlist', 'insertunorderedlist', '|',
+                        'customstyle', 'paragraph', 'fontfamily', 'fontsize', '|',
+                        'justifyleft', 'justifycenter', 'justifyright', 'justifyjustify', '|',
+                        'insertimage', 'attachment', 'spechars', 'snapscreen', '|',
+                        'imagenone', 'imageleft', 'imageright', 'imagecenter',
+                    ]]
+                },
+
                 submitURL:null,
             }
         },
@@ -179,7 +202,7 @@
                     this.myform.enclosureOldNames = this.workOrderaddorUpdateData.enclosureOldNames
                     this.$options.methods.loadList.bind(this)()
                 }else{
-                    this.myform.serviceTypeName = this.$store.state.workOrderaddorUpdateData.name
+                    this.myform.serviceTypeName = this.$store.state.workOrderaddorUpdateData.setform.name
                 }
                 
                 let data = {}
@@ -301,6 +324,7 @@
             },
             onSubmit(){
                 const _this = this
+                let content = this.$refs.ue.getUEContent()
                 let qs = require('querystring')
                 let data = {
                     "id":this.myform.id,
@@ -312,7 +336,7 @@
                     "serviceType" : this.workOrderaddorUpdateData.id,
                     "orderId" : this.myform.orderId,
                     "problem" : this.myform.problem,
-                    "describe" : this.myform.describe,
+                    "describe" : content,
                     "enclosures" : this.myform.enclosures,
                     "enclosureOldNames" : this.myform.enclosureOldNames,
                     "pId" : this.$store.state.ispId,
@@ -411,6 +435,9 @@
 </script>
 
 <style>
+    .wo_aou{
+        margin-bottom: 60px;
+    }
     .jobclass_enclosure{
         width: 100%;
         min-height: 80px;

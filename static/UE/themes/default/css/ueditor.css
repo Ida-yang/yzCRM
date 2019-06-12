@@ -130,6 +130,7 @@ div.edui-box {
 .edui-default .edui-toolbar .edui-menubutton,
 .edui-default .edui-toolbar .edui-combox {
     margin: 1px;
+    line-height: 20px;
 }
 /*UI工具栏、编辑区域、底部*/
 .edui-default .edui-editor {
@@ -140,6 +141,7 @@ div.edui-box {
     -webkit-border-radius: 4px;
     -moz-border-radius: 4px;
     border-radius: 4px;
+    z-index: 0 !important;
 }
 .edui-editor div{
     width:auto;
@@ -256,12 +258,12 @@ div.edui-box {
     font-family: "宋体";
 }
 
-.edui-default .edui-bubble .edui-shadow {
+/* .edui-default .edui-bubble .edui-shadow { */
     /*box-shadow: 1px 1px 3px #818181;*/
     /*-webkit-box-shadow: 2px 2px 3px #818181;*/
     /*-moz-box-shadow: 2px 2px 3px #818181;*/
     /*filter: progid:DXImageTransform.Microsoft.Blur(PixelRadius = '2', MakeShadow = 'true', ShadowOpacity = '0.5');*/
-}
+/* } */
 
 .edui-default .edui-editor-toolbarmsg {
     background-color: #FFF6D9;
@@ -386,8 +388,8 @@ div.edui-box {
     background: url("../images/sparator_v.png") repeat-y 25px;
 }
 
-.edui-default .edui-menuitem-body {
-}
+/* .edui-default .edui-menuitem-body {
+} */
 
 .edui-default .edui-menuitem {
     height: 20px;

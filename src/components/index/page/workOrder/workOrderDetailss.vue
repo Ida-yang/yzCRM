@@ -1,271 +1,305 @@
 <template>
-    <el-row class="wo_content" :gutter="10">
+    <div class="wo_content">
         <!-- {{msg}} -->
-        <el-col :span="18">
-            <el-card class="box-card">
-                <div slot="header" class="clearfix">
-                    <span style="font-weight:bold">服务工单</span>
-                </div>
-                <div class="wo_c">
-                    <ul class="wo_ul_left">
-                        <li class="wo_li_left">
-                            <span style="font-size:20px;font-weight:bold">{{workorderDetails.problem}}</span>
-                        </li>
-                        <li class="wo_li_left">
-                            <span class="wo_span_2" v-html="workorderDetails.describe"></span>
-                        </li>
-                    </ul>
-                </div>
-            </el-card>
-
-            <hr style="height:20px;background-color:#f0f0f0;border:0">
-
-            <div class="orderHead wo_head" v-show="showUE">
-                <el-form :inline="true" ref="myform" :model="myform" :rules="rules">
-                    <!-- <el-form-item class="first_input" label="解决人" label-width="90px">
-                        <el-input v-model="myform.solutionMan" class="inputbox" :disabled="true"></el-input>
-                    </el-form-item>
-                    <el-form-item prop="time" class="first_input" label="解决时间" label-width="90px">
-                        <el-date-picker v-model="myform.time" type="datetime" placeholder="选择解决时间" format="yyyy-MM-dd HH:mm:ss" value-format="yyyy-MM-dd HH:mm:ss" class="inputbox" @change="loadTime"></el-date-picker>
-                    </el-form-item> -->
-                    <el-form-item prop="solveType" class="first_input" label="解决方式" label-width="90px">
-                        <el-select v-model="myform.solveType" placeholder="请选择解决方式" class="inputbox">
-                            <el-option v-for="item in solveTypeList" :key="item.index" :label="item.name" :value="item.name"></el-option>
-                        </el-select>
-                    </el-form-item>
-                    <!-- <el-form-item prop="timeConsuming" class="first_input" label="耗时" label-width="90px">
-                        <el-input v-model="myform.timeConsuming" class="inputbox"></el-input>
-                    </el-form-item> -->
-                    <el-form-item prop="baseInput" class="first_input" label="知识库引入" label-width="90px">
-                        <el-select v-model="myform.baseInput" placeholder="" class="inputbox" filterable @change="selectBase">
-                            <el-option v-for="item in knowledgeBase" :key="item.id" :label="item.pName" :value="item.id"></el-option>
-                        </el-select>
-                    </el-form-item>
-                </el-form>
+        <el-card class="box-card">
+            <div slot="header" class="clearfix">
+                <span style="font-weight:bold">服务工单</span>
             </div>
-
-            <el-tabs v-model="activeName" type="card" class="wo_card">
-                <el-tab-pane label="说明" name="first" style="min-height:300px;">
-                    <div v-show="!showUE" style="padding:0 30px;box-sizing:border-box;">
-                        <el-button class="btn info-btn wo_show" size="mini" @click="doShowUE">编辑</el-button>
-                        <div v-html="defaultMsg"></div>
-                    </div>
-                    <div v-show="showUE">
-                        <div class="editor-container">
-                            <UE :defaultMsg="defaultMsg" :config="config" ref="ue"></UE>
-                        </div>
-                    </div>
-                </el-tab-pane>
-                <el-tab-pane label="配件详情" name="second">
-                    <div class="entry">
-                        <el-button class="btn info-btn" size="mini" icon="el-icon-circle-plus-outline" @click="handleAdd"></el-button>
-                    </div>
-                    <el-table :data="itemData" border highlight-current-row show-summary :summary-method="getSummary" @cell-click="cellClick">
-                        <el-table-column header-align="center" fixed align="center" type="index" width="45"></el-table-column>
-
-                        <el-table-column label="产品名称" prop="tbGoods.goodsName" min-width="280" fixed>
-                            <template slot-scope="scope">
-                                <template v-if="scope.row.edit">
-                                    <el-select v-model="scope.row.tbGoods.goodsName" placeholder="请选择" filterable :filter-method="handleFilter" @focus="handleFoces(scope.$index,scope.row)">
-                                        <el-option class="droplist" :value="scope.row.tbGoods.goodsName">
-                                            <el-table :data="selectData" border @current-change="currentChange" style="width: 100%">
-                                                <el-table-column header-align="center" type="index" min-width="45"></el-table-column>
-                                                <el-table-column prop="tbGoods.goodsName" label="产品名称" width="130"></el-table-column>
-                                                <el-table-column prop="tbGoods.describe" show-overflow-tooltip label="描述" width="150"></el-table-column>
-                                                <el-table-column prop="goodspec" label="规格属性" min-width="150">
-                                                    <template slot-scope="scope">
-                                                        <span v-for="(item,i) in scope.row.goodspec" :key="i">{{item.label + '：' + item.value}}</span>
-                                                    </template>
-                                                </el-table-column>
-                                                <el-table-column prop="unit" label="单位" min-width="90"></el-table-column>
-                                            </el-table>
-                                        </el-option>
-                                    </el-select>
-                                    <el-button class="btn info-btn" size="mini" icon="el-icon-more" style="width:30px;height:28px;padding:0" @click="showDialog()"></el-button>
-                                </template>
-                                <span v-else>{{ scope.row.tbGoods.goodsName }}</span>
-                            </template>
-                        </el-table-column>
-
-                        <el-table-column label="描述" prop="tbGoods.describe" min-width="120" />
-                        
-                        <el-table-column label="规格属性" prop="goodspec" min-width="100">
-                            <template slot-scope="scope">
-                                <span v-for="(item,i) in scope.row.goodspec" :key="i">{{item.value +'/'}}</span>
-                            </template>
-                        </el-table-column>
-
-                        <el-table-column label="单位" prop="unit" min-width="50" />
-
-                        <el-table-column prop="num" min-width="100" label="数量">
-                            <template slot-scope="scope">
-                                <template v-if="scope.row.edit">
-                                    <el-input v-model="scope.row.num" onkeyup="value=value.replace(/[^\d]/g,'')" class="edit-input" size="small" @input="handleinput($event,scope.$index,scope.row)"/>
-                                </template>
-                                <span v-else>{{ scope.row.num }}</span>
-                            </template>
-                        </el-table-column>
-
-                        <el-table-column prop="price" min-width="120" label="单价">
-                            <template slot-scope="scope">
-                                <template v-if="scope.row.edit">
-                                    <el-input v-model="scope.row.price" onkeyup="value=value.replace(/[^\d]/g,'')" class="edit-input" size="small" @input="handleinput($event,scope.$index,scope.row)"/>
-                                </template>
-                                <span v-else>{{ scope.row.price }}</span>
-                            </template>
-                        </el-table-column>
-
-                        <el-table-column prop="amountOfMoney" min-width="120" label="金额">
-                            <template slot-scope="scope">
-                                <template v-if="scope.row.edit">
-                                    <el-input v-model="scope.row.amountOfMoney" onkeyup="value=value.replace(/[^\d]/g,'')" class="edit-input" size="small" @input="handleinput($event,scope.$index,scope.row)"/>
-                                </template>
-                                <span v-else>{{ scope.row.amountOfMoney }}</span>
-                            </template>
-                        </el-table-column>
-
-                        <el-table-column prop="discount" min-width="90" label="折扣">
-                            <template slot-scope="scope">
-                                <template v-if="scope.row.edit">
-                                    <el-input v-model="scope.row.discount" onkeyup="value=value.replace(/[^\d]/g,'')" class="edit-input" size="small" @input="handleinput($event,scope.$index,scope.row)">
-                                        <span slot="suffix" style="margin-right:5px;line-height:34px;">%</span>
-                                    </el-input>
-                                </template>
-                                <span v-else-if="scope.row.discount">{{ scope.row.discount + ' %' }}</span>
-                            </template>
-                        </el-table-column>
-
-                        <el-table-column prop="discountAmount" min-width="120" label="折扣额">
-                            <template slot-scope="scope">
-                                <template v-if="scope.row.edit">
-                                    <el-input v-model="scope.row.discountAmount" onkeyup="value=value.replace(/[^\d]/g,'')" class="edit-input" size="small"/>
-                                </template>
-                                <span v-else>{{ scope.row.discountAmount }}</span>
-                            </template>
-                        </el-table-column>
-
-                        <el-table-column prop="discountAfter" min-width="120" label="折后金额">
-                            <template slot-scope="scope">
-                                <template v-if="scope.row.edit">
-                                    <el-input v-model="scope.row.discountAfter" onkeyup="value=value.replace(/[^\d]/g,'')" class="edit-input" size="small"/>
-                                </template>
-                                <span v-else>{{ scope.row.discountAfter }}</span>
-                            </template>
-                        </el-table-column>
-
-                        <el-table-column prop="taxRate" min-width="90" label="税率">
-                            <template slot-scope="scope">
-                                <template v-if="scope.row.edit">
-                                    <el-input v-model="scope.row.taxRate" onkeyup="value=value.replace(/[^\d]/g,'')" class="edit-input" size="small" @input="handleinput($event,scope.$index,scope.row)">
-                                        <span slot="suffix" style="margin-right:5px;line-height:34px;">%</span>
-                                    </el-input>
-                                </template>
-                                <span v-else>{{ scope.row.taxRate }}</span>
-                            </template>
-                        </el-table-column>
-
-                        <el-table-column prop="taxAmount" min-width="120" label="税额">
-                            <template slot-scope="scope">
-                                <template v-if="scope.row.edit">
-                                    <el-input v-model="scope.row.taxAmount" onkeyup="value=value.replace(/[^\d]/g,'')" class="edit-input" size="small"/>
-                                </template>
-                                <span v-else>{{ scope.row.taxAmount }}</span>
-                            </template>
-                        </el-table-column>
-
-                        <el-table-column prop="taxAfter" min-width="120" label="税后金额">
-                            <template slot-scope="scope">
-                                <template v-if="scope.row.edit">
-                                    <el-input v-model="scope.row.taxAfter" onkeyup="value=value.replace(/[^\d]/g,'')" class="edit-input" size="small"/>
-                                </template>
-                                <span v-else>{{ scope.row.taxAfter }}</span>
-                            </template>
-                        </el-table-column>
-
-                        <el-table-column prop="brand" min-width="80" label="产品品牌"></el-table-column>
-
-                        <el-table-column align="center" label="操作" min-width="90">
-                            <template slot-scope="scope">
-                                <el-button type="success" plain style="width:30px;height:30px;padding:0" :disabled="!scope.row.edit" icon="el-icon-circle-check-outline" @click="confirmEdit(scope.row)"></el-button>
-                                <el-button type="danger" plain style="width:30px;height:30px;padding:0" icon="el-icon-delete" @click="handleDelete(scope.$index,scope.row)"></el-button>
-                            </template>
-                        </el-table-column>
-                    </el-table>
-                </el-tab-pane>
-            </el-tabs>
-
-            <el-dialog title="选择产品" :visible.sync="dialogVisible1" width="80%" class="orderDialog" center>
-                <div class="otherleftcontent">
-                    <el-tree
-                        node-key="id"
-                        highlight-current accordion expand-on-click-node
-                        :data="datalist"
-                        :props="defaultProps"
-                        :default-expanded-keys="defaultkeys"
-                        @node-click="handleNodeClick">
-                    </el-tree>
-                </div>
-                <div class="otherightcontent">
-                    <span>产品名称：</span><el-input v-model="goodsName" style="width:200px;" @input="addInput"></el-input>
-                    <br><br>
-                    <el-table :data="tableData" border fit @selection-change="selectInfo" style="width: 100%">
-                        <el-table-column header-align="center" align="center" type="selection" min-width="45" @selection-change="selectInfo"></el-table-column>
-                        <el-table-column prop="tbGoods.goodsName" label="产品名称" width="130"></el-table-column>
-                        <el-table-column prop="tbGoods.describe" show-overflow-tooltip label="描述" width="150"></el-table-column>
-                        <el-table-column prop="goodspec" label="规格属性" min-width="150">
-                            <template slot-scope="scope">
-                                <span v-for="(item,i) in scope.row.goodspec" :key="i">{{item.label + '：' + item.value}}</span>
-                            </template>
-                        </el-table-column>
-                        <el-table-column prop="unit" label="单位" width="90"></el-table-column>
-                        <el-table-column prop="brand" label="品牌" width="90"></el-table-column>
-                    </el-table>
-                </div>
-                <span slot="footer" class="dialog-footer order_foot">
-                    <el-button @click="dialogVisible1 = false">取 消</el-button>
-                    <el-button type="primary" @click="handleSubmit()">确 定</el-button>
-                </span>
-            </el-dialog>
-        </el-col>
-
-        <el-col :span="6" style="padding:0;" class="right wo_right">
-            <el-card class="box-card">
-                <div slot="header" class="clearfix">
-                    <span style="font-weight:bold">基本信息</span>
-                </div>
-                <div class="wo_c">
-                    <ul class="wo_ul_right">
-                        <li><span>公司名称：</span>{{workorderDetails.customerpool}}</li>
-                        <li><span>联系人：</span>{{workorderDetails.contacts}}</li>
-                        <li><span>电话：</span>{{workorderDetails.phone}}</li>
-                        <li><span>反馈时间：</span>{{workorderDetails.feedbackTime}}</li>
-                        <li><span>反馈方式：</span>{{workorderDetails.feedbackType}}</li>
-                        <li><span>受理人：</span>{{workorderDetails.acceptanceName}}</li>
-                        <li><span>工单类型：</span>{{workorderDetails.serviceTypeName}}</li>
-                        <li><span>销售单号：</span>{{workorderDetails.orderNo}}</li>
-                        <li><span>制单人：</span>{{workorderDetails.private_employee}}</li>
-                        <li><span>负责人：</span>{{workorderDetails.ascription}}</li>
-                        <li><span>部门：</span>{{workorderDetails.deptname}}</li>
-                        <li><span>机构：</span>{{workorderDetails.parentname}}</li>
-                    </ul>
-                    <ul class="wo_ul_right" v-if="workorderDetails.solution">
-                        <li><span>解决人：</span>{{myform.solutionMan}}</li>
-                        <li><span>解决时间：</span>{{myform.time}}</li>
-                        <li><span>耗时：</span>{{myform.timeConsuming}}</li>
-                        <li><span>解决方式：</span>{{myform.solveType}}</li>
-                    </ul>
-                </div>
-            </el-card>
             <div class="wo_c">
-                
+                <ul class="wo_ul">
+                    <li class="wo_li">
+                        <span class="wo_span_1">公司名称</span>
+                        <span class="wo_span_2">{{workorderDetails.customerpool}}</span>
+                    </li>
+                    <li class="wo_li">
+                        <span class="wo_span_1">联系人</span>
+                        <span class="wo_span_2">{{workorderDetails.contacts}}</span>
+                    </li>
+                    <li class="wo_li">
+                        <span class="wo_span_1">电话</span>
+                        <span class="wo_span_2">{{workorderDetails.phone}}</span>
+                    </li>
+                    <li class="wo_li">
+                        <span class="wo_span_1">反馈方式</span>
+                        <span class="wo_span_2">{{workorderDetails.feedbackType}}</span>
+                    </li>
+                    <li class="wo_li">
+                        <span class="wo_span_1">受理人</span>
+                        <span class="wo_span_2">{{workorderDetails.ascription}}</span>
+                    </li>
+                    <li class="wo_li">
+                        <span class="wo_span_1">工单类型</span>
+                        <span class="wo_span_2">{{workorderDetails.serviceTypeName}}</span>
+                    </li>
+                    <li class="wo_li">
+                        <span class="wo_span_1">销售单号</span>
+                        <span class="wo_span_2">{{workorderDetails.orderNo}}</span>
+                    </li>
+                    <li class="wo_li"></li>
+                    <li class="wo_li"></li>
+                    <li class="wo_li_1">
+                        <span class="wo_span_1">问题名称</span>
+                        <span class="wo_span_2">{{workorderDetails.problem}}</span>
+                    </li>
+                    <li class="wo_li_2">
+                        <span class="wo_span_1">问题描述</span>
+                        <span class="wo_span_2" v-html="workorderDetails.describe"></span>
+                    </li>
+                </ul>
             </div>
-        </el-col>
+        </el-card>
+        <div class="bottom">
+            <div class="uploadBOX" v-if="imgList.length">
+                <div class="imgbox" v-for="(item,i) in imgList" :key="i">
+                    <img :src="item.url" class="wo_imgbox" :alt="item.name" @click="showImg($event,item)">
+                </div>
+            </div>
+            <div class="wo_enclo" v-if="fileList.length">
+                <ul>
+                    <li v-for="(item,i) in fileList" :key="i"><a :href="item.url" download>{{item.name}}</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="wo_c_1" >
+            <ul class="wo_ul">
+                <li class="wo_li_3">
+                    <span class="wo_span_1">制单人</span>
+                    <span class="wo_span_3">{{workorderDetails.private_employee}}</span>
+                </li>
+                <li class="wo_li_3">
+                    <span class="wo_span_1">负责人</span>
+                    <span class="wo_span_3">{{workorderDetails.ascription}}</span>
+                </li>
+                <li class="wo_li_3">
+                    <span class="wo_span_1">部门</span>
+                    <span class="wo_span_3">{{workorderDetails.deptname}}</span>
+                </li>
+                <li class="wo_li_3">
+                    <span class="wo_span_1">机构</span>
+                    <span class="wo_span_3">{{workorderDetails.parentname}}</span>
+                </li>
+            </ul>
+        </div>
+
+        <hr style="height:20px;background-color:#f0f0f0;border:0">
+
+        <div class="orderHead">
+            <el-form :inline="true" ref="myform" :model="myform" :rules="rules">
+                <el-form-item class="first_input" label="解决人" label-width="90px">
+                    <el-input v-model="myform.solutionMan" class="inputbox" :disabled="true"></el-input>
+                </el-form-item>
+                <el-form-item prop="time" class="first_input" label="解决时间" label-width="90px">
+                    <el-date-picker v-model="myform.time" type="datetime" placeholder="选择解决时间" format="yyyy-MM-dd HH:mm:ss" value-format="yyyy-MM-dd HH:mm:ss" class="inputbox" @change="loadTime"></el-date-picker>
+                </el-form-item>
+                <el-form-item prop="solveType" class="first_input" label="解决方式" label-width="90px">
+                    <el-select v-model="myform.solveType" placeholder="请选择解决方式" class="inputbox">
+                        <el-option v-for="item in solveTypeList" :key="item.index" :label="item.name" :value="item.name"></el-option>
+                    </el-select>
+                </el-form-item>
+                <el-form-item prop="timeConsuming" class="first_input" label="耗时" label-width="90px">
+                    <el-input v-model="myform.timeConsuming" class="inputbox"></el-input>
+                </el-form-item>
+                <el-form-item prop="baseInput" class="first_input" label="知识库引入" label-width="90px">
+                    <el-select v-model="myform.baseInput" placeholder="" class="inputbox" filterable @change="selectBase">
+                        <el-option v-for="item in knowledgeBase" :key="item.id" :label="item.pName" :value="item.id"></el-option>
+                    </el-select>
+                </el-form-item>
+            </el-form>
+        </div>
+
+        <el-tabs v-model="activeName" type="card">
+            <el-tab-pane label="说明" name="first" style="min-height:150px;">
+                <div v-show="!showUE" style="padding:0 30px;box-sizing:border-box;">
+                    <el-button class="btn info-btn wo_show" size="mini" @click="doShowUE">编辑</el-button>
+                    <div v-html="defaultMsg"></div>
+                </div>
+                <div v-show="showUE">
+                    <div class="editor-container">
+                        <UE :defaultMsg="defaultMsg" :config="config" ref="ue"></UE>
+                    </div>
+                </div>
+            </el-tab-pane>
+            <el-tab-pane label="配件详情" name="second">
+                <div class="entry">
+                    <el-button class="btn info-btn" size="mini" icon="el-icon-circle-plus-outline" @click="handleAdd"></el-button>
+                </div>
+                <el-table :data="itemData" border fit highlight-current-row show-summary :summary-method="getSummary" @cell-click="cellClick">
+                    <el-table-column header-align="center" fixed align="center" type="index" width="45"></el-table-column>
+
+                    <el-table-column label="产品名称" prop="tbGoods.goodsName" width="280" fixed>
+                        <template slot-scope="scope">
+                            <template v-if="scope.row.edit">
+                                <el-select v-model="scope.row.tbGoods.goodsName" placeholder="请选择" filterable :filter-method="handleFilter" @focus="handleFoces(scope.$index,scope.row)">
+                                    <el-option class="droplist" :value="scope.row.tbGoods.goodsName">
+                                        <el-table :data="selectData" border @current-change="currentChange" style="width: 100%">
+                                            <el-table-column header-align="center" type="index" min-width="45"></el-table-column>
+                                            <el-table-column prop="tbGoods.goodsName" label="产品名称" width="130"></el-table-column>
+                                            <el-table-column prop="tbGoods.describe" show-overflow-tooltip label="描述" width="150"></el-table-column>
+                                            <el-table-column prop="goodspec" label="规格属性" min-width="150">
+                                                <template slot-scope="scope">
+                                                    <span v-for="(item,i) in scope.row.goodspec" :key="i">{{item.label + '：' + item.value}}</span>
+                                                </template>
+                                            </el-table-column>
+                                            <el-table-column prop="unit" label="单位" width="90"></el-table-column>
+                                        </el-table>
+                                    </el-option>
+                                </el-select>
+                                <el-button class="btn info-btn" size="mini" icon="el-icon-more" style="width:30px;height:28px;padding:0" @click="showDialog()"></el-button>
+                            </template>
+                            <span v-else>{{ scope.row.tbGoods.goodsName }}</span>
+                        </template>
+                    </el-table-column>
+
+                    <el-table-column label="描述" prop="tbGoods.describe" width="120" />
+                    
+                    <el-table-column label="规格属性" prop="goodspec" width="100">
+                        <template slot-scope="scope">
+                            <span v-for="(item,i) in scope.row.goodspec" :key="i">{{item.value +'/'}}</span>
+                        </template>
+                    </el-table-column>
+
+                    <el-table-column label="单位" prop="unit" width="50" />
+
+                    <el-table-column prop="num" min-width="100" label="数量">
+                        <template slot-scope="scope">
+                            <template v-if="scope.row.edit">
+                                <el-input v-model="scope.row.num" onkeyup="value=value.replace(/[^\d]/g,'')" class="edit-input" size="small" @input="handleinput($event,scope.$index,scope.row)"/>
+                            </template>
+                            <span v-else>{{ scope.row.num }}</span>
+                        </template>
+                    </el-table-column>
+
+                    <el-table-column prop="price" min-width="120" label="单价">
+                        <template slot-scope="scope">
+                            <template v-if="scope.row.edit">
+                                <el-input v-model="scope.row.price" onkeyup="value=value.replace(/[^\d]/g,'')" class="edit-input" size="small" @input="handleinput($event,scope.$index,scope.row)"/>
+                            </template>
+                            <span v-else>{{ scope.row.price }}</span>
+                        </template>
+                    </el-table-column>
+
+                    <el-table-column prop="amountOfMoney" min-width="120" label="金额">
+                        <template slot-scope="scope">
+                            <template v-if="scope.row.edit">
+                                <el-input v-model="scope.row.amountOfMoney" onkeyup="value=value.replace(/[^\d]/g,'')" class="edit-input" size="small" @input="handleinput($event,scope.$index,scope.row)"/>
+                            </template>
+                            <span v-else>{{ scope.row.amountOfMoney }}</span>
+                        </template>
+                    </el-table-column>
+
+                    <el-table-column prop="discount" width="90" label="折扣">
+                        <template slot-scope="scope">
+                            <template v-if="scope.row.edit">
+                                <el-input v-model="scope.row.discount" onkeyup="value=value.replace(/[^\d]/g,'')" class="edit-input" size="small" @input="handleinput($event,scope.$index,scope.row)">
+                                    <span slot="suffix" style="margin-right:5px;line-height:34px;">%</span>
+                                </el-input>
+                            </template>
+                            <span v-else-if="scope.row.discount">{{ scope.row.discount + ' %' }}</span>
+                        </template>
+                    </el-table-column>
+
+                    <el-table-column prop="discountAmount" min-width="120" label="折扣额">
+                        <template slot-scope="scope">
+                            <template v-if="scope.row.edit">
+                                <el-input v-model="scope.row.discountAmount" onkeyup="value=value.replace(/[^\d]/g,'')" class="edit-input" size="small"/>
+                            </template>
+                            <span v-else>{{ scope.row.discountAmount }}</span>
+                        </template>
+                    </el-table-column>
+
+                    <el-table-column prop="discountAfter" min-width="120" label="折后金额">
+                        <template slot-scope="scope">
+                            <template v-if="scope.row.edit">
+                                <el-input v-model="scope.row.discountAfter" onkeyup="value=value.replace(/[^\d]/g,'')" class="edit-input" size="small"/>
+                            </template>
+                            <span v-else>{{ scope.row.discountAfter }}</span>
+                        </template>
+                    </el-table-column>
+
+                    <el-table-column prop="taxRate" width="90" label="税率">
+                        <template slot-scope="scope">
+                            <template v-if="scope.row.edit">
+                                <el-input v-model="scope.row.taxRate" onkeyup="value=value.replace(/[^\d]/g,'')" class="edit-input" size="small" @input="handleinput($event,scope.$index,scope.row)">
+                                    <span slot="suffix" style="margin-right:5px;line-height:34px;">%</span>
+                                </el-input>
+                            </template>
+                            <span v-else>{{ scope.row.taxRate }}</span>
+                        </template>
+                    </el-table-column>
+
+                    <el-table-column prop="taxAmount" min-width="120" label="税额">
+                        <template slot-scope="scope">
+                            <template v-if="scope.row.edit">
+                                <el-input v-model="scope.row.taxAmount" onkeyup="value=value.replace(/[^\d]/g,'')" class="edit-input" size="small"/>
+                            </template>
+                            <span v-else>{{ scope.row.taxAmount }}</span>
+                        </template>
+                    </el-table-column>
+
+                    <el-table-column prop="taxAfter" min-width="120" label="税后金额">
+                        <template slot-scope="scope">
+                            <template v-if="scope.row.edit">
+                                <el-input v-model="scope.row.taxAfter" onkeyup="value=value.replace(/[^\d]/g,'')" class="edit-input" size="small"/>
+                            </template>
+                            <span v-else>{{ scope.row.taxAfter }}</span>
+                        </template>
+                    </el-table-column>
+
+                    <el-table-column prop="brand" width="80" label="产品品牌"></el-table-column>
+
+                    <el-table-column align="center" label="操作" width="90">
+                        <template slot-scope="scope">
+                            <el-button type="success" plain style="width:30px;height:30px;padding:0" :disabled="!scope.row.edit" icon="el-icon-circle-check-outline" @click="confirmEdit(scope.row)"></el-button>
+                            <el-button type="danger" plain style="width:30px;height:30px;padding:0" icon="el-icon-delete" @click="handleDelete(scope.$index,scope.row)"></el-button>
+                        </template>
+                    </el-table-column>
+                </el-table>
+            </el-tab-pane>
+        </el-tabs>
+
+        <el-dialog :visible.sync="dialogVisible">
+            <img width="100%" :src="dialogImageUrl" alt="">
+        </el-dialog>
+
+        <el-dialog title="选择产品" :visible.sync="dialogVisible1" width="80%" class="orderDialog" center>
+            <div class="otherleftcontent">
+                <el-tree
+                    node-key="id"
+                    highlight-current accordion expand-on-click-node
+                    :data="datalist"
+                    :props="defaultProps"
+                    :default-expanded-keys="defaultkeys"
+                    @node-click="handleNodeClick">
+                </el-tree>
+            </div>
+            <div class="otherightcontent">
+                <span>产品名称：</span><el-input v-model="goodsName" style="width:200px;" @input="addInput"></el-input>
+                <br><br>
+                <el-table :data="tableData" border fit @selection-change="selectInfo" style="width: 100%">
+                    <el-table-column header-align="center" align="center" type="selection" min-width="45" @selection-change="selectInfo"></el-table-column>
+                    <el-table-column prop="tbGoods.goodsName" label="产品名称" width="130"></el-table-column>
+                    <el-table-column prop="tbGoods.describe" show-overflow-tooltip label="描述" width="150"></el-table-column>
+                    <el-table-column prop="goodspec" label="规格属性" min-width="150">
+                        <template slot-scope="scope">
+                            <span v-for="(item,i) in scope.row.goodspec" :key="i">{{item.label + '：' + item.value}}</span>
+                        </template>
+                    </el-table-column>
+                    <el-table-column prop="unit" label="单位" width="90"></el-table-column>
+                    <el-table-column prop="brand" label="品牌" width="90"></el-table-column>
+                </el-table>
+            </div>
+            <span slot="footer" class="dialog-footer order_foot">
+                <el-button @click="dialogVisible1 = false">取 消</el-button>
+                <el-button type="primary" @click="handleSubmit()">确 定</el-button>
+            </span>
+        </el-dialog>
         
         <div class="submit_btn">
             <el-button type="primary" :disabled="isDisable" @click="onSubmit" style="margin-right:100px;">立即提交</el-button>
             <el-button @click="closeTag">取消</el-button>
         </div>
-    </el-row>
+    </div>
 </template>
 
 <script>
@@ -283,6 +317,10 @@
                 msg:'工单详情页',
                 detailData:null,
                 workorderDetails:{},
+                imgList:[],
+                fileList:[],
+                dialogImageUrl:null,
+                dialogVisible:false,
 
                 myform:{
                     id:null,
@@ -370,6 +408,7 @@
                         _this.updateData = res.data.solution.partsDetails
                         _this.$options.methods.getItem.bind(_this)()
                     }
+                    _this.$options.methods.loadList.bind(_this)()
                     if(res.data.discount){
                         _this.cusdiscount = res.data.discount
                     }else{
@@ -395,6 +434,24 @@
                     // console.log(err);
                 });
             },
+            loadList(){
+                this.imgList = []
+                this.fileList = []
+                let arr = this.workorderDetails.enclosures
+                let arr2 = this.workorderDetails.enclosureOldNames
+                arr2.forEach((b,j) => {
+                    arr.forEach((a,i) => {
+                        if(j == i){
+                            let aaa = a.split('.')
+                            if(aaa[1] == 'png' || aaa[1] == 'jpg' || aaa[1] == 'jpeg'){
+                                this.imgList.push({url:this.$store.state.systemHttp + 'upload/' + this.$store.state.iscId + '/' + a,name:b})
+                            }else{
+                                this.fileList.push({url:this.$store.state.systemHttp + 'upload/' + this.$store.state.iscId + '/' + a,name:b})
+                            }
+                        }
+                    });
+                });
+            },
             getItem(){
                 this.itemData = []
                 if(this.updateData.length !== 0){
@@ -409,6 +466,10 @@
                         this.itemData.push({ amountOfMoney: el.amountOfMoney, brand: el.brand, discount: el.discount, discountAfter: el.discountAfter, discountAmount: el.discountAmount, goodsId: el.goodsId, tbGoods:{ goodsName:el.goodsName, describe:el.describe, }, id: el.itemId, itemId: el.itemId, num: el.num, price: el.price, taxAfter: el.taxAfter, taxAmount: el.taxAmount, taxRate: el.taxRate, goodspec: el.goodspec, unit: el.unit, edit:false,})
                     });
                 }
+            },
+            showImg(e,val){
+                this.dialogImageUrl = val.url
+                this.dialogVisible = true
             },
             doShowUE(){
                 this.showUE = true
@@ -781,59 +842,88 @@
 
 <style>
     .wo_content{
-        background-color: #f7f7f7;
         margin-bottom: 65px;
-        height: auto;
-        min-height: 100%;
     }
-    .wo_head,.wo_card{
-        background-color: #fff;
+    .wo_c_1{
+        margin-bottom: 20px;
     }
-    .wo_ul_left{
+    .wo_ul{
         width: 100%;
         list-style-type: none;
+        display: flex;
+        flex-wrap: wrap;
     }
-    .wo_ul_left .wo_li_left{
+    .wo_li,.wo_li_1{
+        height: 30px;
         margin-bottom: 22px;
+        display: flex;
+        align-items: center;
+    }
+    .wo_ul .wo_li{
+        flex: 0 0 33%;
+    }
+    .wo_ul .wo_li_1,.wo_ul .wo_li_2{
+        flex: 0 0 66%;
+    }
+    .wo_ul .wo_li_3{
+        flex: 0 0 24%;
     }
     .wo_span_1{
         display: inline-block;
-        width: 110px;
+        width: 90px;
         text-align: right;
         font-size: 14px;
         color: #606266;
         padding-right: 8px;
         box-sizing: border-box;
+        margin-right: 5px;
     }
     .wo_span_2{
         display: inline-block;
-        border-radius: 5px;
-        padding: 0 20px;
-        box-sizing: border-box;
-    }
-
-    .wo_ul_right{
-        list-style-type: none;
-        font-size: 14px;
-        color: #606266;
+        width: calc(100% - 142px);
+        height: 30px;
         line-height: 30px;
-        margin-bottom: 30px;
-    }
-    .wo_ul_right span{
-        display: inline-block;
-        width: 90px;
-        padding-right: 5px;
+        font-size: 14px;
+        border: 1px solid #dcdfe6;
+        border-radius: 5px;
+        padding: 0 8px;
         box-sizing: border-box;
+    }
+    .wo_span_3{
+        display: inline-block;
+        width: calc(100% - 100px);
+        height: 30px;
+        line-height: 30px;
+        font-size: 14px;
+        border: 1px solid #dcdfe6;
+        border-radius: 5px;
+        padding: 0 8px;
+        box-sizing: border-box;
+    }
+    .wo_ul .wo_li_2 .wo_span_1{
+        margin-right:0;
+    }
+    .wo_ul .wo_li_2 .wo_span_2{
+        height: 117px;
+    }
+    .wo_imgbox{
+        border: 1px dashed #dcdfe6
+    }
+    .wo_enclo ul{
+        padding-left: 20px;
+        list-style-type: none;
+        color: blue;
+        text-decoration: underline;
+        line-height: 24px;
+        font-size: 14px;
     }
     
     .droplist{
         height: auto
     }
     .wo_show{
+        /* float: right;
+        margin-right: 20px; */
         margin-left: calc(100% - 60px)
-    }
-
-    .wo_right{
-        padding-bottom: 30px;
     }
 </style>
