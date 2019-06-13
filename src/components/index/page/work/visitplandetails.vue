@@ -342,7 +342,7 @@ export default {
         word-break: break-all;
         white-space: normal; 
     }
-    .block{
+    .card_block{
         height: 20px;
         padding: 20px;
     }

@@ -1,6 +1,6 @@
 <template>
     <div class="sidebar" >
-        <el-menu class="sidebar-el-menu" v-if="crmMenu" :default-active="onRoutes" :collapse="collapse" background-color="#20222a"
+        <el-menu class="sidebar-el-menu" v-if="crmMenu == 1" :default-active="onRoutes" :collapse="collapse" background-color="#20222a"
             text-color="#FFFFFF" active-text-color="#ff6722" unique-opened router>
             <div id="logo" v-if="showlogo">
                 <span style="font-size:16px">
@@ -76,7 +76,8 @@
                 </template>
             </template>
         </el-menu>
-        <el-menu class="sidebar-el-menu" v-if="!crmMenu" :default-active="onRoutes" :collapse="collapse" background-color="#20222a"
+
+        <el-menu class="sidebar-el-menu" v-if="crmMenu == 2" :default-active="onRoutes" :collapse="collapse" background-color="#20222a"
             text-color="#FFFFFF" active-text-color="#ff6722" unique-opened router>
             <div id="logo" v-if="showlogo">
                 <span style="font-size:16px">
@@ -110,7 +111,54 @@
                 </template>
             </template>
         </el-menu>
-        <div :class="collapse?'s_menu':'switch_menu'" @click="switchMenu"></div>
+
+        <el-menu class="sidebar-el-menu" v-if="crmMenu == 3" :default-active="onRoutes" :collapse="collapse" background-color="#20222a"
+            text-color="#FFFFFF" active-text-color="#ff6722" unique-opened router>
+            <div id="logo" v-if="showlogo">
+                <span style="font-size:16px">
+                    云纵CRM信息平台
+                </span>
+            </div>
+            <div id="logo1" v-if="!showlogo">
+                <span style="font-size:16px">
+                    CRM
+                </span>
+            </div>
+            <!-- <span class="title">订货</span> -->
+            <!-- <template v-for="item in itema">
+                <template v-if="item.subs">
+                    <el-submenu :index="item.index" :key="item.index">
+                        <template slot="title">
+                            <i :class="item.icon" style="color:#fff"> </i>&nbsp;
+                            <span slot="title" style="color:#fff">{{ item.title }}</span>
+                        </template>
+                        <el-menu-item v-for="(subItem,i) in item.subs" :key="i" :index="subItem.index">
+                            {{ subItem.title }}
+                        </el-menu-item>
+                    </el-submenu>
+                </template>
+                <template v-else>
+                    <el-menu-item :index="item.index" :key="item.index">
+                        <i :class="item.icon" style="color:#fff" ></i>&nbsp;
+                        <span slot="title"  style="color:#fff">{{ item.title }}</span>
+                    </el-menu-item>
+                </template>
+            </template> -->
+        </el-menu>
+        <div :class="collapse?'s_menu':'switch_menu'">
+            <span v-show="!collapse && crmMenu !== 1" class="switch_tag" @click="switchMenu(1)">CRM</span>
+            <span v-show="collapse && crmMenu !== 1" class="switch_tag" @click="switchMenu(1)">
+                <i class="el-icon-edit"></i>
+            </span>
+            <span v-show="!collapse && crmMenu !== 2" class="switch_tag" @click="switchMenu(2)">办公</span>
+            <span v-show="collapse && crmMenu !== 2" class="switch_tag" @click="switchMenu(2)">
+                <i class="el-icon-share"></i>
+            </span>
+            <span v-show="!collapse && crmMenu !== 3" class="switch_tag" @click="switchMenu(3)">订货</span>
+            <span v-show="collapse && crmMenu !== 3" class="switch_tag" @click="switchMenu(3)">
+                <i class="el-icon-phone-outline"></i>
+            </span>
+        </div>
     </div>
 </template>
 
@@ -119,7 +167,7 @@
     export default {
         data() {
             return {
-                crmMenu:true,
+                crmMenu:1,
                 collapse: false,
                 showlogo:true,
                 itemone: [
@@ -220,6 +268,10 @@
                                 index: 'jobClassification',
                                 title: '新增工单',
                             },
+                            {
+                                index: 'experienceBase',
+                                title: '经验库',
+                            },
                         ]
                     },
                     {
@@ -306,8 +358,9 @@
             })
         },
         methods:{
-            switchMenu(){
-                this.crmMenu = !this.crmMenu
+            switchMenu(val){
+                this.crmMenu = val
+                // this.crmMenu = !this.crmMenu
             },
         },
     }
@@ -355,7 +408,7 @@
     .sidebar > ul {
         height:100%;
         padding-top: 5px;
-        padding-bottom: 50px;
+        padding-bottom: 40px;
         box-sizing: border-box
     }
     .title{
@@ -368,20 +421,33 @@
     }
     .switch_menu{
         width:150px;
-        height: 50px;
+        height: 40px;
         position: fixed;
         bottom: 0;
-        /* background-color: rgb(191, 192, 140); */
+        background-color: #ff9879;
         -webkit-transition: width .3s;
         transition:width .3s;
     }
     .s_menu{
         width: 65px;
-        height: 50px;
+        height: 40px;
         position: fixed;
         bottom: 0;
-        /* background-color: rgb(192, 140, 140); */
+        background-color: #ff9879;
         -webkit-transition: width .6s;
         transition:width .6s;
+    }
+    .switch_tag{
+        display: inline-block;
+        width: calc(50% - 4px);
+        line-height: 40px;
+        color: #ffffff;
+        text-align: center;
+        font-size: 14px;
+        cursor: pointer;
+        border-top: 1px dashed #ffffff;
+    }
+    .switch_tag:first-child{
+        border-right: 1px dashed #ffffff;
     }
 </style>

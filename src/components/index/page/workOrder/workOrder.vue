@@ -15,6 +15,14 @@
                 <el-radio :label="nullvalue" @change="search()">全部</el-radio>
                 <el-radio v-for="item in keyTypeData" :key="item.index" :label="item.index" @change="search()">{{item.name}}</el-radio>
             </el-radio-group>
+            <el-radio-group v-model="searchList.woClass">
+                <span class="nameList">工单分类：</span>
+                <el-radio :label="nullvalue" @change="loadItem">全部</el-radio>
+                <el-radio v-for="item in woClassData" :key="item.id" :label="item.id" @change="loadItem">{{item.name}}</el-radio>
+            </el-radio-group>
+            <el-radio-group v-model="searchList.woClass">
+                <el-radio v-for="item in woItemData" :key="item.id" :label="item.id" @change="search()">{{item.name}}</el-radio>
+            </el-radio-group>
         </div>
         <div class="searchList" style="width:100%;">
             <span class="nameList">公司名称：</span>
@@ -26,19 +34,14 @@
             <div class="totalnum_head">共 <span style="font-weight:bold">{{tableNumber}}</span> 条</div>
         </div>
         <el-table :data="tableData" border stripe style="width:100%">
-            <el-table-column label="问题" prop="problem" fixed min-width="150" show-overflow-tooltip sortable>
+            <el-table-column label="单号" prop="workOrderNo" fixed min-width="150" sortable></el-table-column>
+            <el-table-column label="问题" prop="problem" fixed min-width="200" show-overflow-tooltip sortable>
                 <template slot-scope="scope">
                     <div @click="openDetails(scope.$index, scope.row)" class="hoverline">
                         {{scope.row.problem}}
                     </div>
                 </template>
             </el-table-column>
-            <!-- <el-table-column label="描述" prop="describe" fixed min-width="150" show-overflow-tooltip sortable></el-table-column>
-            <el-table-column prop="enclosureOldNames" min-width="180" label="附件" sortable>
-                <template slot-scope="scope">
-                    <p v-for="(item,i) in scope.row.enclosureOldNames" :key="i">{{item + ','}}</p>
-                </template>
-            </el-table-column> -->
             <el-table-column label="状态" prop="serviceState" min-width="150" sortable></el-table-column>
             <el-table-column label="公司名称" prop="customerpool" min-width="180" sortable></el-table-column>
             <el-table-column label="联系人" prop="contacts" min-width="90" sortable></el-table-column>
@@ -100,6 +103,7 @@
                     label:1,
                     time:null,
                     keyType:2,
+                    woClass:null,
                 },
                 pIdData:[
                     {index:0,name:'全部'},
@@ -122,11 +126,14 @@
                     {index:5,name:'超过15天未解决'},
                     {index:6,name:'超过一个月未解决'},
                 ],
+                woClassData:[],
+                woItemData:[],
                 nullvalue:null,
             }
         },
         mounted(){
             this.loadTable()
+            this.loadClass()
         },
         activated(){
             this.loadTable()
@@ -154,6 +161,7 @@
                 data.limit = this.limit
                 data.example = this.searchList.time
                 data.searchName = this.searchList.searchName
+                data.type = this.searchList.woClass
 
                 axios({
                     method: 'post',
@@ -170,6 +178,33 @@
                     });
                     _this.$store.state.workOrderList = data
                     _this.$store.state.workOrderListnumber = res.data.count
+                }).catch(function(err){
+                });
+            },
+            loadClass(){
+                const _this = this
+
+                axios({
+                    method: 'get',
+                    url: _this.$store.state.defaultHttp+'serviceType/getServiceTypeNodeTree.do?cId='+_this.$store.state.iscId,
+                }).then(function(res){
+                    _this.woClassData = res.data.map.success
+                }).catch(function(err){
+                });
+            },
+            loadItem(val){
+                const _this = this
+                let qs = require('querystring')
+                let data = {}
+                data.id = val
+
+                axios({
+                    method: 'post',
+                    url: _this.$store.state.defaultHttp+'serviceType/getServiceTypeByParentId.do?cId='+_this.$store.state.iscId,
+                    data: qs.stringify(data)
+                }).then(function(res){
+                    _this.woItemData = res.data
+                    _this.$options.methods.search.bind(_this)()
                 }).catch(function(err){
                 });
             },

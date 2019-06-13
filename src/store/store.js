@@ -197,6 +197,9 @@ const state = {
   //工单列表总数
   workOrderListnumber:0,
 
+  //经验库列表
+  experienceBaseList:[],
+
   //当前时间
   nowtime:null,
 }

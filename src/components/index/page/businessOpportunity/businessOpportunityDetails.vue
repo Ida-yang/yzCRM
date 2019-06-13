@@ -142,114 +142,54 @@
                         </ul>
                     </el-tab-pane>
                     <el-tab-pane label="竞争对手" name="second">
-                        <el-table
-                            :data="competitorData"
-                            border
-                            stripe
-                            style="width: 100%">
-                            <el-table-column
-                                prop="name"
-                                min-width="90"
-                                label="公司名称">
+                        <el-table :data="competitorData" border stripe style="width: 100%">
+                            <el-table-column label="公司名称" prop="name" min-width="90">
                             </el-table-column>
-                            <el-table-column
-                                prop="phone"
-                                min-width="110"
-                                label="联系人">
+                            <el-table-column label="联系人" prop="phone" min-width="110">
                             </el-table-column>
-                            <el-table-column
-                                prop="telephone"
-                                min-width="110"
-                                label="优势">
+                            <el-table-column label="优势" prop="telephone" min-width="110">
                             </el-table-column>
-                            <el-table-column
-                                prop="email"
-                                min-width="110"
-                                label="劣势">
+                            <el-table-column label="劣势" prop="email" min-width="110">
                             </el-table-column>
-                            <el-table-column
-                                prop="qq"
-                                min-width="110"
-                                label="常用战术">
+                            <el-table-column label="常用战术" prop="qq" min-width="110">
                             </el-table-column>
                         </el-table>
                     </el-tab-pane>
                     <el-tab-pane label="联系人" name="third">
-                        <el-table
-                            :data="contactData"
-                            border
-                            stripe
-                            style="width: 100%">
-                            <el-table-column
-                                prop="name"
-                                min-width="90"
-                                label="名称">
+                        <el-table :data="contactData" border stripe style="width: 100%">
+                            <el-table-column prop="name" label="名称" min-width="90">
                             </el-table-column>
-                            <el-table-column
-                                prop="phone"
-                                min-width="110"
-                                label="手机">
+                            <el-table-column prop="phone" label="手机" min-width="110">
                             </el-table-column>
-                            <el-table-column
-                                prop="telephone"
-                                min-width="110"
-                                label="固话">
+                            <el-table-column label="固话" prop="telephone" min-width="110">
                             </el-table-column>
-                            <el-table-column
-                                prop="email"
-                                min-width="110"
-                                label="邮箱">
+                            <el-table-column label="邮箱" prop="email" min-width="110">
                             </el-table-column>
-                            <el-table-column
-                                prop="qq"
-                                min-width="110"
-                                label="QQ">
+                            <el-table-column label="QQ" prop="qq" min-width="110">
                             </el-table-column>
-                            <el-table-column
-                                prop="wechat"
-                                min-width="110"
-                                label="微信">
+                            <el-table-column label="微信" prop="wechat" min-width="110">
                             </el-table-column>
-                            <el-table-column
-                                prop="address"
-                                min-width="140"
-                                label="地址">
+                            <el-table-column label="地址" prop="address" min-width="140">
                             </el-table-column>
-                            <el-table-column
-                                prop="identity"
-                                show-overflow-tooltip
-                                min-width="90"
-                                label="职务">
+                            <el-table-column label="职务" prop="identity" show-overflow-tooltip min-width="90">
                             </el-table-column>
-                            <el-table-column
-                                prop="sex"
-                                min-width="90"
-                                label="性别">
+                            <el-table-column label="性别" prop="sex" min-width="90">
                             </el-table-column>
-                            <el-table-column
-                                prop="status"
-                                min-width="90"
-                                label="是否在职">
+                            <el-table-column label="是否在职" prop="status" min-width="90">
                                 <template slot-scope="scope">
                                     <el-tooltip :content="scope.row.status" placement="right">
                                         <el-switch v-model="scope.row.status" active-value="在职" inactive-value="离职" active-color="#13ce66" inactive-color="#bbbbbb" @change="changeState(scope.row)"></el-switch>
                                     </el-tooltip>
                                 </template>
                             </el-table-column>
-                            <el-table-column
-                                prop="isCrux"
-                                min-width="110"
-                                label="是否为关键人">
+                            <el-table-column label="是否为关键人" prop="isCrux" min-width="110">
                                 <template slot-scope="scope">
                                     <el-tooltip :content="scope.row.isCrux" placement="right">
                                         <el-switch v-model="scope.row.isCrux" active-value="是" inactive-value="否" active-color="#13ce66" inactive-color="#bbbbbb" @change="changePrimary(scope.row)"></el-switch>
                                     </el-tooltip>
                                 </template>
                             </el-table-column>
-                            <el-table-column
-                                prop="remark"
-                                min-width="100"
-                                label="备注">
+                            <el-table-column label="备注" prop="remark" min-width="100">
                             </el-table-column>
                         </el-table>
                     </el-tab-pane>
@@ -261,15 +201,15 @@
                     <el-tab-pane label="基本信息" name="first">
                         <div class="text">
                             <ul>
-                            <li>负责人：<span>{{privateUser.private_employee}}</span></li>
-                            <li>负责人部门：<span>{{opportunitydetail.deptname}}</span></li>
-                            <li>负责人机构：<span>{{opportunitydetail.parentname}}</span></li>
                             <li>客户决策人：<span>{{contacts.coName}}</span></li>
                             <li>创建时间：<span>{{opportunitydetail.opportunity_time}}</span></li>
                             <li>签约时间：<span>{{contractTime}}</span></li>
                             <li>失败时间：<span>{{failTime}}</span></li>
-                            <li>预计成交金额：<span>{{opportunitydetail.opportunity_achievement}}</span></li>
+                            <li>预计成交金额：<span class="bold_span">{{opportunitydetail.opportunity_achievement}}</span></li>
                             <li>预计成交时间：<span>{{opportunitydetail.opportunity_deal}}</span></li>
+                            <li>负责人：<span>{{privateUser.private_employee}}</span></li>
+                            <li>部门：<span>{{opportunitydetail.deptname}}</span></li>
+                            <li>机构：<span>{{opportunitydetail.parentname}}</span></li>
                             <li>备注：<span>{{opportunitydetail.opportunity_remarks}}</span></li>
                         </ul>
                             <p>&nbsp;</p>

@@ -343,12 +343,6 @@
     .content-collapse{
         left: 65px !important;
     }
-    /* .header .logo{
-        float: left;
-        width:150px;
-        line-height: 50px;
-        font-family: "楷体";
-    } */
     .breadcrumb{
         height: 50px;
     }

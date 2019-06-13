@@ -73,7 +73,7 @@ export default {
         flex-wrap: wrap;
     }
     .radioList > .el-radio-group > .el-radio{
-        flex: 0 0 10%;
+        flex: 0 0 9%;
         line-height: 30px;
         margin-left: 10px ;
         color: #000000;
@@ -98,7 +98,9 @@ export default {
         width: 90%;
     }
     body {
-        font-family: 'PingFang SC', "Helvetica Neue", Helvetica, "microsoft yahei", arial, STHeiTi, sans-serif;
+        /* font-family: 'PingFang SC', "Helvetica Neue", Helvetica, "microsoft yahei", arial, STHeiTi, sans-serif; */
+        /* font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif */
+        font-family: FZCuYuan-M03S FZY4JW FZY4JW—GB1-0 7156;
     }
 
     a {
@@ -276,6 +278,22 @@ export default {
         opacity: 0;
     }
 
+    .de_span_1{
+        color: #919191;
+    }
+    .de_span_2{
+        color: #606266
+    }
+    .de_span_3{
+        color: #ffffff;
+        background-color: #919191;
+        border-radius: 10px;
+    }
+    .bold_span{
+        font-weight: bold;
+        font-size: 16px
+    }
+    
     /*BaseForm*/
 
     .form-box {
@@ -416,6 +434,7 @@ export default {
         padding-top: 5px;
         padding-left: 10px;
         background-color: #f7f7f7;
+        /* border: 1px dashed #dddddd; */
         border-radius: 5px;
     }
     .recordcontent .left_more{
@@ -424,10 +443,8 @@ export default {
     }
     .recordcontent .right_more{
         float: right;
-        /* width:8%; */
         height:30px;
         cursor: pointer;
-        /* background-color: #686868; */
     }
     .delico{
         float: left;

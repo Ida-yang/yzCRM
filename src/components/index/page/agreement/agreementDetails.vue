@@ -14,7 +14,7 @@
                             <li>合同代码：<span>{{agreementdetail.contract_number}}</span></li>
                             <li>合同名称：<span>{{agreementdetail.contract_name}}</span></li>
                             <li>商机名称：<span>{{agreementdetail.opportunity_name}}</span></li>
-                            <li>合同金额：<span style="font-weight:bold;font-size:16px">{{agreementdetail.amount | commaing}} 元</span></li>
+                            <li>合同金额：<span class="bold_span">{{agreementdetail.amount | commaing}} 元</span></li>
                             <li>合同类型：<span>{{agreementdetail.contract_type}}</span></li>
                             <li>客户签约人：<span>{{agreementdetail.signatories}}</span></li>
                             <li>我方签约人：<span>{{agreementdetail.our_signatories}}</span></li>
@@ -147,8 +147,29 @@
                             <p>&nbsp;</p>
                         </div>
                     </el-tab-pane>
-                    <el-tab-pane label="回款计划" name="second">
-                        <span style="text-align:center;">暂无计划</span>
+                    <el-tab-pane label="回款计划" name="second"><div class="entry">
+                            <el-button class="btn info-btn" size="mini" @click="handleAdd()">新增</el-button>
+                        </div>
+                        <el-table :data="moneyPlanList" border stripe style="width: 100%">
+                            <el-table-column label="期数" fixed header-align="center" align="center" type="index" width="60" />
+                            <el-table-column label="客户名称" prop="customerName" min-width="180" />
+                            <el-table-column label="合同编号" prop="contract_number" min-width="150" />
+                            <el-table-column label="回款阶段" prop="stage" min-width="110" />
+                            <el-table-column label="预计回款金额" prop="price" min-width="120">
+                                <template slot-scope="scope">
+                                    {{scope.row.price | commaing}}
+                                </template>
+                            </el-table-column>
+                            <el-table-column label="预计日期" prop="date" min-width="120" />
+                            <el-table-column label="提醒时间" prop="remind_date" min-width="150" />
+                            <el-table-column label="备注" prop="remarks" min-width="110" />
+                            <el-table-column label="操作" fixed="right" width="150" header-align="center" align="center">
+                                <template slot-scope="scope">
+                                    <el-button size="mini" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
+                                    <el-button size="mini" type="danger" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+                                </template>
+                            </el-table-column>
+                        </el-table>
                     </el-tab-pane>
                     <el-tab-pane label="产品" name="third">
                         <span style="text-align:center;">暂无计划</span>
@@ -192,6 +213,39 @@
             <span slot="footer" class="dialog-footer">
                 <el-button @click="dialogVisible2 = false">取 消</el-button>
                 <el-button type="primary" @click="toexamine()">确 定</el-button>
+            </span>
+        </el-dialog>
+        <el-dialog title="回款计划" :visible.sync="dialogVisible3" width="50%">
+            <el-form ref="moneyPlan" :model="moneyPlan" :rules="rules" label-width="130px">
+                <el-form-item label="总金额">
+                    <el-input v-model="agreementdetail.amount" :disabled="true"></el-input>
+                </el-form-item>
+                <el-form-item label="剩余预计回款金额">
+                    <el-input v-model="agreementdetail.restamount" :disabled="true"></el-input>
+                </el-form-item>
+                <el-form-item prop="stage" label="回款阶段">
+                    <el-select v-model="moneyPlan.stage" placeholder="请选择回款阶段" style="width:100%;">
+                        <el-option v-show="moneyPlanList.length < 1" value="首笔款">首笔款</el-option>
+                        <el-option value="阶段款">阶段款</el-option>
+                        <el-option value="尾笔款">尾笔款</el-option>
+                    </el-select>
+                </el-form-item>
+                <el-form-item prop="price" label="预计回款金额">
+                    <el-input v-model="moneyPlan.price" onkeyup="value=value.replace(/[^\d]/g,'')"></el-input>
+                </el-form-item>
+                <el-form-item prop="date" label="计划日期">
+                    <el-date-picker v-model="moneyPlan.date" type="date" format="yyyy-MM-dd" value-format="yyyy-MM-dd" size="small" style="width:100%;"></el-date-picker>
+                </el-form-item>
+                <el-form-item prop="remind_date" label="提醒时间">
+                    <el-date-picker v-model="moneyPlan.remind_date" type="datetime" format="yyyy-MM-dd HH:mm:ss" value-format="yyyy-MM-dd HH:mm:ss" size="small" style="width:100%;"></el-date-picker>
+                </el-form-item>
+                <el-form-item label="备注">
+                    <el-input v-model="moneyPlan.remarks" type="textarea" rows="5"></el-input>
+                </el-form-item>
+            </el-form>
+            <span slot="footer" class="dialog-footer">
+                <el-button @click="dialogVisible3 = false">取 消</el-button>
+                <el-button type="primary" @click="toback()">确 定</el-button>
             </span>
         </el-dialog>
     </el-row>
@@ -251,6 +305,19 @@
                 exaform:{
                     status:null,
                     remarks:null,
+                },
+
+                moneyPlanList:[],
+
+                dialogVisible3:false,
+                moneyPlan:{
+                    date:null,
+                    price:null,
+                    stage:null,
+                    contract_id:null,
+                    customerpool_id:null,
+                    remarks:null,
+                    remind_date:null,
                 },
                 rules:{
                     remarks:[{ required: true, message: '审核意见不能为空', trigger: 'blur' }]
@@ -393,7 +460,24 @@
                 }).catch(function(err){
                     // console.log(err);
                 });
-                
+
+                //加载回款计划
+                axios({
+                    method:'get',
+                    url:_this.$store.state.defaultHttp+'backPlan/selectBackPlanByContractId.do?cId='+_this.$store.state.iscId+'&contract_id='+_this.detailData.id,
+                }).then(function(res){
+                    _this.moneyPlanList = res.data
+                    let aa = 0
+                    let bb = _this.agreementdetail.amount
+                    _this.moneyPlanList.forEach(el => {
+                        if(el.price){
+                            aa += el.price
+                        }
+                    });
+                    _this.agreementdetail.restamount = bb - aa
+                }).catch(function(err){
+                    // console.log(err);
+                });
             },
             tirggerFile (event) {
                 const _this = this;
@@ -474,6 +558,20 @@
             showexamine(e){
                 this.exaform.status = e
                 this.dialogVisible2 = true
+            },
+            handleAdd(){
+                console.log(this.agreementdetail)
+                this.dialogVisible3 = true
+                this.moneyPlan = { date:null, price:null, stage:null, contract_id:null, customerpool_id:null, remarks:null, remind_date:null,}
+            },
+            toback(){
+                console.log(this.moneyPlan)
+            },
+            handleEdit(index,row){
+                console.log(index,row)
+            },
+            handleDelete(index,row){
+                console.log(index,row)
             },
             toexamine(){
                 const _this = this
@@ -557,7 +655,7 @@
         background-color: #ffffff;
         border: 1px dashed #409EFF;
     }
-    .fileinputnone{
+    /* .fileinputnone{
         background-color: transparent;
     }
     .fileinputnone input{
@@ -572,7 +670,7 @@
         padding: 0;
         height: 100px !important;
         color: transparent;
-    }
+    } */
     .audited{
         position: absolute;
         right: 45%;

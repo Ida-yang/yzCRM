@@ -4,12 +4,12 @@
         <el-col :span="18">
             <el-card class="box-card">
                 <div slot="header" class="clearfix">
-                    <span style="font-weight:bold">服务工单</span>
+                    <span style="font-weight:bold">服务工单：{{workorderDetails.workOrderNo}}</span>
                 </div>
                 <div class="wo_c">
                     <ul class="wo_ul_left">
                         <li class="wo_li_left">
-                            <span style="font-size:20px;font-weight:bold">{{workorderDetails.problem}}</span>
+                            <span style="font-weight:bold">{{workorderDetails.problem}}</span>
                         </li>
                         <li class="wo_li_left">
                             <span class="wo_span_2" v-html="workorderDetails.describe"></span>
@@ -20,24 +20,15 @@
 
             <hr style="height:20px;background-color:#f0f0f0;border:0">
 
-            <div class="orderHead wo_head" v-show="showUE">
+            <div class="orderHead wo_head" v-show="showsolution && !showevaluate">
                 <el-form :inline="true" ref="myform" :model="myform" :rules="rules">
-                    <!-- <el-form-item class="first_input" label="解决人" label-width="90px">
-                        <el-input v-model="myform.solutionMan" class="inputbox" :disabled="true"></el-input>
-                    </el-form-item>
-                    <el-form-item prop="time" class="first_input" label="解决时间" label-width="90px">
-                        <el-date-picker v-model="myform.time" type="datetime" placeholder="选择解决时间" format="yyyy-MM-dd HH:mm:ss" value-format="yyyy-MM-dd HH:mm:ss" class="inputbox" @change="loadTime"></el-date-picker>
-                    </el-form-item> -->
                     <el-form-item prop="solveType" class="first_input" label="解决方式" label-width="90px">
                         <el-select v-model="myform.solveType" placeholder="请选择解决方式" class="inputbox">
                             <el-option v-for="item in solveTypeList" :key="item.index" :label="item.name" :value="item.name"></el-option>
                         </el-select>
                     </el-form-item>
-                    <!-- <el-form-item prop="timeConsuming" class="first_input" label="耗时" label-width="90px">
-                        <el-input v-model="myform.timeConsuming" class="inputbox"></el-input>
-                    </el-form-item> -->
                     <el-form-item prop="baseInput" class="first_input" label="知识库引入" label-width="90px">
-                        <el-select v-model="myform.baseInput" placeholder="" class="inputbox" filterable @change="selectBase">
+                        <el-select v-model="myform.baseInput" placeholder="" style="width:300px;" filterable @change="selectBase">
                             <el-option v-for="item in knowledgeBase" :key="item.id" :label="item.pName" :value="item.id"></el-option>
                         </el-select>
                     </el-form-item>
@@ -46,11 +37,11 @@
 
             <el-tabs v-model="activeName" type="card" class="wo_card">
                 <el-tab-pane label="说明" name="first" style="min-height:300px;">
-                    <div v-show="!showUE" style="padding:0 30px;box-sizing:border-box;">
-                        <el-button class="btn info-btn wo_show" size="mini" @click="doShowUE">编辑</el-button>
+                    <div v-show="!showsolution && !showevaluate" style="padding:0 30px;box-sizing:border-box;">
                         <div v-html="defaultMsg"></div>
+                        <el-button class="btn info-btn wo_show" size="mini" @click="doShowUE">编辑</el-button>
                     </div>
-                    <div v-show="showUE">
+                    <div v-show="showsolution && !showevaluate">
                         <div class="editor-container">
                             <UE :defaultMsg="defaultMsg" :config="config" ref="ue"></UE>
                         </div>
@@ -194,6 +185,19 @@
                 </el-tab-pane>
             </el-tabs>
 
+            <hr style="height:20px;background-color:#f0f0f0;border:0" v-if="showevaluate">
+            
+            <el-card class="box-card" v-if="showevaluate">
+                <div slot="header" class="clearfix">
+                    <span style="font-weight:bold">评价</span>
+                </div>
+                <div class="block">
+                    <el-rate class="wo_evaluate" disabled show-text :texts="ratetexts" v-model="workorderDetails.solution.score"></el-rate>
+                    <p class="wo_p">{{workorderDetails.solution.content}}</p>
+                    <!-- <el-input v-model="workorderDetails.solution.content" type="textarea" rows="5" size="small"></el-input> -->
+                </div>
+            </el-card>
+
             <el-dialog title="选择产品" :visible.sync="dialogVisible1" width="80%" class="orderDialog" center>
                 <div class="otherleftcontent">
                     <el-tree
@@ -228,7 +232,7 @@
             </el-dialog>
         </el-col>
 
-        <el-col :span="6" style="padding:0;" class="right wo_right">
+        <el-col :span="6" class="right wo_right">
             <el-card class="box-card">
                 <div slot="header" class="clearfix">
                     <span style="font-weight:bold">基本信息</span>
@@ -256,9 +260,6 @@
                     </ul>
                 </div>
             </el-card>
-            <div class="wo_c">
-                
-            </div>
         </el-col>
         
         <div class="submit_btn">
@@ -339,8 +340,11 @@
                 nodeChange:false,
                 updateData:[],
 
-                showUE:true,
+                showsolution:true,
+                showevaluate:false,
                 woRemarks:null,
+
+                ratetexts: ['2','4','6','8','10'],
 
                 isDisable:false
             }
@@ -363,13 +367,6 @@
                     data: qs.stringify(data)
                 }).then(function(res){
                     _this.workorderDetails = res.data
-                    if(res.data.solution){
-                        _this.showUE = false
-                        _this.myform = res.data.solution
-                        _this.defaultMsg = res.data.solution.remarks
-                        _this.updateData = res.data.solution.partsDetails
-                        _this.$options.methods.getItem.bind(_this)()
-                    }
                     if(res.data.discount){
                         _this.cusdiscount = res.data.discount
                     }else{
@@ -380,9 +377,21 @@
                     }else{
                         _this.custaxRate = '0'
                     }
-                    _this.$store.commit('getNowTime')
-                    _this.myform.time = _this.$store.state.nowtime
-                    _this.$options.methods.loadTime.bind(_this)(true)
+                    
+                    if(res.data.solution){
+                        _this.showsolution = false
+                        _this.myform = res.data.solution
+                        _this.defaultMsg = res.data.solution.remarks
+                        _this.updateData = res.data.solution.partsDetails
+                        _this.$options.methods.getItem.bind(_this)()
+                        if(res.data.solution.score){
+                            _this.showevaluate = true
+                        }
+                    }else{
+                        _this.$store.commit('getNowTime')
+                        _this.myform.time = _this.$store.state.nowtime
+                        _this.$options.methods.loadTime.bind(_this)(true)
+                    }
                 }).catch(function(err){
                 });
 
@@ -411,7 +420,7 @@
                 }
             },
             doShowUE(){
-                this.showUE = true
+                this.showsolution = true
             },
             selectBase(val){
                 console.log(val)
@@ -759,6 +768,34 @@
                     _this.isDisable = false
                 });
             },
+            // clickRates(){
+            //     const _this = this
+            //     let qs = require('querystring')
+            //     let data = {}
+            //     data.id = this.workorderDetails.solution.id
+            //     data.content = this.workorderDetails.solution.content
+            //     data.score = this.workorderDetails.solution.score
+
+            //     axios({
+            //         method: 'post',
+            //         url: _this.$store.state.defaultHttp+'solution/evaluate.do?cId='+_this.$store.state.iscId,
+            //         data: qs.stringify(data),
+            //     }).then(function(res){
+            //         if(res.data.code && res.data.code == '200'){
+            //             _this.$message({
+            //                 message: '操作成功',
+            //                 type:'success'
+            //             })
+            //             _this.$options.methods.loadData.bind(_this)()
+            //         }else{
+            //             _this.$message({
+            //                 message: res.data.msg,
+            //                 type:'error'
+            //             })
+            //         }
+            //     }).catch(function(err){
+            //     });
+            // },
             closeTag(){
                 let tagsList = this.$store.state.tagsList;
                 let index;
@@ -788,9 +825,12 @@
     }
     .wo_head,.wo_card{
         background-color: #fff;
+        position: relative;
     }
     .wo_ul_left{
         width: 100%;
+        padding: 20px;
+        box-sizing: border-box;
         list-style-type: none;
     }
     .wo_ul_left .wo_li_left{
@@ -818,6 +858,7 @@
         color: #606266;
         line-height: 30px;
         margin-bottom: 30px;
+        margin-left: 10px;
     }
     .wo_ul_right span{
         display: inline-block;
@@ -830,10 +871,19 @@
         height: auto
     }
     .wo_show{
-        margin-left: calc(100% - 60px)
+        margin-left: calc(100% - 105px);
+        position: absolute;
+        bottom: 20px;
     }
 
     .wo_right{
-        padding-bottom: 30px;
+        padding: 0 30px;
+    }
+    .wo_evaluate{
+        margin-bottom: 10px;
+    }
+    .wo_p{
+        color: #606266;
+        line-height: 1.5
     }
 </style>
