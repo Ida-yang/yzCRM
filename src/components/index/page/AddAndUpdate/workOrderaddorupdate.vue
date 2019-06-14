@@ -34,7 +34,7 @@
                     </el-form-item>
                     <el-form-item class="first_input" label="销售单号" label-width="90px">
                         <el-select v-model="myform.orderId" placeholder="请选择销售单号" class="inputbox">
-                            <el-option v-for="item in orderList" :key="item.id" :label="item.orderNo" :value="item.orderNo"></el-option>
+                            <el-option v-for="item in orderList" :key="item.id" :label="item.orderNo" :value="item.id"></el-option>
                         </el-select>
                     </el-form-item>
                     <br>

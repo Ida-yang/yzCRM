@@ -159,9 +159,9 @@
                                     <p class="de_span_1">{{item.inputType}}</p>
                                 </div>
                                 <div class="right_more" v-if="item.showdelico">
-                                    <el-dropdown trigger="click" @command="deletefollow(index)">
+                                    <el-dropdown trigger="click" @command="deletefollow(index)" class="clue_drop">
                                         <span class="el-dropdown-link">更多<i class="el-icon-caret-bottom"></i></span>
-                                        <el-dropdown-menu slot="dropdown">
+                                        <el-dropdown-menu slot="dropdown" class="drop_item">
                                             <el-dropdown-item command="del">删除</el-dropdown-item>
                                         </el-dropdown-menu>
                                     </el-dropdown>
@@ -227,8 +227,8 @@
                 <el-button icon="el-icon-search" type="primary" size="mini" @click="search()"></el-button>
             </div>
             <el-table
-            :data="tableData"
-            style="width: 100%">
+                :data="tableData"
+                style="width: 100%">
                 <el-table-column
                 prop="name"
                 label="公司名称">
@@ -1050,5 +1050,9 @@
     }
     .el-card__body{
         padding: 0;
+    }
+    .clue_drop{
+        font-size: 12px;
+        color: #919191;
     }
 </style>

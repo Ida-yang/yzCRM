@@ -294,6 +294,15 @@ export default {
         font-size: 16px
     }
     
+    .drop_item{
+        padding: 5px 0;
+    }
+    .drop_item .el-dropdown-menu__item{
+        line-height: 24px;
+        font-size: 12px;
+        color: #919191;
+    }
+    
     /*BaseForm*/
 
     .form-box {

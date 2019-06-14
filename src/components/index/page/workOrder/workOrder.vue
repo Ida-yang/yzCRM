@@ -34,6 +34,7 @@
             <div class="totalnum_head">共 <span style="font-weight:bold">{{tableNumber}}</span> 条</div>
         </div>
         <el-table :data="tableData" border stripe style="width:100%">
+            <el-table-column header-align="center" fixed align="center" type="index" width="45"></el-table-column>
             <el-table-column label="单号" prop="workOrderNo" fixed min-width="150" sortable></el-table-column>
             <el-table-column label="问题" prop="problem" fixed min-width="200" show-overflow-tooltip sortable>
                 <template slot-scope="scope">

@@ -277,6 +277,11 @@ const router =new Router({
           meta: { title: '经验库',name:'experienceBase',requireAuth:true}
         },
         {
+          path: '/experienceBasedetail',
+          component: resolve => require(['../components/index/page/workOrder/experienceBasedetail.vue'], resolve),
+          meta: { title: '经验库详情',name:'experienceBasedetail',requireAuth:true}
+        },
+        {
           path: '/name',
           component: resolve => require(['../components/index/page/product/name.vue'], resolve),
           meta: { title: '名字',requireAuth:true}

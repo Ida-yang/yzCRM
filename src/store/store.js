@@ -62,6 +62,7 @@ const state = {
   missiondetailsData:null,
   productdetailsData:null,
   workOrderdetaildsData:null,
+  expBasedetailData:null,
 
 
   //线索挖掘列表
@@ -199,6 +200,8 @@ const state = {
 
   //经验库列表
   experienceBaseList:[],
+  //经验库列表总数
+  experienceBaseListnumber:0,
 
   //当前时间
   nowtime:null,

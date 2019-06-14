@@ -134,9 +134,20 @@
                             <li class="verticalline"></li>
                             <li class="recordcontent">
                                 <div class="left_more">
-                                    <p>{{item.private_employee}}&nbsp;于&nbsp;{{item.createTime}}&nbsp;&nbsp;&nbsp;通过&nbsp;{{item.followType}}&nbsp;联系了：&nbsp;{{item.contacts[0].name}}
+                                    <!-- <p>{{item.private_employee}}&nbsp;于&nbsp;{{item.createTime}}&nbsp;&nbsp;&nbsp;通过&nbsp;{{item.followType}}&nbsp;联系了：&nbsp;{{item.contacts[0].name}}
                                         <span v-if="item.contactTime">&nbsp;&nbsp;&nbsp;并约定下次联系时间：{{item.contactTime}}</span>
                                         &nbsp;&nbsp;&nbsp;<span>状态为：{{item.state}} &nbsp;&nbsp;&nbsp;{{item.inputType}}</span> 
+                                    </p> -->
+                                    <p>
+                                        <span class="de_span_2">{{item.contacts[0].name}}</span>
+                                        <span class="de_span_1">&nbsp;|&nbsp;</span>
+                                        <span class="de_span_1">{{item.createTime}}</span>
+                                        <span v-if="item.contactTime" class="de_span_1">&nbsp;&nbsp;--&nbsp;&nbsp;</span>
+                                        <span class="de_span_1">{{item.contactTime}}</span>
+                                        &nbsp;&nbsp;
+                                        <span class="de_span_2">{{item.state}}</span>
+                                        &nbsp;&nbsp;
+                                        <span class="de_span_3">&nbsp;&nbsp;{{item.followType}}&nbsp;&nbsp;</span>
                                     </p>
                                     <p style="margin-top:15px;margin-bottom:15px;">{{item.followContent}}</p>
                                     <div class="imgbox_two" v-if="item.imgName">
@@ -145,6 +156,9 @@
                                     <div v-if="item.enclosureName">
                                         <a :href="item.enclosureUrl" download>{{item.enclosureOldName}}</a>
                                     </div>
+
+                                    <p class="de_span_1">{{item.inputType}}</p>
+                                    
                                     <el-dialog :visible.sync="dialogVisible2">
                                         <img width="100%" :src="dialogImageUrl2" alt="">
                                     </el-dialog>

@@ -9,7 +9,7 @@
                 <div class="wo_c">
                     <ul class="wo_ul_left">
                         <li class="wo_li_left">
-                            <span style="font-weight:bold">{{workorderDetails.problem}}</span>
+                            <span style="margin-left:10px;font-weight:bold">{{workorderDetails.problem}}</span>
                         </li>
                         <li class="wo_li_left">
                             <span class="wo_span_2" v-html="workorderDetails.describe"></span>
@@ -846,9 +846,7 @@
         box-sizing: border-box;
     }
     .wo_span_2{
-        display: inline-block;
-        border-radius: 5px;
-        padding: 0 20px;
+        padding: 0 10px;
         box-sizing: border-box;
     }
 
