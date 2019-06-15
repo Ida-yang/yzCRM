@@ -227,6 +227,10 @@
                                 title: '合同',
                             },
                             {
+                                index: 'followlog',
+                                title: '跟进记录',
+                            },
+                            {
                                 index: 'order',
                                 title: '销售订单',
                             },

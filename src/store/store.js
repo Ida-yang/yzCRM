@@ -253,7 +253,16 @@ const mutations = {
     mm = (mm < 10 ? "0" + mm : mm)
     s = (s < 10 ? "0" + s : s)
     state.nowtime = y + '-' + m + '-' + d + ' ' + h + ':' + mm + ':' + s
-  }
+  },
+  getNowDate(){
+    let myDate = new Date()
+    let y = myDate.getFullYear() //获取完整的年份(4位,1970-????)
+    let m = myDate.getMonth() + 1 //获取当前月份(0-11,0代表1月)
+    let d = myDate.getDate() //获取当前日(1-31)
+    m = (m < 10 ? "0" + m : m)
+    d = (d < 10 ? "0" + d : d)
+    state.nowdate = y + '-' + m + '-' + d
+  },
 
 }
 

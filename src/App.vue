@@ -1063,7 +1063,7 @@ export default {
         left: 10px;
     }
     .examine_popover .examint_msg{
-        width: 140px;
+        width: 170px;
         display: inline-block;
         margin-left: 40px;
     }

@@ -169,6 +169,18 @@
                 </span>
             </el-tree>
 
+            <el-table :data="payData" border stripe style="width:100%" v-show="showfifteen">
+                <el-table-column header-align="center" align="center" type="index" width="45" />
+                <el-table-column label="支付方式" prop="typeName" sortable />
+                <el-table-column label="备注" prop="notes" sortable />
+                <el-table-column label="操作" width="150" header-align="center" align="center">
+                    <template slot-scope="scope">
+                        <el-button size="mini" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
+                        <el-button size="mini" type="danger" @click="handledelete(scope.$index, scope.row)">编辑</el-button>
+                    </template>
+                </el-table-column>
+            </el-table>
+
             <div class="block numberPage" v-show="showeight || shownine">
                 <el-pagination
                     @size-change="handleSizeChange"
@@ -638,9 +650,7 @@
                     <el-select v-model="newform.jobclassdeptName" placeholder="请选择负责部门" size="mini" class="dept_selec">
                         <el-option class="droplist" :value="newform.jobclassdeptName">
                             <el-tree
-                                node-key="deptid"
-                                highlight-current
-                                default-expand-all
+                                node-key="deptid" highlight-current default-expand-all
                                 ref="tree"
                                 :data="treedatalist"
                                 :props="deptProps"
@@ -661,6 +671,42 @@
             <span slot="footer" class="dialog-footer">
                 <el-button @click="jobclassupdate = false">取 消</el-button>
                 <el-button type="primary" @click="updateProclass()">确 定</el-button>
+            </span>
+        </el-dialog>
+        <!-- 新增支付方式 -->
+        <el-dialog title="新增支付方式" :visible.sync="payTypeadd" width="40%">
+            <el-form ref="newform" :model="newform" label-width="110px" :rules="rules">
+                <el-form-item prop="type" label="辅助资料类别">
+                    <el-input v-model="newform.type" :disabled="true"></el-input>
+                </el-form-item>
+                <el-form-item prop="typeName" label="支付方式">
+                    <el-input v-model="newform.typeName" placeholder="请输入支付方式"></el-input>
+                </el-form-item>
+                <el-form-item prop="notes" label="备注">
+                    <el-input v-model="newform.notes" type="textarea" rows="5"></el-input>
+                </el-form-item>
+            </el-form>
+            <span slot="footer" class="dialog-footer">
+                <el-button @click="payTypeadd = false">取 消</el-button>
+                <el-button type="primary" @click="addbasicset()">确 定</el-button>
+            </span>
+        </el-dialog>
+        <!-- 编辑支付方式 -->
+        <el-dialog title="编辑支付方式" :visible.sync="payTypeupdate" width="40%">
+            <el-form ref="newform" :model="newform" label-width="110px" :rules="rules">
+                <el-form-item prop="type" label="辅助资料类别">
+                    <el-input v-model="newform.type" :disabled="true"></el-input>
+                </el-form-item>
+                <el-form-item prop="typeName" label="支付方式">
+                    <el-input v-model="newform.typeName" placeholder="请输入支付方式"></el-input>
+                </el-form-item>
+                <el-form-item prop="notes" label="备注">
+                    <el-input v-model="newform.notes" type="textarea" rows="5"></el-input>
+                </el-form-item>
+            </el-form>
+            <span slot="footer" class="dialog-footer">
+                <el-button @click="payTypeupdate = false">取 消</el-button>
+                <el-button type="primary" @click="updatebasicset()">确 定</el-button>
             </span>
         </el-dialog>
     </div>
@@ -687,6 +733,7 @@
                 distriData:[],
                 codeData:[],
                 classData:[],
+                payData:[],
 
                 treedatalist:[],
 
@@ -715,6 +762,7 @@
                     {index:5,slotindex:'5',name:'快捷方式',isActive:false},
                     {index:6,slotindex:'6',name:'商机进度',isActive:false},
                     {index:14,slotindex:'14',name:'工单分类',isActive:false},
+                    {index:15,slotindex:'15',name:'支付方式',isActive:false},
                 ],
                 orderparam:[
                     {index:7,slotindex:'7',name:'产品分类',isActive:false},
@@ -787,6 +835,7 @@
                 showtwelve:false,
                 showthirteen:false,
                 showfourteen:false,
+                showfifteen:false,
 
                 dialogVisible:false,//线索状态、客户状态、客户来源、客户分类
                 dialogVisible2:false,
@@ -811,6 +860,8 @@
                 topJobClassadd:false,//工单分类顶级
                 jobclassadd:false,
                 jobclassupdate:false,//工单分类子集
+                payTypeadd:false,
+                payTypeupdate:false,//支付方式
 
                 rules: {
                     typeName : [{ required: true, message: '名称不能为空', trigger: 'blur' },],
@@ -856,6 +907,8 @@
                         _this.waysData = res.data
                     }else if(i == 11){
                         _this.deliData = res.data
+                    }else if(i == 15){
+                        _this.payData = res.data
                     }
                 }).catch(function(err){
                     // console.log(err);
@@ -1003,6 +1056,7 @@
                 _this.showtwelve = false
                 _this.showthirteen = false
                 _this.showfourteen = false
+                _this.showfifteen = false
                 if(i == 1 || i == 2 || i == 3 || i == 4){
                     _this.showtopfour = true
                     _this.$options.methods.reloadTable.bind(_this)(true)
@@ -1036,6 +1090,9 @@
                 }else if(i == 14){
                     _this.showfourteen = true
                     _this.$options.methods.loadjobClass.bind(_this)(true)
+                }else if(i == 15){
+                    _this.showfifteen = true
+                    _this.$options.methods.reloadTable.bind(_this)(true)
                 }
             },
             //添加基础资料弹框
@@ -1099,6 +1156,9 @@
                             _this.newform.jobclassName = null
                             _this.newform.jobclassRemark = null
                             _this.topJobClassadd = true
+                        }else if(i == 15){
+                            _this.newform.typeName = null
+                            _this.payTypeadd = true
                         }
                     }
                 }).catch(function(err){
@@ -1136,7 +1196,7 @@
                 data.type = this.newform.type
                 data.sort = this.newform.sort
                 data.notes = this.newform.notes
-                if(i == 1 || i == 2 || i == 3 || i == 4 || i == 11){
+                if(i == 1 || i == 2 || i == 3 || i == 4 || i == 11 || i == 15){
                     data.typeName = this.newform.typeName
                 }else if(i == 5){
                     data.typeName = this.newform.quickname
@@ -1189,6 +1249,14 @@
                         });
                         flag = true;
                     }
+                }else if(i == 15){
+                    if(!data.typeName){
+                        _this.$message({
+                            message: "支付方式不能为空",
+                            type: 'error'
+                        });
+                        flag = true;
+                    }
                 }
                 if(flag) return
 
@@ -1205,6 +1273,7 @@
                         _this.dialogVisible = false
                         _this.shortcutadd = false
                         _this.deliveryadd = false
+                        _this.payTypeadd = false
                         _this.$options.methods.reloadTable.bind(_this)(true);
                     }else{
                         _this.$message({
@@ -1614,6 +1683,11 @@
                             _this.newform.module = row.module
                             _this.newform.prefix = row.prefix
                             _this.numruleupdate = true
+                        }else if(i == 15){
+                            _this.newform.id = row.id
+                            _this.newform.typeName = row.typeName
+                            _this.newform.notes = row.notes
+                            _this.payTypeupdate = true
                         }
                     }
                 }).catch(function(err){
@@ -1653,7 +1727,7 @@
                 data.type = this.newform.type
                 data.sort = this.newform.sort
                 data.notes = this.newform.notes
-                if(i == 1 || i == 2 || i == 3 || i == 4 || i == 11){
+                if(i == 1 || i == 2 || i == 3 || i == 4 || i == 11 || i == 15){
                     data.typeName = this.newform.typeName
                 }else if(i == 5){
                     data.typeName = this.newform.quickname
@@ -1706,6 +1780,14 @@
                         });
                         flag = true;
                     }
+                }else if(i == 15){
+                    if(!data.typeName){
+                        _this.$message({
+                            message: "支付方式不能为空",
+                            type: 'error'
+                        });
+                        flag = true;
+                    }
                 }
                 if(flag) return
                 
@@ -1722,6 +1804,7 @@
                         _this.dialogVisible2 = false
                         _this.shortcutupdate = false
                         _this.deliveryupdate = false
+                        _this.payTypeupdate = false
                         _this.$options.methods.reloadTable.bind(_this)(true);
                     }else{
                         _this.$message({
@@ -2106,7 +2189,7 @@
                     _this.$message.error("修改失败,请重新修改");
                 });
             },
-            //删除1,2,3,4,5,6,11,12
+            //删除1,2,3,4,5,6,11,12,15
             handledelete(index,row){
                 const _this = this;
                 let i = this.newform.index
@@ -2114,7 +2197,7 @@
                 let idArr = [];
                 let urls = null
                 let val = null
-                if(i == 1 || i == 2 || i == 3 || i == 4 || i == 5 || i == 11){
+                if(i == 1 || i == 2 || i == 3 || i == 4 || i == 5 || i == 11 || i == 15){
                     idArr.id = row.id
                     urls = _this.$store.state.defaultHttp+ 'typeInfo/deleteTypeInfoById.do?cId='+_this.$store.state.iscId // 删除辅助资料
                     val = row.typeName
@@ -2143,7 +2226,7 @@
                                 message: '删除成功',
                                 type: 'success'
                             });
-                            if(i == 1 || i == 2 || i == 3 || i == 4 || i == 5 || i == 11){
+                            if(i == 1 || i == 2 || i == 3 || i == 4 || i == 5 || i == 11 || i == 15){
                                 _this.$options.methods.reloadTable.bind(_this)(true);
                             }else if(i == 6){
                                 _this.$options.methods.loadOppStep.bind(_this)(true);

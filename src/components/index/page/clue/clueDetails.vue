@@ -157,6 +157,10 @@
                                     </div>
                                     
                                     <p class="de_span_1">{{item.inputType}}</p>
+
+                                    <el-dialog :visible.sync="dialogVisible2">
+                                        <img width="100%" :src="dialogImageUrl2" alt="">
+                                    </el-dialog>
                                 </div>
                                 <div class="right_more" v-if="item.showdelico">
                                     <el-dropdown trigger="click" @command="deletefollow(index)" class="clue_drop">
@@ -348,6 +352,9 @@
 
                 website:'',
 
+                dialogVisible2:false,
+                dialogImageUrl2:null,
+
                 Enclosureclue:[]
             }
         },
@@ -437,16 +444,16 @@
                             el.showdelico = false
                         }
                         if(el.userImagName){
-                            el.imgUrl = '/upload/'+_this.$store.state.iscId+'/'+el.userImagName
+                            el.imgUrl = _this.$store.state.systemHttp + '/upload/'+_this.$store.state.iscId+'/'+el.userImagName
                         }
                         if(!el.userImagName || el.userImagName == null){
-                            el.imgUrl = '/upload/staticImg/avatar.jpg'
+                            el.imgUrl = _this.$store.state.systemHttp + '/upload/staticImg/avatar.jpg'
                         }
                         if(el.imgName && el.imgName !== null){
-                            el.picture_detail = '/upload/'+_this.$store.state.iscId+'/'+el.imgName
+                            el.picture_detail = _this.$store.state.systemHttp + '/upload/'+_this.$store.state.iscId+'/'+el.imgName
                         }
                         if(el.enclosureName && el.enclosureName !== null){
-                            el.enclosureUrl = '/upload/'+_this.$store.state.iscId+'/'+el.enclosureName
+                            el.enclosureUrl = _this.$store.state.systemHttp + '/upload/'+_this.$store.state.iscId+'/'+el.enclosureName
                         }
                     });
                     if(!_this.record[0]){
@@ -746,7 +753,7 @@
             },
             showImg(e,val){
                 // console.log(val)
-                this.dialogImageUrl2 = '/upload/'+this.$store.state.iscId+'/'+val.imgName
+                this.dialogImageUrl2 = _this.$store.state.systemHttp + '/upload/'+this.$store.state.iscId+'/'+val.imgName
                 this.dialogVisible2 = true
             },
             changeState(row){

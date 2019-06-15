@@ -156,7 +156,7 @@
                 ],
 
                 agreementTime:[
-                    {id:'',name:'全部'},
+                    {id:'0',name:'全部'},
                     {id:'1',name:'本月签约'},
                     {id:'2',name:'近一个月到期'},
                     {id:'3',name:'已过期'}

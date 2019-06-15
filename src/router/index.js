@@ -282,6 +282,11 @@ const router =new Router({
           meta: { title: '经验库详情',name:'experienceBasedetail',requireAuth:true}
         },
         {
+          path: '/followlog',
+          component: resolve => require(['../components/index/page/log/followlog.vue'], resolve),
+          meta: { title: '跟进记录',name:'followlog',requireAuth:true}
+        },
+        {
           path: '/name',
           component: resolve => require(['../components/index/page/product/name.vue'], resolve),
           meta: { title: '名字',requireAuth:true}

@@ -66,7 +66,7 @@
                     <div class="text item">
                         <div class="examine_c">
                             <div v-for="(item,index) in examineList" :key="index" class="examine_item">
-                                <el-popover placement="bottom" width="200" trigger="hover" class="examine_cont">
+                                <el-popover placement="bottom" width="220" trigger="hover" class="examine_cont">
                                     <div class="examine_popover" v-for="(b,j) in item.userList" :key="j">
                                         <span class="examine_ico">
                                             <i v-if="b.examineStatus == 0" class="el-icon-time" style="font-size:20px"></i>
@@ -77,7 +77,7 @@
                                         </span>
                                         <div class="examint_msg">
                                             <p style="font-size:13px;color:#aaaaaa">{{b.examineTime}}</p>
-                                            <p>{{b.realname + '(' + b.phone + ')'}}</p>
+                                            <span>{{b.realname + '(' + b.phone + ')'}}</span>
                                             <p v-if="b.examineStatus == 0">未审核此申请</p>
                                             <p v-if="b.examineStatus == 1">通过此申请</p>
                                             <p v-if="b.examineStatus == 2">拒绝此申请</p>
@@ -147,8 +147,9 @@
                             <p>&nbsp;</p>
                         </div>
                     </el-tab-pane>
-                    <el-tab-pane label="回款计划" name="second"><div class="entry">
-                            <el-button class="btn info-btn" size="mini" @click="handleAdd()">新增</el-button>
+                    <el-tab-pane label="回款计划" name="second">
+                        <div class="entry">
+                            <el-button class="btn info-btn" size="mini" @click="addplan()">新增计划</el-button>
                         </div>
                         <el-table :data="moneyPlanList" border stripe style="width: 100%">
                             <el-table-column label="期数" fixed header-align="center" align="center" type="index" width="60" />
@@ -163,10 +164,33 @@
                             <el-table-column label="预计日期" prop="date" min-width="120" />
                             <el-table-column label="提醒时间" prop="remind_date" min-width="150" />
                             <el-table-column label="备注" prop="remarks" min-width="110" />
+                            <el-table-column label="操作" fixed="right" width="150" header-align="center" align="center" v-if="!moneyBackList.length">
+                                <template slot-scope="scope">
+                                    <el-button size="mini" @click="editplan(scope.$index, scope.row)">编辑</el-button>
+                                    <el-button size="mini" type="danger" @click="delplan(scope.$index, scope.row)">删除</el-button>
+                                </template>
+                            </el-table-column>
+                        </el-table>
+                        <br><br>
+                        <div class="entry">
+                            <el-button class="btn info-btn" size="mini" @click="addback()">新增回款</el-button>
+                        </div>
+                        <el-table :data="moneyBackList" border stripe style="width: 100%">
+                            <el-table-column label="期数" fixed header-align="center" align="center" type="index" width="60" />
+                            <el-table-column label="客户名称" prop="customerName" min-width="180" />
+                            <el-table-column label="合同编号" prop="contract_number" min-width="150" />
+                            <el-table-column label="回款阶段" prop="back_plan" min-width="110" />
+                            <el-table-column label="回款金额" prop="price" min-width="120">
+                                <template slot-scope="scope">
+                                    {{scope.row.price | commaing}}
+                                </template>
+                            </el-table-column>
+                            <el-table-column label="回款日期" prop="createTime" min-width="120" />
+                            <el-table-column label="备注" prop="remarks" min-width="110" />
                             <el-table-column label="操作" fixed="right" width="150" header-align="center" align="center">
                                 <template slot-scope="scope">
-                                    <el-button size="mini" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
-                                    <el-button size="mini" type="danger" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+                                    <el-button size="mini" @click="editback(scope.$index, scope.row)">编辑</el-button>
+                                    <el-button size="mini" type="danger" @click="delback(scope.$index, scope.row)">删除</el-button>
                                 </template>
                             </el-table-column>
                         </el-table>
@@ -218,12 +242,12 @@
         <el-dialog title="回款计划" :visible.sync="dialogVisible3" width="50%">
             <el-form ref="moneyPlan" :model="moneyPlan" :rules="rules" label-width="130px">
                 <el-form-item label="总金额">
-                    <el-input v-model="agreementdetail.amount" :disabled="true"></el-input>
+                    <el-input v-model="moneyPlan.amount" :disabled="true"></el-input>
                 </el-form-item>
                 <el-form-item label="剩余预计回款金额">
-                    <el-input v-model="agreementdetail.restamount" :disabled="true"></el-input>
+                    <el-input v-model="moneyPlan.restamount" :disabled="true"></el-input>
                 </el-form-item>
-                <el-form-item prop="stage" label="回款阶段">
+                <el-form-item prop="stage" label="回款阶段" v-show="!moneyPlan.id">
                     <el-select v-model="moneyPlan.stage" placeholder="请选择回款阶段" style="width:100%;">
                         <el-option v-show="moneyPlanList.length < 1" value="首笔款">首笔款</el-option>
                         <el-option value="阶段款">阶段款</el-option>
@@ -233,11 +257,11 @@
                 <el-form-item prop="price" label="预计回款金额">
                     <el-input v-model="moneyPlan.price" onkeyup="value=value.replace(/[^\d]/g,'')"></el-input>
                 </el-form-item>
-                <el-form-item prop="date" label="计划日期">
+                <el-form-item prop="date" label="预计回款时间">
                     <el-date-picker v-model="moneyPlan.date" type="date" format="yyyy-MM-dd" value-format="yyyy-MM-dd" size="small" style="width:100%;"></el-date-picker>
                 </el-form-item>
-                <el-form-item prop="remind_date" label="提醒时间">
-                    <el-date-picker v-model="moneyPlan.remind_date" type="datetime" format="yyyy-MM-dd HH:mm:ss" value-format="yyyy-MM-dd HH:mm:ss" size="small" style="width:100%;"></el-date-picker>
+                <el-form-item label="提醒时间">
+                    <el-date-picker v-model="moneyPlan.remind_date" type="datetime" format="yyyy-MM-dd HH:mm:ss" value-format="yyyy-MM-dd HH:mm:ss" default-time="12:00:00" size="small" style="width:100%;"></el-date-picker>
                 </el-form-item>
                 <el-form-item label="备注">
                     <el-input v-model="moneyPlan.remarks" type="textarea" rows="5"></el-input>
@@ -245,7 +269,40 @@
             </el-form>
             <span slot="footer" class="dialog-footer">
                 <el-button @click="dialogVisible3 = false">取 消</el-button>
-                <el-button type="primary" @click="toback()">确 定</el-button>
+                <el-button type="primary" @click="planSubmit()">确 定</el-button>
+            </span>
+        </el-dialog>
+        <el-dialog title="回款信息" :visible.sync="dialogVisible4" width="50%">
+            <el-form ref="moneyBack" :model="moneyBack" :rules="rules" label-width="130px">
+                <el-form-item label="预计回款金额">
+                    <el-input v-model="moneyBack.amount" :disabled="true"></el-input>
+                </el-form-item>
+                <el-form-item label="剩余预计回款金额">
+                    <el-input v-model="moneyBack.restamount" :disabled="true"></el-input>
+                </el-form-item>
+                <el-form-item prop="back_plan_id" label="回款阶段">
+                    <el-select v-model="moneyBack.back_plan_id" placeholder="请选择回款阶段" style="width:100%;">
+                        <el-option v-for="a in moneyPlanList" :key="a.id" :label="a.stage" :value="a.id">{{a.stage}}</el-option>
+                    </el-select>
+                </el-form-item>
+                <el-form-item prop="prices" label="回款金额">
+                    <el-input v-model="moneyBack.price" onkeyup="value=value.replace(/[^\d]/g,'')"></el-input>
+                </el-form-item>
+                <el-form-item prop="createTime" label="回款时间">
+                    <el-date-picker v-model="moneyBack.createTime" type="date" format="yyyy-MM-dd" value-format="yyyy-MM-dd" size="small" style="width:100%;"></el-date-picker>
+                </el-form-item>
+                <el-form-item prop="pay_type_id" label="支付方式">
+                    <el-select v-model="moneyBack.pay_type_id" placeholder="请选择支付方式" style="width:100%;">
+                        <el-option v-for="item in payList" :key="item.id" :label="item.typeName" :value="item.id">{{item.typeName}}</el-option>
+                    </el-select>
+                </el-form-item>
+                <el-form-item label="备注">
+                    <el-input v-model="moneyBack.remarks" type="textarea" rows="5"></el-input>
+                </el-form-item>
+            </el-form>
+            <span slot="footer" class="dialog-footer">
+                <el-button @click="dialogVisible4 = false">取 消</el-button>
+                <el-button type="primary" @click="backSubmit()">确 定</el-button>
             </span>
         </el-dialog>
     </el-row>
@@ -311,16 +368,45 @@
 
                 dialogVisible3:false,
                 moneyPlan:{
+                    id:null,
+                    amount:null,
+                    restamount:null,
                     date:null,
                     price:null,
-                    stage:null,
+                    // stage:null,
+                    back_plan_id:null,
                     contract_id:null,
                     customerpool_id:null,
                     remarks:null,
                     remind_date:null,
                 },
+
+                moneyBackList:[],
+                dialogVisible4:false,
+                moneyBack:{
+                    id:null,
+                    amount:null,
+                    restamount:null,
+                    createTime:null,
+                    price:null,
+                    stage:null,
+                    contract_id:null,
+                    customerpool_id:null,
+                    remarks:null,
+                    pay_type_id:null,
+                },
+                payList:[],
+                backamount:0,
+                backrestamount:0,
                 rules:{
-                    remarks:[{ required: true, message: '审核意见不能为空', trigger: 'blur' }]
+                    remarks:[{ required: true, message: '审核意见不能为空', trigger: 'blur' }],
+                    stage:[{ required: true, message: '回款阶段不能为空', trigger: 'blur' }],
+                    price:[{ required: true, message: '预计回款金额不能为空', trigger: 'blur' }],
+                    date:[{ required: true, message: '预计回款时间不能为空', trigger: 'blur' }],
+                    prices:[{ required: true, message: '回款金额不能为空', trigger: 'blur' }],
+                    createTime:[{ required: true, message: '回款时间不能为空', trigger: 'blur' }],
+                    pay_type_id:[{ required: true, message: '支付方式不能为空', trigger: 'blur' }],
+                    back_plan_id:[{ required: true, message: '回款阶段不能为空', trigger: 'blur' }],
                 },
             }
         },
@@ -336,6 +422,8 @@
                 pageInfo.page = this.page
                 pageInfo.limit = this.limit
                 pageInfo.searchName = this.searchList.keyword
+                let data = {}
+                data.type = '支付方式'
                 //加载详情页右侧表格
                 axios({
                     method:'post',
@@ -344,6 +432,16 @@
                 }).then(function(res){
                     _this.tableData = res.data.map.success
                     _this.tableNumber = res.data.count
+                }).catch(function(err){
+                    // console.log(err);
+                });
+                //加载支付方式
+                axios({
+                    method:'post',
+                    url:_this.$store.state.defaultHttp+'typeInfo/getTypeInfoGroupByType.do?cId='+_this.$store.state.iscId,
+                    data:qs.stringify(data)
+                }).then(function(res){
+                    _this.payList = res.data
                 }).catch(function(err){
                     // console.log(err);
                 });
@@ -369,7 +467,7 @@
                     let arr = _this.dataList
                     arr.forEach(el => {
                         _this.imgid = el.id
-                        _this.imgurl = '/upload/'+_this.$store.state.iscId+'/'+el.name
+                        _this.imgurl = _this.$store.state.systemHttp + '/upload/'+_this.$store.state.iscId+'/'+el.name
                         _this.fileList.push({id:_this.imgid,imgURL:_this.imgurl})
                     });
                 }).catch(function(err){
@@ -404,29 +502,29 @@
                             if(index == 0){
                                 if(el.userList[0].img){
                                     // el.headPortrait = '../../../../static/img/17.jpg'
-                                    el.headPortrait = '/upload/'+_this.$store.state.iscId+'/'+el.userList[0].img
+                                    el.headPortrait = _this.$store.state.systemHttp + '/upload/'+_this.$store.state.iscId+'/'+el.userList[0].img
                                 }else{
                                     // el.headPortrait = '../../../../static/img/timg.jpg'
-                                    el.headPortrait = '/upload/staticImg/avatar.jpg'
+                                    el.headPortrait = _this.$store.state.systemHttp + '/upload/staticImg/avatar.jpg'
                                 }
                             }
                             if(el.stepType ==2){
                                 for(let i = 0; i < el.userList.length; i ++){
                                     if(el.userList[i].img && el.userList[i].examineStatus !== 0){
                                         // el.headPortrait = '../../../../static/img/17.jpg'
-                                        el.headPortrait = '/upload/'+_this.$store.state.iscId+'/'+el.userList[i].img
+                                        el.headPortrait = _this.$store.state.systemHttp + '/upload/'+_this.$store.state.iscId+'/'+el.userList[i].img
                                         break
                                     }else if(!el.userList[i].img && el.userList[i].examineStatus !== 0){
                                         // el.headPortrait = '../../../../static/img/timg.jpg'
-                                        el.headPortrait = '/upload/staticImg/avatar.jpg'
+                                        el.headPortrait = _this.$store.state.systemHttp + '/upload/staticImg/avatar.jpg'
                                         break
                                     }else if(el.userList[i].img && el.userList[i].examineStatus == 0){
                                         // el.headPortrait = '../../../../static/img/17.jpg'
-                                        el.headPortrait = '/upload/'+_this.$store.state.iscId+'/'+el.userList[i].img
+                                        el.headPortrait = _this.$store.state.systemHttp + '/upload/'+_this.$store.state.iscId+'/'+el.userList[i].img
                                         break
                                     }else if(!el.userList[i].img && el.userList[i].examineStatus == 0){
                                         // el.headPortrait = '../../../../static/img/timg.jpg'
-                                        el.headPortrait = '/upload/staticImg/avatar.jpg'
+                                        el.headPortrait = _this.$store.state.systemHttp + '/upload/staticImg/avatar.jpg'
                                         break
                                     }
                                 }
@@ -435,10 +533,10 @@
                                 el.userList.forEach((a,i) => {
                                     if(a.img){
                                         // a.headPortrait = '../../../../static/img/17.jpg'
-                                        a.headPortrait = '/upload/'+_this.$store.state.iscId+'/'+a.img
+                                        a.headPortrait = _this.$store.state.systemHttp + '/upload/'+_this.$store.state.iscId+'/'+a.img
                                     }else{
                                         // a.headPortrait = '../../../../static/img/timg.jpg'
-                                        a.headPortrait = '/upload/staticImg/avatar.jpg'
+                                        a.headPortrait = _this.$store.state.systemHttp + '/upload/staticImg/avatar.jpg'
                                     }
                                 })
                             }
@@ -467,14 +565,15 @@
                     url:_this.$store.state.defaultHttp+'backPlan/selectBackPlanByContractId.do?cId='+_this.$store.state.iscId+'&contract_id='+_this.detailData.id,
                 }).then(function(res){
                     _this.moneyPlanList = res.data
-                    let aa = 0
-                    let bb = _this.agreementdetail.amount
-                    _this.moneyPlanList.forEach(el => {
-                        if(el.price){
-                            aa += el.price
-                        }
-                    });
-                    _this.agreementdetail.restamount = bb - aa
+                }).catch(function(err){
+                    // console.log(err);
+                });
+                //加载回款信息
+                axios({
+                    method:'get',
+                    url:_this.$store.state.defaultHttp+'back/selectBackByContactId.do?cId='+_this.$store.state.iscId+'&contract_id='+_this.detailData.id,
+                }).then(function(res){
+                    _this.moneyBackList = res.data
                 }).catch(function(err){
                     // console.log(err);
                 });
@@ -559,19 +658,284 @@
                 this.exaform.status = e
                 this.dialogVisible2 = true
             },
-            handleAdd(){
-                console.log(this.agreementdetail)
+            addplan(){
+                let aa = 0
+                let bb = this.agreementdetail.amount
+                this.moneyPlanList.forEach(el => {
+                    if(el.price){
+                        aa += el.price
+                    }
+                });
+                let cc = bb - aa
                 this.dialogVisible3 = true
-                this.moneyPlan = { date:null, price:null, stage:null, contract_id:null, customerpool_id:null, remarks:null, remind_date:null,}
+                this.moneyPlan = { 
+                    id:null, amount:bb, restamount:cc, date:null, price:null, stage:null, remarks:null, remind_date:null,
+                    contract_id:this.agreementdetail.contract_id, customerpool_id:this.agreementdetail.customerpool_id,
+                }
             },
-            toback(){
-                console.log(this.moneyPlan)
+            editplan(index,row){
+                let aa = 0
+                let bb = this.agreementdetail.amount
+                this.moneyPlanList.forEach(el => {
+                    if(el.price){
+                        aa += el.price
+                    }
+                });
+                let cc = bb - aa
+                this.dialogVisible3 = true
+                this.moneyPlan = { 
+                    id:row.id, amount:bb, restamount:cc, date:row.date, price:row.price, stage:row.stage, remarks:row.remarks, remind_date:row.remind_date,
+                    contract_id:this.agreementdetail.contract_id, customerpool_id:this.agreementdetail.customerpool_id,
+                }
             },
-            handleEdit(index,row){
-                console.log(index,row)
+            planSubmit(){
+                const _this = this
+                let qs = require('querystring')
+                let data = {
+                    id:this.moneyPlan.id,
+                    date:this.moneyPlan.date,
+                    price:this.moneyPlan.price,
+                    stage:this.moneyPlan.stage,
+                    contract_id:this.moneyPlan.contract_id,
+                    customerpool_id:this.moneyPlan.customerpool_id,
+                    remarks:this.moneyPlan.remarks,
+                    remind_date:this.moneyPlan.remind_date,
+                    pId:this.$store.state.ispId,
+                }
+
+                let flag = false
+                if(!data.date){
+                    _this.$message({
+                        message: '预计回款时间不能为空',
+                        type: 'error'
+                    });
+                    flag = true
+                }
+                if(!data.stage){
+                    _this.$message({
+                        message: '回款阶段不能为空',
+                        type: 'error'
+                    });
+                    flag = true
+                }
+                if(!data.price){
+                    _this.$message({
+                        message: '预计回款金额不能为空',
+                        type: 'error'
+                    });
+                    flag = true
+                }
+                if(data.price > this.moneyPlan.restamount){
+                    _this.$message({
+                        message: '预计回款金额不能超过' + this.moneyPlan.restamount + '元',
+                        type: 'error'
+                    });
+                    flag = true
+                }
+                if(flag) return
+
+                axios({
+                    method: 'post',
+                    url: _this.$store.state.defaultHttp+'backPlan/saveOrUpdate.do?cId='+_this.$store.state.iscId,
+                    data:qs.stringify(data),
+                }).then(function(res){
+                    if(res.data.code && res.data.code == '200') {
+                        _this.$message({
+                            message: '操作成功',
+                            type: 'success'
+                        });
+                        _this.dialogVisible3 = false
+                        _this.$options.methods.loadIMG.bind(_this)(true);
+                    } else {
+                        _this.$message({
+                            message: res.data.msg,
+                            type: 'error'
+                        });
+                    }
+                }).catch(function(err){
+                    _this.$message.error("操作失败,请重新操作");
+                })
             },
-            handleDelete(index,row){
-                console.log(index,row)
+            delplan(index,row){
+                const _this = this;
+                let qs = require('querystring')
+                let idArr = [];
+                idArr.id = row.id
+                _this.$confirm('是否确认删除该回款计划？', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                }).then(({ value }) => {
+                    axios({
+                        method: 'post',
+                        url: _this.$store.state.defaultHttp+'backPlan/delete.do?cId='+_this.$store.state.iscId,
+                        data:qs.stringify(idArr),
+                    }).then(function(res){
+                        if(res.data.code && res.data.code == '200') {
+                            _this.$message({
+                                message: '删除成功',
+                                type: 'success'
+                            });
+                            _this.$options.methods.loadIMG.bind(_this)(true);
+                        } else {
+                            _this.$message({
+                                message: res.data.msg,
+                                type: 'error'
+                            });
+                        }
+                    }).catch(function(err){
+                        _this.$message.error("删除失败,请重新操作");
+                    })
+                }).catch(() => {
+                    this.$message({
+                        type: 'info',
+                        message: '取消删除'
+                    });       
+                });
+            },
+            addback(){
+                let aa = 0
+                let bb = this.agreementdetail.amount
+                this.moneyBackList.forEach(el => {
+                    if(el.price){
+                        aa += el.price
+                    }
+                });
+                let cc = bb - aa
+                this.dialogVisible4 = true
+                this.$store.commit('getNowDate')
+                this.moneyBack = { 
+                    id:null, price:null, back_plan_id:null, remarks:null, pay_type_id:null, amount:bb, restamount:cc, 
+                    createTime:this.$store.state.nowdate, contract_id:this.agreementdetail.contract_id, customerpool_id:this.agreementdetail.customerpool_id,
+                }
+            },
+            editback(index,row){
+                let aa = 0
+                let bb = this.agreementdetail.amount
+                this.moneyBackList.forEach(el => {
+                    if(el.price){
+                        aa += el.price
+                    }
+                });
+                let cc = bb - aa
+                this.dialogVisible4 = true
+                this.moneyBack = { 
+                    id:row.id, price:row.price, back_plan_id:row.back_plan_id, remarks:row.remarks, pay_type_id:row.pay_type_id, amount:bb, restamount:cc, 
+                    createTime:row.createTime, contract_id:this.agreementdetail.contract_id, customerpool_id:this.agreementdetail.customerpool_id,
+                }
+            },
+            backSubmit(){
+                console.log(this.moneyBack)
+                const _this = this
+                let qs = require('querystring')
+                let data = {
+                    id:this.moneyBack.id,
+                    createTime:this.moneyBack.createTime,
+                    price:this.moneyBack.price,
+                    // stage:this.moneyBack.stage,
+                    back_plan_id:this.moneyBack.back_plan_id,
+                    contract_id:this.moneyBack.contract_id,
+                    customerpool_id:this.moneyBack.customerpool_id,
+                    remarks:this.moneyBack.remarks,
+                    pay_type_id:this.moneyBack.pay_type_id,
+                    pId:this.$store.state.ispId,
+                    secondid:this.$store.state.deptid
+                }
+
+                let flag = false
+                if(!data.createTime){
+                    _this.$message({
+                        message: '回款时间不能为空',
+                        type: 'error'
+                    });
+                    flag = true
+                }
+                if(!data.price){
+                    _this.$message({
+                        message: '回款金额不能为空',
+                        type: 'error'
+                    });
+                    flag = true
+                }
+                if(!data.pay_type_id){
+                    _this.$message({
+                        message: '支付方式不能为空',
+                        type: 'error'
+                    });
+                    flag = true
+                }
+                if(!data.back_plan_id){
+                    _this.$message({
+                        message: '回款阶段不能为空',
+                        type: 'error'
+                    });
+                    flag = true
+                }
+                if(data.price > this.moneyBack.restamount){
+                    _this.$message({
+                        message: '回款金额不能超过' + this.moneyBack.restamount + '元',
+                        type: 'error'
+                    });
+                    flag = true
+                }
+                if(flag) return
+
+                axios({
+                    method: 'post',
+                    url: _this.$store.state.defaultHttp+'back/saveOrUpdate.do?cId='+_this.$store.state.iscId,
+                    data:qs.stringify(data),
+                }).then(function(res){
+                    if(res.data.code && res.data.code == '200') {
+                        _this.$message({
+                            message: '操作成功',
+                            type: 'success'
+                        });
+                        _this.dialogVisible4 = false
+                        _this.$options.methods.loadIMG.bind(_this)(true);
+                    } else {
+                        _this.$message({
+                            message: res.data.msg,
+                            type: 'error'
+                        });
+                    }
+                }).catch(function(err){
+                    _this.$message.error("操作失败,请重新操作");
+                })
+            },
+            delback(index,row){
+                const _this = this;
+                let qs = require('querystring')
+                let idArr = [];
+                idArr.id = row.id
+                _this.$confirm('是否确认删除该回款信息？', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                }).then(({ value }) => {
+                    axios({
+                        method: 'post',
+                        url: _this.$store.state.defaultHttp+'back/delete.do?cId='+_this.$store.state.iscId,
+                        data:qs.stringify(idArr),
+                    }).then(function(res){
+                        if(res.data.code && res.data.code == '200') {
+                            _this.$message({
+                                message: '删除成功',
+                                type: 'success'
+                            });
+                            _this.$options.methods.loadIMG.bind(_this)(true);
+                        } else {
+                            _this.$message({
+                                message: res.data.msg,
+                                type: 'error'
+                            });
+                        }
+                    }).catch(function(err){
+                        _this.$message.error("删除失败,请重新操作");
+                    })
+                }).catch(() => {
+                    this.$message({
+                        type: 'info',
+                        message: '取消删除'
+                    });       
+                });
             },
             toexamine(){
                 const _this = this
