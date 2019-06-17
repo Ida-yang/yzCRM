@@ -109,7 +109,7 @@
                 </el-pagination>
             </div>
         </el-col>
-        <el-dialog title="线索和每日考核方案" :visible.sync="dialogVisible" width="40%">
+        <el-dialog title="线索和每日考核方案" :visible.sync="dialogVisible" :close-on-click-modal="false" width="40%">
             <el-form label-width="130px" :model="updateList">
                 <el-form-item label="线索/客户新增目标">
                     <el-input onkeyup = "value=value.replace(/[^\d]/g,'')" class="oppinput" v-model="updateList.addClue"></el-input>
@@ -129,7 +129,7 @@
                 <el-button type="primary" @click="addcLue()">确 定</el-button>
             </span>
         </el-dialog>
-        <el-dialog title="拜访周目标" :visible.sync="dialogVisible2" width="40%">
+        <el-dialog title="拜访周目标" :visible.sync="dialogVisible2" :close-on-click-modal="false" width="40%">
             <!-- <span>这是一段信息</span> -->
             <el-form label-width="80px" :model="updateList">
                 <el-form-item label="拜访目标">
@@ -144,7 +144,7 @@
                 <el-button type="primary" @click="addvisit()">确 定</el-button>
             </span>
         </el-dialog>
-        <el-dialog title="每周商机考核" :visible.sync="dialogVisible3" width="40%">
+        <el-dialog title="每周商机考核" :visible.sync="dialogVisible3" :close-on-click-modal="false" width="40%">
             <!-- <span>这是一段信息</span> -->
             <el-form label-width="100px" :model="updateList">
                 <el-form-item label="商机新增目标">
@@ -156,7 +156,7 @@
                 <el-button type="primary" @click="addopportunity()">确 定</el-button>
             </span>
         </el-dialog>
-        <el-dialog title="合同金额" :visible.sync="dialogVisible4" width="40%">
+        <el-dialog title="合同金额" :visible.sync="dialogVisible4" :close-on-click-modal="false" width="40%">
             <!-- <span>这是一段信息</span> -->
             <el-form label-width="80px" :model="updateList">
                 <el-form-item label="每月">

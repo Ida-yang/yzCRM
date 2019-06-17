@@ -50,7 +50,7 @@
                 </el-pagination>
             </div>
 
-            <el-dialog title="新增/编辑" :visible.sync="addDialog" width="60%">
+            <el-dialog title="新增/编辑" :visible.sync="addDialog" :close-on-click-modal="false" width="60%">
                 <el-form ref="myform" :model="myform" label-width="80px" :rules="rules" style="padding-right:30px">
                     <el-form-item label="工单分类">
                         <el-input v-model="myform.service_type_name" :disabled="true"></el-input>

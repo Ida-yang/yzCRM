@@ -262,7 +262,7 @@
             <img width="100%" :src="dialogImageUrl" alt="">
         </el-dialog>
 
-        <el-dialog title="选择产品" :visible.sync="dialogVisible1" width="80%" class="orderDialog" center>
+        <el-dialog title="选择产品" :visible.sync="dialogVisible1" :close-on-click-modal="false" width="80%" class="orderDialog" center>
             <div class="otherleftcontent">
                 <el-tree
                     node-key="id"

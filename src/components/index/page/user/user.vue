@@ -78,10 +78,7 @@
                 </el-pagination>
             </div>
         </div>
-        <el-dialog
-            title="添加用户"
-            :visible.sync="dialogVisible"
-            width="40%">
+        <el-dialog title="添加用户" :visible.sync="dialogVisible" :close-on-click-modal="false" width="40%">
                 <el-form ref="newform" :model="newform" label-width="80px" :rules="rules">
                     <el-form-item prop="second_id" label="所属部门">
                         <el-input v-model="newform.secondname" :disabled="true"></el-input>
@@ -125,10 +122,7 @@
                 <el-button type="primary" @click="adduser()">确 定</el-button>
             </span>
         </el-dialog>
-        <el-dialog
-            title="修改用户"
-            :visible.sync="dialogVisible2"
-            width="40%">
+        <el-dialog title="修改用户" :visible.sync="dialogVisible2" :close-on-click-modal="false" width="40%">
             <el-form ref="newform" :model="newform" :rules="rules" label-width="80px">
                 <el-form-item prop="second_id" label="所属部门">
                     <el-input v-model="newform.secondname" :disabled="true"></el-input>

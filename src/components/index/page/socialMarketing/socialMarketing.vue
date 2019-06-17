@@ -72,7 +72,7 @@
                 </el-pagination>
             </div>
         </div>
-        <el-dialog title="添加活动" :visible.sync="dialogVisible" width="40%">
+        <el-dialog title="添加活动" :visible.sync="dialogVisible" :close-on-click-modal="false" width="40%">
             <el-form ref="newform" :model="newform" label-width="80px" :rules="rules">
                 <el-form-item prop="resourceid" label="来源">
                     <el-select v-model="newform.resourceid" placeholder="请选择来源" style="width:80%;">
@@ -91,7 +91,7 @@
                 <el-button type="primary" @click="adduser()">确 定</el-button>
             </span>
         </el-dialog>
-        <el-dialog title="修改活动" :visible.sync="dialogVisible2" width="40%">
+        <el-dialog title="修改活动" :visible.sync="dialogVisible2" :close-on-click-modal="false" width="40%">
             <el-form ref="newform" :model="newform" :rules="rules" label-width="80px">
                 <el-form-item prop="resourceid" label="来源">
                     <el-select v-model="newform.resourceid" placeholder="请选择来源" style="width:80%;">

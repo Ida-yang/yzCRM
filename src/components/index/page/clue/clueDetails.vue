@@ -225,7 +225,7 @@
             </div>
         </el-col>
         
-        <el-col :span="6" style="padding:10px;" class="right">
+        <el-col :span="6" style="padding:10px;min-height:560px;" class="right">
             <div class="searchList" style="width:100%;">
                 <el-input  v-model="searchList.keyword" placeholder="请输入公司名称" style="width:80%;" @keyup.enter.native="search"></el-input>
                 <el-button icon="el-icon-search" type="primary" size="mini" @click="search()"></el-button>

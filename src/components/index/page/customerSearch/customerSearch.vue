@@ -123,7 +123,7 @@
             <div class="searchList" style="margin-left:30px;">
                 <el-button icon="el-icon-search" type="primary" size="mini" @click="search()">查询</el-button>
                 &nbsp;&nbsp;
-                <el-button icon="el-icon-circle-close-outline" style="background:#20222a;color:#ffffff;" size="mini" @click="reset()">清空</el-button>
+                <el-button icon="el-icon-circle-close-outline" class="clear_btn" size="mini" @click="reset()">清空</el-button>
             </div>
         </div>
         <div class="dropdown" @click="showSearchList">

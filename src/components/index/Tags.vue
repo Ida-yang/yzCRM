@@ -186,19 +186,15 @@
         background: #fff;
         padding: 0 5px 0 12px;
         vertical-align: middle;
-        color: #000;
+        color: #606266;
         -webkit-transition: all .3s ease-in;
         -moz-transition: all .3s ease-in;
         transition: all .3s ease-in;
     }
 
     .tags-li:not(.active):hover {
-        background: #f8f8f8;
+        background: #f7f7f7;
     }
-
-    /* .tags-li.active {
-        color: #000;
-    } */
 
     .tags-li-title {
         float: left;
@@ -207,17 +203,17 @@
         white-space: nowrap;
         text-overflow: ellipsis;
         margin-right: 5px;
-        color: #666;
+        color: #606266;
     }
 
     .tags-li.active .tags-li-title {
-        color: #fff;
+        color: #ffffff;
     }
 
     .tags-li.active {
         border: 1px solid #ff6b3e;
         background-color: #ff6333;
-        color: #fff;
+        color: #ffffff;
     }
 
     /* .tags-li-icon{

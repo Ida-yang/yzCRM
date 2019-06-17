@@ -195,7 +195,7 @@
         </div>
         
         <!-- 新增线索状态、客户状态、客户来源、客户分类 -->
-        <el-dialog title="添加状态" :visible.sync="dialogVisible" width="40%">
+        <el-dialog title="添加状态" :visible.sync="dialogVisible" :close-on-click-modal="false" width="40%">
             <el-form ref="newform" :model="newform" label-width="110px" :rules="rules">
                 <el-form-item prop="type" label="辅助资料类别">
                     <el-input v-model="newform.type" :disabled="true"></el-input>
@@ -216,7 +216,7 @@
             </span>
         </el-dialog>
         <!-- 编辑线索状态、客户状态、客户来源、客户分类 -->
-        <el-dialog title="修改状态" :visible.sync="dialogVisible2" width="40%">
+        <el-dialog title="修改状态" :visible.sync="dialogVisible2" :close-on-click-modal="false" width="40%">
             <el-form ref="newform" :model="newform" :rules="rules" label-width="110px">
                 <el-form-item prop="type" label="辅助资料类别">
                     <el-input v-model="newform.type" :disabled="true"></el-input>
@@ -237,7 +237,7 @@
             </span>
         </el-dialog>
         <!-- 新增快捷方式 -->
-        <el-dialog title="添加快捷方式" :visible.sync="shortcutadd" width="40%">
+        <el-dialog title="添加快捷方式" :visible.sync="shortcutadd" :close-on-click-modal="false" width="40%">
             <el-form ref="newform" :model="newform" label-width="110px" :rules="rules">
                 <el-form-item prop="type" label="辅助资料类别">
                     <el-input v-model="newform.type" :disabled="true"></el-input>
@@ -261,7 +261,7 @@
             </span>
         </el-dialog>
         <!-- 编辑快捷方式 -->
-        <el-dialog title="修改快捷方式" :visible.sync="shortcutupdate" width="40%">
+        <el-dialog title="修改快捷方式" :visible.sync="shortcutupdate" :close-on-click-modal="false" width="40%">
             <el-form ref="newform" :model="newform" :rules="rules" label-width="110px">
                 <el-form-item prop="type" label="辅助资料类别">
                     <el-input v-model="newform.type" :disabled="true"></el-input>
@@ -282,7 +282,7 @@
             </span>
         </el-dialog>
         <!-- 新增商机进度 -->
-        <el-dialog title="添加商机进度" :visible.sync="businessproadd" width="40%">
+        <el-dialog title="添加商机进度" :visible.sync="businessproadd" :close-on-click-modal="false" width="40%">
             <el-form ref="newform" :model="newform" label-width="110px" :rules="rules">
                 <el-form-item prop="type" label="辅助资料类别">
                     <el-input v-model="newform.type" :disabled="true"></el-input>
@@ -303,7 +303,7 @@
             </span>
         </el-dialog>
         <!-- 修改商机进度 -->
-        <el-dialog title="修改商机进度" :visible.sync="businessproupdate" width="40%">
+        <el-dialog title="修改商机进度" :visible.sync="businessproupdate" :close-on-click-modal="false" width="40%">
             <el-form ref="newform" :model="newform" :rules="rules" label-width="110px">
                 <el-form-item prop="type" label="辅助资料类别">
                     <el-input v-model="newform.type" :disabled="true"></el-input>
@@ -327,7 +327,7 @@
             </span>
         </el-dialog>
         <!-- 新增产品顶级分类 -->
-        <el-dialog title="新增产品分类" :visible.sync="topProClassadd" width="40%">
+        <el-dialog title="新增产品分类" :visible.sync="topProClassadd" :close-on-click-modal="false" width="40%">
             <el-form ref="newform" :model="newform" :rules="rules" label-width="110px">
                 <el-form-item prop="type" label="辅助资料类别">
                     <el-input v-model="newform.type" :disabled="true"></el-input>
@@ -342,7 +342,7 @@
             </span>
         </el-dialog>
         <!-- 新增产品分类子集 -->
-        <el-dialog title="新增产品分类" :visible.sync="prodClassadd" width="40%">
+        <el-dialog title="新增产品分类" :visible.sync="prodClassadd" :close-on-click-modal="false" width="40%">
             <el-form ref="newform" :model="newform" :rules="rules" label-width="110px">
                 <el-form-item prop="type" label="辅助资料类别">
                     <el-input v-model="newform.type" :disabled="true"></el-input>
@@ -360,7 +360,7 @@
             </span>
         </el-dialog>
         <!-- 编辑产品分类子集 -->
-        <el-dialog title="修改产品分类" :visible.sync="prodClassupdate" width="40%">
+        <el-dialog title="修改产品分类" :visible.sync="prodClassupdate" :close-on-click-modal="false" width="40%">
             <el-form ref="newform" :model="newform" :rules="rules" label-width="110px">
                 <el-form-item prop="type" label="辅助资料类别">
                     <el-input v-model="newform.type" :disabled="true"></el-input>
@@ -375,7 +375,7 @@
             </span>
         </el-dialog>
         <!-- 新增单位 -->
-        <el-dialog title="新增单位" :visible.sync="unitadd" width="40%">
+        <el-dialog title="新增单位" :visible.sync="unitadd" :close-on-click-modal="false" width="40%">
             <el-form ref="newform" :model="newform" :rules="rules" label-width="110px">
                 <el-form-item prop="type" label="辅助资料类别">
                     <el-input v-model="newform.type" :disabled="true"></el-input>
@@ -390,7 +390,7 @@
             </span>
         </el-dialog>
         <!-- 编辑单位 -->
-        <el-dialog title="修改单位" :visible.sync="unitupdate" width="40%">
+        <el-dialog title="修改单位" :visible.sync="unitupdate" :close-on-click-modal="false" width="40%">
             <el-form ref="newform" :model="newform" :rules="rules" label-width="110px">
                 <el-form-item prop="type" label="辅助资料类别">
                     <el-input v-model="newform.type" :disabled="true"></el-input>
@@ -405,7 +405,7 @@
             </span>
         </el-dialog>
         <!-- 新增品牌 -->
-        <el-dialog title="新增品牌" :visible.sync="brandadd" width="40%">
+        <el-dialog title="新增品牌" :visible.sync="brandadd" :close-on-click-modal="false" width="40%">
             <el-form ref="newform" :model="newform" :rules="rules" label-width="110px">
                 <el-form-item prop="type" label="辅助资料类别">
                     <el-input v-model="newform.type" :disabled="true"></el-input>
@@ -420,7 +420,7 @@
             </span>
         </el-dialog>
         <!-- 编辑品牌 -->
-        <el-dialog title="修改品牌" :visible.sync="brandupdate" width="40%">
+        <el-dialog title="修改品牌" :visible.sync="brandupdate" :close-on-click-modal="false" width="40%">
             <el-form ref="newform" :model="newform" :rules="rules" label-width="110px">
                 <el-form-item prop="type" label="辅助资料类别">
                     <el-input v-model="newform.type" :disabled="true"></el-input>
@@ -435,7 +435,7 @@
             </span>
         </el-dialog>
         <!-- 新增规格名称 -->
-        <el-dialog title="新增规格" :visible.sync="specadd" width="40%">
+        <el-dialog title="新增规格" :visible.sync="specadd" :close-on-click-modal="false" width="40%">
             <el-form ref="newform" :model="newform" :rules="rules" label-width="110px">
                 <el-form-item prop="type" label="辅助资料类别">
                     <el-input v-model="newform.type" :disabled="true"></el-input>
@@ -463,7 +463,7 @@
             </span>
         </el-dialog>
         <!-- 编辑规格名称 -->
-        <el-dialog title="编辑规格" :visible.sync="specupdate" width="40%">
+        <el-dialog title="编辑规格" :visible.sync="specupdate" :close-on-click-modal="false" width="40%">
             <el-form ref="newform" :model="newform" :rules="rules" label-width="110px">
                 <el-form-item prop="type" label="辅助资料类别">
                     <el-input v-model="newform.type" :disabled="true"></el-input>
@@ -491,7 +491,7 @@
             </span>
         </el-dialog>
         <!-- 新增交货方式 -->
-        <el-dialog title="新增交货方式" :visible.sync="deliveryadd" width="40%">
+        <el-dialog title="新增交货方式" :visible.sync="deliveryadd" :close-on-click-modal="false" width="40%">
             <el-form ref="newform" :model="newform" label-width="110px" :rules="rules">
                 <el-form-item prop="type" label="辅助资料类别">
                     <el-input v-model="newform.type" :disabled="true"></el-input>
@@ -506,7 +506,7 @@
             </span>
         </el-dialog>
         <!-- 编辑交货方式 -->
-        <el-dialog title="修改交货方式" :visible.sync="deliveryupdate" width="40%">
+        <el-dialog title="修改交货方式" :visible.sync="deliveryupdate" :close-on-click-modal="false" width="40%">
             <el-form ref="newform" :model="newform" :rules="rules" label-width="110px">
                 <el-form-item prop="type" label="辅助资料类别">
                     <el-input v-model="newform.type" :disabled="true"></el-input>
@@ -521,7 +521,7 @@
             </span>
         </el-dialog>
         <!-- 新增经销商级别 -->
-        <el-dialog title="添加经销商级别" :visible.sync="cusleveladd" width="40%">
+        <el-dialog title="添加经销商级别" :visible.sync="cusleveladd" :close-on-click-modal="false" width="40%">
             <el-form ref="newform" :model="newform" label-width="110px" :rules="rules">
                 <el-form-item prop="type" label="辅助资料类别">
                     <el-input v-model="newform.type" :disabled="true"></el-input>
@@ -542,7 +542,7 @@
             </span>
         </el-dialog>
         <!-- 编辑编号规则 -->
-        <el-dialog title="修改经销商级别" :visible.sync="cuslevelupdate" width="40%">
+        <el-dialog title="修改经销商级别" :visible.sync="cuslevelupdate" :close-on-click-modal="false" width="40%">
             <el-form ref="newform" :model="newform" :rules="rules" label-width="110px">
                 <el-form-item prop="type" label="辅助资料类别">
                     <el-input v-model="newform.type" :disabled="true"></el-input>
@@ -563,7 +563,7 @@
             </span>
         </el-dialog>
         <!-- 编辑编号规则 -->
-        <el-dialog title="修改编号规则" :visible.sync="numruleupdate" width="40%">
+        <el-dialog title="修改编号规则" :visible.sync="numruleupdate" :close-on-click-modal="false" width="40%">
             <el-form ref="newform" :model="newform" :rules="rules" label-width="110px">
                 <el-form-item prop="type" label="辅助资料类别">
                     <el-input v-model="newform.type" :disabled="true"></el-input>
@@ -582,7 +582,7 @@
         </el-dialog>
         
         <!-- 新增工单顶级分类 -->
-        <el-dialog title="新增工单分类" :visible.sync="topJobClassadd" width="40%">
+        <el-dialog title="新增工单分类" :visible.sync="topJobClassadd" :close-on-click-modal="false" width="40%">
             <el-form ref="newform" :model="newform" :rules="rules" label-width="110px">
                 <el-form-item prop="type" label="辅助资料类别">
                     <el-input v-model="newform.type" :disabled="true"></el-input>
@@ -617,7 +617,7 @@
             </span>
         </el-dialog>
         <!-- 新增工单分类子集 -->
-        <el-dialog title="新增工单分类" :visible.sync="jobclassadd" width="40%">
+        <el-dialog title="新增工单分类" :visible.sync="jobclassadd" :close-on-click-modal="false" width="40%">
             <el-form ref="newform" :model="newform" :rules="rules" label-width="110px">
                 <el-form-item prop="type" label="辅助资料类别">
                     <el-input v-model="newform.type" :disabled="true"></el-input>
@@ -641,7 +641,7 @@
             </span>
         </el-dialog>
         <!-- 编辑工单分类子集 -->
-        <el-dialog title="修改工单分类" :visible.sync="jobclassupdate" width="40%">
+        <el-dialog title="修改工单分类" :visible.sync="jobclassupdate" :close-on-click-modal="false" width="40%">
             <el-form ref="newform" :model="newform" :rules="rules" label-width="110px">
                 <el-form-item prop="type" label="辅助资料类别">
                     <el-input v-model="newform.type" :disabled="true"></el-input>
@@ -674,7 +674,7 @@
             </span>
         </el-dialog>
         <!-- 新增支付方式 -->
-        <el-dialog title="新增支付方式" :visible.sync="payTypeadd" width="40%">
+        <el-dialog title="新增支付方式" :visible.sync="payTypeadd" :close-on-click-modal="false" width="40%">
             <el-form ref="newform" :model="newform" label-width="110px" :rules="rules">
                 <el-form-item prop="type" label="辅助资料类别">
                     <el-input v-model="newform.type" :disabled="true"></el-input>
@@ -692,7 +692,7 @@
             </span>
         </el-dialog>
         <!-- 编辑支付方式 -->
-        <el-dialog title="编辑支付方式" :visible.sync="payTypeupdate" width="40%">
+        <el-dialog title="编辑支付方式" :visible.sync="payTypeupdate" :close-on-click-modal="false" width="40%">
             <el-form ref="newform" :model="newform" label-width="110px" :rules="rules">
                 <el-form-item prop="type" label="辅助资料类别">
                     <el-input v-model="newform.type" :disabled="true"></el-input>

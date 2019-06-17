@@ -37,7 +37,7 @@
                 </el-table-column>
             </el-table>
         </div>
-        <el-dialog title="添加" :visible.sync="dialogVisible" width="50%">
+        <el-dialog title="添加" :visible.sync="dialogVisible" :close-on-click-modal="false" width="50%">
             <el-form ref="newform" :model="newform" label-width="80px">
                 <el-form-item label="上级部门">
                     <el-input v-model="newform.parentname" :disabled="true" style="200px;"></el-input>
@@ -51,7 +51,7 @@
                 <el-button type="primary" @click="appenddept()">确 定</el-button>
             </span>
         </el-dialog>
-        <el-dialog title="修改" :visible.sync="dialogVisible2" width="50%">
+        <el-dialog title="修改" :visible.sync="dialogVisible2" :close-on-click-modal="false" width="50%">
             <el-form ref="newform" :model="newform" label-width="80px">
                 <el-form-item label="上级部门">
                     <el-input v-model="newform.parentname" :disabled="true" style="200px;"></el-input>
@@ -65,7 +65,7 @@
                 <el-button type="primary" @click="updatedept()">确 定</el-button>
             </span>
         </el-dialog>
-        <el-dialog title="添加角色" :visible.sync="dialogVisible3" width="70%">
+        <el-dialog title="添加角色" :visible.sync="dialogVisible3" :close-on-click-modal="false" width="70%">
             <el-form ref="roleform" :model="roleform" label-width="80px">
                 <el-form-item label="所属部门">
                     <el-input v-model="roleform.deptname" :disabled="true" style="200px;"></el-input>
@@ -166,7 +166,7 @@
                 <el-button type="primary" @click="addrole()">确 定</el-button>
             </span>
         </el-dialog>
-        <el-dialog title="修改角色" :visible.sync="dialogVisible4" width="50%">
+        <el-dialog title="修改角色" :visible.sync="dialogVisible4" :close-on-click-modal="false" width="50%">
             <el-form ref="roleform" :model="roleform" label-width="80px">
                 <el-form-item label="所属部门">
                     <el-input v-model="roleform.deptname" :disabled="true" style="200px;"></el-input>
@@ -1447,7 +1447,6 @@
             },
 
             changevalue(e,val){
-                console.log(e,val.id)
                 let i = this.checkindex
                 let arr = this.checkedList
                 
@@ -1594,7 +1593,6 @@
                     }
                 }
                 this.checkedList = hash
-                console.log(this.checkedList)
             },
             
         }
@@ -1607,7 +1605,7 @@
         height: 100%;
     }
     .leftcontent{
-        width: 35%;
+        width: 420px;
         height: 100%;
         float: left;
         box-sizing: border-box;
@@ -1617,7 +1615,7 @@
         margin: 20px 0;
     }
     .rightcontent{
-        width: 64%;
+        width: calc(100% - 420px);
         height: 100%;
         float: left;
         box-sizing: border-box;
@@ -1635,20 +1633,8 @@
         -moz-box-sizing:border-box; /* Firefox */ 
         -webkit-box-sizing:border-box;
     }
-    .rolecontent{
-        width:94%;
-        line-height:20px;
-        height: auto;
-        color: #000000;
-        padding-top: 5px;
-        padding-left: 10px;
-        border-radius: 5px;
-    }
     .checkboxclass{
         width: 100px;
         margin-left: 30px;
     }
-    /* .checkboxclass{
-        margin-left: 30px;
-    } */
 </style>

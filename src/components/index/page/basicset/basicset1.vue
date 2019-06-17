@@ -421,6 +421,7 @@
         
         <el-dialog
             title="添加状态"
+            :close-on-click-modal="false"
             :visible.sync="dialogVisible"
             width="40%">
             <el-form ref="newform" :model="newform" label-width="110px" :rules="rules">
@@ -444,6 +445,7 @@
         </el-dialog><!-- 新增线索状态、客户状态、客户来源、客户分类 -->
         <el-dialog
             title="修改状态"
+            :close-on-click-modal="false"
             :visible.sync="dialogVisible2"
             width="40%">
             <el-form ref="newform" :model="newform" :rules="rules" label-width="110px">
@@ -467,6 +469,7 @@
         </el-dialog><!-- 编辑线索状态、客户状态、客户来源、客户分类 -->
         <el-dialog
             title="添加快捷方式"
+            :close-on-click-modal="false"
             :visible.sync="dialogVisible3"
             width="40%">
             <el-form ref="newform" :model="newform" label-width="110px" :rules="rules">
@@ -493,6 +496,7 @@
         </el-dialog><!-- 新增快捷方式 -->
         <el-dialog
             title="修改快捷方式"
+            :close-on-click-modal="false"
             :visible.sync="dialogVisible4"
             width="40%">
             <el-form ref="newform" :model="newform" :rules="rules" label-width="110px">
@@ -519,6 +523,7 @@
         </el-dialog><!-- 编辑快捷方式 -->
         <el-dialog
             title="添加商机进度"
+            :close-on-click-modal="false"
             :visible.sync="dialogVisible5"
             width="40%">
             <el-form ref="newform" :model="newform" label-width="110px" :rules="rules">
@@ -545,6 +550,7 @@
         </el-dialog><!-- 新增商机进度 -->
         <el-dialog
             title="修改商机进度"
+            :close-on-click-modal="false"
             :visible.sync="dialogVisible6"
             width="40%">
             <el-form ref="newform" :model="newform" :rules="rules" label-width="110px">
@@ -571,6 +577,7 @@
         </el-dialog><!-- 编辑商机进度 -->
         <el-dialog
             title="新增产品分类"
+            :close-on-click-modal="false"
             :visible.sync="dialogVisible7"
             width="40%">
             <el-form ref="newform" :model="newform" :rules="rules" label-width="110px">
@@ -591,6 +598,7 @@
         </el-dialog><!-- 新增产品分类子集 -->
         <el-dialog
             title="修改产品分类"
+            :close-on-click-modal="false"
             :visible.sync="dialogVisible8"
             width="40%">
             <el-form ref="newform" :model="newform" :rules="rules" label-width="110px">
@@ -608,6 +616,7 @@
         </el-dialog><!-- 编辑产品分类子集 -->
         <el-dialog
             title="新增单位"
+            :close-on-click-modal="false"
             :visible.sync="dialogVisible9"
             width="40%">
             <el-form ref="newform" :model="newform" :rules="rules" label-width="110px">
@@ -625,6 +634,7 @@
         </el-dialog><!-- 新增单位 -->
         <el-dialog
             title="修改单位"
+            :close-on-click-modal="false"
             :visible.sync="dialogVisible10"
             width="40%">
             <el-form ref="newform" :model="newform" :rules="rules" label-width="110px">
@@ -642,6 +652,7 @@
         </el-dialog><!-- 编辑单位 -->
         <el-dialog
             title="新增品牌"
+            :close-on-click-modal="false"
             :visible.sync="dialogVisible11"
             width="40%">
             <el-form ref="newform" :model="newform" :rules="rules" label-width="110px">
@@ -659,6 +670,7 @@
         </el-dialog><!-- 新增品牌 -->
         <el-dialog
             title="修改品牌"
+            :close-on-click-modal="false"
             :visible.sync="dialogVisible12"
             width="40%">
             <el-form ref="newform" :model="newform" :rules="rules" label-width="110px">
@@ -676,6 +688,7 @@
         </el-dialog><!-- 编辑品牌 -->
         <el-dialog
             title="新增产品分类"
+            :close-on-click-modal="false"
             :visible.sync="dialogVisible13"
             width="40%">
             <el-form ref="newform" :model="newform" :rules="rules" label-width="110px">
@@ -693,6 +706,7 @@
         </el-dialog><!-- 新增产品分类顶级 -->
         <el-dialog
             title="新增规格"
+            :close-on-click-modal="false"
             :visible.sync="dialogVisible14"
             width="40%">
             <el-form ref="newform" :model="newform" :rules="rules" label-width="110px">
@@ -723,6 +737,7 @@
         </el-dialog><!-- 新增规格名称 -->
         <el-dialog
             title="编辑规格"
+            :close-on-click-modal="false"
             :visible.sync="dialogVisible15"
             width="40%">
             <el-form ref="newform" :model="newform" :rules="rules" label-width="110px">
@@ -753,6 +768,7 @@
         </el-dialog><!-- 编辑规格名称 -->
         <el-dialog
             title="添加交货方式"
+            :close-on-click-modal="false"
             :visible.sync="dialogVisible16"
             width="40%">
             <el-form ref="newform" :model="newform" label-width="110px" :rules="rules">
@@ -770,6 +786,7 @@
         </el-dialog><!-- 新增交货方式 -->
         <el-dialog
             title="修改交货方式"
+            :close-on-click-modal="false"
             :visible.sync="dialogVisible17"
             width="40%">
             <el-form ref="newform" :model="newform" :rules="rules" label-width="110px">
@@ -787,6 +804,7 @@
         </el-dialog><!-- 编辑交货方式 -->
         <el-dialog
             title="添加经销商级别"
+            :close-on-click-modal="false"
             :visible.sync="dialogVisible18"
             width="40%">
             <el-form ref="newform" :model="newform" label-width="110px" :rules="rules">
@@ -810,6 +828,7 @@
         </el-dialog><!-- 新增经销商级别 -->
         <el-dialog
             title="修改经销商级别"
+            :close-on-click-modal="false"
             :visible.sync="dialogVisible19"
             width="40%">
             <el-form ref="newform" :model="newform" :rules="rules" label-width="110px">
@@ -834,6 +853,7 @@
         
         <el-dialog
             title="修改编号规则"
+            :close-on-click-modal="false"
             :visible.sync="dialogVisible20"
             width="40%">
             <el-form ref="newform" :model="newform" :rules="rules" label-width="110px">

@@ -52,7 +52,7 @@
             </div>
         </div>
         
-        <el-dialog center title="修改密码" :visible.sync="dialogFormVisible" width="40%">
+        <el-dialog center title="修改密码" :visible.sync="dialogFormVisible" :close-on-click-modal="false" width="40%">
             <el-form :model="reSetForm" :rules="rules" ref="reSetForm"  label-width="100px" label-position="left">
                 <el-form-item prop="oldpass" label="旧密码">
                     <el-input v-model="reSetForm.oldpass" type="text" class="handle-input mr10" style="width:240px;" clearable></el-input>

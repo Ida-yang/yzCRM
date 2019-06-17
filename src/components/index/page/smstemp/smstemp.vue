@@ -50,7 +50,7 @@
                 </ul>
             </div>
         </div>
-        <el-dialog title="添加短信模板" :visible.sync="dialogVisible" width="40%">
+        <el-dialog title="添加短信模板" :visible.sync="dialogVisible" :close-on-click-modal="false" width="40%">
             <el-form ref="newform" :model="newform" label-width="110px" :rules="rules" style="padding-right:30px">
                 <el-form-item prop="type" label="应用模块">
                     <el-input v-model="newform.type" :disabled="true"></el-input>
@@ -88,7 +88,7 @@
                 <el-button type="primary" @click="addbasicset()">确 定</el-button>
             </span>
         </el-dialog>
-        <el-dialog title="修改短信模板" :visible.sync="dialogVisible2" width="40%">
+        <el-dialog title="修改短信模板" :visible.sync="dialogVisible2" :close-on-click-modal="false" width="40%">
             <el-form ref="newform" :model="newform" :rules="rules" label-width="110px" style="padding-right:30px">
                 <el-form-item prop="type" label="应用模块">
                     <el-input v-model="newform.type" :disabled="true"></el-input>

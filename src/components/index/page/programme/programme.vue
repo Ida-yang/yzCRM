@@ -140,11 +140,7 @@
             </el-tabs>
             
         </div>
-        <el-dialog
-            title="添加方案"
-            :visible.sync="dialogVisible"
-            width="40%"
-            class="dialogform">
+        <el-dialog title="添加方案" :visible.sync="dialogVisible" :close-on-click-modal="false" width="40%" class="dialogform">
             <el-form ref="newform" :model="newform" label-width="80px" :rules="rules">
                 <el-form-item prop="second_id" label="所属部门">
                     <el-input v-model="newform.secondname" :disabled="true"></el-input>
@@ -169,11 +165,7 @@
                 <el-button type="primary" @click="addprogramme()">确 定</el-button>
             </span>
         </el-dialog>
-        <el-dialog
-            title="修改方案"
-            :visible.sync="dialogVisible2"
-            width="40%"
-            class="dialogform">
+        <el-dialog title="修改方案" :visible.sync="dialogVisible2" :close-on-click-modal="false" width="40%" class="dialogform">
             <el-form ref="newform" :model="newform" :rules="rules" label-width="80px">
                 <el-form-item prop="second_id" label="所属部门">
                     <el-input v-model="newform.secondname" :disabled="true"></el-input>
@@ -198,11 +190,7 @@
                 <el-button type="primary" @click="updateprogramme()">确 定</el-button>
             </span>
         </el-dialog>
-        <el-dialog
-            title="个人目标"
-            :visible.sync="dialogVisible3"
-            width="40%"
-            class="dialogform">
+        <el-dialog title="个人目标" :visible.sync="dialogVisible3" :close-on-click-modal="false" width="40%" class="dialogform">
             <el-form ref="goalsForm" :model="goalsForm" :rules="rules" label-width="80px">
                 <el-form-item prop="private_employee" label="员工">
                     <el-input v-model="goalsForm.private_employee" :disabled="true"></el-input>

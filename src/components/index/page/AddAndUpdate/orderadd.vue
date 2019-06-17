@@ -204,7 +204,7 @@
             <el-button @click="closeTag">取消</el-button>
         </div>
 
-        <el-dialog title="选择产品" :visible.sync="dialogVisible" width="80%" class="orderDialog" center>
+        <el-dialog title="选择产品" :visible.sync="dialogVisible" :close-on-click-modal="false" width="80%" class="orderDialog" center>
             <div class="otherleftcontent">
                 <el-tree
                     node-key="id"

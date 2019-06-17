@@ -125,10 +125,7 @@
                 :total="tableNumber">
             </el-pagination>
         </div>
-        <el-dialog
-            title="发送短信"
-            :visible.sync="dialogVisible"
-            width="40%">
+        <el-dialog title="发送短信" :visible.sync="dialogVisible" :close-on-click-modal="false" width="40%">
             <el-form ref="newform" :model="newform" label-width="110px" :rules="rules" style="padding-right:30px">
                 <el-form-item prop="cluenum" label="线索选择量">
                     <el-input v-model="newform.cluenum" :disabled="true"></el-input>

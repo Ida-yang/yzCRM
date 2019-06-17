@@ -26,7 +26,7 @@
                 <el-select v-model="searchList.mechanism" placeholder="请选择"  @change="search">
                     <el-option v-for="item in mechanismData" :key="item.deptid" :label="item.deptname" :value="item.deptid"></el-option>
                 </el-select>
-                <el-button icon="el-icon-circle-close-outline" style="margin-left:55px;background:#20222a;color:#ffffff;" size="mini" @click="reset()">清空</el-button>
+                <el-button icon="el-icon-circle-close-outline" class="clear_btn" size="mini" @click="reset()">清空</el-button>
             </div>
             <div class="radioList report_radio">
                 <el-radio-group v-model="searchList.department">
@@ -590,7 +590,7 @@
         height: 100%;
         font-size: 24px;
         text-align: center;
-        color:#8a8a8a;
+        color:#919191;
         position: relative;
     }
     .null_c span{

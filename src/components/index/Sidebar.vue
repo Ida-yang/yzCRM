@@ -1,7 +1,7 @@
 <template>
     <div class="sidebar" >
         <el-menu class="sidebar-el-menu" v-if="crmMenu == 1" :default-active="onRoutes" :collapse="collapse" background-color="#20222a"
-            text-color="#FFFFFF" active-text-color="#ff6722" unique-opened router>
+            text-color="#f7f7f7" active-text-color="#ff6333" unique-opened router>
             <div id="logo" v-if="showlogo">
                 <span style="font-size:16px">
                     云纵CRM信息平台
@@ -21,7 +21,7 @@
                     <el-submenu :index="item.index" :key="item.index">
                         <template slot="title">
                             <i :class="item.icon" style="color:#fff"> </i>&nbsp;
-                            <span slot="title" style="color:#fff">{{ item.title }}</span>
+                            <span slot="title">{{ item.title }}</span>
                         </template>
                         <el-menu-item v-for="(subItem,i) in item.subs" :key="i" :index="subItem.index">
                             {{ subItem.title }}
@@ -30,8 +30,8 @@
                 </template>
                 <template v-else>
                     <el-menu-item :index="item.index" :key="item.index">
-                        <i :class="item.icon" style="color:#fff" ></i>&nbsp;
-                        <span slot="title"  style="color:#fff">{{ item.title }}</span>
+                        <i :class="item.icon" style="color:#fff"></i>&nbsp;
+                        <span slot="title">{{ item.title }}</span>
                     </el-menu-item>
                 </template>
             </template>
@@ -41,7 +41,7 @@
                     <el-submenu :index="item.index" :key="item.index">
                         <template slot="title">
                             <i :class="item.icon"  style="color:#fff"> </i>&nbsp;
-                            <span slot="title"  style="color:#fff">{{ item.title }}</span>
+                            <span slot="title">{{ item.title }}</span>
                         </template>
                         <el-menu-item v-for="(subItem,i) in item.subs" :key="i" :index="subItem.index">
                             {{ subItem.title }}
@@ -51,7 +51,7 @@
                 <template v-else>
                     <el-menu-item :index="item.index" :key="item.index">
                         <i :class="item.icon" style="color:#fff" ></i>&nbsp;
-                        <span slot="title"  style="color:#fff">{{ item.title }}</span>
+                        <span slot="title">{{ item.title }}</span>
                     </el-menu-item>
                 </template>
             </template>
@@ -60,8 +60,8 @@
                 <template v-if="item.subs">
                     <el-submenu :index="item.index" :key="item.index">
                         <template slot="title">
-                            <i :class="item.icon"  style="color:#fff"> </i>&nbsp;
-                            <span slot="title"  style="color:#fff">{{ item.title }}</span>
+                            <i :class="item.icon" style="color:#fff"> </i>&nbsp;
+                            <span slot="title">{{ item.title }}</span>
                         </template>
                         <el-menu-item v-for="(subItem,i) in item.subs" :key="i" :index="subItem.index">
                             {{ subItem.title }}
@@ -71,14 +71,14 @@
                 <template v-else>
                     <el-menu-item :index="item.index" :key="item.index">
                         <i :class="item.icon" style="color:#fff" ></i>&nbsp;
-                        <span slot="title"  style="color:#fff">{{ item.title }}</span>
+                        <span slot="title">{{ item.title }}</span>
                     </el-menu-item>
                 </template>
             </template>
         </el-menu>
 
         <el-menu class="sidebar-el-menu" v-if="crmMenu == 2" :default-active="onRoutes" :collapse="collapse" background-color="#20222a"
-            text-color="#FFFFFF" active-text-color="#ff6722" unique-opened router>
+            text-color="#f7f7f7" active-text-color="#ff6333" unique-opened router>
             <div id="logo" v-if="showlogo">
                 <span style="font-size:16px">
                     云纵CRM信息平台
@@ -96,7 +96,7 @@
                     <el-submenu :index="item.index" :key="item.index">
                         <template slot="title">
                             <i :class="item.icon" style="color:#fff"> </i>&nbsp;
-                            <span slot="title" style="color:#fff">{{ item.title }}</span>
+                            <span slot="title">{{ item.title }}</span>
                         </template>
                         <el-menu-item v-for="(subItem,i) in item.subs" :key="i" :index="subItem.index">
                             {{ subItem.title }}
@@ -106,14 +106,14 @@
                 <template v-else>
                     <el-menu-item :index="item.index" :key="item.index">
                         <i :class="item.icon" style="color:#fff" ></i>&nbsp;
-                        <span slot="title"  style="color:#fff">{{ item.title }}</span>
+                        <span slot="title">{{ item.title }}</span>
                     </el-menu-item>
                 </template>
             </template>
         </el-menu>
 
         <el-menu class="sidebar-el-menu" v-if="crmMenu == 3" :default-active="onRoutes" :collapse="collapse" background-color="#20222a"
-            text-color="#FFFFFF" active-text-color="#ff6722" unique-opened router>
+            text-color="#f7f7f7" active-text-color="#ff6333" unique-opened router>
             <div id="logo" v-if="showlogo">
                 <span style="font-size:16px">
                     云纵CRM信息平台
@@ -130,7 +130,7 @@
                     <el-submenu :index="item.index" :key="item.index">
                         <template slot="title">
                             <i :class="item.icon" style="color:#fff"> </i>&nbsp;
-                            <span slot="title" style="color:#fff">{{ item.title }}</span>
+                            <span slot="title">{{ item.title }}</span>
                         </template>
                         <el-menu-item v-for="(subItem,i) in item.subs" :key="i" :index="subItem.index">
                             {{ subItem.title }}
@@ -140,7 +140,7 @@
                 <template v-else>
                     <el-menu-item :index="item.index" :key="item.index">
                         <i :class="item.icon" style="color:#fff" ></i>&nbsp;
-                        <span slot="title"  style="color:#fff">{{ item.title }}</span>
+                        <span slot="title">{{ item.title }}</span>
                     </el-menu-item>
                 </template>
             </template> -->
@@ -376,7 +376,7 @@
         height: 60px;
         padding: 0 8px;
         line-height: 60px;
-        color: #ffffff;
+        color: #f7f7f7;
         box-sizing: border-box
     }
     #logo1{
@@ -384,7 +384,7 @@
         height: 60px;
         padding: 0 10px;
         line-height: 60px;
-        color: #ffffff;
+        color: #f7f7f7;
     }
     .sidebar{
         height: 100%;
@@ -418,7 +418,7 @@
     .title{
         display: inline-block;
         height: 40px;
-        color: #ffffff;
+        color: #f7f7f7;
         font-size: 10px;
         padding-left: 18px;
         line-height: 40px;
@@ -428,7 +428,7 @@
         height: 40px;
         position: fixed;
         bottom: 0;
-        background-color: #ff9879;
+        background-color: #20222a;
         -webkit-transition: width .3s;
         transition:width .3s;
     }
@@ -437,7 +437,7 @@
         height: 40px;
         position: fixed;
         bottom: 0;
-        background-color: #ff9879;
+        background-color: #20222a;
         -webkit-transition: width .6s;
         transition:width .6s;
     }
@@ -445,13 +445,17 @@
         display: inline-block;
         width: calc(50% - 4px);
         line-height: 40px;
-        color: #ffffff;
+        color: #f7f7f7;
         text-align: center;
         font-size: 14px;
         cursor: pointer;
-        border-top: 1px dashed #ffffff;
+        /* border-top: 1px dashed #f7f7f7; */
     }
-    .switch_tag:first-child{
-        border-right: 1px dashed #ffffff;
+    .switch_tag:hover{
+        background-color: #1A1B22;
+        /* color: #ff6333 */
     }
+    /* .switch_tag{
+        border-right: 1px dashed #f7f7f7;
+    } */
 </style>

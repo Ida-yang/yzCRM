@@ -36,49 +36,42 @@
             </el-radio-group>
             <div style="width:100%;height:20px"></div>
         </div>
-        
-        <ul class="followrecord" v-for="(item,index) in followList" :key="item.followId">
-            <li class="recordicon">
-                <img :src="item.imgUrl" class="detail_portrait" :alt="item.private_employee" :title="item.private_employee" />
-            </li>
-            <li class="verticalline"></li>
-            <li class="recordcontent">
-                <div class="left_more">
-                    <p>
-                        <span class="de_span_2">{{item.contacts[0].name}}</span>
-                        <span class="de_span_1">&nbsp;|&nbsp;</span>
-                        <span class="de_span_1">{{item.createTime}}</span>
-                        <span v-if="item.contactTime" class="de_span_1">&nbsp;&nbsp;--&nbsp;&nbsp;</span>
-                        <span class="de_span_1">{{item.contactTime}}</span>
-                        &nbsp;&nbsp;
-                        <span class="de_span_2">{{item.state}}</span>
-                        &nbsp;&nbsp;
-                        <span class="de_span_3">&nbsp;&nbsp;{{item.followType}}&nbsp;&nbsp;</span>
-                    </p>
-                    <p style="margin-top:15px;margin-bottom:15px;">{{item.followContent}}</p>
-                    <div class="imgbox_two" v-if="item.imgName">
-                        <img :src="item.picture_detail" alt="图片" width="80" height="80" @click="showImg($event,item)">
-                    </div>
-                    <div v-if="item.enclosureName">
-                        <a :href="item.enclosureUrl" download>{{item.enclosureOldName}}</a>
-                    </div>
-                    
-                    <p class="de_span_1">{{item.inputType}}</p>
+        <div class="folog_c">
+            <ul class="followrecord" v-for="(item) in followList" :key="item.followId">
+                <li class="recordicon">
+                    <img :src="item.imgUrl" class="detail_portrait" :alt="item.private_employee" :title="item.private_employee" />
+                </li>
+                <li class="verticalline"></li>
+                <li class="recordcontent">
+                    <div class="left_more">
+                        <p>
+                            <span class="de_span_2">{{item.contacts[0].name}}</span>
+                            <span class="de_span_1">&nbsp;|&nbsp;</span>
+                            <span class="de_span_1">{{item.createTime}}</span>
+                            <span v-if="item.contactTime" class="de_span_1">&nbsp;&nbsp;--&nbsp;&nbsp;</span>
+                            <span class="de_span_1">{{item.contactTime}}</span>
+                            &nbsp;&nbsp;
+                            <span class="de_span_2">{{item.state}}</span>
+                            &nbsp;&nbsp;
+                            <span class="de_span_3">&nbsp;&nbsp;{{item.followType}}&nbsp;&nbsp;</span>
+                        </p>
+                        <p style="margin-top:15px;margin-bottom:15px;">{{item.followContent}}</p>
+                        <div class="imgbox_two" v-if="item.imgName">
+                            <img :src="item.picture_detail" alt="图片" width="80" height="80" @click="showImg($event,item)">
+                        </div>
+                        <div v-if="item.enclosureName">
+                            <a :href="item.enclosureUrl" download>{{item.enclosureOldName}}</a>
+                        </div>
+                        
+                        <p class="de_span_1">{{item.inputType}}</p>
 
-                    <el-dialog :visible.sync="dialogVisible2">
-                        <img width="100%" :src="dialogImageUrl2" alt="">
-                    </el-dialog>
-                </div>
-                <div class="right_more" v-if="item.showdelico">
-                    <el-dropdown trigger="click" @command="deletefollow(index)" class="clue_drop">
-                        <span class="el-dropdown-link">更多<i class="el-icon-caret-bottom"></i></span>
-                        <el-dropdown-menu slot="dropdown" class="drop_item">
-                            <el-dropdown-item command="del">删除</el-dropdown-item>
-                        </el-dropdown-menu>
-                    </el-dropdown>
-                </div>
-            </li>
-        </ul>
+                        <el-dialog :visible.sync="dialogVisible2">
+                            <img width="100%" :src="dialogImageUrl2" alt="">
+                        </el-dialog>
+                    </div>
+                </li>
+            </ul>
+        </div>
         <div class="block numberPage">
             <el-pagination
                 @size-change="SizeChange"
@@ -176,24 +169,24 @@
                 const _this = this
                 let qs = require('querystring')
                 let data = {}
-                // if(this.searchList.label == 0 ){
-                //     if(this.searchList.mechanism && !this.searchList.department){
-                //         data.deptid = this.searchList.mechanism
-                //     }else if(this.searchList.department && !this.searchList.user){
-                //         data.secondid = this.searchList.department
-                //     }else if(this.searchList.user){
-                //         data.pId = this.searchList.user
-                //     }
-                // }else if(this.searchList.label == 1){
-                //     data.pId = _this.$store.state.ispId
-                // }else if(this.searchList.label == 2){
-                //     data.secondid = _this.$store.state.deptid
-                // }else if(this.searchList.label == 3){
-                //     data.deptid = _this.$store.state.insid
-                // }
-                // data.type = this.searchList.type
-                // data.example = this.searchList.example
-                // data.keyType = this.searchList.keyType
+                if(this.searchList.label == 0 ){
+                    if(this.searchList.mechanism && !this.searchList.department){
+                        data.deptid = this.searchList.mechanism
+                    }else if(this.searchList.department && !this.searchList.user){
+                        data.secondid = this.searchList.department
+                    }else if(this.searchList.user){
+                        data.pId = this.searchList.user
+                    }
+                }else if(this.searchList.label == 1){
+                    data.pId = _this.$store.state.ispId
+                }else if(this.searchList.label == 2){
+                    data.secondid = _this.$store.state.deptid
+                }else if(this.searchList.label == 3){
+                    data.deptid = _this.$store.state.insid
+                }
+                data.type = this.searchList.type
+                data.example = this.searchList.example
+                data.keyType = this.searchList.keyType
                 data.page = this.page;
                 data.limit = this.limit;
 
@@ -296,5 +289,7 @@
 </script>
 
 <style>
-
+    .folog_c{
+        margin: 20px;
+    }
 </style>

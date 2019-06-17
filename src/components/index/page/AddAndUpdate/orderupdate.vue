@@ -298,7 +298,7 @@
             <el-button @click="closeTag">取消</el-button>
         </div>
         
-        <el-dialog title="选择产品" :visible.sync="dialogVisible" width="80%" class="orderDialog">
+        <el-dialog title="选择产品" :visible.sync="dialogVisible" :close-on-click-modal="false" width="80%" class="orderDialog">
             <div class="otherleftcontent">
                 <el-tree
                     node-key="id" highlight-current accordion expand-on-click-node
@@ -330,7 +330,7 @@
             </span>
         </el-dialog>
         
-        <el-dialog title="审核意见" :visible.sync="dialogVisible2" width="40%">
+        <el-dialog title="审核意见" :close-on-click-modal="false" :visible.sync="dialogVisible2" width="40%">
             <el-form ref="exaform" :model="exaform" :rules="rules">
                 <el-form-item prop="remarks">
                     <el-input v-model="exaform.remarks" type="textarea" rows="5" placeholder="请输入审核意见（必填）"></el-input>

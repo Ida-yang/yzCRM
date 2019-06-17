@@ -138,6 +138,7 @@
                         </div>
                         <div class="text" style="height:150px;">
                             <ul>
+                                <li>&nbsp;</li><li>&nbsp;</li><li>&nbsp;</li>
                                 <li>创建人：<span>{{agreementdetail.private_employee}}</span></li>
                                 <li>创建人部门：<span>{{agreementdetail.deptname}}</span></li>
                                 <li>创建人机构：<span>{{agreementdetail.parentname}}</span></li>
@@ -202,7 +203,7 @@
             </div>
         </el-col>
         
-        <el-col :span="6" style="padding:10px;" class="right">
+        <el-col :span="6" style="padding:10px;min-height:635px;" class="right">
             <div class="searchList" style="width:100%;">
                 <el-input  v-model="searchList.keyword" placeholder="请输入公司名称" style="width:80%;" @keyup.enter.native="search"></el-input>
                 <el-button icon="el-icon-search" type="primary" size="mini" @click="search()"></el-button>
@@ -228,7 +229,7 @@
                 </el-pagination>
             </div>
         </el-col>
-        <el-dialog title="审核意见" :visible.sync="dialogVisible2" width="40%">
+        <el-dialog title="审核意见" :visible.sync="dialogVisible2" :close-on-click-modal="false" width="40%">
             <el-form ref="exaform" :model="exaform" :rules="rules">
                 <el-form-item prop="remarks">
                     <el-input v-model="exaform.remarks" type="textarea" rows="5" placeholder="请输入审核意见（必填）"></el-input>
@@ -239,7 +240,7 @@
                 <el-button type="primary" @click="toexamine()">确 定</el-button>
             </span>
         </el-dialog>
-        <el-dialog title="回款计划" :visible.sync="dialogVisible3" width="50%">
+        <el-dialog title="回款计划" :visible.sync="dialogVisible3" :close-on-click-modal="false" width="50%">
             <el-form ref="moneyPlan" :model="moneyPlan" :rules="rules" label-width="130px">
                 <el-form-item label="总金额">
                     <el-input v-model="moneyPlan.amount" :disabled="true"></el-input>
@@ -272,7 +273,7 @@
                 <el-button type="primary" @click="planSubmit()">确 定</el-button>
             </span>
         </el-dialog>
-        <el-dialog title="回款信息" :visible.sync="dialogVisible4" width="50%">
+        <el-dialog title="回款信息" :visible.sync="dialogVisible4" :close-on-click-modal="false" width="50%">
             <el-form ref="moneyBack" :model="moneyBack" :rules="rules" label-width="130px">
                 <el-form-item label="预计回款金额">
                     <el-input v-model="moneyBack.amount" :disabled="true"></el-input>

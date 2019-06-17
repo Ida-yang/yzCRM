@@ -254,7 +254,7 @@
                 </el-card>
             </div> -->
         </el-col>
-        <el-dialog :visible.sync="dialogVisible" width="400px">
+        <el-dialog :visible.sync="dialogVisible" :close-on-click-modal="false" width="400px">
             <span>确认修改商机进度吗？一旦确定将不可撤回</span>
             <br><br>
             <span style="margin-right:10px;font-size:14px;">预计成交时间:</span>
@@ -265,7 +265,7 @@
             </span>
         </el-dialog>
         
-        <el-col :span="6" style="padding:10px;" class="right">
+        <el-col :span="6" style="padding:10px;min-height:600px;" class="right">
             <div class="searchList" style="width:100%;">
                 <el-input  v-model="searchList.keyword" placeholder="请输入公司名称" style="width:80%;" @keyup.enter.native="search"></el-input>
                 <el-button icon="el-icon-search" type="primary" size="mini" @click="search()"></el-button>

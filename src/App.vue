@@ -179,11 +179,11 @@ export default {
         font-size: 13px;
         padding-bottom: 1px;
         margin-bottom: 15px;
-        color: #000;
+        /* color: #000; */
     }
-    .el-table thead {
+    /* .el-table thead {
         color: #000;
-    }
+    } */
 
     .el-table th{
         font-size: 14px
@@ -398,6 +398,11 @@ export default {
         border-color:#ff815a;
         color:#ffffff
     }
+    .clear_btn{
+        margin-left: 55px;
+        background: #20222a;
+        color: #ffffff;
+    }
     .followform{
         height: auto;
         min-height: 200px;
@@ -411,9 +416,9 @@ export default {
     .followrecord{
         clear: both;
         width: 100%;
+        min-height: 95px;
         list-style: none;
         position: relative;
-        /* background-color: pink; */
     }
     .followrecord li{
         float: left;
@@ -627,7 +632,7 @@ export default {
         height: 100%
     }
     .setleftcontent{
-        flex: 0 0 20%;
+        flex: 0 0 250px;
         height: 100%;
         padding-top:30px;
         box-sizing: border-box;
@@ -635,7 +640,7 @@ export default {
         overflow-x: hidden
     }
     .setrightcontent{
-        flex: 0 0 79%;
+        flex: 0 0 calc(100% - 250px);
         height: 100%;
         box-sizing: border-box;
         overflow-y: overlay;
@@ -663,7 +668,7 @@ export default {
         background-color: #f0f0f0;
     } */
     .otherleftcontent{
-        width: 20%;
+        width: 250px;
         height: 100%;
         float: left;
         box-sizing: border-box;
@@ -671,7 +676,7 @@ export default {
         overflow-x: hidden
     }
     .otherightcontent{
-        width: 79%;
+        width: calc(100% - 250px);
         height: 100%;
         float: left;
         box-sizing: border-box;
@@ -750,7 +755,13 @@ export default {
     }
     .operation_org{
         position: fixed;
-        right: 64%;
+        right: calc(100% - 555px);
+        width: 30%;
+        text-align: right
+    }
+    .content-collapse .operation_org{
+        position: fixed;
+        right: calc(100% - 470px);
         width: 30%;
         text-align: right
     }

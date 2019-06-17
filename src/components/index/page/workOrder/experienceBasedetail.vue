@@ -6,12 +6,12 @@
                     <span style="font-weight:bold">{{eBdetail.title}}</span>
                 </div>
                 <div class="block">
-                    <div v-html="eBdetail.describe"></div>
+                    <div v-html="eBdetail.describe" class="eb_ue"></div>
                 </div>
             </el-card>
         </el-col>
 
-        <el-col :span="6" style="padding:10px;" class="right">
+        <el-col :span="6" style="padding:10px;min-height: 500px;" class="right">
             <div class="searchList" style="width:100%;">
                 <el-input v-model="searchList.searchName" placeholder="请输入标题" style="width:calc(95% - 45px);" @keyup.enter.native="search"></el-input>
                 <el-button icon="el-icon-search" type="primary" size="mini" @click="search()"></el-button>
@@ -110,5 +110,8 @@
         background-color: #f7f7f7;
         height: auto;
         min-height: 100%;
+    }
+    .eb_ue{
+        min-height: 400px;
     }
 </style>
