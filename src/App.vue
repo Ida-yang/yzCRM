@@ -289,6 +289,13 @@ export default {
         background-color: #919191;
         border-radius: 10px;
     }
+    .de_span_4{
+        color: #606266;
+        cursor: pointer;
+    }
+    .de_span_4:hover{
+        text-decoration: underline;
+    }
     .bold_span{
         font-weight: bold;
         font-size: 16px

@@ -24,13 +24,13 @@
                         </ul>
                         <p>&nbsp;</p>
                         <div class="audited" v-if="agreementdetail.checkStatus == 1">
-                            <img class="audited_img" src="/upload/staticImg/inaudit.png" alt="审核中">
+                            <img class="audited_img" :src="auditing" alt="审核中">
                         </div>
                         <div class="audited" v-if="agreementdetail.checkStatus == 2">
-                            <img class="audited_img" src="/upload/staticImg/examine.png" alt="已审核">
+                            <img class="audited_img" :src="audited" alt="已审核">
                         </div>
                         <div class="audited" v-if="agreementdetail.checkStatus == 3">
-                            <img class="audited_img" src="/upload/staticImg/refuse.png" alt="未通过">
+                            <img class="audited_img" :src="noaudit" alt="未通过">
                         </div>
                     </div>
                     <div v-show="!thisshow"></div>
@@ -409,6 +409,10 @@
                     pay_type_id:[{ required: true, message: '支付方式不能为空', trigger: 'blur' }],
                     back_plan_id:[{ required: true, message: '回款阶段不能为空', trigger: 'blur' }],
                 },
+
+                auditing: this.$store.state.systemHttp + '/upload/staticImg/inaudit.png',
+                audited: this.$store.state.systemHttp + '/upload/staticImg/examine.png',
+                noaudit: this.$store.state.systemHttp + '/upload/staticImg/refuse.png'
             }
         },
         activated(){

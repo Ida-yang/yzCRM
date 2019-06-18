@@ -38,7 +38,7 @@
                      <!-- :content="public_username" -->
                     <el-tooltip effect="dark" :content="public_username" placement="left-end">
                         <span class="el-dropdown-link">
-                            <img :src="imgUrl" alt=""/>
+                            <img :src="imgUrl" :alt="public_username"/>
                         </span>
                     </el-tooltip>
                     <span>
@@ -162,9 +162,9 @@
             },
             loadIMG(){
                 if(this.$store.state.portrait && this.$store.state.portrait !== 'null'){
-                    this.imgUrl = '/upload/'+this.$store.state.iscId+'/'+this.$store.state.portrait
+                    this.imgUrl = this.$store.state.systemHttp + '/upload/'+this.$store.state.iscId+'/'+this.$store.state.portrait
                 }else{
-                    this.imgUrl = '/upload/staticImg/avatar.jpg'
+                    this.imgUrl = this.$store.state.systemHttp + '/upload/staticImg/avatar.jpg'
                 }
             },
             //修改密码

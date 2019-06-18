@@ -306,7 +306,7 @@
     .cluecharts_c{
         position: fixed;
         left: 165px;
-        top: 256px;
+        top: 216px;
         width: calc(100% - 197px);
         height: calc(100% - 260px);
         margin-right: 80px;
@@ -315,15 +315,17 @@
     }
     .cluecharts_b{
         width: 100%;
-        /* height: 100%; */
+        height: 100%;
         display: flex;
         flex-wrap: wrap;
         justify-content: center;
-        align-items: center
+        align-items: center;
+        overflow-y: overlay
     }
     .cluecharts_b .cluecharts_b_c{
         flex: 0 0 calc(33% - 10px);
-        height: calc(50% - 10px);
+        /* height: calc(50% - 10px); */
+        height: 300px;
         margin: 5px;
         border-right: 1px solid #dddddd;
         border-top: 1px solid #dddddd

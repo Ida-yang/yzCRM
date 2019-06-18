@@ -227,12 +227,16 @@
                                 title: '合同',
                             },
                             {
-                                index: 'followlog',
-                                title: '跟进记录',
-                            },
-                            {
                                 index: 'order',
                                 title: '销售订单',
+                            },
+                            {
+                                index: 'receive',
+                                title: '应收回款',
+                            },
+                            {
+                                index: 'followlog',
+                                title: '跟进记录',
                             },
                             {
                                 index: 'product',

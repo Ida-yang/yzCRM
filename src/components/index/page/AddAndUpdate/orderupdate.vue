@@ -39,13 +39,13 @@
                     </el-form-item>
                 </el-form>
                 <div class="audit" v-if="myform.checkStatus == 1">
-                    <img class="audit_img" src="/upload/staticImg/inaudit.png" alt="审核中">
+                    <img class="audit_img" :src="auditing" alt="审核中">
                 </div>
                 <div class="audit" v-if="myform.checkStatus == 2">
-                    <img class="audit_img" src="/upload/staticImg/examine.png" alt="已审核">
+                    <img class="audit_img" :src="audited" alt="已审核">
                 </div>
                 <div class="audit" v-if="myform.checkStatus == 3">
-                    <img class="audit_img" src="/upload/staticImg/refuse.png" alt="未通过">
+                    <img class="audit_img" :src="noaudit" alt="未通过">
                 </div>
             </div>
         </el-card>
@@ -435,6 +435,10 @@
                 rules:{
                     remarks:[{ required: true, message: '审核意见不能为空', trigger: 'blur' }]
                 },
+
+                auditing: this.$store.state.systemHttp +  + '/upload/staticImg/inaudit.png',
+                audited: this.$store.state.systemHttp + '/upload/staticImg/examine.png',
+                noaudit: this.$store.state.systemHttp + '/upload/staticImg/refuse.png',
             }
         },
         mounted() {
@@ -650,29 +654,29 @@
                         if(index == 0){
                             if(el.userList[0].img){
                                 // el.headPortrait = '../../../../static/img/17.jpg'
-                                el.headPortrait = '/upload/'+_this.$store.state.iscId+'/'+el.userList[0].img
+                                el.headPortrait = _this.$store.state.systemHttp + '/upload/'+_this.$store.state.iscId+'/'+el.userList[0].img
                             }else{
                                 // el.headPortrait = '../../../../static/img/timg.jpg'
-                                el.headPortrait = '/upload/staticImg/avatar.jpg'
+                                el.headPortrait = _this.$store.state.systemHttp + '/upload/staticImg/avatar.jpg'
                             }
                         }
                         if(el.stepType ==2){
                             for(let i = 0; i < el.userList.length; i ++){
                                 if(el.userList[i].img && el.userList[i].examineStatus !== 0){
                                     // el.headPortrait = '../../../../static/img/17.jpg'
-                                    el.headPortrait = '/upload/'+_this.$store.state.iscId+'/'+el.userList[i].img
+                                    el.headPortrait = _this.$store.state.systemHttp + '/upload/'+_this.$store.state.iscId+'/'+el.userList[i].img
                                     break
                                 }else if(!el.userList[i].img && el.userList[i].examineStatus !== 0){
                                     // el.headPortrait = '../../../../static/img/timg.jpg'
-                                    el.headPortrait = '/upload/staticImg/avatar.jpg'
+                                    el.headPortrait = _this.$store.state.systemHttp + '/upload/staticImg/avatar.jpg'
                                     break
                                 }else if(el.userList[i].img && el.userList[i].examineStatus == 0){
                                     // el.headPortrait = '../../../../static/img/17.jpg'
-                                    el.headPortrait = '/upload/'+_this.$store.state.iscId+'/'+el.userList[i].img
+                                    el.headPortrait = _this.$store.state.systemHttp + '/upload/'+_this.$store.state.iscId+'/'+el.userList[i].img
                                     break
                                 }else if(!el.userList[i].img && el.userList[i].examineStatus == 0){
                                     // el.headPortrait = '../../../../static/img/timg.jpg'
-                                    el.headPortrait = '/upload/staticImg/avatar.jpg'
+                                    el.headPortrait = _this.$store.state.systemHttp + '/upload/staticImg/avatar.jpg'
                                     break
                                 }
                             }
@@ -681,10 +685,10 @@
                             el.userList.forEach((a,i) => {
                                 if(a.img){
                                     // a.headPortrait = '../../../../static/img/17.jpg'
-                                    a.headPortrait = '/upload/'+_this.$store.state.iscId+'/'+a.img
+                                    a.headPortrait = _this.$store.state.systemHttp + '/upload/'+_this.$store.state.iscId+'/'+a.img
                                 }else{
                                     // a.headPortrait = '../../../../static/img/timg.jpg'
-                                    a.headPortrait = '/upload/staticImg/avatar.jpg'
+                                    a.headPortrait = _this.$store.state.systemHttp + '/upload/staticImg/avatar.jpg'
                                 }
                             })
                         }

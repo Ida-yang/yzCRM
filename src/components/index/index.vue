@@ -3,6 +3,7 @@
         <v-message></v-message>
         <v-cluecharts></v-cluecharts>
         <v-customercharts></v-customercharts>
+        <v-customfollow></v-customfollow>
         <!-- <v-search></v-search> -->
         <v-head></v-head>
         <v-sidebar></v-sidebar>
@@ -26,6 +27,7 @@
     import vCluecharts from './cluecharts.vue';
     import vCustomercharts from './customercharts.vue';
     import vTags from './Tags.vue';
+    import vCustomfollow from './customfollow.vue'
     import bus from './bus';
     export default {
         data(){
@@ -35,7 +37,7 @@
             }
         },
         components:{
-            vHead, vSidebar, vTags, vMessage, vCluecharts, vCustomercharts
+            vHead, vSidebar, vTags, vMessage, vCluecharts, vCustomercharts, vCustomfollow
         },
         created(){
             bus.$on('collapse', msg => {

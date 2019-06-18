@@ -1,36 +1,28 @@
 <template>
     <div id="customercharts_c" class="customercharts_c" :class="{'charts-collapse':collapse}" v-show="collapse4">
-        <el-tabs v-model="activename" type="card">
-            <el-tab-pane label="客户占比一" name="first">
-                <div class="customercharts_b">
-                    <div class="customercharts_b_c">
-                        <div id="chart008" :style="{width: '300px', height: '300px'}"></div>
-                    </div>
-                    <div class="customercharts_b_c">
-                        <div id="chart009" :style="{width: '300px', height: '300px'}"></div>
-                    </div>
-                    <div class="customercharts_b_c">
-                        <div id="chart010" :style="{width: '300px', height: '300px'}"></div>
-                    </div>
-                    <div class="customercharts_b_c">
-                        <div id="chart011" :style="{width: '300px', height: '300px'}"></div>
-                    </div>
-                    <div class="customercharts_b_c">
-                        <div id="chart012" :style="{width: '300px', height: '300px'}"></div>
-                    </div>
-                    <div class="customercharts_b_c">
-                        <div id="chart013" :style="{width: '300px', height: '300px'}"></div>
-                    </div>
-                </div>
-            </el-tab-pane>
-            <el-tab-pane label="客户占比二" name="second">
-                <div class="customercharts_b">
-                    <div class="customercharts_b_c">
-                        <div id="chart014" :style="{width: '300px', height: '300px'}"></div>
-                    </div>
-                </div>
-            </el-tab-pane>
-        </el-tabs>
+        <div class="customercharts_b">
+            <div class="customercharts_b_c">
+                <div id="chart008" :style="{width: '300px', height: '300px'}"></div>
+            </div>
+            <div class="customercharts_b_c">
+                <div id="chart009" :style="{width: '300px', height: '300px'}"></div>
+            </div>
+            <div class="customercharts_b_c">
+                <div id="chart010" :style="{width: '300px', height: '300px'}"></div>
+            </div>
+            <div class="customercharts_b_c">
+                <div id="chart011" :style="{width: '300px', height: '300px'}"></div>
+            </div>
+            <div class="customercharts_b_c">
+                <div id="chart012" :style="{width: '300px', height: '300px'}"></div>
+            </div>
+            <div class="customercharts_b_c">
+                <div id="chart013" :style="{width: '300px', height: '300px'}"></div>
+            </div>
+            <div class="customercharts_b_c">
+                <div id="chart014" :style="{width: '300px', height: '300px'}"></div>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -64,7 +56,6 @@
                 yearData:[],
                 typeData:[],
 
-                activename:'first'
             }
         },
         created(){
@@ -359,18 +350,19 @@
         margin-right: 80px;
         background-color: #fdfeff;
         z-index: 999;
+        overflow-y: overlay
     }
     .customercharts_b{
         width: 100%;
         height: 100%;
         display: flex;
         flex-wrap: wrap;
-        justify-content: center;
-        align-items: center
+        /* justify-content: center; */
+        align-items: center;
     }
     .customercharts_b .customercharts_b_c{
         flex: 0 0 calc(33% - 10px);
-        height: calc(50% - 10px);
+        height: 300px;
         margin: 5px;
         border-right: 1px solid #dddddd;
         border-top: 1px solid #dddddd

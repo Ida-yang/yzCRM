@@ -54,6 +54,8 @@
                             <span class="de_span_2">{{item.state}}</span>
                             &nbsp;&nbsp;
                             <span class="de_span_3">&nbsp;&nbsp;{{item.followType}}&nbsp;&nbsp;</span>
+                            &nbsp;&nbsp;
+                            <span class="de_span_4" @click="openfollow(item)">{{item.poolname}}</span>
                         </p>
                         <p style="margin-top:15px;margin-bottom:15px;">{{item.followContent}}</p>
                         <div class="imgbox_two" v-if="item.imgName">
@@ -90,6 +92,7 @@
     import store from '../../../../store/store'
     import axios from 'axios'
     import qs from 'qs'
+    import bus from '../../bus'
 
     export default {
         name:'followlog',
@@ -146,6 +149,10 @@
 
                 dialogVisible2:false,
                 dialogImageUrl2:null,
+
+                customer_id:null,
+
+                cusfollow:false,
             }
         },
         mounted(){
@@ -170,13 +177,9 @@
                 let qs = require('querystring')
                 let data = {}
                 if(this.searchList.label == 0 ){
-                    if(this.searchList.mechanism && !this.searchList.department){
-                        data.deptid = this.searchList.mechanism
-                    }else if(this.searchList.department && !this.searchList.user){
-                        data.secondid = this.searchList.department
-                    }else if(this.searchList.user){
-                        data.pId = this.searchList.user
-                    }
+                    data.dept = this.searchList.mechanism
+                    data.second = this.searchList.department
+                    data.id = this.searchList.user
                 }else if(this.searchList.label == 1){
                     data.pId = _this.$store.state.ispId
                 }else if(this.searchList.label == 2){
@@ -216,9 +219,26 @@
                     // console.log(err);
                 });
             },
+
+            openfollow(val){
+                const _this = this
+                this.$store.state.customfollowId = {}
+                if(val.customerpool_id){
+                    this.$store.state.customfollowId = {
+                        customerpool_id : val.customerpool_id,
+                        submitUrl : _this.$store.state.defaultHttp+'customerpool/getFollowStaffAndpool.do?cId='+_this.$store.state.iscId
+                    }
+                }else if(val.customertwo_id){
+                    this.$store.state.customfollowId = {
+                        customertwoId : val.customertwo_id,
+                        submitUrl : _this.$store.state.defaultHttp+'getFollowStaff.do?cId='+_this.$store.state.iscId
+                    }
+                }
+                this.cusfollow = true;
+                bus.$emit('cusfollow', this.cusfollow)
+            },
             
             showImg(e,val){
-                // console.log(val)
                 this.dialogImageUrl2 = _this.$store.state.systemHttp + '/upload/'+this.$store.state.iscId+'/'+val.imgName
                 this.dialogVisible2 = true
             },
@@ -269,7 +289,7 @@
                 const _this = this
                 if(!this.searchList.department && this.searchList.mechanism){
                     _this.$options.methods.loaddeptList.bind(_this)()
-                }else if(!this.searchList.user && this.searchList.department && this.searchList.mechanism){
+                }else if(this.searchList.department && this.searchList.mechanism){
                     _this.$options.methods.loadUser.bind(_this)()
                 }
                 _this.$options.methods.loadData.bind(_this)()

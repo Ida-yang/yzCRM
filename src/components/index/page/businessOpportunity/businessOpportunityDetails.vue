@@ -497,16 +497,16 @@
                     _this.record = res.data.map.success
                     _this.record.forEach(el => {
                         if(el.userImagName){
-                            el.imgUrl = '/upload/'+_this.$store.state.iscId+'/'+el.userImagName
+                            el.imgUrl = _this.$store.state.systemHttp + '/upload/'+_this.$store.state.iscId+'/'+el.userImagName
                         }
                         if(!el.userImagName || el.userImagName == null){
-                            el.imgUrl = '/upload/staticImg/avatar.jpg'
+                            el.imgUrl = _this.$store.state.systemHttp + '/upload/staticImg/avatar.jpg'
                         }
                         if(el.imgName && el.imgName !== null){
-                            el.picture_detail = '/upload/'+_this.$store.state.iscId+'/'+el.imgName
+                            el.picture_detail = _this.$store.state.systemHttp + '/upload/'+_this.$store.state.iscId+'/'+el.imgName
                         }
                         if(el.enclosureName && el.enclosureName !== null){
-                            el.enclosureUrl = '/upload/'+_this.$store.state.iscId+'/'+el.enclosureName
+                            el.enclosureUrl = _this.$store.state.systemHttp + '/upload/'+_this.$store.state.iscId+'/'+el.enclosureName
                         }
                     });
                 }).catch(function(err){
@@ -524,7 +524,7 @@
                 });
             },
             showImg(e,val){
-                this.dialogImageUrl2 = '/upload/'+this.$store.state.iscId+'/'+val.imgName
+                this.dialogImageUrl2 = this.$store.state.systemHttp + '/upload/'+this.$store.state.iscId+'/'+val.imgName
                 this.dialogVisible2 = true
             },
             showNextDialog(){

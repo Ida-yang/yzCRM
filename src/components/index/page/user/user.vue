@@ -37,7 +37,7 @@
                         <el-popover placement="right" width="200" trigger="hover">
                             <img class="img_portrait_big" v-show="scope.row.imgUrl" :src="scope.row.portrait" alt="头像" width="200" height="200">
                             <img class="img_portrait" v-show="scope.row.imgUrl" slot="reference" :src="scope.row.portrait" alt="头像" width="50" height="50">
-                            <img class="img_portrait" v-show="!scope.row.imgUrl" slot="reference" src="/upload/staticImg/avatar.jpg" alt="头像" width="50" height="50">
+                            <img class="img_portrait" v-show="!scope.row.imgUrl" slot="reference" :src="scope.row.noportrait" alt="头像" width="50" height="50">
                         </el-popover>
                     </template>
                 </el-table-column>
@@ -84,7 +84,7 @@
                         <el-input v-model="newform.secondname" :disabled="true"></el-input>
                     </el-form-item>
                     <el-form-item prop="imgUrl" label="头像">
-                        <el-upload class="avatar-uploader portrait" :action="doUpload" :show-file-list="false" :on-success="handleAvatarSuccess" :before-upload="beforeUploadimg">
+                        <el-upload class="avatar-uploader portraits" :action="doUpload" :show-file-list="false" :on-success="handleAvatarSuccess" :before-upload="beforeUploadimg">
                             <img v-if="imgfile" :src="imgfile" class="avatar" width="100" height="100">
                             <i v-else class="el-icon-plus avatar-uploader-icon portrait_add"></i>
                         </el-upload>
@@ -128,7 +128,7 @@
                     <el-input v-model="newform.secondname" :disabled="true"></el-input>
                 </el-form-item>
                     <el-form-item prop="imgUrl" label="头像">
-                        <el-upload class="avatar-uploader portrait" :action="doUpload" :on-success="handleAvatarSuccess" :show-file-list="false" :before-upload="beforeUploadimg">
+                        <el-upload class="avatar-uploader portraits" :action="doUpload" :on-success="handleAvatarSuccess" :show-file-list="false" :before-upload="beforeUploadimg">
                             <img v-if="imgfile" :src="imgfile" class="avatar" width="100" height="100">
                             <i v-else class="el-icon-plus avatar-uploader-icon portrait_add"></i>
                         </el-upload>
@@ -300,9 +300,9 @@
                     let arr = res.data.map.success
                     arr.forEach(el => {
                         if(el.imgUrl){
-                            el.portrait = '/upload/'+_this.$store.state.iscId+'/'+el.imgUrl
+                            el.portrait = _this.$store.state.systemHttp + '/upload/'+_this.$store.state.iscId+'/'+el.imgUrl
                         }else{
-                            return
+                            el.noportrait = _this.$store.state.systemHttp + '/upload/staticImg/avatar.jpg'
                         }
                     });
                 }).catch(function(err){
@@ -553,7 +553,7 @@
                             _this.newform.private_QQ = row.private_QQ
                             _this.newform.imgUrl = row.imgUrl
                             if(row.imgUrl){
-                                _this.imgfile = '/upload/'+_this.$store.state.iscId+'/'+row.imgUrl
+                                _this.imgfile = _this.$store.state.systemHttp + '/upload/'+_this.$store.state.iscId+'/'+row.imgUrl
                             }
                             
                             _this.dialogVisible2 = true
@@ -789,11 +789,11 @@
     /* .contentall{
         background-color: #ffffff;
     } */
-    .portrait .el-upload--text{
+    .portraits .el-upload--text{
         width: 100px;
         height: 100px;
     }
-    .portrait .el-upload--text .portrait_add{
+    .portraits .el-upload--text .portrait_add{
         line-height: 100px;
     }
     .img_portrait{

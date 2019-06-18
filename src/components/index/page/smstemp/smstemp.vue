@@ -33,10 +33,10 @@
                             <p>2019-03-29 15:31:21</p>
                             <div class="sms_b_c"> {{item.content}} </div>
                             <div class="approve" v-show="item.status == 2">
-                                <img class="approve_img" src="/upload/staticImg/examine.png" alt="已审核">
+                                <img class="approve_img" :src="auditing" alt="已审核">
                             </div>
                             <div class="approve" v-show="item.status == 3">
-                                <img class="approve_img" src="/upload/staticImg/refuse.png" alt="审核未通过">
+                                <img class="approve_img" :src="noaudit" alt="审核未通过">
                             </div>
                         </div>
                         <div class="sms_f">
@@ -197,6 +197,9 @@
                     signature : [{ required: true, message: '模板签名不能为空', trigger: 'blur' },],
                     genre : [{ required: true, message: '短信类型不能为空', trigger: 'blur' },],
                 },
+
+                auditing: this.$store.state.systemHttp + '/upload/staticImg/examine.png',
+                noaudit: this.$store.state.systemHttp + '/upload/staticImg/refuse.png',
             }
         },
         mounted(){

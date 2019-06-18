@@ -63,6 +63,7 @@ const state = {
   productdetailsData:null,
   workOrderdetaildsData:null,
   expBasedetailData:null,
+  receivdetailData:null,
 
 
   //线索挖掘列表
@@ -202,6 +203,14 @@ const state = {
   experienceBaseList:[],
   //经验库列表总数
   experienceBaseListnumber:0,
+
+  //客户跟进记录ID
+  customfollowId:null,
+
+  //应收回款列表
+  receiveList:[],
+  //应收惠匡列表总数
+  receiveListnumber:0,
 
   //当前时间
   nowtime:null,

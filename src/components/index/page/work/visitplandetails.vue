@@ -21,7 +21,7 @@
                         <div class="item_body">拜访目的：<span>{{visitdetails.visitObjective}}</span></div>
                         <p>&nbsp;</p>
                         <div class="verify" v-if="showverify">
-                            <img class="verify_img" src="/upload/staticImg/examine.png" alt="已审核">
+                            <img class="verify_img" :src="auditing" alt="已审核">
                         </div>
                     </div>
                 </el-card>
@@ -146,7 +146,9 @@ export default {
 
             dialogVisible:false,
 
-            showverify:false
+            showverify:false,
+
+            auditing: this.$store.state.systemHttp + '/upload/staticImg/examine.png'
         }
     },
     activated(){

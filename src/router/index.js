@@ -287,6 +287,16 @@ const router =new Router({
           meta: { title: '跟进记录',name:'followlog',requireAuth:true}
         },
         {
+          path: '/receive',
+          component: resolve => require(['../components/index/page/receive/receive.vue'], resolve),
+          meta: { title: '应收回款',name:'receive',requireAuth:true}
+        },
+        {
+          path: '/receivedetail',
+          component: resolve => require(['../components/index/page/receive/receivedetail.vue'], resolve),
+          meta: { title: '回款详情页',requireAuth:true}
+        },
+        {
           path: '/name',
           component: resolve => require(['../components/index/page/product/name.vue'], resolve),
           meta: { title: '名字',requireAuth:true}
