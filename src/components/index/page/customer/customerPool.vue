@@ -204,9 +204,9 @@
                 let qs =require('querystring')
             axios({
                 method: 'get',
-                url: _this.$store.state.defaultHttp+'getNameAndId.do?cId='+_this.$store.state.iscId,
+                url: _this.$store.state.defaultHttp+'customerTwo/getNameAndId.do?cId='+_this.$store.state.iscId,
             }).then(function(res){
-                _this.useroptions = res.data
+                _this.useroptions = res.data.map.success
             }).catch(function(err){
                 // console.log(err);
             });

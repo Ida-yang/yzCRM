@@ -119,7 +119,7 @@
                     </div>
                 </el-card>
             </div>
-            <div class="bottom">
+            <div class="top">
                 <el-tabs v-model="activeName2" type="card">
                     <el-tab-pane label="合同详情" name="first">
                         <div class="uploadBOX">
@@ -395,6 +395,7 @@
                     customerpool_id:null,
                     remarks:null,
                     pay_type_id:null,
+                    backNo:null,
                 },
                 payList:[],
                 backamount:0,
@@ -506,29 +507,23 @@
                             
                             if(index == 0){
                                 if(el.userList[0].img){
-                                    // el.headPortrait = '../../../../static/img/17.jpg'
                                     el.headPortrait = _this.$store.state.systemHttp + '/upload/'+_this.$store.state.iscId+'/'+el.userList[0].img
                                 }else{
-                                    // el.headPortrait = '../../../../static/img/timg.jpg'
                                     el.headPortrait = _this.$store.state.systemHttp + '/upload/staticImg/avatar.jpg'
                                 }
                             }
                             if(el.stepType ==2){
                                 for(let i = 0; i < el.userList.length; i ++){
                                     if(el.userList[i].img && el.userList[i].examineStatus !== 0){
-                                        // el.headPortrait = '../../../../static/img/17.jpg'
                                         el.headPortrait = _this.$store.state.systemHttp + '/upload/'+_this.$store.state.iscId+'/'+el.userList[i].img
                                         break
                                     }else if(!el.userList[i].img && el.userList[i].examineStatus !== 0){
-                                        // el.headPortrait = '../../../../static/img/timg.jpg'
                                         el.headPortrait = _this.$store.state.systemHttp + '/upload/staticImg/avatar.jpg'
                                         break
                                     }else if(el.userList[i].img && el.userList[i].examineStatus == 0){
-                                        // el.headPortrait = '../../../../static/img/17.jpg'
                                         el.headPortrait = _this.$store.state.systemHttp + '/upload/'+_this.$store.state.iscId+'/'+el.userList[i].img
                                         break
                                     }else if(!el.userList[i].img && el.userList[i].examineStatus == 0){
-                                        // el.headPortrait = '../../../../static/img/timg.jpg'
                                         el.headPortrait = _this.$store.state.systemHttp + '/upload/staticImg/avatar.jpg'
                                         break
                                     }
@@ -537,10 +532,8 @@
                             if(el.stepType == 3){
                                 el.userList.forEach((a,i) => {
                                     if(a.img){
-                                        // a.headPortrait = '../../../../static/img/17.jpg'
                                         a.headPortrait = _this.$store.state.systemHttp + '/upload/'+_this.$store.state.iscId+'/'+a.img
                                     }else{
-                                        // a.headPortrait = '../../../../static/img/timg.jpg'
                                         a.headPortrait = _this.$store.state.systemHttp + '/upload/staticImg/avatar.jpg'
                                     }
                                 })
@@ -809,7 +802,7 @@
                 this.dialogVisible4 = true
                 this.$store.commit('getNowDate')
                 this.moneyBack = { 
-                    id:null, price:null, back_plan_id:null, remarks:null, pay_type_id:null, amount:bb, restamount:cc, 
+                    id:null, price:null, back_plan_id:null, remarks:null, pay_type_id:null, amount:bb, restamount:cc, backNo:null,
                     createTime:this.$store.state.nowdate, contract_id:this.agreementdetail.contract_id, customerpool_id:this.agreementdetail.customerpool_id,
                 }
             },
@@ -824,26 +817,27 @@
                 let cc = bb - aa
                 this.dialogVisible4 = true
                 this.moneyBack = { 
-                    id:row.id, price:row.price, back_plan_id:row.back_plan_id, remarks:row.remarks, pay_type_id:row.pay_type_id, amount:bb, restamount:cc, 
+                    id:row.id, backNo:row.backNo, price:row.price, back_plan_id:row.back_plan_id, remarks:row.remarks, pay_type_id:row.pay_type_id, amount:bb, restamount:cc, 
                     createTime:row.createTime, contract_id:this.agreementdetail.contract_id, customerpool_id:this.agreementdetail.customerpool_id,
                 }
             },
             backSubmit(){
-                console.log(this.moneyBack)
                 const _this = this
                 let qs = require('querystring')
                 let data = {
                     id:this.moneyBack.id,
                     createTime:this.moneyBack.createTime,
                     price:this.moneyBack.price,
-                    // stage:this.moneyBack.stage,
+                    backNo:this.moneyBack.backNo,
                     back_plan_id:this.moneyBack.back_plan_id,
                     contract_id:this.moneyBack.contract_id,
                     customerpool_id:this.moneyBack.customerpool_id,
                     remarks:this.moneyBack.remarks,
                     pay_type_id:this.moneyBack.pay_type_id,
                     pId:this.$store.state.ispId,
-                    secondid:this.$store.state.deptid
+                    secondid:this.$store.state.deptid,
+                    deptid:this.$store.state.insid,
+                    type:'合同'
                 }
 
                 let flag = false
@@ -1014,9 +1008,6 @@
         background-color: #f7f7f7;
         height: auto;
         min-height: 100%;
-    }
-    .el-card__body{
-        padding: 0;
     }
     .fileinput{
         width: 100px;

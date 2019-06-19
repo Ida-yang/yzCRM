@@ -124,7 +124,7 @@
             <el-tab-pane label="产品详情描述" name="second">
                 <div class="components-container ueditor_c">
                     <div class="editor-container">
-                        <UE :defaultMsg="DescData.introduction" :config="config" ref="ue"></UE>
+                        <UE :defaultMsg="defaultMsg" :config="config" ref="ue"></UE>
                     </div>
                 </div>
             </el-tab-pane>
@@ -150,7 +150,6 @@
             return{
                 updataData:null,
                 despecData:[],
-                DescData:null,
                 activeName:'first',
                 myform:{
                     goodsName:null,
@@ -228,7 +227,7 @@
                     _this.updataData = res.data
                     _this.myform = res.data.goods
                     _this.specHeadData = res.data.goodsSpec
-                    _this.DescData = res.data.goodsDesc
+                    _this.defaultMsg = res.data.goodsSpec.introduction
                     _this.imageList = JSON.parse(res.data.goodsDesc.itemImages)
                     _this.tableData = res.data.itemList
                     _this.despecData = res.data.itemList

@@ -5,7 +5,7 @@
                 <div slot="header" class="clearfix">
                     <span style="font-weight:bold">{{eBdetail.title}}</span>
                 </div>
-                <div class="block">
+                <div class="block eb_block">
                     <div v-html="eBdetail.describe" class="eb_ue"></div>
                 </div>
             </el-card>
@@ -113,5 +113,9 @@
     }
     .eb_ue{
         min-height: 400px;
+    }
+    .eb_block{
+        padding: 20px;
+        box-sizing: border-box;
     }
 </style>

@@ -200,7 +200,7 @@
         <div class="submit_btn">
             <el-button type="primary" v-show="submitAdd" :disabled="isDisable" @click="onSubmit" style="margin-right:50px !important;">立即提交</el-button>
             <el-button type="primary" v-show="!submitAdd" :disabled="isDisable" @click="updateSubmit" style="margin-right:50px !important;">立即编辑</el-button>
-            <el-button type="primary" :disabled="isDisable" @click="submitOrClose" style="margin-right:50px !important;">保存并关闭</el-button>
+            <el-button type="primary" v-show="submitAdd" :disabled="isDisable" @click="submitOrClose" style="margin-right:50px !important;">保存并关闭</el-button>
             <el-button @click="closeTag">取消</el-button>
         </div>
 
@@ -483,9 +483,13 @@
                     }
                     if(el.discount){
                         this.cusdiscount = el.discount
+                    }else{
+                        this.cusdiscount = '100'
                     }
                     if(el.taxRate){
                         this.custaxRate = el.taxRate
+                    }else{
+                        this.custaxRate = '0'
                     }
                 });
                 this.$options.methods.loadContact.bind(this)()

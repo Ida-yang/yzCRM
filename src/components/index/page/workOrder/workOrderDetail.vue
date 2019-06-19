@@ -9,7 +9,7 @@
                 <div class="wo_c">
                     <ul class="wo_ul_left">
                         <li class="wo_li_left">
-                            <span style="margin-left:10px;font-weight:bold">{{workorderDetails.problem}}</span>
+                            <span style="font-weight:bold">{{workorderDetails.problem}}</span>
                         </li>
                         <li class="wo_li_left">
                             <span class="wo_span_2" v-html="workorderDetails.describe"></span>
@@ -29,7 +29,7 @@
                     </el-form-item>
                     <el-form-item prop="baseInput" class="first_input" label="知识库引入" label-width="90px">
                         <el-select v-model="myform.baseInput" placeholder="" style="width:300px;" filterable @change="selectBase">
-                            <el-option v-for="item in knowledgeBase" :key="item.id" :label="item.pName" :value="item.id"></el-option>
+                            <el-option v-for="item in knowledgeBase" :key="item.id" :label="item.title" :value="item.describe"></el-option>
                         </el-select>
                     </el-form-item>
                 </el-form>
@@ -232,7 +232,7 @@
             </el-dialog>
         </el-col>
 
-        <el-col :span="6" class="right wo_right">
+        <el-col :span="6" class="right">
             <el-card class="box-card">
                 <div slot="header" class="clearfix">
                     <span style="font-weight:bold">基本信息</span>
@@ -352,6 +352,7 @@
         mounted(){
             this.loadData()
             this.getList()
+            this.getknowledgeBase()
         },
         methods:{
             loadData(){
@@ -424,6 +425,7 @@
             },
             selectBase(val){
                 console.log(val)
+                this.defaultMsg = val
             },
             loadTime(){
                 let begintime = new Date(this.workorderDetails.feedbackTime.replace(/-/g, "/"))
@@ -462,6 +464,23 @@
                         }
                     });
                     _this.$options.methods.getSelect.bind(_this)()
+                }).catch(function(err){
+                    // console.log(err);
+                });
+            },
+            getknowledgeBase(){
+                const _this = this
+                let qs = require('querystring')
+                let data = {}
+                data.page = 1
+                data.limit = 1000000
+                
+                axios({
+                    method: 'post',
+                    url: _this.$store.state.defaultHttp+'knowledgeBase/queryForList.do?cId='+_this.$store.state.iscId,
+                    data:qs.stringify(data)
+                }).then(function(res){
+                    _this.knowledgeBase = res.data.map.success
                 }).catch(function(err){
                     // console.log(err);
                 });
@@ -835,6 +854,7 @@
     }
     .wo_ul_left .wo_li_left{
         margin-bottom: 22px;
+        margin-left: 10px;
     }
     .wo_span_1{
         display: inline-block;
@@ -846,7 +866,6 @@
         box-sizing: border-box;
     }
     .wo_span_2{
-        padding: 0 10px;
         box-sizing: border-box;
     }
 
@@ -873,10 +892,7 @@
         position: absolute;
         bottom: 20px;
     }
-
-    .wo_right{
-        padding: 0 30px;
-    }
+    
     .wo_evaluate{
         margin-bottom: 10px;
     }

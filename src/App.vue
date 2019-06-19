@@ -166,6 +166,9 @@ export default {
     .el-card{
         width: 100%;
     }
+    .el-card__body{
+        padding: 0;
+    }
     /* .el-table tbody tr:hover>td { 
         background-color: #eff5fd !important 
     } */
@@ -248,14 +251,17 @@ export default {
         width: 100%;
         margin: 5px 0 0 20px;;
     }
-
+    
+    .text{
+        margin: 20px 40px;
+    }
     .text ul{
         width: 100%;
         display: flex;
         display: -webkit-flex; /* Safari */
         flex-wrap: wrap;
         align-content: flex-start;
-        padding: 10px 0 0 20px;
+        /* padding: 10px 0 0 20px; */
         box-sizing: border-box;
         list-style: none;
     }
@@ -1018,14 +1024,13 @@ export default {
         color: #606266
     }
     .examine_c{
-        padding: 20px;
         box-sizing: border-box;
         display: flex;
         flex-wrap: wrap;
     }
     .examine_c .examine_item{
         flex: 0;
-        height: 100px;
+        height: 110px;
         display: flex;
     }
     .examine_c .examine_item .examine_cont{

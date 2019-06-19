@@ -18,14 +18,14 @@
             </div>
 
             <div class="eb_content">
-                <ul v-for="item in experienceBaseList" :key="item.id" class="ed_ul" @click="opendetials(item)">
-                    <li class="ed_li_1">
+                <ul v-for="item in experienceBaseList" :key="item.id" class="ed_ul">
+                    <li class="ed_li_1" @click="opendetials(item)">
                         <img :src="item.portrait" width="50" height="50" style="border-radius:25px" />
                     </li>
                     <li class="ed_li_2">
-                        <p class="ed_p_1">{{item.title}}<span class="ed_p_span">{{item.createTime}}</span></p>
+                        <p class="ed_p_1" @click="opendetials(item)">{{item.title}}<span class="ed_p_span">{{item.createTime}}</span></p>
                         <div class="ed_p_2">
-                            创建人：{{item.private_employee}}
+                            <span class="ed_span_1" @click="opendetials(item)">创建人：{{item.private_employee}}</span>
                             <el-dropdown trigger="click" @command="delOrEdit($event,item)" class="ed_drop">
                                 <span class="el-dropdown-link">更多<i class="el-icon-caret-bottom"></i></span>
                                 <el-dropdown-menu slot="dropdown" class="drop_item">
@@ -224,7 +224,6 @@
                         pId:val.pId
                     }
                 }else if(e == 'del'){
-                    console.log(e,val)
                     let data = {}
                     data.id = val.id
                     _this.$confirm('是否确认删除[' + val.title + ']？', '提示', {
@@ -330,7 +329,7 @@
         height: 80px;
         border-bottom: 1px dashed #919191;
         list-style-type: none;
-        margin: 0 10px;
+        padding: 0 10px;
         box-sizing: border-box;
         position: relative;
         display: flex;
@@ -361,8 +360,13 @@
         font-size: 12px;
         color: #919191;
     }
+    .ed_ul .ed_span_1{
+        display: inline-block;
+        width: calc(100% - 100px);
+    }
     .ed_ul .ed_drop{
-        margin-left: 50px;
+        position: absolute;
+        right: 30px;
         font-size: 12px;
         color: #919191;
         cursor: pointer;

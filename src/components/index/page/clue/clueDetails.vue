@@ -1055,9 +1055,6 @@
         background-color: #fff;
         margin-top: 20px;
     }
-    .el-card__body{
-        padding: 0;
-    }
     .clue_drop{
         font-size: 12px;
         color: #919191;

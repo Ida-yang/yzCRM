@@ -200,7 +200,8 @@
                     this.myform.mechanism = this.workOrderaddorUpdateData.parentname
                     this.myform.enclosures = this.workOrderaddorUpdateData.enclosures
                     this.myform.enclosureOldNames = this.workOrderaddorUpdateData.enclosureOldNames
-                    this.$options.methods.loadList.bind(this)()
+                    this.defaultMsg = this.workOrderaddorUpdateData.describe
+                    // this.$options.methods.loadList.bind(this)()
                 }else{
                     this.myform.serviceTypeName = this.$store.state.workOrderaddorUpdateData.setform.name
                 }
@@ -223,9 +224,9 @@
                 //获取所有受理人
                 axios({
                     method: 'get',
-                    url: _this.$store.state.defaultHttp+'getNameAndId.do?cId='+_this.$store.state.iscId,
+                    url: _this.$store.state.defaultHttp+'customerTwo/getNameAndId.do?cId='+_this.$store.state.iscId,
                 }).then(function(res){
-                    _this.acceptanceList = res.data
+                    _this.acceptanceList = res.data.map.success
                 }).catch(function(err){
                     // console.log(err);
                 });

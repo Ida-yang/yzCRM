@@ -472,9 +472,6 @@
         height: auto;
         min-height: 100%;
     }
-    .el-card__body{
-        padding: 0;
-    }
     .oppinput{
         width:90%;
     }

@@ -1158,7 +1158,4 @@
         background-color: #fff;
         margin-top: 20px;
     }
-    .el-card__body{
-        padding: 0;
-    }
 </style>

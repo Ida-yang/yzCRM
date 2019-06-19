@@ -62,9 +62,19 @@
                         <el-progress :text-inside="true" :stroke-width="20" :percentage="parseInt(scope.row.opportunityProgress[0].progress_probability)" :color="scope.row.stepcolor"></el-progress>
                     </template>
                 </el-table-column>
-                <el-table-column label="预计成绩金额" prop="opportunity_achievement" v-if="item.prop == 'opportunity_achievement' && item.state == 1" min-width="140" sortable>
+                <el-table-column label="预计成交金额" prop="estimatedAmount" v-if="item.prop == 'opportunity_achievement' && item.state == 1" min-width="140" sortable>
                     <template slot-scope="scope">
-                        {{scope.row.opportunity_achievement | rounding}}
+                        {{scope.row.estimatedAmount | rounding}}
+                    </template>
+                </el-table-column>
+                <el-table-column label="成功金额" prop="successAmount" v-if="item.prop == 'successMoney' && item.state == 1" min-width="140" sortable>
+                    <template slot-scope="scope">
+                        {{scope.row.successAmount | rounding}}
+                    </template>
+                </el-table-column>
+                <el-table-column label="失败金额" prop="failAmount" v-if="item.prop == 'failMoney' && item.state == 1" min-width="140" sortable>
+                    <template slot-scope="scope">
+                        {{scope.row.failAmount | rounding}}
                     </template>
                 </el-table-column>
                 <el-table-column label="预计成交时间" prop="opportunity_deal" v-if="item.prop == 'opportunity_deal' && item.state == 1" min-width="140" sortable />
@@ -185,6 +195,39 @@
                 dialogFormVisible:false,
                 dialogFormVisible1:false,
                 formLabelWidth: '130px',
+                tableDatas: [
+                    {
+                        title:'当月预计成交金额',
+                        jine:'金额',
+                        yujizhanbi:'预计占比',
+                        shijichengjiao:'实际成交',
+                        shijizhanbi:'实际占比',
+                    },{
+                        title:'预计第一周成交',
+                        jine:'金额',
+                        yujizhanbi:'预计占比',
+                        shijichengjiao:'实际成交',
+                        shijizhanbi:'实际占比',
+                    },{
+                        title:'预计第二周成交',
+                        jine:'金额',
+                        yujizhanbi:'预计占比',
+                        shijichengjiao:'实际成交',
+                        shijizhanbi:'实际占比',
+                    },{
+                        title:'预计第三周成交',
+                        jine:'金额',
+                        yujizhanbi:'预计占比',
+                        shijichengjiao:'实际成交',
+                        shijizhanbi:'实际占比',
+                    },{
+                        title:'预计第四周成交',
+                        jine:'金额',
+                        yujizhanbi:'预计占比',
+                        shijichengjiao:'实际成交',
+                        shijizhanbi:'实际占比',
+                    }
+                ]
             }
         },
         activated(){
@@ -224,16 +267,33 @@
                 }).then(function(res){
                     let data = res.data.map.success
                     data.forEach((el) => {
+                        el.successAmount = '0'
+                        el.failAmount = '0'
+                        el.estimatedAmount = '0'
                         if(el.opportunityProgress[0].progress_probability == '100'){
                             el.stepcolor = '#67c23a'
+                            el.successAmount = el.opportunity_achievement
+                            el.failAmount = '0'
+                            el.estimatedAmount = '0'
+                        }else if(el.opportunityProgress[0].progress_probability == '0'){
+                            el.successAmount = '0'
+                            el.failAmount = el.opportunity_achievement
+                            el.estimatedAmount = '0'
                         }else if(el.opportunityProgress[0].progress_probability < '50'){
                             el.stepcolor = '#909399'
-                        }else{
+                            el.successAmount = '0'
+                            el.failAmount = '0'
+                            el.estimatedAmount = el.opportunity_achievement
+                        }else if(el.opportunityProgress[0].progress_probability >= '50'){
                             el.stepcolor = '#f56c6c'
+                            el.successAmount = '0'
+                            el.failAmount = '0'
+                            el.estimatedAmount = el.opportunity_achievement
                         }
                     });
                     _this.$store.state.businessOpportunityList = data
                     _this.$store.state.businessOpportunityListnumber = res.data.count
+                    console.log(data)
                 }).catch(function(err){
                     // console.log(err);
                 });
@@ -311,7 +371,7 @@
                     {"label":"商机名称","inputModel":"opportunity_name"},
                     {"label":"公司名称","inputModel":"customerpool_id","type":"require"},
                     {"label":"客户决策人","inputModel":"contacts_id","type":"select"},
-                    {"label":"预计成绩金额","inputModel":"opportunity_achievement","type":"number"},
+                    {"label":"预计成交金额","inputModel":"opportunity_achievement","type":"number"},
                     {"label":"预计成交时间","inputModel":"opportunity_deal","type":"date"},
                     {"label":"负责人","inputModel":"user_id","disabled":true},
                     {"label":"备注","inputModel":"opportunity_remarks","type":'textarea'}];
@@ -351,7 +411,7 @@
                     {"label":"商机名称","inputModel":"opportunity_name"},
                     {"label":"公司名称","inputModel":"customerpool_id","type":"require"},
                     {"label":"客户决策人","inputModel":"contacts_id","type":"select"},
-                    {"label":"预计成绩金额","inputModel":"opportunity_achievement","type":"number"},
+                    {"label":"预计成交金额","inputModel":"opportunity_achievement","type":"number"},
                     {"label":"预计成交时间","inputModel":"opportunity_deal","type":"date"},
                     {"label":"负责人","inputModel":"user_id","disabled":true},
                     {"label":"备注","inputModel":"opportunity_remarks","type":'textarea'}];
@@ -510,7 +570,7 @@
                         return;
                     }
                     const values = data.map(item => Number(item[column.property]));
-                    if(column.property == 'opportunity_achievement'){
+                    if(column.property == 'estimatedAmount' || column.property == 'successAmount' || column.property == 'failAmount' || column.property == 'opportunity_achievement'){
                         sums[index] = values.reduce((acc, cur) => (cur + acc), 0)
                         sums[index] = sums[index].toFixed(2)
                         let intPart = Math.trunc(sums[index])

@@ -144,7 +144,7 @@
                     opportunity_name : [{ required: true, message: '商机名称不能为空', trigger: 'blur' },],
                     customerpool_id : [{ required: true, message: '关联客户不能为空', trigger: 'blur' },],
                     contacts_id : [{ required: true, message: '决策人不能为空', trigger: 'blur' },],
-                    opportunity_achievement : [{ required: true, message: '预计成绩金额不能为空', trigger: 'blur' },],
+                    opportunity_achievement : [{ required: true, message: '预计成交金额不能为空', trigger: 'blur' },],
                     opportunity_deal : [{ required: true, message: '预计成交时间不能为空', trigger: 'blur' },],
                 },
 
@@ -288,9 +288,9 @@
                         });
                         flag = true;
                     }
-                    if(item.inputModel == "opportunity_achievement" && !subData[item.inputModel]) {//预计成绩金额不能为空
+                    if(item.inputModel == "opportunity_achievement" && !subData[item.inputModel]) {//预计成交金额不能为空
                         _this.$message({
-                            message: "预计成绩金额不能为空",
+                            message: "预计成交金额不能为空",
                             type: 'error'
                         });
                         flag = true;

@@ -113,7 +113,7 @@
                     </el-steps>
                 </el-card>
             </div>
-            <div class="bottom" v-show="auxcontent">
+            <div class="top" v-show="auxcontent">
                 <el-tabs v-model="auxindex" type="card">
                     <el-tab-pane label="跟进记录" name="first">
                         <ul class="followrecord" v-for="item in record" :key="item.followId">
@@ -196,7 +196,7 @@
                 </el-tabs>
             </div>
             
-            <div class="bottom">
+            <div class="top">
                 <el-tabs v-model="baseindex" type="card">
                     <el-tab-pane label="基本信息" name="first">
                         <div class="text">
@@ -711,9 +711,6 @@
         background-color: #f7f7f7;
         height: auto;
         min-height: 100%;
-    }
-    .el-card__body{
-        padding: 0;
     }
     .aux_c{
         height: 150px;

@@ -118,6 +118,9 @@
                 nullvalue:null,
             }
         },
+        activated(){
+            this.loadTable()
+        },
         mounted(){
             this.loadTable()
         },

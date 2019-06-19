@@ -15,7 +15,8 @@
             </el-radio-group>
             <el-radio-group v-model="searchList.keyType">
                 <span class="nameList">跟进类型：</span>
-                <el-radio v-for="item in typeData" :key="item.label" :label="item.label" @change="search()">{{item.value}}</el-radio>
+                <el-radio :label="nullvalue">全部</el-radio>
+                <el-radio v-for="item in typeData" :key="item.label" :label="item.value" @change="search()">{{item.value}}</el-radio>
             </el-radio-group>
         </div>
         <div class="searchList" style="width:100%;" v-if="searchList.label == 0">
@@ -107,7 +108,7 @@
                     type:'',
                     label:1,
                     example:'',
-                    keyType:'',
+                    keyType:null,
                     mechanism:'',
                     department:'',
                     user:'',
@@ -136,7 +137,6 @@
                     {label:5,value:'上月'},
                 ],
                 typeData:[
-                    {label:'',value:'全部'},
                     {label:1,value:'电话'},
                     {label:2,value:'QQ'},
                     {label:3,value:'微信'},
@@ -157,6 +157,9 @@
         },
         mounted(){
             this.loadmechanism()
+            this.loadData()
+        },
+        activated(){
             this.loadData()
         },
         methods:{
