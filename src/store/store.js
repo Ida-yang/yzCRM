@@ -36,34 +36,35 @@ const state = {
   welcomeData:null,
 
   //添加或修改列表数据
-  clueaddOrUpdateData:null,
-  cusaddOrUpdateData:null,
-  agreeaddOrUpdateData:null,
-  oppaddOrUpdateData:null,
-  contaddOrUpdateData:null,
-  visitaddOrUpdateData:null,
-  missionaddOrUpdateData:null,
-  productaddData:null,
-  productupdateData:null,
-  orderaddData:null,
-  orderupdateData:null,
-  approvaladdData:null,
-  approvalupdateData:null,
-  workOrderaddorUpdateData:null,
+  clueaddOrUpdateData:null, // 线索
+  cusaddOrUpdateData:null, // 客户
+  agreeaddOrUpdateData:null, // 合同
+  oppaddOrUpdateData:null, // 商机
+  contaddOrUpdateData:null, // 联系人
+  visitaddOrUpdateData:null, // 外勤
+  missionaddOrUpdateData:null, // 任务
+  productaddData:null, // 产品新增
+  productupdateData:null, // 产品编辑
+  orderaddData:null, // 订单新增
+  orderupdateData:null, // 订单编辑
+  approvaladdData:null, // 审批流程新增
+  approvalupdateData:null, // 审批流程编辑
+  workOrderaddorUpdateData:null, // 工单
   
   //跳转详情页列表
-  cluedetailsData:null,
-  cusdetailsData:null,
-  agreedetailsData:null,
-  oppdetailsData:null,
-  contdetailsData:null,
-  prodetailsData:null,
-  visitdetailsData:null,
-  missiondetailsData:null,
-  productdetailsData:null,
-  workOrderdetaildsData:null,
-  expBasedetailData:null,
-  receivdetailData:null,
+  cluedetailsData:null, // 线索
+  cusdetailsData:null, // 客户
+  agreedetailsData:null, // 合同
+  oppdetailsData:null, // 商机
+  contdetailsData:null, // 联系人
+  prodetailsData:null, // 方案
+  visitdetailsData:null, // 外勤
+  missiondetailsData:null, // 任务
+  productdetailsData:null, // 产品
+  workOrderdetaildsData:null, // 工单
+  expBasedetailData:null, // 经验库
+  receivdetailData:null, // 回款
+  culturePondetailData:null, // 培育池
 
 
   //线索挖掘列表
@@ -211,6 +212,11 @@ const state = {
   receiveList:[],
   //应收惠匡列表总数
   receiveListnumber:0,
+
+  //培育池列表
+  culturePondList:[],
+  //培育池列表总数
+  culturePondListnumber:0,
 
   //当前时间
   nowtime:null,

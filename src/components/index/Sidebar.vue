@@ -250,6 +250,10 @@
                         title: '营销',
                         subs: [
                             {
+                                index: 'culturePond',
+                                title: '培育池',
+                            },
+                            {
                                 index: 'socialMarketing',
                                 title: '社交营销',
                             },

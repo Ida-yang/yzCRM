@@ -8,7 +8,6 @@
             </el-radio-group>
         </div>
         <div class="searchList" style="width:100%;">
-            <span class="nameList">公司名称：</span>
             <el-input placeholder="请输入公司名称或单号" v-model="searchList.searchName" style="margin-left:20px;width:400px;" @input="search">
                 <el-select v-model="searchList.searchOption" slot="prepend" placeholder="请选择" style="width:110px"> 
                     <el-option label="公司名称" value="1"></el-option>

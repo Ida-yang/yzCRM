@@ -297,6 +297,16 @@ const router =new Router({
           meta: { title: '回款详情页',requireAuth:true}
         },
         {
+          path: '/culturePond',
+          component: resolve => require(['../components/index/page/culturePond/culturePond.vue'], resolve),
+          meta: { title: '培育池', name:'culturePond', requireAuth:true}
+        },
+        {
+          path: '/culturePondetail',
+          component: resolve => require(['../components/index/page/culturePond/culturePondetail.vue'], resolve),
+          meta: { title: '培育池详情', requireAuth:true}
+        },
+        {
           path: '/name',
           component: resolve => require(['../components/index/page/product/name.vue'], resolve),
           meta: { title: '名字',requireAuth:true}
