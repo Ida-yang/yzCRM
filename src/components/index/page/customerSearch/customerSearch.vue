@@ -133,7 +133,7 @@
         <div class="entry">
             <el-button class="btn info-btn" size="mini" @click="transfers()">转移至线索</el-button>
 
-            <div class="totalnum_head">共 <span style="font-weight:bold">{{tableNumber}}</span> 条</div>
+            <!-- <div class="totalnum_head">共 <span style="font-weight:bold">{{tableNumber}}</span> 条</div> -->
 
             <el-popover placement="bottom" width="100" trigger="click">
                 <el-checkbox-group class="checklist" v-model="checklist" style="max-height:600px;overflow-y:overlay;overflow-x:hidden">
@@ -157,23 +157,23 @@
                         </div>
                     </template>
                 </el-table-column>
-                <el-table-column label="公司地址" prop="address" show-overflow-tooltip v-if="item.prop == 'address' && item.state == 1" min-width="160" sortable />
+                <el-table-column label="公司地址" prop="address" show-overflow-tooltip v-if="item.prop == 'address' && item.state == 1" min-width="200" sortable />
                 <el-table-column label="注册资金" prop="capital" v-if="item.prop == 'capital' && item.state == 1" width="110" sortable>
                     <template slot-scope="scope">
                         {{scope.row.capital + '万元'}}
                     </template>
                 </el-table-column>
-                <el-table-column label="法人"  prop="representative" show-overflow-tooltip v-if="item.prop == 'representative' && item.state == 1" width="80"                sortable />
-                <el-table-column label="成立日期" prop="date" v-if="item.prop == 'date' && item.state == 1" sortable width="120">
+                <el-table-column label="法人"  prop="representative" show-overflow-tooltip v-if="item.prop == 'representative' && item.state == 1" width="90" sortable />
+                <el-table-column label="成立日期" prop="date" v-if="item.prop == 'date' && item.state == 1" sortable width="110">
                 </el-table-column>
                 <el-table-column label="手机" prop="phoneId" v-if="item.prop == 'coPhone' && item.state == 1" width="110" sortable>
                     <template slot-scope="scope">
                         {{scope.row.phoneId | toTel}}
                     </template>
                 </el-table-column>
-                <el-table-column label="电话" prop="telephoneId" v-if="item.prop == 'coTelephone' && item.state == 1" width="100" sortable />
+                <el-table-column label="电话" prop="telephoneId" v-if="item.prop == 'coTelephone' && item.state == 1" width="110" sortable />
                 <el-table-column label="邮箱" prop="emailId" show-overflow-tooltip v-if="item.prop == 'coEmail' && item.state == 1" width="130" sortable />
-                <el-table-column label="网站" prop="url" v-if="item.prop == 'coWebsite' && item.state == 1" sortable />
+                <el-table-column label="网站" prop="url" v-if="item.prop == 'coWebsite' && item.state == 1" min-width="130" sortable />
                 <el-table-column label="行业" prop="industryName" show-overflow-tooltip v-if="item.prop == 'industryName' && item.state == 1" width="110" sortable />
                 <el-table-column label="企业规模" prop="enterpriseScaleName" v-if="item.prop == 'enterpriseScaleName' && item.state == 1" width="110" sortable />
                 <el-table-column label="省-市-区" v-if="item.prop == 'countryId' && item.state == 1" width="150" sortable>
@@ -188,7 +188,7 @@
             </div>
         </el-table>
         <div class="block numberPage">
-            <div class="totalnum">共 {{tableNumber}} 条</div>
+            <!-- <div class="totalnum">共 {{tableNumber}} 条</div> -->
             <el-pagination
                 class="pagination"
                 @size-change="handleSizeChange"

@@ -25,12 +25,12 @@
         </div>
         <el-table :data="tableData" ref="multipleTable" border stripe style="width:100%">
             <el-table-column fixed header-align="center" align="center" type="index" width="45" />
-            <el-table-column label="手机号码" prop="phone" fixed min-width="100" sortable />
+            <el-table-column label="手机号码" prop="phone" fixed min-width="110" sortable />
             <el-table-column label="联系人" prop="name" min-width="100" sortable />
-            <el-table-column label="公司名称" prop="workName" min-width="180" sortable />
-            <el-table-column label="时间" prop="createTime" min-width="145" sortable />
-            <el-table-column label="内容" prop="content" show-overflow-tooltip min-width="160" sortable />
-            <el-table-column prop="ip" label="IP" min-width="140" sortable />
+            <el-table-column label="公司名称" prop="workName" min-width="200" sortable />
+            <el-table-column label="时间" prop="createTime" min-width="150" sortable />
+            <el-table-column label="内容" prop="content" show-overflow-tooltip min-width="180" sortable />
+            <el-table-column prop="ip" label="IP" min-width="160" sortable />
         </el-table>
         <div class="block numberPage">
             <el-pagination

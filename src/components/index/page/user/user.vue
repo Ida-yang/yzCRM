@@ -49,17 +49,17 @@
                         </template>
                     </el-table-column>
                     <el-table-column label="用户" prop="private_employee" fixed v-if="item.prop == 'private_employee' && item.state == 1" min-width="90" sortable />
-                    <el-table-column label="登录账号" prop="private_username" v-if="item.prop == 'private_username' && item.state == 1" min-width="120" sortable />
+                    <el-table-column label="登录账号" prop="private_username" v-if="item.prop == 'private_username' && item.state == 1" min-width="110" sortable />
                     <el-table-column label="岗位" prop="name" v-if="item.prop == 'name' && item.state == 1" min-width="100" sortable />
-                    <el-table-column label="手机号" prop="private_phone" v-if="item.prop == 'private_phone' && item.state == 1" min-width="120" sortable />
+                    <el-table-column label="手机号" prop="private_phone" v-if="item.prop == 'private_phone' && item.state == 1" min-width="110" sortable />
                     <el-table-column label="邮箱" prop="private_email" show-overflow-tooltip v-if="item.prop == 'private_email' && item.state == 1" min-width="130" sortable />
                     <el-table-column label="部门" prop="deptname" show-overflow-tooltip v-if="item.prop == 'deptname' && item.state == 1" min-width="100" sortable />
-                    <el-table-column label="机构" prop="parentname" v-if="item.prop == 'parentname' && item.state == 1" min-width="180" sortable />
+                    <el-table-column label="机构" prop="parentname" v-if="item.prop == 'parentname' && item.state == 1" min-width="110" show-overflow-tooltip sortable />
                     <el-table-column label="创建时间" prop="createTime" v-if="item.prop == 'createTime' && item.state == 1" min-width="150" sortable />
                     <el-table-column label="是否同步" prop="isSynchronization" v-if="item.prop == 'isSynchronization' && item.state == 1" min-width="110" sortable />
-                    <el-table-column label="状态" prop="private_state" v-if="item.prop == 'private_state' && item.state == 1" min-width="80" sortable />
+                    <el-table-column label="状态" prop="private_state" v-if="item.prop == 'private_state' && item.state == 1" min-width="90" sortable />
                 </div>
-                <el-table-column label="操作" fixed="right" width="140" header-align="center" align="center">
+                <el-table-column label="操作" fixed="right" width="150" header-align="center" align="center">
                     <template slot-scope="scope">
                         <el-button size="mini" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
                         <el-button size="mini" type="danger" @click="handlesynchro(scope.$index, scope.row)">同步</el-button>

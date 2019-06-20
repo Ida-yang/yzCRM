@@ -45,13 +45,13 @@
                         </template>
                     </el-table-column>
                     <el-table-column label="价格" prop="price" v-if="item.prop == 'price' && item.state == 1" min-width="90" sortable />
-                    <el-table-column label="成本价" prop="costPrice" v-if="item.prop == 'costPrice' && item.state == 1" min-width="90" sortable />
+                    <el-table-column label="成本价" prop="costPrice" v-if="item.prop == 'costPrice' && item.state == 1" min-width="100" sortable />
                     <el-table-column label="单位" prop="unit" v-if="item.prop == 'unit' && item.state == 1" min-width="90" sortable />
                     <el-table-column label="品牌" prop="brand" v-if="item.prop == 'brand' && item.state == 1" min-width="90" sortable />
                     <el-table-column label="状态" prop="status" v-if="item.prop == 'status' && item.state == 1" min-width="90" sortable />
                     <el-table-column label="创建时间" prop="createTime" v-if="item.prop == 'createTime' && item.state == 1" min-width="150" sortable />
                 </div>
-                <el-table-column label="操作" fixed="right" width="140" header-align="center" align="center">
+                <el-table-column label="操作" fixed="right" width="150" header-align="center" align="center">
                     <template slot-scope="scope">
                         <el-button size="mini" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
                         <el-button size="mini" type="danger" @click="handledelete(scope.$index, scope.row)">删除</el-button>

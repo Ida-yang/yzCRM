@@ -217,6 +217,7 @@
                 if(e == 'edit'){
                     this.addDialog = true
                     this.myform = {
+                        id:val.id,
                         title:val.title,
                         describe:val.describe,
                         service_type_id:val.service_type_id,

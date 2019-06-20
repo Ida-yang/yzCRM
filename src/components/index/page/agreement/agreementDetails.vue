@@ -39,7 +39,7 @@
             <div class="top">
                 <el-card class="box-card" v-model="agreementdetail">
                     <div slot="header" class="clearfix">
-                        <el-popover placement="right-start" width="200" trigger="click">
+                        <el-popover placement="right-start" width="220" trigger="click">
                             <div style="max-height:400px;overflow-y:overlay">
                                 <div class="examine_popover" v-for="(b,j) in examineLog" :key="j">
                                     <span class="examine_ico">
@@ -152,9 +152,9 @@
                         <div class="entry">
                             <el-button class="btn info-btn" size="mini" @click="addplan()">新增计划</el-button>
                         </div>
-                        <el-table :data="moneyPlanList" border stripe style="width: 100%">
+                        <el-table :data="moneyPlanList" border stripe :summary-method="getSummaries" show-summary style="width: 100%">
                             <el-table-column label="期数" fixed header-align="center" align="center" type="index" width="60" />
-                            <el-table-column label="客户名称" prop="customerName" min-width="180" />
+                            <el-table-column label="公司名称" prop="customerName" min-width="200" />
                             <el-table-column label="合同编号" prop="contract_number" min-width="150" />
                             <el-table-column label="回款阶段" prop="stage" min-width="110" />
                             <el-table-column label="预计回款金额" prop="price" min-width="120">
@@ -162,9 +162,9 @@
                                     {{scope.row.price | commaing}}
                                 </template>
                             </el-table-column>
-                            <el-table-column label="预计日期" prop="date" min-width="120" />
+                            <el-table-column label="预计日期" prop="date" min-width="110" />
                             <el-table-column label="提醒时间" prop="remind_date" min-width="150" />
-                            <el-table-column label="备注" prop="remarks" min-width="110" />
+                            <el-table-column label="备注" prop="remarks" min-width="180" />
                             <el-table-column label="操作" fixed="right" width="150" header-align="center" align="center" v-if="!moneyBackList.length">
                                 <template slot-scope="scope">
                                     <el-button size="mini" @click="editplan(scope.$index, scope.row)">编辑</el-button>
@@ -176,18 +176,18 @@
                         <div class="entry">
                             <el-button class="btn info-btn" size="mini" @click="addback()">新增回款</el-button>
                         </div>
-                        <el-table :data="moneyBackList" border stripe style="width: 100%">
+                        <el-table :data="moneyBackList" border stripe :summary-method="getSummaries" show-summary style="width: 100%">
                             <el-table-column label="期数" fixed header-align="center" align="center" type="index" width="60" />
-                            <el-table-column label="客户名称" prop="customerName" min-width="180" />
+                            <el-table-column label="公司名称" prop="customerName" min-width="200" />
                             <el-table-column label="合同编号" prop="contract_number" min-width="150" />
                             <el-table-column label="回款阶段" prop="back_plan" min-width="110" />
-                            <el-table-column label="回款金额" prop="price" min-width="120">
+                            <el-table-column label="回款金额" prop="price" min-width="110">
                                 <template slot-scope="scope">
                                     {{scope.row.price | commaing}}
                                 </template>
                             </el-table-column>
-                            <el-table-column label="回款日期" prop="createTime" min-width="120" />
-                            <el-table-column label="备注" prop="remarks" min-width="110" />
+                            <el-table-column label="回款日期" prop="createTime" min-width="110" />
+                            <el-table-column label="备注" prop="remarks" min-width="180" />
                             <el-table-column label="操作" fixed="right" width="150" header-align="center" align="center">
                                 <template slot-scope="scope">
                                     <el-button size="mini" @click="editback(scope.$index, scope.row)">编辑</el-button>
@@ -601,6 +601,40 @@
                         })
                     }
                 })
+            },
+            getSummaries(param){
+                const { columns, data } = param;
+                const sums = [];
+                columns.forEach((column, index) => {
+                    if (index === 0) {
+                        sums[index] = '总价';
+                        return;
+                    }
+                    const values = data.map(item => Number(item[column.property]));
+                    if(column.property == 'price'){
+                        sums[index] = values.reduce((acc, cur) => (cur + acc), 0)
+                        sums[index] = sums[index].toFixed(2)
+                        let intPart = Math.trunc(sums[index])
+                        let intPartFormat = intPart.toString().replace(/(\d)(?=(?:\d{3})+$)/g, '$1,')
+                        let floatPart = '.00' // 预定义小数部分
+                        let valArray = sums[index].split('.')
+                        if(valArray.length === 2) {
+                            floatPart = valArray[1].toString() // 拿到小数部分
+                            if(floatPart.length === 1) { // 补0,实际上用不着
+                                sums[index] = intPartFormat + '.' + floatPart + '0'
+                            }else{
+                                sums[index] = intPartFormat + '.' + floatPart
+                            }
+                        } else {
+                            sums[index] = intPartFormat + floatPart
+                        }
+                        sums[index] += ' 元';
+                    }else{
+                        sums[index] = '';
+                    }
+                });
+
+                return sums;
             },
             showImg(e,val){
                 this.dialogImageUrl = val.imgURL

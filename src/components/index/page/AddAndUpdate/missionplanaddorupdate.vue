@@ -60,9 +60,9 @@
                         <el-button style="width:15px;height:15px;padding:0;border-radius:50%;" @click="getRow(scope.$index,scope.row)">&nbsp;</el-button>
                     </template>
                 </el-table-column>
-                <el-table-column prop="name" min-width="80" label="公司名称" sortable />
-                <el-table-column prop="address" min-width="130" label="公司地址" sortable />
-                <el-table-column prop="representative" min-width="40" label="法人" sortable />
+                <el-table-column prop="name" min-width="200" label="公司名称" sortable />
+                <el-table-column prop="address" show-overflow-tooltip min-width="200" label="公司地址" sortable />
+                <el-table-column prop="representative" min-width="90" label="法人" sortable />
             </el-table>
         </div>
     </div>

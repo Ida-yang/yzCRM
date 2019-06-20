@@ -57,8 +57,8 @@
                     <div class="filter-container">
                         <el-table :data="tableData1" border stripe style="width: 100%">
                             <el-table-column header-align="center" align="center" type="index" min-width="45"></el-table-column>
-                            <el-table-column label="规格名称" prop="spec_name"></el-table-column>
-                            <el-table-column label="规格值" prop="specValue" min-width="200">
+                            <el-table-column label="规格名称" prop="spec_name" min-width="200"></el-table-column>
+                            <el-table-column label="规格值" prop="specValue" min-width="400">
                                 <template slot-scope="scope">
                                     <el-tag type="info" v-for="(item,i) in scope.row.spec_value" :key="i" style="margin-right:8px;">&nbsp;{{item}}&nbsp;</el-tag>
                                 </template>

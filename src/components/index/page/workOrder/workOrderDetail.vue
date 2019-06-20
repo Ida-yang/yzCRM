@@ -27,7 +27,7 @@
                             <el-option v-for="item in solveTypeList" :key="item.index" :label="item.name" :value="item.name"></el-option>
                         </el-select>
                     </el-form-item>
-                    <el-form-item prop="baseInput" class="first_input" label="知识库引入" label-width="90px">
+                    <el-form-item prop="baseInput" class="first_input" label="经验库引入" label-width="90px">
                         <el-select v-model="myform.baseInput" placeholder="" style="width:300px;" filterable @change="selectBase">
                             <el-option v-for="item in knowledgeBase" :key="item.id" :label="item.title" :value="item.describe"></el-option>
                         </el-select>
@@ -424,7 +424,6 @@
                 this.showsolution = true
             },
             selectBase(val){
-                console.log(val)
                 this.defaultMsg = val
             },
             loadTime(){

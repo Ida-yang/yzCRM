@@ -47,48 +47,18 @@
             </div>
         </div>
         <div class="welfoot">
-            <el-table
-                :data="tableData"
-                ref="multipleTable"
-                border
-                stripe
-                style="width:100%">
-                <el-table-column
-                    fixed
-                    header-align="center"
-                    align="center"
-                    type="index"
-                    width="45">
-                </el-table-column>
-                <el-table-column
-                    prop="type"
-                    min-width="120"
-                    label="类型"
-                    sortable>
-                </el-table-column>
-                <el-table-column
-                    prop="theme"
-                    min-width="120"
-                    label="主题"
-                    sortable>
+            <el-table :data="tableData" ref="multipleTable" border stripe style="width:100%">
+                <el-table-column fixed header-align="center" align="center" type="index" width="45" />
+                <el-table-column prop="type" min-width="120" label="类型" sortable />
+                <el-table-column prop="theme" min-width="150" label="主题" sortable>
                     <template slot-scope="scope">
                         <div @click="openDetails(scope.$index, scope.row)" class="hoverline">
                             {{scope.row.theme}}
                         </div>
                     </template>
                 </el-table-column>
-                <el-table-column
-                    prop="describe"
-                    show-overflow-tooltip
-                    min-width="120"
-                    label="描述"
-                    sortable>
-                </el-table-column>
-                <el-table-column
-                    prop="startTime"
-                    min-width="180"
-                    label="时间"
-                    sortable>
+                <el-table-column prop="describe" show-overflow-tooltip min-width="180" label="描述" sortable />
+                <el-table-column prop="startTime" min-width="150" label="时间" sortable>
                     <template slot-scope="scope">
                         <div>
                             <p>{{scope.row.startTime}}</p>
@@ -96,18 +66,8 @@
                         </div>
                     </template>
                 </el-table-column>
-                <el-table-column
-                    prop="private_employee"
-                    min-width="110"
-                    label="负责人"
-                    sortable>
-                </el-table-column>
-                <el-table-column
-                    prop="state"
-                    min-width="90"
-                    label="状态"
-                    sortable>
-                </el-table-column>
+                <el-table-column prop="private_employee" min-width="110" label="负责人" sortable />
+                <el-table-column prop="state" min-width="90" label="状态" sortable />
             </el-table>
         </div>
     </div>

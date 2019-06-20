@@ -35,16 +35,16 @@
                 </el-table-column>
                 <div v-for="(item,index) in filterList" :key="index" >
                     <el-table-column label="活动名称" prop="name" fixed v-if="item.prop == 'name' && item.state == 1" min-width="150" sortable />
-                    <el-table-column label="负责人" prop="private_employee" v-if="item.prop == 'private_employee' && item.state == 1" min-width="90" sortable />
-                    <el-table-column label="线索量" prop="clueNum" v-if="item.prop == 'clueNum' && item.state == 1" min-width="120" sortable />
+                    <el-table-column label="负责人" prop="private_employee" v-if="item.prop == 'private_employee' && item.state == 1" min-width="100" sortable />
+                    <el-table-column label="线索量" prop="clueNum" v-if="item.prop == 'clueNum' && item.state == 1" min-width="100" sortable />
                     <el-table-column label="创建时间" prop="createTime" v-if="item.prop == 'createTime' && item.state == 1" min-width="150" sortable />
-                    <el-table-column label="网址" prop="codeURL" v-if="item.prop == 'codeURL' && item.state == 1" min-width="250" sortable>
+                    <el-table-column label="网址" prop="codeURL" v-if="item.prop == 'codeURL' && item.state == 1" min-width="320" sortable>
                         <template slot-scope="scope">
                             <a :href="scope.row.codeURL" target="_blank"> {{scope.row.codeURL}}</a>
                         </template>
                     </el-table-column>
-                    <el-table-column label="来源" prop="typeName" v-if="item.prop == 'typeName' && item.state == 1" min-width="130" sortable />
-                    <el-table-column label="备注" prop="remarks" v-if="item.prop == 'remarks' && item.state == 1" min-width="130" sortable />
+                    <el-table-column label="来源" prop="typeName" v-if="item.prop == 'typeName' && item.state == 1" min-width="110" sortable />
+                    <el-table-column label="备注" prop="remarks" v-if="item.prop == 'remarks' && item.state == 1" min-width="180" sortable />
                 </div>
                 <el-table-column label="二维码" fixed="right" width="120" header-align="center" align="center">
                     <template slot-scope="scope">
@@ -54,7 +54,7 @@
                         </el-popover>
                     </template>
                 </el-table-column>
-                <el-table-column label="操作" width="80" fixed="right" header-align="center" align="center">
+                <el-table-column label="操作" width="90" fixed="right" header-align="center" align="center">
                     <template slot-scope="scope">
                         <el-button size="mini" type="danger" @click="handledelete(scope.$index, scope.row)">删除</el-button>
                     </template>

@@ -52,7 +52,7 @@
         <div v-show="thisshow">
             <el-card class="box-card">
                 <div slot="header" class="clearfix">
-                    <el-popover placement="right-start" width="200" trigger="click">
+                    <el-popover placement="right-start" width="220" trigger="click">
                         <div style="max-height:400px;overflow-y:overlay">
                             <div class="examine_popover" v-for="(b,j) in examineLog" :key="j">
                                 <span class="examine_ico">

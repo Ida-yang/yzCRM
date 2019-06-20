@@ -15,7 +15,7 @@
                     <div class="text item">
                         <ul>
                             <li>拜访对象：<span>{{visitdetails.contactsName}}</span></li>
-                            <li>联系电话：<span>{{visitdetails.phone}}</span></li>
+                            <li style="flex:0 0 50%;">联系电话：<span>{{visitdetails.phone}}</span></li>
                         </ul>
                         <div class="item_body">拜访主题：<span>{{visitdetails.visitTheme}}</span></div>
                         <div class="item_body">拜访目的：<span>{{visitdetails.visitObjective}}</span></div>

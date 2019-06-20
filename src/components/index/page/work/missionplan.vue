@@ -34,7 +34,7 @@
             </el-popover>
         </div>
         <el-table :data="tableData" ref="multipleTable" border stripe style="width:100%;" @selection-change="selectInfo">
-            <el-table-column fixed header-align="center" align="center" type="selection" width="45" scope.row.id prop="id" @selection-change="selectInfo" sortable />
+            <el-table-column fixed header-align="center" align="center" type="selection" width="45" prop="id" @selection-change="selectInfo" sortable />
             <div v-for="(item,index) in filterList" :key="index" >
                 <el-table-column label="主题" prop="id" v-if="item.prop == 'planningTheme' && item.state == 1" fixed min-width="350" sortable>
                     <template slot-scope="scope">
@@ -44,7 +44,7 @@
                         <div class="visit_info">{{scope.row.describe}}</div>
                     </template>
                 </el-table-column>
-                <el-table-column label="时间" prop="startTime" v-if="item.prop == 'startTime' && item.state == 1" show-overflow-tooltip min-width="135" sortable>
+                <el-table-column label="时间" prop="startTime" v-if="item.prop == 'startTime' && item.state == 1" show-overflow-tooltip min-width="150" sortable>
                     <template slot-scope="scope">
                         <div>
                             <p>{{scope.row.startTime}}</p>
@@ -52,7 +52,7 @@
                         </div>
                     </template>
                 </el-table-column>
-                <el-table-column label="关联客户" prop="customerName" v-if="item.prop == 'relationObject' && item.state == 1" min-width="180" sortable />
+                <el-table-column label="关联客户" prop="customerName" v-if="item.prop == 'relationObject' && item.state == 1" min-width="200" sortable />
                 <el-table-column label="状态" prop="state" v-if="item.prop == 'state' && item.state == 1" min-width="220" sortable>
                     <template slot-scope="scope">
                         <el-button-group>
@@ -64,8 +64,8 @@
                 </el-table-column>
                 <el-table-column label="提醒时间" prop="remindTime" v-if="item.prop == 'remindTime' && item.state == 1" min-width="150" sortable />
                 <el-table-column label="负责人" prop="private_employee" v-if="item.prop == 'private_employee' && item.state == 1" min-width="100" sortable />
-                <el-table-column label="部门" prop="deptname" v-if="item.prop == 'deptname' && item.state == 1" min-width="100" sortable />
-                <el-table-column label="机构" prop="parentname" v-if="item.prop == 'parentname' && item.state == 1" show-overflow-tooltip min-width="100" sortable />
+                <el-table-column label="部门" prop="deptname" v-if="item.prop == 'deptname' && item.state == 1" min-width="110" sortable />
+                <el-table-column label="机构" prop="parentname" v-if="item.prop == 'parentname' && item.state == 1" show-overflow-tooltip min-width="110" sortable />
             </div>
             <el-table-column label="操作" fixed="right" width="150" header-align="center" align="center">
                 <template slot-scope="scope">

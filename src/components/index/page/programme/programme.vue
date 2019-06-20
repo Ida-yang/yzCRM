@@ -26,16 +26,16 @@
                             <p class="entry_name">{{goalsyear + '年' + depGoalsName + '全年目标业绩为' + depGoalsNum + '元'}}</p>
                         </div>
                         <el-table :data="depGoalsData" border stripe style="width:100%">
-                            <el-table-column prop="deptname" fixed min-width="100" label="部门" sortable />
-                            <el-table-column prop="month1" min-width="90" label="一月" sortable />
-                            <el-table-column prop="month2" min-width="90" label="二月" sortable />
-                            <el-table-column prop="month3" min-width="90" label="三月" sortable />
-                            <el-table-column prop="month4" min-width="90" label="四月" sortable />
-                            <el-table-column prop="month5" min-width="90" label="五月" sortable />
-                            <el-table-column prop="month6" min-width="90" label="六月" sortable />
-                            <el-table-column prop="month7" min-width="90" label="七月" sortable />
-                            <el-table-column prop="month8" min-width="90" label="八月" sortable />
-                            <el-table-column prop="month9" min-width="90" label="九月" sortable />
+                            <el-table-column prop="deptname" fixed min-width="110" label="部门" sortable />
+                            <el-table-column prop="month01" min-width="90" label="一月" sortable />
+                            <el-table-column prop="month02" min-width="90" label="二月" sortable />
+                            <el-table-column prop="month03" min-width="90" label="三月" sortable />
+                            <el-table-column prop="month04" min-width="90" label="四月" sortable />
+                            <el-table-column prop="month05" min-width="90" label="五月" sortable />
+                            <el-table-column prop="month06" min-width="90" label="六月" sortable />
+                            <el-table-column prop="month07" min-width="90" label="七月" sortable />
+                            <el-table-column prop="month08" min-width="90" label="八月" sortable />
+                            <el-table-column prop="month09" min-width="90" label="九月" sortable />
                             <el-table-column prop="month10" min-width="90" label="十月" sortable />
                             <el-table-column prop="month11" min-width="90" label="十一月" sortable />
                             <el-table-column prop="month12" min-width="90" label="十二月" sortable />
@@ -44,16 +44,16 @@
                             <p class="entry_name">{{depGoalsName + '成员' + goalsyear + '年目标明细'}}</p>
                         </div>
                         <el-table :data="goalsData" border stripe style="width:100%">
-                            <el-table-column prop="private_employee" fixed min-width="100" label="员工" sortable />
-                            <el-table-column prop="month1" min-width="90" label="一月" sortable />
-                            <el-table-column prop="month2" min-width="90" label="二月" sortable />
-                            <el-table-column prop="month3" min-width="90" label="三月" sortable />
-                            <el-table-column prop="month4" min-width="90" label="四月" sortable />
-                            <el-table-column prop="month5" min-width="90" label="五月" sortable />
-                            <el-table-column prop="month6" min-width="90" label="六月" sortable />
-                            <el-table-column prop="month7" min-width="90" label="七月" sortable />
-                            <el-table-column prop="month8" min-width="90" label="八月" sortable />
-                            <el-table-column prop="month9" min-width="90" label="九月" sortable />
+                            <el-table-column prop="private_employee" fixed min-width="110" label="员工" sortable />
+                            <el-table-column prop="month01" min-width="90" label="一月" sortable />
+                            <el-table-column prop="month02" min-width="90" label="二月" sortable />
+                            <el-table-column prop="month03" min-width="90" label="三月" sortable />
+                            <el-table-column prop="month04" min-width="90" label="四月" sortable />
+                            <el-table-column prop="month05" min-width="90" label="五月" sortable />
+                            <el-table-column prop="month06" min-width="90" label="六月" sortable />
+                            <el-table-column prop="month07" min-width="90" label="七月" sortable />
+                            <el-table-column prop="month08" min-width="90" label="八月" sortable />
+                            <el-table-column prop="month09" min-width="90" label="九月" sortable />
                             <el-table-column prop="month10" min-width="90" label="十月" sortable />
                             <el-table-column prop="month11" min-width="90" label="十一月" sortable />
                             <el-table-column prop="month12" min-width="90" label="十二月" sortable />
@@ -101,12 +101,12 @@
                             </el-table-column>
                             <el-table-column label="年份" prop="time" v-if="item.prop == 'time' && item.state == 1" min-width="90" sortable />
                             <el-table-column label="负责人" prop="private_employee" v-if="item.prop == 'private_employee' && item.state == 1" min-width="100" sortable />
-                            <el-table-column label="部门" prop="deptname" v-if="item.prop == 'deptname' && item.state == 1" min-width="120" sortable />
-                            <el-table-column label="机构" prop="parentname" v-if="item.prop == 'parentname' && item.state == 1" min-width="130" sortable />
+                            <el-table-column label="部门" prop="deptname" v-if="item.prop == 'deptname' && item.state == 1" min-width="110" sortable />
+                            <el-table-column label="机构" prop="parentname" v-if="item.prop == 'parentname' && item.state == 1" min-width="110" show-overflow-tooltip sortable />
                             <el-table-column label="创建时间" prop="createTime" v-if="item.prop == 'createTime' && item.state == 1" min-width="150" sortable />
                             <el-table-column label="状态" prop="state" v-if="item.prop == 'state' && item.state == 1" min-width="80" sortable />
                         </div>
-                        <el-table-column label="操作" fixed="right" width="140" header-align="center" align="center">
+                        <el-table-column label="操作" fixed="right" width="150" header-align="center" align="center">
                             <template slot-scope="scope">
                                 <el-button size="mini" @click="handleUpdate(scope.$index, scope.row)">编辑</el-button>
                                 <el-button size="mini" type="danger" @click="handledelete(scope.$index, scope.row)">删除</el-button>
@@ -195,32 +195,32 @@
                 <el-form-item prop="private_employee" label="员工">
                     <el-input v-model="goalsForm.private_employee" :disabled="true"></el-input>
                 </el-form-item>
-                <el-form-item prop="month1" label="一月">
-                    <el-input v-model="goalsForm.month1" onkeyup="value=value.replace(/[^\d]/g,'')" placeholder="请输入一月份目标"></el-input>
+                <el-form-item prop="month01" label="一月">
+                    <el-input v-model="goalsForm.month01" onkeyup="value=value.replace(/[^\d]/g,'')" placeholder="请输入一月份目标"></el-input>
                 </el-form-item>
-                <el-form-item prop="month2" label="二月">
-                    <el-input v-model="goalsForm.month2" onkeyup="value=value.replace(/[^\d]/g,'')" placeholder="请输入二月份目标"></el-input>
+                <el-form-item prop="month02" label="二月">
+                    <el-input v-model="goalsForm.month02" onkeyup="value=value.replace(/[^\d]/g,'')" placeholder="请输入二月份目标"></el-input>
                 </el-form-item>
-                <el-form-item prop="month3" label="三月">
-                    <el-input v-model="goalsForm.month3" onkeyup="value=value.replace(/[^\d]/g,'')" placeholder="请输入三月份目标"></el-input>
+                <el-form-item prop="month03" label="三月">
+                    <el-input v-model="goalsForm.month03" onkeyup="value=value.replace(/[^\d]/g,'')" placeholder="请输入三月份目标"></el-input>
                 </el-form-item>
-                <el-form-item prop="month4" label="四月">
-                    <el-input v-model="goalsForm.month4" onkeyup="value=value.replace(/[^\d]/g,'')" placeholder="请输入四月份目标"></el-input>
+                <el-form-item prop="month04" label="四月">
+                    <el-input v-model="goalsForm.month04" onkeyup="value=value.replace(/[^\d]/g,'')" placeholder="请输入四月份目标"></el-input>
                 </el-form-item>
-                <el-form-item prop="month5" label="五月">
-                    <el-input v-model="goalsForm.month5" onkeyup="value=value.replace(/[^\d]/g,'')" placeholder="请输入五月份目标"></el-input>
+                <el-form-item prop="month05" label="五月">
+                    <el-input v-model="goalsForm.month05" onkeyup="value=value.replace(/[^\d]/g,'')" placeholder="请输入五月份目标"></el-input>
                 </el-form-item>
-                <el-form-item prop="month6" label="六月">
-                    <el-input v-model="goalsForm.month6" onkeyup="value=value.replace(/[^\d]/g,'')" placeholder="请输入六月份目标"></el-input>
+                <el-form-item prop="month06" label="六月">
+                    <el-input v-model="goalsForm.month06" onkeyup="value=value.replace(/[^\d]/g,'')" placeholder="请输入六月份目标"></el-input>
                 </el-form-item>
-                <el-form-item prop="month7" label="七月">
-                    <el-input v-model="goalsForm.month7" onkeyup="value=value.replace(/[^\d]/g,'')" placeholder="请输入七月份目标"></el-input>
+                <el-form-item prop="month07" label="七月">
+                    <el-input v-model="goalsForm.month07" onkeyup="value=value.replace(/[^\d]/g,'')" placeholder="请输入七月份目标"></el-input>
                 </el-form-item>
-                <el-form-item prop="month8" label="八月">
-                    <el-input v-model="goalsForm.month8" onkeyup="value=value.replace(/[^\d]/g,'')" placeholder="请输入八月份目标"></el-input>
+                <el-form-item prop="month08" label="八月">
+                    <el-input v-model="goalsForm.month08" onkeyup="value=value.replace(/[^\d]/g,'')" placeholder="请输入八月份目标"></el-input>
                 </el-form-item>
-                <el-form-item prop="month9" label="九月">
-                    <el-input v-model="goalsForm.month9" onkeyup="value=value.replace(/[^\d]/g,'')" placeholder="请输入九月份目标"></el-input>
+                <el-form-item prop="month09" label="九月">
+                    <el-input v-model="goalsForm.month09" onkeyup="value=value.replace(/[^\d]/g,'')" placeholder="请输入九月份目标"></el-input>
                 </el-form-item>
                 <el-form-item prop="month10" label="十月">
                     <el-input v-model="goalsForm.month10" onkeyup="value=value.replace(/[^\d]/g,'')" placeholder="请输入十月份目标"></el-input>
@@ -411,12 +411,12 @@
                             _this.goalsData = res.data.contractMoneyProject
                             _this.depGoalsData = [res.data.statistics]
                             _this.depGoalsName = objs.deptname
-                            _this.depGoalsNum = objs.month1 + objs.month2 + objs.month3 + objs.month4 + objs.month5 + objs.month6 + objs.month7 + objs.month8 + objs.month9 + objs.month10 + objs.month11 + objs.month12
+                            _this.depGoalsNum = objs.month01 + objs.month02 + objs.month03 + objs.month04 + objs.month05 + objs.month06 + objs.month07 + objs.month08 + objs.month09 + objs.month10 + objs.month11 + objs.month12
                         }
                     }else{
                         if(_this.searchList.secondid){
                             _this.goalsData = []
-                            _this.depGoalsData = [{deptname:_this.newform.secondname,month1:0,month2:0,month3:0,month4:0,month5:0,month6:0,month7:0,month8:0,month9:0,month10:0,month11:0,month12:0}]
+                            _this.depGoalsData = [{deptname:_this.newform.secondname,month01:0,month02:0,month03:0,month04:0,month05:0,month06:0,month07:0,month08:0,month09:0,month10:0,month11:0,month12:0}]
                             _this.depGoalsName = _this.newform.secondname
                             _this.depGoalsNum = 0
                         }
@@ -455,7 +455,7 @@
                 this.newform.second_id = data.deptid
                 this.newform.secondname = data.deptname
                 if(this.activename == 'first'){
-                    // this.depGoalsData = [{deptname:data.deptname,month1:null,month2:null,month3:null,month4:null,month5:null,month6:null,month7:null,month8:null,month9:null,month10:null,month11:null,month12:null}]
+                    // this.depGoalsData = [{deptname:data.deptname,month01:null,month02:null,month03:null,month04:null,month05:null,month06:null,month07:null,month08:null,month09:null,month10:null,month11:null,month12:null}]
                     this.$options.methods.loadGoals.bind(this)(true)
                     this.showGoals = true
                 }else if(this.activename == 'second'){
@@ -818,15 +818,15 @@
                 this.goalsForm.id = row.id
                 this.goalsForm.pId = row.pId
                 this.goalsForm.private_employee = row.private_employee
-                this.goalsForm.month1 = row.month1
-                this.goalsForm.month2 = row.month2
-                this.goalsForm.month3 = row.month3
-                this.goalsForm.month4 = row.month4
-                this.goalsForm.month5 = row.month5
-                this.goalsForm.month6 = row.month6
-                this.goalsForm.month7 = row.month7
-                this.goalsForm.month8 = row.month8
-                this.goalsForm.month9 = row.month9
+                this.goalsForm.month01 = row.month01
+                this.goalsForm.month02 = row.month02
+                this.goalsForm.month03 = row.month03
+                this.goalsForm.month04 = row.month04
+                this.goalsForm.month05 = row.month05
+                this.goalsForm.month06 = row.month06
+                this.goalsForm.month07 = row.month07
+                this.goalsForm.month08 = row.month08
+                this.goalsForm.month09 = row.month09
                 this.goalsForm.month10 = row.month10
                 this.goalsForm.month11 = row.month11
                 this.goalsForm.month12= row.month12

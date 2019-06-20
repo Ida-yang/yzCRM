@@ -45,43 +45,43 @@
             <el-table-column fixed header-align="center" align="center" type="selection" width="45" scope.row.opportunity_id prop="opportunity_id" @selection-change="selectInfo">
             </el-table-column>
             <div v-for="(item,index) in filterList" :key="index" >
-                <el-table-column label="商机编号" prop="opportunity_number" fixed v-if="item.prop == 'opportunity_number' && item.state == 1" min-width="145" sortable />
-                <el-table-column label="商机名称" prop="opportunity_name" fixed v-if="item.prop == 'opportunity_name' && item.state == 1" min-width="120" sortable>
+                <el-table-column label="商机编号" prop="opportunity_number" fixed v-if="item.prop == 'opportunity_number' && item.state == 1" min-width="150" sortable />
+                <el-table-column label="商机名称" prop="opportunity_name" fixed v-if="item.prop == 'opportunity_name' && item.state == 1" min-width="150" sortable>
                     <template slot-scope="scope">
                         <div @click="openDetails(scope.$index, scope.row)" class="hoverline">
                             {{scope.row.opportunity_name}}
                         </div>
                     </template>
                 </el-table-column>
-                <el-table-column label="创建时间" prop="opportunity_time" v-if="item.prop == 'opportunity_time' && item.state == 1" min-width="145" sortable />
-                <el-table-column label="公司名称" prop="customerpool[0].name" v-if="item.prop == 'customerpool[0].name' && item.state == 1" min-width="180" sortable />
-                <el-table-column label="客户决策人" prop="contacts[0].coName" v-if="item.prop == 'contacts[0].coName' && item.state == 1" min-width="115" sortable />
+                <el-table-column label="创建时间" prop="opportunity_time" v-if="item.prop == 'opportunity_time' && item.state == 1" min-width="150" sortable />
+                <el-table-column label="公司名称" prop="customerpool[0].name" v-if="item.prop == 'customerpool[0].name' && item.state == 1" min-width="200" sortable />
+                <el-table-column label="客户决策人" prop="contacts[0].coName" v-if="item.prop == 'contacts[0].coName' && item.state == 1" min-width="120" sortable />
                 <el-table-column label="商机进度" prop="opportunityProgress[0].progress_name" v-if="item.prop == 'opportunityProgress[0].progress_name' && item.state == 1" min-width="110" sortable />
                 <el-table-column label="成功几率" prop="opportunityProgress[0].progress_probability" show-overflow-tooltip v-if="item.prop == 'opportunityProgress[0].progress_probability' && item.state == 1" min-width="130" sortable>
                     <template slot-scope="scope">
                         <el-progress :text-inside="true" :stroke-width="20" :percentage="parseInt(scope.row.opportunityProgress[0].progress_probability)" :color="scope.row.stepcolor"></el-progress>
                     </template>
                 </el-table-column>
-                <el-table-column label="预计成交金额" prop="estimatedAmount" v-if="item.prop == 'opportunity_achievement' && item.state == 1" min-width="140" sortable>
+                <el-table-column label="预计成交金额" prop="estimatedAmount" v-if="item.prop == 'opportunity_achievement' && item.state == 1" min-width="130" sortable>
                     <template slot-scope="scope">
                         {{scope.row.estimatedAmount | rounding}}
                     </template>
                 </el-table-column>
-                <el-table-column label="成功金额" prop="successAmount" v-if="item.prop == 'successMoney' && item.state == 1" min-width="140" sortable>
+                <el-table-column label="成功金额" prop="successAmount" v-if="item.prop == 'successMoney' && item.state == 1" min-width="130" sortable>
                     <template slot-scope="scope">
                         {{scope.row.successAmount | rounding}}
                     </template>
                 </el-table-column>
-                <el-table-column label="失败金额" prop="failAmount" v-if="item.prop == 'failMoney' && item.state == 1" min-width="140" sortable>
+                <el-table-column label="失败金额" prop="failAmount" v-if="item.prop == 'failMoney' && item.state == 1" min-width="130" sortable>
                     <template slot-scope="scope">
                         {{scope.row.failAmount | rounding}}
                     </template>
                 </el-table-column>
-                <el-table-column label="预计成交时间" prop="opportunity_deal" v-if="item.prop == 'opportunity_deal' && item.state == 1" min-width="140" sortable />
+                <el-table-column label="预计成交时间" prop="opportunity_deal" v-if="item.prop == 'opportunity_deal' && item.state == 1" min-width="150" sortable />
                 <el-table-column label="负责人" prop="private_employee" v-if="item.prop == 'private_employee' && item.state == 1" min-width="90" sortable />
-                <el-table-column label="部门" prop="deptname" v-if="item.prop == 'deptname' && item.state == 1" min-width="80" sortable />
-                <el-table-column label="机构" prop="parentname" v-if="item.prop == 'parentname' && item.state == 1" min-width="200" sortable />
-                <el-table-column label="备注" prop="opportunity_remarks" v-if="item.prop == 'opportunity_remarks' && item.state == 1" min-width="80" sortable />
+                <el-table-column label="部门" prop="deptname" v-if="item.prop == 'deptname' && item.state == 1" min-width="90" sortable />
+                <el-table-column label="机构" prop="parentname" v-if="item.prop == 'parentname' && item.state == 1" min-width="110" show-overflow-tooltip sortable />
+                <el-table-column label="备注" prop="opportunity_remarks" v-if="item.prop == 'opportunity_remarks' && item.state == 1" min-width="180" sortable />
             </div>
             <el-table-column label="操作" fixed="right" width="150" header-align="center" align="center">
                 <template slot-scope="scope">

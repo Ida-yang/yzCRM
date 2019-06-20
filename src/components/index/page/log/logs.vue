@@ -28,10 +28,10 @@
             <el-table :data="oplogData" ref="multipleTable" border stripe style="width:100%;">
                 <el-table-column fixed header-align="center" align="center" type="index" width="45" />
                 <el-table-column label="模块" prop="model" fixed min-width="100" sortable />
-                <el-table-column label="对象" prop="workName" show-overflow-tooltip min-width="160" sortable />
+                <el-table-column label="对象" prop="workName" show-overflow-tooltip min-width="200" sortable />
                 <el-table-column label="操作类型" prop="type" min-width="130" sortable />
                 <el-table-column label="用户" prop="private_employee" min-width="100" sortable />
-                <el-table-column label="时间" prop="startDate" min-width="140" sortable />
+                <el-table-column label="时间" prop="startDate" min-width="150" sortable />
                 <el-table-column label="IP地址" prop="ip" show-overflow-tooltip min-width="160" sortable />
             </el-table>
             <div class="block numberPage">
@@ -70,16 +70,16 @@
             <div class="searchList" style="width:100%;"></div>
             <el-table :data="SMSlogData" ref="multipleTable" border stripe style="width:100%;">
                 <el-table-column fixed header-align="center" align="center" type="index" width="45" />
-                <el-table-column label="公司名称" prop="workname" show-overflow-tooltip min-width="160" sortable />
-                <el-table-column label="联系人" prop="contact" min-width="130" sortable />
+                <el-table-column label="公司名称" prop="workname" show-overflow-tooltip min-width="200" sortable />
+                <el-table-column label="联系人" prop="contact" min-width="110" sortable />
                 <el-table-column label="电话" prop="phone" min-width="110" sortable />
                 <el-table-column label="模板标题" prop="title" min-width="130" sortable />
                 <el-table-column label="模板内容" prop="content" show-overflow-tooltip min-width="180" sortable />
                 <el-table-column label="短信说明" prop="explain" show-overflow-tooltip min-width="180" sortable />
-                <el-table-column label="发送者" prop="private_employee" min-width="140" sortable />
-                <el-table-column label="部门" prop="deptname" show-overflow-tooltip min-width="160" sortable />
-                <el-table-column label="机构" prop="parentname" show-overflow-tooltip min-width="160" sortable />
-                <el-table-column label="发送时间" prop="createTime" show-overflow-tooltip min-width="160" sortable />
+                <el-table-column label="发送者" prop="private_employee" min-width="110" sortable />
+                <el-table-column label="部门" prop="deptname" show-overflow-tooltip min-width="110" sortable />
+                <el-table-column label="机构" prop="parentname" show-overflow-tooltip min-width="110" sortable />
+                <el-table-column label="发送时间" prop="createTime" show-overflow-tooltip min-width="150" sortable />
             </el-table>
             <div class="block numberPage">
                 <el-pagination

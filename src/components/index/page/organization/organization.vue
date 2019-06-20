@@ -26,9 +26,9 @@
             </div>
             <el-table :data="roleList" border stripe :max-height="maxheight" style="width:100%">
                 <el-table-column header-align="center" align="center" type="selection" width="45" sortable />
-                <el-table-column label="角色名称" prop="name" sortable />
-                <el-table-column label="部门" prop="deptname" sortable />
-                <el-table-column label="上级部门" prop="parentname" sortable />
+                <el-table-column label="角色名称" prop="name" min-width="110" sortable />
+                <el-table-column label="部门" prop="deptname" min-width="110" sortable />
+                <el-table-column label="上级部门" prop="parentname" min-width="110" show-overflow-tooltip sortable />
                 <el-table-column label="操作" width="150" header-align="center" align="center">
                     <template slot-scope="scope">
                         <el-button size="mini" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>

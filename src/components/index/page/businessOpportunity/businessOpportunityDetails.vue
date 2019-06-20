@@ -143,38 +143,24 @@
                     </el-tab-pane>
                     <el-tab-pane label="竞争对手" name="second">
                         <el-table :data="competitorData" border stripe style="width: 100%">
-                            <el-table-column label="公司名称" prop="name" min-width="90">
-                            </el-table-column>
-                            <el-table-column label="联系人" prop="phone" min-width="110">
-                            </el-table-column>
-                            <el-table-column label="优势" prop="telephone" min-width="110">
-                            </el-table-column>
-                            <el-table-column label="劣势" prop="email" min-width="110">
-                            </el-table-column>
-                            <el-table-column label="常用战术" prop="qq" min-width="110">
-                            </el-table-column>
+                            <el-table-column label="公司名称" prop="name" min-width="200" />
+                            <el-table-column label="联系人" prop="phone" min-width="100" />
+                            <el-table-column label="优势" prop="telephone" min-width="150" />
+                            <el-table-column label="劣势" prop="email" min-width="150" />
+                            <el-table-column label="常用战术" prop="qq" min-width="180" />
                         </el-table>
                     </el-tab-pane>
                     <el-tab-pane label="联系人" name="third">
                         <el-table :data="contactData" border stripe style="width: 100%">
-                            <el-table-column prop="name" label="名称" min-width="90">
-                            </el-table-column>
-                            <el-table-column prop="phone" label="手机" min-width="110">
-                            </el-table-column>
-                            <el-table-column label="固话" prop="telephone" min-width="110">
-                            </el-table-column>
-                            <el-table-column label="邮箱" prop="email" min-width="110">
-                            </el-table-column>
-                            <el-table-column label="QQ" prop="qq" min-width="110">
-                            </el-table-column>
-                            <el-table-column label="微信" prop="wechat" min-width="110">
-                            </el-table-column>
-                            <el-table-column label="地址" prop="address" min-width="140">
-                            </el-table-column>
-                            <el-table-column label="职务" prop="identity" show-overflow-tooltip min-width="90">
-                            </el-table-column>
-                            <el-table-column label="性别" prop="sex" min-width="90">
-                            </el-table-column>
+                            <el-table-column prop="name" label="联系人名称" min-width="120" />
+                            <el-table-column prop="phone" label="手机" min-width="110" />
+                            <el-table-column label="固话" prop="telephone" min-width="110" />
+                            <el-table-column label="邮箱" prop="email" min-width="130" />
+                            <el-table-column label="QQ" prop="qq" min-width="110" />
+                            <el-table-column label="微信" prop="wechat" min-width="110" />
+                            <el-table-column label="地址" prop="address" min-width="200" />
+                            <el-table-column label="职务" prop="identity" show-overflow-tooltip min-width="90" />
+                            <el-table-column label="性别" prop="sex" min-width="90" />
                             <el-table-column label="是否在职" prop="status" min-width="90">
                                 <template slot-scope="scope">
                                     <el-tooltip :content="scope.row.status" placement="right">
@@ -189,8 +175,7 @@
                                     </el-tooltip>
                                 </template>
                             </el-table-column>
-                            <el-table-column label="备注" prop="remark" min-width="100">
-                            </el-table-column>
+                            <el-table-column label="备注" prop="remark" min-width="180" />
                         </el-table>
                     </el-tab-pane>
                 </el-tabs>
@@ -217,16 +202,11 @@
                     </el-tab-pane>
                     <el-tab-pane label="产品" name="second">
                         <el-table :data="productData" border stripe style="width: 100%">
-                            <el-table-column prop="name" min-width="90" label="公司名称">
-                            </el-table-column>
-                            <el-table-column prop="phone" min-width="110" label="联系人">
-                            </el-table-column>
-                            <el-table-column prop="telephone" min-width="110" label="优势">
-                            </el-table-column>
-                            <el-table-column prop="email" min-width="110" label="劣势">
-                            </el-table-column>
-                            <el-table-column prop="qq" min-width="110" label="常用战术">
-                            </el-table-column>
+                            <el-table-column prop="name" min-width="200" label="公司名称" />
+                            <el-table-column prop="phone" min-width="110" label="联系人" />
+                            <el-table-column prop="telephone" min-width="150" label="优势" />
+                            <el-table-column prop="email" min-width="150" label="劣势" />
+                            <el-table-column prop="qq" min-width="150" label="常用战术" />
                         </el-table>
                     </el-tab-pane>
                 </el-tabs>

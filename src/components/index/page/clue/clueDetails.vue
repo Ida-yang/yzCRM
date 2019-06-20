@@ -181,14 +181,14 @@
                             </el-select>
                         </div>
                         <el-table :data="clueDetails" border stripe style="width: 100%">
-                            <el-table-column label="名称" min-width="110" prop="name" />
+                            <el-table-column label="联系人名称" min-width="120" prop="name" />
                             <el-table-column label="手机" min-width="110" prop="phone" />
                             <el-table-column label="固话" min-width="110" prop="telephone" />
                             <el-table-column label="邮箱" min-width="130" prop="email" />
-                            <el-table-column label="QQ" min-width="130" prop="qq" />
+                            <el-table-column label="QQ" min-width="110" prop="qq" />
                             <el-table-column label="微信" min-width="110" prop="wechat" />
-                            <el-table-column label="地址" prop="address" min-width="150" show-overflow-tooltip />
-                            <el-table-column label="职务" min-width="110" prop="identity" />
+                            <el-table-column label="地址" prop="address" min-width="200" show-overflow-tooltip />
+                            <el-table-column label="职务" min-width="90" prop="identity" />
                             <el-table-column label="性别" min-width="90" prop="sex" />
                             <el-table-column label="是否在职" min-width="110" prop="status">
                                 <template slot-scope="scope">
@@ -204,7 +204,7 @@
                                     </el-tooltip>
                                 </template>
                             </el-table-column>
-                            <el-table-column label="备注" min-width="110" prop="remark" />
+                            <el-table-column label="备注" min-width="180" prop="remark" />
                         </el-table>
                     </el-tab-pane>
                     <el-tab-pane label="官网" name="third">
@@ -212,13 +212,13 @@
                     </el-tab-pane>
                     <el-tab-pane label="附件" name="fourth">
                         <el-table :data="Enclosureclue" border stripe style="width: 100%">
-                            <el-table-column label="附件名称" prop="name" min-width="150">
+                            <el-table-column label="附件名称" prop="name" min-width="180">
                                 <template slot-scope="scope">
                                     <a :href="scope.row.src" download>{{scope.row.name}}</a>
                                 </template>
                             </el-table-column>
                             <el-table-column label="上传者" prop="uploads" min-width="110" />
-                            <el-table-column label="上传时间" prop="uploadTime" min-width="145" />
+                            <el-table-column label="上传时间" prop="uploadTime" min-width="150" />
                         </el-table>
                     </el-tab-pane>
                 </el-tabs>
@@ -230,12 +230,8 @@
                 <el-input  v-model="searchList.keyword" placeholder="请输入公司名称" style="width:80%;" @keyup.enter.native="search"></el-input>
                 <el-button icon="el-icon-search" type="primary" size="mini" @click="search()"></el-button>
             </div>
-            <el-table
-                :data="tableData"
-                style="width: 100%">
-                <el-table-column
-                prop="name"
-                label="公司名称">
+            <el-table :data="tableData" style="width: 100%">
+                <el-table-column prop="name" label="公司名称">
                     <template slot-scope="scope">
                     <div @click="getRow(scope.$index, scope.row)">
                         {{scope.row.name}}
@@ -244,8 +240,7 @@
                 </el-table-column>
             </el-table>
             <div class="block numberPage number">
-                <el-pagination
-                small
+                <el-pagination small
                 @size-change="handleSizeChange"
                 @current-change="handleCurrentChange"
                 :current-page="page"

@@ -23,7 +23,7 @@
         </div>
         <el-table :data="tableData" border stripe style="width:100%">
             <el-table-column header-align="center" fixed align="center" type="index" width="45"></el-table-column>
-            <el-table-column label="日期" prop="createTime" fixed min-width="100" sortable></el-table-column>
+            <el-table-column label="日期" prop="createTime" fixed min-width="110" sortable></el-table-column>
             <el-table-column label="回款编号" prop="backNo" fixed min-width="150" show-overflow-tooltip sortable>
                 <template slot-scope="scope">
                     <div @click="openDetails(scope.$index, scope.row)" class="hoverline">
@@ -31,11 +31,19 @@
                     </div>
                 </template>
             </el-table-column>
-            <el-table-column label="公司名称" prop="customerName" min-width="180" sortable></el-table-column>
+            <el-table-column label="公司名称" prop="customerName" min-width="200" sortable></el-table-column>
             <el-table-column label="原单号" prop="contract_number" min-width="150" sortable></el-table-column>
             <el-table-column label="原单类型" prop="type" min-width="110" sortable></el-table-column>
-            <el-table-column label="总金额" prop="totalAmount" min-width="100" sortable></el-table-column>
-            <el-table-column label="已回款金额" prop="amount_of_repayment" min-width="130" sortable></el-table-column>
+            <el-table-column label="总金额" prop="totalAmount" min-width="140" sortable>
+                <template slot-scope="scope">
+                    {{scope.row.totalAmount | commaing}}
+                </template>
+            </el-table-column>
+            <el-table-column label="已回款金额" prop="amount_of_repayment" min-width="130" sortable>
+                <template slot-scope="scope">
+                    {{scope.row.amount_of_repayment | commaing}}
+                </template>
+            </el-table-column>
             <el-table-column label="本次回款金额" prop="price" min-width="130" sortable>
                 <template slot-scope="scope">
                     {{scope.row.price | commaing}}
@@ -50,9 +58,9 @@
                     <span v-if="scope.row.checkStatus == 3">未通过</span>
                 </template>
             </el-table-column>
-            <el-table-column label="制单人" prop="private_employee" min-width="90" sortable></el-table-column>
+            <el-table-column label="制单人" prop="private_employee" min-width="100" sortable></el-table-column>
             <el-table-column label="部门" prop="deptname" min-width="110" sortable></el-table-column>
-            <el-table-column label="机构" prop="parentname" min-width="130" show-overflow-tooltip="" sortable></el-table-column>
+            <el-table-column label="机构" prop="parentname" min-width="130" show-overflow-tooltip sortable></el-table-column>
             <el-table-column label="操作" fixed="right" width="150" header-align="center" align="center">
                 <template slot-scope="scope">
                     <el-button size="mini" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>

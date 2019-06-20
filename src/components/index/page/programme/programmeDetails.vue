@@ -30,12 +30,12 @@
                     </div>
                     <div class="text item">
                         <el-table :data="cLueProjects" border strip style="width: 100%">
-                            <el-table-column label="岗位" prop="name" />
-                            <el-table-column label="线索/客户新增目标" prop="addClue" min-width="100" />
-                            <el-table-column label="线索更新目标" prop="toUpdate" />
-                            <el-table-column label="每月" prop="monthNum" />
-                            <el-table-column label="每周" prop="weekNum" />
-                            <el-table-column label="操作" width="80" header-align="center" align="center">
+                            <el-table-column label="岗位" min-width="110" prop="name" />
+                            <el-table-column label="线索/客户新增目标" prop="addClue" min-width="150" />
+                            <el-table-column label="线索更新目标" prop="toUpdate" min-width="130" />
+                            <el-table-column label="每月" prop="monthNum" min-width="110" />
+                            <el-table-column label="每周" prop="weekNum" min-width="100" />
+                            <el-table-column label="操作" width="90" header-align="center" align="center">
                                 <template slot-scope="scope">
                                     <el-button size="mini" @click="handleclue(scope.$index, scope.row)">编辑</el-button>
                                 </template>
@@ -51,10 +51,10 @@
                     </div>
                     <div class="text item">
                         <el-table :data="visitprojects" border strip style="width: 100%">
-                            <el-table-column label="岗位" prop="name" />
-                            <el-table-column label="拜访目标" prop="visitNum" />
-                            <el-table-column label="每月最低" prop="monthMinimum" />
-                            <el-table-column label="操作" width="80" header-align="center" align="center">
+                            <el-table-column label="岗位" prop="name" min-width="110" />
+                            <el-table-column label="拜访目标" prop="visitNum" min-width="110" />
+                            <el-table-column label="每月最低" prop="monthMinimum" min-width="110" />
+                            <el-table-column label="操作" width="90" header-align="center" align="center">
                                 <template slot-scope="scope">
                                     <el-button size="mini" @click="handlevisit(scope.$index, scope.row)">编辑</el-button>
                                 </template>
@@ -70,9 +70,9 @@
                     </div>
                     <div class="text item">
                         <el-table :data="opportunityProjects" border strip style="width: 100%">
-                            <el-table-column label="岗位" prop="name" />
-                            <el-table-column label="商机新增目标" prop="opportunityNum" />
-                            <el-table-column label="操作" width="80" header-align="center" align="center">
+                            <el-table-column label="岗位" prop="name" min-width="110" />
+                            <el-table-column label="商机新增目标" prop="opportunityNum" min-width="130" />
+                            <el-table-column label="操作" width="90" header-align="center" align="center">
                                 <template slot-scope="scope">
                                     <el-button size="mini" @click="handleopportunity(scope.$index, scope.row)">编辑</el-button>
                                 </template>
@@ -130,7 +130,6 @@
             </span>
         </el-dialog>
         <el-dialog title="拜访周目标" :visible.sync="dialogVisible2" :close-on-click-modal="false" width="40%">
-            <!-- <span>这是一段信息</span> -->
             <el-form label-width="80px" :model="updateList">
                 <el-form-item label="拜访目标">
                     <el-input onkeyup = "value=value.replace(/[^\d]/g,'')" class="oppinput" v-model="updateList.visitNum"></el-input>
@@ -145,7 +144,6 @@
             </span>
         </el-dialog>
         <el-dialog title="每周商机考核" :visible.sync="dialogVisible3" :close-on-click-modal="false" width="40%">
-            <!-- <span>这是一段信息</span> -->
             <el-form label-width="100px" :model="updateList">
                 <el-form-item label="商机新增目标">
                     <el-input onkeyup = "value=value.replace(/[^\d]/g,'')" class="oppinput" v-model="updateList.opportunityNum"></el-input>
@@ -157,7 +155,6 @@
             </span>
         </el-dialog>
         <el-dialog title="合同金额" :visible.sync="dialogVisible4" :close-on-click-modal="false" width="40%">
-            <!-- <span>这是一段信息</span> -->
             <el-form label-width="80px" :model="updateList">
                 <el-form-item label="每月">
                     <el-input onkeyup = "value=value.replace(/[^\d]/g,'')" class="oppinput" v-model="updateList.monthMoney"></el-input>

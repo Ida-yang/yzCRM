@@ -38,7 +38,7 @@
         <div class="top">
                 <el-card class="box-card" v-model="receivdetailData">
                     <div slot="header" class="clearfix">
-                        <el-popover placement="right-start" width="200" trigger="click">
+                        <el-popover placement="right-start" width="220" trigger="click">
                             <div style="max-height:400px;overflow-y:overlay">
                                 <div class="examine_popover" v-for="(b,j) in examineLog" :key="j">
                                     <span class="examine_ico">
@@ -124,7 +124,7 @@
                     <el-tab-pane label="回款信息" name="first">
                         <el-table :data="moneyBackList" border stripe style="width: 100%">
                             <el-table-column label="期数" header-align="center" fixed align="center" type="index" width="90" />
-                            <el-table-column label="客户名称" min-width="180" prop="customerName" />
+                            <el-table-column label="客户名称" min-width="200" prop="customerName" />
                             <el-table-column label="合同编号" min-width="150" prop="contract_number" />
                             <el-table-column label="回款阶段" min-width="110" prop="back_plan" />
                             <el-table-column label="回款金额" min-width="110" prop="price" />
@@ -350,7 +350,51 @@
                     // console.log(err);
                 });
             },
-            toexamine(){},
+            toexamine(){
+                
+                const _this = this
+                let qs = require('querystring')
+                let data = {}
+                data.id = this.receivdetailData.id
+                data.recordId = this.receivdetailData.examineRecordId
+                data.pId = this.$store.state.ispId
+                data.status = this.exaform.status
+                data.remarks = this.exaform.remarks
+
+                let flag = false
+                if(!data.remarks){
+                    _this.$message({
+                        message:'审核意见不能为空',
+                        type:'error'
+                    })
+                    flag = true
+                }
+                if(flag) return
+
+                axios({
+                    method:'post',
+                    url:_this.$store.state.defaultHttp+'examineRecord/auditExamine.do?cId='+_this.$store.state.iscId,
+                    data:qs.stringify(data)
+                }).then(function(res){
+                    if(res.data.code && res.data.code == '200'){
+                        _this.$message({
+                            message:'操作成功',
+                            type:'success'
+                        })
+                        _this.dialogVisible2 = false
+                        _this.exaform.status = null
+                        _this.exaform.remarks = null
+                        _this.$options.methods.loadIMG.bind(_this)()
+                    }else{
+                        _this.$message({
+                            message:res.data.msg,
+                            type:'error'
+                        })
+                    }
+                }).catch(function(err){
+                    _this.$message.error("审核失败，请稍后再试");
+                });
+            },
             retract(){
                 this.thisshow = !this.thisshow
                 this.retracts = !this.retracts

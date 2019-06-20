@@ -27,11 +27,11 @@
                 <el-button class="btn info-btn" size="mini" @click="handleAdd()">新增</el-button>
             </div>
             <el-table :data="statesData" border stripe style="width:100%" v-show="showtopfour">
-                <el-table-column label="顺序" prop="sort" sortable />
-                <el-table-column label="ID" prop="id" width="100" sortable />
+                <el-table-column label="顺序" prop="sort" width="80" align="center" sortable />
+                <el-table-column label="ID" prop="id" min-width="90" sortable />
                 <el-table-column label="名称" prop="typeName" min-width="120" sortable />
-                <el-table-column label="备注" prop="notes" min-width="120" sortable />
-                <el-table-column label="操作" width="140" header-align="center" align="center">
+                <el-table-column label="备注" prop="notes" min-width="180" sortable />
+                <el-table-column label="操作" width="150" header-align="center" align="center">
                     <template slot-scope="scope">
                         <el-button size="mini" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
                         <el-button size="mini" type="danger" @click="handledelete(scope.$index, scope.row)">删除</el-button>
@@ -41,8 +41,8 @@
             <el-table :data="deliData" border stripe style="width:100%" v-show="showeleven">
                 <el-table-column header-align="center" align="center" type="index" width="45" />
                 <el-table-column label="名称" prop="typeName" min-width="120" sortable />
-                <el-table-column label="创建时间" prop="createTime" sortable />
-                <el-table-column label="操作" width="140" header-align="center" align="center">
+                <el-table-column label="创建时间" prop="createTime" min-width="150" sortable />
+                <el-table-column label="操作" width="150" header-align="center" align="center">
                     <template slot-scope="scope">
                         <el-button size="mini" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
                         <el-button size="mini" type="danger" @click="handledelete(scope.$index, scope.row)">删除</el-button>
@@ -50,11 +50,11 @@
                 </el-table-column>
             </el-table>
             <el-table :data="waysData" border stripe style="width:100%" v-show="showfive">
-                <el-table-column label="顺序" prop="sort" sortable />
+                <el-table-column label="顺序" prop="sort" width="80" align="center" sortable />
                 <el-table-column label="方式名称" prop="typeName" min-width="120" sortable />
-                <el-table-column label="跟进内容" prop="content" min-width="120" sortable />
-                <el-table-column label="备注" prop="notes" min-width="120" sortable />
-                <el-table-column label="操作" width="140" header-align="center" align="center">
+                <el-table-column label="跟进内容" prop="content" min-width="180" sortable />
+                <el-table-column label="备注" prop="notes" min-width="180" sortable />
+                <el-table-column label="操作" width="150" header-align="center" align="center">
                     <template slot-scope="scope">
                         <el-button size="mini" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
                         <el-button size="mini" type="danger" @click="handledelete(scope.$index, scope.row)">删除</el-button>
@@ -62,15 +62,15 @@
                 </el-table-column>
             </el-table>
             <el-table :data="oppstepsData" border stripe style="width:100%" v-show="showsix">
-                <el-table-column label="顺序" prop="sort" sortable />
+                <el-table-column label="顺序" prop="sort" width="80" align="center" sortable />
                 <el-table-column label="状态名称" prop="step_name" min-width="120" sortable />
                 <el-table-column label="成功几率" prop="step_probability" min-width="120" sortable>
                     <template slot-scope="scope">
                         <div>{{scope.row.step_probability}} %</div>
                     </template>
                 </el-table-column>
-                <el-table-column label="备注" prop="notes" min-width="120" sortable />
-                <el-table-column label="操作" width="140" header-align="center" align="center">
+                <el-table-column label="备注" prop="notes" min-width="180" sortable />
+                <el-table-column label="操作" width="150" header-align="center" align="center">
                     <template slot-scope="scope">
                         <el-button size="mini" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
                         <el-button size="mini" type="danger" @click="handledelete(scope.$index, scope.row)">删除</el-button>
@@ -81,8 +81,8 @@
             <el-table :data="unitsData" border stripe style="width:100%" v-show="showeight">
                 <el-table-column header-align="center" align="center" type="index" width="45" />
                 <el-table-column label="单位名称" prop="name" min-width="120" sortable />
-                <el-table-column label="创建时间" prop="createTime" min-width="120" sortable />
-                <el-table-column label="操作" width="140" header-align="center" align="center">
+                <el-table-column label="创建时间" prop="createTime" min-width="150" sortable />
+                <el-table-column label="操作" width="150" header-align="center" align="center">
                     <template slot-scope="scope">
                         <el-button size="mini" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
                         <el-button size="mini" type="danger" @click="deleteUnit(scope.$index, scope.row)">删除</el-button>
@@ -91,10 +91,10 @@
             </el-table>
             <el-table :data="brandsData" border stripe style="width:100%" v-show="shownine">
                 <el-table-column header-align="center" align="center" type="index" width="45" />
-                <el-table-column label="首字母" prop="firstChar" min-width="120" sortable />
-                <el-table-column label="品牌名称" prop="name" sortable />
-                <el-table-column label="创建时间" prop="createTime" sortable />
-                <el-table-column label="操作" width="140" header-align="center" align="center">
+                <el-table-column label="首字母" prop="firstChar" width="100" sortable />
+                <el-table-column label="品牌名称" prop="name" min-width="120" sortable />
+                <el-table-column label="创建时间" prop="createTime" min-width="150" sortable />
+                <el-table-column label="操作" width="150" header-align="center" align="center">
                     <template slot-scope="scope">
                         <el-button size="mini" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
                         <el-button size="mini" type="danger" @click="deleteBrand(scope.$index, scope.row)">删除</el-button>
@@ -122,8 +122,8 @@
                         <span v-for="(a,i) in scope.row.specValue" :key="i">{{a}} , </span>
                     </template>
                 </el-table-column>
-                <el-table-column prop="createTime" label="创建时间" min-width="145" sortable />
-                <el-table-column label="操作" width="140" header-align="center" align="center">
+                <el-table-column prop="createTime" label="创建时间" min-width="150" sortable />
+                <el-table-column label="操作" width="150" header-align="center" align="center">
                     <template slot-scope="scope">
                         <el-button size="mini" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
                         <el-button size="mini" type="danger" @click="deletespec(scope.$index, scope.row)">删除</el-button>
@@ -131,12 +131,12 @@
                 </el-table-column>
             </el-table>
             <el-table :data="distriData" border stripe style="width:100%" v-show="showtwelve">
-                <el-table-column label="排序" prop="sort" min-width="50" sortable />
+                <el-table-column label="顺序" prop="sort" min-width="80" align="center" sortable />
                 <el-table-column label="经销商名称" prop="name" min-width="120" sortable />
                 <el-table-column label="默认折扣" prop="discount" min-width="120" sortable>
                     <template slot-scope="scope">{{scope.row.discount}} %</template>
                 </el-table-column>
-                <el-table-column label="操作" width="140" header-align="center" align="center">
+                <el-table-column label="操作" width="150" header-align="center" align="center">
                     <template slot-scope="scope">
                         <el-button size="mini" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
                         <el-button size="mini" type="danger" @click="handledelete(scope.$index, scope.row)">删除</el-button>
@@ -145,8 +145,9 @@
             </el-table>
             
             <el-table :data="codeData" border stripe style="width:100%" v-show="showthirteen">
-                <el-table-column label="编号模块" prop="module" sortable />
-                <el-table-column label="编号前缀" prop="prefix" sortable />
+                <el-table-column header-align="center" align="center" type="index" width="45" />
+                <el-table-column label="编号模块" prop="module" min-width="120" sortable />
+                <el-table-column label="编号前缀" prop="prefix" min-width="120" sortable />
                 <el-table-column label="操作" width="90" header-align="center" align="center">
                     <template slot-scope="scope">
                         <el-button size="mini" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
@@ -171,8 +172,8 @@
 
             <el-table :data="payData" border stripe style="width:100%" v-show="showfifteen">
                 <el-table-column header-align="center" align="center" type="index" width="45" />
-                <el-table-column label="支付方式" prop="typeName" sortable />
-                <el-table-column label="备注" prop="notes" sortable />
+                <el-table-column label="支付方式" prop="typeName" min-width="120" sortable />
+                <el-table-column label="备注" prop="notes" min-width="180" sortable />
                 <el-table-column label="操作" width="150" header-align="center" align="center">
                     <template slot-scope="scope">
                         <el-button size="mini" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>

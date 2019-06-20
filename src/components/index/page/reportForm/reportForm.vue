@@ -9,20 +9,20 @@
                 <div id="chart203" :style="{width: '500px', height: '400px'}"></div>
             </div>
             <div class="middlebody">
-                <el-table :data="industryData" ref="multipleTable" border stripe style="width:100%;text-align:center">
-                    <el-table-column label="行业" prop="name" sortable />
-                    <el-table-column label="内部占比" prop="innerShare" sortable>
+                <el-table :data="industryData" ref="multipleTable" border stripe style="width:100%;">
+                    <el-table-column label="行业" prop="name" min-width="110" sortable />
+                    <el-table-column label="内部占比" prop="innerShare" min-width="110" sortable>
                         <template slot-scope="scope">
                             {{scope.row.innerShare + '%'}}
                         </template>
                     </el-table-column>
-                    <el-table-column label="内部数量" prop="innerNum" sortable />
-                    <el-table-column label="全国占比" prop="countryShare" sortable>
+                    <el-table-column label="内部数量" prop="innerNum" min-width="110" sortable />
+                    <el-table-column label="全国占比" prop="countryShare" min-width="110" sortable>
                         <template slot-scope="scope">
                             {{scope.row.countryShare + '%'}}
                         </template>
                     </el-table-column>
-                    <el-table-column label="全国总数量" prop="countryNum" min-width="90" sortable />
+                    <el-table-column label="全国总数量" prop="countryNum" min-width="120" sortable />
                 </el-table>
             </div>
         </div>
@@ -31,7 +31,7 @@
                 <div id="chart204" :style="{width: '500px', height: '400px'}"></div>
             </div>
             <div class="middlebody">
-                <el-table :data="cityData" ref="multipleTable" border stripe style="width:100%;text-align:center">
+                <el-table :data="cityData" ref="multipleTable" border stripe style="width:100%;">
                     <el-table-column label="省份" prop="name" min-width="120" sortable />
                     <el-table-column label="数量" prop="num" min-width="90" sortable />
                     <el-table-column label="占比" prop="share" min-width="90" sortable>
@@ -47,7 +47,7 @@
                 <div id="chart201" :style="{width: '500px', height: '400px'}"></div>
             </div>
             <div class="middlebody">
-                <el-table :data="scaleData" ref="multipleTable" border stripe style="width:100%;text-align:center">
+                <el-table :data="scaleData" ref="multipleTable" border stripe style="width:100%;">
                     <el-table-column label="公司规模" prop="name" min-width="120" sortable />
                     <el-table-column label="数量" prop="num" min-width="90" sortable />
                     <el-table-column label="占比" prop="share" min-width="90" sortable>
@@ -63,7 +63,7 @@
                 <div id="chart202" :style="{width: '500px', height: '400px'}"></div>
             </div>
             <div class="middlebody">
-                <el-table :data="yearsData" ref="multipleTable" border stripe style="width:100%;text-align:center">
+                <el-table :data="yearsData" ref="multipleTable" border stripe style="width:100%;">
                     <el-table-column label="年限" prop="years" min-width="120" sortable />
                     <el-table-column label="数量" prop="num" min-width="90" sortable />
                     <el-table-column label="占比" prop="share" min-width="90" sortable>
@@ -78,11 +78,11 @@
             <el-table :data="tableData" ref="multipleTable" border stripe style="width:100%;text-align:center">
                 <el-table-column label="目标客户定位推荐" prop="industryName" min-width="160" sortable />
                 <el-table-column label="省份" prop="cityName" min-width="110" sortable />
-                <el-table-column label="成立年限" prop="years" min-width="120" sortable />
-                <el-table-column label="当前省份保有量" prop="result" min-width="145" sortable />
-                <el-table-column label="已获得融资" prop="financing" min-width="130" sortable />
-                <el-table-column label="已上市" prop="list" min-width="120" sortable />
-                <el-table-column label="有电话" prop="phone" min-width="120" sortable />
+                <el-table-column label="成立年限" prop="years" min-width="110" sortable />
+                <el-table-column label="当前省份保有量" prop="result" min-width="150" sortable />
+                <el-table-column label="已获得融资" prop="financing" min-width="120" sortable />
+                <el-table-column label="已上市" prop="list" min-width="100" sortable />
+                <el-table-column label="有电话" prop="phone" min-width="100" sortable />
             </el-table>
         </div>
     </div>

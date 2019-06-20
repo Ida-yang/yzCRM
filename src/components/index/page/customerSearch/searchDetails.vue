@@ -33,12 +33,11 @@
                 <el-tabs v-model="activeName2" type="card" @tab-click="tabClick">
                     <el-tab-pane label="联系人" name="first">
                         <el-table :data="contacts" border stripe style="width: 100%">
-                            <el-table-column label="名称" prop="name" min-width="110" />
+                            <el-table-column label="联系人名称" prop="name" min-width="120" />
                             <el-table-column label="手机" prop="phone" min-width="110" />
                             <el-table-column label="邮箱" prop="email" min-width="130" />
                             <el-table-column label="QQ" prop="qq" min-width="110" />
                             <el-table-column label="职务" prop="contactsAddress" min-width="110" />
-                            <el-table-column label="其他" prop="contactsAddress" min-width="110" />
                             <el-table-column label="来源" prop="source" min-width="110" />
                         </el-table>
                     </el-tab-pane>

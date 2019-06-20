@@ -148,15 +148,15 @@
         <div :class="collapse?'s_menu':'switch_menu'">
             <span v-show="!collapse && crmMenu !== 1" class="switch_tag" @click="switchMenu(1)">CRM</span>
             <span v-show="collapse && crmMenu !== 1" class="switch_tag" @click="switchMenu(1)">
-                <i class="el-icon-edit"></i>
+                <i class="mdi-account-multiple"></i>
             </span>
             <span v-show="!collapse && crmMenu !== 2" class="switch_tag" @click="switchMenu(2)">办公</span>
             <span v-show="collapse && crmMenu !== 2" class="switch_tag" @click="switchMenu(2)">
-                <i class="el-icon-share"></i>
+                <i class="mdi-city"></i>
             </span>
             <span v-show="!collapse && crmMenu !== 3" class="switch_tag" @click="switchMenu(3)">订货</span>
             <span v-show="collapse && crmMenu !== 3" class="switch_tag" @click="switchMenu(3)">
-                <i class="el-icon-phone-outline"></i>
+                <i class="mdi-cart"></i>
             </span>
         </div>
     </div>

@@ -71,7 +71,7 @@
                                     <i class="el-icon-delete" v-show="scope.row.sign !== 'spec1'" @click="DelId(scope.row)"></i>
                                 </template>
                             </el-table-column>
-                            <el-table-column prop="specName" label="规格名称">
+                            <el-table-column prop="specName" label="规格名称" min-width="130">
                                 <template slot-scope="scope">
                                     <el-select v-model="scope.row.spec_name" placeholder="请选择规格名称" class="inputbox" @change="changeLabel">
                                         <el-option v-for="item in specsData" :key="item.id" :label="item.specName" :value="item.specName" :disabled="item.disabled"></el-option>                                    </el-select>

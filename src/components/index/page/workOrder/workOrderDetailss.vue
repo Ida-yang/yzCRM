@@ -100,7 +100,7 @@
                 <el-form-item prop="timeConsuming" class="first_input" label="耗时" label-width="90px">
                     <el-input v-model="myform.timeConsuming" class="inputbox"></el-input>
                 </el-form-item>
-                <el-form-item prop="baseInput" class="first_input" label="知识库引入" label-width="90px">
+                <el-form-item prop="baseInput" class="first_input" label="经验库引入" label-width="90px">
                     <el-select v-model="myform.baseInput" placeholder="" class="inputbox" filterable @change="selectBase">
                         <el-option v-for="item in knowledgeBase" :key="item.id" :label="item.pName" :value="item.id"></el-option>
                     </el-select>

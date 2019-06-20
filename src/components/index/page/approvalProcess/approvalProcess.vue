@@ -14,14 +14,14 @@
             <el-table :data="tableData" border stripe style="width:100%">
                 <el-table-column label="审核流程" prop="name" fixed min-width="110" sortable></el-table-column>
                 <el-table-column label="关联对象" prop="categoryTypeName" min-width="110" sortable></el-table-column>
-                <el-table-column label="应用部门" prop="deptIdLs" min-width="130" sortable>
+                <el-table-column label="应用部门" prop="deptIdLs" min-width="150" sortable>
                     <template slot-scope="scope">
                         <span v-for="item in scope.row.deptIdLs" :key="item.id">{{item.name}},</span>
                     </template>
                 </el-table-column>
-                <el-table-column label="备注" prop="remarks" min-width="110" sortable></el-table-column>
-                <el-table-column label="最后修改人" prop="updateUserName" min-width="110" sortable></el-table-column>
-                <el-table-column label="创建时间" prop="createTime" min-width="145" sortable></el-table-column>
+                <el-table-column label="最后修改人" prop="updateUserName" min-width="120" sortable></el-table-column>
+                <el-table-column label="创建时间" prop="createTime" min-width="150" sortable></el-table-column>
+                <el-table-column label="备注" prop="remarks" min-width="180" sortable></el-table-column>
                 <el-table-column label="操作" fixed="right" width="150" header-align="center" align="center">
                     <template slot-scope="scope">
                         <el-button size="mini" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>

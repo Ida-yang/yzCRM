@@ -31,27 +31,27 @@
 
 .mdi-bell-outline:before {content: "\F09C";}
 
-.mdi-dots-horizontal:before {content: "\F1D8";}
+/* .mdi-dots-horizontal:before {content: "\F1D8";} */
 
-.mdi-delete:before {content: "\F1C0";}
+/* .mdi-delete:before {content: "\F1C0";} */
 
-.mdi-delete-forever:before {content: "\F5E8";}
+/* .mdi-delete-forever:before {content: "\F5E8";} */
 
-.mdi-delete-sweep:before {content: "\F5E9";}
+/* .mdi-delete-sweep:before {content: "\F5E9";} */
 
-.mdi-access-point:before {content: "\F002";}
+/* .mdi-access-point:before {content: "\F002";} */
 
-.mdi-magnify:before {content: "\F349";}
+/* .mdi-magnify:before {content: "\F349";} */
 
-.mdi-menu-down:before {content: "\F35D";}
+/* .mdi-menu-down:before {content: "\F35D";} */
 
-.mdi-menu-left:before {content: "\F35E";}
+/* .mdi-menu-left:before {content: "\F35E";} */
 
-.mdi-menu-right:before {content: "\F35F";}
+/* .mdi-menu-right:before {content: "\F35F";} */
 
-.mdi-menu-up:before {content: "\F360";}
+/* .mdi-menu-up:before {content: "\F360";} */
 
-.mdi-view-grid:before {content: "\F570";}
+/* .mdi-view-grid:before {content: "\F570";} */
 
 .mdi-settings:before {content: "\F493";}
 
@@ -73,9 +73,9 @@
 
 .mdi-lock:before {content: "\F33E";}
 
-.mdi-pencil:before {content: "\F3EB";}
+/* .mdi-pencil:before {content: "\F3EB";} */
 
-.mdi-send:before {content: "\F48A";}
+/* .mdi-send:before {content: "\F48A";} */
 
 .mdi-puzzle:before {content: "\F431";}
 
@@ -90,3 +90,9 @@
 .mdi-chart-pie:before {content: "\F12B";}
 
 .mdi-vector-triangle:before {content: "\F563";}
+
+.mdi-account-multiple:before {content: "\F00E"; }
+
+.mdi-cart:before {content: "\F110"; }
+
+.mdi-city:before {content: "\F146"; }
