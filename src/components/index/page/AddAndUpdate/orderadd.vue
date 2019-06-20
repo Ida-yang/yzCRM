@@ -621,16 +621,13 @@
                 });
                 this.idArr = newArr
                 this.itemList = val
-                // this.$options.methods.selectItem.bind(this)()
             },
             selectItem(){
-                // console.log(this.selectList)
                 if(this.selectList.length){
                     this.selectList.forEach((el,i) => {
                         this.itemList.push(el)
                         this.itemList.forEach((item,j) => {
                             if(el.id == item.id){
-                                console.log(item)
                                 this.itemList.splice(j,1)
                             }
                         });

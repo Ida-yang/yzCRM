@@ -299,7 +299,6 @@
                 });
             },
             handleAvatarSuccess(res, file, fileList) {
-                console.log(res, file, fileList)
                 this.myform.enclosures = []
                 this.myform.enclosureOldNames = []
                 fileList.forEach(el => {
@@ -308,7 +307,6 @@
                 });
             },
             handleRemove(file, fileList) {
-                console.log(file, fileList)
                 this.myform.enclosures = []
                 this.myform.enclosureOldNames = []
                 fileList.forEach(el => {

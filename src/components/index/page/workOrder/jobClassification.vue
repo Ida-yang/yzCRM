@@ -1,6 +1,6 @@
 <template>
     <div>
-        <p class="aaaa">新增工单分类</p>
+        <p class="aaaa">新增工单</p>
         <el-carousel :autoplay="false" indicator-position="outside">
             <el-carousel-item v-for="(item,index) in classList" :key="index">
                 <ul class="jobclass_ul">

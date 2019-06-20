@@ -360,7 +360,6 @@
                     a.disabled = false
                     this.specHeadData.forEach(b => {
                         if(a.specName == b.spec_name){
-                            console.log(a)
                             a.disabled = true
                         }
                     });

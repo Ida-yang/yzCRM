@@ -748,7 +748,6 @@
                     "remarks":content,
                     "partsDetails":partsDetails,
                 }
-                console.log(data)
                 let flag = false
                 if(!this.myform.time){
                     _this.$message({

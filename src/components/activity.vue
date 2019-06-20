@@ -55,9 +55,8 @@
             this.getSearchString()
         },
         methods:{
-            //key(需要检错的键） url（传入的需要分割的url地址）
             getSearchString() {
-            // 获取URL中?之后的字符
+                // 获取URL中?之后的字符
                 var str = window.location.hash;
                 let strs = str.substring(11,str.length);
                 this.p = strs

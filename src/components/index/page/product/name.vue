@@ -56,7 +56,6 @@
     methods: {
       getDate(){
         for(let i = 0; i < this.opportunityProgress.length; i ++){
-          // console.log(this.opportunityProgress[i].previousTime,this.opportunityProgress[i].createTime)
           if(this.opportunityProgress[i].previousTime){
             let arr = this.opportunityProgress[i].previousTime.split(" ");
             let arr2 = this.opportunityProgress[i].createTime.split(" ");
@@ -64,7 +63,6 @@
             let endtime = new Date(arr2[0].replace(/-/g, "/"))
             let dateDiff = endtime.getTime() - begintime.getTime();
             let dayDiff = Math.floor(dateDiff / (24 * 3600 * 1000));
-            console.log(dayDiff)
           }
         }
       },

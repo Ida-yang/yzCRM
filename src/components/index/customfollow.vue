@@ -68,14 +68,13 @@
             }
         },
         created(){
-            // 通过 Event Bus 进行组件间通信，来折叠侧边栏
+            // 通过 Event Bus 进行组件间通信
             bus.$on('cusfollow', msg => {
                 this.cusfollow = msg;
             })
         },
         methods:{
             loadData(){
-                // console.log(this.$store.state.customfollowId)
                 const _this = this
                 let qs = require('querystring')
                 let data = {}

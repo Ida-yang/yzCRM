@@ -59,16 +59,13 @@
             }
         },
         created(){
-            // 通过 Event Bus 进行组件间通信，来折叠侧边栏
+            // 通过 Event Bus 进行组件间通信
             bus.$on('collapse', msg => {
                 this.collapse = msg;
             })
             bus.$on('collapse4', msg => {
                 this.collapse4 = msg;
             })
-        },
-        mounted(){
-            // this.loadChart()
         },
         watch:{
             loadData(nv,ov){
@@ -91,7 +88,6 @@
                 
                 if(customerChartsData){
                     customerChartsData.state.forEach(a => {
-                        console.log(a)
                         this.stateData.push({name:a.typeName,value:a.num})
                     });//客户状态
                     customerChartsData.source.forEach(b => {

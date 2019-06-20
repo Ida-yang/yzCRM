@@ -293,7 +293,6 @@
                     });
                     _this.$store.state.businessOpportunityList = data
                     _this.$store.state.businessOpportunityListnumber = res.data.count
-                    console.log(data)
                 }).catch(function(err){
                     // console.log(err);
                 });

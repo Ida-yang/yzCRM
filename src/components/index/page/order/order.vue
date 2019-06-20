@@ -329,7 +329,6 @@
                             }
                             _this.$options.methods.loadTable.bind(_this)();
                         }).catch(function(err){
-                            console.log(err)
                             _this.$message.error("删除失败，请重新操作");
                         })
                     }).catch(() => {

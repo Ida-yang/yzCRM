@@ -61,12 +61,6 @@
             <el-table-column label="制单人" prop="private_employee" min-width="100" sortable></el-table-column>
             <el-table-column label="部门" prop="deptname" min-width="110" sortable></el-table-column>
             <el-table-column label="机构" prop="parentname" min-width="130" show-overflow-tooltip sortable></el-table-column>
-            <el-table-column label="操作" fixed="right" width="150" header-align="center" align="center">
-                <template slot-scope="scope">
-                    <el-button size="mini" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
-                    <el-button type="danger" size="mini" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
-                </template>
-            </el-table-column>
         </el-table>
         <div class="block numberPage">
             <el-pagination
@@ -162,7 +156,6 @@
                 this.$router.push({ path: '/receivedetail' });
             },
             search(){
-                console.log(this.searchList.searchOption)
                 this.$options.methods.loadTable.bind(this)()
             },
             handleSizeChange(val){

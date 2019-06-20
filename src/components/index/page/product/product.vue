@@ -324,7 +324,6 @@
             handledelete(index,row){
                 const _this = this
                 let qs = require('querystring')
-                console.log(row)
                 let data = []
                 data.ids = row.id
 

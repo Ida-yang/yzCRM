@@ -2479,7 +2479,6 @@
             },
             //选择树形结构下拉框
             handlecheck(data,val){
-                console.log(data,val)
                 this.newform.jobclassdeptId = data.deptid
                 this.newform.jobclassdeptName = data.deptname
             },

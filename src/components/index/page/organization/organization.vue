@@ -958,7 +958,6 @@
                                 }
                             });
                         });
-                        // console.log(this.checkedList)
                         _this.roleform.id = val.id
                         _this.roleform.name = val.name
                         _this.roleform.deptid = val.deptid
@@ -1205,7 +1204,6 @@
                         });
                     }
                 });
-                // console.log(this.checkedList)
                 this.$options.methods.norepeat.bind(this)()
             },
             // 选中全部活动权限

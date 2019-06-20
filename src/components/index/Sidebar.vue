@@ -357,12 +357,9 @@
                 this.collapse = msg;
                 if(msg == true){
                     this.showlogo = false
-                    // this.switch_menu = 'width: 65px;height: 50px;position: fixed;bottom: 0;background-color: rgb(192, 140, 140);transition:width .6s;'
                 }else{
                     this.showlogo = true
-                    // this.switch_menu = 'width:150px;height: 50px;position: fixed;bottom: 0;background-color: rgb(225, 201, 102);transition:width .3s;'
                 }
-                // this.showlogo = !this.showlogo
             })
         },
         methods:{

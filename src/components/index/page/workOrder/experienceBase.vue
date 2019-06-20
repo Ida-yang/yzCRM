@@ -274,7 +274,6 @@
                 data.title = this.myform.title
                 data.describe = content
                 data.pId = this.myform.pId
-                console.log(data)
 
                 let flag = false
                 if(!data.title){

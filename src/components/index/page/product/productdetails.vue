@@ -158,13 +158,6 @@
                 doUpload:this.$store.state.defaultHttp + 'previewAvatar.do?cId=' + this.$store.state.iscId,
             }
         },
-        watch: {
-            checkboxVal(valArr) {
-                this.tableData.forEach(el => {
-                    console.log(el)
-                });
-            },
-        },
         activated(){
             this.loadData()
         },

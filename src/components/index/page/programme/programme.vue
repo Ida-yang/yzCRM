@@ -860,7 +860,6 @@
                 });
             },
             tabClick(e){
-                // console.log(e)
                 if(e.index == 0){
                     this.$options.methods.loadGoals.bind(this)()
                 }else if(e.index == 1){

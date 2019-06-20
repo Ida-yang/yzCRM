@@ -303,7 +303,6 @@
             },
             //显示对应状态数表格数据
             showTableval(val){
-                console.log(val)
                 const _this = this
                 let i = val.index
                 this.index = val.index

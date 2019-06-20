@@ -525,7 +525,6 @@ export default {
             }
 
             if(i == 0){
-                console.log(i)
                 axios({
                     method: 'get',
                     url: _this.$store.state.defaultHttp+authorityInterface,//查询用户
