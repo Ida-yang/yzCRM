@@ -28,13 +28,12 @@
                             <li>邮箱：<span>{{contacts.email}}</span></li>
                             <li>QQ：<span>{{contacts.qq}}</span></li>
                             <li>微信：<span>{{contacts.wechat}}</span></li>
-                            <li>地址：<span>{{customerdetail.address}}</span></li>
                             <li>职务：<span>{{contacts.identity}}</span></li>
                             <li>性别：<span>{{contacts.sex}}</span></li>
                             <li>网址：<span>{{customerdetail.url}}</span></li>
+                            <li>地址：<span>{{customerdetail.address}}</span></li>
                             <li>备注：<span>{{customerdetail.remark}}</span></li>
                         </ul>
-                        <p>&nbsp;</p>
                     </div>
                 </el-card>
             </div>
@@ -80,7 +79,6 @@
                             <li>登记机关：<span>{{customerdetail.registrationAuthority}}</span></li>
                             <li>成立时间：<span>{{customerdetail.date}}</span></li>
                         </ul>
-                        <p>&nbsp;</p>
                     </div>
                 </el-card>
             </div>
@@ -369,7 +367,7 @@
                 <el-button type="primary" @click="submitcontact">确 定</el-button>
             </span>
         </el-dialog>
-        <el-dialog title="新增商机" :visible.sync="oppdialog" width="50%">
+        <el-dialog title="新增商机" :visible.sync="oppdialog" width="50%" :close-on-click-modal="false">
             <el-form ref="newform" :model="newform" label-width="110px" :rules="rules" style="padding-right:30px">
                 <el-form-item label="公司名称">
                     <el-input v-model="newform.pName" :disabled="true"></el-input>
@@ -400,7 +398,7 @@
                 <el-button type="primary" @click="submitopp">确 定</el-button>
             </span>
         </el-dialog>
-        <el-dialog title="新增合同" :visible.sync="agreedialog" width="50%">
+        <el-dialog title="新增合同" :visible.sync="agreedialog" width="50%" :close-on-click-modal="false">
             <el-form ref="newform" :model="newform" label-width="110px" :rules="rules" style="padding-right:30px">
                 <el-form-item label="客户名称">
                     <el-input v-model="newform.pName" :disabled="true"></el-input>
@@ -1056,20 +1054,36 @@
                 });
             },
             addcontact(){
-                this.contactdialog = true
-                this.newform = {
-                    pName:this.customerdetail.pName,
-                    name:null,
-                    phone:null,
-                    telephone:null,
-                    qq:null,
-                    email:null,
-                    weChat:null,
-                    sex:null,
-                    birthday:null,
-                    identity:null,
-                    remark:null,
-                }
+                const _this = this
+
+                axios({
+                    method: 'get',
+                    url: _this.$store.state.defaultHttp+'contactsJurisdiction/insert.do',//新增联系人
+                }).then(function(res){
+                    if(res.data.msg && res.data.msg == 'error'){
+                        _this.$message({
+                            message:'对不起，您没有该权限，请联系管理员开通',
+                            type:'error'
+                        })
+                    }else{
+                        _this.contactdialog = true
+                        _this.newform = {
+                            pName:_this.customerdetail.pName,
+                            name:null,
+                            phone:null,
+                            telephone:null,
+                            qq:null,
+                            email:null,
+                            weChat:null,
+                            sex:null,
+                            birthday:null,
+                            identity:null,
+                            remark:null,
+                        }
+                    }
+                }).catch(function(err){
+                    // console.log(err);
+                });
             },
             submitcontact(){
                 const _this = this
@@ -1132,16 +1146,32 @@
                 });
             },
             addopp(){
-                this.oppdialog = true
-                this.newform = {
-                    pName:this.customerdetail.pName,
-                    opportunity_name:null,
-                    contacts_id:null,
-                    opportunity_achievement:null,
-                    opportunity_deal:null,
-                    our_signame:this.$store.state.user,
-                    opportunity_remarks:null,
-                }
+                const _this = this
+
+                axios({
+                    method: 'get',
+                    url: _this.$store.state.defaultHttp+'opportunityJurisdiction/insert.do',//新增商机
+                }).then(function(res){
+                    if(res.data.msg && res.data.msg == 'error'){
+                        _this.$message({
+                            message:'对不起，您没有该权限，请联系管理员开通',
+                            type:'error'
+                        })
+                    }else{
+                        _this.oppdialog = true
+                        _this.newform = {
+                            pName:_this.customerdetail.pName,
+                            opportunity_name:null,
+                            contacts_id:null,
+                            opportunity_achievement:null,
+                            opportunity_deal:null,
+                            our_signame:_this.$store.state.user,
+                            opportunity_remarks:null,
+                        }
+                    }
+                }).catch(function(err){
+                    // console.log(err);
+                });
             },
             submitopp(){
                 const _this = this
@@ -1199,20 +1229,36 @@
                 });
             },
             addagree(){
-                this.agreedialog = true
-                this.newform = {
-                    pName:this.customerdetail.pName,
-                    contract_type:null,
-                    contract_name:null,
-                    opportunity_id:null,
-                    amount:null,
-                    start_date:null,
-                    end_date:null,
-                    signatories:null,
-                    our_signatories:null,
-                    our_signame:this.$store.state.user,
-                    remarks:null,
-                }
+                const _this = this
+
+                axios({
+                    method: 'get',
+                    url: _this.$store.state.defaultHttp+'contractJurisdiction/insert.do',//新增合同
+                }).then(function(res){
+                    if(res.data.msg && res.data.msg == 'error'){
+                        _this.$message({
+                            message:'对不起，您没有该权限，请联系管理员开通',
+                            type:'error'
+                        })
+                    }else{
+                        _this.agreedialog = true
+                        _this.newform = {
+                            pName:_this.customerdetail.pName,
+                            contract_type:null,
+                            contract_name:null,
+                            opportunity_id:null,
+                            amount:null,
+                            start_date:null,
+                            end_date:null,
+                            signatories:null,
+                            our_signatories:null,
+                            our_signame:_this.$store.state.user,
+                            remarks:null,
+                        }
+                    }
+                }).catch(function(err){
+                    // console.log(err);
+                });
             },
             submitagree(){
                 const _this = this

@@ -20,7 +20,6 @@
                             <li>原单号：<span>{{receivdetailData.contract_number}}</span></li>
                             <li>原单类型：<span>{{receivdetailData.type}}</span></li>
                         </ul>
-                        <p>&nbsp;</p>
                         <div class="audited" v-if="receivdetailData.checkStatus == 1">
                             <img class="audited_img" :src="auditing" alt="审核中">
                         </div>

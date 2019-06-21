@@ -201,7 +201,7 @@
         width: 100%;
         height: 50px;
         /* background-color: #b8b8b8; */
-        background-color: #20222a;
+        background-color: rgb(52, 63, 83);
         color: #ffffff;
         line-height: 50px;
         padding-left: 20px;

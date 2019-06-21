@@ -114,6 +114,9 @@ export default {
         min-width: 65px;
         box-sizing: border-box
     }
+    .el-menu-item:hover,.el-submenu__title:hover{
+        background-color: rgb(41, 47, 63) !important;
+    }
     input::-webkit-outer-spin-button,
     input::-webkit-inner-spin-button{
         -webkit-appearance: none !important;
@@ -413,7 +416,7 @@ export default {
     }
     .clear_btn{
         margin-left: 55px;
-        background: #20222a;
+        background: rgb(52, 63, 83);
         color: #ffffff;
     }
     .followform{

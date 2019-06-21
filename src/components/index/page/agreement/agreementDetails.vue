@@ -22,7 +22,6 @@
                             <li>到期时间：<span>{{agreementdetail.end_date}}</span></li>
                             <li>剩余天数：<span>{{agreementdetail.due_time}}</span></li>
                         </ul>
-                        <p>&nbsp;</p>
                         <div class="audited" v-if="agreementdetail.checkStatus == 1">
                             <img class="audited_img" :src="auditing" alt="审核中">
                         </div>
@@ -145,7 +144,6 @@
                                 <li>创建时间：<span>{{agreementdetail.create_time}}</span></li>
                                 <li>修改时间：<span>{{agreementdetail.update_time}}</span></li>
                             </ul>
-                            <p>&nbsp;</p>
                         </div>
                     </el-tab-pane>
                     <el-tab-pane label="回款计划" name="second">

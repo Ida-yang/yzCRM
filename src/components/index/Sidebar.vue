@@ -1,6 +1,6 @@
 <template>
     <div class="sidebar" >
-        <el-menu class="sidebar-el-menu" v-if="crmMenu == 1" :default-active="onRoutes" :collapse="collapse" background-color="#20222a"
+        <el-menu class="sidebar-el-menu" v-if="crmMenu == 1" :default-active="onRoutes" :collapse="collapse" background-color="rgb(52, 63, 83)"
             text-color="#f7f7f7" active-text-color="#ff6333" unique-opened router>
             <div id="logo" v-if="showlogo">
                 <span style="font-size:16px">
@@ -77,7 +77,7 @@
             </template>
         </el-menu>
 
-        <el-menu class="sidebar-el-menu" v-if="crmMenu == 2" :default-active="onRoutes" :collapse="collapse" background-color="#20222a"
+        <el-menu class="sidebar-el-menu" v-if="crmMenu == 2" :default-active="onRoutes" :collapse="collapse" background-color="rgb(52, 63, 83)"
             text-color="#f7f7f7" active-text-color="#ff6333" unique-opened router>
             <div id="logo" v-if="showlogo">
                 <span style="font-size:16px">
@@ -112,7 +112,7 @@
             </template>
         </el-menu>
 
-        <el-menu class="sidebar-el-menu" v-if="crmMenu == 3" :default-active="onRoutes" :collapse="collapse" background-color="#20222a"
+        <el-menu class="sidebar-el-menu" v-if="crmMenu == 3" :default-active="onRoutes" :collapse="collapse" background-color="rgb(52, 63, 83)"
             text-color="#f7f7f7" active-text-color="#ff6333" unique-opened router>
             <div id="logo" v-if="showlogo">
                 <span style="font-size:16px">
@@ -270,7 +270,7 @@
                     {
                         icon: 'mdi-vector-triangle',
                         index: '5',
-                        title: '服务支持',
+                        title: '售后服务',
                         subs: [
                             {
                                 index: 'workOrder',
@@ -398,8 +398,9 @@
         left: 0;
         top: 0;
         bottom: 0px;
-        background-color: rgb(32, 34, 42);
+        background-color: rgb(52, 63, 83);
         overflow-y: overlay;
+        font-family: Montserrat,Georgia,'Times New Roman',Times,serif;
     }
     .sidebar::-webkit-scrollbar{
         width: 0;
@@ -433,7 +434,7 @@
         height: 40px;
         position: fixed;
         bottom: 0;
-        background-color: #20222a;
+        background-color: rgb(52, 63, 83);
         -webkit-transition: width .3s;
         transition:width .3s;
     }
@@ -442,7 +443,7 @@
         height: 40px;
         position: fixed;
         bottom: 0;
-        background-color: #20222a;
+        background-color: rgb(52, 63, 83);
         -webkit-transition: width .6s;
         transition:width .6s;
     }
@@ -457,7 +458,7 @@
         /* border-top: 1px dashed #f7f7f7; */
     }
     .switch_tag:hover{
-        background-color: #1A1B22;
+        background-color: rgb(41, 47, 63);
         /* color: #ff6333 */
     }
     /* .switch_tag{

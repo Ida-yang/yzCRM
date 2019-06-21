@@ -25,7 +25,6 @@
         <div class="entry">
             <el-button class="btn info-btn" size="mini" @click="handleAdd()">新增</el-button>
             <el-button class="btn" size="mini" @click="handleDeletes()">删除</el-button>
-            <!-- <el-button class="btn info-btn" size="mini" @click="Receivables()">收款</el-button> -->
             <div class="totalnum_head">共 <span style="font-weight:bold">{{tableNumber}}</span> 条</div>
             <el-popover placement="bottom" width="100" trigger="click">
                 <el-checkbox-group class="checklist" v-model="checklist" style="max-height:600px;overflow-y:overlay;overflow-x:hidden">

@@ -24,7 +24,7 @@
             <el-select v-model="searchList.mechanism" placeholder="请选择"  @change="search">
                 <el-option v-for="item in mechanismData" :key="item.deptid" :label="item.deptname" :value="item.deptid"></el-option>
             </el-select>
-            <el-button icon="el-icon-circle-close-outline" style="margin-left:55px;background:#20222a;color:#ffffff;" size="mini" @click="reset()">清空</el-button>
+            <el-button icon="el-icon-circle-close-outline" style="margin-left:55px;background:rgb(52, 63, 83);color:#ffffff;" size="mini" @click="reset()">清空</el-button>
         </div>
         <div class="radioList" v-if="searchList.label == 0">
             <el-radio-group v-model="searchList.department">

@@ -744,7 +744,7 @@
                     this.submitUpload();
                 },500);
                 return false; // 返回false不会自动上传
-            },   
+            },
          
             // 上传excel
             submitUpload() {

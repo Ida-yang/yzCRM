@@ -29,15 +29,13 @@
                             <li>邮箱：<span>{{contacts.email}}</span></li>
                             <li>QQ：<span>{{contacts.qq}}</span></li>
                             <li>微信：<span>{{contacts.wechat}}</span></li>
-                            <li>地址：<span>{{cluedetail.address}}</span></li>
                             <li>职务：<span>{{contacts.identity}}</span></li>
                             <li>性别：<span>{{contacts.sex}}</span></li>
                             <li>网址：<span>{{cluedetail.url}}</span></li>
+                            <li>地址：<span>{{cluedetail.address}}</span></li>
                             <li>备注：<span>{{cluedetail.remark}}</span></li>
                         </ul>
-                        <p>&nbsp;</p>
                     </div>
-                    <!-- <div v-show="!thisshow"></div> -->
                 </el-card>
             </div>
             <div class="top">
@@ -83,7 +81,6 @@
                             <li>登记机关：<span>{{cluedetail.registrationAuthority}}</span></li>
                             <li>成立时间：<span>{{cluedetail.date}}</span></li>
                         </ul>
-                        <p>&nbsp;</p>
                     </div>
                 </el-card>
             </div>
@@ -834,20 +831,36 @@
                 });
             },
             addcontact(){
-                this.contactdialog = true
-                this.newform = {
-                    pName:this.cluedetail.name,
-                    name:null,
-                    phone:null,
-                    telephone:null,
-                    qq:null,
-                    email:null,
-                    weChat:null,
-                    sex:null,
-                    birthday:null,
-                    identity:null,
-                    remark:null,
-                }
+                const _this = this
+
+                axios({
+                    method: 'get',
+                    url: _this.$store.state.defaultHttp+'contactsJurisdiction/insert.do',//新增联系人
+                }).then(function(res){
+                    if(res.data.msg && res.data.msg == 'error'){
+                        _this.$message({
+                            message:'对不起，您没有该权限，请联系管理员开通',
+                            type:'error'
+                        })
+                    }else{
+                        _this.contactdialog = true
+                        _this.newform = {
+                            pName:_this.cluedetail.name,
+                            name:null,
+                            phone:null,
+                            telephone:null,
+                            qq:null,
+                            email:null,
+                            weChat:null,
+                            sex:null,
+                            birthday:null,
+                            identity:null,
+                            remark:null,
+                        }
+                    }
+                }).catch(function(err){
+                    // console.log(err);
+                });
             },
             submitcontact(){
                 const _this = this

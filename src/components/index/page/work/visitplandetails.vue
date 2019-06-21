@@ -43,7 +43,6 @@
                             <li>部门：<span>{{visitdetails.deptname}}</span></li>
                             <li>机构：<span>{{visitdetails.parentname}}</span></li>
                         </ul>
-                        <p>&nbsp;</p>
                     </div>
                 </el-card>
             </div>

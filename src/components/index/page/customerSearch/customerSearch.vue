@@ -131,7 +131,8 @@
             <el-button class="icon" icon="el-icon-caret-bottom" size="mini" v-show="!text">显示搜索列表</el-button>
         </div>
         <div class="entry">
-            <el-button class="btn info-btn" size="mini" @click="transfers()">转移至线索</el-button>
+            <el-button class="btn info-btn" size="mini" @click="transfertoClue()">转移至线索</el-button>
+            <el-button class="btn info-btn" size="mini" @click="transfertoPone()">转移至培育池</el-button>
 
             <!-- <div class="totalnum_head">共 <span style="font-weight:bold">{{tableNumber}}</span> 条</div> -->
 
@@ -470,7 +471,7 @@
                 this.show = !this.show;
                 this.text = !this.text;
             },
-            transfers(){
+            transfertoClue(){
                 const _this = this;
                 let qs =require('querystring')
                 let idArr = [];
@@ -511,6 +512,57 @@
                             });
                         }
                     }).catch(function(err){
+                        _this.$message.error("转移失败,请重新转移");
+                    });
+                }else{
+                    _this.$message({
+                        type: 'error',
+                        message: '请先选择要转移的数据'
+                    }); 
+                }
+            },
+            transfertoPone(){
+                const _this = this;
+                let qs =require('querystring')
+                let idArr = [];
+                idArr.ids = this.idArr.id
+                idArr.secondid = this.$store.state.deptid
+                idArr.deptid = this.$store.state.insid
+                idArr.pId = this.$store.state.ispId
+
+                if(idArr.ids){
+                    _this.Loading = true
+                    axios({
+                        method: 'post',
+                        url:  _this.$store.state.defaultHttp+ 'customerOne/transferToCultivationPool.do?cId='+_this.$store.state.iscId,
+                        data:qs.stringify(idArr),
+                    }).then(function(res){
+                        _this.Loading = false
+                        if(res.data.code && res.data.code == '200') {
+                            if(res.data.map.map.suceessCount && res.data.map.map.eroorCount == 0){
+                                _this.$message({
+                                    message: '转移成功,转移了'+res.data.map.map.suceessCount+ '条',
+                                    type: 'success'
+                                });
+                            }else{
+                                _this.$message({
+                                    message: '转移了'+res.data.map.map.suceessCount+ '条，有'+res.data.map.map.eroorCount+'已存在于线索或客户中',
+                                    type: 'success'
+                                });
+                            }
+                        } else if(res.data.msg && res.data.msg == 'error'){//转移至线索
+                            _this.$message({
+                                message: '对不起，您没有该权限，请联系管理员开通',
+                                type: 'error'
+                            })
+                        } else {
+                            _this.$message({
+                                message: res.data.msg,
+                                type: 'error'
+                            });
+                        }
+                    }).catch(function(err){
+                        _this.Loading = false
                         _this.$message.error("转移失败,请重新转移");
                     });
                 }else{

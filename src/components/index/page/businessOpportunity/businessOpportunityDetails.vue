@@ -17,12 +17,11 @@
                             <li>邮箱：<span>{{contacts.email}}</span></li>
                             <li>QQ：<span>{{contacts.qq}}</span></li>
                             <li>微信：<span>{{contacts.wechat}}</span></li>
-                            <li>地址：<span>{{customerpool.address}}</span></li>
                             <li>性别：<span>{{contacts.sex}}</span></li>
                             <li>职务：<span>{{contacts.identity}}</span></li>
                             <li>备注：<span>{{customerpool.remark}}</span></li>
+                            <li>地址：<span>{{customerpool.address}}</span></li>
                         </ul>
-                        <p>&nbsp;</p>
                     </div>
                     <div v-show="!thisshow"></div>
                 </el-card>
@@ -197,7 +196,6 @@
                             <li>机构：<span>{{opportunitydetail.parentname}}</span></li>
                             <li>备注：<span>{{opportunitydetail.opportunity_remarks}}</span></li>
                         </ul>
-                            <p>&nbsp;</p>
                         </div>
                     </el-tab-pane>
                     <el-tab-pane label="产品" name="second">
@@ -211,28 +209,6 @@
                     </el-tab-pane>
                 </el-tabs>
             </div>
-            <!-- <div class="top">
-                <el-card class="box-card">
-                    <div slot="header" class="clearfix">
-                        <span>基本信息</span>
-                    </div>
-                    <div class="text item" style="min-height:150px;">
-                        <ul>
-                            <li>负责人：<span>{{privateUser.private_employee}}</span></li>
-                            <li>负责人部门：<span>{{opportunitydetail.deptname}}</span></li>
-                            <li>负责人机构：<span>{{opportunitydetail.parentname}}</span></li>
-                            <li>客户决策人：<span>{{contacts.coName}}</span></li>
-                            <li>创建时间：<span>{{opportunitydetail.opportunity_time}}</span></li>
-                            <li>签约时间：<span>{{contractTime}}</span></li>
-                            <li>失败时间：<span>{{failTime}}</span></li>
-                            <li>预计成交金额：<span>{{opportunitydetail.opportunity_achievement}}</span></li>
-                            <li>预计成交时间：<span>{{opportunitydetail.opportunity_deal}}</span></li>
-                            <li>备注：<span>{{opportunitydetail.opportunity_remarks}}</span></li>
-                        </ul>
-                        <p>&nbsp;</p>
-                    </div>
-                </el-card>
-            </div> -->
         </el-col>
         <el-dialog :visible.sync="dialogVisible" :close-on-click-modal="false" width="400px">
             <span>确认修改商机进度吗？一旦确定将不可撤回</span>

@@ -14,11 +14,25 @@
         </div>
         <div class="entry">
             <el-button class="btn info-btn" size="mini" @click="handleAdd()">新增</el-button>
+            <el-button class="btn info-btn" size="mini" @click="handleDeletes()">删除</el-button>
 
             <div class="totalnum_head">共 <span style="font-weight:bold">{{tableNumber}}</span> 条</div>
+
+            <el-popover placement="left" width="150" trigger="click">
+                <div class="download_c">
+                    <p class="download_h">首次导入请下载模板</p>
+                    <div class="download_down">
+                        <el-button class="info-btn" type="mini"><a :href="downloadUrl" download>下载模板</a></el-button>
+                    </div>
+                    <el-upload class="upload-demo" ref="upload" :multiple="true" action="doUpload" :limit="1" :before-upload="beforeUpload">
+                        <el-button slot="trigger" size="mini" class="info-btn">导入excel</el-button>
+                    </el-upload>
+                </div>
+                <el-button slot="reference" class="info-btn screen_upload" type="mini">导入</el-button>
+            </el-popover>
         </div>
-        <el-table :data="tableData" border stripe style="width:100%">
-            <el-table-column header-align="center" fixed align="center" type="index" width="45" />
+        <el-table :data="tableData" border stripe style="width:100%" @selection-change="selectInfo">
+            <el-table-column fixed header-align="center" align="center" type="selection" width="45" prop="id" @selection-change="selectInfo" sortable />
             <el-table-column label="联系人" prop="contacts" fixed min-width="100" sortable />
             <el-table-column label="公司名称" prop="name" fixed min-width="200" sortable>
                 <template slot-scope="scope">
@@ -108,9 +122,16 @@
                     {index:'2',name:'本组'},
                     {index:'3',name:'本机构'},
                 ],
+
+                idArr:[],
+
+                downloadUrl: this.$store.state.systemHttp+'upload/culture_pool_template.xls',
             }
         },
         mounted(){
+            this.loadTable()
+        },
+        activated(){
             this.loadTable()
         },
         methods:{
@@ -136,13 +157,167 @@
                 this.$store.state.culturePondetailData = {id:row.id}
                 this.$router.push({ path: '/culturePondetail' });
             },
-            handleAdd(){},
+            selectInfo(val){
+                const _this = this
+                let arr = val;
+                let newArr = [new Array()];
+                arr.forEach((item) => {
+                    if(item.id != 0){
+                        newArr.push(item.id)
+                    }
+                });
+                this.idArr = newArr;
+            },
+            handleAdd(){
+                this.$store.state.culPondaddorUpdateData = {}
+                this.$router.push({path:'/culPondaddorUpdate'})
+            },
             handleEdit(index,row){
-                console.log(index,row)
+                this.$store.state.culPondaddorUpdateData = row
+                this.$router.push({path:'/culPondaddorUpdate'})
             },
             handleDelete(index,row){
-                console.log(index,row)
+                const _this = this;
+                let qs =require('querystring')
+                let idArr = []
+                idArr.ids = row.id
+
+                _this.$confirm('是否确认删除[' + row.name + ']？', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                }).then(({ value }) => {
+                    axios({
+                        method: 'post',
+                        url: _this.$store.state.defaultHttp+'cultivationPool/deleteByPrimaryKey.do?cId='+_this.$store.state.iscId,
+                        data:qs.stringify(idArr),
+                    }).then(function(res){
+                        if(res.data.code && res.data.code == '200') {
+                            _this.$message({
+                                message: '删除成功',
+                                type: 'success'
+                            });
+                            _this.$options.methods.loadTable.bind(_this)(true);
+                        }else if(res.data.msg && res.data.msg == 'error'){//删除培育池
+                            _this.$message({
+                                message: '对不起，您没有该权限，请联系管理员开通',
+                                type: 'error'
+                            })
+                        } else {
+                            _this.$message({
+                                message: res.data.msg,
+                                type: 'error'
+                            });
+                        }
+                    }).catch(function(err){
+                        _this.$message.error("删除失败,请重新删除");
+                    })
+                }).catch(() => {
+                    this.$message({
+                        type: 'info',
+                        message: '取消删除【' + row.name + '】'
+                    });       
+                });
             },
+            handleDeletes(){
+                const _this = this;
+                let qs =require('querystring')
+                let idArr = []
+                idArr.ids = this.idArr
+
+                if(idArr.ids){
+                    _this.$confirm('是否确认删除？', '提示', {
+                        confirmButtonText: '确定',
+                        cancelButtonText: '取消',
+                    }).then(({ value }) => {
+                        axios({
+                            method: 'post',
+                            url:  _this.$store.state.defaultHttp+ 'cultivationPool/deleteByPrimaryKey.do?cId='+_this.$store.state.iscId,
+                            data:qs.stringify(idArr),
+                        }).then(function(res){
+                            if(res.data.code && res.data.code == '200') {
+                                _this.$message({
+                                    message: '删除成功',
+                                    type: 'success'
+                                });
+                                _this.$options.methods.loadTable.bind(_this)(true);
+                            }else if(res.data.msg && res.data.msg == 'error'){//删除培育池
+                                _this.$message({
+                                    message: '对不起，您没有该权限，请联系管理员开通',
+                                    type: 'error'
+                                })
+                            } else {
+                                _this.$message({
+                                    message: res.data.msg,
+                                    type: 'error'
+                                });
+                            }
+                        }).catch((err) => {
+                            _this.$message.error("删除失败,请重新删除");
+                        })
+                    }).catch(() => {
+                        _this.$message({
+                            type: 'info',
+                            message: '取消删除'
+                        });       
+                    });
+                }else{
+                    _this.$message({
+                        type: 'error',
+                        message: '请先选择要删除的线索'
+                    }); 
+                }
+            },
+            
+            beforeUpload(file){
+                this.files = file;
+                const extension = file.name.split('.')[1] === 'xls'
+                const extension2 = file.name.split('.')[1] === 'xlsx'
+                const isLt5M = file.size / 1024 / 1024 < 5
+                if (!extension && !extension2) {
+                    this.$message.warning('上传模板只能是 xls、xlsx格式!')
+                    return
+                }
+                if (!isLt5M) {
+                    this.$message.warning('上传模板大小不能超过 5MB!')
+                    return
+                }
+                this.fileName = file.name;
+                setTimeout(() => {
+                    this.submitUpload();
+                },500);
+                return false; // 返回false不会自动上传
+            },
+            // 上传excel
+            submitUpload() {
+                const _this = this
+                if(this.fileName == ""){
+                    this.$message.warning('请选择要上传的文件！')
+                    return false
+                }
+                let fileFormData = new FormData();
+                fileFormData.append("pId", this.$store.state.ispId);
+                fileFormData.append("secondid", this.$store.state.deptid);
+                fileFormData.append("deptid", this.$store.state.insid);
+                //fileName是键，files是值，就是要传的文件，files是要传的文件名
+                fileFormData.append('files', this.files, this.fileName);
+                let requestConfig = {
+                    headers: {
+                        'Content-Type': 'multipart/form-data'
+                    },
+                }
+                // 执行上传excel
+                axios.post(this.$store.state.defaultHttp+'cultivationPool/upload.do?cId='+this.$store.state.iscId,fileFormData, requestConfig)
+                .then(res => {
+                    _this.$message({
+                        message: '上传成功',
+                        type: 'success'
+                    })
+                    _this.$options.methods.loadTable.bind(_this)(true);
+                }).catch((e) => {
+                    _this.$message.error("excel上传失败，请重新上传");
+                })
+            },
+
             search(){
                 this.$options.methods.loadTable.bind(this)()
             },

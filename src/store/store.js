@@ -50,6 +50,7 @@ const state = {
   approvaladdData:null, // 审批流程新增
   approvalupdateData:null, // 审批流程编辑
   workOrderaddorUpdateData:null, // 工单
+  culPondaddorUpdateData:null, // 培育池
   
   //跳转详情页列表
   cluedetailsData:null, // 线索

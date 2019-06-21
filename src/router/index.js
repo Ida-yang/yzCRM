@@ -307,6 +307,11 @@ const router =new Router({
           meta: { title: '培育池详情', requireAuth:true}
         },
         {
+          path: '/culPondaddorUpdate',
+          component: resolve => require(['../components/index/page/AddAndUpdate/culPondaddorUpdate.vue'], resolve),
+          meta: { title: '编辑培育池', requireAuth:true}
+        },
+        {
           path: '/name',
           component: resolve => require(['../components/index/page/product/name.vue'], resolve),
           meta: { title: '名字',requireAuth:true}
