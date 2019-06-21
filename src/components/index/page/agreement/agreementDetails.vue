@@ -190,8 +190,8 @@
                             <el-table-column label="备注" prop="remarks" min-width="180" />
                             <el-table-column label="操作" fixed="right" width="150" header-align="center" align="center">
                                 <template slot-scope="scope">
-                                    <el-button size="mini" @click="editback(scope.$index, scope.row)">编辑</el-button>
-                                    <el-button size="mini" type="danger" @click="delback(scope.$index, scope.row)">删除</el-button>
+                                    <el-button size="mini" :disabled="scope.row.disabledBtn" @click="editback(scope.$index, scope.row)">编辑</el-button>
+                                    <el-button size="mini" :disabled="scope.row.disabledBtn" type="danger" @click="delback(scope.$index, scope.row)">删除</el-button>
                                 </template>
                             </el-table-column>
                         </el-table>
@@ -571,7 +571,13 @@
                     method:'get',
                     url:_this.$store.state.defaultHttp+'back/selectBackByContactId.do?cId='+_this.$store.state.iscId+'&contract_id='+_this.detailData.id,
                 }).then(function(res){
-                    _this.moneyBackList = res.data
+                    let data = res.data
+                    data.forEach(element => {
+                        if(element.checkStatus == 2){
+                            element.disabledBtn = true
+                        }
+                    });
+                    _this.moneyBackList = data
                 }).catch(function(err){
                     // console.log(err);
                 });

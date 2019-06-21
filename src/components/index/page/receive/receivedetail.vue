@@ -122,8 +122,8 @@
             <div class="bottom">
                 <el-tabs v-model="activeName2" type="card">
                     <el-tab-pane label="回款信息" name="first">
-                        <el-table :data="moneyBackList" border stripe style="width: 100%">
-                            <el-table-column label="期数" header-align="center" fixed align="center" type="index" width="90" />
+                        <el-table :data="thisMoneyBack" border stripe style="width: 100%">
+                            <el-table-column label="期数" header-align="center" fixed align="center" prop="periodsnum" width="90" />
                             <el-table-column label="客户名称" min-width="200" prop="customerName" />
                             <el-table-column label="合同编号" min-width="150" prop="contract_number" />
                             <el-table-column label="回款阶段" min-width="110" prop="back_plan" />
@@ -133,6 +133,15 @@
                         </el-table>
                     </el-tab-pane>
                     <el-tab-pane label="回款详情" name="second">
+                        <el-table :data="moneyBackLists" border stripe style="width: 100%">
+                            <el-table-column label="期数" header-align="center" fixed align="center" type="index" width="90" />
+                            <el-table-column label="客户名称" min-width="200" prop="customerName" />
+                            <el-table-column label="合同编号" min-width="150" prop="contract_number" />
+                            <el-table-column label="回款阶段" min-width="110" prop="back_plan" />
+                            <el-table-column label="回款金额" min-width="110" prop="price" />
+                            <el-table-column label="回款日期" min-width="110" prop="createTime" />
+                            <el-table-column label="备注" min-width="110" prop="remarks" />
+                        </el-table>
                     </el-tab-pane>
                 </el-tabs>
             </div>
@@ -210,7 +219,8 @@
 
                 activeName2:'first',
 
-                moneyBackList:[],
+                moneyBackLists:[],
+                thisMoneyBack:[],
 
                 tableData:[],
                 tableNumber:0,
@@ -321,7 +331,14 @@
                         method:'get',
                         url:_this.$store.state.defaultHttp+'back/selectBackByContactId.do?cId='+_this.$store.state.iscId+'&contract_id='+_this.receivdetailData.contract_id,
                     }).then(function(res){
-                        _this.moneyBackList = res.data
+                        _this.moneyBackLists = res.data
+                        _this.thisMoneyBack = []
+                        res.data.forEach((el,i) => {
+                            if(el.id == _this.receivdetailData.id){
+                                el.periodsnum = i+1
+                                _this.thisMoneyBack.push(el)
+                            }
+                        });
                     }).catch(function(err){
                         // console.log(err);
                     });
@@ -384,7 +401,7 @@
                         _this.dialogVisible2 = false
                         _this.exaform.status = null
                         _this.exaform.remarks = null
-                        _this.$options.methods.loadIMG.bind(_this)()
+                        _this.$options.methods.loadData.bind(_this)()
                     }else{
                         _this.$message({
                             message:res.data.msg,

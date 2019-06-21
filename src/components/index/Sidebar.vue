@@ -399,7 +399,7 @@
         top: 0;
         bottom: 0px;
         background-color: rgb(32, 34, 42);
-        overflow-y: scroll;
+        overflow-y: overlay;
     }
     .sidebar::-webkit-scrollbar{
         width: 0;

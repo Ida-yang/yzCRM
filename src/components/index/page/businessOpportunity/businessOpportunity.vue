@@ -125,7 +125,7 @@
         },
         filters: {
             rounding (value) {
-                // value = value.toFixed(2)
+                value = value.toFixed(2)
                 let intPart = Math.trunc(value) //获取整数部分
                 let intPartFormat = intPart.toString().replace(/(\d)(?=(?:\d{3})+$)/g, '$1,') // 将整数部分逢三一断
                 let floatPart = '.00' // 预定义小数部分
@@ -267,27 +267,27 @@
                 }).then(function(res){
                     let data = res.data.map.success
                     data.forEach((el) => {
-                        el.successAmount = '0'
-                        el.failAmount = '0'
-                        el.estimatedAmount = '0'
+                        el.successAmount = 0
+                        el.failAmount = 0
+                        el.estimatedAmount = 0
                         if(el.opportunityProgress[0].progress_probability == '100'){
                             el.stepcolor = '#67c23a'
                             el.successAmount = el.opportunity_achievement
-                            el.failAmount = '0'
-                            el.estimatedAmount = '0'
+                            el.failAmount = 0
+                            el.estimatedAmount = 0
                         }else if(el.opportunityProgress[0].progress_probability == '0'){
-                            el.successAmount = '0'
+                            el.successAmount = 0
                             el.failAmount = el.opportunity_achievement
-                            el.estimatedAmount = '0'
+                            el.estimatedAmount = 0
                         }else if(el.opportunityProgress[0].progress_probability < '50'){
                             el.stepcolor = '#909399'
-                            el.successAmount = '0'
-                            el.failAmount = '0'
+                            el.successAmount = 0
+                            el.failAmount = 0
                             el.estimatedAmount = el.opportunity_achievement
                         }else if(el.opportunityProgress[0].progress_probability >= '50'){
                             el.stepcolor = '#f56c6c'
-                            el.successAmount = '0'
-                            el.failAmount = '0'
+                            el.successAmount = 0
+                            el.failAmount = 0
                             el.estimatedAmount = el.opportunity_achievement
                         }
                     });

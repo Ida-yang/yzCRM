@@ -103,7 +103,7 @@
                     searchName:null,
                     label:1,
                     time:null,
-                    keyType:2,
+                    keyType:null,
                     woClass:null,
                 },
                 pIdData:[

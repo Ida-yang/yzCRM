@@ -174,13 +174,16 @@
                         </ul>
                     </el-tab-pane>
                     <el-tab-pane label="联系人" name="second">
-                        <div class="pricon">
-                            <span>首要联系人</span>
-                            <el-select class="pricon_sel" v-model="contacts_id" placeholder="请选择" @change="choosePri">
-                                <el-option v-for="item in priconList" :key="item.id" :label="item.name" :value="item.id"></el-option>
-                            </el-select>
+                        <div class="entry">
+                            <el-button class="btn info-btn" size="mini" @click="addcontact()">新增联系人</el-button>
+                            <div class="screen">
+                                <span style="font-size:14px;">首要联系人</span>
+                                <el-select class="pricon_sel" v-model="contacts_id" placeholder="请选择" @change="choosePri">
+                                    <el-option v-for="item in priconList" :key="item.id" :label="item.name" :value="item.id"></el-option>
+                                </el-select>
+                            </div>
                         </div>
-                        <el-table :data="clueDetails" border stripe style="width: 100%">
+                        <el-table :data="contactList" border stripe style="width: 100%">
                             <el-table-column label="联系人名称" min-width="120" prop="name" />
                             <el-table-column label="手机" min-width="110" prop="phone" />
                             <el-table-column label="固话" min-width="110" prop="telephone" />
@@ -251,6 +254,49 @@
                 </el-pagination>
             </div>
         </el-col>
+
+        <el-dialog title="新增联系人" :visible.sync="contactdialog" width="50%" :close-on-click-modal="false">
+            <el-form ref="newform" :model="newform" label-width="80px" :rules="rules" style="padding-right:30px">
+                <el-form-item label="公司名称">
+                    <el-input v-model="newform.pName" :disabled="true"></el-input>
+                </el-form-item>
+                <el-form-item prop="name" label="联系人">
+                    <el-input v-model="newform.name"></el-input>
+                </el-form-item>
+                <el-form-item prop="phone" label="手机">
+                    <el-input v-model="newform.phone" onkeyup = "value=value.replace(/[^\d]/g,'')"></el-input>
+                </el-form-item>
+                <el-form-item label="电话">
+                    <el-input v-model="newform.telephone"></el-input>
+                </el-form-item>
+                <el-form-item label="QQ">
+                    <el-input v-model="newform.qq"></el-input>
+                </el-form-item>
+                <el-form-item label="邮箱">
+                    <el-input v-model="newform.email"></el-input>
+                </el-form-item>
+                <el-form-item label="微信">
+                    <el-input v-model="newform.weChat"></el-input>
+                </el-form-item>
+                <el-form-item label="性别">
+                     <el-radio v-model="newform.sex" label="男">男</el-radio>
+                    <el-radio v-model="newform.sex" label="女">女</el-radio>
+                </el-form-item>
+                <el-form-item label="生日">
+                    <el-date-picker v-model="newform.birthday" type="date" default-value="1985-06-15" format="yyyy-MM-dd" value-format="yyyy-MM-dd" placeholder="选择日期" style="width:100%;"></el-date-picker>
+                </el-form-item>
+                <el-form-item label="职务">
+                    <el-input v-model="newform.identity"></el-input>
+                </el-form-item>
+                <el-form-item prop="explain" label="备注">
+                    <el-input type="textarea" rows="5" v-model="newform.remark" placeholder="请输入备注"></el-input>
+                </el-form-item>
+            </el-form>
+            <span slot="footer" class="dialog-footer">
+                <el-button @click="contactdialog = false">取 消</el-button>
+                <el-button type="primary" @click="submitcontact">确 定</el-button>
+            </span>
+        </el-dialog>
     </el-row>
 </template>
 
@@ -263,11 +309,6 @@
     export default {
         name:'clueDetails',
         store,
-        computed: {
-            clueDetails(){
-                return store.state.clueDetailsList;
-            },
-        },
         data(){
             return {
                 detailData:null,
@@ -292,11 +333,14 @@
                     imgName:null,
                     enclosureName: null,
                 },
+                newform:{},
                 rules: {
                     followContent : [{ required: true, message: '请输入跟进内容', trigger: 'blur' },],
                     contactsId : [{ required: true, message: '请选择联系人', trigger: 'blur' },],
                     followType : [{ required: true, message: '请选择联系方式', trigger: 'blur' },],
                     state : [{ required: true, message: '请选择状态', trigger: 'blur' },],
+                    name : [{ required: true, message: '联系人名称不能为空', trigger: 'blur' },],
+                    phone : [{ required: true, message: '手机号码不能为空', trigger: 'blur' },],
                 },
                 followTypes:[
                     {label:'电话',value:'1'},
@@ -350,7 +394,9 @@
                 dialogVisible2:false,
                 dialogImageUrl2:null,
 
-                Enclosureclue:[]
+                Enclosureclue:[],
+
+                contactdialog:false,
             }
         },
         beforeRouteLeave(to, from , next){
@@ -387,19 +433,6 @@
                 pageInfo.limit = this.limit
                 let data = {}
                 data.type = '快捷方式'
-                //详情页联系人
-                axios({
-                    method:'post',
-                    url:_this.$store.state.defaultHttp+'customerTwo/getClueContacts.do?cId='+_this.$store.state.iscId+'&customeroneId='+this.detailData.id,
-                    data:qs.stringify(pageInfo)
-                }).then(function(res){
-                    _this.$store.state.clueDetailsList = res.data.map.success
-                    _this.contactList = res.data.map.success
-                    _this.priconList = res.data.map.success
-                    _this.followform.contactsId = res.data.map.success[0].id
-                }).catch(function(err){
-                    // console.log(err);
-                });
                 //加载快捷方式
                 axios({
                     method: 'post',
@@ -468,6 +501,26 @@
                     _this.cluedetail = res.data
                     _this.contacts = res.data.contacts[0]
                     _this.showbusiness = false
+                }).catch(function(err){
+                    // console.log(err);
+                });
+                _this.$options.methods.loadContact.bind(_this)()
+            },
+            loadContact(){
+                const _this = this
+                let qs = require('querystring')
+                let pageInfo = {}
+                pageInfo.page = this.page
+                pageInfo.limit = this.limit
+                //详情页联系人
+                axios({
+                    method:'post',
+                    url:_this.$store.state.defaultHttp+'customerTwo/getClueContacts.do?cId='+_this.$store.state.iscId+'&customeroneId='+this.detailData.id,
+                    data:qs.stringify(pageInfo)
+                }).then(function(res){
+                    _this.contactList = res.data.map.success
+                    _this.priconList = res.data.map.success
+                    _this.followform.contactsId = res.data.map.success[0].id
                 }).catch(function(err){
                     // console.log(err);
                 });
@@ -727,25 +780,6 @@
                     })
                 }
             },
-            search(){
-                const _this = this;
-                let qs = require('querystring')
-                let searchList = {}
-                searchList.searchName = this.searchList.keyword;
-                searchList.page = this.page;
-                searchList.limit = this.limit;
-
-                axios({
-                    method: 'post',
-                    url: _this.$store.state.defaultHttp+'customerTwo/getUserByClue.do?cId='+_this.$store.state.iscId+'&pId='+_this.$store.state.ispId,
-                    data: qs.stringify(searchList),
-                }).then(function(res){
-                    _this.tableData = res.data.map.success
-                    _this.tableNumber = res.data.count
-                }).catch(function(err){
-                    // console.log(err);
-                });
-            },
             showImg(e,val){
                 // console.log(val)
                 this.dialogImageUrl2 = _this.$store.state.systemHttp + '/upload/'+this.$store.state.iscId+'/'+val.imgName
@@ -792,6 +826,82 @@
                     }else{
                         _this.$message({
                             message: '可能出了点什么问题，再看看',
+                            type: 'error'
+                        })
+                    }
+                }).catch(function(err){
+                    // console.log(err);
+                });
+            },
+            addcontact(){
+                this.contactdialog = true
+                this.newform = {
+                    pName:this.cluedetail.name,
+                    name:null,
+                    phone:null,
+                    telephone:null,
+                    qq:null,
+                    email:null,
+                    weChat:null,
+                    sex:null,
+                    birthday:null,
+                    identity:null,
+                    remark:null,
+                }
+            },
+            submitcontact(){
+                const _this = this
+                let qs = require('querystring')
+                let data = {
+                    poolName:this.cluedetail.name,
+                    customeroneId:this.cluedetail.id,
+                    name:this.newform.name,
+                    phone:this.newform.phone,
+                    telephone:this.newform.telephone,
+                    qq:this.newform.qq,
+                    email:this.newform.email,
+                    weChat:this.newform.weChat,
+                    sex:this.newform.sex,
+                    birthday:this.newform.birthday,
+                    identity:this.newform.identity,
+                    remark:this.newform.remark,
+                    pId:this.$store.state.ispId,
+                    secondid:this.$store.state.deptid,
+                    deptid:this.$store.state.insid
+                }
+
+                let flag = false
+                if(!data.name){
+                    _this.$message({
+                        message: '联系人名称不能为空',
+                        type: 'error'
+                    })
+                    flag = true
+                }
+                if(!data.phone){
+                    _this.$message({
+                        message: '手机号码不能为空',
+                        type: 'error'
+                    })
+                    flag = true
+                }
+                if(flag) return
+
+                axios({
+                    method:'post',
+                    url:_this.$store.state.defaultHttp+ 'insertContacts.do?cId='+_this.$store.state.iscId,
+                    data:qs.stringify(data)
+                }).then(function(res){
+                    if(res.data.code && res.data.code == '200'){
+                        _this.$message({
+                            message: '添加成功',
+                            type: 'success'
+                        })
+                        _this.contactdialog = false
+                        _this.$options.methods.loadContact.bind(_this)();
+                    }else{
+                        _this.$message({
+                            message: res.data.msg,
                             type: 'error'
                         })
                     }
@@ -945,6 +1055,25 @@
                 }else{
                     this.$router.push('/index');
                 }
+            },
+            search(){
+                const _this = this;
+                let qs = require('querystring')
+                let searchList = {}
+                searchList.searchName = this.searchList.keyword;
+                searchList.page = this.page;
+                searchList.limit = this.limit;
+
+                axios({
+                    method: 'post',
+                    url: _this.$store.state.defaultHttp+'customerTwo/getUserByClue.do?cId='+_this.$store.state.iscId+'&pId='+_this.$store.state.ispId,
+                    data: qs.stringify(searchList),
+                }).then(function(res){
+                    _this.tableData = res.data.map.success
+                    _this.tableNumber = res.data.count
+                }).catch(function(err){
+                    // console.log(err);
+                });
             },
             handleSizeChange(val) {
                 const _this = this;

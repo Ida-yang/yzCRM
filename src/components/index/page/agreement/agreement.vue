@@ -53,6 +53,16 @@
                         {{scope.row.amount | rounding}}
                     </template>
                 </el-table-column>
+                <el-table-column label="已回款金额" prop="already" v-if="item.prop == 'already' && item.state == 1" min-width="120" sortable>
+                    <template slot-scope="scope">
+                        {{scope.row.already | rounding}}
+                    </template>
+                </el-table-column>
+                <el-table-column label="剩余金额" prop="surplus" v-if="item.prop == 'surplus' && item.state == 1" min-width="130" sortable>
+                    <template slot-scope="scope">
+                        {{scope.row.surplus | rounding}}
+                    </template>
+                </el-table-column>
                 <el-table-column label="合同开始日期" prop="start_date" v-if="item.prop == 'start_date' && item.state == 1" min-width="130" sortable />
                 <el-table-column label="合同到期日期" prop="end_date" show-overflow-tooltip v-if="item.prop == 'end_date' && item.state == 1" min-width="130" sortable />
                 <el-table-column label="剩余天数" prop="expireDay" v-if="item.prop == 'expireDay' && item.state == 1" min-width="110" sortable />
@@ -63,16 +73,6 @@
                 <el-table-column label="机构" prop="parentname" v-if="item.prop == 'parentname' && item.state == 1" min-width="100" show-overflow-tooltip sortable />
                 <el-table-column label="创建时间" prop="create_time" v-if="item.prop == 'createTime' && item.state == 1" min-width="150" sortable />
                 <el-table-column label="备注" prop="remarks" v-if="item.prop == 'remarks' && item.state == 1" sortable min-width="180" />
-                <el-table-column label="已回款金额" prop="already" v-if="item.prop == 'already' && item.state == 1" min-width="120" sortable>
-                    <template slot-scope="scope">
-                        {{scope.row.already | rounding}}
-                    </template>
-                </el-table-column>
-                <el-table-column label="剩余款项金额" prop="surplus" v-if="item.prop == 'surplus' && item.state == 1" min-width="130" sortable>
-                    <template slot-scope="scope">
-                        {{scope.row.surplus | rounding}}
-                    </template>
-                </el-table-column>
             </div>
             <el-table-column label="操作" fixed="right" width="150" header-align="center" align="center">
                 <template slot-scope="scope">

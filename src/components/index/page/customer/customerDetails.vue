@@ -175,13 +175,17 @@
                         </ul>
                     </el-tab-pane>
                     <el-tab-pane label="联系人" name="second">
-                        <div class="pricon">
-                            <span>首要联系人</span>
-                            <el-select class="pricon_sel" v-model="contacts_id" placeholder="请选择" @change="choosePri">
-                                <el-option v-for="item in priconList" :key="item.id" :label="item.name" :value="item.id"></el-option>
-                            </el-select>
+                        <div class="entry">
+                            <el-button class="btn info-btn" size="mini" @click="addcontact()">新增联系人</el-button>
+                            <div class="screen">
+                                <span style="font-size:14px;">首要联系人</span>
+                                <el-select class="pricon_sel" v-model="contacts_id" placeholder="请选择" @change="choosePri">
+                                    <el-option v-for="item in priconList" :key="item.id" :label="item.name" :value="item.id"></el-option>
+                                </el-select>
+                            </div>
                         </div>
                         <el-table :data="cusConsDetails" border stripe style="width: 100%">
+                            <el-table-column header-align="center" fixed align="center" type="index" width="45" />
                             <el-table-column label="联系人名称" prop="name" min-width="120" />
                             <el-table-column label="手机" prop="phone" min-width="110" />
                             <el-table-column label="固话" prop="telephone" min-width="110" />
@@ -209,7 +213,11 @@
                         </el-table>
                     </el-tab-pane>
                     <el-tab-pane label="商机管理" name="third">
+                        <div class="entry">
+                            <el-button class="btn info-btn" size="mini" @click="addopp()">新增商机</el-button>
+                        </div>
                         <el-table :data="opportunityDetails" border stripe style="width: 100%">
+                            <el-table-column header-align="center" fixed align="center" type="index" width="45" />
                             <el-table-column label="商机名称" prop="opportunity_name" min-width="150" />
                             <el-table-column label="商机金额" prop="opportunity_achievement" min-width="110">
                                 <template slot-scope="scope">
@@ -223,7 +231,11 @@
                         </el-table>
                     </el-tab-pane>
                     <el-tab-pane label="合同管理" name="fouth">
+                        <div class="entry">
+                            <el-button class="btn info-btn" size="mini" @click="addagree()">新增合同</el-button>
+                        </div>
                         <el-table :data="agreementDetails" border stripe style="width: 100%">
+                            <el-table-column header-align="center" fixed align="center" type="index" width="45" />
                             <el-table-column label="合同编号" prop="contract_number" min-width="150" />
                             <el-table-column label="合同名称" prop="contract_name" min-width="150" />
                             <el-table-column label="合同类型" prop="contract_type" min-width="110" />
@@ -247,6 +259,7 @@
                     </el-tab-pane>
                     <el-tab-pane label="外勤任务" name="sixth">
                         <el-table :data="FielDutyDetails" border stripe style="width: 100%">
+                            <el-table-column header-align="center" fixed align="center" type="index" width="45" />
                             <el-table-column label="类型" prop="type" min-width="90" />
                             <el-table-column label="主题" prop="theme" min-width="150" />
                             <el-table-column label="时间" prop="startTime" min-width="150">
@@ -271,6 +284,7 @@
                     </el-tab-pane>
                     <el-tab-pane label="附件" name="eighth">
                         <el-table :data="EnclosureDetails" border stripe style="width: 100%">
+                            <el-table-column header-align="center" fixed align="center" type="index" width="45" />
                             <el-table-column label="附件名称" prop="name" min-width="150">
                                 <template slot-scope="scope">
                                     <a :href="scope.row.src" download>{{scope.row.name}}</a>
@@ -312,6 +326,127 @@
                 </el-pagination>
             </div>
         </el-col>
+
+        <el-dialog title="新增联系人" :visible.sync="contactdialog" width="50%" :close-on-click-modal="false">
+            <el-form ref="newform" :model="newform" label-width="80px" :rules="rules" style="padding-right:30px">
+                <el-form-item label="公司名称">
+                    <el-input v-model="newform.pName" :disabled="true"></el-input>
+                </el-form-item>
+                <el-form-item prop="name" label="联系人">
+                    <el-input v-model="newform.name"></el-input>
+                </el-form-item>
+                <el-form-item prop="phone" label="手机">
+                    <el-input v-model="newform.phone" onkeyup = "value=value.replace(/[^\d]/g,'')"></el-input>
+                </el-form-item>
+                <el-form-item label="电话">
+                    <el-input v-model="newform.telephone"></el-input>
+                </el-form-item>
+                <el-form-item label="QQ">
+                    <el-input v-model="newform.qq"></el-input>
+                </el-form-item>
+                <el-form-item label="邮箱">
+                    <el-input v-model="newform.email"></el-input>
+                </el-form-item>
+                <el-form-item label="微信">
+                    <el-input v-model="newform.weChat"></el-input>
+                </el-form-item>
+                <el-form-item label="性别">
+                     <el-radio v-model="newform.sex" label="男">男</el-radio>
+                    <el-radio v-model="newform.sex" label="女">女</el-radio>
+                </el-form-item>
+                <el-form-item label="生日">
+                    <el-date-picker v-model="newform.birthday" type="date" default-value="1985-06-15" format="yyyy-MM-dd" value-format="yyyy-MM-dd" placeholder="选择日期" style="width:100%;"></el-date-picker>
+                </el-form-item>
+                <el-form-item label="职务">
+                    <el-input v-model="newform.identity"></el-input>
+                </el-form-item>
+                <el-form-item prop="explain" label="备注">
+                    <el-input type="textarea" rows="5" v-model="newform.remark" placeholder="请输入备注"></el-input>
+                </el-form-item>
+            </el-form>
+            <span slot="footer" class="dialog-footer">
+                <el-button @click="contactdialog = false">取 消</el-button>
+                <el-button type="primary" @click="submitcontact">确 定</el-button>
+            </span>
+        </el-dialog>
+        <el-dialog title="新增商机" :visible.sync="oppdialog" width="50%">
+            <el-form ref="newform" :model="newform" label-width="110px" :rules="rules" style="padding-right:30px">
+                <el-form-item label="公司名称">
+                    <el-input v-model="newform.pName" :disabled="true"></el-input>
+                </el-form-item>
+                <el-form-item prop="opportunity_name" label="商机名称">
+                    <el-input v-model="newform.opportunity_name"></el-input>
+                </el-form-item>
+                <el-form-item prop="contacts_id" label="客户决策人">
+                    <el-select v-model="newform.contacts_id" placeholder="请选择客户决策人" style="width:100%">
+                        <el-option v-for="item in cusConsDetails" :key="item.id" :label="item.name" :value="item.id"></el-option>
+                    </el-select>
+                </el-form-item>
+                <el-form-item prop="opportunity_achievement" label="预计成交金额">
+                    <el-input v-model="newform.opportunity_achievement" onkeyup = "value=value.replace(/[^\d]/g,'')"></el-input>
+                </el-form-item>
+                <el-form-item prop="opportunity_deal" label="预计成交时间">
+                    <el-date-picker v-model="newform.opportunity_deal" type="date" placeholder="请选择预计成交时间" format="yyyy-MM-dd" value-format="yyyy-MM-dd" style="width:100%;"></el-date-picker>
+                </el-form-item>
+                <el-form-item label="负责人">
+                    <el-input v-model="newform.our_signame" :disabled="true"></el-input>
+                </el-form-item>
+                <el-form-item label="备注">
+                    <el-input v-model="newform.opportunity_remarks" type="textarea" rows="5"></el-input>
+                </el-form-item>
+            </el-form>
+            <span slot="footer" class="dialog-footer">
+                <el-button @click="oppdialog = false">取 消</el-button>
+                <el-button type="primary" @click="submitopp">确 定</el-button>
+            </span>
+        </el-dialog>
+        <el-dialog title="新增合同" :visible.sync="agreedialog" width="50%">
+            <el-form ref="newform" :model="newform" label-width="110px" :rules="rules" style="padding-right:30px">
+                <el-form-item label="客户名称">
+                    <el-input v-model="newform.pName" :disabled="true"></el-input>
+                </el-form-item>
+                <el-form-item prop="contract_type" label="合同类型">
+                    <el-select v-model="newform.contract_type" placeholder="请选择" style="width:100%">
+                        <el-option label="销售合同" value="销售合同"></el-option>
+                        <el-option label="服务合同" value="服务合同"></el-option>
+                        <el-option label="代理合同" value="代理合同"></el-option>
+                        <el-option label="其他" value="其他"></el-option>
+                    </el-select>
+                </el-form-item>
+                <el-form-item prop="contract_name" label="合同名称">
+                    <el-input v-model="newform.contract_name"></el-input>
+                </el-form-item>
+                <el-form-item prop="opportunity_id" label="对应商机">
+                    <el-select v-model="newform.opportunity_id" placeholder="请选择" style="width:100%" @change="handleopp">
+                        <el-option v-for="item in opportunityDetails" :key="item.opportunity_id" :label="item.opportunity_name" :value="item.opportunity_id"></el-option>
+                    </el-select>
+                </el-form-item>
+                <el-form-item prop="amount" label="合同金额">
+                    <el-input v-model="newform.amount" onkeyup = "value=value.replace(/[^\d]/g,'')"></el-input>
+                </el-form-item>
+                <el-form-item prop="start_date" label="开始时间">
+                    <el-date-picker v-model="newform.start_date" type="date" placeholder="选择日期" format="yyyy-MM-dd" value-format="yyyy-MM-dd" @change="handlechange" style="width:100%;"></el-date-picker>
+                </el-form-item>
+                <el-form-item prop="end_date" label="结束时间">
+                    <el-date-picker v-model="newform.end_date" type="date" placeholder="选择日期" format="yyyy-MM-dd" value-format="yyyy-MM-dd" style="width:100%;"></el-date-picker>
+                </el-form-item>
+                <el-form-item prop="signatories" label="客户签约人">
+                    <el-select v-model="newform.signatories" placeholder="请选择" style="width:100%">
+                        <el-option v-for="item in cusConsDetails" :key="item.id" :label="item.name" :value="item.id"></el-option>
+                    </el-select>
+                </el-form-item>
+                <el-form-item label="我方签约人">
+                    <el-input v-model="newform.our_signame" :disabled="true"></el-input>
+                </el-form-item>
+                <el-form-item label="备注">
+                    <el-input v-model="newform.remarks" type="textarea" rows="5"></el-input>
+                </el-form-item>
+            </el-form>
+            <span slot="footer" class="dialog-footer">
+                <el-button @click="agreedialog = false">取 消</el-button>
+                <el-button type="primary" @click="submitagree">确 定</el-button>
+            </span>
+        </el-dialog>
     </el-row>
 </template>
 
@@ -384,11 +519,24 @@
                     imgName:null,
                     enclosureName: null,
                 },
+                newform:{},
                 rules: {
                     followContent : [{ required: true, message: '请输入跟进内容', trigger: 'blur' },],
                     contactsId : [{ required: true, message: '请选择联系人', trigger: 'blur' },],
                     followType : [{ required: true, message: '请选择联系方式', trigger: 'blur' },],
                     state : [{ required: true, message: '请选择状态', trigger: 'blur' },],
+                    name : [{ required: true, message: '联系人名称不能为空', trigger: 'blur' },],
+                    phone : [{ required: true, message: '手机号码不能为空', trigger: 'blur' },],
+                    opportunity_name : [{ required: true, message: '商机名称不能为空', trigger: 'blur' },],
+                    opportunity_achievement : [{ required: true, message: '预计成交金额不能为空', trigger: 'blur' },],
+                    opportunity_deal : [{ required: true, message: '预计成交时间不能为空', trigger: 'blur' },],
+                    contacts_id : [{ required: true, message: '客户决策人不能为空', trigger: 'blur' },],
+                    contract_type : [{ required: true, message: '合同类型不能为空', trigger: 'blur' },],
+                    contract_name : [{ required: true, message: '合同名称不能为空', trigger: 'blur' },],
+                    amount : [{ required: true, message: '合同金额不能为空', trigger: 'blur' },],
+                    start_date : [{ required: true, message: '开始时间不能为空', trigger: 'blur' },],
+                    end_date : [{ required: true, message: '结束时间不能为空', trigger: 'blur' },],
+                    signatories : [{ required: true, message: '客户签约人不能为空', trigger: 'blur' },],
                     
                 },
                 followTypes:[
@@ -398,8 +546,6 @@
                     {label:'邮箱',value:'4'},
                     {label:'拜访',value:'5'},
                 ],
-                // portrait:this.$store.state.portrait,
-                // imgUrl:'',
 
                 stateList:[],
                 searchList:{
@@ -443,7 +589,11 @@
 
                 website:'',
 
-                EnclosureDetails:[]
+                EnclosureDetails:[],
+
+                contactdialog:false,
+                oppdialog:false,
+                agreedialog:false,
             }
         },
         beforeRouteLeave(to, from , next){
@@ -456,10 +606,6 @@
             this.reload()
             this.loadTemplate()
         },
-        // mounted(){
-        //     this.loadData();
-        //     this.loadCountry()
-        // },
         methods: {
             reload(){
                 const _this = this
@@ -518,19 +664,7 @@
                 }).catch(function(err){
                     // console.log(err);
                 });
-                //详情页联系人
-                axios({
-                    method:'post',
-                    url:_this.$store.state.defaultHttp+'customerpool/getPoolContacts.do?cId='+_this.$store.state.iscId+'&customerpool_id='+this.detailData.id,
-                    data:qs.stringify(pageInfo2)
-                }).then(function(res){
-                    _this.$store.state.cusConsDetailsList = res.data.map.success
-                    _this.contactList = res.data.map.success
-                    _this.priconList = res.data.map.success
-                    _this.followform.contactsId = res.data.map.success[0].id
-                }).catch(function(err){
-                    // console.log(err);
-                });
+                
                 //加载跟进记录
                 axios({
                     method:'get',
@@ -569,26 +703,6 @@
                 }).catch(function(err){
                     // console.log(err);
                 });
-                //详情页商机
-                axios({
-                    method:'post',
-                    url:_this.$store.state.defaultHttp+'customerpool/queryForPoolList.do?cId='+_this.$store.state.iscId+'&customerpool_id='+this.detailData.id,
-                    data:qs.stringify(pageInfo2)
-                }).then(function(res){
-                    _this.$store.state.opportunityDetailsList = res.data.map.success
-                }).catch(function(err){
-                    // console.log(err);
-                });
-                //详情页合同
-                axios({
-                    method:'post',
-                    url:_this.$store.state.defaultHttp+'customerpool/getContractByPool.do?cId='+_this.$store.state.iscId+'&customerpool_id='+this.detailData.id,
-                    data:qs.stringify(pageInfo2)
-                }).then(function(res){
-                    _this.$store.state.agreementDetailsList = res.data.map.success
-                }).catch(function(err){
-                    // console.log(err);
-                });
                 //详情页开票
                 axios({
                     method:'post',
@@ -605,6 +719,63 @@
                     url:_this.$store.state.defaultHttp+'customerpool/selectWorkPlanAndVisit.do?cId='+_this.$store.state.iscId+'&customerpool_id='+this.detailData.id
                 }).then(function(res){
                     _this.$store.state.FielDutyDetailsList = res.data.map.workPlanAndVisit
+                }).catch(function(err){
+                    // console.log(err);
+                });
+                _this.$options.methods.loadContact.bind(_this)()
+                _this.$options.methods.loadAgree.bind(_this)()
+                _this.$options.methods.loadOpp.bind(_this)()
+            },
+            loadContact(){
+                const _this = this
+                let qs = require('querystring')
+                let pageInfo2 = {}
+                pageInfo2.page = '1'
+                pageInfo2.limit = '100000'
+                //详情页联系人
+                axios({
+                    method:'post',
+                    url:_this.$store.state.defaultHttp+'customerpool/getPoolContacts.do?cId='+_this.$store.state.iscId+'&customerpool_id='+this.detailData.id,
+                    data:qs.stringify(pageInfo2)
+                }).then(function(res){
+                    _this.$store.state.cusConsDetailsList = res.data.map.success
+                    _this.contactList = res.data.map.success
+                    _this.priconList = res.data.map.success
+                    _this.followform.contactsId = res.data.map.success[0].id
+                }).catch(function(err){
+                    // console.log(err);
+                });
+            },
+            loadAgree(){
+                const _this = this
+                let qs = require('querystring')
+                let pageInfo2 = {}
+                pageInfo2.page = '1'
+                pageInfo2.limit = '100000'
+                //详情页合同
+                axios({
+                    method:'post',
+                    url:_this.$store.state.defaultHttp+'customerpool/getContractByPool.do?cId='+_this.$store.state.iscId+'&customerpool_id='+this.detailData.id,
+                    data:qs.stringify(pageInfo2)
+                }).then(function(res){
+                    _this.$store.state.agreementDetailsList = res.data.map.success
+                }).catch(function(err){
+                    // console.log(err);
+                });
+            },
+            loadOpp(){
+                const _this = this
+                let qs = require('querystring')
+                let pageInfo2 = {}
+                pageInfo2.page = '1'
+                pageInfo2.limit = '100000'
+                //详情页商机
+                axios({
+                    method:'post',
+                    url:_this.$store.state.defaultHttp+'customerpool/queryForPoolList.do?cId='+_this.$store.state.iscId+'&customerpool_id='+this.detailData.id,
+                    data:qs.stringify(pageInfo2)
+                }).then(function(res){
+                    _this.$store.state.opportunityDetailsList = res.data.map.success
                 }).catch(function(err){
                     // console.log(err);
                 });
@@ -836,24 +1007,6 @@
                     })
                 }
             },
-            search(){
-                const _this = this;
-                let qs =require('querystring')
-                let searchList = {}
-                searchList.searchName = this.searchList.keyword;
-                searchList.page = this.page;
-                searchList.limit = this.limit;
-                axios({
-                    method: 'post',
-                    url: _this.$store.state.defaultHttp+'customerpool/getPoolRight.do?cId='+_this.$store.state.iscId+'&pId='+_this.$store.state.ispId,
-                    data: qs.stringify(searchList),
-                }).then(function(res){
-                    _this.tableData = res.data.map.success
-                    _this.tableNumber = res.data.count
-                }).catch(function(err){
-                    // console.log(err);
-                });
-            },
             changeState(row){
                 const _this = this
                 let qs = require('querystring')
@@ -900,6 +1053,248 @@
                     }
                 }).catch(function(err){
                     // console.log(err);
+                });
+            },
+            addcontact(){
+                this.contactdialog = true
+                this.newform = {
+                    pName:this.customerdetail.pName,
+                    name:null,
+                    phone:null,
+                    telephone:null,
+                    qq:null,
+                    email:null,
+                    weChat:null,
+                    sex:null,
+                    birthday:null,
+                    identity:null,
+                    remark:null,
+                }
+            },
+            submitcontact(){
+                const _this = this
+                let qs = require('querystring')
+                let data = {
+                    poolName:this.customerdetail.pName,
+                    customerpool_id:this.customerdetail.id,
+                    name:this.newform.name,
+                    phone:this.newform.phone,
+                    telephone:this.newform.telephone,
+                    qq:this.newform.qq,
+                    email:this.newform.email,
+                    weChat:this.newform.weChat,
+                    sex:this.newform.sex,
+                    birthday:this.newform.birthday,
+                    identity:this.newform.identity,
+                    remark:this.newform.remark,
+                    pId:this.$store.state.ispId,
+                    secondid:this.$store.state.deptid,
+                    deptid:this.$store.state.insid
+                }
+
+                let flag = false
+                if(!data.name){
+                    _this.$message({
+                        message: '联系人名称不能为空',
+                        type: 'error'
+                    })
+                    flag = true
+                }
+                if(!data.phone){
+                    _this.$message({
+                        message: '手机号码不能为空',
+                        type: 'error'
+                    })
+                    flag = true
+                }
+                if(flag) return
+
+                axios({
+                    method:'post',
+                    url:_this.$store.state.defaultHttp+ 'insertContacts.do?cId='+_this.$store.state.iscId,
+                    data:qs.stringify(data)
+                }).then(function(res){
+                    if(res.data.code && res.data.code == '200'){
+                        _this.$message({
+                            message: '添加成功',
+                            type: 'success'
+                        })
+                        _this.contactdialog = false
+                        _this.$options.methods.loadContact.bind(_this)();
+                    }else{
+                        _this.$message({
+                            message: res.data.msg,
+                            type: 'error'
+                        })
+                    }
+                }).catch(function(err){
+                    // console.log(err);
+                });
+            },
+            addopp(){
+                this.oppdialog = true
+                this.newform = {
+                    pName:this.customerdetail.pName,
+                    opportunity_name:null,
+                    contacts_id:null,
+                    opportunity_achievement:null,
+                    opportunity_deal:null,
+                    our_signame:this.$store.state.user,
+                    opportunity_remarks:null,
+                }
+            },
+            submitopp(){
+                const _this = this
+                let qs = require('querystring')
+                let data = {
+                    customerpool_id:this.customerdetail.id,
+                    opportunity_name:this.newform.opportunity_name,
+                    contacts_id:this.newform.contacts_id,
+                    opportunity_achievement:this.newform.opportunity_achievement,
+                    opportunity_deal:this.newform.opportunity_deal,
+                    user_id:this.$store.state.ispId,
+                    secondid:this.$store.state.deptid,
+                    deptid:this.$store.state.insid
+                }
+
+                let flag = false
+                if(!data.opportunity_name){
+                    _this.$message({ message: '商机名称不能为空', type: 'error' })
+                    flag = true
+                }
+                if(!data.contacts_id){
+                    _this.$message({ message: '客户决策人不能为空', type: 'error' })
+                    flag = true
+                }
+                if(!data.opportunity_achievement){
+                    _this.$message({ message: '预计成交金额不能为空', type: 'error' })
+                    flag = true
+                }
+                if(!data.opportunity_deal){
+                    _this.$message({ message: '预计成交时间不能为空', type: 'error' })
+                    flag = true
+                }
+                if(flag) return
+
+                axios({
+                    method:'post',
+                    url:_this.$store.state.defaultHttp+ 'opportunity/saveOrUpdate.do?cId='+_this.$store.state.iscId,
+                    data:qs.stringify(data)
+                }).then(function(res){
+                    if(res.data.code && res.data.code == '200'){
+                        _this.$message({
+                            message: '添加成功',
+                            type: 'success'
+                        })
+                        _this.oppdialog = false
+                        _this.$options.methods.loadOpp.bind(_this)();
+                    }else{
+                        _this.$message({
+                            message: res.data.msg,
+                            type: 'error'
+                        })
+                    }
+                }).catch(function(err){
+                    // console.log(err);
+                });
+            },
+            addagree(){
+                this.agreedialog = true
+                this.newform = {
+                    pName:this.customerdetail.pName,
+                    contract_type:null,
+                    contract_name:null,
+                    opportunity_id:null,
+                    amount:null,
+                    start_date:null,
+                    end_date:null,
+                    signatories:null,
+                    our_signatories:null,
+                    our_signame:this.$store.state.user,
+                    remarks:null,
+                }
+            },
+            submitagree(){
+                const _this = this
+                let qs = require('querystring')
+                let data = {
+                    customerpool_id:this.customerdetail.id,
+                    contract_type:this.newform.contract_type,
+                    contract_name:this.newform.contract_name,
+                    opportunity_id:this.newform.opportunity_id,
+                    amount:this.newform.amount,
+                    start_date:this.newform.start_date,
+                    end_date:this.newform.end_date,
+                    signatories:this.newform.signatories,
+                    our_signatories:this.$store.state.ispId,
+                    remarks:this.newform.remarks,
+                    pId:this.$store.state.ispId,
+                    secondid:this.$store.state.deptid,
+                    deptid:this.$store.state.insid
+                }
+
+                let flag = false
+                if(!data.contract_type){
+                    _this.$message({ message: '合同类型不能为空', type: 'error' })
+                    flag = true
+                }
+                if(!data.contract_name){
+                    _this.$message({ message: '合同名称不能为空', type: 'error' })
+                    flag = true
+                }
+                if(!data.amount){
+                    _this.$message({ message: '合同金额不能为空', type: 'error' })
+                    flag = true
+                }
+                if(!data.start_date){
+                    _this.$message({ message: '开始时间不能为空', type: 'error' })
+                    flag = true
+                }
+                if(!data.end_date){
+                    _this.$message({ message: '结束时间不能为空', type: 'error' })
+                    flag = true
+                }
+                if(!data.signatories){
+                    _this.$message({ message: '客户签约人不能为空', type: 'error' })
+                    flag = true
+                }
+                if(flag) return
+
+                axios({
+                    method:'post',
+                    url:_this.$store.state.defaultHttp+ 'insertContract.do?cId='+_this.$store.state.iscId,
+                    data:qs.stringify(data)
+                }).then(function(res){
+                    if(res.data.code && res.data.code == '200'){
+                        _this.$message({
+                            message: '添加成功',
+                            type: 'success'
+                        })
+                        _this.agreedialog = false
+                        _this.$options.methods.loadAgree.bind(_this)();
+                    }else{
+                        _this.$message({
+                            message: res.data.msg,
+                            type: 'error'
+                        })
+                    }
+                }).catch(function(err){
+                    // console.log(err);
+                });
+            },
+            handlechange(val){
+                this.newform.start_date = val
+                let arr = val.split('-')
+                let year = parseInt(arr[0]) + 1
+                let month = arr[1]
+                let day = arr[2]
+                this.newform.end_date = year + '-' + month + '-' + day
+            },
+            handleopp(val){
+                this.opportunityDetails.forEach(el => {
+                    if(val == el.opportunity_id){
+                        this.newform.amount = el.opportunity_achievement
+                    }
                 });
             },
 
@@ -1052,6 +1447,24 @@
                 }else{
                     this.$router.push('/index');
                 }
+            },
+            search(){
+                const _this = this;
+                let qs =require('querystring')
+                let searchList = {}
+                searchList.searchName = this.searchList.keyword;
+                searchList.page = this.page;
+                searchList.limit = this.limit;
+                axios({
+                    method: 'post',
+                    url: _this.$store.state.defaultHttp+'customerpool/getPoolRight.do?cId='+_this.$store.state.iscId+'&pId='+_this.$store.state.ispId,
+                    data: qs.stringify(searchList),
+                }).then(function(res){
+                    _this.tableData = res.data.map.success
+                    _this.tableNumber = res.data.count
+                }).catch(function(err){
+                    // console.log(err);
+                });
             },
             handleSizeChange(val) {
                 const _this = this;

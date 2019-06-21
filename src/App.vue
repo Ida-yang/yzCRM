@@ -567,11 +567,11 @@ export default {
         width: 100%;
         height: 40px;
         /* background-color: #fbfadb; */
-        text-align: right;
+        /* text-align: right; */
         font-size: 14px;
     }
     .pricon_sel{
-        width: 120px;
+        width: 150px;
     }
     .line{
         float: left;
@@ -1097,5 +1097,11 @@ export default {
         box-sizing: border-box;
         /* color: rgb(149, 149, 255) */
         background-color: #f0f0f0
+    }
+
+    .jobclass_line{
+        width: 100%;
+        height: 15px;
+        background-color: #f0f0f0;
     }
 </style>

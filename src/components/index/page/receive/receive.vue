@@ -3,7 +3,6 @@
         <div class="radioList">
             <el-radio-group v-model="searchList.stateid">
                 <span class="nameList">工单状态：</span>
-                <el-radio :label="nullvalue" @click="search">全部</el-radio>
                 <el-radio v-for="item in stateData" :key="item.index" :label="item.index" @change="search()">{{item.name}}</el-radio>
             </el-radio-group>
         </div>
@@ -20,7 +19,7 @@
         <div class="entry">
             <div class="totalnum_head">共 <span style="font-weight:bold">{{tableNumber}}</span> 条</div>
         </div>
-        <el-table :data="tableData" border stripe style="width:100%">
+        <el-table :data="tableData" border stripe style="width:100%" :summary-method="getSummaries" show-summary>
             <el-table-column header-align="center" fixed align="center" type="index" width="45"></el-table-column>
             <el-table-column label="日期" prop="createTime" fixed min-width="110" sortable></el-table-column>
             <el-table-column label="回款编号" prop="backNo" fixed min-width="150" show-overflow-tooltip sortable>
@@ -46,6 +45,11 @@
             <el-table-column label="本次回款金额" prop="price" min-width="130" sortable>
                 <template slot-scope="scope">
                     {{scope.row.price | commaing}}
+                </template>
+            </el-table-column>
+            <el-table-column label="剩余金额" prop="amount_of_repayment" min-width="130" sortable>
+                <template slot-scope="scope">
+                    {{scope.row.totalAmount - scope.row.amount_of_repayment | commaing}}
                 </template>
             </el-table-column>
             <el-table-column label="支付方式" prop="pay_type" min-width="110" sortable></el-table-column>
@@ -111,9 +115,10 @@
                 },
 
                 stateData:[
+                    {index:null,name:'全部'},
                     {index:0,name:'待审核'},
-                    {index:1,name:'已审核'},
-                    {index:2,name:'审核中'},
+                    {index:1,name:'审核中'},
+                    {index:2,name:'已审核'},
                     {index:3,name:'未通过'},
                 ],
                 nullvalue:null,
@@ -153,6 +158,40 @@
             openDetails(index,row){
                 this.$store.state.receivdetailData = {id:row.id}
                 this.$router.push({ path: '/receivedetail' });
+            },
+            getSummaries(param){
+                const { columns, data } = param;
+                const sums = [];
+                columns.forEach((column, index) => {
+                    if (index === 0) {
+                        sums[index] = '总价';
+                        return;
+                    }
+                    const values = data.map(item => Number(item[column.property]));
+                    if(column.property == 'price'){
+                        sums[index] = values.reduce((acc, cur) => (cur + acc), 0)
+                        sums[index] = sums[index].toFixed(2)
+                        let intPart = Math.trunc(sums[index])
+                        let intPartFormat = intPart.toString().replace(/(\d)(?=(?:\d{3})+$)/g, '$1,')
+                        let floatPart = '.00' // 预定义小数部分
+                        let valArray = sums[index].split('.')
+                        if(valArray.length === 2) {
+                            floatPart = valArray[1].toString() // 拿到小数部分
+                            if(floatPart.length === 1) { // 补0,实际上用不着
+                                sums[index] = intPartFormat + '.' + floatPart + '0'
+                            }else{
+                                sums[index] = intPartFormat + '.' + floatPart
+                            }
+                        } else {
+                            sums[index] = intPartFormat + floatPart
+                        }
+                        sums[index] += ' 元';
+                    }else{
+                        sums[index] = '';
+                    }
+                });
+
+                return sums;
             },
             search(){
                 this.$options.methods.loadTable.bind(this)()

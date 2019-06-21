@@ -3,8 +3,8 @@
         <el-card class="box-card">
             <div slot="header" class="clearfix">
                 <span style="font-weight:bold">销售订单<span style="font-weight:bold">：{{myform.orderNo}}</span></span>
-                        <el-button style="float:right;margin-left:10px;" class="info-btn" size="mini" @click="retract()" v-show="retracts">收起</el-button>
-                        <el-button style="float:right;margin-left:10px;" class="info-btn" size="mini" @click="retract()" v-show="!retracts">显示</el-button>
+                        <!-- <el-button style="float:right;margin-left:10px;" class="info-btn" size="mini" @click="retract()" v-show="retracts">收起</el-button> -->
+                        <el-button style="float:right;margin-left:10px;" class="info-btn" size="mini" @click="retract()">审核</el-button>
             </div>
             <div class="orderHead">
                 <el-form :inline="true" ref="myform" :model="myform" :rules="rules">
@@ -49,6 +49,7 @@
                 </div>
             </div>
         </el-card>
+        <div class="jobclass_line" v-show="thisshow"></div>
         <div v-show="thisshow">
             <el-card class="box-card">
                 <div slot="header" class="clearfix">
@@ -270,7 +271,7 @@
 
             <el-table-column prop="brand" width="80" label="产品品牌"></el-table-column>
 
-            <el-table-column align="center" label="操作" width="90" fixed="right">
+            <el-table-column align="center" label="操作" width="90" fixed="right" v-if="myform.checkStatus !== 2">
                 <template slot-scope="scope">
                     <el-button type="success" plain style="width:30px;height:30px;padding:0" :disabled="!scope.row.edit" icon="el-icon-circle-check-outline" @click="confirmEdit(scope.row)"></el-button>
                     <el-button type="danger" plain style="width:30px;height:30px;padding:0" icon="el-icon-delete" @click="handleDelete(scope.$index,scope.row)"></el-button>
@@ -436,7 +437,7 @@
                     remarks:[{ required: true, message: '审核意见不能为空', trigger: 'blur' }]
                 },
 
-                auditing: this.$store.state.systemHttp +  + '/upload/staticImg/inaudit.png',
+                auditing: this.$store.state.systemHttp + '/upload/staticImg/inaudit.png',
                 audited: this.$store.state.systemHttp + '/upload/staticImg/examine.png',
                 noaudit: this.$store.state.systemHttp + '/upload/staticImg/refuse.png',
             }
@@ -653,29 +654,23 @@
                         
                         if(index == 0){
                             if(el.userList[0].img){
-                                // el.headPortrait = '../../../../static/img/17.jpg'
                                 el.headPortrait = _this.$store.state.systemHttp + '/upload/'+_this.$store.state.iscId+'/'+el.userList[0].img
                             }else{
-                                // el.headPortrait = '../../../../static/img/timg.jpg'
                                 el.headPortrait = _this.$store.state.systemHttp + '/upload/staticImg/avatar.jpg'
                             }
                         }
                         if(el.stepType ==2){
                             for(let i = 0; i < el.userList.length; i ++){
                                 if(el.userList[i].img && el.userList[i].examineStatus !== 0){
-                                    // el.headPortrait = '../../../../static/img/17.jpg'
                                     el.headPortrait = _this.$store.state.systemHttp + '/upload/'+_this.$store.state.iscId+'/'+el.userList[i].img
                                     break
                                 }else if(!el.userList[i].img && el.userList[i].examineStatus !== 0){
-                                    // el.headPortrait = '../../../../static/img/timg.jpg'
                                     el.headPortrait = _this.$store.state.systemHttp + '/upload/staticImg/avatar.jpg'
                                     break
                                 }else if(el.userList[i].img && el.userList[i].examineStatus == 0){
-                                    // el.headPortrait = '../../../../static/img/17.jpg'
                                     el.headPortrait = _this.$store.state.systemHttp + '/upload/'+_this.$store.state.iscId+'/'+el.userList[i].img
                                     break
                                 }else if(!el.userList[i].img && el.userList[i].examineStatus == 0){
-                                    // el.headPortrait = '../../../../static/img/timg.jpg'
                                     el.headPortrait = _this.$store.state.systemHttp + '/upload/staticImg/avatar.jpg'
                                     break
                                 }
@@ -684,10 +679,8 @@
                         if(el.stepType == 3){
                             el.userList.forEach((a,i) => {
                                 if(a.img){
-                                    // a.headPortrait = '../../../../static/img/17.jpg'
                                     a.headPortrait = _this.$store.state.systemHttp + '/upload/'+_this.$store.state.iscId+'/'+a.img
                                 }else{
-                                    // a.headPortrait = '../../../../static/img/timg.jpg'
                                     a.headPortrait = _this.$store.state.systemHttp + '/upload/staticImg/avatar.jpg'
                                 }
                             })
@@ -731,7 +724,7 @@
             },
             cellClick(row, column, cell, event){
                 row.edit = false
-                if(column.label !== '操作'){
+                if(column.label !== '操作' && this.myform.checkStatus !== 2){
                     row.edit = true
                     this.itemData.forEach((el,i) => {
                         if(row.id == el.id){
@@ -1099,7 +1092,7 @@
     .audit{
         position: absolute;
         right: 30%;
-        top: 150px;
+        top: 120px;
     }
     .audit .audit_img{
         width: 150px;

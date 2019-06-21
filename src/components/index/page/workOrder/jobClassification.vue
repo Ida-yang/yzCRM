@@ -120,11 +120,6 @@
     .jobclass_ul .jobclass_li:nth-child(-n+4){
         margin-top: 20px;
     }
-    .jobclass_line{
-        width: 100%;
-        height: 15px;
-        background-color: #f0f0f0;
-    }
     .jobclass2_ul{
         width: 100%;
         list-style-type: none;
