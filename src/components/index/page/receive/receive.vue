@@ -1,6 +1,10 @@
 <template>
     <div>
         <div class="radioList">
+            <el-radio-group v-model="searchList.label">
+                <span class="nameList">数据授权：</span>
+                <el-radio v-for="item in pIdData" :key="item.index" :label="item.index" @change="search()">{{item.name}}</el-radio>
+            </el-radio-group>
             <el-radio-group v-model="searchList.stateid">
                 <span class="nameList">工单状态：</span>
                 <el-radio v-for="item in stateData" :key="item.index" :label="item.index" @change="search()">{{item.name}}</el-radio>
@@ -17,7 +21,7 @@
             <el-button icon="el-icon-search" type="primary" size="mini" @click="search()">查询</el-button>
         </div>
         <div class="entry">
-            <div class="totalnum_head">共 <span style="font-weight:bold">{{tableNumber}}</span> 条</div>
+            <div class="totalnum_head">共 <span class="bold_span">{{tableNumber}}</span> 条</div>
         </div>
         <el-table :data="tableData" border stripe style="width:100%" :summary-method="getSummaries" show-summary>
             <el-table-column header-align="center" fixed align="center" type="index" width="45"></el-table-column>
@@ -111,7 +115,8 @@
                 searchList:{
                     searchName:null,
                     searchOption:'1',
-                    stateid:0
+                    stateid:null,
+                    label:1,
                 },
 
                 stateData:[
@@ -120,6 +125,13 @@
                     {index:1,name:'审核中'},
                     {index:2,name:'已审核'},
                     {index:3,name:'未通过'},
+                ],
+                pIdData:[
+                    {index:0,name:'全部'},
+                    {index:1,name:'我的'},
+                    {index:2,name:'本组'},
+                    {index:3,name:'本机构'},
+                    {index:4,name:'待我审核'},
                 ],
                 nullvalue:null,
             }
@@ -135,6 +147,17 @@
                 const _this = this
                 let qs = require('querystring')
                 let data = {}
+                if(this.searchList.label == 0 ){
+                    // searchList.pId = _this.nullvalue
+                }else if(this.searchList.label == 1){
+                    data.pId = _this.$store.state.ispId
+                }else if(this.searchList.label == 2){
+                    data.secondid = _this.$store.state.deptid
+                }else if(this.searchList.label == 3){
+                    data.deptid = _this.$store.state.insid
+                }else if(this.searchList.label == 4){
+                    data.examine = _this.$store.state.ispId
+                }
                 if(this.searchList.searchOption == '1'){
                     data.searchName = this.searchList.searchName
                 }else if(this.searchList.searchOption == '2'){

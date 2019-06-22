@@ -37,7 +37,7 @@
             <el-button class="btn info-btn" size="mini" @click="customerSwitching()">转移至客户</el-button>
             <el-button class="btn info-btn" size="mini" @click="showsend()">发送短信</el-button>
 
-            <div class="totalnum_head">共 <span style="font-weight:bold">{{tableNumber}}</span> 条</div>
+            <div class="totalnum_head">共 <span class="bold_span">{{tableNumber}}</span> 条</div>
 
             <el-popover placement="left" width="150" trigger="click">
                 <div class="download_c">

@@ -14,7 +14,7 @@
             <div class="entry">
                 <el-button class="btn info-btn" size="mini" @click="handleAdd()">新增</el-button>
 
-                <div class="totalnum_head">共 <span style="font-weight:bold">{{tableNumber}}</span> 条</div>
+                <div class="totalnum_head">共 <span class="bold_span">{{tableNumber}}</span> 条</div>
             </div>
 
             <div class="eb_content">

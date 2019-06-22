@@ -5,7 +5,7 @@
             <div class="top">
                 <el-card class="box-card" v-model="cluedetail">
                     <div slot="header" class="clearfix">
-                        <span>{{cluedetail.name}}</span>
+                        <span class="bold_span">{{cluedetail.name}}</span>
                         <el-button style="float:right;" class="info-btn" size="mini" @click="retract()" v-show="retracts">显示</el-button>
                         <el-button style="float:right;" class="info-btn" size="mini" @click="retract()" v-show="!retracts">收起</el-button>
                         <el-popover placement="bottom" width="100" trigger="click">

@@ -36,7 +36,7 @@
                                 <img class="approve_img" :src="auditing" alt="已审核">
                             </div>
                             <div class="approve" v-show="item.status == 3">
-                                <img class="approve_img" :src="noaudit" alt="审核未通过">
+                                <img class="approve_img" :src="noaudit" alt="未通过">
                             </div>
                         </div>
                         <div class="sms_f">
@@ -172,9 +172,9 @@
                 },
                 statusData:[
                     {id:'',name:'全部'},
-                    {id:'1',name:'正在审核'},
-                    {id:'2',name:'审核通过'},
-                    {id:'3',name:'未通过审核'},
+                    {id:'1',name:'审核中'},
+                    {id:'2',name:'已审核'},
+                    {id:'3',name:'未通过'},
                 ],
                 genreData:[
                     {id:'',name:'全部'},

@@ -16,7 +16,7 @@
             <el-button class="btn info-btn" size="mini" @click="handleAdd()">新增</el-button>
             <el-button class="btn info-btn" size="mini" @click="handleDeletes()">删除</el-button>
 
-            <div class="totalnum_head">共 <span style="font-weight:bold">{{tableNumber}}</span> 条</div>
+            <div class="totalnum_head">共 <span class="bold_span">{{tableNumber}}</span> 条</div>
 
             <el-popover placement="left" width="150" trigger="click">
                 <div class="download_c">
@@ -51,7 +51,7 @@
             <el-table-column label="职位" prop="position" min-width="100" sortable />
             <el-table-column label="性别" prop="sex" min-width="90" sortable />
             <el-table-column label="生日" prop="birthday" min-width="110" sortable />
-            <el-table-column label="省-市-区" prop="countryid" min-width="110" sortable>
+            <el-table-column label="省-市-区" prop="countryid" min-width="150" sortable>
                 <template slot-scope="scope">
                     {{scope.row.country + '-' + scope.row.city + '-' + scope.row.area}}
                 </template>

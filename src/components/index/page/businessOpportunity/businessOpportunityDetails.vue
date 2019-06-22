@@ -5,7 +5,7 @@
             <div class="top">
                 <el-card class="box-card">
                     <div slot="header" class="clearfix">
-                        <span>{{customerpool.name}}</span>
+                        <span class="bold_span">{{customerpool.name}}</span>
                         <el-button style="float:right;margin-left:10px;" class="info-btn" size="mini" @click="retract()" v-show="retracts">收起</el-button>
                         <el-button style="float:right;margin-left:10px;" class="info-btn" size="mini" @click="retract()" v-show="!retracts">显示</el-button>
                     </div>
@@ -112,7 +112,7 @@
                     </el-steps>
                 </el-card>
             </div>
-            <div class="top" v-show="auxcontent">
+            <div class="bottom" v-show="auxcontent">
                 <el-tabs v-model="auxindex" type="card">
                     <el-tab-pane label="跟进记录" name="first">
                         <ul class="followrecord" v-for="item in record" :key="item.followId">
@@ -180,7 +180,7 @@
                 </el-tabs>
             </div>
             
-            <div class="top">
+            <div class="bottom">
                 <el-tabs v-model="baseindex" type="card">
                     <el-tab-pane label="基本信息" name="first">
                         <div class="text">
@@ -189,7 +189,7 @@
                             <li>创建时间：<span>{{opportunitydetail.opportunity_time}}</span></li>
                             <li>签约时间：<span>{{contractTime}}</span></li>
                             <li>失败时间：<span>{{failTime}}</span></li>
-                            <li>预计成交金额：<span class="bold_span">{{opportunitydetail.opportunity_achievement}}</span></li>
+                            <li>预计成交金额：<span class="bold_span">{{opportunitydetail.opportunity_achievement | commaing}} 元</span></li>
                             <li>预计成交时间：<span>{{opportunitydetail.opportunity_deal}}</span></li>
                             <li>负责人：<span>{{privateUser.private_employee}}</span></li>
                             <li>部门：<span>{{opportunitydetail.deptname}}</span></li>
@@ -258,6 +258,13 @@
     export default {
         name:'businessOpportunityDetails',
         store,
+        filters:{
+            commaing(value){
+                let intPart = Math.trunc(value) //获取整数部分
+                let intPartFormat = intPart.toString().replace(/(\d)(?=(?:\d{3})+$)/g, '$1,') // 将整数部分逢三一断
+                return intPartFormat
+            },
+        },
         data(){
             return {
                 pickerOptions:{

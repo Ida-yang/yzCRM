@@ -5,7 +5,7 @@
             <div class="top">
                 <el-card class="box-card">
                     <div slot="header" class="clearfix">
-                        <span>{{visitdetails.customerName}}</span>
+                        <span class="bold_span">{{visitdetails.customerName}}</span>
                         <span style="margin-left:50px;">{{visitdetails.contactsName}}</span>
                         <el-button style="float:right;margin-left:10px;" class="info-btn" size="mini" @click="retract()" v-show="retracts">收起</el-button>
                         <el-button style="float:right;margin-left:10px;" class="info-btn" size="mini" @click="retract()" v-show="!retracts">显示</el-button>
@@ -237,7 +237,7 @@ export default {
             if(val == '审核'){
                 data.approverState = '已审核'
             }else{
-                data.approverState = '未审核'
+                data.approverState = '待审核'
             }
             data.approverTime = this.$store.state.nowtime
 

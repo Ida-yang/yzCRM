@@ -39,7 +39,7 @@ const router =new Router({
         {
           path: '/index',
           component: resolve => require(['../components/index/page/welcome.vue'], resolve),
-          meta: { title: '首页' ,requireAuth:true}
+          meta: { title: '首页' ,name:'index', requireAuth:true}
         },
         {
           path: '/customerSearch',

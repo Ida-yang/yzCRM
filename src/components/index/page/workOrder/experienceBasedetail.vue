@@ -3,7 +3,7 @@
         <el-col :span="18">
             <el-card class="box-card">
                 <div slot="header" class="clearfix">
-                    <span style="font-weight:bold">{{eBdetail.title}}</span>
+                    <span class="bold_span">{{eBdetail.title}}</span>
                 </div>
                 <div class="block eb_block">
                     <div v-html="eBdetail.describe" class="eb_ue"></div>

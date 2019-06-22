@@ -5,7 +5,7 @@
             <div class="top">
                 <el-card class="box-card">
                     <div slot="header" class="clearfix">
-                        <span>{{programme.projectName}}</span>
+                        <span class="bold_span">{{programme.projectName}}</span>
                         <el-button style="float:right;margin-left:10px;" class="info-btn" size="mini" @click="retract()" v-show="retracts">收起</el-button>
                         <el-button style="float:right;margin-left:10px;" class="info-btn" size="mini" @click="retract()" v-show="!retracts">显示</el-button>
                     </div>

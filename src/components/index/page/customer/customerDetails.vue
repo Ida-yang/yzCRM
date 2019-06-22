@@ -5,7 +5,7 @@
             <div class="top">
                 <el-card class="box-card">
                     <div slot="header" class="clearfix">
-                        <span>{{customerdetail.pName}}</span>
+                        <span class="bold_span">{{customerdetail.pName}}</span>
                         <el-button style="float:right;" class="info-btn" size="mini" @click="retract()" v-show="!retracts">收起</el-button>
                         <el-button style="float:right;" class="info-btn" size="mini" @click="retract()" v-show="retracts">显示</el-button>
                         <el-popover placement="bottom" width="100" trigger="click">
@@ -164,7 +164,7 @@
                                 <div class="right_more" v-if="item.showdelico">
                                     <el-dropdown trigger="click" @command="deletefollow(index)">
                                         <span class="el-dropdown-link">更多<i class="el-icon-caret-bottom"></i></span>
-                                        <el-dropdown-menu slot="dropdown">
+                                        <el-dropdown-menu slot="dropdown" class="drop_item">
                                             <el-dropdown-item command="del">删除</el-dropdown-item>
                                         </el-dropdown-menu>
                                     </el-dropdown>

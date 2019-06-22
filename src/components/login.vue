@@ -2,19 +2,39 @@
     <!-- 登录页 -->
     <el-row class="logincontent">
         <el-col class="content-l" v-if="isShowChromeTip">
-            <p style="color:red;font-size:20px;margin-top:300px;text-align:center">
+            <!-- <p style="color:red;font-size:20px;margin-top:300px;text-align:center">
                 请务必使用Chrome浏览器打开【
                 <a target="_blank" href="https://www.google.cn/intl/zh-CN/chrome/">
                     点击下载
                 </a>
                 】
-            </p>
+            </p> -->
+            <div class="low_c">
+                <p class="low_title">云纵CRM提醒您</p>
+                <p class="low_msg">您的浏览器暂不支持使用，请切换浏览器使用</p>
+                <p class="low_title2">我们建议您使用以下浏览器</p>
+                <ul class="low_ul">
+                    <li class="low_li">
+                        <img src="../../static/img/chrome.jpg" />
+                        <p class="low_msg">Google Chrome</p>
+                    </li>
+                    <li class="low_li2"></li>
+                    <li class="low_li">
+                        <img src="../../static/img/firefox.jpg" />
+                        <p class="low_msg">firefox</p>
+                    </li>
+                    <li class="low_li2"></li>
+                    <li class="low_li">
+                        <img src="../../static/img/opera.jpg" />
+                        <p class="low_msg">Opera</p>
+                    </li>
+                </ul>
+            </div>
         </el-col>
         <el-col class="content-r" v-if="!isShowChromeTip">
             <div class="login">
                 <p class="login_head">云纵CRM系统管理平台 </p>
                 <p class="login_wel">欢迎您登录</p>
-                <!-- <p class="login_wel"><span>欢迎登录</span></p> -->
                 <div class="grid-content bg-purple-dark">
                     <el-form  :model="loginFrom" status-icon :rules="rules" ref="loginFrom" 
                     class="demo-ruleForm"
@@ -64,10 +84,27 @@ export default {
     store,
     computed:{
         isShowChromeTip() {
-            const USER_AGENT = navigator.userAgent.toLowerCase()
-            const isChrome = /.*(chrome)\/([\w.]+).*/
+            // const USER_AGENT = navigator.userAgent.toLowerCase()
+            // const isChrome = /.*(chrome)\/([\w.]+).*/
             // console.log(USER_AGENT,isChrome)
-            return !isChrome.test(USER_AGENT)
+            // return !isChrome.test(USER_AGENT)
+            var userAgent = navigator.userAgent; //取得浏览器的userAgent字符串
+            var isOpera = userAgent.indexOf("Opera") > -1;
+            if (isOpera) { //判断是否Opera浏览器
+                return false
+            }else if (userAgent.indexOf("Firefox") > -1) { //判断是否Firefox浏览器
+                return false
+            }else if (userAgent.indexOf("Chrome") > -1) {  //google/QQ
+                return false
+            // }else if (userAgent.indexOf("Safari") > -1) { //判断是否Safari浏览器
+            //     // console.log('Safari')
+            //     return "Safari";
+            // }else if (userAgent.indexOf("compatible") > -1 && userAgent.indexOf("MSIE") > -1 && !isOpera) { //判断是否IE浏览器
+            //     // console.log('IE')
+            //     return true
+            }else{
+                return true
+            }
         }
     },
     data () {
@@ -86,7 +123,6 @@ export default {
                     { required: true, message: '请输入密码', trigger: 'blur' },
                 ],
             },
-            // isShowChromeTip:false
         }
     },
     mounted() {
@@ -191,30 +227,33 @@ export default {
         margin: 0;
     }
    .content-l{
-       width: 100%;
-       height: 100%;
+        width: 100%;
+        height: 100%;
+        background-image: url('../../static/img/d485a4y5f2.jpg');
+        background-repeat: no-repeat;
+        background-size: 100% 100%;
    }
    .content-r{
-       width: 100%;
-       height: 100%;
-       padding: 20px;
-       position: relative;
-       background-image: url('/upload/staticImg/index.jpg');
-       background-repeat: no-repeat;
-       background-size: 100% 100%;
+        width: 100%;
+        height: 100%;
+        padding: 20px;
+        position: relative;
+        background-image: url('/upload/staticImg/index.jpg');
+        background-repeat: no-repeat;
+        background-size: 100% 100%;
    }
    .login{
-       width: 320px;
-       background-color: rgb(255, 255, 255);
-       padding: 20px 50px 120px 50px;
-       border-radius: 5px;
-       position: absolute;
-       left: 50%;
-       top: 50%;
-       transform: translate(-50%,-50%);
+        width: 320px;
+        background-color: rgb(255, 255, 255);
+        padding: 20px 50px 120px 50px;
+        border-radius: 5px;
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%,-50%);
    }
    .iconSet{
-       color: #20222a;
+        color: #20222a;
    }
     /* .el-form-item__error{
         left: 20% !important;
@@ -235,5 +274,51 @@ export default {
     .login_wel span{
         border-bottom: 2px solid #82a79f;
         padding-bottom: 2px;
+    }
+
+    .low_c{
+        width: 800px;
+        height: 100%;
+        margin: 0 auto;
+        padding-top: 130px;
+        box-sizing: border-box;
+        text-align: center;
+        font-family: "Open Sans", Helvetica, Arial, sans-serif;
+    }
+    .low_title{
+        font-size: 24px;
+        margin-bottom: 25px;
+    }
+    .low_msg{
+        font-size: 14px;
+        line-height: 20px;
+        color: #919191;
+        margin-bottom: 60px;
+    }
+    .low_title2{
+        font-size: 20px;
+        margin-bottom: 30px;
+    }
+    .low_ul{
+        width: 100%;
+        height: 120px;
+        background-color: rgb(255, 255, 255);
+        border: 1px solid #e3e3e3;
+        border-radius: 5px;
+        box-sizing: border-box;
+        list-style: none;
+    }
+    .low_ul .low_li{
+        float: left;
+        width: 33%;
+        height: 100px;
+        margin-top: 15px;
+    }
+    .low_ul .low_li2{
+        float: left;
+        width: 1px;
+        height: 60px;
+        margin-top: 30px;
+        background-color: #e3e3e3;
     }
 </style>

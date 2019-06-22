@@ -4,12 +4,12 @@
         <el-col :span="18">
             <el-card class="box-card">
                 <div slot="header" class="clearfix">
-                    <span style="font-weight:bold">服务工单：{{workorderDetails.workOrderNo}}</span>
+                    <span class="bold_span">服务工单：{{workorderDetails.workOrderNo}}</span>
                 </div>
                 <div class="wo_c">
                     <ul class="wo_ul_left">
                         <li class="wo_li_left">
-                            <span style="font-weight:bold">{{workorderDetails.problem}}</span>
+                            <span class="bold_span">{{workorderDetails.problem}}</span>
                         </li>
                         <li class="wo_li_left">
                             <span class="wo_span_2" v-html="workorderDetails.describe"></span>
@@ -189,7 +189,7 @@
             
             <el-card class="box-card" v-if="showevaluate">
                 <div slot="header" class="clearfix">
-                    <span style="font-weight:bold">评价</span>
+                    <span class="bold_span">评价</span>
                 </div>
                 <div class="block">
                     <el-rate class="wo_evaluate" disabled show-text :texts="ratetexts" v-model="workorderDetails.solution.score"></el-rate>
@@ -235,7 +235,7 @@
         <el-col :span="6" class="right">
             <el-card class="box-card">
                 <div slot="header" class="clearfix">
-                    <span style="font-weight:bold">基本信息</span>
+                    <span class="bold_span">基本信息</span>
                 </div>
                 <div class="wo_c">
                     <ul class="wo_ul_right">

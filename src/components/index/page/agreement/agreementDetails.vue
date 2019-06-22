@@ -5,7 +5,7 @@
             <div class="top">
                 <el-card class="box-card" v-model="agreementdetail">
                     <div slot="header" class="clearfix">
-                        <span>{{agreementdetail.poolName}}</span>
+                        <span class="bold_span">{{agreementdetail.poolName}}</span>
                         <el-button style="float:right;margin-left:10px;" class="info-btn" size="mini" @click="retract()" v-show="retracts">收起</el-button>
                         <el-button style="float:right;margin-left:10px;" class="info-btn" size="mini" @click="retract()" v-show="!retracts">显示</el-button>
                     </div>
@@ -106,8 +106,8 @@
                                         <span v-if="item.examineStatus == 0 && index == 4" class="examine_status">四级审核</span>
                                         <span v-if="item.examineStatus == 0 && index == 5" class="examine_status">五级审核</span>
                                         <span v-if="item.examineStatus == 0 && index == 6" class="examine_status">六级审核</span>
-                                        <span v-if="item.examineStatus == 1" class="examine_status"><i class="el-icon-success" style="color:#67c23a;font-size:15px"></i> 已通过</span>
-                                        <span v-if="item.examineStatus == 2" class="examine_status"><i class="el-icon-circle-close" style="color:#f56c6c;font-size:18px"></i> 已拒绝</span>
+                                        <span v-if="item.examineStatus == 1" class="examine_status"><i class="el-icon-success" style="color:#67c23a;font-size:15px"></i> 已审核</span>
+                                        <span v-if="item.examineStatus == 2" class="examine_status"><i class="el-icon-circle-close" style="color:#f56c6c;font-size:18px"></i> 未通过</span>
                                         <span v-if="item.examineStatus == 3" class="examine_status"><i class="el-icon-time" style="color:#e6a23c;font-size:18px"></i> 审核中</span>
                                         <span v-if="item.examineStatus == 5" class="examine_status"><i class="el-icon-circle-plus" style="color:#67c23a;font-size:18px"></i> 发起</span>
                                     </div>
@@ -118,7 +118,7 @@
                     </div>
                 </el-card>
             </div>
-            <div class="top">
+            <div class="bottom">
                 <el-tabs v-model="activeName2" type="card">
                     <el-tab-pane label="合同详情" name="first">
                         <div class="uploadBOX">

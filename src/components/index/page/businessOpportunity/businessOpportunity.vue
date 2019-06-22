@@ -28,11 +28,14 @@
             &nbsp;&nbsp;
             <el-button icon="el-icon-search" type="primary" size="mini" @click="search()">查询</el-button>
         </div>
+        <div class="generCharts" @click="generateCharts">
+            <i class="mdi-chart-pie chart_icon"></i>
+        </div>
         <div class="entry">
             <el-button class="btn info-btn" size="mini" @click="handleAdd()">新增</el-button>
             <el-button class="btn" size="mini" @click="handleDeletes()">删除</el-button>
 
-            <div class="totalnum_head">共 <span style="font-weight:bold">{{tableNumber}}</span> 条</div>
+            <div class="totalnum_head">共 <span class="bold_span">{{tableNumber}}</span> 条</div>
 
             <el-popover placement="bottom" width="100" trigger="click">
                 <el-checkbox-group class="checklist" v-model="checklist">
@@ -108,6 +111,7 @@
     import store from '../../../../store/store'
     import axios from 'axios'
     import qs from 'qs'
+    import bus from '../../bus';
 
     export default {
         name:'businessOpportunity',
@@ -227,8 +231,15 @@
                         shijichengjiao:'实际成交',
                         shijizhanbi:'实际占比',
                     }
-                ]
+                ],
+
+                collapse5:false
             }
+        },
+        beforeRouteLeave(to, from , next){
+            this.collapse5 = false;
+            bus.$emit('collapse5', this.collapse5);
+            next()
         },
         activated(){
             this.reloadTable()
@@ -644,6 +655,69 @@
                 const _this = this;
                 _this.page = val;
                 _this.$options.methods.reloadTable.bind(_this)(false);
+            },
+            generateCharts(){
+                const _this = this
+                let qs = require('querystring')
+
+                let date = new Date()
+                let y = date.getFullYear() //获取完整的年份(4位,1970-????)
+                let m = date.getMonth() + 1 //获取当前月份(0-11,0代表1月)
+                m = (m < 10 ? "0" + m : m)
+
+                let data = {}
+                if(this.searchList.label == 1){
+                    data.pId = _this.$store.state.ispId
+                }else if(this.searchList.label == 2){
+                    data.secondid = _this.$store.state.deptid
+                }else if(this.searchList.label == 3){
+                    data.deptid = _this.$store.state.insid
+                }
+                data.yearMonth = y + '-' + m
+
+                let flag = false
+                _this.$store.state.oppChartsData.id = 'opp' + new Date().getTime()
+                // 目标达成率和预测周期
+                axios({
+                    method: 'post',
+                    url: _this.$store.state.defaultHttp+'opportunity/opportunityPredictionPeriod.do?cId='+_this.$store.state.iscId,
+                    data: qs.stringify(data)
+                }).then(function(res){
+                    _this.$store.state.oppChartsData.rateAndCycle = res.data
+                }).catch(function(err){
+                });
+                // 各个商机阶段的预计成交金额
+                axios({
+                    method: 'post',
+                    url: _this.$store.state.defaultHttp+'opportunity/opportunitySumAchievement.do?cId='+_this.$store.state.iscId,
+                    data: qs.stringify(data)
+                }).then(function(res){
+                    _this.$store.state.oppChartsData.stageAmount = res.data
+                }).catch(function(err){
+                });
+                // 商机完成金额、预计成交金额、失败金额
+                axios({
+                    method: 'post',
+                    url: _this.$store.state.defaultHttp+'opportunity/opportunityStageMoney.do?cId='+_this.$store.state.iscId,
+                    data: qs.stringify(data)
+                }).then(function(res){
+                    _this.$store.state.oppChartsData.amounts = res.data
+                }).catch(function(err){
+                });
+                // 本月每周预计成交金额
+                axios({
+                    method: 'post',
+                    url: _this.$store.state.defaultHttp+'opportunity/opportunityAchievementWeek.do?cId='+_this.$store.state.iscId,
+                    data: qs.stringify(data)
+                }).then(function(res){
+                    _this.$store.state.oppChartsData.weekAmount = res.data
+                }).catch(function(err){
+                });
+                if(flag) return
+
+                // console.log(_this.$store.state.oppChartsData)
+                _this.collapse5 = !_this.collapse5
+                bus.$emit('collapse5', _this.collapse5)
             },
         },
     }

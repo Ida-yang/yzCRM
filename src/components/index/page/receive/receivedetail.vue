@@ -105,8 +105,8 @@
                                         <span v-if="item.examineStatus == 0 && index == 4" class="examine_status">四级审核</span>
                                         <span v-if="item.examineStatus == 0 && index == 5" class="examine_status">五级审核</span>
                                         <span v-if="item.examineStatus == 0 && index == 6" class="examine_status">六级审核</span>
-                                        <span v-if="item.examineStatus == 1" class="examine_status"><i class="el-icon-success" style="color:#67c23a;font-size:15px"></i> 已通过</span>
-                                        <span v-if="item.examineStatus == 2" class="examine_status"><i class="el-icon-circle-close" style="color:#f56c6c;font-size:18px"></i> 已拒绝</span>
+                                        <span v-if="item.examineStatus == 1" class="examine_status"><i class="el-icon-success" style="color:#67c23a;font-size:15px"></i> 已审核</span>
+                                        <span v-if="item.examineStatus == 2" class="examine_status"><i class="el-icon-circle-close" style="color:#f56c6c;font-size:18px"></i> 未通过</span>
                                         <span v-if="item.examineStatus == 3" class="examine_status"><i class="el-icon-time" style="color:#e6a23c;font-size:18px"></i> 审核中</span>
                                         <span v-if="item.examineStatus == 5" class="examine_status"><i class="el-icon-circle-plus" style="color:#67c23a;font-size:18px"></i> 发起</span>
                                     </div>
@@ -131,7 +131,7 @@
                             <el-table-column label="备注" min-width="110" prop="remarks" />
                         </el-table>
                     </el-tab-pane>
-                    <el-tab-pane label="回款详情" name="second">
+                    <el-tab-pane label="已回款信息" name="second">
                         <el-table :data="moneyBackLists" border stripe style="width: 100%">
                             <el-table-column label="期数" header-align="center" fixed align="center" type="index" width="90" />
                             <el-table-column label="客户名称" min-width="200" prop="customerName" />

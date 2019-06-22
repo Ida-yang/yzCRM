@@ -22,7 +22,7 @@
             <el-button class="info-btn" size="mini" @click="handleDeletes()">删除</el-button>
             <el-button class="info-btn" size="mini" @click="handleReceives()">领取</el-button>
 
-            <div class="totalnum_head">共 <span style="font-weight:bold">{{tableNumber}}</span> 条</div>
+            <div class="totalnum_head">共 <span class="bold_span">{{tableNumber}}</span> 条</div>
 
             <el-popover placement="bottom" width="100" v-model="visible2" trigger="click">
                 <el-select v-model="userData.pId" placeholder="请选择用户">
@@ -35,7 +35,7 @@
                 </div>
                 <el-button slot="reference" class="btn" size="mini">分配</el-button>
             </el-popover>
-            <div class="totalnum_head">共 <span style="font-weight:bold">{{tableNumber}}</span> 条</div>
+            <div class="totalnum_head">共 <span class="bold_span">{{tableNumber}}</span> 条</div>
             <el-popover placement="bottom" width="100" trigger="click">
                 <el-checkbox-group class="checklist" v-model="checklist" style="max-height:600px;overflow-y:overlay;overflow-x:hidden">
                     <el-checkbox class="checkone" v-for="item in filterList" :key="item.id" :label="item.name" :value="item.state" @change="hangleChange($event,item)"></el-checkbox>

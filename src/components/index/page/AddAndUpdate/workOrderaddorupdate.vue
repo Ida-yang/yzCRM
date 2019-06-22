@@ -2,7 +2,7 @@
     <div class="wo_aou">
         <el-card class="box-card">
             <div slot="header" class="clearfix">
-                <span style="font-weight:bold">服务工单</span>
+                <span class="bold_span">服务工单</span>
             </div>
             <div class="orderHead">
                 <el-form :inline="true" ref="myform" :model="myform" :rules="rules">

@@ -413,7 +413,7 @@
     }
     .middles .middlebody{
         flex: 1;
-        width: 50%;
+        width: 40%;
         padding: 0 10px;
     }
     .middles .middlebody > div{

@@ -4,7 +4,7 @@
         <div class="radioList">
             <el-radio-group v-model="searchList.label">
                 <span class="nameList">数据授权：</span>
-                <el-radio v-for="item in agreementData" :key="item.label" :label="item.label" @change="search()">{{item.value}}</el-radio>
+                <el-radio v-for="item in pIdData" :key="item.label" :label="item.label" @change="search()">{{item.value}}</el-radio>
             </el-radio-group>
             <el-radio-group v-model="searchList.type">
                 <span class="nameList">合同类型：</span>
@@ -25,7 +25,9 @@
         <div class="entry">
             <el-button class="btn info-btn" size="mini" @click="handleAdd()">新增</el-button>
             <el-button class="btn" size="mini" @click="handleDeletes()">删除</el-button>
-            <div class="totalnum_head">共 <span style="font-weight:bold">{{tableNumber}}</span> 条</div>
+
+            <div class="totalnum_head">共 <span class="bold_span">{{tableNumber}}</span> 条</div>
+            
             <el-popover placement="bottom" width="100" trigger="click">
                 <el-checkbox-group class="checklist" v-model="checklist" style="max-height:600px;overflow-y:overlay;overflow-x:hidden">
                     <el-checkbox class="checkone" v-for="item in filterList" :key="item.id" :label="item.name" :value="item.state" @change="hangleChange($event,item)"></el-checkbox>
@@ -147,11 +149,12 @@
                     example:'0'
                 },
 
-                agreementData:[
+                pIdData:[
                     {label:'0',value:'全部'},
                     {label:'1',value:'我的'},
                     {label:'2',value:'本组'},
-                    {label:'3',value:'本机构'}
+                    {label:'3',value:'本机构'},
+                    {label:'4',value:'待我审核'}
                 ],
 
                 agreementTime:[
@@ -196,13 +199,15 @@
                 let qs =require('querystring')
                 let searchList = {}
                 if(this.searchList.label == 0 ){
-                    searchList.pId = _this.nullvalue
+                    // searchList.pId = _this.nullvalue
                 }else if(this.searchList.label == 1){
                     searchList.pId = _this.$store.state.ispId
                 }else if(this.searchList.label == 2){
                     searchList.secondid = _this.$store.state.deptid
                 }else if(this.searchList.label == 3){
                     searchList.deptid = _this.$store.state.insid
+                }else if(this.searchList.label = 4){
+                    searchList.examine = _this.$store.state.ispId
                 }
                 searchList.searchName = this.searchList.searchName
                 searchList.example = this.searchList.example
@@ -222,7 +227,7 @@
                         }else if(el.checkStatus == 1){
                             el.approvalStatus = '审核中'
                         }else if(el.checkStatus == 2){
-                            el.approvalStatus = '审核通过'
+                            el.approvalStatus = '已审核'
                             el.disabledBtn = true
                         }else if(el.checkStatus == 3){
                             el.approvalStatus = '未通过'

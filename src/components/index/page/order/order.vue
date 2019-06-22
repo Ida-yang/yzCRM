@@ -20,7 +20,7 @@
         </div>
         <div class="entry">
             <el-button class="btn info-btn" size="mini" @click="handleAdd()">新增</el-button>
-            <div class="totalnum_head">共 <span style="font-weight:bold">{{tableNumber}}</span> 条</div>
+            <div class="totalnum_head">共 <span class="bold_span">{{tableNumber}}</span> 条</div>
             <el-popover placement="bottom" width="100" trigger="click">
                 <el-checkbox-group class="checklist" v-model="checklist" style="max-height:600px;overflow-y:overlay;overflow-x:hidden">
                     <el-checkbox class="checkone" v-for="item in filterList" :key="item.id" :label="item.name" :value="item.state" @change="hangleChange($event,item)"></el-checkbox>
@@ -146,7 +146,8 @@
                     {label:'0',value:'全部'},
                     {label:'1',value:'我的'},
                     {label:'2',value:'本组'},
-                    {label:'3',value:'本机构'}
+                    {label:'3',value:'本机构'},
+                    {label:'4',value:'待我审核'}
                 ],
                 timeData:[
                     {id:'1',name:'今天'},
@@ -178,13 +179,15 @@
                 let searchList = {}
                 searchList.searchName = this.searchList.searchName;
                 if(this.searchList.label == 0 ){
-                    searchList.pId = _this.nullvalue
+                    // searchList.pId = _this.nullvalue
                 }else if(this.searchList.label == 1){
                     searchList.pId = _this.$store.state.ispId
                 }else if(this.searchList.label == 2){
                     searchList.secondid = _this.$store.state.deptid
                 }else if(this.searchList.label == 3){
                     searchList.deptid = _this.$store.state.insid
+                }else if(this.searchList.label == 4){
+                    searchList.examine = _this.$store.state.ispId
                 }
                 searchList.example = this.searchList.example
                 searchList.page = this.page;
@@ -202,7 +205,7 @@
                         }else if(el.checkStatus == 1){
                             el.approvalStatus = '审核中'
                         }else if(el.checkStatus == 2){
-                            el.approvalStatus = '审核通过'
+                            el.approvalStatus = '已审核'
                             el.disabledBtn = true
                         }else if(el.checkStatus == 3){
                             el.approvalStatus = '未通过'

@@ -18,18 +18,18 @@
             <span class="title">主要</span>
             <template v-for="item in itemone">
                 <template v-if="item.subs">
-                    <el-submenu :index="item.index" :key="item.index">
+                    <el-submenu :index="item.index" :key="item.index" class="sidebar_submenu">
                         <template slot="title">
                             <i :class="item.icon" style="color:#fff"> </i>&nbsp;
                             <span slot="title">{{ item.title }}</span>
                         </template>
-                        <el-menu-item v-for="(subItem,i) in item.subs" :key="i" :index="subItem.index">
+                        <el-menu-item v-for="(subItem,i) in item.subs" :key="i" :index="subItem.index" class="sidebar_menu_item">
                             {{ subItem.title }}
                         </el-menu-item>
                     </el-submenu>
                 </template>
                 <template v-else>
-                    <el-menu-item :index="item.index" :key="item.index">
+                    <el-menu-item :index="item.index" :key="item.index" class="sidebar_menu_item">
                         <i :class="item.icon" style="color:#fff"></i>&nbsp;
                         <span slot="title">{{ item.title }}</span>
                     </el-menu-item>
@@ -38,18 +38,18 @@
             <span class="title">应用</span>
             <template v-for="item in itemtwo">
                 <template v-if="item.subs">
-                    <el-submenu :index="item.index" :key="item.index">
+                    <el-submenu :index="item.index" :key="item.index" class="sidebar_submenu">
                         <template slot="title">
                             <i :class="item.icon"  style="color:#fff"> </i>&nbsp;
                             <span slot="title">{{ item.title }}</span>
                         </template>
-                        <el-menu-item v-for="(subItem,i) in item.subs" :key="i" :index="subItem.index">
+                        <el-menu-item v-for="(subItem,i) in item.subs" :key="i" :index="subItem.index" class="sidebar_menu_item">
                             {{ subItem.title }}
                         </el-menu-item>
                     </el-submenu>
                 </template>
                 <template v-else>
-                    <el-menu-item :index="item.index" :key="item.index">
+                    <el-menu-item :index="item.index" :key="item.index" class="sidebar_menu_item">
                         <i :class="item.icon" style="color:#fff" ></i>&nbsp;
                         <span slot="title">{{ item.title }}</span>
                     </el-menu-item>
@@ -58,18 +58,18 @@
             <span class="title">设置</span>
             <template v-for="item in itemlast">
                 <template v-if="item.subs">
-                    <el-submenu :index="item.index" :key="item.index">
+                    <el-submenu :index="item.index" :key="item.index" class="sidebar_submenu">
                         <template slot="title">
                             <i :class="item.icon" style="color:#fff"> </i>&nbsp;
                             <span slot="title">{{ item.title }}</span>
                         </template>
-                        <el-menu-item v-for="(subItem,i) in item.subs" :key="i" :index="subItem.index">
+                        <el-menu-item v-for="(subItem,i) in item.subs" :key="i" :index="subItem.index" class="sidebar_menu_item">
                             {{ subItem.title }}
                         </el-menu-item>
                     </el-submenu>
                 </template>
                 <template v-else>
-                    <el-menu-item :index="item.index" :key="item.index">
+                    <el-menu-item :index="item.index" :key="item.index" class="sidebar_menu_item">
                         <i :class="item.icon" style="color:#fff" ></i>&nbsp;
                         <span slot="title">{{ item.title }}</span>
                     </el-menu-item>
@@ -93,18 +93,18 @@
             <span class="title">办公</span>
             <template v-for="item in itema">
                 <template v-if="item.subs">
-                    <el-submenu :index="item.index" :key="item.index">
+                    <el-submenu :index="item.index" :key="item.index" class="sidebar_submenu">
                         <template slot="title">
                             <i :class="item.icon" style="color:#fff"> </i>&nbsp;
                             <span slot="title">{{ item.title }}</span>
                         </template>
-                        <el-menu-item v-for="(subItem,i) in item.subs" :key="i" :index="subItem.index">
+                        <el-menu-item v-for="(subItem,i) in item.subs" :key="i" :index="subItem.index" class="sidebar_menu_item">
                             {{ subItem.title }}
                         </el-menu-item>
                     </el-submenu>
                 </template>
                 <template v-else>
-                    <el-menu-item :index="item.index" :key="item.index">
+                    <el-menu-item :index="item.index" :key="item.index" class="sidebar_menu_item">
                         <i :class="item.icon" style="color:#fff" ></i>&nbsp;
                         <span slot="title">{{ item.title }}</span>
                     </el-menu-item>
@@ -127,18 +127,18 @@
             <!-- <span class="title">订货</span> -->
             <!-- <template v-for="item in itema">
                 <template v-if="item.subs">
-                    <el-submenu :index="item.index" :key="item.index">
+                    <el-submenu :index="item.index" :key="item.index" class="sidebar_submenu">
                         <template slot="title">
                             <i :class="item.icon" style="color:#fff"> </i>&nbsp;
                             <span slot="title">{{ item.title }}</span>
                         </template>
-                        <el-menu-item v-for="(subItem,i) in item.subs" :key="i" :index="subItem.index">
+                        <el-menu-item v-for="(subItem,i) in item.subs" :key="i" :index="subItem.index" class="sidebar_menu_item">
                             {{ subItem.title }}
                         </el-menu-item>
                     </el-submenu>
                 </template>
                 <template v-else>
-                    <el-menu-item :index="item.index" :key="item.index">
+                    <el-menu-item :index="item.index" :key="item.index" class="sidebar_menu_item">
                         <i :class="item.icon" style="color:#fff" ></i>&nbsp;
                         <span slot="title">{{ item.title }}</span>
                     </el-menu-item>
@@ -425,7 +425,7 @@
         display: inline-block;
         height: 40px;
         color: #f7f7f7;
-        font-size: 10px;
+        font-size: 12px;
         padding-left: 18px;
         line-height: 40px;
     }

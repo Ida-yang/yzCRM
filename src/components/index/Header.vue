@@ -364,7 +364,10 @@
         align-items: center;
     }
     .header-user-con div{
-        flex: 1;
+        /* flex: 1; */
+        flex-grow:1;
+        flex-shrink:1;
+        flex-basis:1;
         margin-left: 20px;
         width: auto;
     }
@@ -405,9 +408,6 @@
         justify-content: center;
         margin-right: 30px;
     }
-    /* .user-name span{
-        flex: 1;
-    } */
     .el-dropdown-link{
         color: #20222a;
         cursor: pointer;

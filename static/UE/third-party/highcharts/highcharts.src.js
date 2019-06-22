@@ -3238,7 +3238,7 @@ SVGRenderer.prototype = {
 			renderer = this,
 			forExport = renderer.forExport,
 			lines = pick(wrapper.textStr, '').toString()
-				.replace(/<(b|strong)>/g, '<span style="font-weight:bold">')
+				.replace(/<(b|strong)>/g, '<span class="bold_span">')
 				.replace(/<(i|em)>/g, '<span style="font-style:italic">')
 				.replace(/<a/g, '<span')
 				.replace(/<\/(b|strong|i|em|a)>/g, '</span>')

@@ -127,6 +127,14 @@ const state = {
   businessOpportunityList:[],
   //商机列表总数
   businessOpportunityListnumber:0,
+  // 商机图标数据
+  oppChartsData:{
+    id:null,
+    rateAndCycle:null,
+    stageAmount:[],
+    rateAndCycle:[],
+    rateAndCycle:[],
+  },
 
   //用户列表
   userList:[],

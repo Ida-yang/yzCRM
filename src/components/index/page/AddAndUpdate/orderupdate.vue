@@ -2,7 +2,7 @@
     <div class="orderadd_c">
         <el-card class="box-card">
             <div slot="header" class="clearfix">
-                <span style="font-weight:bold">销售订单<span style="font-weight:bold">：{{myform.orderNo}}</span></span>
+                <span class="bold_span">销售订单<span class="bold_span">：{{myform.orderNo}}</span></span>
                         <!-- <el-button style="float:right;margin-left:10px;" class="info-btn" size="mini" @click="retract()" v-show="retracts">收起</el-button> -->
                         <el-button style="float:right;margin-left:10px;" class="info-btn" size="mini" @click="retract()">审核</el-button>
             </div>
@@ -121,8 +121,8 @@
                                     <span v-if="item.examineStatus == 0 && index == 4" class="examine_status">四级审核</span>
                                     <span v-if="item.examineStatus == 0 && index == 5" class="examine_status">五级审核</span>
                                     <span v-if="item.examineStatus == 0 && index == 6" class="examine_status">六级审核</span>
-                                    <span v-if="item.examineStatus == 1" class="examine_status"><i class="el-icon-success" style="color:#67c23a;font-size:15px"></i> 已通过</span>
-                                    <span v-if="item.examineStatus == 2" class="examine_status"><i class="el-icon-circle-close" style="color:#f56c6c;font-size:18px"></i> 已拒绝</span>
+                                    <span v-if="item.examineStatus == 1" class="examine_status"><i class="el-icon-success" style="color:#67c23a;font-size:15px"></i> 已审核</span>
+                                    <span v-if="item.examineStatus == 2" class="examine_status"><i class="el-icon-circle-close" style="color:#f56c6c;font-size:18px"></i> 未通过</span>
                                     <span v-if="item.examineStatus == 3" class="examine_status"><i class="el-icon-time" style="color:#e6a23c;font-size:18px"></i> 审核中</span>
                                     <span v-if="item.examineStatus == 5" class="examine_status"><i class="el-icon-circle-plus" style="color:#67c23a;font-size:18px"></i> 发起</span>
                                 </div>
@@ -136,140 +136,150 @@
         <div v-show="!thisshow"></div>
         
         <div class="entry">
-            <el-button class="btn info-btn" size="mini" icon="el-icon-circle-plus-outline" @click="handleAdd"></el-button>
+            <el-button class="btn info-btn" size="mini" icon="el-icon-circle-plus-outline" v-if="myform.checkStatus !== 2" @click="handleAdd"></el-button>
+
+            <el-popover placement="bottom" width="100" trigger="click">
+                <el-checkbox-group class="checklist" v-model="checklist" style="max-height:600px;overflow-y:overlay;overflow-x:hidden">
+                    <el-checkbox class="checkone" v-for="item in filterList" :key="item.id" :label="item.name" :value="item.state" @change="hangleChange($event,item)"></el-checkbox>
+                </el-checkbox-group>
+                <el-button slot="reference" icon="el-icon-more" class="info-btn screen" type="mini"></el-button>
+            </el-popover>
         </div>
         <el-table v-loading="listLoading" :data="itemData" border fit highlight-current-row show-summary :summary-method="getSummary" @cell-click="cellClick" style="width: 100%">
             <el-table-column header-align="center" align="center" fixed type="index" min-width="45"></el-table-column>
-            <el-table-column prop="tbGoods.goodsName" width="280px" class="table_required" fixed label="产品名称">
-                <template slot-scope="scope">
-                    <template v-if="scope.row.edit">
-                        <el-select v-model="scope.row.tbGoods.goodsName" placeholder="请选择" filterable :filter-method="handleFilter" @focus="handleFoces(scope.$index,scope.row)">
-                            <el-option class="droplist" :value="scope.row.tbGoods.goodsName">
-                                <el-table :data="selectData" border fit @current-change="currentChange" style="width: 100%">
-                                    <el-table-column header-align="center" align="center" type="index" min-width="45"></el-table-column>
-                                    <el-table-column prop="tbGoods.goodsName" label="产品名称" width="130"></el-table-column>
-                                    <el-table-column prop="tbGoods.describe" show-overflow-tooltip label="描述" width="150"></el-table-column>
-                                    <el-table-column prop="goodspec" label="规格属性" min-width="150">
-                                        <template slot-scope="scope">
-                                            <span v-for="(item,i) in scope.row.goodspec" :key="i">{{item.label + '：' + item.value}}</span>
-                                        </template>
-                                    </el-table-column>
-                                    <el-table-column prop="unit" label="单位" width="90">
-                                    </el-table-column>
-                                </el-table>
-                            </el-option>
-                        </el-select>
-                        <el-button class="btn info-btn" size="mini" icon="el-icon-more" style="width:30px;height:28px;padding:0" @click="showDialog()"></el-button>
+
+            <div v-for="(item,index) in filterList" :key="index" >
+                <el-table-column label="产品名称" prop="tbGoods.goodsName" width="280px" v-if="item.prop == 'goodsName' && item.state == 1" class="table_required" fixed>
+                    <template slot-scope="scope">
+                        <template v-if="scope.row.edit">
+                            <el-select v-model="scope.row.tbGoods.goodsName" placeholder="请选择" filterable :filter-method="handleFilter" @focus="handleFoces(scope.$index,scope.row)">
+                                <el-option class="droplist" :value="scope.row.tbGoods.goodsName">
+                                    <el-table :data="selectData" border fit @current-change="currentChange" style="width: 100%">
+                                        <el-table-column header-align="center" align="center" type="index" min-width="45"></el-table-column>
+                                        <el-table-column prop="tbGoods.goodsName" label="产品名称" width="130"></el-table-column>
+                                        <el-table-column prop="tbGoods.describe" show-overflow-tooltip label="描述" width="150"></el-table-column>
+                                        <el-table-column prop="goodspec" label="规格属性" min-width="150">
+                                            <template slot-scope="scope">
+                                                <span v-for="(item,i) in scope.row.goodspec" :key="i">{{item.label + '：' + item.value}}</span>
+                                            </template>
+                                        </el-table-column>
+                                        <el-table-column prop="unit" label="单位" width="90">
+                                        </el-table-column>
+                                    </el-table>
+                                </el-option>
+                            </el-select>
+                            <el-button class="btn info-btn" size="mini" icon="el-icon-more" style="width:30px;height:28px;padding:0" @click="showDialog()"></el-button>
+                        </template>
+                        <span v-else>{{ scope.row.tbGoods.goodsName }}</span>
                     </template>
-                    <span v-else>{{ scope.row.tbGoods.goodsName }}</span>
-                </template>
-            </el-table-column>
+                </el-table-column>
 
-            <el-table-column prop="tbGoods.describe" width="120" label="描述"></el-table-column>
+                <el-table-column label="描述" prop="tbGoods.describe" width="120" v-if="item.prop == 'describe' && item.state == 1"></el-table-column>
 
-            <el-table-column prop="goodspec" min-width="100" label="规格属性">
-                <template slot-scope="scope">
-                    <span v-for="(item,i) in scope.row.goodspec" :key="i">{{'/' + item.value}}</span>
-                </template>
-            </el-table-column>
-
-            <el-table-column prop="unit" width="50" label="单位"></el-table-column>
-
-            <el-table-column prop="num" min-width="120" class-name="table_required" label="数量">
-                <template slot-scope="scope">
-                    <template v-if="scope.row.edit">
-                        <el-input v-model="scope.row.num" class="edit-input" size="small" @input="handleinput($event,scope.$index,scope.row)"/>
+                <el-table-column label="规格属性" prop="goodspec" min-width="100" v-if="item.prop == 'spec' && item.state == 1">
+                    <template slot-scope="scope">
+                        <span v-for="(item,i) in scope.row.goodspec" :key="i">{{'/' + item.value}}</span>
                     </template>
-                    <span v-else>{{ scope.row.num }}</span>
-                </template>
-            </el-table-column>
+                </el-table-column>
 
-            <el-table-column prop="price" min-width="120" class-name="table_required" label="单价">
-                <template slot-scope="scope">
-                    <template v-if="scope.row.edit">
-                        <el-input v-model="scope.row.price" class="edit-input" size="small" @input="handleinput($event,scope.$index,scope.row)"/>
+                <el-table-column label="单位" prop="unit" width="50" v-if="item.prop == 'unit' && item.state == 1"></el-table-column>
+
+                <el-table-column label="数量" prop="num" min-width="120" class-name="table_required" v-if="item.prop == 'num' && item.state == 1">
+                    <template slot-scope="scope">
+                        <template v-if="scope.row.edit">
+                            <el-input v-model="scope.row.num" class="edit-input" size="small" @input="handleinput($event,scope.$index,scope.row)"/>
+                        </template>
+                        <span v-else>{{ scope.row.num }}</span>
                     </template>
-                    <span v-else>{{ scope.row.price }}</span>
-                </template>
-            </el-table-column>
+                </el-table-column>
 
-            <el-table-column prop="amountOfMoney" min-width="120" label="金额">
-                <template slot-scope="scope">
-                    <template v-if="scope.row.edit">
-                        <el-input v-model="scope.row.amountOfMoney" class="edit-input" size="small" @input="handleinput($event,scope.$index,scope.row)"/>
+                <el-table-column label="单价" prop="price" min-width="120" class-name="table_required" v-if="item.prop == 'price' && item.state == 1">
+                    <template slot-scope="scope">
+                        <template v-if="scope.row.edit">
+                            <el-input v-model="scope.row.price" class="edit-input" size="small" @input="handleinput($event,scope.$index,scope.row)"/>
+                        </template>
+                        <span v-else>{{ scope.row.price }}</span>
                     </template>
-                    <span v-else>{{ scope.row.amountOfMoney }}</span>
-                </template>
-            </el-table-column>
+                </el-table-column>
 
-            <el-table-column prop="discount" width="90" label="折扣">
-                <template slot-scope="scope">
-                    <template v-if="scope.row.edit">
-                        <el-input v-model="scope.row.discount" class="edit-input" size="small" @input="handleinput($event,scope.$index,scope.row)">
-                            <span slot="suffix" style="margin-right:5px;line-height:34px;">%</span>
-                        </el-input>
+                <el-table-column label="金额" prop="amountOfMoney" min-width="120" v-if="item.prop == 'amountOfMoney' && item.state == 1">
+                    <template slot-scope="scope">
+                        <template v-if="scope.row.edit">
+                            <el-input v-model="scope.row.amountOfMoney" class="edit-input" size="small" @input="handleinput($event,scope.$index,scope.row)"/>
+                        </template>
+                        <span v-else>{{ scope.row.amountOfMoney }}</span>
                     </template>
-                    <span v-else-if="scope.row.discount">{{ scope.row.discount + ' %' }}</span>
-                </template>
-            </el-table-column>
+                </el-table-column>
 
-            <el-table-column prop="discountAmount" min-width="120" label="折扣额">
-                <template slot-scope="scope">
-                    <template v-if="scope.row.edit">
-                        <el-input v-model="scope.row.discountAmount" class="edit-input" size="small"/>
+                <el-table-column label="折扣" prop="discount" width="90" v-if="item.prop == 'discount' && item.state == 1">
+                    <template slot-scope="scope">
+                        <template v-if="scope.row.edit">
+                            <el-input v-model="scope.row.discount" class="edit-input" size="small" @input="handleinput($event,scope.$index,scope.row)">
+                                <span slot="suffix" style="margin-right:5px;line-height:34px;">%</span>
+                            </el-input>
+                        </template>
+                        <span v-else-if="scope.row.discount">{{ scope.row.discount + ' %' }}</span>
                     </template>
-                    <span v-else>{{ scope.row.discountAmount }}</span>
-                </template>
-            </el-table-column>
+                </el-table-column>
 
-            <el-table-column prop="discountAfter" min-width="120" label="折后金额">
-                <template slot-scope="scope">
-                    <template v-if="scope.row.edit">
-                        <el-input v-model="scope.row.discountAfter" class="edit-input" size="small"/>
+                <el-table-column label="折扣额" prop="discountAmount" min-width="120" v-if="item.prop == 'discountAmount' && item.state == 1">
+                    <template slot-scope="scope">
+                        <template v-if="scope.row.edit">
+                            <el-input v-model="scope.row.discountAmount" class="edit-input" size="small"/>
+                        </template>
+                        <span v-else>{{ scope.row.discountAmount }}</span>
                     </template>
-                    <span v-else>{{ scope.row.discountAfter }}</span>
-                </template>
-            </el-table-column>
+                </el-table-column>
 
-            <el-table-column prop="taxRate" width="90" label="税率">
-                <template slot-scope="scope">
-                    <template v-if="scope.row.edit">
-                        <el-input v-model="scope.row.taxRate" class="edit-input" size="small" @input="handleinput($event,scope.$index,scope.row)">
-                            <span slot="suffix" style="margin-right:5px;line-height:34px;">%</span>
-                        </el-input>
+                <el-table-column label="折后金额" prop="discountAfter" min-width="120" v-if="item.prop == 'discountAfter' && item.state == 1">
+                    <template slot-scope="scope">
+                        <template v-if="scope.row.edit">
+                            <el-input v-model="scope.row.discountAfter" class="edit-input" size="small"/>
+                        </template>
+                        <span v-else>{{ scope.row.discountAfter }}</span>
                     </template>
-                    <span v-else-if="scope.row.taxRate">{{ scope.row.taxRate + ' %' }}</span>
-                </template>
-            </el-table-column>
+                </el-table-column>
 
-            <el-table-column prop="taxAmount" min-width="120" label="税额">
-                <template slot-scope="scope">
-                    <template v-if="scope.row.edit">
-                        <el-input v-model="scope.row.taxAmount" class="edit-input" size="small"/>
+                <el-table-column label="税率" prop="taxRate" width="90" v-if="item.prop == 'taxRate' && item.state == 1">
+                    <template slot-scope="scope">
+                        <template v-if="scope.row.edit">
+                            <el-input v-model="scope.row.taxRate" class="edit-input" size="small" @input="handleinput($event,scope.$index,scope.row)">
+                                <span slot="suffix" style="margin-right:5px;line-height:34px;">%</span>
+                            </el-input>
+                        </template>
+                        <span v-else-if="scope.row.taxRate">{{ scope.row.taxRate + ' %' }}</span>
                     </template>
-                    <span v-else>{{ scope.row.taxAmount }}</span>
-                </template>
-            </el-table-column>
+                </el-table-column>
 
-            <el-table-column prop="taxAfter" min-width="120" label="税后金额">
-                <template slot-scope="scope">
-                    <template v-if="scope.row.edit">
-                        <el-input v-model="scope.row.taxAfter" class="edit-input" size="small"/>
+                <el-table-column label="税额" prop="taxAmount" min-width="120" v-if="item.prop == 'taxAmount' && item.state == 1">
+                    <template slot-scope="scope">
+                        <template v-if="scope.row.edit">
+                            <el-input v-model="scope.row.taxAmount" class="edit-input" size="small"/>
+                        </template>
+                        <span v-else>{{ scope.row.taxAmount }}</span>
                     </template>
-                    <span v-else>{{ scope.row.taxAfter }}</span>
-                </template>
-            </el-table-column>
+                </el-table-column>
 
-            <el-table-column prop="commitTime" width="170" label="交货日期">
-                <template slot-scope="scope">
-                    <template v-if="scope.row.edit">
-                        <el-date-picker v-model="scope.row.commitTime" type="date" format="yyyy-MM-dd" value-format="yyyy-MM-dd" size="small" class="table_date"></el-date-picker>
+                <el-table-column label="税后金额" prop="taxAfter" min-width="120" v-if="item.prop == 'taxAfter' && item.state == 1">
+                    <template slot-scope="scope">
+                        <template v-if="scope.row.edit">
+                            <el-input v-model="scope.row.taxAfter" class="edit-input" size="small"/>
+                        </template>
+                        <span v-else>{{ scope.row.taxAfter }}</span>
                     </template>
-                    <span v-else>{{ scope.row.commitTime }}</span>
-                </template>
-            </el-table-column>
+                </el-table-column>
 
-            <el-table-column prop="brand" width="80" label="产品品牌"></el-table-column>
+                <el-table-column label="交货日期" prop="commitTime" width="170" v-if="item.prop == 'commitTime' && item.state == 1">
+                    <template slot-scope="scope">
+                        <template v-if="scope.row.edit">
+                            <el-date-picker v-model="scope.row.commitTime" type="date" format="yyyy-MM-dd" value-format="yyyy-MM-dd" size="small" class="table_date"></el-date-picker>
+                        </template>
+                        <span v-else>{{ scope.row.commitTime }}</span>
+                    </template>
+                </el-table-column>
+
+                <el-table-column label="产品品牌" prop="brand" width="80" v-if="item.prop == 'brand' && item.state == 1"></el-table-column>
+            </div>
 
             <el-table-column align="center" label="操作" width="90" fixed="right" v-if="myform.checkStatus !== 2">
                 <template slot-scope="scope">
@@ -440,12 +450,16 @@
                 auditing: this.$store.state.systemHttp + '/upload/staticImg/inaudit.png',
                 audited: this.$store.state.systemHttp + '/upload/staticImg/examine.png',
                 noaudit: this.$store.state.systemHttp + '/upload/staticImg/refuse.png',
+
+                filterList:null,
+                checklist:null
             }
         },
         mounted() {
             this.loadData()
             this.getList()
             this.loadOther()
+            this.reloadData()
         },
         methods: {
             loadData(){
@@ -469,6 +483,36 @@
                     _this.$options.methods.loadContact.bind(_this)()
                     _this.$options.methods.getItem.bind(_this)()
                     _this.$options.methods.loadExamine.bind(_this)()
+                }).catch(function(err){
+                    // console.log(err);
+                });
+            },
+            
+            reloadData() {
+                const _this = this;
+                let qs =require('querystring')
+                
+                let filterList = {}
+                filterList.type = '销售订单详情'
+                let data = {}
+                data.type = '销售订单详情'
+                data.state = 1
+                
+                axios({
+                    method: 'post',
+                    url: _this.$store.state.defaultHttp+'userPageInfo/getAllUserPage.do?cId='+_this.$store.state.iscId+'&pId='+_this.$store.state.ispId,
+                    data: qs.stringify(filterList)
+                }).then(function(res){
+                    _this.filterList = res.data
+                }).catch(function(err){
+                    // console.log(err);
+                });
+                axios({
+                    method: 'post',
+                    url: _this.$store.state.defaultHttp+'userPageInfo/getUserPage.do?cId='+_this.$store.state.iscId+'&pId='+_this.$store.state.ispId,
+                    data: qs.stringify(data)
+                }).then(function(res){
+                    _this.checklist = res.data
                 }).catch(function(err){
                     // console.log(err);
                 });
@@ -1058,6 +1102,29 @@
                 }else{
                     this.$router.push('/index');
                 }
+            },
+            hangleChange(e,val){
+                const _this = this
+                let qs = require('querystring')
+                let data = {}
+                data.pageInfoId = val.pageInfoId
+                if(e == true){
+                    data.state = 1
+                }else{
+                    data.state = 0
+                }
+
+                axios({
+                    method: 'post',
+                    url:  _this.$store.state.defaultHttp+ 'userPageInfo/updateUserPageByid.do?cId='+_this.$store.state.iscId+'&pId='+_this.$store.state.ispId,
+                    data:qs.stringify(data),
+                }).then(function(res){
+                    if(res.data && res.data =="success"){
+                        _this.$options.methods.reloadData.bind(_this)(true);
+                    }
+                }).catch(function(err){
+                    _this.$message.error("提交失败，请重新提交");
+                });
             },
         }
     }
