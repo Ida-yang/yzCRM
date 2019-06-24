@@ -2,7 +2,7 @@
     <div id="oppCharts_c" class="oppCharts_c" :class="{'charts-collapse':collapse}" v-show="collapse5">
         <div class="oppCharts_b">
             <div class="oppCharts_b_c">
-                <el-progress type="circle" :percentage="rate"></el-progress>
+                <el-progress type="circle" :percentage="rate" :stroke-width="8"></el-progress>
             </div>
             <div class="oppCharts_b_c">
                 <div id="chart015" :style="{width: '300px', height: '300px'}"></div>
@@ -10,6 +10,49 @@
             <div class="oppCharts_b_c">
                 <div id="chart016" :style="{width: '300px', height: '300px'}"></div>
             </div>
+        </div>
+        <div class="oppCharts_t">
+            <el-table :data="amounts" style="width: 100%" border>
+                <el-table-column prop="title" label=" " min-width="150">
+                    <template slot-scope="scope">金额</template>
+                </el-table-column>
+                <el-table-column prop="target" label="金额目标" min-width="150" />
+                <el-table-column prop="opportunity_achievement" label="预计当月成交金额" min-width="150" />
+                <el-table-column prop="deal" label="当月已成交" min-width="150" />
+                <el-table-column prop="difference" label="差额" min-width="150" />
+                <el-table-column prop="fail" label="失败" min-width="150" />
+            </el-table>
+        </div>
+        <div class="oppCharts_t">
+             <el-table :data="moneyList" border stripe style="width:100%">
+                <template v-for="item in colList">
+                    <el-table-column :label="item.name" :prop="item.col" :key="item.index" show-overflow-tooltip :min-width="item.width"></el-table-column>
+                </template>
+            </el-table>
+        </div>
+        <div class="oppCharts_t">
+            <table class="el-table" style="width:100%;" cellspacing="0">
+                <tr>
+                    <th></th>
+                    <th v-for="(item,i) in weekAmount" style="padding-left:10px;">{{item.title}}</th>
+                </tr>
+                <tr>
+                    <td style="padding-left:10px;">预计成交金额</td>
+                    <td v-for="(item,i) in weekAmount" style="padding-left:10px;">{{item.opportunity_achievement}}</td>
+                </tr>
+                <tr>
+                    <td style="padding-left:10px;">预计占比</td>
+                    <td v-for="(item,i) in weekAmount" style="padding-left:10px;">{{item.estimateProportions}}</td>
+                </tr>
+                <tr>
+                    <td style="padding-left:10px;">实际成交</td>
+                    <td v-for="(item,i) in weekAmount" style="padding-left:10px;">{{item.deal}}</td>
+                </tr>
+                <tr>
+                    <td style="padding-left:10px;">实际占比</td>
+                    <td v-for="(item,i) in weekAmount" style="padding-left:10px;">{{item.actualProportion}}</td>
+                </tr>
+            </table>
         </div>
     </div>
 </template>
@@ -28,7 +71,7 @@
         store,
         computed:{
             loadData(){
-                return store.state.oppChartsData.id
+                return store.state.oppChartsDataId
             },
         },
         data() {
@@ -36,11 +79,14 @@
                 collapse: false,
                 collapse5: false,
                 
-                rate:null,
+                rate:0,
                 cycle:[],
                 stageAmount:[],
                 amounts:[],
                 weekAmount:[],
+
+                moneyList:[],
+                colList:[],
 
             }
         },
@@ -64,13 +110,10 @@
             loadChart(){
                 const _this = this
                 let oppChartsData = this.$store.state.oppChartsData
-                this.rate = null
                 this.cycle = []
                 this.stageAmount = []
-                this.amounts = []
-                this.weekAmount = []
                 
-                if(oppChartsData){
+                // if(oppChartsData){
                     // console.log(oppChartsData)
                     // 目标达成率和预测周期
                     this.rate = oppChartsData.rateAndCycle.achievement_rate
@@ -83,23 +126,76 @@
                     oppChartsData.stageAmount.forEach(a => {
                         this.stageAmount.push({name:a.step_name,value:a.proportion})
                     });
-                    // // 商机完成金额、预计成交金额、失败金额
-                    // oppChartsData.amounts.forEach(a => {
-                    //     this.stateData.push({name:a.typeName,value:a.num})
-                    // });
-                    // // 本月每周预计成交金额
-                    // oppChartsData.weekAmount.forEach(a => {
-                    //     this.stateData.push({name:a.typeName,value:a.num})
-                    // });
-                }
-                this.$options.methods.drawLine.bind(this)()
-                
+                    // 商机完成金额、预计成交金额、失败金额
+                    this.amounts = oppChartsData.amounts.opportunityStageMoney
+                    this.moneyList = [oppChartsData.amounts.money]
+                    _this.colList = []
+                    oppChartsData.stageAmount.forEach(el => {
+                        _this.colList.push({index:el.sort,name:el.step_name,col:el.col,width:'140'},)
+                    });
+                    // 本月每周预计成交金额
+                    this.weekAmount = oppChartsData.weekAmount
+
+                    this.$options.methods.drawLine.bind(this)()
+                // }
             },
             drawLine(){
                 // 基于准备好的dom，初始化echarts实例
                 let chart015 = echarts.init(document.getElementById('chart015'))
                 let chart016 = echarts.init(document.getElementById('chart016'))
                 
+                chart015.setOption({
+                    title: {
+                        text: '商机预测周期占比', // 标题文本
+                        left: 'center',
+                        top: 10
+                    },
+                    tooltip : {
+                        trigger: 'item',
+                        formatter: "{a}：" + "{b} <br/> " + '占比：' + "{c}"
+                    },
+                    series : [{
+                        name:'商机周期',  // 提示框标题
+                        type: 'pie',
+                        radius : '60%',
+                        center: ['50%', '50%'],
+                        selectedMode: 'single',
+                        data: this.cycle,// 扇形区域数据
+                        itemStyle: {
+                            emphasis: {
+                                shadowBlur: 10,
+                                shadowOffsetX: 0,
+                                shadowColor: 'rgba(0, 0, 0, 0.5)'
+                            }
+                        }
+                    }]
+                });
+                chart016.setOption({
+                    title: {
+                        text: '商机阶段占比', // 标题文本
+                        left: 'center',
+                        top: 10
+                    },
+                    tooltip : {
+                        trigger: 'item',
+                        formatter: "{a}：" + "{b} <br/> " + '占比：' + "{c}"
+                    },
+                    series : [{
+                        name:'商机阶段',  // 提示框标题
+                        type: 'pie',
+                        radius : '60%',
+                        center: ['50%', '50%'],
+                        selectedMode: 'single',
+                        data: this.stageAmount,// 扇形区域数据
+                        itemStyle: {
+                            emphasis: {
+                                shadowBlur: 10,
+                                shadowOffsetX: 0,
+                                shadowColor: 'rgba(0, 0, 0, 0.5)'
+                            }
+                        }
+                    }]
+                });
             },
         },
     }
@@ -133,17 +229,23 @@
         top: 246px;
         width: calc(100% - 197px);
         height: calc(100% - 246px);
-        margin-right: 80px;
+        margin-right: 50px;
         background-color: #fdfeff;
         z-index: 999;
         overflow-y: overlay
     }
     .oppCharts_b{
         width: 100%;
-        height: 100%;
+        height: 300px;
         display: flex;
         flex-wrap: wrap;
-        align-items: center;
+        /* align-items: center; */
+    }
+    .oppCharts_t{
+        width: 100%;
+        height: auto;
+        display: flex;
+        flex-wrap: wrap;
     }
     .oppCharts_b .oppCharts_b_c{
         flex: 0 0 calc(33% - 10px);
@@ -154,6 +256,10 @@
     }
     .oppCharts_b .oppCharts_b_c > div{
         margin:0 auto
+    }
+    .oppCharts_b .oppCharts_b_c .el-progress--circle{
+        margin-left: calc(50% - 63px);
+        margin-top: 87px;
     }
     .charts-collapse{
         left: 80px;

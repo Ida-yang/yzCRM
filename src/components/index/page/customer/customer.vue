@@ -867,10 +867,6 @@
 </script>
 
 <style>
-    .el-table td, .el-table th {
-        padding: 6px 0 !important;
-        line-height: 30px;
-    }
     .diamood_red,.diamood_blue,.diamood_red_h,.diamood_blue_h{
         font-size: 18px;
         float: left;

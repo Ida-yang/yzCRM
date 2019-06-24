@@ -674,9 +674,8 @@
                     data.deptid = _this.$store.state.insid
                 }
                 data.yearMonth = y + '-' + m
-
+                
                 let flag = false
-                _this.$store.state.oppChartsData.id = 'opp' + new Date().getTime()
                 // 目标达成率和预测周期
                 axios({
                     method: 'post',
@@ -713,19 +712,19 @@
                     _this.$store.state.oppChartsData.weekAmount = res.data
                 }).catch(function(err){
                 });
+                
+                _this.$store.state.oppChartsDataId = 'opp' + new Date().getTime()
                 if(flag) return
 
-                // console.log(_this.$store.state.oppChartsData)
-                _this.collapse5 = !_this.collapse5
-                bus.$emit('collapse5', _this.collapse5)
+                console.log(_this.$store.state.oppChartsData)
+                setTimeout(() => {
+                    _this.collapse5 = !_this.collapse5
+                    bus.$emit('collapse5', _this.collapse5)
+                }, 500);
             },
         },
     }
 </script>
 
 <style>
-    .el-table td, .el-table th {
-        padding: 6px 0 !important;
-        line-height: 30px;
-    }
 </style>

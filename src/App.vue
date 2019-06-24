@@ -102,12 +102,14 @@
     }
     .el-table th {
         font-size: 14px;
-        background: #eef1f6;
+        background-color: #f7f7f7;
+        /* background: #eef1f6; */
     }
     .el-table td,
     .el-table th {
         padding: 8px 0;
-        line-height: 30px;
+        line-height: 23px;
+        border-right: 1px solid #ebeef5
     }
     .el-table--border::after,
     .el-table--border::before {
