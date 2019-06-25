@@ -103,6 +103,7 @@
     .el-table th {
         font-size: 14px;
         background-color: #f7f7f7;
+        color: #1f2d3d
         /* background: #eef1f6; */
     }
     .el-table td,
@@ -618,6 +619,7 @@
         flex: 0 0 250px;
         height: 100%;
         padding-top: 30px;
+        padding-bottom: 30px;
         box-sizing: border-box;
         overflow-y: scroll;
         overflow-x: hidden;

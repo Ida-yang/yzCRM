@@ -15,6 +15,7 @@
         <div class="entry">
             <el-button class="btn info-btn" size="mini" @click="handleAdd()">新增</el-button>
             <el-button class="btn info-btn" size="mini" @click="handleDeletes()">删除</el-button>
+            <el-button class="btn info-btn" size="mini" @click="showsend()">发送短信</el-button>
 
             <div class="totalnum_head">共 <span class="bold_span">{{tableNumber}}</span> 条</div>
 
@@ -85,6 +86,29 @@
                 :total="tableNumber">
             </el-pagination>
         </div>
+
+        <el-dialog title="发送短信" :visible.sync="dialogVisible" :close-on-click-modal="false" width="40%">
+            <el-form ref="newform" :model="newform" label-width="110px" :rules="rules" style="padding-right:30px">
+                <el-form-item prop="culnum" label="培育池选择量">
+                    <el-input v-model="newform.culnum" :disabled="true"></el-input>
+                </el-form-item>
+                <el-form-item prop="templateId" label="短信模板">
+                    <el-select v-model="newform.templateId" placeholder="请选择" style="width:100%" @change="changetemplate">
+                        <el-option v-for="item in templateList" :key="item.templateId" :label="item.title" :value="item.templateId"></el-option>
+                    </el-select>
+                </el-form-item>
+                <el-form-item prop="smscontent" label="短信内容">
+                    <el-input type="textarea" rows="5" v-model="newform.smscontent"  :disabled="true"></el-input>
+                </el-form-item>
+                <el-form-item prop="explain" label="说明">
+                    <el-input type="textarea" rows="5" v-model="newform.explain" placeholder="请输入短信说明"></el-input>
+                </el-form-item>
+            </el-form>
+            <span slot="footer" class="dialog-footer">
+                <el-button @click="dialogVisible = false">取 消</el-button>
+                <el-button type="primary" @click="sendSMS()">确 定</el-button>
+            </span>
+        </el-dialog>
     </div>
 </template>
 
@@ -124,6 +148,22 @@
                 ],
 
                 idArr:[],
+                SMSId:[],
+                SMSnames:[],
+                SMSphones:[],
+                SMScontacts:[],
+
+                dialogVisible:false,
+                templateList:null,
+                newform:{
+                    templateId:null,
+                    culnum:null,
+                    explain:null,
+                    smscontent:null,
+                },
+                rules: {
+                    templateId : [{ required: true, message: '短信模板不能为空', trigger: 'blur' },],
+                },
 
                 downloadUrl: this.$store.state.systemHttp+'upload/culture_pool_template.xls',
             }
@@ -153,6 +193,24 @@
                     // console.log(err);
                 });
             },
+            loadTemplate(){
+                const _this = this;
+                let qs =require('querystring')
+                let data = {}
+                data.type = '营销'
+                data.genre = '营销类'
+                data.status = '2'
+                
+                axios({
+                    method: 'post',
+                    url: _this.$store.state.defaultHttp+'template/selectTemplate.do?cId='+_this.$store.state.iscId,
+                    data:qs.stringify(data)
+                }).then(function(res){
+                    _this.templateList = res.data.map.templates
+                }).catch(function(err){
+                    // console.log(err);
+                });
+            },
             openDetails(index,row){
                 this.$store.state.culturePondetailData = {id:row.id}
                 this.$router.push({ path: '/culturePondetail' });
@@ -161,9 +219,17 @@
                 const _this = this
                 let arr = val;
                 let newArr = [new Array()];
+                this.SMSId = []
+                this.SMSnames = []
+                this.SMSphones = []
+                this.SMScontacts = []
                 arr.forEach((item) => {
                     if(item.id != 0){
                         newArr.push(item.id)
+                        _this.SMSId.push(item.id)
+                        _this.SMSnames.push(item.name)
+                        _this.SMSphones.push(item.phone)
+                        _this.SMScontacts.push(item.contacts)
                     }
                 });
                 this.idArr = newArr;
@@ -316,6 +382,98 @@
                 }).catch((e) => {
                     _this.$message.error("excel上传失败，请重新上传");
                 })
+            },
+            changetemplate(val){
+                this.templateList.forEach(el => {
+                    if(el.templateId == val){
+                        this.newform.smscontent = el.content
+                    }
+                });
+            },
+            showsend(){
+                const _this = this
+                if(this.SMSId[0]){
+                    axios({
+                        method: 'get',
+                        url: _this.$store.state.defaultHttp+'clueJurisdiction/send.do',//线索发送短信
+                    }).then(function(res){
+                        if(res.data.msg && res.data.msg == 'error'){
+                            _this.$message({
+                                message:'对不起，您没有该权限，请联系管理员开通',
+                                type:'error'
+                            })
+                        }else{
+                            _this.$options.methods.loadTemplate.bind(_this)()
+                            _this.newform.culnum = _this.SMSId.length
+                            _this.newform.templateId = ''
+                            _this.newform.explain = ''
+                            _this.newform.smscontent = ''
+                            _this.dialogVisible = true
+                        }
+                    }).catch(function(err){
+                        // console.log(err);
+                    });
+                    
+                }else{
+                    this.$message({
+                        type: 'error',
+                        message: '请先选择要发送短信的线索'
+                    }); 
+                }
+            },
+            sendSMS(){
+                const _this = this
+                let qs = require('querystring')
+                let data = {}
+                data.names = this.SMSnames
+                data.phones = this.SMSphones
+                data.contacts = this.SMScontacts
+                data.templateId = this.newform.templateId
+
+                axios({
+                    method: 'post',
+                    url: _this.$store.state.defaultHttp+'message/sendMarketingMsg.do?cId='+_this.$store.state.iscId,
+                    data: qs.stringify(data)
+                }).then(function(res){
+                    if(res.data.code && res.data.code == '200'){
+                        _this.$message({
+                            message:'发送成功',
+                            type:'success'
+                        })
+                        _this.$options.methods.addSMSsended.bind(_this)()
+                        _this.dialogVisible = false
+                    }else{
+                        _this.$message({
+                            message:res.data.msg,
+                            type:'error'
+                        })
+                    }
+                }).catch(function(err){
+                    // console.log(err);
+                });
+            },
+            addSMSsended(){
+                const _this = this
+                let qs = require('querystring')
+                let data2 = {}
+                data2.type = '培育池'
+                data2.ids = this.SMSId
+                data2.names = this.SMSnames
+                data2.phones = this.SMSphones
+                data2.contacts = this.SMScontacts
+                data2.templateId = this.newform.templateId   
+                data2.explain = this.newform.explain
+                data2.pId = this.$store.state.ispId
+                data2.secondid = this.$store.state.deptid
+                data2.deptid = this.$store.state.insid
+
+                axios({
+                    method: 'post',
+                    url: _this.$store.state.defaultHttp+'sendRecord/insertSendRecord.do?cId='+_this.$store.state.iscId,
+                    data: qs.stringify(data2)
+                }).then(function(res){
+                }).catch(function(err){
+                });
             },
 
             search(){

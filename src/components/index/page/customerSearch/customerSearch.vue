@@ -450,7 +450,6 @@
             },
             openDetails(index,row){
                 this.$store.state.searchdetailsData = row.id
-                // this.showdetails = true
                 this.showdetails = true
                 bus.$emit('showdetails', this.showdetails);
                 // this.$router.push({ path: '/searchDetails' });

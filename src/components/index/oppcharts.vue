@@ -12,8 +12,9 @@
             </div>
         </div>
         <div class="oppCharts_t">
+            <div class="oppEntry">当月预计成交金额分析</div>
             <el-table :data="amounts" style="width: 100%" border>
-                <el-table-column prop="title" label=" " min-width="150">
+                <el-table-column prop="title" label="" min-width="150">
                     <template slot-scope="scope">金额</template>
                 </el-table-column>
                 <el-table-column prop="target" label="金额目标" min-width="150" />
@@ -24,13 +25,15 @@
             </el-table>
         </div>
         <div class="oppCharts_t">
-             <el-table :data="moneyList" border stripe style="width:100%">
+            <div class="oppEntry">当月商机阶段占比分析（阶段越往后且金额越大越有利）</div>
+             <el-table :data="moneyList" border stripe style="width:100%;">
                 <template v-for="item in colList">
                     <el-table-column :label="item.name" :prop="item.col" :key="item.index" show-overflow-tooltip :min-width="item.width"></el-table-column>
                 </template>
             </el-table>
         </div>
         <div class="oppCharts_t">
+            <div class="oppEntry">当月商机成交周期分析（周期越往前且金额越大越有利）</div>
             <table class="el-table" style="width:100%;" cellspacing="0">
                 <tr>
                     <th></th>
@@ -71,7 +74,7 @@
         store,
         computed:{
             loadData(){
-                return store.state.oppChartsDataId
+                return store.state.oppChartsData
             },
         },
         data() {
@@ -109,40 +112,61 @@
         methods:{
             loadChart(){
                 const _this = this
-                let oppChartsData = this.$store.state.oppChartsData
+                let qs = require('querystring')
+                let data = this.$store.state.oppChartsData
                 this.cycle = []
                 this.stageAmount = []
-                
-                // if(oppChartsData){
-                    // console.log(oppChartsData)
-                    // 目标达成率和预测周期
-                    this.rate = oppChartsData.rateAndCycle.achievement_rate
-                    this.cycle.push(
-                        {name:'预计7天成交金额',value:oppChartsData.rateAndCycle.day7},
-                        {name:'预计15天成交金额',value:oppChartsData.rateAndCycle.day15},
-                        {name:'预计30天成交金额',value:oppChartsData.rateAndCycle.day30},
-                    )
-                    // 各个商机阶段的预计成交金额
-                    oppChartsData.stageAmount.forEach(a => {
-                        this.stageAmount.push({name:a.step_name,value:a.proportion})
-                    });
-                    // 商机完成金额、预计成交金额、失败金额
-                    this.amounts = oppChartsData.amounts.opportunityStageMoney
-                    this.moneyList = [oppChartsData.amounts.money]
-                    _this.colList = []
-                    oppChartsData.stageAmount.forEach(el => {
-                        _this.colList.push({index:el.sort,name:el.step_name,col:el.col,width:'140'},)
-                    });
-                    // 本月每周预计成交金额
-                    this.weekAmount = oppChartsData.weekAmount
+                this.colList = []
 
-                    this.$options.methods.drawLine.bind(this)()
-                // }
+                axios({
+                    method: 'post',
+                    url: _this.$store.state.defaultHttp+'opportunity/opportunityPredictionPeriod.do?cId='+_this.$store.state.iscId,
+                    data: qs.stringify(data)
+                }).then(function(res){
+                    _this.cycle.push(
+                        {name:'预计7天成交金额',value:res.data.day7},
+                        {name:'预计15天成交金额',value:res.data.day15},
+                        {name:'预计30天成交金额',value:res.data.day30},
+                    )
+                    _this.$options.methods.drawLine1.bind(_this)()
+                }).catch(function(err){
+                });
+                // 各个商机阶段的预计成交金额
+                axios({
+                    method: 'post',
+                    url: _this.$store.state.defaultHttp+'opportunity/opportunitySumAchievement.do?cId='+_this.$store.state.iscId,
+                    data: qs.stringify(data)
+                }).then(function(res){
+                    res.data.forEach(a => {
+                        _this.stageAmount.push({name:a.step_name,value:a.proportion})
+                        _this.colList.push({index:a.sort,name:a.step_name,col:a.col,width:'110'},)
+                    });
+                    _this.$options.methods.drawLine2.bind(_this)()
+                }).catch(function(err){
+                });
+                // 商机完成金额、预计成交金额、失败金额
+                axios({
+                    method: 'post',
+                    url: _this.$store.state.defaultHttp+'opportunity/opportunityStageMoney.do?cId='+_this.$store.state.iscId,
+                    data: qs.stringify(data)
+                }).then(function(res){
+                    _this.amounts = res.data.opportunityStageMoney
+                    _this.moneyList = [res.data.money]
+                }).catch(function(err){
+                });
+                // // 本月每周预计成交金额
+                axios({
+                    method: 'post',
+                    url: _this.$store.state.defaultHttp+'opportunity/opportunityAchievementWeek.do?cId='+_this.$store.state.iscId,
+                    data: qs.stringify(data)
+                }).then(function(res){
+                    _this.weekAmount = res.data
+                }).catch(function(err){
+                });
             },
-            drawLine(){
+            drawLine1(){
                 // 基于准备好的dom，初始化echarts实例
                 let chart015 = echarts.init(document.getElementById('chart015'))
-                let chart016 = echarts.init(document.getElementById('chart016'))
                 
                 chart015.setOption({
                     title: {
@@ -170,6 +194,11 @@
                         }
                     }]
                 });
+            },
+            drawLine2(){
+                // 基于准备好的dom，初始化echarts实例
+                let chart016 = echarts.init(document.getElementById('chart016'))
+                
                 chart016.setOption({
                     title: {
                         text: '商机阶段占比', // 标题文本
@@ -239,13 +268,10 @@
         height: 300px;
         display: flex;
         flex-wrap: wrap;
-        /* align-items: center; */
     }
     .oppCharts_t{
         width: 100%;
-        height: auto;
-        display: flex;
-        flex-wrap: wrap;
+        margin-bottom: 20px;
     }
     .oppCharts_b .oppCharts_b_c{
         flex: 0 0 calc(33% - 10px);
@@ -264,6 +290,16 @@
     .charts-collapse{
         left: 80px;
         width: calc(100% - 112px);
+    }
+    .oppEntry{
+        width: 100%;
+        height: 50px;
+        line-height: 50px;
+        font-size: 18px;
+        text-align: center;
+        font-weight: bold;
+        background-color: #f7f7f7;
+        color: #1f2d3d
     }
 </style>
 

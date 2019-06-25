@@ -312,6 +312,11 @@ const router =new Router({
           meta: { title: '编辑培育池', requireAuth:true}
         },
         {
+          path: '/cusportrait',
+          component: resolve => require(['../components/index/page/basicset/cusportrait.vue'], resolve),
+          meta: { title: '客户画像', name:'cusportrait', requireAuth:true}
+        },
+        {
           path: '/name',
           component: resolve => require(['../components/index/page/product/name.vue'], resolve),
           meta: { title: '名字',requireAuth:true}

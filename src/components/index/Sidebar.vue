@@ -306,10 +306,14 @@
                             {
                                 index: 'user',
                                 title: '用户管理',
-                            }, 
+                            },
                             {
                                 index: 'basicset',
                                 title: '辅助资料'
+                            },
+                            {
+                                index: 'cusportrait',
+                                title: '客户画像'
                             },
                             {
                                 index: 'approvalProcess',
