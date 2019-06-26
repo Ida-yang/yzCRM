@@ -191,7 +191,7 @@ router.afterEach( ( to, from, next ) => {
   (function() {
     var hm = document.createElement("script");
     hm.src = "https://hm.baidu.com/hm.js?419f9fb8b9f5e52971e7e52c328860a8";
-    var s = document.getElementsByTagName("script")[0]; 
+    var s = document.getElementsByTagName("script")[0];
     s.parentNode.insertBefore(hm, s);
   })();
  });

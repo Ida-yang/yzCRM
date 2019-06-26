@@ -2,6 +2,7 @@
     <div id="oppCharts_c" class="oppCharts_c" :class="{'charts-collapse':collapse}" v-show="collapse5">
         <div class="oppCharts_b">
             <div class="oppCharts_b_c">
+                <div class="rateEntry">目标占比</div>
                 <el-progress type="circle" :percentage="rate" :stroke-width="8"></el-progress>
             </div>
             <div class="oppCharts_b_c">
@@ -12,48 +13,47 @@
             </div>
         </div>
         <div class="oppCharts_t">
-            <div class="oppEntry">当月预计成交金额分析</div>
-            <el-table :data="amounts" style="width: 100%" border>
-                <el-table-column prop="title" label="" min-width="150">
-                    <template slot-scope="scope">金额</template>
-                </el-table-column>
-                <el-table-column prop="target" label="金额目标" min-width="150" />
-                <el-table-column prop="opportunity_achievement" label="预计当月成交金额" min-width="150" />
-                <el-table-column prop="deal" label="当月已成交" min-width="150" />
-                <el-table-column prop="difference" label="差额" min-width="150" />
-                <el-table-column prop="fail" label="失败" min-width="150" />
+            <!-- <div class="oppEntry">当月预计成交金额分析</div> -->
+            <el-table :data="amounts" border stripe style="width:100%;">
+                <el-table-column prop="title" label="" width="200" />
+                <el-table-column prop="target" label="金额目标" width="200" />
+                <el-table-column prop="opportunity_achievement" label="预计当月成交金额" width="200" />
+                <el-table-column prop="deal" label="当月已成交" width="200" />
+                <el-table-column prop="difference" label="差额" width="200" />
+                <el-table-column prop="fail" label="失败" width="200" />
             </el-table>
         </div>
         <div class="oppCharts_t">
-            <div class="oppEntry">当月商机阶段占比分析（阶段越往后且金额越大越有利）</div>
-             <el-table :data="moneyList" border stripe style="width:100%;">
+            <!-- <div class="oppEntry">当月商机阶段占比分析（阶段越往后且金额越大越有利）</div> -->
+             <el-table :data="moneyList" border stripe>
                 <template v-for="item in colList">
-                    <el-table-column :label="item.name" :prop="item.col" :key="item.index" show-overflow-tooltip :min-width="item.width"></el-table-column>
+                    <el-table-column :label="item.name" :prop="item.col" :key="item.index" show-overflow-tooltip width="200"></el-table-column>
                 </template>
             </el-table>
         </div>
         <div class="oppCharts_t">
-            <div class="oppEntry">当月商机成交周期分析（周期越往前且金额越大越有利）</div>
-            <table class="el-table" style="width:100%;" cellspacing="0">
+            <!-- <div class="oppEntry">当月商机成交周期分析（周期越往前且金额越大越有利）</div> -->
+            <table class="el-table" style="width:1400px" cellspacing="0">
+            <!-- <table class="el-table" style="width:100%;" cellspacing="0"> -->
                 <tr>
-                    <th></th>
-                    <th v-for="(item,i) in weekAmount" style="padding-left:10px;">{{item.title}}</th>
+                    <th style=""></th>
+                    <th v-for="(item,i) in weekAmount" :key="i" style="padding-left:10px;">{{item.title}}</th>
                 </tr>
                 <tr>
                     <td style="padding-left:10px;">预计成交金额</td>
-                    <td v-for="(item,i) in weekAmount" style="padding-left:10px;">{{item.opportunity_achievement}}</td>
+                    <td v-for="(item,i) in weekAmount" :key="i" style="padding-left:10px;">{{item.opportunity_achievement}}</td>
                 </tr>
                 <tr>
                     <td style="padding-left:10px;">预计占比</td>
-                    <td v-for="(item,i) in weekAmount" style="padding-left:10px;">{{item.estimateProportions}}</td>
+                    <td v-for="(item,i) in weekAmount" :key="i" style="padding-left:10px;">{{item.estimateProportions}}</td>
                 </tr>
                 <tr>
                     <td style="padding-left:10px;">实际成交</td>
-                    <td v-for="(item,i) in weekAmount" style="padding-left:10px;">{{item.deal}}</td>
+                    <td v-for="(item,i) in weekAmount" :key="i" style="padding-left:10px;">{{item.deal}}</td>
                 </tr>
                 <tr>
                     <td style="padding-left:10px;">实际占比</td>
-                    <td v-for="(item,i) in weekAmount" style="padding-left:10px;">{{item.actualProportion}}</td>
+                    <td v-for="(item,i) in weekAmount" :key="i" style="padding-left:10px;">{{item.actualProportion}}</td>
                 </tr>
             </table>
         </div>
@@ -117,16 +117,18 @@
                 this.cycle = []
                 this.stageAmount = []
                 this.colList = []
+                this.moneyList = []
 
                 axios({
                     method: 'post',
                     url: _this.$store.state.defaultHttp+'opportunity/opportunityPredictionPeriod.do?cId='+_this.$store.state.iscId,
                     data: qs.stringify(data)
                 }).then(function(res){
+                    _this.rate = res.data.achievement_rate
                     _this.cycle.push(
                         {name:'预计7天成交金额',value:res.data.day7},
                         {name:'预计15天成交金额',value:res.data.day15},
-                        {name:'预计30天成交金额',value:res.data.day30},
+                        {name:'预计本月成交金额',value:res.data.day30},
                     )
                     _this.$options.methods.drawLine1.bind(_this)()
                 }).catch(function(err){
@@ -139,7 +141,7 @@
                 }).then(function(res){
                     res.data.forEach(a => {
                         _this.stageAmount.push({name:a.step_name,value:a.proportion})
-                        _this.colList.push({index:a.sort,name:a.step_name,col:a.col,width:'110'},)
+                        _this.colList.push({index:a.sort,name:a.step_name,col:a.col},)
                     });
                     _this.$options.methods.drawLine2.bind(_this)()
                 }).catch(function(err){
@@ -151,7 +153,10 @@
                     data: qs.stringify(data)
                 }).then(function(res){
                     _this.amounts = res.data.opportunityStageMoney
-                    _this.moneyList = [res.data.money]
+                    _this.amounts.forEach(el => {
+                        el.title = '金额'
+                    });
+                    _this.moneyList.push(res.data.money)
                 }).catch(function(err){
                 });
                 // // 本月每周预计成交金额
@@ -256,9 +261,9 @@
         position: fixed;
         left: 165px;
         top: 246px;
-        width: calc(100% - 197px);
+        width: calc(100% - 177px);
         height: calc(100% - 246px);
-        margin-right: 50px;
+        margin-right: 20px;
         background-color: #fdfeff;
         z-index: 999;
         overflow-y: overlay
@@ -271,7 +276,7 @@
     }
     .oppCharts_t{
         width: 100%;
-        margin-bottom: 20px;
+        margin-bottom: 80px;
     }
     .oppCharts_b .oppCharts_b_c{
         flex: 0 0 calc(33% - 10px);
@@ -285,11 +290,11 @@
     }
     .oppCharts_b .oppCharts_b_c .el-progress--circle{
         margin-left: calc(50% - 63px);
-        margin-top: 87px;
+        margin-top: 37px;
     }
     .charts-collapse{
         left: 80px;
-        width: calc(100% - 112px);
+        width: calc(100% - 92px);
     }
     .oppEntry{
         width: 100%;
@@ -300,6 +305,14 @@
         font-weight: bold;
         background-color: #f7f7f7;
         color: #1f2d3d
+    }
+    .rateEntry{
+        width: 100%;
+        height: 50px;
+        line-height: 50px;
+        font-size: 18px;
+        text-align: center;
+        font-weight: bold;
     }
 </style>
 

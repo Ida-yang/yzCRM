@@ -246,7 +246,7 @@
                 :current-page="page"
                 :page-sizes="[20, 30, 50, 100]"
                 :page-size="20"
-                layout="total, sizes, prev, pager, next"
+                layout="total, sizes, prev, next"
                 :total="tableNumber">
                 </el-pagination>
             </div>

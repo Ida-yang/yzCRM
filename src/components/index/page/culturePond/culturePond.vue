@@ -16,6 +16,7 @@
             <el-button class="btn info-btn" size="mini" @click="handleAdd()">新增</el-button>
             <el-button class="btn info-btn" size="mini" @click="handleDeletes()">删除</el-button>
             <el-button class="btn info-btn" size="mini" @click="showsend()">发送短信</el-button>
+            <el-button class="btn info-btn" size="mini" @click="showemail()">发送邮件</el-button>
 
             <div class="totalnum_head">共 <span class="bold_span">{{tableNumber}}</span> 条</div>
 
@@ -109,6 +110,21 @@
                 <el-button type="primary" @click="sendSMS()">确 定</el-button>
             </span>
         </el-dialog>
+
+        <el-dialog title="发送邮件" :visible.sync="dialogVisible2" :close-on-click-modal="false" width="40%">
+            <el-form ref="newform" :model="newform" label-width="110px" :rules="rules" style="padding-right:30px">
+                <el-form-item prop="culnum" label="培育池选择量">
+                    <el-input v-model="newform.culnum" :disabled="true"></el-input>
+                </el-form-item>
+                <el-form-item prop="templateId" label="邮件模板ID">
+                    <el-input v-model="newform.templateId" placeholder="例如：rtqfM2"></el-input>
+                </el-form-item>
+            </el-form>
+            <span slot="footer" class="dialog-footer">
+                <el-button @click="dialogVisible2 = false">取 消</el-button>
+                <el-button type="primary" @click="sendEmail()">确 定</el-button>
+            </span>
+        </el-dialog>
     </div>
 </template>
 
@@ -136,15 +152,14 @@
                 limit:20,
                 searchList:{
                     searchName:null,
-                    searchOption:'1',
-                    label:'1'
+                    label:1
                 },
 
                 pIdData:[
-                    {index:'0',name:'全部'},
-                    {index:'1',name:'我的'},
-                    {index:'2',name:'本组'},
-                    {index:'3',name:'本机构'},
+                    {index:0,name:'全部'},
+                    {index:1,name:'我的'},
+                    {index:2,name:'本组'},
+                    {index:3,name:'本机构'},
                 ],
 
                 idArr:[],
@@ -152,8 +167,10 @@
                 SMSnames:[],
                 SMSphones:[],
                 SMScontacts:[],
+                SMSemails:[],
 
                 dialogVisible:false,
+                dialogVisible2:false,
                 templateList:null,
                 newform:{
                     templateId:null,
@@ -179,6 +196,16 @@
                 const _this = this
                 let qs = require('querystring')
                 let data = {}
+                if(this.searchList.label == 0 ){
+                    data.pId = null
+                }else if(this.searchList.label == 1){
+                    data.pId = _this.$store.state.ispId
+                }else if(this.searchList.label == 2){
+                    data.secondid = _this.$store.state.deptid
+                }else if(this.searchList.label == 3){
+                    data.deptid = _this.$store.state.insid
+                }
+                data.searchName = this.searchList.searchName
                 data.page = this.page
                 data.limit = this.limit
 
@@ -223,6 +250,7 @@
                 this.SMSnames = []
                 this.SMSphones = []
                 this.SMScontacts = []
+                this.SMSemails = []
                 arr.forEach((item) => {
                     if(item.id != 0){
                         newArr.push(item.id)
@@ -230,6 +258,7 @@
                         _this.SMSnames.push(item.name)
                         _this.SMSphones.push(item.phone)
                         _this.SMScontacts.push(item.contacts)
+                        _this.SMSemails.push(item.email)
                     }
                 });
                 this.idArr = newArr;
@@ -393,31 +422,16 @@
             showsend(){
                 const _this = this
                 if(this.SMSId[0]){
-                    axios({
-                        method: 'get',
-                        url: _this.$store.state.defaultHttp+'clueJurisdiction/send.do',//线索发送短信
-                    }).then(function(res){
-                        if(res.data.msg && res.data.msg == 'error'){
-                            _this.$message({
-                                message:'对不起，您没有该权限，请联系管理员开通',
-                                type:'error'
-                            })
-                        }else{
-                            _this.$options.methods.loadTemplate.bind(_this)()
-                            _this.newform.culnum = _this.SMSId.length
-                            _this.newform.templateId = ''
-                            _this.newform.explain = ''
-                            _this.newform.smscontent = ''
-                            _this.dialogVisible = true
-                        }
-                    }).catch(function(err){
-                        // console.log(err);
-                    });
-                    
+                    _this.$options.methods.loadTemplate.bind(_this)()
+                    _this.newform.culnum = _this.SMSId.length
+                    _this.newform.templateId = ''
+                    _this.newform.explain = ''
+                    _this.newform.smscontent = ''
+                    _this.dialogVisible = true
                 }else{
                     this.$message({
                         type: 'error',
-                        message: '请先选择要发送短信的线索'
+                        message: '请先选择要发送短信的培育池'
                     }); 
                 }
             },
@@ -461,7 +475,7 @@
                 data2.names = this.SMSnames
                 data2.phones = this.SMSphones
                 data2.contacts = this.SMScontacts
-                data2.templateId = this.newform.templateId   
+                data2.templateId = this.newform.templateId
                 data2.explain = this.newform.explain
                 data2.pId = this.$store.state.ispId
                 data2.secondid = this.$store.state.deptid
@@ -472,6 +486,50 @@
                     url: _this.$store.state.defaultHttp+'sendRecord/insertSendRecord.do?cId='+_this.$store.state.iscId,
                     data: qs.stringify(data2)
                 }).then(function(res){
+                }).catch(function(err){
+                });
+            },
+
+            showemail(){
+                const _this = this
+                if(this.SMSId[0]){
+                    console.log(this.SMSId)
+                    console.log(this.SMSnames)
+                    console.log(this.SMSemails)
+                    _this.newform.culnum = _this.SMSId.length
+                    this.dialogVisible2 = true
+                }else{
+                    _this.$message({
+                        type: 'error',
+                        message: '请先选择要发送邮箱的培育池'
+                    }); 
+                }
+            },
+            sendEmail(){
+                const _this = this
+                let qs = require('querystring')
+                let data = {}
+                data.names = this.SMSnames
+                data.emails = this.SMSemails
+                data.templateId = this.newform.templateId
+
+                axios({
+                    method: 'post',
+                    url: _this.$store.state.defaultHttp+'message/mailXSend.do?cId='+_this.$store.state.iscId,
+                    data: qs.stringify(data)
+                }).then(function(res){
+                    if(res.data.code && res.data.code == '200'){
+                        _this.$message({
+                            message:'发送成功',
+                            type:'success'
+                        })
+                        _this.dialogVisible2 = false
+                    }else{
+                        _this.$message({
+                            message:res.data.msg,
+                            type:'error'
+                        })
+                    }
                 }).catch(function(err){
                 });
             },

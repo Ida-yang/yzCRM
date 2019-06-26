@@ -304,7 +304,7 @@
         position: fixed;
         left: 165px;
         top: 216px;
-        width: calc(100% - 197px);
+        width: calc(100% - 177px);
         height: calc(100% - 260px);
         margin-right: 80px;
         background-color: #fdfeff;
@@ -332,7 +332,7 @@
     }
     .charts-collapse{
         left: 80px;
-        width: calc(100% - 112px);
+        width: calc(100% - 92px);
     }
 </style>
 

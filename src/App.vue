@@ -227,6 +227,30 @@
         border: 1px solid #ddd;
         border-radius: 5px;
     }
+    
+    .addorupdatecontent {
+        width: 98%;
+        margin: 40px 15px 65px 0;
+        overflow-y: auto
+    }
+    .myForm {
+        width: 41%;
+        padding-left: 15px;
+        box-sizing: border-box;
+        float: left;
+    }
+    .line {
+        float: left;
+        /* height: 95%; */
+        border-left: 1px solid #000;
+        margin-right: 5px;
+    }
+    .formlist {
+        width: 57%;
+        height: auto;
+        float: left;
+    }
+
     .BarCodeBox {
         width: 20%;
         display: inline-block;
@@ -550,17 +574,6 @@
     }
     .pricon_sel {
         width: 150px;
-    }
-    .line {
-        float: left;
-        height: 95%;
-        border-left: 1px solid #000;
-        margin-right: 5px;
-    }
-    .formlist {
-        width: 57%;
-        height: auto;
-        float: left;
     }
     .totalnum_head {
         float: right;

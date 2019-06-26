@@ -72,11 +72,11 @@
         top: 40px;
         bottom:0;
         width: auto;
-        /* padding:10px 0; */
         padding: 0;
         margin: 0 15px;
         box-sizing: border-box;
-        overflow-x: hidden; overflow-y: auto; 
+        overflow-x: hidden; 
+        overflow-y: overlay; 
     }
     .el-form-item.is-required .el-form-item__label:before{
         content:'*';

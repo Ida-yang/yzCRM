@@ -1,19 +1,19 @@
 <template>
     <div>
         <div class="ap_top">
-            <el-form :inline="true" ref="myform" :model="myform" :rules="rules">
-                <el-form-item label="审核流名称" label-width="90px">
+            <el-form :inline="true" ref="myform" :model="myform" :rules="rules" label-width="100px">
+                <el-form-item label="审核流名称" prop="name">
                     <el-input v-model="myform.name" size="mini" style="width:200px;"></el-input>
                 </el-form-item>
-                <el-form-item label="关联对象" label-width="90px">
+                <el-form-item label="关联对象">
                     <el-select v-model="myform.categoryType" placeholder="请选择关联对象" size="mini">
                         <el-option v-for="item in AssociatedList" :key="item.id" :label="item.name" :value="item.id"></el-option>
                     </el-select>
                 </el-form-item>
-                <el-form-item label="备注" label-width="90px">
+                <el-form-item label="备注">
                     <el-input v-model="myform.remarks" size="mini" style="width:200px;"></el-input>
                 </el-form-item>
-                <el-form-item label="应用部门" label-width="90px">
+                <el-form-item label="应用部门" prop="deptNames">
                     <el-select v-model="myform.deptNames" multiple placeholder="请选择应用部门" size="mini" class="dept_select">
                         <el-option class="droplist" :value="myform.deptNames">
                             <el-tree 
@@ -33,7 +33,7 @@
         </div>
         <div class="ap_bottom">
             <div class="ap_level" v-for="item in levelList" :key="item.index" @mouseover="onmouseover(item)" @mouseleave="onmouseleave(item)">
-                <span class="nameList">{{item.name}}</span>
+                <span class="nameList"><span style="color:#f56c6c;margin-right:4px">*</span>{{item.name}}</span>
                 <el-select v-model="item.stepType" size="mini">
                     <el-option v-for="item in stepTypeList" :key="item.id" :label="item.stepName" :value="item.id"></el-option>
                 </el-select>
@@ -93,7 +93,10 @@
                     {id:3,stepName:'多人会签'},
                 ],
                 userList:[],
-                rules:{},
+                rules:{
+                    deptNames: [{ required: true, message: '应用部门不能为空', trigger: 'blur' },],
+                    name: [{ required: true, message: '审批流名称不能为空', trigger: 'blur' },],
+                },
 
                 isDisable:false,
                 showaddStep:true,

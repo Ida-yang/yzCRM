@@ -89,9 +89,9 @@
                     @size-change="handleSizeChange"
                     @current-change="handleCurrentChange"
                     :current-page="page"
-                    :page-sizes="[20, 30, 50, 100]"
-                    :page-size="20"
-                    layout="total, sizes, prev, pager, next"
+                    :page-sizes="[15, 30, 50, 100]"
+                    :page-size="15"
+                    layout="total, sizes, prev, next"
                     :total="tableNumber">
                 </el-pagination>
             </div>
@@ -119,7 +119,7 @@
                     keyword:null,
                 },
                 page:1,
-                limit:20,
+                limit:15,
 
                 activeName2:'first',
 

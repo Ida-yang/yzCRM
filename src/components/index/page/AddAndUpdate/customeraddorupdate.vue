@@ -1,10 +1,9 @@
 <template>
     <!-- 客户新增修改 -->
-    <div class="content">
+    <div class="addorupdatecontent">
         <el-tabs class="formtabs" v-model="activeName" type="card">
             <el-tab-pane label="主要数据" name="first">
                 <el-form :model="myForm" ref="myForm" class="cusForm" :rules="rules">
-                    <!-- <h3>{{cusaddOrUpdateData.title}}</h3> -->
                     <el-form-item
                         class="formitemcus"
                         label-width="100px"
@@ -105,11 +104,6 @@
                             <el-radio v-model="myForm[item.inputModel]" @input="handleInput($event, item.inputModel)" label="女">女</el-radio>
                         </div>
                     </el-form-item>
-                    <div style="float:right;margin:20px 60px;">
-                        <el-button type="primary" :disabled="isDisable" @click="submit">立即提交</el-button>
-                        &nbsp;&nbsp;
-                        <el-button @click="closeTag">取消</el-button>
-                    </div>
                 </el-form>
             </el-tab-pane>
             <el-tab-pane label="辅助资料" name="second">
@@ -210,7 +204,6 @@
             </el-tab-pane>
             <el-tab-pane label="订货资料" name="third">
                 <el-form :model="myForm" ref="myForm" class="cusForm" :rules="rules">
-                    <!-- <h3>{{cusaddOrUpdateData.title}}</h3> -->
                     <el-form-item
                         label-width="130px"
                         v-for="item in cusaddOrUpdateData.orderForm"
@@ -248,7 +241,7 @@
                 </el-form>
             </el-tab-pane>
         </el-tabs>
-        <div class="line"></div>
+        <div class="line" style="height:690px;"></div>
         <div class="formlist">
             <el-table :data="tableData" border stripe :default-sort = "{order: 'ascending'}" max-height="680">
                 <el-table-column header-align="center" align="center" width="35">
@@ -260,6 +253,11 @@
                 <el-table-column prop="address" show-overflow-tooltip min-width="200" label="公司地址" sortable />
                 <el-table-column prop="representative" min-width="90" label="法人" sortable />
             </el-table>
+        </div>
+        
+        <div class="submit_btn">
+            <el-button type="primary" :disabled="isDisable" @click="submit" style="margin-right:50px !important;">立即提交</el-button>
+            <el-button @click="closeTag">取消</el-button>
         </div>
     </div>
 </template>
@@ -767,9 +765,6 @@
 </script>
 
 <style>
-    .content {
-        width: 98%;
-    }
     .formtabs{
         width: 41%;
         float: left;

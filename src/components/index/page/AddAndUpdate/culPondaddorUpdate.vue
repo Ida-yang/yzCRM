@@ -1,13 +1,13 @@
 <template>
-    <div class="content">
+    <div class="addorupdatecontent">
         <el-form :model="myForm" ref="myForm" class="myForm" :rules="rules" label-width="110px">
-            <el-form-item label="联系人">
+            <el-form-item label="联系人" prop="contacts">
                 <el-input v-model="myForm.contacts" style="width:90%;" />
             </el-form-item>
-            <el-form-item label="公司名称">
+            <el-form-item label="公司名称" prop="name">
                 <el-input v-model="myForm.name" style="width:90%;" @input="handleoninput" />
             </el-form-item>
-            <el-form-item label="手机">
+            <el-form-item label="手机" prop="phone">
                 <el-input v-model="myForm.phone" style="width:90%;" />
             </el-form-item>
             <el-form-item label="电话">
@@ -59,15 +59,15 @@
             <!-- <el-form-item label="备注">
                 <el-input v-model="myForm.name" type="textarea" rows="5" style="width:90%;" />
             </el-form-item> -->
-            <div style="float:right;margin:20px 60px;">
+            <!-- <div style="float:right;margin:20px 60px;">
                 <el-button type="primary" :disabled="isDisable" @click="submit">立即提交</el-button>
                 &nbsp;&nbsp;
                 <el-button @click="closeTag">取消</el-button>
-            </div>
+            </div> -->
         </el-form>
-        <div class="line" style="height:790px"></div>
+        <div class="line" style="height:770px"></div>
         <div class="formlist">
-            <el-table :data="tableData" border stripe :default-sort = "{order: 'ascending'}" max-height="780">
+            <el-table :data="tableData" border stripe :default-sort = "{order: 'ascending'}" max-height="760">
                 <el-table-column header-align="center" align="center" width="35">
                     <template slot-scope="scope">
                         <el-button style="width:15px;height:15px;padding:0;border-radius:50%;" @click="getRow(scope.$index,scope.row)">&nbsp;</el-button>
@@ -77,6 +77,11 @@
                 <el-table-column prop="address" show-overflow-tooltip min-width="200" label="公司地址" sortable />
                 <el-table-column prop="representative" min-width="90" label="法人" sortable />
             </el-table>
+        </div>
+
+        <div class="submit_btn">
+            <el-button type="primary" :disabled="isDisable" @click="submit" style="margin-right:50px !important;">立即提交</el-button>
+            <el-button @click="closeTag">取消</el-button>
         </div>
     </div>
 </template>
@@ -94,7 +99,11 @@
                 msg:'culPondaddorUpdate.vue',
 
                 myForm:{},
-                rules:{},
+                rules:{
+                    contacts: [{ required: true, message: '联系人不能为空', trigger: 'blur' },],
+                    name: [{ required: true, message: '公司名称不能为空', trigger: 'blur' },],
+                    phone: [{ required: true, message: '手机号码不能为空', trigger: 'blur' },],
+                },
 
                 Provinces:[],
                 cityList: [],
@@ -335,3 +344,6 @@
         },
     }
 </script>
+
+<style>
+</style>

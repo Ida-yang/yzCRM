@@ -1,6 +1,6 @@
 <template>
     <!-- 任务新增修改 -->
-    <div class="content">
+    <div class="addorupdatecontent">
         <el-form :model="myForm" ref="myForm" class="myForm" :rules="rules">
             <el-form-item
                 class="formitemcont"
@@ -46,15 +46,10 @@
                     auto-complete="off">
                 </el-date-picker>
             </el-form-item>
-            <div style="float:right;margin:20px 60px;">
-                <el-button type="primary" :disabled="isDisable" @click="submit">立即提交</el-button>
-                &nbsp;&nbsp;
-                <el-button @click="closeTag">取消</el-button>
-            </div>
         </el-form>
-        <div class="line"></div>
+        <div class="line" style="height:390px"></div>
         <div class="formlist">
-            <el-table :data="tableData" border stripe :default-sort = "{order: 'ascending'}" max-height="580">
+            <el-table :data="tableData" border stripe :default-sort = "{order: 'ascending'}" max-height="380">
                 <el-table-column header-align="center" align="center" width="35">
                     <template slot-scope="scope">
                         <el-button style="width:15px;height:15px;padding:0;border-radius:50%;" @click="getRow(scope.$index,scope.row)">&nbsp;</el-button>
@@ -64,6 +59,11 @@
                 <el-table-column prop="address" show-overflow-tooltip min-width="200" label="公司地址" sortable />
                 <el-table-column prop="representative" min-width="90" label="法人" sortable />
             </el-table>
+        </div>
+        
+        <div class="submit_btn">
+            <el-button type="primary" :disabled="isDisable" @click="submit" style="margin-right:50px !important;">立即提交</el-button>
+            <el-button @click="closeTag">取消</el-button>
         </div>
     </div>
 </template>
@@ -274,13 +274,6 @@ export default {
 </script>
 
 <style>
-    .content {
-        width: 98%;
-    }
-    .myForm {
-        width: 41%;
-        float: left;
-    }
 </style>
 
 

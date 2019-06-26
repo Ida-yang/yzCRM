@@ -461,7 +461,7 @@
         cursor: pointer;
         /* border-top: 1px dashed #f7f7f7; */
     }
-    .switch_tag:hover{
+    .switch_tag:hover,.switch_tag:focus{
         background-color: rgb(41, 47, 63);
         /* color: #ff6333 */
     }
