@@ -182,6 +182,18 @@
                 </el-table-column>
             </el-table>
 
+            <el-table :data="failData" border stripe style="width:100%" v-show="showsixteen">
+                <el-table-column header-align="center" align="center" type="index" width="45" />
+                <el-table-column label="失败原因" prop="typeName" min-width="120" sortable />
+                <el-table-column label="备注" prop="notes" min-width="180" sortable />
+                <el-table-column label="操作" width="150" header-align="center" align="center">
+                    <template slot-scope="scope">
+                        <el-button size="mini" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
+                        <el-button size="mini" type="danger" @click="handledelete(scope.$index, scope.row)">编辑</el-button>
+                    </template>
+                </el-table-column>
+            </el-table>
+
             <div class="block numberPage" v-show="showeight || shownine">
                 <el-pagination
                     @size-change="handleSizeChange"
@@ -710,6 +722,42 @@
                 <el-button type="primary" @click="updatebasicset()">确 定</el-button>
             </span>
         </el-dialog>
+        <!-- 新增失败原因 -->
+        <el-dialog title="新增失败原因" :visible.sync="failreasonadd" :close-on-click-modal="false" width="40%">
+            <el-form ref="newform" :model="newform" label-width="110px" :rules="rules">
+                <el-form-item prop="type" label="辅助资料类别">
+                    <el-input v-model="newform.type" :disabled="true"></el-input>
+                </el-form-item>
+                <el-form-item prop="typeName" label="失败原因">
+                    <el-input v-model="newform.typeName" placeholder="请输入失败原因"></el-input>
+                </el-form-item>
+                <el-form-item prop="notes" label="备注">
+                    <el-input v-model="newform.notes" type="textarea" rows="5"></el-input>
+                </el-form-item>
+            </el-form>
+            <span slot="footer" class="dialog-footer">
+                <el-button @click="failreasonadd = false">取 消</el-button>
+                <el-button type="primary" @click="addbasicset()">确 定</el-button>
+            </span>
+        </el-dialog>
+        <!-- 编辑失败原因 -->
+        <el-dialog title="编辑失败原因" :visible.sync="failreasonupdate" :close-on-click-modal="false" width="40%">
+            <el-form ref="newform" :model="newform" label-width="110px" :rules="rules">
+                <el-form-item prop="type" label="辅助资料类别">
+                    <el-input v-model="newform.type" :disabled="true"></el-input>
+                </el-form-item>
+                <el-form-item prop="typeName" label="失败原因">
+                    <el-input v-model="newform.typeName" placeholder="请输入失败原因"></el-input>
+                </el-form-item>
+                <el-form-item prop="notes" label="备注">
+                    <el-input v-model="newform.notes" type="textarea" rows="5"></el-input>
+                </el-form-item>
+            </el-form>
+            <span slot="footer" class="dialog-footer">
+                <el-button @click="failreasonupdate = false">取 消</el-button>
+                <el-button type="primary" @click="updatebasicset()">确 定</el-button>
+            </span>
+        </el-dialog>
     </div>
 </template>
 <script>
@@ -735,6 +783,7 @@
                 codeData:[],
                 classData:[],
                 payData:[],
+                failData:[],
 
                 treedatalist:[],
 
@@ -764,6 +813,7 @@
                     {index:6,slotindex:'6',name:'商机进度',isActive:false},
                     {index:14,slotindex:'14',name:'工单分类',isActive:false},
                     {index:15,slotindex:'15',name:'支付方式',isActive:false},
+                    {index:16,slotindex:'16',name:'失败原因',isActive:false},
                 ],
                 orderparam:[
                     {index:7,slotindex:'7',name:'产品分类',isActive:false},
@@ -837,6 +887,7 @@
                 showthirteen:false,
                 showfourteen:false,
                 showfifteen:false,
+                showsixteen:false,
 
                 dialogVisible:false,//线索状态、客户状态、客户来源、客户分类
                 dialogVisible2:false,
@@ -863,6 +914,8 @@
                 jobclassupdate:false,//工单分类子集
                 payTypeadd:false,
                 payTypeupdate:false,//支付方式
+                failreasonadd:false,
+                failreasonupdate:false,//失败原因
 
                 rules: {
                     typeName : [{ required: true, message: '名称不能为空', trigger: 'blur' },],
@@ -890,7 +943,7 @@
             this.reloadTable()
         },
         methods:{
-            //加载1,2,3,4,5,11，的数据
+            //加载1,2,3,4,5,11，15，16,的数据
             reloadTable(){
                 const _this = this
                 let qs = require('querystring')
@@ -910,6 +963,8 @@
                         _this.deliData = res.data
                     }else if(i == 15){
                         _this.payData = res.data
+                    }else if(i == 16){
+                        _this.failData = res.data
                     }
                 }).catch(function(err){
                     // console.log(err);
@@ -1058,6 +1113,7 @@
                 _this.showthirteen = false
                 _this.showfourteen = false
                 _this.showfifteen = false
+                _this.showsixteen = false
                 if(i == 1 || i == 2 || i == 3 || i == 4){
                     _this.showtopfour = true
                     _this.$options.methods.reloadTable.bind(_this)(true)
@@ -1093,6 +1149,9 @@
                     _this.$options.methods.loadjobClass.bind(_this)(true)
                 }else if(i == 15){
                     _this.showfifteen = true
+                    _this.$options.methods.reloadTable.bind(_this)(true)
+                }else if(i == 16){
+                    _this.showsixteen = true
                     _this.$options.methods.reloadTable.bind(_this)(true)
                 }
             },
@@ -1160,6 +1219,9 @@
                         }else if(i == 15){
                             _this.newform.typeName = null
                             _this.payTypeadd = true
+                        }else if(i == 16){
+                            _this.newform.typeName = null
+                            _this.failreasonadd = true
                         }
                     }
                 }).catch(function(err){
@@ -1197,7 +1259,7 @@
                 data.type = this.newform.type
                 data.sort = this.newform.sort
                 data.notes = this.newform.notes
-                if(i == 1 || i == 2 || i == 3 || i == 4 || i == 11 || i == 15){
+                if(i == 1 || i == 2 || i == 3 || i == 4 || i == 11 || i == 15 || i == 16){
                     data.typeName = this.newform.typeName
                 }else if(i == 5){
                     data.typeName = this.newform.quickname
@@ -1258,6 +1320,14 @@
                         });
                         flag = true;
                     }
+                }else if(i == 16){
+                    if(!data.typeName){
+                        _this.$message({
+                            message: "失败原因不能为空",
+                            type: 'error'
+                        });
+                        flag = true;
+                    }
                 }
                 if(flag) return
 
@@ -1275,6 +1345,7 @@
                         _this.shortcutadd = false
                         _this.deliveryadd = false
                         _this.payTypeadd = false
+                        _this.failreasonadd = false
                         _this.$options.methods.reloadTable.bind(_this)(true);
                     }else{
                         _this.$message({
@@ -1689,6 +1760,11 @@
                             _this.newform.typeName = row.typeName
                             _this.newform.notes = row.notes
                             _this.payTypeupdate = true
+                        }else if(i == 16){
+                            _this.newform.id = row.id
+                            _this.newform.typeName = row.typeName
+                            _this.newform.notes = row.notes
+                            _this.failreasonupdate = true
                         }
                     }
                 }).catch(function(err){
@@ -1728,7 +1804,7 @@
                 data.type = this.newform.type
                 data.sort = this.newform.sort
                 data.notes = this.newform.notes
-                if(i == 1 || i == 2 || i == 3 || i == 4 || i == 11 || i == 15){
+                if(i == 1 || i == 2 || i == 3 || i == 4 || i == 11 || i == 15 || i == 16){
                     data.typeName = this.newform.typeName
                 }else if(i == 5){
                     data.typeName = this.newform.quickname
@@ -1789,6 +1865,14 @@
                         });
                         flag = true;
                     }
+                }else if(i == 16){
+                    if(!data.typeName){
+                        _this.$message({
+                            message: "失败原因不能为空",
+                            type: 'error'
+                        });
+                        flag = true;
+                    }
                 }
                 if(flag) return
                 
@@ -1806,6 +1890,7 @@
                         _this.shortcutupdate = false
                         _this.deliveryupdate = false
                         _this.payTypeupdate = false
+                        _this.failreasonupdate = false
                         _this.$options.methods.reloadTable.bind(_this)(true);
                     }else{
                         _this.$message({
@@ -2190,7 +2275,7 @@
                     _this.$message.error("修改失败,请重新修改");
                 });
             },
-            //删除1,2,3,4,5,6,11,12,15
+            //删除1,2,3,4,5,6,11,12,15,16
             handledelete(index,row){
                 const _this = this;
                 let i = this.newform.index
@@ -2198,7 +2283,7 @@
                 let idArr = [];
                 let urls = null
                 let val = null
-                if(i == 1 || i == 2 || i == 3 || i == 4 || i == 5 || i == 11 || i == 15){
+                if(i == 1 || i == 2 || i == 3 || i == 4 || i == 5 || i == 11 || i == 15 || i == 16){
                     idArr.id = row.id
                     urls = _this.$store.state.defaultHttp+ 'typeInfo/deleteTypeInfoById.do?cId='+_this.$store.state.iscId // 删除辅助资料
                     val = row.typeName
@@ -2227,7 +2312,7 @@
                                 message: '删除成功',
                                 type: 'success'
                             });
-                            if(i == 1 || i == 2 || i == 3 || i == 4 || i == 5 || i == 11 || i == 15){
+                            if(i == 1 || i == 2 || i == 3 || i == 4 || i == 5 || i == 11 || i == 15 || i == 16){
                                 _this.$options.methods.reloadTable.bind(_this)(true);
                             }else if(i == 6){
                                 _this.$options.methods.loadOppStep.bind(_this)(true);

@@ -6,54 +6,93 @@
                 <el-progress type="circle" :percentage="rate" :stroke-width="8"></el-progress>
             </div>
             <div class="oppCharts_b_c">
-                <div id="chart015" :style="{width: '300px', height: '300px'}"></div>
+                <div id="chart015" :style="{width: '100%', height: '300px'}"></div>
             </div>
             <div class="oppCharts_b_c">
-                <div id="chart016" :style="{width: '300px', height: '300px'}"></div>
+                <div id="chart016" :style="{width: '100%', height: '300px'}"></div>
             </div>
         </div>
         <div class="oppCharts_t">
             <!-- <div class="oppEntry">当月预计成交金额分析</div> -->
             <el-table :data="amounts" border stripe style="width:100%;">
-                <el-table-column prop="title" label="" width="200" />
-                <el-table-column prop="target" label="金额目标" width="200" />
-                <el-table-column prop="opportunity_achievement" label="预计当月成交金额" width="200" />
-                <el-table-column prop="deal" label="当月已成交" width="200" />
-                <el-table-column prop="difference" label="差额" width="200" />
-                <el-table-column prop="fail" label="失败" width="200" />
+                <el-table-column prop="title" label="" />
+                <el-table-column prop="target" label="金额目标">
+                    <template slot-scope="scope">
+                        {{scope.row.target | rounding}}
+                    </template>
+                </el-table-column>
+                <el-table-column prop="opportunity_achievement" label="预计当月成交金额">
+                    <template slot-scope="scope">
+                        {{scope.row.opportunity_achievement | rounding}}
+                    </template>
+                </el-table-column>
+                <el-table-column prop="achievementProportion" label="占比">
+                    <template slot-scope="scope">
+                        {{scope.row.achievementProportion + ' %'}}
+                    </template>
+                </el-table-column>
+                <el-table-column prop="deal" label="当月已成交">
+                    <template slot-scope="scope">
+                        {{scope.row.deal | rounding}}
+                    </template>
+                </el-table-column>
+                <el-table-column prop="dealProportion" label="占比">
+                    <template slot-scope="scope">
+                        {{scope.row.dealProportion + ' %'}}
+                    </template>
+                </el-table-column>
+                <el-table-column prop="difference" label="差额">
+                    <template slot-scope="scope">
+                        {{scope.row.difference | rounding}}
+                    </template>
+                </el-table-column>
+                <el-table-column prop="fail" label="失败">
+                    <template slot-scope="scope">
+                        {{scope.row.fail | rounding}}
+                    </template>
+                </el-table-column>
             </el-table>
         </div>
         <div class="oppCharts_t">
             <!-- <div class="oppEntry">当月商机阶段占比分析（阶段越往后且金额越大越有利）</div> -->
-             <el-table :data="moneyList" border stripe>
+             <el-table :data="moneyList" border stripe style="width:100%;">
+                 <el-table-column prop="title" label="" />
                 <template v-for="item in colList">
-                    <el-table-column :label="item.name" :prop="item.col" :key="item.index" show-overflow-tooltip width="200"></el-table-column>
+                    <el-table-column :label="item.name" :prop="item.col" :key="item.index"></el-table-column>
                 </template>
             </el-table>
         </div>
         <div class="oppCharts_t">
             <!-- <div class="oppEntry">当月商机成交周期分析（周期越往前且金额越大越有利）</div> -->
-            <table class="el-table" style="width:1400px" cellspacing="0">
-            <!-- <table class="el-table" style="width:100%;" cellspacing="0"> -->
+            <!-- <table class="el-table" style="width:1400px" cellspacing="0"> -->
+            <table class="el-table" style="width:100%;" cellspacing="0">
                 <tr>
                     <th style=""></th>
                     <th v-for="(item,i) in weekAmount" :key="i" style="padding-left:10px;">{{item.title}}</th>
                 </tr>
                 <tr>
                     <td style="padding-left:10px;">预计成交金额</td>
-                    <td v-for="(item,i) in weekAmount" :key="i" style="padding-left:10px;">{{item.opportunity_achievement}}</td>
+                    <td v-for="(item,i) in weekAmount" :key="i" style="padding-left:10px;">{{item.opportunity_achievement | rounding}}</td>
                 </tr>
                 <tr>
-                    <td style="padding-left:10px;">预计占比</td>
-                    <td v-for="(item,i) in weekAmount" :key="i" style="padding-left:10px;">{{item.estimateProportions}}</td>
+                    <td style="padding-left:10px;">与预计占比</td>
+                    <td v-for="(item,i) in weekAmount" :key="i" style="padding-left:10px;font-weight:bold">{{item.estimateProportions + ' %'}}</td>
+                </tr>
+                <tr>
+                    <td style="padding-left:10px;">与目标占比</td>
+                    <td v-for="(item,i) in weekAmount" :key="i" style="padding-left:10px;">{{item.estimateTargetProportions + ' %'}}</td>
                 </tr>
                 <tr>
                     <td style="padding-left:10px;">实际成交</td>
-                    <td v-for="(item,i) in weekAmount" :key="i" style="padding-left:10px;">{{item.deal}}</td>
+                    <td v-for="(item,i) in weekAmount" :key="i" style="padding-left:10px;">{{item.deal | rounding}}</td>
                 </tr>
                 <tr>
-                    <td style="padding-left:10px;">实际占比</td>
-                    <td v-for="(item,i) in weekAmount" :key="i" style="padding-left:10px;">{{item.actualProportion}}</td>
+                    <td style="padding-left:10px;">与实际占比</td>
+                    <td v-for="(item,i) in weekAmount" :key="i" style="padding-left:10px;font-weight:bold">{{item.actualProportion + ' %'}}</td>
+                </tr>
+                <tr>
+                    <td style="padding-left:10px;">与目标占比</td>
+                    <td v-for="(item,i) in weekAmount" :key="i" style="padding-left:10px;">{{item.actualTargetProportion + ' %'}}</td>
                 </tr>
             </table>
         </div>
@@ -76,6 +115,25 @@
             loadData(){
                 return store.state.oppChartsData
             },
+        },
+        filters: {
+            rounding (value) {
+                value = value.toFixed(2)
+                let intPart = Math.trunc(value) //获取整数部分
+                let intPartFormat = intPart.toString().replace(/(\d)(?=(?:\d{3})+$)/g, '$1,') // 将整数部分逢三一断
+                let floatPart = '.00' // 预定义小数部分
+                let valArray = value.split('.')
+                if(valArray.length === 2) {
+                    floatPart = valArray[1].toString() // 拿到小数部分
+                    if(floatPart.length === 1) { // 补0,实际上用不着
+                        return intPartFormat + '.' + floatPart + '0'
+                    }else{
+                        return intPartFormat + '.' + floatPart
+                    }
+                } else {
+                    return intPartFormat + floatPart
+                }
+            }
         },
         data() {
             return {
@@ -157,6 +215,9 @@
                         el.title = '金额'
                     });
                     _this.moneyList.push(res.data.money)
+                    _this.moneyList.push(res.data.moneyProportion)
+                    _this.moneyList.push(res.data.num)
+                    _this.moneyList.push(res.data.numProportion)
                 }).catch(function(err){
                 });
                 // // 本月每周预计成交金额
@@ -276,7 +337,7 @@
     }
     .oppCharts_t{
         width: 100%;
-        margin-bottom: 80px;
+        margin-bottom: 20px;
     }
     .oppCharts_b .oppCharts_b_c{
         flex: 0 0 calc(33% - 10px);

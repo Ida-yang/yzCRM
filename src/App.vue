@@ -195,8 +195,8 @@
         min-width: 65px;
         box-sizing: border-box;
     }
-    .sidebar_menu_item:hover,
-    .sidebar_submenu .el-submenu__title:hover {
+    .sidebar_menu_item:hover,.sidebar_menu_item:focus,.sidebar_menu_item:active,
+    .sidebar_submenu .el-submenu__title:hover,.sidebar_submenu .el-submenu__title:focus,.sidebar_submenu .el-submenu__title:active {
         background-color: rgb(41, 47, 63) !important;
     }
         input::-webkit-outer-spin-button,

@@ -184,9 +184,9 @@ const state = {
   //操作日志列表总数
   logListnumber:0,
 
-  //短信雷达列表
+  //营销雷达列表
   SMSradarList:[],
-  //短信雷达列表总数
+  //营销雷达列表总数
   SMSradarListnumber:0,
 
   //产品列表

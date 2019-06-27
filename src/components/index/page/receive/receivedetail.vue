@@ -235,6 +235,10 @@
                     remarks:null,
                 },
                 rules:{},
+
+                auditing: this.$store.state.systemHttp + '/upload/staticImg/inaudit.png',
+                audited: this.$store.state.systemHttp + '/upload/staticImg/examine.png',
+                noaudit: this.$store.state.systemHttp + '/upload/staticImg/refuse.png',
             }
         },
         activated(){
@@ -443,5 +447,15 @@
         background-color: #f7f7f7;
         min-height: 100%;
         height: auto;
+    }
+    .audited{
+        position: absolute;
+        right: 45%;
+        top: 90px;
+    }
+    .audited .audited_img{
+        width: 150px;
+        height: 75px;
+        transform: rotate(-10deg)
     }
 </style>

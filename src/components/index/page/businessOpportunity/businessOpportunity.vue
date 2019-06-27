@@ -178,6 +178,7 @@
                 ],
                 stepData:[],
                 stateData:[
+                    {id:'6',typeName:'本月已成交'},
                     {id:'1',typeName:'预计7天成交'},
                     {id:'2',typeName:'预计15天成交'},
                     {id:'3',typeName:'预计本月成交'},

@@ -1612,9 +1612,4 @@
         height: auto;
         min-height: 100%;
     }
-    .middle{
-        height: auto;
-        background-color: #fff;
-        margin-top: 20px;
-    }
 </style>

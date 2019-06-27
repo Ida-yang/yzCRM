@@ -349,7 +349,7 @@
                 isDisable:false
             }
         },
-        mounted(){
+        activated(){
             this.loadData()
             this.getList()
             this.getknowledgeBase()
@@ -388,10 +388,6 @@
                         if(res.data.solution.score){
                             _this.showevaluate = true
                         }
-                    }else{
-                        _this.$store.commit('getNowTime')
-                        _this.myform.time = _this.$store.state.nowtime
-                        _this.$options.methods.loadTime.bind(_this)(true)
                     }
                 }).catch(function(err){
                 });
@@ -722,6 +718,9 @@
             onSubmit(){
                 const _this = this
                 let content = this.$refs.ue.getUEContent()
+                _this.$store.commit('getNowTime')
+                _this.myform.time = _this.$store.state.nowtime
+                _this.$options.methods.loadTime.bind(_this)(true)
                 let partsDetails = new Array()
                 this.itemData.forEach(el => {
                     if(el.goodsId || el.itemId){

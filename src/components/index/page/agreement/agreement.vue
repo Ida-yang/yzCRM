@@ -69,7 +69,14 @@
                 <el-table-column label="剩余天数" prop="expireDay" v-if="item.prop == 'expireDay' && item.state == 1" min-width="110" sortable />
                 <el-table-column label="客户签约人" prop="signatories" v-if="item.prop == 'signatories' && item.state == 1" min-width="120" sortable />
                 <el-table-column label="我方签约人" prop="our_signatories" v-if="item.prop == 'our_signatories' && item.state == 1" min-width="120" sortable />
-                <el-table-column label="审核状态" prop="approvalStatus" v-if="item.prop == 'state' && item.state == 1" min-width="110" sortable />
+                <el-table-column label="审核状态" prop="approvalStatus" v-if="item.prop == 'state' && item.state == 1" min-width="110" sortable>
+                    <template slot-scope="scope">
+                        <el-tag v-if="scope.row.checkStatus == 0" size="small" style="background-color:#ffffff;color:#606266;border-color:#dcdfe6" effect="dark">待审核</el-tag>
+                        <el-tag v-if="scope.row.checkStatus == 1" size="small" style="background-color:#e6a23c;color:#ffffff;border-color:#e6a23c" effect="dark">审核中</el-tag>
+                        <el-tag v-if="scope.row.checkStatus == 2" size="small" style="background-color:#67c23a;color:#ffffff;border-color:#67c23a" effect="dark">已审核</el-tag>
+                        <el-tag v-if="scope.row.checkStatus == 3" size="small" style="background-color:#f56c6c;color:#ffffff;border-color:#f56c6c" effect="dark">未通过</el-tag>
+                    </template>
+                </el-table-column>
                 <el-table-column label="部门" prop="deptname" v-if="item.prop == 'deptname' && item.state == 1" min-width="90" sortable />
                 <el-table-column label="机构" prop="parentname" v-if="item.prop == 'parentname' && item.state == 1" min-width="100" show-overflow-tooltip sortable />
                 <el-table-column label="创建时间" prop="create_time" v-if="item.prop == 'createTime' && item.state == 1" min-width="150" sortable />
@@ -221,18 +228,18 @@
                     data: qs.stringify(searchList),
                 }).then(function(res){
                     let array = res.data.map.success
-                    array.forEach(el => {
-                        if(el.checkStatus == 0){
-                            el.approvalStatus = '未审核'
-                        }else if(el.checkStatus == 1){
-                            el.approvalStatus = '审核中'
-                        }else if(el.checkStatus == 2){
-                            el.approvalStatus = '已审核'
-                            el.disabledBtn = true
-                        }else if(el.checkStatus == 3){
-                            el.approvalStatus = '未通过'
-                        }
-                    });
+                    // array.forEach(el => {
+                    //     if(el.checkStatus == 0){
+                    //         el.approvalStatus = '待审核'
+                    //     }else if(el.checkStatus == 1){
+                    //         el.approvalStatus = '审核中'
+                    //     }else if(el.checkStatus == 2){
+                    //         el.approvalStatus = '已审核'
+                    //         el.disabledBtn = true
+                    //     }else if(el.checkStatus == 3){
+                    //         el.approvalStatus = '未通过'
+                    //     }
+                    // });
                     _this.$store.state.agreementList = array
                     _this.$store.state.agreementListnumber = res.data.count;
                 }).catch(function(err){

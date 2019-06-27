@@ -32,30 +32,39 @@
         </div>
         <div class="entry">
             <div class="totalnum_head">共 <span class="bold_span">{{tableNumber}}</span> 条</div>
+
+            <el-popover placement="bottom" width="100" trigger="click">
+                <el-checkbox-group class="checklist" v-model="checklist" style="max-height:600px;overflow-y:overlay;overflow-x:hidden">
+                    <el-checkbox class="checkone" v-for="item in filterList" :key="item.id" :label="item.name" :value="item.state" @change="hangleChange($event,item)"></el-checkbox>
+                </el-checkbox-group>
+                <el-button slot="reference" icon="el-icon-more" class="info-btn screen" type="mini"></el-button>
+            </el-popover>
         </div>
         <el-table :data="tableData" border stripe style="width:100%">
             <el-table-column header-align="center" fixed align="center" type="index" width="45"></el-table-column>
-            <el-table-column label="单号" prop="workOrderNo" fixed min-width="150" sortable></el-table-column>
-            <el-table-column label="问题" prop="problem" fixed min-width="200" show-overflow-tooltip sortable>
-                <template slot-scope="scope">
-                    <div @click="openDetails(scope.$index, scope.row)" class="hoverline">
-                        {{scope.row.problem}}
-                    </div>
-                </template>
-            </el-table-column>
-            <el-table-column label="状态" prop="serviceState" min-width="90" sortable></el-table-column>
-            <el-table-column label="公司名称" prop="customerpool" min-width="200" sortable></el-table-column>
-            <el-table-column label="联系人" prop="contacts" min-width="100" sortable></el-table-column>
-            <el-table-column label="电话" prop="phone" min-width="110" sortable></el-table-column>
-            <el-table-column label="反馈时间" prop="feedbackTime" min-width="150" sortable></el-table-column>
-            <el-table-column label="反馈方式" prop="feedbackType" min-width="110" sortable></el-table-column>
-            <el-table-column label="受理人" prop="acceptanceName" min-width="100" sortable></el-table-column>
-            <el-table-column label="工单类型" prop="serviceTypeName" min-width="110" sortable></el-table-column>
-            <el-table-column label="销售单号" prop="orderNo" min-width="150" sortable></el-table-column>
-            <el-table-column label="制单人" prop="private_employee" min-width="100" sortable></el-table-column>
-            <el-table-column label="业务员" prop="ascription" min-width="100" sortable></el-table-column>
-            <el-table-column label="部门" prop="deptname" min-width="110" sortable></el-table-column>
-            <el-table-column label="机构" prop="parentname" min-width="110" show-overflow-tooltip sortable></el-table-column>
+            <div v-for="(item,index) in filterList" :key="index">
+                <el-table-column label="单号" prop="workOrderNo" v-if="item.prop == 'workOrderNo' && item.state == 1" fixed min-width="150" sortable></el-table-column>
+                <el-table-column label="问题" prop="problem" v-if="item.prop == 'problem' && item.state == 1" fixed min-width="200" show-overflow-tooltip sortable>
+                    <template slot-scope="scope">
+                        <div @click="openDetails(scope.$index, scope.row)" class="hoverline">
+                            {{scope.row.problem}}
+                        </div>
+                    </template>
+                </el-table-column>
+                <el-table-column label="状态" prop="serviceState" v-if="item.prop == 'status' && item.state == 1" min-width="90" sortable></el-table-column>
+                <el-table-column label="公司名称" prop="customerpool" v-if="item.prop == 'customerpool' && item.state == 1" min-width="200" sortable></el-table-column>
+                <el-table-column label="联系人" prop="contacts" v-if="item.prop == 'contacts' && item.state == 1" min-width="100" sortable></el-table-column>
+                <el-table-column label="电话" prop="phone" v-if="item.prop == 'phone' && item.state == 1" min-width="110" sortable></el-table-column>
+                <el-table-column label="反馈时间" prop="feedbackTime" v-if="item.prop == 'feedbackTime' && item.state == 1" min-width="150" sortable></el-table-column>
+                <el-table-column label="反馈方式" prop="feedbackType" v-if="item.prop == 'feedbackType' && item.state == 1" min-width="110" sortable></el-table-column>
+                <el-table-column label="受理人" prop="acceptanceName" v-if="item.prop == 'acceptance' && item.state == 1" min-width="100" sortable></el-table-column>
+                <el-table-column label="工单类型" prop="serviceTypeName" v-if="item.prop == 'serviceType' && item.state == 1" min-width="110" sortable></el-table-column>
+                <el-table-column label="销售单号" prop="orderNo" v-if="item.prop == 'orderNo' && item.state == 1" min-width="150" sortable></el-table-column>
+                <el-table-column label="制单人" prop="private_employee" v-if="item.prop == 'pId' && item.state == 1" min-width="100" sortable></el-table-column>
+                <el-table-column label="业务员" prop="ascription" v-if="item.prop == 'ascriptionId' && item.state == 1" min-width="100" sortable></el-table-column>
+                <el-table-column label="部门" prop="deptname" v-if="item.prop == 'secondid' && item.state == 1" min-width="110" sortable></el-table-column>
+                <el-table-column label="机构" prop="parentname" v-if="item.prop == 'deptid' && item.state == 1" min-width="110" show-overflow-tooltip sortable></el-table-column>
+            </div>
             <el-table-column label="操作" fixed="right" width="150" header-align="center" align="center">
                 <template slot-scope="scope">
                     <el-button size="mini" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
@@ -130,11 +139,15 @@
                 woClassData:[],
                 woItemData:[],
                 nullvalue:null,
+
+                filterList:null,
+                checklist:null,
             }
         },
         mounted(){
             this.loadTable()
             this.loadClass()
+            this.reloadData()
         },
         activated(){
             this.loadTable()
@@ -209,6 +222,35 @@
                 }).catch(function(err){
                 });
             },
+            //获取筛选列表
+            reloadData() {
+                const _this = this;
+                let qs =require('querystring')
+                let filterList = {}
+                filterList.type = '工单'
+                let data = {}
+                data.type = '工单'
+                data.state = 1
+                
+                axios({
+                    method: 'post',
+                    url: _this.$store.state.defaultHttp+'userPageInfo/getAllUserPage.do?cId='+_this.$store.state.iscId+'&pId='+_this.$store.state.ispId,
+                    data: qs.stringify(filterList)
+                }).then(function(res){
+                    _this.filterList = res.data
+                }).catch(function(err){
+                    // console.log(err);
+                });
+                axios({
+                    method: 'post',
+                    url: _this.$store.state.defaultHttp+'userPageInfo/getUserPage.do?cId='+_this.$store.state.iscId+'&pId='+_this.$store.state.ispId,
+                    data: qs.stringify(data)
+                }).then(function(res){
+                    _this.checklist = res.data
+                }).catch(function(err){
+                    // console.log(err);
+                });
+            },
             openDetails(index,row){
                 this.$store.state.workOrderdetaildsData = {id:row.id}
                 this.$router.push({ path: '/workOrderDetail' });
@@ -256,6 +298,29 @@
                     }).catch(function(err){
                         _this.$message.error("删除失败,请重新删除");
                     });
+                });
+            },
+            hangleChange(e,val){
+                const _this = this
+                let qs = require('querystring')
+                let data = {}
+                data.pageInfoId = val.pageInfoId
+                if(e == true){
+                    data.state = 1
+                }else{
+                    data.state = 0
+                }
+
+                axios({
+                    method: 'post',
+                    url:  _this.$store.state.defaultHttp+ 'userPageInfo/updateUserPageByid.do?cId='+_this.$store.state.iscId+'&pId='+_this.$store.state.ispId,
+                    data:qs.stringify(data),
+                }).then(function(res){
+                    if(res.data && res.data =="success"){
+                        _this.$options.methods.reloadData.bind(_this)(true);
+                    }
+                }).catch(function(err){
+                    // console.log(err);
                 });
             },
             search(){

@@ -201,7 +201,7 @@
                     let array = res.data.map.orders
                     array.forEach(el => {
                         if(el.checkStatus == 0){
-                            el.approvalStatus = '未审核'
+                            el.approvalStatus = '待审核'
                         }else if(el.checkStatus == 1){
                             el.approvalStatus = '审核中'
                         }else if(el.checkStatus == 2){

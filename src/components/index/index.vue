@@ -76,7 +76,7 @@
         margin: 0 15px;
         box-sizing: border-box;
         overflow-x: hidden; 
-        overflow-y: overlay; 
+        overflow-y: auto; 
     }
     .el-form-item.is-required .el-form-item__label:before{
         content:'*';

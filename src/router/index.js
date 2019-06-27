@@ -194,7 +194,7 @@ const router =new Router({
         {
           path: '/SMSradar',
           component: resolve => require(['../components/index/page/smstemp/SMSradar.vue'], resolve),
-          meta: { title: '短信雷达',name:'SMSradar' ,requireAuth:true}
+          meta: { title: '营销雷达',name:'SMSradar' ,requireAuth:true}
         },
         {
           path: '/analysisReport',

@@ -1187,11 +1187,6 @@
         height: auto;
         min-height: 100%;
     }
-    .middle{
-        height: auto;
-        background-color: #fff;
-        margin-top: 20px;
-    }
     .clue_drop{
         font-size: 12px;
         color: #919191;

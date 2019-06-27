@@ -27,7 +27,7 @@
                 </el-card>
             </div>
             
-            <div class="bottom" v-show="auxcontent">
+            <div class="bottom" v-if="auxcontent">
                 <div class="aux_c">
                     <div class="aux_ul">
                         <div class="aux_li">
@@ -99,7 +99,7 @@
                         <el-button class="info-btn" size="mini" style="float:right;" @click="endStep()" v-if="shownext">失败关闭</el-button>
                         <span style="line-height:20px;float:right;font-size:14px;" v-if="showfail">该商机已关闭</span>
                         <span style="line-height:20px;float:right;font-size:14px;" v-if="showsuccess">签约成功！</span>
-                        <el-button class="info-btn" size="mini" style="float:right;margin-right:10px;" @click="auxAnalys()">辅助分析</el-button>
+                        <el-button class="info-btn" size="mini" style="float:right;margin-right:10px;" v-if="showauxAnalys" @click="auxAnalys()">辅助分析</el-button>
                     </div>
                     <el-steps :active="active" finish-status="success" :process-status="isprocess" align-center style="padding:10px;">
                         <el-step v-for="item in stepList" :key="item.step_id" :title="item.step_name" :description="item.step_probability">
@@ -112,7 +112,7 @@
                     </el-steps>
                 </el-card>
             </div>
-            <div class="bottom" v-show="auxcontent">
+            <div class="bottom" v-if="auxcontent">
                 <el-tabs v-model="auxindex" type="card">
                     <el-tab-pane label="跟进记录" name="first">
                         <ul class="followrecord" v-for="item in record" :key="item.followId">
@@ -331,6 +331,8 @@
 
                 baseindex:'first',
                 productData:[],
+
+                showauxAnalys:true
             }
         },
         // mounted(){
@@ -399,6 +401,7 @@
                                 _this.showsuccess = true
                                 _this.isprocess = 'wait'
                                 _this.contractTime = addStep[i].createTime
+                                _this.showauxAnalys = false
                             }else{
                                 _this.active = i+1
                                 _this.shownext = true
