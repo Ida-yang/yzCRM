@@ -95,8 +95,8 @@
                 <el-card class="box-card step_process">
                     <div slot="header" class="clearfix">
                         <span>{{opportunitydetail.opportunity_name}}</span>
-                        <el-button class="info-btn" size="mini" style="float:right;" @click="showNextDialog()" v-if="shownext">下一步</el-button>
-                        <el-button class="info-btn" size="mini" style="float:right;" @click="endStep()" v-if="shownext">失败关闭</el-button>
+                        <el-button class="info-btn" size="mini" style="float:right;" @click="dialogVisible = true" v-if="shownext">下一步</el-button>
+                        <el-button class="info-btn" size="mini" style="float:right;" @click="dialogVisible3 = true" v-if="shownext">失败关闭</el-button>
                         <span style="line-height:20px;float:right;font-size:14px;" v-if="showfail">该商机已关闭</span>
                         <span style="line-height:20px;float:right;font-size:14px;" v-if="showsuccess">签约成功！</span>
                         <el-button class="info-btn" size="mini" style="float:right;margin-right:10px;" v-if="showauxAnalys" @click="auxAnalys()">辅助分析</el-button>
@@ -220,6 +220,22 @@
                 <el-button type="primary" @click="nextStep()">确 定</el-button>
             </span>
         </el-dialog>
+        <el-dialog :visible.sync="dialogVisible3" :close-on-click-modal="false" width="400px">
+            <span>确认关闭商机进度吗？一旦确定将不可撤回</span>
+            <br><br>
+            <el-checkbox-group v-model="reasonsForFailure">
+                <el-checkbox v-for="item in failReasonData" :key="item.id" :label="item.id">{{item.typeName}}</el-checkbox>
+            </el-checkbox-group>
+            <!-- <hr style="width:100%;height:1px;background-color:#606266;border:none;margin-bottom:10px;"> -->
+            <br>
+            <div class="editor-container">
+                <UE :defaultMsg="defaultMsg" :config="config" ref="ue"></UE>
+            </div>
+            <span slot="footer" class="dialog-footer">
+                <el-button @click="dialogVisible3 = false">取 消</el-button>
+                <el-button type="primary" @click="endStep()">确 定</el-button>
+            </span>
+        </el-dialog>
         
         <el-col :span="6" style="padding:10px;min-height:600px;" class="right">
             <div class="searchList" style="width:100%;">
@@ -254,10 +270,12 @@
     import store from '../../../../store/store'
     import axios from 'axios'
     import qs from 'qs'
+    import UE from '../../ue.vue'
 
     export default {
         name:'businessOpportunityDetails',
         store,
+        components:{UE},
         filters:{
             commaing(value){
                 let intPart = Math.trunc(value) //获取整数部分
@@ -328,11 +346,25 @@
 
                 dialogVisible:false,
                 opportunityDeal:null,
+                dialogVisible3:false,
+                reasonsForFailure:[],
+                codeSnippet:null,
+                defaultMsg:'填写原因前请把这句话删掉',
+                config: {
+                    initialFrameWidth: '',
+                    initialFrameHeight: 200,
+                    toolbars:[[
+                        'bold', '|', 'insertorderedlist', 'insertunorderedlist', '|',
+                        'justifyleft', 'justifycenter', 'justifyright', 'justifyjustify', '|',
+                    ]]
+                },
 
                 baseindex:'first',
                 productData:[],
 
-                showauxAnalys:true
+                showauxAnalys:true,
+
+                failReasonData:[]
             }
         },
         // mounted(){
@@ -351,9 +383,8 @@
                 let pageInfo = {}
                 pageInfo.page = this.page
                 pageInfo.limit = this.limit
-                let pageInfo2 = {}
-                pageInfo2.page = '1'
-                pageInfo2.limit = '100000'
+                let data = {}
+                data.type = '失败原因'
 
                 axios({
                     method: 'post',
@@ -362,6 +393,15 @@
                 }).then(function(res){
                     _this.tableData = res.data.map.success
                     _this.tableNumber = res.data.count
+                }).catch(function(err){
+                    // console.log(err);
+                });
+                axios({
+                    method: 'post',
+                    url: _this.$store.state.defaultHttp+'typeInfo/getTypeInfoGroupByType.do?cId='+_this.$store.state.iscId,
+                    data:qs.stringify(data)
+                }).then(function(res){
+                    _this.failReasonData = res.data
                 }).catch(function(err){
                     // console.log(err);
                 });
@@ -394,6 +434,7 @@
                                 _this.showsuccess = false
                                 _this.isprocess = 'error'
                                 _this.failTime = addStep[i].createTime
+                                _this.showauxAnalys = false
                             }else if(addStep[i].progress_probability == '100'){
                                 _this.active = i+1
                                 _this.shownext = false
@@ -493,9 +534,6 @@
                 this.dialogImageUrl2 = this.$store.state.systemHttp + '/upload/'+this.$store.state.iscId+'/'+val.imgName
                 this.dialogVisible2 = true
             },
-            showNextDialog(){
-                this.dialogVisible = true
-            },
             closeDialog(){
                 this.dialogVisible = false
                 this.shownext = true
@@ -541,42 +579,46 @@
                     }
                 }
             },
+            checkreasonList(val){
+                console.log(val)
+            },
             endStep(){
                 const _this = this
                 let qs = require('querystring')
+                let content = this.$refs.ue.getUEContent()
                 let data = {}
                 data.previousTime = this.steptime + ':00'
                 data.deptid = this.$store.state.insid
                 data.secondid = this.$store.state.deptid
                 data.oy_id = this.idArr.opportunity_id
                 data.stepId = 100
-                _this.$confirm('确认关闭商机进度吗？一旦确定将不可撤回','提示',{
-                    confirmButtonText:'确定',
-                    cancelButtonText:'取消',
-                }).then(({value}) =>{
-                    axios({
-                        method:'post',
-                        url:_this.$store.state.defaultHttp+ 'saveOpportunityProgress.do?cId='+_this.$store.state.iscId+'&pId='+_this.$store.state.ispId,
-                        data:qs.stringify(data),
-                    }).then(function(res){
-                        if(res.data.code && res.data.code == 200) {
-                            _this.$message({
-                                message: '关闭成功',
-                                type: 'success'
-                            });
-                            _this.isprocess = 'error'
-                            _this.shownext = false
-                            _this.showfail = true
-                            _this.$options.methods.loadData.bind(_this)(true);
-                        } else {
-                            _this.$message({
-                                message: res.data.msg,
-                                type: 'error'
-                            });
-                        }
-                    }).catch(function(err){
-                        _this.$message.error("关闭失败,请重新关闭");
-                    })
+                data.codeSnippet = content
+                data.reasonsForFailure = this.reasonsForFailure
+                
+                axios({
+                    method:'post',
+                    url:_this.$store.state.defaultHttp+ 'saveOpportunityProgress.do?cId='+_this.$store.state.iscId+'&pId='+_this.$store.state.ispId,
+                    data:qs.stringify(data),
+                }).then(function(res){
+                    if(res.data.code && res.data.code == 200) {
+                        _this.$message({
+                            message: '关闭成功',
+                            type: 'success'
+                        });
+                        _this.isprocess = 'error'
+                        _this.shownext = false
+                        _this.showfail = true
+                        _this.showauxAnalys = false
+                        _this.dialogVisible3 = false
+                        _this.$options.methods.loadData.bind(_this)(true);
+                    } else {
+                        _this.$message({
+                            message: res.data.msg,
+                            type: 'error'
+                        });
+                    }
+                }).catch(function(err){
+                    _this.$message.error("关闭失败,请重新关闭");
                 })
             },
             auxAnalys(){

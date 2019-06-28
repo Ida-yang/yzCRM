@@ -1,9 +1,6 @@
 <template>
     <div class="contentall">
         <div class="setleftcontent">
-            <!-- <ul class="namecontent">
-                <li v-for="item in menuList" :key="item.index" :value="item.name" :class="{actived:item.isActive}" @click="showTableval(item)">{{item.name}}</li>
-            </ul> -->
             <el-menu default-active="1" class="el-menu-vertical-demo base_menu">
                 <el-submenu index="1">
                     <span slot="title">个人画像</span>
@@ -32,6 +29,7 @@
                 <el-button class="btn info-btn" size="mini" @click="handleAdd()">新增</el-button>
             </div>
             <el-table :data="cusportraitData" border stripe style="width:100%">
+                <el-table-column header-align="center" align="center" type="index" width="45" />
                 <el-table-column label="名称" prop="typeName" min-width="120" sortable />
                 <el-table-column label="备注" prop="notes" min-width="180" sortable />
                 <el-table-column label="操作" width="150" header-align="center" align="center">
@@ -77,9 +75,9 @@
 
                 cusportraitData:[],
                 personalList:[
-                    {index:'1',name:'性别',isActive:false},
+                    {index:'1',name:'性别',isActive:true},
                     {index:'2',name:'年龄',isActive:false},
-                    {index:'3',name:'职业',isActive:true},
+                    {index:'3',name:'职业',isActive:false},
                     {index:'4',name:'岗位',isActive:false},
                     {index:'5',name:'学历',isActive:false},
                 ],
@@ -123,7 +121,9 @@
                     typeName:null,
                     note:null,
                 },
-                rules:{},
+                rules:{
+                    typeName : [{ required: true, message: '画像值不能为空', trigger: 'blur' },],
+                },
                 dialogVisible:false,
             }
         },

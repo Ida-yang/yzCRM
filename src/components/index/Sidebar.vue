@@ -327,10 +327,6 @@
                                 index: 'logs',
                                 title: '日志',
                             },
-                            // {
-                            //     index: 'name',
-                            //     title: '名字',
-                            // },
                         ]
                     },
                 ],
@@ -347,6 +343,10 @@
                             {
                                 index: 'missionplan',
                                 title: '任务',
+                            },
+                            {
+                                index: 'note',
+                                title: '便签',
                             },
                         ]
                     },

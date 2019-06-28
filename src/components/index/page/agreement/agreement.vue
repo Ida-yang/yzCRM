@@ -69,7 +69,7 @@
                 <el-table-column label="剩余天数" prop="expireDay" v-if="item.prop == 'expireDay' && item.state == 1" min-width="110" sortable />
                 <el-table-column label="客户签约人" prop="signatories" v-if="item.prop == 'signatories' && item.state == 1" min-width="120" sortable />
                 <el-table-column label="我方签约人" prop="our_signatories" v-if="item.prop == 'our_signatories' && item.state == 1" min-width="120" sortable />
-                <el-table-column label="审核状态" prop="approvalStatus" v-if="item.prop == 'state' && item.state == 1" min-width="110" sortable>
+                <el-table-column label="状态" prop="approvalStatus" v-if="item.prop == 'state' && item.state == 1" width="90" sortable>
                     <template slot-scope="scope">
                         <el-tag v-if="scope.row.checkStatus == 0" size="small" style="background-color:#ffffff;color:#606266;border-color:#dcdfe6" effect="dark">待审核</el-tag>
                         <el-tag v-if="scope.row.checkStatus == 1" size="small" style="background-color:#e6a23c;color:#ffffff;border-color:#e6a23c" effect="dark">审核中</el-tag>

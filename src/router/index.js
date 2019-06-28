@@ -317,9 +317,9 @@ const router =new Router({
           meta: { title: '客户画像', name:'cusportrait', requireAuth:true}
         },
         {
-          path: '/name',
-          component: resolve => require(['../components/index/page/product/name.vue'], resolve),
-          meta: { title: '名字',requireAuth:true}
+          path: '/note',
+          component: resolve => require(['../components/index/page/work/note.vue'], resolve),
+          meta: { title: '便签', name:'note', requireAuth:true}
         },
       ]
     },

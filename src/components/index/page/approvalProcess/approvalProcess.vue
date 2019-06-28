@@ -172,35 +172,6 @@
                     });       
                 });
             },
-            changeStatus(row){
-                const _this = this
-                let qs = require('querystring')
-                let data = {}
-                data.id = row.id
-                data.status = row.status
-                data.pId = this.$store.state.ispId
-
-                axios({
-                    method: 'post',
-                    url: _this.$store.state.defaultHttp+'examine/updateStatus.do?cId='+_this.$store.state.iscId,
-                    data: qs.stringify(data)
-                }).then(function(res){
-                    if(res.data.code && res.data.code == '200'){
-                        _this.$message({
-                            message:'修改状态成功',
-                            type:'success'
-                        })
-                        _this.$options.methods.loadTable.bind(_this)()
-                    }else{
-                        _this.$message({
-                            message:res.data.msg,
-                            type:'error'
-                        })
-                    }
-                }).catch(function(err){
-                    _this.$message.error("修改状态失败,请重新修改");
-                });
-            },
             handleSizeChange(val){
                 const _this = this;
                 _this.limit = val;

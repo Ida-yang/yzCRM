@@ -677,53 +677,9 @@
                 data.yearMonth = y + '-' + m
 
                 _this.$store.state.oppChartsData = data
-                
-                // let flag = false
-                // // 目标达成率和预测周期
-                // axios({
-                //     method: 'post',
-                //     url: _this.$store.state.defaultHttp+'opportunity/opportunityPredictionPeriod.do?cId='+_this.$store.state.iscId,
-                //     data: qs.stringify(data)
-                // }).then(function(res){
-                //     _this.$store.state.oppChartsData.rateAndCycle = res.data
-                // }).catch(function(err){
-                // });
-                // // 各个商机阶段的预计成交金额
-                // axios({
-                //     method: 'post',
-                //     url: _this.$store.state.defaultHttp+'opportunity/opportunitySumAchievement.do?cId='+_this.$store.state.iscId,
-                //     data: qs.stringify(data)
-                // }).then(function(res){
-                //     _this.$store.state.oppChartsData.stageAmount = res.data
-                // }).catch(function(err){
-                // });
-                // // 商机完成金额、预计成交金额、失败金额
-                // axios({
-                //     method: 'post',
-                //     url: _this.$store.state.defaultHttp+'opportunity/opportunityStageMoney.do?cId='+_this.$store.state.iscId,
-                //     data: qs.stringify(data)
-                // }).then(function(res){
-                //     _this.$store.state.oppChartsData.amounts = res.data
-                // }).catch(function(err){
-                // });
-                // // 本月每周预计成交金额
-                // axios({
-                //     method: 'post',
-                //     url: _this.$store.state.defaultHttp+'opportunity/opportunityAchievementWeek.do?cId='+_this.$store.state.iscId,
-                //     data: qs.stringify(data)
-                // }).then(function(res){
-                //     _this.$store.state.oppChartsData.weekAmount = res.data
-                // }).catch(function(err){
-                // });
-                
-                // _this.$store.state.oppChartsDataId = 'opp' + new Date().getTime()
-                // if(flag) return
 
-                // console.log(_this.$store.state.oppChartsData)
-                // setTimeout(() => {
-                    _this.collapse5 = !_this.collapse5
-                    bus.$emit('collapse5', _this.collapse5)
-                // }, 500);
+                _this.collapse5 = !_this.collapse5
+                bus.$emit('collapse5', _this.collapse5)
             },
         },
     }

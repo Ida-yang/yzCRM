@@ -39,13 +39,20 @@
                         </div>
                     </template>
                 </el-table-column>
-                <el-table-column label="公司名称" prop="customerName" fixed show-overflow-tooltip v-if="item.prop == 'customerName' && item.state == 1" min-width="200" sortable />
+                <el-table-column label="公司名称" prop="customerName" show-overflow-tooltip v-if="item.prop == 'customerName' && item.state == 1" min-width="200" sortable />
                 <el-table-column label="总金额" prop="totalSum" v-if="item.prop == 'totalSum' && item.state == 1" min-width="110" sortable>
                     <template slot-scope="scope">
                         {{scope.row.totalSum | rounding}}
                     </template>
                 </el-table-column>
-                <el-table-column label="审核状态" prop="approvalStatus" v-if="item.prop == 'checkStatus' && item.state == 1" min-width="110" sortable />
+                <el-table-column label="状态" prop="checkStatus" v-if="item.prop == 'checkStatus' && item.state == 1" width="90" sortable>
+                    <template slot-scope="scope">
+                        <el-tag v-if="scope.row.checkStatus == 0" size="small" style="background-color:#ffffff;color:#606266;border-color:#dcdfe6" effect="dark">待审核</el-tag>
+                        <el-tag v-if="scope.row.checkStatus == 1" size="small" style="background-color:#e6a23c;color:#ffffff;border-color:#e6a23c" effect="dark">审核中</el-tag>
+                        <el-tag v-if="scope.row.checkStatus == 2" size="small" style="background-color:#67c23a;color:#ffffff;border-color:#67c23a" effect="dark">已审核</el-tag>
+                        <el-tag v-if="scope.row.checkStatus == 3" size="small" style="background-color:#f56c6c;color:#ffffff;border-color:#f56c6c" effect="dark">未通过</el-tag>
+                    </template>
+                </el-table-column>
                 <el-table-column label="联系人" prop="contactsName" v-if="item.prop == 'contactsName' && item.state == 1" min-width="100" sortable />
                 <el-table-column label="结算方式" prop="settlement" v-if="item.prop == 'settlement' && item.state == 1" min-width="110" sortable />
                 <el-table-column label="交货方式" prop="delivery" v-if="item.prop == 'delivery' && item.state == 1" min-width="110" sortable />
@@ -199,18 +206,18 @@
                     data: qs.stringify(searchList),
                 }).then(function(res){
                     let array = res.data.map.orders
-                    array.forEach(el => {
-                        if(el.checkStatus == 0){
-                            el.approvalStatus = '待审核'
-                        }else if(el.checkStatus == 1){
-                            el.approvalStatus = '审核中'
-                        }else if(el.checkStatus == 2){
-                            el.approvalStatus = '已审核'
-                            el.disabledBtn = true
-                        }else if(el.checkStatus == 3){
-                            el.approvalStatus = '未通过'
-                        }
-                    });
+                    // array.forEach(el => {
+                    //     if(el.checkStatus == 0){
+                    //         el.approvalStatus = '待审核'
+                    //     }else if(el.checkStatus == 1){
+                    //         el.approvalStatus = '审核中'
+                    //     }else if(el.checkStatus == 2){
+                    //         el.approvalStatus = '已审核'
+                    //         el.disabledBtn = true
+                    //     }else if(el.checkStatus == 3){
+                    //         el.approvalStatus = '未通过'
+                    //     }
+                    // });
                     _this.$store.state.orderList = array
                     _this.$store.state.orderListnumber = res.data.count
                 }).catch(function(err){

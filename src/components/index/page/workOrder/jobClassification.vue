@@ -135,21 +135,21 @@
         padding-left: 25px;
         box-sizing: border-box;
     }
-    .p1{
+    .jobclass_li .p1{
         font-size: 16px;
         line-height: 30px;
     }
-    .p2{
+    .jobclass_li .p2{
         font-size: 14px;
         height: 48px;
         line-height: 24px;
         color: #686868
     }
-    .p3{
+    .jobclass_li .p3{
         font-size: 14px;
         line-height: 30px;
     }
-    .p4{
+    .jobclass2_li .p4{
         font-size: 16px;
         line-height: 60px;
     }

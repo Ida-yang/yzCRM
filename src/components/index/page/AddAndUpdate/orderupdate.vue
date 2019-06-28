@@ -3,7 +3,6 @@
         <el-card class="box-card">
             <div slot="header" class="clearfix">
                 <span class="bold_span">销售订单<span class="bold_span">：{{myform.orderNo}}</span></span>
-                        <!-- <el-button style="float:right;margin-left:10px;" class="info-btn" size="mini" @click="retract()" v-show="retracts">收起</el-button> -->
                         <el-button style="float:right;margin-left:10px;" class="info-btn" size="mini" @click="retract()">审核</el-button>
             </div>
             <div class="orderHead">
@@ -136,7 +135,7 @@
         <div v-show="!thisshow"></div>
         
         <div class="entry">
-            <el-button class="btn info-btn" size="mini" icon="el-icon-circle-plus-outline" v-if="myform.checkStatus !== 2" @click="handleAdd"></el-button>
+            <el-button class="btn info-btn" size="mini" icon="el-icon-circle-plus-outline" v-if="myform.checkStatus == 0" @click="handleAdd"></el-button>
 
             <el-popover placement="bottom" width="100" trigger="click">
                 <el-checkbox-group class="checklist" v-model="checklist" style="max-height:600px;overflow-y:overlay;overflow-x:hidden">
@@ -281,7 +280,7 @@
                 <el-table-column label="产品品牌" prop="brand" width="80" v-if="item.prop == 'brand' && item.state == 1"></el-table-column>
             </div>
 
-            <el-table-column align="center" label="操作" width="90" fixed="right" v-if="myform.checkStatus !== 2">
+            <el-table-column align="center" label="操作" width="90" fixed="right" v-if="myform.checkStatus == 0">
                 <template slot-scope="scope">
                     <el-button type="success" plain style="width:30px;height:30px;padding:0" :disabled="!scope.row.edit" icon="el-icon-circle-check-outline" @click="confirmEdit(scope.row)"></el-button>
                     <el-button type="danger" plain style="width:30px;height:30px;padding:0" icon="el-icon-delete" @click="handleDelete(scope.$index,scope.row)"></el-button>
@@ -768,7 +767,7 @@
             },
             cellClick(row, column, cell, event){
                 row.edit = false
-                if(column.label !== '操作' && this.myform.checkStatus !== 2){
+                if(column.label !== '操作' && this.myform.checkStatus == 0){
                     row.edit = true
                     this.itemData.forEach((el,i) => {
                         if(row.id == el.id){

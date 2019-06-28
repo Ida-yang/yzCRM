@@ -216,8 +216,8 @@
                 <el-form-item prop="typeName" label="状态名称">
                     <el-input v-model="newform.typeName" placeholder="请输入状态名称"></el-input>
                 </el-form-item>
-                <el-form-item prop="sort" label="排序编号">
-                    <el-input onkeyup = "value=value.replace(/[^\d]/g,'')" v-model="newform.sort" placeholder="请输入排序编号"></el-input>
+                <el-form-item prop="sort" label="顺序">
+                    <el-input onkeyup = "value=value.replace(/[^\d]/g,'')" v-model="newform.sort" placeholder="请输入顺序"></el-input>
                 </el-form-item>
                 <el-form-item prop="notes" label="备注">
                     <el-input v-model="newform.notes" placeholder="请输入状态备注"></el-input>
@@ -237,8 +237,8 @@
                 <el-form-item prop="typeName" label="状态名称">
                     <el-input v-model="newform.typeName" placeholder="请输入状态名称"></el-input>
                 </el-form-item>
-                <el-form-item prop="sort" label="排序编号">
-                    <el-input onkeyup = "value=value.replace(/[^\d]/g,'')" v-model="newform.sort" placeholder="请输入排序编号"></el-input>
+                <el-form-item prop="sort" label="顺序">
+                    <el-input onkeyup = "value=value.replace(/[^\d]/g,'')" v-model="newform.sort" placeholder="请输入顺序"></el-input>
                 </el-form-item>
                 <el-form-item prop="notes" label="备注">
                     <el-input v-model="newform.notes" placeholder="请输入状态备注"></el-input>
@@ -261,8 +261,8 @@
                 <el-form-item prop="quickcontent" label="跟进内容">
                     <el-input v-model="newform.quickcontent" placeholder="请输入跟进内容"></el-input>
                 </el-form-item>
-                <el-form-item prop="sort" label="排序编号">
-                    <el-input onkeyup = "value=value.replace(/[^\d]/g,'')" v-model="newform.sort" placeholder="请输入排序编号"></el-input>
+                <el-form-item prop="sort" label="顺序">
+                    <el-input onkeyup = "value=value.replace(/[^\d]/g,'')" v-model="newform.sort" placeholder="请输入顺序"></el-input>
                 </el-form-item>
                 <el-form-item prop="notes" label="备注">
                     <el-input v-model="newform.notes" placeholder="请输入备注"></el-input>
@@ -285,8 +285,8 @@
                 <el-form-item prop="quickcontent" label="跟进内容">
                     <el-input v-model="newform.quickcontent" placeholder="请输入跟进内容"></el-input>
                 </el-form-item>
-                <el-form-item prop="sort" label="排序编号">
-                    <el-input onkeyup = "value=value.replace(/[^\d]/g,'')" v-model="newform.sort" placeholder="请输入排序编号"></el-input>
+                <el-form-item prop="sort" label="顺序">
+                    <el-input onkeyup = "value=value.replace(/[^\d]/g,'')" v-model="newform.sort" placeholder="请输入顺序"></el-input>
                 </el-form-item>
             </el-form>
             <span slot="footer" class="dialog-footer">
@@ -306,8 +306,8 @@
                 <el-form-item prop="probability" label="成功几率">
                     <el-input type="number" min="0" max="100" v-model="newform.probability" placeholder="请输入成功几率"><span slot="suffix" style="margin-right:20px">%</span></el-input>
                 </el-form-item>
-                <el-form-item prop="sort" label="排序编号">
-                    <el-input onkeyup = "value=value.replace(/[^\d]/g,'')" v-model="newform.sort" placeholder="请输入排序编号"></el-input>
+                <el-form-item prop="sort" label="顺序">
+                    <el-input onkeyup = "value=value.replace(/[^\d]/g,'')" v-model="newform.sort" placeholder="请输入顺序"></el-input>
                 </el-form-item>
             </el-form>
             <span slot="footer" class="dialog-footer">
@@ -327,8 +327,8 @@
                 <el-form-item prop="probability" label="成功几率">
                     <el-input type="number" min="0" max="100" v-model="newform.probability" placeholder="请输入成功几率"><span slot="suffix" style="margin-right:20px">%</span></el-input>
                 </el-form-item>
-                <el-form-item prop="sort" label="排序编号">
-                    <el-input onkeyup = "value=value.replace(/[^\d]/g,'')" v-model="newform.sort" placeholder="请输入排序编号"></el-input>
+                <el-form-item prop="sort" label="顺序">
+                    <el-input onkeyup = "value=value.replace(/[^\d]/g,'')" v-model="newform.sort" placeholder="请输入顺序"></el-input>
                 </el-form-item>
                 <el-form-item prop="notes" label="备注">
                     <el-input v-model="newform.notes" placeholder="请输入备注"></el-input>
@@ -539,8 +539,8 @@
                 <el-form-item prop="type" label="辅助资料类别">
                     <el-input v-model="newform.type" :disabled="true"></el-input>
                 </el-form-item>
-                <el-form-item prop="sort" label="排序编号">
-                    <el-input onkeyup = "value=value.replace(/[^\d]/g,'')" v-model="newform.sort" placeholder="请输入排序编号"></el-input>
+                <el-form-item prop="sort" label="顺序">
+                    <el-input onkeyup = "value=value.replace(/[^\d]/g,'')" v-model="newform.sort" placeholder="请输入顺序"></el-input>
                 </el-form-item>
                 <el-form-item prop="distri_name" label="经销商级别">
                     <el-input v-model="newform.distri_name" placeholder="请输入经销商级别"></el-input>
@@ -560,8 +560,8 @@
                 <el-form-item prop="type" label="辅助资料类别">
                     <el-input v-model="newform.type" :disabled="true"></el-input>
                 </el-form-item>
-                <el-form-item prop="sort" label="排序编号">
-                    <el-input onkeyup = "value=value.replace(/[^\d]/g,'')" v-model="newform.sort" placeholder="请输入排序编号"></el-input>
+                <el-form-item prop="sort" label="顺序">
+                    <el-input onkeyup = "value=value.replace(/[^\d]/g,'')" v-model="newform.sort" placeholder="请输入顺序"></el-input>
                 </el-form-item>
                 <el-form-item prop="distri_name" label="经销商级别">
                     <el-input v-model="newform.distri_name" placeholder="请输入经销商级别"></el-input>
@@ -919,7 +919,7 @@
 
                 rules: {
                     typeName : [{ required: true, message: '名称不能为空', trigger: 'blur' },],
-                    sort : [{ required: true, message: '排序编号不能为空', trigger: 'blur' },],
+                    sort : [{ required: true, message: '顺序不能为空', trigger: 'blur' },],
                     quickname : [{ required: true, message: '快捷方式不能为空', trigger: 'blur' },],
                     quickcontent : [{ required: true, message: '跟进内容不能为空', trigger: 'blur' },],
                     probability : [{ required: true, message: '成功几率不能为空', trigger: 'blur' },],
@@ -1270,7 +1270,7 @@
                 if(i == 1 || i == 2 || i == 3 || i == 4){
                     if(!data.sort){
                         _this.$message({
-                            message: "排序编号不能为空",
+                            message: "顺序不能为空",
                             type: 'error'
                         });
                         flag = true;
@@ -1285,7 +1285,7 @@
                 }else if(i == 5){
                     if(!data.sort){
                         _this.$message({
-                            message: "排序编号不能为空",
+                            message: "顺序不能为空",
                             type: 'error'
                         });
                         flag = true;
@@ -1371,7 +1371,7 @@
                 let flag = false;
                 if(!data.sort){
                     _this.$message({
-                        message: "排序编号不能为空",
+                        message: "顺序不能为空",
                         type: 'error'
                     });
                     flag = true;
@@ -1589,7 +1589,7 @@
                 let flag = false;
                 if(!data.sort){
                     _this.$message({
-                        message: "排序编号不能为空",
+                        message: "顺序不能为空",
                         type: 'error'
                     });
                     flag = true;
@@ -1815,7 +1815,7 @@
                 if(i == 1 || i == 2 || i == 3 || i == 4){
                     if(!data.sort){
                         _this.$message({
-                            message: "排序编号不能为空",
+                            message: "顺序不能为空",
                             type: 'error'
                         });
                         flag = true;
@@ -1830,7 +1830,7 @@
                 }else if(i == 5){
                     if(!data.sort){
                         _this.$message({
-                            message: "排序编号不能为空",
+                            message: "顺序不能为空",
                             type: 'error'
                         });
                         flag = true;
@@ -1917,7 +1917,7 @@
                 let flag = false;
                 if(!data.sort){
                     _this.$message({
-                        message: "排序编号不能为空",
+                        message: "顺序不能为空",
                         type: 'error'
                     });
                     flag = true;
@@ -2135,7 +2135,7 @@
                 let flag = false;
                 if(!data.sort){
                     _this.$message({
-                        message: "排序编号不能为空",
+                        message: "顺序不能为空",
                         type: 'error'
                     });
                     flag = true;

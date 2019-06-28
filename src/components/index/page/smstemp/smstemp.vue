@@ -10,7 +10,7 @@
         <div class="setrightcontent">
             <div class="radioList">
             <el-radio-group v-model="searchList.status">
-                <span class="nameList">审核状态：</span>
+                <span class="nameList">模板状态：</span>
                 <el-radio v-for="item in statusData" :key="item.id" :label="item.id" @change="search()">{{item.name}}</el-radio>
             </el-radio-group>
             <el-radio-group v-model="searchList.genre">
