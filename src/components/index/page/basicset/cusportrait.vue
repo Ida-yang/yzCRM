@@ -44,7 +44,7 @@
         <el-dialog title="添加画像" :visible.sync="dialogVisible" :close-on-click-modal="false" width="40%">
             <el-form ref="newform" :model="newform" label-width="110px" :rules="rules">
                 <el-form-item prop="type" label="客户画像类别">
-                    <el-input v-model="newform.type" :disabled="true"></el-input>
+                    <el-input v-model="newform.type" :disabled="disabledBtn"></el-input>
                 </el-form-item>
                 <el-form-item prop="typeName" label="画像值">
                     <el-input v-model="newform.typeName" placeholder="请输入画像值"></el-input>
@@ -118,16 +118,23 @@
                 newform:{
                     type:'性别',
                     id:null,
+                    parentid:null,
                     typeName:null,
                     note:null,
                 },
                 rules:{
-                    typeName : [{ required: true, message: '画像值不能为空', trigger: 'blur' },],
+                    type: [{ required: true, message: '画像类别名称不能为空', trigger: 'blur' },],
+                    typeName: [{ required: true, message: '画像值不能为空', trigger: 'blur' },],
                 },
                 dialogVisible:false,
+                disabledBtn:true,
             }
         },
         mounted(){
+            this.loadOtherType()
+            this.loadData()
+        },
+        activated(){
             this.loadData()
         },
         methods:{
@@ -146,16 +153,35 @@
                 }).catch(function(err){
                 });
             },
+            loadOtherType(){
+                const _this = this
+
+                axios({
+                    method: 'get',
+                    url: _this.$store.state.defaultHttp+'portraitType/getOthersPortraitType.do?cId='+_this.$store.state.iscId
+                }).then(function(res){
+                    _this.otherList = res.data.portraitTypes
+                }).catch(function(err){
+                });
+            },
             //显示左边对应表格和数据
             showTableval(val){
                 const _this = this
                 this.valIndex = val.index
                 this.newform.type = val.name
                 val.isActive = !val.isActive;
+                if(val.id){
+                    this.newform.parentid = val.id
+                    this.disabledBtn = false
+                }else{
+                    this.newform.parentid = null
+                    this.disabledBtn = true
+                }
                 _this.$options.methods.loadData.bind(_this)(true)
             },
             handleAdd(){
                 const _this = this
+                this.newform.id = null
                 this.newform.typeName = null
                 this.newform.notes = null
                 this.dialogVisible = true
@@ -206,12 +232,82 @@
             submit(){
                 const _this = this
                 let qs = require('querystring')
+                let showload = false
+                let submitURL = ''
+                let data = {}
+                if(this.newform.parentid){
+                    data = {
+                        id:this.newform.id,
+                        parentid:this.newform.parentid,
+                        parentname:this.newform.type,
+                        typeName:this.newform.typeName,
+                        notes:this.newform.notes,
+                    }
+                    showload = true
+                    submitURL = _this.$store.state.defaultHttp+'portraitType/saveOrUpdateOthersPortrait.do?cId='+_this.$store.state.iscId
+                }else{
+                    data = {
+                        id:this.newform.id,
+                        type:this.newform.type,
+                        typeName:this.newform.typeName,
+                        notes:this.newform.notes,
+                    }
+                    showload = false
+                    submitURL = _this.$store.state.defaultHttp+'portraitType/saveOrUpdate.do?cId='+_this.$store.state.iscId
+                }
+
+                let flag = false
+                if(!data.typeName){
+                    _this.$message({
+                        message:'画像值不能为空',
+                        type:'error'
+                    })
+                    flag = true
+                }
+                if(data.parentid && !data.parentname){
+                    _this.$message({
+                        message:'画像类别名称不能为空',
+                        type:'error'
+                    })
+                    flag = true
+                }
+                if(flag) return
+
+                axios({
+                    method: 'post',
+                    url: submitURL,
+                    data: qs.stringify(data)
+                }).then(function(res){
+                    if(res.data.code && res.data.code == '200'){
+                        _this.$message({
+                            message:'操作成功',
+                            type:'success'
+                        })
+                        _this.dialogVisible = false
+                        if(showload){
+                            _this.$options.methods.loadOtherType.bind(_this)()
+                        }
+                        _this.$options.methods.loadData.bind(_this)()
+                    }else{
+                        _this.$message({
+                            message:res.data.msg,
+                            type:'error'
+                        })
+                    }
+                }).catch(function(err){
+                });
+            },
+            submit2(){
+                const _this = this
+                let qs = require('querystring')
                 let data = {
+                    parentid:this.newform.parentid,
+                    parentname:this.newform.type,
                     id:this.newform.id,
-                    type:this.newform.type,
                     typeName:this.newform.typeName,
                     notes:this.newform.notes,
                 }
+                console.log(data)
 
                 let flag = false
                 if(!data.typeName){
@@ -223,26 +319,26 @@
                 }
                 if(flag) return
 
-                axios({
-                    method: 'post',
-                    url: _this.$store.state.defaultHttp+'portraitType/saveOrUpdate.do?cId='+_this.$store.state.iscId,
-                    data: qs.stringify(data)
-                }).then(function(res){
-                    if(res.data.code && res.data.code == '200'){
-                        _this.$message({
-                            message:'操作成功',
-                            type:'success'
-                        })
-                        _this.dialogVisible = false
-                        _this.$options.methods.loadData.bind(_this)()
-                    }else{
-                        _this.$message({
-                            message:res.data.msg,
-                            type:'error'
-                        })
-                    }
-                }).catch(function(err){
-                });
+                // axios({
+                //     method: 'post',
+                //     url: _this.$store.state.defaultHttp+'portraitType/saveOrUpdate.do?cId='+_this.$store.state.iscId,
+                //     data: qs.stringify(data)
+                // }).then(function(res){
+                //     if(res.data.code && res.data.code == '200'){
+                //         _this.$message({
+                //             message:'操作成功',
+                //             type:'success'
+                //         })
+                //         _this.dialogVisible = false
+                //         _this.$options.methods.loadData.bind(_this)()
+                //     }else{
+                //         _this.$message({
+                //             message:res.data.msg,
+                //             type:'error'
+                //         })
+                //     }
+                // }).catch(function(err){
+                // });
             },
         },
     }

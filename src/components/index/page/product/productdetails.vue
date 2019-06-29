@@ -144,10 +144,12 @@
                 dialogVisible:false,
                 dialogImageUrl:'',
 
-                defaultMsg: '这里是UE测试',
+                defaultMsg: '填写产品描述前请把这句话删掉',
                 config: {
                     initialFrameWidth: null,
-                    initialFrameHeight: 500
+                    initialFrameHeight: 500,
+                    elementPathEnabled:false,
+                    wordCount:false,
                 },
 
                 tableData1:[{sign:'spec1', spec_name:'', spec_value:[], options:[]}],

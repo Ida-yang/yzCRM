@@ -317,6 +317,11 @@ const router =new Router({
           meta: { title: '客户画像', name:'cusportrait', requireAuth:true}
         },
         {
+          path: '/competitor',
+          component: resolve => require(['../components/index/page/culturePond/competitor.vue'], resolve),
+          meta: { title: '竞争对手', name:'competitor', requireAuth:true}
+        },
+        {
           path: '/note',
           component: resolve => require(['../components/index/page/work/note.vue'], resolve),
           meta: { title: '便签', name:'note', requireAuth:true}

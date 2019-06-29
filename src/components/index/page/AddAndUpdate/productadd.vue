@@ -189,7 +189,9 @@
                 defaultMsg: '填写产品详情描述前请把这句话删掉',
                 config: {
                     initialFrameWidth: null,
-                    initialFrameHeight: 500
+                    initialFrameHeight: 500,
+                    elementPathEnabled:false,
+                    wordCount:false,
                 },
 
                 specHeadData:[{sign:'spec1', spec_name:'', spec_value:[], options:[]}],

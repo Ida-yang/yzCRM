@@ -132,7 +132,9 @@
                         'customstyle', 'paragraph', 'fontfamily', 'fontsize', '|',
                         'insertimage', 'attachment', 'spechars', 'snapscreen', '|',
                         'imagenone', 'imageleft', 'imageright', 'imagecenter',
-                    ]]
+                    ]],
+                    elementPathEnabled:false,
+                    wordCount:false,
                 },
             }
         },

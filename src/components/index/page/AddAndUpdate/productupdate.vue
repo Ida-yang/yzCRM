@@ -194,7 +194,9 @@
                 defaultMsg: '这里是UE测试',
                 config: {
                     initialFrameWidth: null,
-                    initialFrameHeight: 500
+                    initialFrameHeight: 500,
+                    elementPathEnabled:false,
+                    wordCount:false,
                 },
 
                 specHeadData:[],

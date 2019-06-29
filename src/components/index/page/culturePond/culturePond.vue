@@ -63,7 +63,7 @@
                 <el-table-column label="生日" prop="birthday" v-if="item.prop == 'birthday' && item.state == 1" min-width="110" sortable />
                 <el-table-column label="省-市-区" prop="countryid" v-if="item.prop == 'provincialAndUrbanAreas' && item.state == 1" min-width="150" sortable>
                     <template slot-scope="scope">
-                        {{scope.row.country + '-' + scope.row.city + '-' + scope.row.area}}
+                        {{scope.row.country}}-{{scope.row.city}}-{{scope.row.area}}
                     </template>
                 </el-table-column>
                 <el-table-column label="创建时间" prop="createTime" v-if="item.prop == 'createTime' && item.state == 1" min-width="150" sortable />

@@ -227,6 +227,11 @@ const state = {
   //培育池列表总数
   culturePondListnumber:0,
 
+  //竞争对手列表
+  competitorList:[],
+  //竞争对手列表总数
+  competitorListnumber:0,
+
   //当前时间
   nowtime:null,
 }

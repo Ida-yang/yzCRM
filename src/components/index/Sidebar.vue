@@ -254,6 +254,10 @@
                                 title: '培育池',
                             },
                             {
+                                index: 'competitor',
+                                title: '竞争对手',
+                            },
+                            {
                                 index: 'socialMarketing',
                                 title: '社交营销',
                             },

@@ -220,11 +220,11 @@
                 <el-button type="primary" @click="nextStep()">确 定</el-button>
             </span>
         </el-dialog>
-        <el-dialog :visible.sync="dialogVisible3" :close-on-click-modal="false" width="400px">
+        <el-dialog :visible.sync="dialogVisible3" :close-on-click-modal="false" width="620px">
             <span>确认关闭商机进度吗？一旦确定将不可撤回</span>
             <br><br>
             <el-checkbox-group v-model="reasonsForFailure">
-                <el-checkbox v-for="item in failReasonData" :key="item.id" :label="item.id">{{item.typeName}}</el-checkbox>
+                <el-checkbox v-for="item in failReasonData" :key="item.id" :label="item.id" style="width:190px;margin:0">{{item.typeName}}</el-checkbox>
             </el-checkbox-group>
             <!-- <hr style="width:100%;height:1px;background-color:#606266;border:none;margin-bottom:10px;"> -->
             <br>
@@ -349,14 +349,16 @@
                 dialogVisible3:false,
                 reasonsForFailure:[],
                 codeSnippet:null,
-                defaultMsg:'填写原因前请把这句话删掉',
+                defaultMsg:'',
                 config: {
                     initialFrameWidth: '',
                     initialFrameHeight: 200,
                     toolbars:[[
                         'bold', '|', 'insertorderedlist', 'insertunorderedlist', '|',
                         'justifyleft', 'justifycenter', 'justifyright', 'justifyjustify', '|',
-                    ]]
+                    ]],
+                    elementPathEnabled:false,
+                    wordCount:false,
                 },
 
                 baseindex:'first',

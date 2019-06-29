@@ -80,6 +80,7 @@
                     @change="handleInput($event, item.inputModel)"
                     :placeholder="item.placeholder"
                     format="yyyy-MM-dd" value-format="yyyy-MM-dd"
+                    :picker-options="pickerOptions"
                     style="width:90%;" 
                     auto-complete="off">
                 </el-date-picker>
@@ -122,6 +123,12 @@
         store,
         data(){
             return {
+                pickerOptions:{
+                    disabledDate(time) {
+                        return time.getTime() < Date.now() - 8.64e7;
+                    },
+                },
+                
                 contactslist:null,
                 oppaddOrUpdateData: {},
                 myForm: {

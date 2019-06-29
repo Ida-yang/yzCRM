@@ -43,9 +43,7 @@
                     </el-form-item>
                     <br>
                     <el-form-item prop="describe" class="first_input" label="问题描述" label-width="90px">
-                        <!-- <el-input type="textarea" rows="5" v-model="myform.describe" style="width:610px;"></el-input> -->
-                        
-                        <div class="editor-container">
+                        <div class="editor-container editor_head">
                             <UE :defaultMsg="defaultMsg" :config="config" ref="ue"></UE>
                         </div>
                     </el-form-item>
@@ -66,13 +64,6 @@
                 </el-form-item>
             </el-form>
         </el-card>
-        
-        <!-- <div class="jobclass_enclosure">
-            <el-upload class="upload-demo jobclass_upload" :action="doUpload" :on-success="handleAvatarSuccess" :on-remove="handleRemove" :before-remove="beforeRemove" multiple :limit="3" :on-exceed="handleExceed" :file-list="fileList">
-                <el-button size="small">上传附件</el-button>
-                <div slot="tip" class="el-upload__tip">只能上传3个大小不超过5M的附件，支持格式JPG，JPEG，PNG，TXT，DOC，DOCX，XLS，XLSX，PDF</div>
-            </el-upload>
-        </div> -->
 
         
         
@@ -154,14 +145,15 @@
                     initialFrameWidth: 610,
                     initialFrameHeight: 500,
                     toolbars:[[
-                        'undo', 'redo', '|',
-                        'bold', 'italic', 'underline', 'strikethrough', 'forecolor', 'backcolor', '|',
-                        'formatmatch', 'autotypeset', 'insertorderedlist', 'insertunorderedlist', '|',
-                        'customstyle', 'paragraph', 'fontfamily', 'fontsize', '|',
+                        'undo', 'redo', '|', 'fontsize',
+                        'bold', 'italic', 'underline', 'forecolor', '|',
+                        'insertorderedlist', 'insertunorderedlist', '|',
                         'justifyleft', 'justifycenter', 'justifyright', 'justifyjustify', '|',
-                        'insertimage', 'attachment', 'spechars', 'snapscreen', '|',
+                        'insertimage', 'attachment', '|',
                         'imagenone', 'imageleft', 'imageright', 'imagecenter',
-                    ]]
+                    ]],
+                    elementPathEnabled:false,
+                    wordCount:false,
                 },
 
                 submitURL:null,
@@ -450,6 +442,9 @@
     } */
     .jobclass_upload .el-upload-list__item{
         width: 60%;
+    }
+    .editor_head{
+        line-height: 24px;
     }
 </style>
 

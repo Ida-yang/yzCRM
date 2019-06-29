@@ -307,7 +307,9 @@
                 defaultMsg: '填写说明前请把这句话删掉',
                 config: {
                     initialFrameWidth: null,
-                    initialFrameHeight: 500
+                    initialFrameHeight: 500,
+                    elementPathEnabled:false,
+                    wordCount:false,
                 },
 
                 itemData:[
