@@ -23,7 +23,93 @@
             </div>
             <div class="bottom">
                 <el-tabs v-model="activeName2" type="card">
-                    <el-tab-pane label="个人画像" name="first">
+                    <el-tab-pane label="客户画像" name="first">
+                        <div class="cus_portrait">
+                            <img class="cusport_img" src="../../../../../static/img/cusPortrait.png" width="250" height="250" />
+                            <div class="cusport_div1">
+                                <span class="cusport_span"><img style="margin-left:11px;" src="../../../../../static/img/persona.png" width="35" height="35" /><br>个人画像</span>
+                                <img class="cusport_line" src="../../../../../static/img/line1.png" />
+                                <div class="cusport_c">
+                                    <div class="cusport_bg">
+                                        <p>1111111</p>
+                                        <p>2222222</p>
+                                        <p>3333333</p>
+                                        <p>2222222</p>
+                                        <p>3333333</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="cusport_div2">
+                                <span class="cusport_span"><img style="margin-left:11px;" src="../../../../../static/img/family.png" width="35" height="35" /><br>家庭画像</span>
+                                <img class="cusport_line" src="../../../../../static/img/line2.png" />
+                                <div class="cusport_c">
+                                    <div class="cusport_bg">
+                                        <p>1111111</p>
+                                        <p>4444444</p>
+                                        <p>1111111</p>
+                                        <p>4444444</p>
+                                        <p>1111111</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="cusport_div3">
+                                <span class="cusport_span"><img style="margin-left:11px;" src="../../../../../static/img/consumption.png" width="35" height="35" /><br>消费画像</span>
+                                <img class="cusport_line" src="../../../../../static/img/line3.png" />
+                                <div class="cusport_c">
+                                    <div class="cusport_bg">
+                                        <p>1111111</p>
+                                        <p>2222222</p>
+                                        <p>3333333</p>
+                                        <p>4444444</p>
+                                        <p>1111111</p>
+                                        <p>2222222</p>
+                                        <p>3333333</p>
+                                        <p>4444444</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="cusport_div4">
+                                <span class="cusport_span"><img style="margin-left:11px;" src="../../../../../static/img/marketing.png" width="35" height="35" /><br>营销画像</span>
+                                <img class="cusport_line" src="../../../../../static/img/line4.png" />
+                                <div class="cusport_c">
+                                    <div class="cusport_bg">
+                                        <p></p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="cusport_div5">
+                                <span class="cusport_span"><img style="margin-left:11px;" src="../../../../../static/img/interest.png" width="35" height="35" /><br>兴趣画像</span>
+                                <img class="cusport_line" src="../../../../../static/img/line5.png" />
+                                <div class="cusport_c">
+                                    <div class="cusport_bg">
+                                        <p>3333333</p>
+                                        <p>4444444</p>
+                                        <p>3333333</p>
+                                        <p>4444444</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="cusport_div6">
+                                <span class="cusport_span"><img style="margin-left:11px;" src="../../../../../static/img/other.png" width="35" height="35" /><br>其他画像</span>
+                                <img class="cusport_line" src="../../../../../static/img/line6.png" />
+                                <div class="cusport_c">
+                                    <div class="cusport_bg">
+                                        <p>1111111</p>
+                                        <p>1111111</p>
+                                        <p>1111111</p>
+                                        <p>1111111</p>
+                                        <p>1111111</p>
+                                        <p>1111111</p>
+                                        <p>1111111</p>
+                                        <p>1111111</p>
+                                        <p>1111111</p>
+                                        <p>1111111</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </el-tab-pane>
+                    <el-tab-pane label="个人画像" name="second">
                         <ul class="cul_checkBox">
                             <li class="cil_li">
                                 <span class="cul_li_span">性别</span>
@@ -55,16 +141,16 @@
                             </li>
                         </ul>
                     </el-tab-pane>
-                    <el-tab-pane label="家庭画像" name="second">
+                    <el-tab-pane label="家庭画像" name="third">
                         <span style="text-align:center;">暂无数据</span>
                     </el-tab-pane>
-                    <el-tab-pane label="需求画像" name="third">
+                    <el-tab-pane label="需求画像" name="fourth">
                         <span style="text-align:center;">暂无数据</span>
                     </el-tab-pane>
-                    <el-tab-pane label="营销画像" name="fourth">
+                    <el-tab-pane label="营销画像" name="fifth">
                         <span style="text-align:center;">暂无数据</span>
                     </el-tab-pane>
-                    <el-tab-pane label="其他画像" name="fifth">
+                    <el-tab-pane label="其他画像" name="sixth">
                         <span style="text-align:center;">暂无数据</span>
                     </el-tab-pane>
                 </el-tabs>

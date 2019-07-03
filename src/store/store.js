@@ -51,6 +51,7 @@ const state = {
   approvalupdateData:null, // 审批流程编辑
   workOrderaddorUpdateData:null, // 工单
   culPondaddorUpdateData:null, // 培育池
+  competitorAddOrUpdateData:null, // 竞争对手
   
   //跳转详情页列表
   cluedetailsData:null, // 线索
@@ -66,6 +67,7 @@ const state = {
   expBasedetailData:null, // 经验库
   receivdetailData:null, // 回款
   culturePondetailData:null, // 培育池
+  competitordetailData:null, // 竞争对手
 
 
   //线索挖掘列表

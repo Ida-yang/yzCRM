@@ -11,14 +11,18 @@
                     <el-menu-item v-for="item in familyList" :key="item.index" :index="item.index" @click="showTableval(item)">{{item.name}}</el-menu-item>
                 </el-submenu>
                 <el-submenu index="3">
-                    <span slot="title">需求画像</span>
-                    <el-menu-item v-for="item in demandList" :key="item.index" :index="item.index" @click="showTableval(item)">{{item.name}}</el-menu-item>
+                    <span slot="title">兴趣画像</span>
+                    <el-menu-item v-for="item in interestList" :key="item.index" :index="item.index" @click="showTableval(item)">{{item.name}}</el-menu-item>
                 </el-submenu>
                 <el-submenu index="4">
+                    <span slot="title">消费画像</span>
+                    <el-menu-item v-for="item in consumptionList" :key="item.index" :index="item.index" @click="showTableval(item)">{{item.name}}</el-menu-item>
+                </el-submenu>
+                <el-submenu index="5">
                     <span slot="title">企业画像</span>
                     <el-menu-item v-for="item in enterpriseList" :key="item.index" :index="item.index" @click="showTableval(item)">{{item.name}}</el-menu-item>
                 </el-submenu>
-                <el-submenu index="5">
+                <el-submenu index="6">
                     <span slot="title">其他</span>
                     <el-menu-item v-for="item in otherList" :key="item.index" :index="item.index" @click="showTableval(item)">{{item.name}}</el-menu-item>
                 </el-submenu>
@@ -88,11 +92,13 @@
                     {index:'9',name:'父母人数',isActive:false},
                     {index:'10',name:'年收入',isActive:false},
                 ],
-                demandList:[
+                interestList:[
                     {index:'11',name:'行为爱好',isActive:false},
                     {index:'12',name:'阅读兴趣',isActive:false},
                     {index:'13',name:'社交兴趣',isActive:false},
                     {index:'14',name:'运动兴趣',isActive:false},
+                ],
+                consumptionList:[
                     {index:'15',name:'手机兴趣',isActive:false},
                     {index:'16',name:'品牌兴趣',isActive:false},
                     {index:'17',name:'车辆兴趣',isActive:false},
@@ -296,49 +302,6 @@
                     }
                 }).catch(function(err){
                 });
-            },
-            submit2(){
-                const _this = this
-                let qs = require('querystring')
-                let data = {
-                    parentid:this.newform.parentid,
-                    parentname:this.newform.type,
-                    id:this.newform.id,
-                    typeName:this.newform.typeName,
-                    notes:this.newform.notes,
-                }
-                console.log(data)
-
-                let flag = false
-                if(!data.typeName){
-                    _this.$message({
-                        message:'名称不能为空',
-                        type:'error'
-                    })
-                    flag = true
-                }
-                if(flag) return
-
-                // axios({
-                //     method: 'post',
-                //     url: _this.$store.state.defaultHttp+'portraitType/saveOrUpdate.do?cId='+_this.$store.state.iscId,
-                //     data: qs.stringify(data)
-                // }).then(function(res){
-                //     if(res.data.code && res.data.code == '200'){
-                //         _this.$message({
-                //             message:'操作成功',
-                //             type:'success'
-                //         })
-                //         _this.dialogVisible = false
-                //         _this.$options.methods.loadData.bind(_this)()
-                //     }else{
-                //         _this.$message({
-                //             message:res.data.msg,
-                //             type:'error'
-                //         })
-                //     }
-                // }).catch(function(err){
-                // });
             },
         },
     }

@@ -141,12 +141,59 @@
                         </ul>
                     </el-tab-pane>
                     <el-tab-pane label="竞争对手" name="second">
-                        <el-table :data="competitorData" border stripe style="width: 100%">
-                            <el-table-column label="公司名称" prop="name" min-width="200" />
-                            <el-table-column label="联系人" prop="phone" min-width="100" />
-                            <el-table-column label="优势" prop="telephone" min-width="150" />
-                            <el-table-column label="劣势" prop="email" min-width="150" />
-                            <el-table-column label="常用战术" prop="qq" min-width="180" />
+                        <div class="entry">
+                            <el-button class="btn info-btn" size="mini" icon="el-icon-circle-plus-outline" @click="addCompetitor"></el-button>
+                        </div>
+                        <el-table :data="competitorData" border highlight-current-row @cell-click="cellClick2">
+                            <el-table-column header-align="center" fixed align="center" type="index" width="45"></el-table-column>
+
+                            <el-table-column label="公司名称" prop="name" min-width="280" fixed>
+                                <template slot-scope="scope">
+                                    <template v-if="scope.row.edit">
+                                        <el-select v-model="scope.row.name" placeholder="请选择" filterable @focus="handleFoces(scope.$index,scope.row)" @change="selectChange($event,scope.row)">
+                                            <el-option class="droplist" v-for="item in competitorList" :key="item.id" :label="item.name" :value="item.id">
+                                            </el-option>
+                                        </el-select>
+                                    </template>
+                                    <span v-else>{{ scope.row.name }}</span>
+                                </template>
+                            </el-table-column>
+
+                            <el-table-column prop="contacts" min-width="100" label="联系人" />
+
+                            <el-table-column prop="advantage" min-width="220" label="优势">
+                                <template slot-scope="scope">
+                                    <template v-if="scope.row.edit">
+                                        <el-input v-model="scope.row.advantage" class="edit-input" size="small"/>
+                                    </template>
+                                    <span v-else>{{ scope.row.advantage }}</span>
+                                </template>
+                            </el-table-column>
+
+                            <el-table-column prop="inferiority" min-width="220" label="劣势">
+                                <template slot-scope="scope">
+                                    <template v-if="scope.row.edit">
+                                        <el-input v-model="scope.row.inferiority" class="edit-input" size="small"/>
+                                    </template>
+                                    <span v-else>{{ scope.row.inferiority }}</span>
+                                </template>
+                            </el-table-column>
+
+                            <el-table-column prop="commonTactics" min-width="220" label="常用战术">
+                                <template slot-scope="scope">
+                                    <template v-if="scope.row.edit">
+                                        <el-input v-model="scope.row.commonTactics" class="edit-input" size="small"/>
+                                    </template>
+                                    <span v-else>{{ scope.row.commonTactics }}</span>
+                                </template>
+                            </el-table-column>
+
+                            <el-table-column align="center" fixed="right" label="操作" min-width="90">
+                                <template slot-scope="scope">
+                                    <el-button type="success" plain style="width:30px;height:30px;padding:0" :disabled="!scope.row.edit" icon="el-icon-circle-check-outline" @click="editCompetitor(scope.$index,scope.row)"></el-button>
+                                    <el-button type="danger" plain style="width:30px;height:30px;padding:0" icon="el-icon-delete" @click="deleteCompetitor(scope.$index,scope.row)"></el-button>
+                                </template>
+                            </el-table-column>
                         </el-table>
                     </el-tab-pane>
                     <el-tab-pane label="联系人" name="third">
@@ -198,18 +245,180 @@
                         </ul>
                         </div>
                     </el-tab-pane>
-                    <el-tab-pane label="产品" name="second">
-                        <el-table :data="productData" border stripe style="width: 100%">
-                            <el-table-column prop="name" min-width="200" label="公司名称" />
-                            <el-table-column prop="phone" min-width="110" label="联系人" />
-                            <el-table-column prop="telephone" min-width="150" label="优势" />
-                            <el-table-column prop="email" min-width="150" label="劣势" />
-                            <el-table-column prop="qq" min-width="150" label="常用战术" />
+                    <el-tab-pane label="产品报价" name="second">
+                        <div class="entry">
+                            <el-button class="btn info-btn" size="mini" icon="el-icon-circle-plus-outline" @click="handleAdd"></el-button>
+                        </div>
+                        <el-table :data="itemData" border highlight-current-row show-summary :summary-method="getSummary" @cell-click="cellClick">
+                            <el-table-column header-align="center" fixed align="center" type="index" width="45"></el-table-column>
+
+                            <el-table-column label="产品名称" prop="tbGoods.goodsName" min-width="280" fixed>
+                                <template slot-scope="scope">
+                                    <template v-if="scope.row.edit">
+                                        <el-select v-model="scope.row.tbGoods.goodsName" placeholder="请选择" filterable :filter-method="handleFilter" @focus="handleFoces(scope.$index,scope.row)">
+                                            <el-option class="droplist" :value="scope.row.tbGoods.goodsName">
+                                                <el-table :data="selectData" border @current-change="currentChange" style="width: 100%">
+                                                    <el-table-column header-align="center" type="index" min-width="45"></el-table-column>
+                                                    <el-table-column prop="tbGoods.goodsName" label="产品名称" width="130"></el-table-column>
+                                                    <el-table-column prop="tbGoods.describe" show-overflow-tooltip label="描述" width="150"></el-table-column>
+                                                    <el-table-column prop="goodspec" label="规格属性" min-width="150">
+                                                        <template slot-scope="scope">
+                                                            <span v-for="(item,i) in scope.row.goodspec" :key="i">{{item.label + '：' + item.value}}</span>
+                                                        </template>
+                                                    </el-table-column>
+                                                    <el-table-column prop="unit" label="单位" min-width="90"></el-table-column>
+                                                </el-table>
+                                            </el-option>
+                                        </el-select>
+                                        <el-button class="btn info-btn" size="mini" icon="el-icon-more" style="width:30px;height:28px;padding:0" @click="showDialog()"></el-button>
+                                    </template>
+                                    <span v-else>{{ scope.row.tbGoods.goodsName }}</span>
+                                </template>
+                            </el-table-column>
+
+                            <el-table-column label="描述" prop="tbGoods.describe" min-width="120" />
+                            
+                            <el-table-column label="规格属性" prop="goodspec" min-width="100">
+                                <template slot-scope="scope">
+                                    <span v-for="(item,i) in scope.row.goodspec" :key="i">{{item.value +'/'}}</span>
+                                </template>
+                            </el-table-column>
+
+                            <el-table-column label="单位" prop="unit" min-width="50" />
+
+                            <el-table-column prop="num" min-width="100" label="数量">
+                                <template slot-scope="scope">
+                                    <template v-if="scope.row.edit">
+                                        <el-input v-model="scope.row.num" onkeyup="value=value.replace(/[^\d]/g,'')" class="edit-input" size="small" @input="handleinput($event,scope.$index,scope.row)"/>
+                                    </template>
+                                    <span v-else>{{ scope.row.num }}</span>
+                                </template>
+                            </el-table-column>
+
+                            <el-table-column prop="price" min-width="120" label="单价">
+                                <template slot-scope="scope">
+                                    <template v-if="scope.row.edit">
+                                        <el-input v-model="scope.row.price" onkeyup="value=value.replace(/[^\d]/g,'')" class="edit-input" size="small" @input="handleinput($event,scope.$index,scope.row)"/>
+                                    </template>
+                                    <span v-else>{{ scope.row.price }}</span>
+                                </template>
+                            </el-table-column>
+
+                            <el-table-column prop="amountOfMoney" min-width="120" label="金额">
+                                <template slot-scope="scope">
+                                    <template v-if="scope.row.edit">
+                                        <el-input v-model="scope.row.amountOfMoney" onkeyup="value=value.replace(/[^\d]/g,'')" class="edit-input" size="small" @input="handleinput($event,scope.$index,scope.row)"/>
+                                    </template>
+                                    <span v-else>{{ scope.row.amountOfMoney }}</span>
+                                </template>
+                            </el-table-column>
+
+                            <el-table-column prop="discount" min-width="90" label="折扣">
+                                <template slot-scope="scope">
+                                    <template v-if="scope.row.edit">
+                                        <el-input v-model="scope.row.discount" onkeyup="value=value.replace(/[^\d]/g,'')" class="edit-input" size="small" @input="handleinput($event,scope.$index,scope.row)">
+                                            <span slot="suffix" style="margin-right:5px;line-height:34px;">%</span>
+                                        </el-input>
+                                    </template>
+                                    <span v-else-if="scope.row.discount">{{ scope.row.discount + ' %' }}</span>
+                                </template>
+                            </el-table-column>
+
+                            <el-table-column prop="discountAmount" min-width="120" label="折扣额">
+                                <template slot-scope="scope">
+                                    <template v-if="scope.row.edit">
+                                        <el-input v-model="scope.row.discountAmount" onkeyup="value=value.replace(/[^\d]/g,'')" class="edit-input" size="small"/>
+                                    </template>
+                                    <span v-else>{{ scope.row.discountAmount }}</span>
+                                </template>
+                            </el-table-column>
+
+                            <el-table-column prop="discountAfter" min-width="120" label="折后金额">
+                                <template slot-scope="scope">
+                                    <template v-if="scope.row.edit">
+                                        <el-input v-model="scope.row.discountAfter" onkeyup="value=value.replace(/[^\d]/g,'')" class="edit-input" size="small"/>
+                                    </template>
+                                    <span v-else>{{ scope.row.discountAfter }}</span>
+                                </template>
+                            </el-table-column>
+
+                            <el-table-column prop="taxRate" min-width="90" label="税率">
+                                <template slot-scope="scope">
+                                    <template v-if="scope.row.edit">
+                                        <el-input v-model="scope.row.taxRate" onkeyup="value=value.replace(/[^\d]/g,'')" class="edit-input" size="small" @input="handleinput($event,scope.$index,scope.row)">
+                                            <span slot="suffix" style="margin-right:5px;line-height:34px;">%</span>
+                                        </el-input>
+                                    </template>
+                                    <span v-else>{{ scope.row.taxRate }}</span>
+                                </template>
+                            </el-table-column>
+
+                            <el-table-column prop="taxAmount" min-width="120" label="税额">
+                                <template slot-scope="scope">
+                                    <template v-if="scope.row.edit">
+                                        <el-input v-model="scope.row.taxAmount" onkeyup="value=value.replace(/[^\d]/g,'')" class="edit-input" size="small"/>
+                                    </template>
+                                    <span v-else>{{ scope.row.taxAmount }}</span>
+                                </template>
+                            </el-table-column>
+
+                            <el-table-column prop="taxAfter" min-width="120" label="税后金额">
+                                <template slot-scope="scope">
+                                    <template v-if="scope.row.edit">
+                                        <el-input v-model="scope.row.taxAfter" onkeyup="value=value.replace(/[^\d]/g,'')" class="edit-input" size="small"/>
+                                    </template>
+                                    <span v-else>{{ scope.row.taxAfter }}</span>
+                                </template>
+                            </el-table-column>
+
+                            <el-table-column prop="brand" min-width="80" label="产品品牌"></el-table-column>
+
+                            <el-table-column align="center" fixed="right" label="操作" min-width="90">
+                                <template slot-scope="scope">
+                                    <el-button type="success" plain style="width:30px;height:30px;padding:0" :disabled="!scope.row.edit" icon="el-icon-circle-check-outline" @click="confirmEdit(scope.row)"></el-button>
+                                    <el-button type="danger" plain style="width:30px;height:30px;padding:0" icon="el-icon-delete" @click="handleDelete(scope.$index,scope.row)"></el-button>
+                                </template>
+                            </el-table-column>
                         </el-table>
+                        <div class="pro_sub_btn">
+                            <el-button type="primary" :disabled="isDisable" @click="onSubmit">立即提交</el-button>
+                        </div>
                     </el-tab-pane>
                 </el-tabs>
             </div>
         </el-col>
+        <el-dialog title="选择产品" :visible.sync="dialogVisible1" :close-on-click-modal="false" width="80%" class="orderDialog" center>
+            <div class="otherleftcontent">
+                <el-tree
+                    node-key="id"
+                    highlight-current accordion expand-on-click-node
+                    :data="datalist"
+                    :props="defaultProps"
+                    :default-expanded-keys="defaultkeys"
+                    @node-click="handleNodeClick">
+                </el-tree>
+            </div>
+            <div class="otherightcontent">
+                <span>产品名称：</span><el-input v-model="goodsName" style="width:200px;" @input="addInput"></el-input>
+                <br><br>
+                <el-table :data="tableData" border fit @selection-change="selectInfo" style="width: 100%">
+                    <el-table-column header-align="center" align="center" type="selection" min-width="45" @selection-change="selectInfo"></el-table-column>
+                    <el-table-column prop="tbGoods.goodsName" label="产品名称" width="130"></el-table-column>
+                    <el-table-column prop="tbGoods.describe" show-overflow-tooltip label="描述" width="150"></el-table-column>
+                    <el-table-column prop="goodspec" label="规格属性" min-width="150">
+                        <template slot-scope="scope">
+                            <span v-for="(item,i) in scope.row.goodspec" :key="i">{{item.label + '：' + item.value}}</span>
+                        </template>
+                    </el-table-column>
+                    <el-table-column prop="unit" label="单位" width="90"></el-table-column>
+                    <el-table-column prop="brand" label="品牌" width="90"></el-table-column>
+                </el-table>
+            </div>
+            <span slot="footer" class="dialog-footer order_foot">
+                <el-button @click="dialogVisible1 = false">取 消</el-button>
+                <el-button type="primary" @click="handleSubmit()">确 定</el-button>
+            </span>
+        </el-dialog>
         <el-dialog :visible.sync="dialogVisible" :close-on-click-modal="false" width="400px">
             <span>确认修改商机进度吗？一旦确定将不可撤回</span>
             <br><br>
@@ -242,7 +451,7 @@
                 <el-input  v-model="searchList.keyword" placeholder="请输入公司名称" style="width:80%;" @keyup.enter.native="search"></el-input>
                 <el-button icon="el-icon-search" type="primary" size="mini" @click="search()"></el-button>
             </div>
-            <el-table :data="tableData" style="width: 100%">
+            <el-table :data="tableDatas" style="width: 100%">
                 <el-table-column prop="customerpool[0].name" label="公司名称">
                     <template slot-scope="scope">
                         <div @click="getRow(scope.$index, scope.row)">
@@ -301,7 +510,7 @@
                 contractTime:null,
                 failTime:null,
 
-                tableData: null,
+                tableDatas: null,
                 tableNumber:null,
                 page:1,
                 limit:20,
@@ -362,11 +571,43 @@
                 },
 
                 baseindex:'first',
-                productData:[],
 
                 showauxAnalys:true,
 
-                failReasonData:[]
+                failReasonData:[],
+
+                itemData:[
+                    {id:10,amountOfMoney:null, commitTime:null, brand:null, discount:null, discountAfter:null, discountAmount:null, tbGoods:{ goodsName:'', describe:'', }, num: null, price: null, taxAfter:null, taxAmount:null, taxRate:null, unit:null, edit:false,},
+                ],
+                list:null,
+                selectData:[],
+                scopeIndex:'',
+                cusdiscount:null,
+                custaxRate:null,
+                OKdisabled:true,
+                classification_id:null,
+                goodsName:null,
+
+                dialogVisible1:false,
+                tableData:[],
+                itemList:[],
+                multipleSelection:[],
+                idArr:[],
+
+                datalist:[],
+                defaultProps:{
+                    label:'name',
+                    children:'next',
+                },
+                defaultkeys:[1],
+
+                nodeChange:false,
+                updateData:[],
+                productData:{},
+
+                isDisable:false,
+
+                competitorList:[],
             }
         },
         // mounted(){
@@ -375,7 +616,8 @@
         // },
         activated(){
             this.loadTable()
-            this.loadData();
+            this.loadData()
+            this.getList()
         },
         methods: {
             loadTable(){
@@ -387,13 +629,16 @@
                 pageInfo.limit = this.limit
                 let data = {}
                 data.type = '失败原因'
+                let data2 = {}
+                data2.page = 1
+                data2.limit = 999999999
 
                 axios({
                     method: 'post',
                     url: _this.$store.state.defaultHttp+'opportunity/query.do?cId='+_this.$store.state.iscId+'&pId='+_this.$store.state.ispId,
                     data: qs.stringify(pageInfo),
                 }).then(function(res){
-                    _this.tableData = res.data.map.success
+                    _this.tableDatas = res.data.map.success
                     _this.tableNumber = res.data.count
                 }).catch(function(err){
                     // console.log(err);
@@ -407,6 +652,25 @@
                 }).catch(function(err){
                     // console.log(err);
                 });
+                axios({
+                    method: 'get',
+                    url: _this.$store.state.defaultHttp+'classification/getClassificationNodeTree.do?cId='+_this.$store.state.iscId,
+                }).then(function(res){
+                    _this.datalist = res.data.map.success
+                }).catch(function(err){
+                    // console.log(err);
+                });
+                
+                //竞争对手列表
+                axios({
+                    method:'post',
+                    url:_this.$store.state.defaultHttp + 'competitor/queryForList.do?cId=' + _this.$store.state.iscId,
+                    data: qs.stringify(data2)
+                }).then(function(res){
+                    _this.competitorList = res.data.map.success
+                }).catch(function(err){
+                    // console.log(err);
+                });
             },
             loadData() {
                 const _this = this
@@ -416,6 +680,16 @@
                     url:_this.$store.state.defaultHttp+'opportunity/getopportunityById.do?cId='+_this.$store.state.iscId+'&opportunity_id='+_this.idArr.opportunity_id,
                 }).then(function(res){
                     _this.opportunitydetail = res.data.map.success[0]
+                    if(_this.opportunitydetail.discount){
+                        _this.cusdiscount = res.data.discount
+                    }else{
+                        _this.cusdiscount = '100'
+                    }
+                    if(_this.opportunitydetail.taxRate){
+                        _this.custaxRate = res.data.taxRate
+                    }else{
+                        _this.custaxRate = '0'
+                    }
                     _this.contacts = res.data.map.success[0].contacts[0]
                     _this.privateUser = res.data.map.success[0].privateUser[0]
                     _this.customerpool = res.data.map.success[0].customerpool[0]
@@ -489,7 +763,30 @@
                 }).catch(function(err){
                     // console.log(err);
                 });
+                _this.$options.methods.loadProduct.bind(_this)()
+                _this.$options.methods.getCompetitor.bind(_this)()
+            },
+            loadProduct(){
+                const _this = this
+                let qs = require('querystring')
+                let data = {}
+                data.opportunity_id = _this.idArr.opportunity_id
                 
+                axios({
+                    method: 'post',
+                    url: _this.$store.state.defaultHttp+'order/selectById.do?cId='+_this.$store.state.iscId,
+                    data:qs.stringify(data)
+                }).then(function(res){
+                    _this.productData = res.data
+                    _this.updateData = res.data.orderDetails
+                    if(_this.updateData.length){
+                        _this.$options.methods.getItem.bind(_this)()
+                    }else{
+                        _this.itemData = [{id:10,amountOfMoney:null, commitTime:null, brand:null, discount:null, discountAfter:null, discountAmount:null, tbGoods:{ goodsName:'', describe:'', }, num: null, price: null, taxAfter:null, taxAmount:null, taxRate:null, unit:null, edit:false,},]
+                    }
+                }).catch(function(err){
+                    // console.log(err);
+                });
             },
             loadfollow(){
                 const _this = this
@@ -679,6 +976,470 @@
                 this.thisshow = !this.thisshow
                 this.retracts = !this.retracts
             },
+
+            // 竞争对手
+            getCompetitor(){
+                const _this = this
+                let qs = require('querystring')
+                let data = {}
+                data.oy_id = this.idArr.opportunity_id
+
+                axios({
+                    method: 'post',
+                    url: _this.$store.state.defaultHttp+'opportunityCompetitor/selectByOpportunityId.do?cId='+_this.$store.state.iscId,
+                    data:qs.stringify(data)
+                }).then(function(res){
+                    let items = res.data
+                    _this.competitorData = items.map(v => {
+                        _this.$set(v, 'edit', false)
+                        return v
+                    })
+                }).catch(function(err){
+                    // console.log(err);
+                });
+            },
+            cellClick2(row, column, cell, event){
+                if(column.label !== '操作'){
+                    row.edit = true
+                    this.competitorData.forEach((el,i) => {
+                        if(row.id == el.id){
+                            this.scopeIndex = i
+                        }
+                    });
+                }
+            },
+            addCompetitor(){
+                this.competitorData.push({id:null,oy_id:this.idArr.opportunity_id,competitor_id:null,contacts:null,advantage:null,inferiority:null,commonTactics:null,edit:false})
+            },
+            selectChange(val,row){
+                this.competitorList.forEach(el => {
+                    if(el.id == val){
+                        row.competitor_id = el.id
+                        row.contacts = el.contacts
+                    }
+                });
+            },
+            editCompetitor(index,row){
+                const _this = this
+                let qs = require('querystring')
+                let data = row
+
+                let flag = false
+                if(!data.competitor_id){
+                    this.$message({
+                        message:'竞争对手不能为空',
+                        type:'success'
+                    })
+                }
+
+                axios({
+                    method: 'post',
+                    url: _this.$store.state.defaultHttp+'opportunityCompetitor/saveOrUpdate.do?cId='+_this.$store.state.iscId,
+                    data:qs.stringify(data)
+                }).then(function(res){
+                    if(res.data.code && res.data.code == '200'){
+                        _this.$message({
+                            message:'操作成功',
+                            type:'success'
+                        })
+                        row.edit = false
+                        _this.$options.methods.getCompetitor.bind(_this)()
+                    }else{
+                        _this.$message({
+                            message:res.data.msg,
+                            type:'error'
+                        })
+                    }
+                }).catch(function(err){
+                    // console.log(err);
+                });
+            },
+            deleteCompetitor(index,row){
+                const _this = this
+                let qs = require('querystring')
+                let data = {}
+                data.id = row.id
+
+                _this.$confirm('是否确认删除？', '提示', {
+                        confirmButtonText: '确定',
+                        cancelButtonText: '取消',
+                    }).then(({ value }) => {
+                    axios({
+                        method: 'post',
+                        url: _this.$store.state.defaultHttp+'opportunityCompetitor/delete.do?cId='+_this.$store.state.iscId,
+                        data:qs.stringify(data)
+                    }).then(function(res){
+                        if(res.data.code && res.data.code == '200'){
+                            _this.$message({
+                                message:'操作成功',
+                                type:'success'
+                            })
+                            _this.$options.methods.getCompetitor.bind(_this)()
+                        }else{
+                            _this.$message({
+                                message:res.data.msg,
+                                type:'error'
+                            })
+                        }
+                    }).catch(function(err){
+                        // console.log(err);
+                    })
+                }).catch(() => {
+                    _this.$message({
+                        type: 'info',
+                        message: '取消删除'
+                    });       
+                });
+            },
+
+
+            /*  ----产品 ----  */
+            getList() {
+                const _this = this
+                let qs = require('querystring')
+                let data = {}
+                data.page = 1
+                data.limit = 1000000
+                
+                axios({
+                    method: 'post',
+                    url: _this.$store.state.defaultHttp+'goods/search.do?cId='+_this.$store.state.iscId,
+                    data:qs.stringify(data)
+                }).then(function(res){
+                    let items = res.data.map.goods
+                    _this.list = items.map(v => {
+                        _this.$set(v, 'edit', false)
+                        return v
+                    })
+                    items.forEach(element => {
+                        element.aaa = JSON.parse(element.spec)
+                        element.goodspec = []
+                        for(var key in element.aaa){
+                            if(key !== "null" && key !== "undefined"){
+                                element.goodspec.push({label:key,value:element.aaa[key]})
+                            }
+                        }
+                    });
+                    _this.$options.methods.getSelect.bind(_this)()
+                }).catch(function(err){
+                    // console.log(err);
+                });
+            },
+            getItem(){
+                this.itemData = []
+                if(this.updateData.length !== 0){
+                    this.updateData.forEach((el,i) => {
+                        el.aaa = JSON.parse(el.spec)
+                        el.goodspec = []
+                        for(var key in el.aaa){
+                            if(key !== "null" && key !== "undefined"){
+                                el.goodspec.push({label:key,value:el.aaa[key]})
+                            }
+                        }
+                        this.itemData.push({ amountOfMoney: el.amountOfMoney, brand: el.brand, discount: el.discount, discountAfter: el.discountAfter, discountAmount: el.discountAmount, goodsId: el.goodsId, tbGoods:{ goodsName:el.goodsName, describe:el.describe, }, id: el.itemId, itemId: el.itemId, num: el.num, price: el.price, taxAfter: el.taxAfter, taxAmount: el.taxAmount, taxRate: el.taxRate, goodspec: el.goodspec, unit: el.unit, edit:false,})
+                    });
+                // }else{
+                //     console.log('232323232')
+                //     _this.itemData = [{id:10,amountOfMoney:null, commitTime:null, brand:null, discount:null, discountAfter:null, discountAmount:null, tbGoods:{ goodsName:'', describe:'', }, num: null, price: null, taxAfter:null, taxAmount:null, taxRate:null, unit:null, edit:false,},]
+                }
+            },
+            getData(){
+                const _this = this
+                let qs = require('querystring')
+                let data = {}
+                data.page = 1
+                data.limit = 1000000
+                data.classification_id = this.classification_id
+                data.searchName = this.goodsName
+                
+                axios({
+                    method: 'post',
+                    url: _this.$store.state.defaultHttp+'goods/search.do?cId='+_this.$store.state.iscId,
+                    data:qs.stringify(data)
+                }).then(function(res){
+                    let items = res.data.map.goods
+                    items.map(v => {
+                        _this.$set(v, 'edit', false)
+                        return v
+                    })
+                    items.forEach(element => {
+                        element.aaa = JSON.parse(element.spec)
+                        element.goodspec = []
+                        for(var key in element.aaa){
+                            if(key !== "null" && key !== "undefined"){
+                                element.goodspec.push({label:key,value:element.aaa[key]})
+                            }
+                        }
+                    });
+                    _this.tableData = items
+                }).catch(function(err){
+                    // console.log(err);
+                });
+            },
+            getSelect(){
+                this.itemData.forEach((a,j) => {
+                    this.list.forEach((el,i) => {
+                        if(el.id == a.id){
+                            this.list.splice(i,1)
+                        }
+                    });
+                });
+                this.selectData = this.list
+            },
+            handleAdd(){
+                this.itemData.push({amountOfMoney:null, commitTime:null, brand:null, discount:null, discountAfter:null, discountAmount:null, tbGoods:{ goodsName:'', describe:'', }, num: null, price: null, taxAfter:null, taxAmount:null, taxRate:null, unit:null, edit:false})
+            },
+            getSummary(param){
+                const { columns, data } = param;
+                const sums = [];
+                columns.forEach((column, index) => {
+                    if (index === 0) {
+                        sums[index] = '合计';
+                        return;
+                    }
+                    const values = data.map(item => Number(item[column.property]));
+                    if(column.property == 'amountOfMoney' || column.property == 'discountAmount' || column.property == 'discountAfter' || column.property == 'taxAmount' || column.property == 'taxAfter'){
+                        sums[index] = values.reduce((acc, cur) => (cur + acc), 0)
+                        sums[index] = sums[index].toFixed(2)
+                        let intPart = Math.trunc(sums[index])
+                        let intPartFormat = intPart.toString().replace(/(\d)(?=(?:\d{3})+$)/g, '$1,')
+                        let floatPart = '.00' // 预定义小数部分
+                        let valArray = sums[index].split('.')
+                        if(valArray.length === 2) {
+                            floatPart = valArray[1].toString() // 拿到小数部分
+                            if(floatPart.length === 1) { // 补0,实际上用不着
+                                sums[index] = intPartFormat + '.' + floatPart + '0'
+                            }else{
+                                sums[index] = intPartFormat + '.' + floatPart
+                            }
+                        } else {
+                            sums[index] = intPartFormat + floatPart
+                        }
+                        sums[index] += ' 元';
+                    }else if(column.property == 'num'){
+                        sums[index] = values.reduce((acc, cur) => (cur + acc), 0)
+                        sums[index]
+                    }else{
+                        sums[index] = '';
+                    }
+                });
+
+                return sums;
+            },
+            cellClick(row, column, cell, event){
+                row.edit = false
+                if(column.label !== '操作'){
+                    row.edit = true
+                    this.itemData.forEach((el,i) => {
+                        if(row.id == el.id){
+                            this.scopeIndex = i
+                        }
+                    });
+                }
+            },
+            handleFoces(index,row){
+                this.scopeIndex = index
+            },
+            handleFilter(val){
+                this.selectData = []
+                this.list.forEach(el => {
+                    if(el.tbGoods.goodsName.indexOf(val) != -1){
+                        this.selectData.push(el)
+                    }
+                });
+            },
+            currentChange(e){
+                this.itemData.forEach((el,i) => {
+                    if(i == this.scopeIndex){
+                        if(e){
+                            e.edit = true
+                            e.price = e.tbGoods.price
+                            e.discount = this.cusdiscount
+                            e.taxRate = this.custaxRate
+                            e.num = 1
+                            this.itemData.splice(i,1,e)
+                            this.OKdisabled = false
+                            this.$options.methods.handleinput(1,i,e)
+                        }
+                    }
+                });
+                this.list.forEach((item,j) => {
+                    if(e && e.id == item.id){
+                        this.list.splice(j,1)
+                    }
+                });
+                this.selectData = this.list
+            },
+            handleinput(e,index,row){
+                if(row.num && row.price){
+                    let z = parseInt(row.num) * parseFloat(row.price)
+                    row.amountOfMoney = z.toFixed(2)
+                }
+                if(row.amountOfMoney && row.discount){
+                    let a = parseFloat(row.amountOfMoney) * parseFloat(row.discount) / 100
+                    let b = parseFloat(row.amountOfMoney) - a
+                    row.discountAmount = b.toFixed(2)
+                    row.discountAfter = a.toFixed(2)
+                }else{
+                    row.discountAmount = 0
+                    row.discountAfter = 0
+                }
+                if(row.amountOfMoney && row.taxRate){
+                    if(row.discountAfter){
+                        let x = parseFloat(row.discountAfter) * parseFloat(row.taxRate) / 100
+                        let y = parseFloat(row.discountAfter) + x
+                        row.taxAmount = x.toFixed(2)
+                        row.taxAfter = y.toFixed(2)
+                    }else{
+                        let c = parseFloat(row.amountOfMoney) * parseFloat(row.taxRate) / 100
+                        let d = parseFloat(row.amountOfMoney) + c
+                        row.taxAmount = c.toFixed(2)
+                        row.taxAfter = d.toFixed(2)
+                    }
+                }else{
+                    row.taxAmount = 0
+                    row.taxAfter = 0
+                }
+            },
+            showDialog(){
+                this.dialogVisible1 = true
+                this.$options.methods.getData.bind(this)()
+            },
+            handleNodeClick(data){
+                this.classification_id = data.id
+                if(data.next.length == 0){
+                    this.nodeChange = true
+                    this.$options.methods.getData.bind(this)()
+                }
+            },
+            addInput(val){
+                this.goodsName = val
+                this.$options.methods.getData.bind(this)()
+            },
+            selectInfo(val){
+                this.itemList = []
+                this.multipleSelection = val;
+                let arr = val;
+                let newArr = new Array();
+                arr.forEach((item) => {
+                    if(item.id != 0){
+                        newArr.push(item.id)
+                    }
+                });
+                this.idArr = newArr
+                this.itemList = val
+            },
+            handleSubmit(){
+                let arrs = []
+                this.itemData.forEach((el,i) => {
+                    if(el.goodsId){
+                        arrs.push(el)
+                    }
+                    if(this.itemList.length){
+                        this.itemList.forEach((a,j) => {
+                            a.edit = true
+                            if(el.id == a.id){
+                                this.itemList.splice(j,1)
+                            }
+                        });
+                    }
+                });
+                this.itemData = arrs.concat(this.itemList)
+
+                this.itemData.forEach((param,y) => {
+                    this.list.forEach((item,x) => {
+                        if(item.id == param.id){
+                            param.price = item.tbGoods.price
+                            param.discount = this.cusdiscount
+                            param.taxRate = this.custaxRate
+                            param.num = 1
+                            this.list.splice(x,1)
+                            this.$options.methods.handleinput(1,y,param)
+                        }
+                    });
+                });
+                this.selectData = this.list
+
+                this.dialogVisible1 = false
+            },
+            confirmEdit(row) {
+                row.edit = false
+                this.$message({
+                    message: '本地保存成功',
+                    type: 'success'
+                })
+            },
+            handleDelete(index,row){
+                this.itemData.forEach((el,i) => {
+                    if(i == index){
+                        this.itemData.splice(i,1)
+                    }
+                });
+                this.$options.methods.getList.bind(this)()
+            },
+            onSubmit(){
+                console.log(this.productData)
+                const _this = this
+                let totalSum = 0
+                let partsDetails = new Array()
+                this.itemData.forEach(el => {
+                    if(el.goodsId || el.itemId){
+                        totalSum += parseFloat(el.taxAfter)
+                        partsDetails.push({
+                            "price":el.price,
+                            "num":el.num,
+                            "itemId":el.id,
+                            "amountOfMoney":el.amountOfMoney,
+                            "discount":el.discount,
+                            "discountAmount":el.discountAmount,
+                            "discountAfter":el.discountAfter,
+                            "taxRate":el.taxRate,
+                            "taxAmount":el.taxAmount,
+                            "taxAfter":el.taxAfter,
+                        })
+                    }
+                });
+                let data = {
+                    "id":this.productData.id,
+                    "opportunity_id":this.idArr.opportunity_id,
+                    "customerpoolId":this.customerId,
+                    "totalSum":totalSum,
+                    "ascriptionId":this.customerpool.pId,
+                    "secondid":this.customerpool.secondid,
+                    "deptid":this.customerpool.deptid,
+                    "orderDetails":partsDetails,
+                    "pId":parseInt(this.$store.state.ispId)
+                }
+
+                this.isDisable = true
+
+                axios({
+                    method: 'post',
+                    url: _this.$store.state.defaultHttp+'order/saveOrUpdateFromOpportunityOrContract.do?cId='+_this.$store.state.iscId,
+                    data: data,
+                }).then(function(res){
+                    if(res.data.code && res.data.code == '200'){
+                        _this.$message({
+                            message: '操作成功',
+                            type:'success'
+                        })
+                        _this.itemData.forEach(o => {
+                            o.edit = false
+                        });
+                        _this.$options.methods.loadProduct.bind(_this)()
+                    }else{
+                        _this.$message({
+                            message: res.data.msg,
+                            type:'error'
+                        })
+                    }
+                    _this.isDisable = false
+                }).catch(function(err){
+                    _this.isDisable = false
+                });
+            },
+
+
             getRow(index,row){
                 this.$store.state.oppdetailsData.submitData = {"id":row.opportunity_id}
                 this.idArr.opportunity_id = row.opportunity_id
@@ -696,7 +1457,7 @@
                     url: _this.$store.state.defaultHttp+'opportunity/query.do?cId='+_this.$store.state.iscId,
                     data: qs.stringify(searchList),
                 }).then(function(res){
-                    _this.tableData = res.data.map.success
+                    _this.tableDatas = res.data.map.success
                     _this.tableNumber = res.data.count
                 }).catch(function(err){
                     // console.log(err);

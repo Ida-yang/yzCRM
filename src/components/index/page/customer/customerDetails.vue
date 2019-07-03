@@ -624,8 +624,8 @@
                 pageInfo.page = this.page
                 pageInfo.limit = this.limit
                 let pageInfo2 = {}
-                pageInfo2.page = '1'
-                pageInfo2.limit = '100000'
+                pageInfo2.page = 1
+                pageInfo2.limit = 100000
                 let data = {}
                 data.type = '快捷方式'
 
@@ -666,7 +666,7 @@
                 //加载跟进记录
                 axios({
                     method:'get',
-                    url:_this.$store.state.defaultHttp+'customerpool/getFollowStaffAndpool.do?cId='+_this.$store.state.iscId+'&pId='+_this.$store.state.ispId+'&customerpool_id='+_this.detailData.id,
+                    url:_this.$store.state.defaultHttp+'customerpool/getFollowStaffAndpool.do?cId='+_this.$store.state.iscId+'&customerpool_id='+_this.detailData.id,
                 }).then(function(res){
                     _this.record = res.data.map.success
                     if(!_this.record[0]){
@@ -728,8 +728,8 @@
                 const _this = this
                 let qs = require('querystring')
                 let pageInfo2 = {}
-                pageInfo2.page = '1'
-                pageInfo2.limit = '100000'
+                pageInfo2.page = 1
+                pageInfo2.limit = 100000
                 //详情页联系人
                 axios({
                     method:'post',
@@ -748,8 +748,8 @@
                 const _this = this
                 let qs = require('querystring')
                 let pageInfo2 = {}
-                pageInfo2.page = '1'
-                pageInfo2.limit = '100000'
+                pageInfo2.page = 1
+                pageInfo2.limit = 100000
                 //详情页合同
                 axios({
                     method:'post',
@@ -765,8 +765,8 @@
                 const _this = this
                 let qs = require('querystring')
                 let pageInfo2 = {}
-                pageInfo2.page = '1'
-                pageInfo2.limit = '100000'
+                pageInfo2.page = 1
+                pageInfo2.limit = 100000
                 //详情页商机
                 axios({
                     method:'post',

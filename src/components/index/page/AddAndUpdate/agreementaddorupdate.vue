@@ -146,6 +146,7 @@
                     end_date:null,
                     customerpool_id:null,
                     signatories:null,
+                    orderId:null,
                 },
                 subData: {},
                 oppoptions:null,
@@ -297,7 +298,9 @@
             handleopp(val,key){
                 this.oppoptions.forEach(el => {
                     if(val == el.opportunity_id){
+                        console.log(el)
                         this.myForm.amount = el.opportunity_achievement
+                        this.myForm.orderId = el.orderId
                     }
                 });
             },
@@ -309,6 +312,8 @@
                 if(_this.agreeaddOrUpdateData.submitData) {
                     subData.contract_id = _this.agreeaddOrUpdateData.submitData.id;
                     subData.csId = _this.agreeaddOrUpdateData.submitData.csId;
+                }else{
+                    subData.orderId = this.myForm.orderId
                 }
                 subData.secondid = this.$store.state.deptid
                 subData.deptid = this.$store.state.insid

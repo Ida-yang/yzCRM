@@ -321,6 +321,12 @@
         justify-content: center;
         align-items: center;
     }
+    .pro_sub_btn{
+        width: 100%;
+        padding-left: calc(100% - 98px);
+        padding-bottom: 20px;
+        box-sizing: border-box;
+    }
 
     /* 卡片 */
     .el-card {
@@ -754,13 +760,13 @@
     .operation_org {
         position: fixed;
         right: calc(100% - 555px);
-        width: 28%;
+        /* width: 28%; */
         text-align: right;
     }
     .content-collapse .operation_org {
         position: fixed;
         right: calc(100% - 470px);
-        width: 28%;
+        /* width: 28%; */
         text-align: right;
     }
     .el-icon-info {
@@ -1074,5 +1080,138 @@
         width: 100%;
         height: 15px;
         background-color: #f0f0f0;
+    }
+
+
+    /* 客户画像 */
+    .cus_portrait{
+        width: 100%;
+        height: 560px;
+        position: relative;
+        font-size: 14px;
+    }
+    .cus_portrait .cusport_img{
+        margin-left: calc(50% - 125px);
+        margin-top: 125px;
+        z-index: 1;
+    }
+    .cusport_c{
+        width: 130px;
+        box-sizing: border-box;
+        text-align: center;
+        color: #606266
+    }
+    .cusport_bg{
+        width: 120px;
+        min-height: 22px;
+        background-color: #f0f0f0;
+        line-height: 22px;
+    }
+    .cusport_div1 .cusport_span{
+        position: absolute;
+        top: 70px;
+        right: calc(50% + 50px);
+    }
+    .cusport_div1 .cusport_c{
+        position: absolute;
+        top: 0;
+        right: calc(50% + 160px);
+        padding-right: 10px;
+        border-right: 1px solid #f0f0f0
+    }
+    .cusport_div1 .cusport_line{
+        position: absolute;
+        top: 0;
+        right: calc(50% + 68px);
+    }
+
+    .cusport_div2 .cusport_span{
+        position: absolute;
+        top: 206px;
+        right: calc(50% + 130px);
+    }
+    .cusport_div2 .cusport_c{
+        position: absolute;
+        top: 166px;
+        right: calc(50% + 240px);
+        padding-right: 10px;
+        border-right: 1px solid #f0f0f0
+    }
+    .cusport_div2 .cusport_line{
+        position: absolute;
+        top: 146px;
+        right: calc(50% + 152px);
+    }
+
+    .cusport_div3 .cusport_span{
+        position: absolute;
+        top: 352px;
+        right: calc(50% + 50px);
+    }
+    .cusport_div3 .cusport_c{
+        position: absolute;
+        top: 332px;
+        right: calc(50% + 160px);
+        padding-right: 10px;
+        border-right: 1px solid #f0f0f0
+    }
+    .cusport_div3 .cusport_line{
+        position: absolute;
+        top: 312px;
+        right: calc(50% + 72px);
+    }
+
+    .cusport_div4 .cusport_span{
+        position: absolute;
+        top: 70px;
+        left: calc(50% + 50px);
+    }
+    .cusport_div4 .cusport_c{
+        position: absolute;
+        top: 0;
+        left: calc(50% + 160px);
+        padding-left: 10px;
+        border-left: 1px solid #f0f0f0
+    }
+    .cusport_div4 .cusport_line{
+        position: absolute;
+        top: 0;
+        left: calc(50% + 64px);
+    }
+    
+    .cusport_div5 .cusport_span{
+        position: absolute;
+        top: 206px;
+        left: calc(50% + 130px);
+    }
+    .cusport_div5 .cusport_c{
+        position: absolute;
+        top: 166px;
+        left: calc(50% + 240px);
+        padding-left: 10px;
+        border-left: 1px solid #f0f0f0
+    }
+    .cusport_div5 .cusport_line{
+        position: absolute;
+        top: 146px;
+        left: calc(50% + 160px);
+    }
+
+    .cusport_div6 .cusport_span{
+        position: absolute;
+        top: 352px;
+        left: calc(50% + 50px);
+    }
+    .cusport_div6 .cusport_c{
+        position: absolute;
+        top: 332px;
+        left: calc(50% + 160px);
+        padding-left: 10px;
+        border-left: 1px solid #f0f0f0
+    }
+    .cusport_div6 .cusport_line{
+        position: absolute;
+        top: 308px;
+        left: calc(50% + 74px);
     }
 </style>

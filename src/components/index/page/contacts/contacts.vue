@@ -38,7 +38,13 @@
         <el-table :data="tableData" ref="multipleTable" border stripe style="width:100%;" @selection-change="selectInfo">
             <el-table-column fixed header-align="center" align="center" type="selection" width="45" scope.row.csId prop="csId" @selection-change="selectInfo" />
             <div v-for="(item,index) in filterList" :key="index" >
-                <el-table-column label="联系人" prop="name" fixed v-if="item.prop == 'name' && item.state == 1" min-width="100" sortable />
+                <el-table-column label="联系人" prop="name" fixed v-if="item.prop == 'name' && item.state == 1" min-width="100" sortable>
+                    <template slot-scope="scope">
+                        <div @click="openDetails(scope.$index, scope.row)" class="hoverline">
+                            {{scope.row.name}}
+                        </div>
+                    </template>
+                </el-table-column>
                 <el-table-column label="公司名称" prop="poolname" fixed v-if="item.prop == 'poolname' && item.state == 1" min-width="200" sortable />
                 <el-table-column label="电话" prop="telephone" v-if="item.prop == 'telephone' && item.state == 1" min-width="110" sortable />
                 <el-table-column label="手机" prop="phone" v-if="item.prop == 'phone' && item.state == 1" min-width="110" sortable />
@@ -223,10 +229,8 @@
                 
             },
             openDetails(index,row){
-                let contdetailsData = {};
-                contdetailsData.submitData = {"id": row.id};
-                this.$store.state.contdetailsData = contdetailsData;
-                this.$router.push({ path: '/clueDetails' });
+                this.$store.state.contdetailsData = {id: row.csId}
+                this.$router.push({ path: '/contactsdetail' });
             },
             handleAdd(){
                 const _this = this
@@ -238,7 +242,7 @@
                     {"label":"电话","inputModel":"telephone","type":"number"},
                     {"label":"QQ","inputModel":"qq","type":"number"},
                     {"label":"邮箱","inputModel":"email"},
-                    {"label":"微信","inputModel":"weChat"},
+                    {"label":"微信","inputModel":"wechat"},
                     {"label":"性别","inputModel":"sex","type":"radio"},
                     {"label":"生日","inputModel":"birthday","type":"date"},
                     {"label":"职务","inputModel":"identity"},
@@ -257,7 +261,7 @@
                     "areaid":'',
                     "qq": '',
                     "email": '',
-                    "weChat": '',
+                    "wechat": '',
                     "sex": '',
                     "birthday":'',
                     "identity": '',
@@ -292,7 +296,7 @@
                     {"label":"电话","inputModel":"telephone","type":"number"},
                     {"label":"QQ","inputModel":"qq","type":"number"},
                     {"label":"邮箱","inputModel":"email"},
-                    {"label":"微信","inputModel":"weChat"},
+                    {"label":"微信","inputModel":"wechat"},
                     {"label":"性别","inputModel":"sex","type":"radio"},
                     {"label":"生日","inputModel":"birthday","type":"date"},
                     {"label":"职务","inputModel":"identity"},
@@ -314,7 +318,7 @@
                     "area":row.areaid,
                     "qq": row.qq,
                     "email": row.email,
-                    "weChat": row.weChat,
+                    "wechat": row.wechat,
                     "sex": row.sex,
                     "birthday":row.birthday,
                     "identity": row.identity,

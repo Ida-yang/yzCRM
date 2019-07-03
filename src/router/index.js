@@ -97,9 +97,14 @@ const router =new Router({
           meta: { title: '联系人',name:'contacts' ,requireAuth:true}
         },
         {
+          path: '/contactsdetail',
+          component: resolve => require(['../components/index/page/contacts/contactsdetail.vue'], resolve),
+          meta: { title: '联系人详情', requireAuth:true}
+        },
+        {
           path: '/contactsaddorupdate',
           component: resolve => require(['../components/index/page/AddAndUpdate/contactsaddorupdate.vue'], resolve),
-          meta: { title: '编辑联系人' ,requireAuth:true}
+          meta: { title: '编辑联系人', requireAuth:true}
         },
         {
           path: '/agreement',
@@ -317,14 +322,24 @@ const router =new Router({
           meta: { title: '客户画像', name:'cusportrait', requireAuth:true}
         },
         {
+          path: '/note',
+          component: resolve => require(['../components/index/page/work/note.vue'], resolve),
+          meta: { title: '便签', name:'note', requireAuth:true}
+        },
+        {
           path: '/competitor',
           component: resolve => require(['../components/index/page/culturePond/competitor.vue'], resolve),
           meta: { title: '竞争对手', name:'competitor', requireAuth:true}
         },
         {
-          path: '/note',
-          component: resolve => require(['../components/index/page/work/note.vue'], resolve),
-          meta: { title: '便签', name:'note', requireAuth:true}
+          path: '/competitordetail',
+          component: resolve => require(['../components/index/page/culturePond/competitordetail.vue'], resolve),
+          meta: { title: '竞争对手详情', requireAuth:true}
+        },
+        {
+          path: '/competitoraddorupdate',
+          component: resolve => require(['../components/index/page/AddAndUpdate/competitoraddorupdate.vue'], resolve),
+          meta: { title: '编辑竞争对手', requireAuth:true}
         },
       ]
     },

@@ -128,6 +128,11 @@
                 <el-form-item prop="templateId" label="邮件模板ID">
                     <el-input v-model="newform.templateId" placeholder="例如：rtqfM2"></el-input>
                 </el-form-item>
+                <el-form-item prop="url" label="网址">
+                    <el-input v-model="newform.url">
+                        <template slot="prepend">http://</template>
+                    </el-input>
+                </el-form-item>
             </el-form>
             <span slot="footer" class="dialog-footer">
                 <el-button @click="dialogVisible2 = false">取 消</el-button>
@@ -186,6 +191,7 @@
                     culnum:null,
                     explain:null,
                     smscontent:null,
+                    url:null,
                 },
                 rules: {
                     templateId : [{ required: true, message: '短信模板不能为空', trigger: 'blur' },],
@@ -535,10 +541,9 @@
             showemail(){
                 const _this = this
                 if(this.SMSId[0]){
-                    console.log(this.SMSId)
-                    console.log(this.SMSnames)
-                    console.log(this.SMSemails)
                     _this.newform.culnum = _this.SMSId.length
+                    _this.newform.url = ''
+                    _this.newform.templateId = ''
                     this.dialogVisible2 = true
                 }else{
                     _this.$message({
@@ -554,6 +559,7 @@
                 data.names = this.SMSnames
                 data.emails = this.SMSemails
                 data.templateId = this.newform.templateId
+                data.url = this.newform.url
 
                 axios({
                     method: 'post',

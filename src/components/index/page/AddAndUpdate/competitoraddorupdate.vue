@@ -1,5 +1,6 @@
 <template>
     <div class="addorupdatecontent">
+        <!-- {{msg}} -->
         <el-form :model="myForm" ref="myForm" class="myForm" :rules="rules" label-width="110px">
             <el-form-item label="联系人" prop="contacts">
                 <el-input v-model="myForm.contacts" style="width:90%;" />
@@ -13,9 +14,6 @@
             <el-form-item label="电话">
                 <el-input v-model="myForm.telephone" style="width:90%;" />
             </el-form-item>
-            <el-form-item label="微信">
-                <el-input v-model="myForm.weChat" style="width:90%;" />
-            </el-form-item>
             <el-form-item label="QQ">
                 <el-input v-model="myForm.qq" style="width:90%;" />
             </el-form-item>
@@ -26,12 +24,12 @@
                 <el-radio v-model="myForm.sex" label="男">男</el-radio>
                 <el-radio v-model="myForm.sex" label="女">女</el-radio>
             </el-form-item>
+            <el-form-item label="职业">
+                <el-input v-model="myForm.position" style="width:90%;" />
+            </el-form-item>
             <el-form-item label="生日">
                 <el-date-picker v-model="myForm.birthday" format="yyyy-MM-dd" value-format="yyyy-MM-dd" default-value="1985-06-15" style="width:90%;">
                 </el-date-picker>
-            </el-form-item>
-            <el-form-item label="职业">
-                <el-input v-model="myForm.position" style="width:90%;" />
             </el-form-item>
             <el-form-item label="省/市/区">
                 <el-select v-model="myForm.countryid" @change="choseProvince" placeholder="请选择省" style="width:28%;">
@@ -47,9 +45,6 @@
             <el-form-item label="微博">
                 <el-input v-model="myForm.microblog" style="width:90%;" />
             </el-form-item>
-            <el-form-item label="支付宝">
-                <el-input v-model="myForm.alipay" style="width:90%;" />
-            </el-form-item>
             <el-form-item label="旺旺">
                 <el-input v-model="myForm.wangwang" style="width:90%;" />
             </el-form-item>
@@ -57,9 +52,9 @@
                 <el-input v-model="myForm.address" style="width:90%;" />
             </el-form-item>
         </el-form>
-        <div class="line" style="height:770px"></div>
+        <div class="line" style="height:670px"></div>
         <div class="formlist">
-            <el-table :data="tableData" border stripe :default-sort = "{order: 'ascending'}" max-height="760">
+            <el-table :data="tableData" border stripe :default-sort = "{order: 'ascending'}" max-height="660">
                 <el-table-column header-align="center" align="center" width="35">
                     <template slot-scope="scope">
                         <el-button style="width:15px;height:15px;padding:0;border-radius:50%;" @click="getRow(scope.$index,scope.row)">&nbsp;</el-button>
@@ -84,18 +79,14 @@
     import qs from 'qs'
 
     export default {
-        name:'culPondaddorUpdate',
+        name:'competitoraddorupdate',
         store,
         data(){
             return{
-                msg:'culPondaddorUpdate.vue',
+                msg:'competitoraddorupdate.vue',
 
                 myForm:{},
-                rules:{
-                    contacts: [{ required: true, message: '联系人不能为空', trigger: 'blur' },],
-                    name: [{ required: true, message: '公司名称不能为空', trigger: 'blur' },],
-                    phone: [{ required: true, message: '手机号码不能为空', trigger: 'blur' },],
-                },
+                rules:{},
 
                 Provinces:[],
                 cityList: [],
@@ -109,6 +100,7 @@
         mounted(){
             this.loadTable()
             this.loadData()
+            this.loadCountry()
         },
         methods:{
             loadTable(){
@@ -130,44 +122,52 @@
             loadData(){
                 const _this = this
                 let qs = require('querystring')
-                let culData = this.$store.state.culPondaddorUpdateData
-                console.log(this.$store.state.culPondaddorUpdateData)
-                if(culData.id){
+                let compData = this.$store.state.competitorAddOrUpdateData
+                if(compData.id){
                     this.myForm = {
-                        id:culData.id,
-                        name:culData.name,
-                        contacts:culData.contacts,
-                        phone:culData.phone,
-                        email:culData.email,
-                        qq:culData.qq,
-                        telephone:culData.telephone,
-                        microblog:culData.microblog,
-                        wangwang:culData.wangwang,
-                        address:culData.address,
-                        position:culData.position,
-                        sex:culData.sex,
-                        birthday:culData.birthday,
-                        countryid:culData.countryid,
-                        cityid:culData.cityid,
-                        areaid:culData.areaid,
-                        weChat:culData.weChat,
-                        alipay:culData.alipay,
-                        label:culData.label,
+                        id:compData.id,
+                        name:compData.name,
+                        contacts:compData.contacts,
+                        phone:compData.phone,
+                        email:compData.email,
+                        qq:compData.qq,
+                        telephone:compData.telephone,
+                        microblog:compData.microblog,
+                        wangwang:compData.wangwang,
+                        address:compData.address,
+                        position:compData.position,
+                        sex:compData.sex,
+                        birthday:compData.birthday,
+                        countryid:compData.countryid,
+                        cityid:compData.cityid,
+                        areaid:compData.areaid,
                         pId:this.$store.state.ispId,
                         secondid:this.$store.state.deptid,
                         deptid:this.$store.state.insid,
                     }
                 }else{
                     this.myForm = {
-                        name:null, contacts:null, phone:null, email:null, qq:null, telephone:null, microblog:null, 
-                        wangwang:null, address:null, position:null, sex:null, birthday:null, 
-                        countryid:null, cityid:null, areaid:null, weChat:null, alipay:null, label:null,
+                        id:null,
+                        name:null,
+                        contacts:null,
+                        phone:null,
+                        email:null,
+                        qq:null,
+                        telephone:null,
+                        microblog:null,
+                        wangwang:null,
+                        address:null,
+                        position:null,
+                        sex:null,
+                        birthday:null,
+                        countryid:null,
+                        cityid:null,
+                        areaid:null,
                         pId:this.$store.state.ispId,
                         secondid:this.$store.state.deptid,
                         deptid:this.$store.state.insid,
                     }
                 }
-                this.$options.methods.loadCountry.bind(this)()
             },
             loadCountry(){
                 const _this = this
@@ -208,6 +208,10 @@
                 });
                 
             },
+            getRow(index,row){
+                this.myForm.name = row.name
+                this.myForm.address = row.address
+            },
             handleoninput(val){
                 const _this = this
                 this.myForm.name = val
@@ -231,25 +235,23 @@
                 const _this = this
                 this.myForm.cityid = ''
                 this.myForm.areaid = ''
-                this.myForm.countryid = e
+                this.countryid = e
                 _this.$options.methods.loadCountry.bind(_this)(true);
             },
             // 选市
             choseCity(e) {
                 const _this = this
                 this.myForm.areaid = ''
-                this.myForm.cityid = e
+                this.cityid = e
                 _this.$options.methods.loadCountry.bind(_this)(true);
             },
             // 选区
             choseBlock(e) {
-                this.myForm.areaid = e
-            },
-            getRow(index,row){
-                this.myForm.name = row.name
-                this.myForm.address = row.address
+                this.E=e;
+                this.areaid = e
             },
             submit(){
+                console.log(this.myForm)
                 const _this = this;
                 let qs =require('querystring')
                 let subData = this.myForm
@@ -291,7 +293,7 @@
 
                 axios({
                     method: 'post',
-                    url: _this.$store.state.defaultHttp+'cultivationPool/saveOrUpdate.do?cId=' + _this.$store.state.iscId,
+                    url: _this.$store.state.defaultHttp+'competitor/saveOrUpdate.do?cId=' + _this.$store.state.iscId,
                     data: qs.stringify(subData)
                 }).then(function(res){
                     if(res.data.code && res.data.code == "200") {
@@ -324,7 +326,7 @@
                 const delItem = this.$store.state.tagsList.splice(index, 1)[0];
                 const item = this.$store.state.tagsList[index] ? this.$store.state.tagsList[index] : this.$store.state.tagsList[index - 1];
                 if (item) {
-                    delItem.path === this.$route.fullPath && this.$router.push('/culturePond');
+                    delItem.path === this.$route.fullPath && this.$router.push('/competitor');
                 }else{
                     this.$router.push('/index');
                 }
@@ -332,6 +334,3 @@
         },
     }
 </script>
-
-<style>
-</style>
