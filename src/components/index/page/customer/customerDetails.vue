@@ -381,7 +381,7 @@
                     </el-select>
                 </el-form-item>
                 <el-form-item prop="opportunity_achievement" label="预计成交金额">
-                    <el-input v-model="newform.opportunity_achievement" onkeyup = "value=value.replace(/[^\d]/g,'')"></el-input>
+                    <el-input v-model="newform.opportunity_achievement" onkeyup = "value=value.replace(/[^\d]/g,'.')"></el-input>
                 </el-form-item>
                 <el-form-item prop="opportunity_deal" label="预计成交时间">
                     <el-date-picker v-model="newform.opportunity_deal" type="date" placeholder="请选择预计成交时间" format="yyyy-MM-dd" value-format="yyyy-MM-dd" style="width:100%;"></el-date-picker>
@@ -420,7 +420,7 @@
                     </el-select>
                 </el-form-item>
                 <el-form-item prop="amount" label="合同金额">
-                    <el-input v-model="newform.amount" onkeyup = "value=value.replace(/[^\d]/g,'')"></el-input>
+                    <el-input v-model="newform.amount" onkeyup = "value=value.replace(/[^\d]/g,'.')"></el-input>
                 </el-form-item>
                 <el-form-item prop="start_date" label="开始时间">
                     <el-date-picker v-model="newform.start_date" type="date" placeholder="选择日期" format="yyyy-MM-dd" value-format="yyyy-MM-dd" @change="handlechange" style="width:100%;"></el-date-picker>
@@ -476,20 +476,21 @@
         },
         filters: {
             rounding (value) {
-                return value.toFixed(2)
-                let intPart = Math.trunc(value) //获取整数部分
-                let intPartFormat = intPart.toString().replace(/(\d)(?=(?:\d{3})+$)/g, '$1,') // 将整数部分逢三一断
-                let floatPart = '.00' // 预定义小数部分
-                let valArray = value.split('.')
-                if(valArray.length === 2) {
-                    floatPart = valArray[1].toString() // 拿到小数部分
-                    if(floatPart.length === 1) { // 补0,实际上用不着
-                        return intPartFormat + '.' + floatPart + '0'
-                    }else{
-                        return intPartFormat + '.' + floatPart
+                if(value){
+                    let intPart = Math.trunc(value) //获取整数部分
+                    let intPartFormat = intPart.toString().replace(/(\d)(?=(?:\d{3})+$)/g, '$1,') // 将整数部分逢三一断
+                    let floatPart = '.00' // 预定义小数部分
+                    let valArray = value.toString().split('.')
+                    if(valArray.length === 2) {
+                        floatPart = valArray[1].toString() // 拿到小数部分
+                        if(floatPart.length === 1) { // 补0,实际上用不着
+                            return intPartFormat + '.' + floatPart + '0'
+                        }else{
+                            return intPartFormat + '.' + floatPart
+                        }
+                    } else {
+                        return intPartFormat + floatPart
                     }
-                } else {
-                    return intPartFormat + floatPart
                 }
             }
         },

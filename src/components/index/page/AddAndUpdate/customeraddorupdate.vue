@@ -126,7 +126,7 @@
                         <!-- 注册资金 -->
                         <el-input 
                             v-else-if="item.inputModel == 'capital'"
-                            onkeyup = "value=value.replace(/[^\d]/g,'')"
+                            onkeyup = "value=value.replace(/[^\d]/g,'.')"
                             :value="myForm[item.inputModel]"
                             @input="handleinput($event, item.inputModel)"
                             style="width:90%;" 
@@ -221,7 +221,7 @@
                         <!-- 税率 -->
                         <el-input 
                             v-else-if="item.inputModel == 'taxRate'"
-                            onkeyup = "value=value.replace(/[^\d]/g,'')"
+                            onkeyup = "value=value.replace(/[^\d]/g,'.')"
                             :value="myForm[item.inputModel]"
                             @input="handleinput($event, item.inputModel)"
                             style="width:90%;" 

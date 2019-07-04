@@ -43,14 +43,14 @@
         <el-table :data="tableData" border stripe style="width:100%" @selection-change="selectInfo">
             <el-table-column fixed header-align="center" align="center" type="selection" width="45" prop="id" @selection-change="selectInfo" sortable />
             <div v-for="(item,index) in filterList" :key="index">
-                <el-table-column label="联系人" prop="contacts" v-if="item.prop == 'contacts' && item.state == 1" fixed min-width="100" sortable />
-                <el-table-column label="公司名称" prop="name" v-if="item.prop == 'name' && item.state == 1" fixed min-width="200" sortable>
+                <el-table-column label="联系人" prop="contacts" v-if="item.prop == 'contacts' && item.state == 1" fixed min-width="100" sortable>
                     <template slot-scope="scope">
                         <div @click="openDetails(scope.$index, scope.row)" class="hoverline">
-                            {{scope.row.name}}
+                            {{scope.row.contacts}}
                         </div>
                     </template>
                 </el-table-column>
+                <el-table-column label="公司名称" prop="name" v-if="item.prop == 'name' && item.state == 1" fixed min-width="200" sortable />
                 <el-table-column label="手机" prop="phone" v-if="item.prop == 'phone' && item.state == 1" min-width="110" sortable />
                 <el-table-column label="邮箱" prop="email" v-if="item.prop == 'email' && item.state == 1" min-width="130" sortable />
                 <el-table-column label="QQ" prop="qq" v-if="item.prop == 'qq' && item.state == 1" min-width="110" sortable />

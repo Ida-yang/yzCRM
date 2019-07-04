@@ -151,20 +151,21 @@
         store,
         filters: {
             rounding (value) {
-                return value.toFixed(2)
-                let intPart = Math.trunc(value) //获取整数部分
-                let intPartFormat = intPart.toString().replace(/(\d)(?=(?:\d{3})+$)/g, '$1,') // 将整数部分逢三一断
-                let floatPart = '.00' // 预定义小数部分
-                let valArray = value.split('.')
-                if(valArray.length === 2) {
-                    floatPart = valArray[1].toString() // 拿到小数部分
-                    if(floatPart.length === 1) { // 补0,实际上用不着
-                        return intPartFormat + '.' + floatPart + '0'
-                    }else{
-                        return intPartFormat + '.' + floatPart
+                if(value){
+                    let intPart = Math.trunc(value) //获取整数部分
+                    let intPartFormat = intPart.toString().replace(/(\d)(?=(?:\d{3})+$)/g, '$1,') // 将整数部分逢三一断
+                    let floatPart = '.00' // 预定义小数部分
+                    let valArray = value.toString().split('.')
+                    if(valArray.length === 2) {
+                        floatPart = valArray[1].toString() // 拿到小数部分
+                        if(floatPart.length === 1) { // 补0,实际上用不着
+                            return intPartFormat + '.' + floatPart + '0'
+                        }else{
+                            return intPartFormat + '.' + floatPart
+                        }
+                    } else {
+                        return intPartFormat + floatPart
                     }
-                } else {
-                    return intPartFormat + floatPart
                 }
             }
         },

@@ -100,7 +100,7 @@
                         <el-table-column prop="price" min-width="120" label="单价">
                             <template slot-scope="scope">
                                 <template v-if="scope.row.edit">
-                                    <el-input v-model="scope.row.price" onkeyup="value=value.replace(/[^\d]/g,'')" class="edit-input" size="small" @input="handleinput($event,scope.$index,scope.row)"/>
+                                    <el-input v-model="scope.row.price" onkeyup="value=value.replace(/[^\d]/g,'.')" class="edit-input" size="small" @input="handleinput($event,scope.$index,scope.row)"/>
                                 </template>
                                 <span v-else>{{ scope.row.price }}</span>
                             </template>
@@ -109,7 +109,7 @@
                         <el-table-column prop="amountOfMoney" min-width="120" label="金额">
                             <template slot-scope="scope">
                                 <template v-if="scope.row.edit">
-                                    <el-input v-model="scope.row.amountOfMoney" onkeyup="value=value.replace(/[^\d]/g,'')" class="edit-input" size="small" @input="handleinput($event,scope.$index,scope.row)"/>
+                                    <el-input v-model="scope.row.amountOfMoney" onkeyup="value=value.replace(/[^\d]/g,'.')" class="edit-input" size="small" @input="handleinput($event,scope.$index,scope.row)"/>
                                 </template>
                                 <span v-else>{{ scope.row.amountOfMoney }}</span>
                             </template>
@@ -118,7 +118,7 @@
                         <el-table-column prop="discount" min-width="90" label="折扣">
                             <template slot-scope="scope">
                                 <template v-if="scope.row.edit">
-                                    <el-input v-model="scope.row.discount" onkeyup="value=value.replace(/[^\d]/g,'')" class="edit-input" size="small" @input="handleinput($event,scope.$index,scope.row)">
+                                    <el-input v-model="scope.row.discount" onkeyup="value=value.replace(/[^\d]/g,'.')" class="edit-input" size="small" @input="handleinput($event,scope.$index,scope.row)">
                                         <span slot="suffix" style="margin-right:5px;line-height:34px;">%</span>
                                     </el-input>
                                 </template>
@@ -129,7 +129,7 @@
                         <el-table-column prop="discountAmount" min-width="120" label="折扣额">
                             <template slot-scope="scope">
                                 <template v-if="scope.row.edit">
-                                    <el-input v-model="scope.row.discountAmount" onkeyup="value=value.replace(/[^\d]/g,'')" class="edit-input" size="small"/>
+                                    <el-input v-model="scope.row.discountAmount" onkeyup="value=value.replace(/[^\d]/g,'.')" class="edit-input" size="small"/>
                                 </template>
                                 <span v-else>{{ scope.row.discountAmount }}</span>
                             </template>
@@ -138,7 +138,7 @@
                         <el-table-column prop="discountAfter" min-width="120" label="折后金额">
                             <template slot-scope="scope">
                                 <template v-if="scope.row.edit">
-                                    <el-input v-model="scope.row.discountAfter" onkeyup="value=value.replace(/[^\d]/g,'')" class="edit-input" size="small"/>
+                                    <el-input v-model="scope.row.discountAfter" onkeyup="value=value.replace(/[^\d]/g,'.')" class="edit-input" size="small"/>
                                 </template>
                                 <span v-else>{{ scope.row.discountAfter }}</span>
                             </template>
@@ -147,7 +147,7 @@
                         <el-table-column prop="taxRate" min-width="90" label="税率">
                             <template slot-scope="scope">
                                 <template v-if="scope.row.edit">
-                                    <el-input v-model="scope.row.taxRate" onkeyup="value=value.replace(/[^\d]/g,'')" class="edit-input" size="small" @input="handleinput($event,scope.$index,scope.row)">
+                                    <el-input v-model="scope.row.taxRate" onkeyup="value=value.replace(/[^\d]/g,'.')" class="edit-input" size="small" @input="handleinput($event,scope.$index,scope.row)">
                                         <span slot="suffix" style="margin-right:5px;line-height:34px;">%</span>
                                     </el-input>
                                 </template>
@@ -158,7 +158,7 @@
                         <el-table-column prop="taxAmount" min-width="120" label="税额">
                             <template slot-scope="scope">
                                 <template v-if="scope.row.edit">
-                                    <el-input v-model="scope.row.taxAmount" onkeyup="value=value.replace(/[^\d]/g,'')" class="edit-input" size="small"/>
+                                    <el-input v-model="scope.row.taxAmount" onkeyup="value=value.replace(/[^\d]/g,'.')" class="edit-input" size="small"/>
                                 </template>
                                 <span v-else>{{ scope.row.taxAmount }}</span>
                             </template>
@@ -167,7 +167,7 @@
                         <el-table-column prop="taxAfter" min-width="120" label="税后金额">
                             <template slot-scope="scope">
                                 <template v-if="scope.row.edit">
-                                    <el-input v-model="scope.row.taxAfter" onkeyup="value=value.replace(/[^\d]/g,'')" class="edit-input" size="small"/>
+                                    <el-input v-model="scope.row.taxAfter" onkeyup="value=value.replace(/[^\d]/g,'.')" class="edit-input" size="small"/>
                                 </template>
                                 <span v-else>{{ scope.row.taxAfter }}</span>
                             </template>

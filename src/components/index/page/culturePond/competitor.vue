@@ -27,35 +27,35 @@
         </div>
         <el-table :data="tableData" border stripe style="width:100%" @selection-change="selectInfo">
             <el-table-column fixed header-align="center" align="center" type="selection" width="45" prop="id" @selection-change="selectInfo" sortable />
-            <!-- <div v-for="(item,index) in filterList" :key="index"> -->
-                <el-table-column label="联系人" prop="contacts" fixed min-width="100" sortable />
-                <el-table-column label="公司名称" prop="name" fixed min-width="200" sortable>
+            <div v-for="(item,index) in filterList" :key="index">
+                <el-table-column label="联系人" prop="contacts" fixed v-if="item.prop == 'contacts' && item.state == 1" min-width="100" sortable />
+                <el-table-column label="公司名称" prop="name" fixed v-if="item.prop == 'name' && item.state == 1" min-width="200" sortable>
                     <!-- <template slot-scope="scope">
                         <div @click="openDetails(scope.$index, scope.row)" class="hoverline">
                             {{scope.row.name}}
                         </div>
                     </template> -->
                 </el-table-column>
-                <el-table-column label="手机" prop="phone" min-width="110" sortable />
-                <el-table-column label="邮箱" prop="email" min-width="130" sortable />
-                <el-table-column label="QQ" prop="qq" min-width="110" sortable />
-                <el-table-column label="固话" prop="telephone" min-width="110" sortable />
-                <el-table-column label="微博" prop="microblog" min-width="110" sortable />
-                <el-table-column label="旺旺" prop="wangwang" min-width="110" sortable />
-                <el-table-column label="地址" prop="address" min-width="180" show-overflow-tooltip sortable />
-                <el-table-column label="职位" prop="position" min-width="100" sortable />
-                <el-table-column label="性别" prop="sex" min-width="90" sortable />
-                <el-table-column label="生日" prop="birthday" min-width="110" sortable />
-                <el-table-column label="省-市-区" prop="countryid" min-width="150" sortable>
+                <el-table-column label="手机" prop="phone" v-if="item.prop == 'phone' && item.state == 1" min-width="110" sortable />
+                <el-table-column label="邮箱" prop="email" v-if="item.prop == 'email' && item.state == 1" min-width="130" sortable />
+                <el-table-column label="QQ" prop="qq" v-if="item.prop == 'qq' && item.state == 1" min-width="110" sortable />
+                <el-table-column label="固话" prop="telephone" v-if="item.prop == 'telephone' && item.state == 1" min-width="110" sortable />
+                <el-table-column label="微博" prop="microblog" v-if="item.prop == 'microblog' && item.state == 1" min-width="110" sortable />
+                <el-table-column label="旺旺" prop="wangwang" v-if="item.prop == 'wangwang' && item.state == 1" min-width="110" sortable />
+                <el-table-column label="地址" prop="address" v-if="item.prop == 'address' && item.state == 1" min-width="180" show-overflow-tooltip sortable />
+                <el-table-column label="职位" prop="position" v-if="item.prop == 'position' && item.state == 1" min-width="100" sortable />
+                <el-table-column label="性别" prop="sex" v-if="item.prop == 'sex' && item.state == 1" min-width="90" sortable />
+                <el-table-column label="生日" prop="birthday" v-if="item.prop == 'birthday' && item.state == 1" min-width="110" sortable />
+                <el-table-column label="省-市-区" prop="countryid" v-if="item.prop == 'provincialAndUrbanAreas' && item.state == 1" min-width="150" sortable>
                     <template slot-scope="scope">
                         {{scope.row.country}}-{{scope.row.city}}-{{scope.row.area}}
                     </template>
                 </el-table-column>
-                <el-table-column label="创建时间" prop="createTime" min-width="150" sortable />
-                <el-table-column label="负责人" prop="private_employee" min-width="100" sortable />
-                <el-table-column label="部门" prop="deptname" min-width="110" sortable />
-                <el-table-column label="机构" prop="parentname" min-width="110" show-overflow-tooltip sortable />
-            <!-- </div> -->
+                <el-table-column label="创建时间" prop="createTime" v-if="item.prop == 'createTime' && item.state == 1" min-width="150" sortable />
+                <el-table-column label="负责人" prop="private_employee" v-if="item.prop == 'pId' && item.state == 1" min-width="100" sortable />
+                <el-table-column label="部门" prop="deptname" v-if="item.prop == 'secondid' && item.state == 1" min-width="110" sortable />
+                <el-table-column label="机构" prop="parentname" v-if="item.prop == 'deptid' && item.state == 1" min-width="110" show-overflow-tooltip sortable />
+            </div>
             <el-table-column label="操作" fixed="right" width="150" header-align="center" align="center">
                 <template slot-scope="scope">
                     <el-button size="mini" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
@@ -107,6 +107,7 @@
         },
         mounted(){
             this.loadData()
+            this.reloadData()
         },
         activated(){
             this.loadData()
@@ -145,9 +146,9 @@
                 const _this = this;
                 let qs =require('querystring')
                 let filterList = {}
-                filterList.type = '培育池'
+                filterList.type = '竞争对手'
                 let data = {}
-                data.type = '培育池'
+                data.type = '竞争对手'
                 data.state = 1
                 
                 axios({

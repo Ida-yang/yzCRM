@@ -112,120 +112,6 @@
                     </el-steps>
                 </el-card>
             </div>
-            <div class="bottom" v-if="auxcontent">
-                <el-tabs v-model="auxindex" type="card">
-                    <el-tab-pane label="跟进记录" name="first">
-                        <ul class="followrecord" v-for="item in record" :key="item.followId">
-                            <li class="recordicon">
-                                <img :src="item.imgUrl" class="detail_portrait" alt="头像" />
-                            </li>
-                            <li class="verticalline"></li>
-                            <li class="recordcontent">
-                                <div class="left_more">
-                                    <p>{{item.private_employee}}&nbsp;&nbsp;于{{item.createTime}}&nbsp;&nbsp;通过{{item.followType}}更新了一条记录<span v-if="item.contacts[0]">&nbsp;&nbsp;&nbsp;客户联系人为：&nbsp;{{item.contacts[0].name}}</span>
-                                        <span v-if="item.contactTime">&nbsp;&nbsp;&nbsp;并约定下次联系时间：{{item.contactTime}}</span>
-                                        <span>&nbsp;&nbsp;&nbsp;状态为：{{item.state}} &nbsp;&nbsp;&nbsp;{{item.inputType}}</span>
-                                    </p>
-                                    <p style="margin-top:15px;margin-bottom:15px;">{{item.followContent}}</p>
-                                    <div class="imgbox_two" v-if="item.imgName">
-                                        <img :src="item.picture_detail" alt="图片" width="80" height="80" @click="showImg($event,item)">
-                                    </div>
-                                    <div v-if="item.enclosureName">
-                                        <a :href="item.enclosureUrl" download>{{item.enclosureOldName}}</a>
-                                    </div>
-                                    <el-dialog :visible.sync="dialogVisible2">
-                                        <img width="100%" :src="dialogImageUrl2" alt="">
-                                    </el-dialog>
-                                </div>
-                            </li>
-                        </ul>
-                    </el-tab-pane>
-                    <el-tab-pane label="竞争对手" name="second">
-                        <div class="entry">
-                            <el-button class="btn info-btn" size="mini" icon="el-icon-circle-plus-outline" @click="addCompetitor"></el-button>
-                        </div>
-                        <el-table :data="competitorData" border highlight-current-row @cell-click="cellClick2">
-                            <el-table-column header-align="center" fixed align="center" type="index" width="45"></el-table-column>
-
-                            <el-table-column label="公司名称" prop="name" min-width="280" fixed>
-                                <template slot-scope="scope">
-                                    <template v-if="scope.row.edit">
-                                        <el-select v-model="scope.row.name" placeholder="请选择" filterable @focus="handleFoces(scope.$index,scope.row)" @change="selectChange($event,scope.row)">
-                                            <el-option class="droplist" v-for="item in competitorList" :key="item.id" :label="item.name" :value="item.id">
-                                            </el-option>
-                                        </el-select>
-                                    </template>
-                                    <span v-else>{{ scope.row.name }}</span>
-                                </template>
-                            </el-table-column>
-
-                            <el-table-column prop="contacts" min-width="100" label="联系人" />
-
-                            <el-table-column prop="advantage" min-width="220" label="优势">
-                                <template slot-scope="scope">
-                                    <template v-if="scope.row.edit">
-                                        <el-input v-model="scope.row.advantage" class="edit-input" size="small"/>
-                                    </template>
-                                    <span v-else>{{ scope.row.advantage }}</span>
-                                </template>
-                            </el-table-column>
-
-                            <el-table-column prop="inferiority" min-width="220" label="劣势">
-                                <template slot-scope="scope">
-                                    <template v-if="scope.row.edit">
-                                        <el-input v-model="scope.row.inferiority" class="edit-input" size="small"/>
-                                    </template>
-                                    <span v-else>{{ scope.row.inferiority }}</span>
-                                </template>
-                            </el-table-column>
-
-                            <el-table-column prop="commonTactics" min-width="220" label="常用战术">
-                                <template slot-scope="scope">
-                                    <template v-if="scope.row.edit">
-                                        <el-input v-model="scope.row.commonTactics" class="edit-input" size="small"/>
-                                    </template>
-                                    <span v-else>{{ scope.row.commonTactics }}</span>
-                                </template>
-                            </el-table-column>
-
-                            <el-table-column align="center" fixed="right" label="操作" min-width="90">
-                                <template slot-scope="scope">
-                                    <el-button type="success" plain style="width:30px;height:30px;padding:0" :disabled="!scope.row.edit" icon="el-icon-circle-check-outline" @click="editCompetitor(scope.$index,scope.row)"></el-button>
-                                    <el-button type="danger" plain style="width:30px;height:30px;padding:0" icon="el-icon-delete" @click="deleteCompetitor(scope.$index,scope.row)"></el-button>
-                                </template>
-                            </el-table-column>
-                        </el-table>
-                    </el-tab-pane>
-                    <el-tab-pane label="联系人" name="third">
-                        <el-table :data="contactData" border stripe style="width: 100%">
-                            <el-table-column prop="name" label="联系人名称" min-width="120" />
-                            <el-table-column prop="phone" label="手机" min-width="110" />
-                            <el-table-column label="固话" prop="telephone" min-width="110" />
-                            <el-table-column label="邮箱" prop="email" min-width="130" />
-                            <el-table-column label="QQ" prop="qq" min-width="110" />
-                            <el-table-column label="微信" prop="wechat" min-width="110" />
-                            <el-table-column label="地址" prop="address" min-width="200" />
-                            <el-table-column label="职务" prop="identity" show-overflow-tooltip min-width="90" />
-                            <el-table-column label="性别" prop="sex" min-width="90" />
-                            <el-table-column label="是否在职" prop="status" min-width="90">
-                                <template slot-scope="scope">
-                                    <el-tooltip :content="scope.row.status" placement="right">
-                                        <el-switch v-model="scope.row.status" active-value="在职" inactive-value="离职" active-color="#13ce66" inactive-color="#bbbbbb" @change="changeState(scope.row)"></el-switch>
-                                    </el-tooltip>
-                                </template>
-                            </el-table-column>
-                            <el-table-column label="是否为关键人" prop="isCrux" min-width="110">
-                                <template slot-scope="scope">
-                                    <el-tooltip :content="scope.row.isCrux" placement="right">
-                                        <el-switch v-model="scope.row.isCrux" active-value="是" inactive-value="否" active-color="#13ce66" inactive-color="#bbbbbb" @change="changePrimary(scope.row)"></el-switch>
-                                    </el-tooltip>
-                                </template>
-                            </el-table-column>
-                            <el-table-column label="备注" prop="remark" min-width="180" />
-                        </el-table>
-                    </el-tab-pane>
-                </el-tabs>
-            </div>
             
             <div class="bottom">
                 <el-tabs v-model="baseindex" type="card">
@@ -298,7 +184,7 @@
                             <el-table-column prop="price" min-width="120" label="单价">
                                 <template slot-scope="scope">
                                     <template v-if="scope.row.edit">
-                                        <el-input v-model="scope.row.price" onkeyup="value=value.replace(/[^\d]/g,'')" class="edit-input" size="small" @input="handleinput($event,scope.$index,scope.row)"/>
+                                        <el-input v-model="scope.row.price" onkeyup="value=value.replace(/[^\d]/g,'.')" class="edit-input" size="small" @input="handleinput($event,scope.$index,scope.row)"/>
                                     </template>
                                     <span v-else>{{ scope.row.price }}</span>
                                 </template>
@@ -307,7 +193,7 @@
                             <el-table-column prop="amountOfMoney" min-width="120" label="金额">
                                 <template slot-scope="scope">
                                     <template v-if="scope.row.edit">
-                                        <el-input v-model="scope.row.amountOfMoney" onkeyup="value=value.replace(/[^\d]/g,'')" class="edit-input" size="small" @input="handleinput($event,scope.$index,scope.row)"/>
+                                        <el-input v-model="scope.row.amountOfMoney" onkeyup="value=value.replace(/[^\d]/g,'.')" class="edit-input" size="small" @input="handleinput($event,scope.$index,scope.row)"/>
                                     </template>
                                     <span v-else>{{ scope.row.amountOfMoney }}</span>
                                 </template>
@@ -316,7 +202,7 @@
                             <el-table-column prop="discount" min-width="90" label="折扣">
                                 <template slot-scope="scope">
                                     <template v-if="scope.row.edit">
-                                        <el-input v-model="scope.row.discount" onkeyup="value=value.replace(/[^\d]/g,'')" class="edit-input" size="small" @input="handleinput($event,scope.$index,scope.row)">
+                                        <el-input v-model="scope.row.discount" onkeyup="value=value.replace(/[^\d]/g,'.')" class="edit-input" size="small" @input="handleinput($event,scope.$index,scope.row)">
                                             <span slot="suffix" style="margin-right:5px;line-height:34px;">%</span>
                                         </el-input>
                                     </template>
@@ -327,7 +213,7 @@
                             <el-table-column prop="discountAmount" min-width="120" label="折扣额">
                                 <template slot-scope="scope">
                                     <template v-if="scope.row.edit">
-                                        <el-input v-model="scope.row.discountAmount" onkeyup="value=value.replace(/[^\d]/g,'')" class="edit-input" size="small"/>
+                                        <el-input v-model="scope.row.discountAmount" onkeyup="value=value.replace(/[^\d]/g,'.')" class="edit-input" size="small"/>
                                     </template>
                                     <span v-else>{{ scope.row.discountAmount }}</span>
                                 </template>
@@ -336,7 +222,7 @@
                             <el-table-column prop="discountAfter" min-width="120" label="折后金额">
                                 <template slot-scope="scope">
                                     <template v-if="scope.row.edit">
-                                        <el-input v-model="scope.row.discountAfter" onkeyup="value=value.replace(/[^\d]/g,'')" class="edit-input" size="small"/>
+                                        <el-input v-model="scope.row.discountAfter" onkeyup="value=value.replace(/[^\d]/g,'.')" class="edit-input" size="small"/>
                                     </template>
                                     <span v-else>{{ scope.row.discountAfter }}</span>
                                 </template>
@@ -345,7 +231,7 @@
                             <el-table-column prop="taxRate" min-width="90" label="税率">
                                 <template slot-scope="scope">
                                     <template v-if="scope.row.edit">
-                                        <el-input v-model="scope.row.taxRate" onkeyup="value=value.replace(/[^\d]/g,'')" class="edit-input" size="small" @input="handleinput($event,scope.$index,scope.row)">
+                                        <el-input v-model="scope.row.taxRate" onkeyup="value=value.replace(/[^\d]/g,'.')" class="edit-input" size="small" @input="handleinput($event,scope.$index,scope.row)">
                                             <span slot="suffix" style="margin-right:5px;line-height:34px;">%</span>
                                         </el-input>
                                     </template>
@@ -356,7 +242,7 @@
                             <el-table-column prop="taxAmount" min-width="120" label="税额">
                                 <template slot-scope="scope">
                                     <template v-if="scope.row.edit">
-                                        <el-input v-model="scope.row.taxAmount" onkeyup="value=value.replace(/[^\d]/g,'')" class="edit-input" size="small"/>
+                                        <el-input v-model="scope.row.taxAmount" onkeyup="value=value.replace(/[^\d]/g,'.')" class="edit-input" size="small"/>
                                     </template>
                                     <span v-else>{{ scope.row.taxAmount }}</span>
                                 </template>
@@ -365,7 +251,7 @@
                             <el-table-column prop="taxAfter" min-width="120" label="税后金额">
                                 <template slot-scope="scope">
                                     <template v-if="scope.row.edit">
-                                        <el-input v-model="scope.row.taxAfter" onkeyup="value=value.replace(/[^\d]/g,'')" class="edit-input" size="small"/>
+                                        <el-input v-model="scope.row.taxAfter" onkeyup="value=value.replace(/[^\d]/g,'.')" class="edit-input" size="small"/>
                                     </template>
                                     <span v-else>{{ scope.row.taxAfter }}</span>
                                 </template>
@@ -382,6 +268,132 @@
                         </el-table>
                         <div class="pro_sub_btn">
                             <el-button type="primary" :disabled="isDisable" @click="onSubmit">立即提交</el-button>
+                        </div>
+                    </el-tab-pane>
+                    <el-tab-pane label="跟进记录" name="third" style="min-height:200px;">
+                        <ul class="followrecord" v-for="item in record" :key="item.followId">
+                            <li class="recordicon">
+                                <img :src="item.imgUrl" class="detail_portrait" alt="头像" />
+                            </li>
+                            <li class="verticalline"></li>
+                            <li class="recordcontent">
+                                <div class="left_more">
+                                    <p>{{item.private_employee}}&nbsp;&nbsp;于{{item.createTime}}&nbsp;&nbsp;通过{{item.followType}}更新了一条记录<span v-if="item.contacts[0]">&nbsp;&nbsp;&nbsp;客户联系人为：&nbsp;{{item.contacts[0].name}}</span>
+                                        <span v-if="item.contactTime">&nbsp;&nbsp;&nbsp;并约定下次联系时间：{{item.contactTime}}</span>
+                                        <span>&nbsp;&nbsp;&nbsp;状态为：{{item.state}} &nbsp;&nbsp;&nbsp;{{item.inputType}}</span>
+                                    </p>
+                                    <p style="margin-top:15px;margin-bottom:15px;">{{item.followContent}}</p>
+                                    <div class="imgbox_two" v-if="item.imgName">
+                                        <img :src="item.picture_detail" alt="图片" width="80" height="80" @click="showImg($event,item)">
+                                    </div>
+                                    <div v-if="item.enclosureName">
+                                        <a :href="item.enclosureUrl" download>{{item.enclosureOldName}}</a>
+                                    </div>
+                                    <el-dialog :visible.sync="dialogVisible2">
+                                        <img width="100%" :src="dialogImageUrl2" alt="">
+                                    </el-dialog>
+                                </div>
+                            </li>
+                        </ul>
+                    </el-tab-pane>
+                    <el-tab-pane label="竞争对手" name="fourth">
+                        <div class="entry">
+                            <el-button class="btn info-btn" size="mini" icon="el-icon-circle-plus-outline" @click="addCompetitor"></el-button>
+                        </div>
+                        <el-table :data="competitorData" border highlight-current-row @cell-click="cellClick2">
+                            <el-table-column header-align="center" fixed align="center" type="index" width="45"></el-table-column>
+
+                            <el-table-column label="公司名称" prop="name" min-width="280" fixed>
+                                <template slot-scope="scope">
+                                    <template v-if="scope.row.edit">
+                                        <el-select v-model="scope.row.name" placeholder="请选择" filterable @focus="handleFoces(scope.$index,scope.row)" @change="selectChange($event,scope.row)">
+                                            <el-option class="droplist" v-for="item in competitorList" :key="item.id" :label="item.name" :value="item.id">
+                                            </el-option>
+                                        </el-select>
+                                    </template>
+                                    <span v-else>{{ scope.row.name }}</span>
+                                </template>
+                            </el-table-column>
+
+                            <el-table-column prop="contacts" min-width="100" label="联系人" />
+
+                            <el-table-column prop="advantage" min-width="220" label="优势">
+                                <template slot-scope="scope">
+                                    <template v-if="scope.row.edit">
+                                        <el-input v-model="scope.row.advantage" class="edit-input" size="small"/>
+                                    </template>
+                                    <span v-else>{{ scope.row.advantage }}</span>
+                                </template>
+                            </el-table-column>
+
+                            <el-table-column prop="inferiority" min-width="220" label="劣势">
+                                <template slot-scope="scope">
+                                    <template v-if="scope.row.edit">
+                                        <el-input v-model="scope.row.inferiority" class="edit-input" size="small"/>
+                                    </template>
+                                    <span v-else>{{ scope.row.inferiority }}</span>
+                                </template>
+                            </el-table-column>
+
+                            <el-table-column prop="commonTactics" min-width="220" label="常用战术">
+                                <template slot-scope="scope">
+                                    <template v-if="scope.row.edit">
+                                        <el-input v-model="scope.row.commonTactics" class="edit-input" size="small"/>
+                                    </template>
+                                    <span v-else>{{ scope.row.commonTactics }}</span>
+                                </template>
+                            </el-table-column>
+
+                            <el-table-column align="center" fixed="right" label="操作" min-width="90">
+                                <template slot-scope="scope">
+                                    <el-button type="success" plain style="width:30px;height:30px;padding:0" :disabled="!scope.row.edit" icon="el-icon-circle-check-outline" @click="editCompetitor(scope.$index,scope.row)"></el-button>
+                                    <el-button type="danger" plain style="width:30px;height:30px;padding:0" icon="el-icon-delete" @click="deleteCompetitor(scope.$index,scope.row)"></el-button>
+                                </template>
+                            </el-table-column>
+                        </el-table>
+                    </el-tab-pane>
+                    <el-tab-pane label="联系人" name="fifth">
+                        <el-table :data="contactData" border stripe style="width: 100%">
+                            <el-table-column prop="name" label="联系人名称" min-width="120" />
+                            <el-table-column prop="phone" label="手机" min-width="110" />
+                            <el-table-column label="固话" prop="telephone" min-width="110" />
+                            <el-table-column label="邮箱" prop="email" min-width="130" />
+                            <el-table-column label="QQ" prop="qq" min-width="110" />
+                            <el-table-column label="微信" prop="wechat" min-width="110" />
+                            <el-table-column label="地址" prop="address" min-width="200" />
+                            <el-table-column label="职务" prop="identity" show-overflow-tooltip min-width="90" />
+                            <el-table-column label="性别" prop="sex" min-width="90" />
+                            <el-table-column label="是否在职" prop="status" min-width="90">
+                                <template slot-scope="scope">
+                                    <el-tooltip :content="scope.row.status" placement="right">
+                                        <el-switch v-model="scope.row.status" active-value="在职" inactive-value="离职" active-color="#13ce66" inactive-color="#bbbbbb" @change="changeState(scope.row)"></el-switch>
+                                    </el-tooltip>
+                                </template>
+                            </el-table-column>
+                            <el-table-column label="是否为关键人" prop="isCrux" min-width="110">
+                                <template slot-scope="scope">
+                                    <el-tooltip :content="scope.row.isCrux" placement="right">
+                                        <el-switch v-model="scope.row.isCrux" active-value="是" inactive-value="否" active-color="#13ce66" inactive-color="#bbbbbb" @change="changePrimary(scope.row)"></el-switch>
+                                    </el-tooltip>
+                                </template>
+                            </el-table-column>
+                            <el-table-column label="备注" prop="remark" min-width="180" />
+                        </el-table>
+                    </el-tab-pane>
+                    <el-tab-pane label="失败原因" name="sixth" v-if="showfail">
+                        <!-- 失败原因：失败 -->
+                        <div class="wo_c" style="min-height:200px;">
+                            <ul class="wo_ul_left">
+                                <li class="wo_li_left">
+                                    <span class="bold_span" style="font-size:14px;">失败原因：</span>
+                                    <span style="font-size:14px;" v-for="item in opportunitydetail.reasonsForFailures" :key="item">{{item}}，</span>
+                                </li>
+                                <br>
+                                <li class="wo_li_left">
+                                    <span style="font-size:14px;">失败描述：</span>
+                                    <div v-html="opportunitydetail.codeSnippet"></div>
+                                </li>
+                            </ul>
                         </div>
                     </el-tab-pane>
                 </el-tabs>
@@ -487,9 +499,22 @@
         components:{UE},
         filters:{
             commaing(value){
-                let intPart = Math.trunc(value) //获取整数部分
-                let intPartFormat = intPart.toString().replace(/(\d)(?=(?:\d{3})+$)/g, '$1,') // 将整数部分逢三一断
-                return intPartFormat
+                if(value){
+                    let intPart = Math.trunc(value) //获取整数部分
+                    let intPartFormat = intPart.toString().replace(/(\d)(?=(?:\d{3})+$)/g, '$1,') // 将整数部分逢三一断
+                    let floatPart = '.00' // 预定义小数部分
+                    let valArray = value.toString().split('.')
+                    if(valArray.length === 2) {
+                        floatPart = valArray[1].toString() // 拿到小数部分
+                        if(floatPart.length === 1) { // 补0,实际上用不着
+                            return intPartFormat + '.' + floatPart + '0'
+                        }else{
+                            return intPartFormat + '.' + floatPart
+                        }
+                    } else {
+                        return intPartFormat + floatPart
+                    }
+                }
             },
         },
         data(){
@@ -535,7 +560,6 @@
 
                 retracts:true,
 
-                auxindex:'first',
                 auxList:{},
                 auxcontent:false,
 
@@ -681,12 +705,12 @@
                 }).then(function(res){
                     _this.opportunitydetail = res.data.map.success[0]
                     if(_this.opportunitydetail.discount){
-                        _this.cusdiscount = res.data.discount
+                        _this.cusdiscount = res.data.map.success[0].discount
                     }else{
                         _this.cusdiscount = '100'
                     }
                     if(_this.opportunitydetail.taxRate){
-                        _this.custaxRate = res.data.taxRate
+                        _this.custaxRate = res.data.map.success[0].taxRate
                     }else{
                         _this.custaxRate = '0'
                     }
@@ -725,6 +749,7 @@
                                 _this.showfail = false
                                 _this.showsuccess = false
                                 _this.isprocess = 'process'
+                                _this.showauxAnalys = true
                             }
                             if(i !== 0){
                                 if(addStep[i].previousTime){
@@ -744,6 +769,7 @@
                             }
                         }
                     }
+                    _this.auxcontent = false
                     _this.$options.methods.loadfollow.bind(_this)()
                 }).catch(function(err){
                     _this.$message.error("商机详情加载失败,请重新进入页面");
@@ -878,9 +904,6 @@
                     }
                 }
             },
-            checkreasonList(val){
-                console.log(val)
-            },
             endStep(){
                 const _this = this
                 let qs = require('querystring')
@@ -893,6 +916,16 @@
                 data.stepId = 100
                 data.codeSnippet = content
                 data.reasonsForFailure = this.reasonsForFailure
+                
+                let flag = false
+                if(!data.reasonsForFailure.length){
+                    _this.$message({
+                        message: '失败原因不能为空',
+                        type: 'error'
+                    });
+                    flag = true
+                }
+                if(flag) return
                 
                 axios({
                     method:'post',
@@ -1043,7 +1076,7 @@
                             type:'success'
                         })
                         row.edit = false
-                        _this.$options.methods.getCompetitor.bind(_this)()
+                        _this.$options.methods.loadData.bind(_this)()
                     }else{
                         _this.$message({
                             message:res.data.msg,
@@ -1074,7 +1107,7 @@
                                 message:'操作成功',
                                 type:'success'
                             })
-                            _this.$options.methods.getCompetitor.bind(_this)()
+                            _this.$options.methods.loadData.bind(_this)()
                         }else{
                             _this.$message({
                                 message:res.data.msg,
@@ -1378,7 +1411,6 @@
                 this.$options.methods.getList.bind(this)()
             },
             onSubmit(){
-                console.log(this.productData)
                 const _this = this
                 let totalSum = 0
                 let partsDetails = new Array()
@@ -1411,6 +1443,16 @@
                     "pId":parseInt(this.$store.state.ispId)
                 }
 
+                let flag = false
+                if(!data.orderDetails.length){
+                    _this.$message({
+                        message:'至少添加一个产品',
+                        type:'error'
+                    })
+                    flag = true
+                }
+                if(flag) return
+
                 this.isDisable = true
 
                 axios({
@@ -1426,7 +1468,7 @@
                         _this.itemData.forEach(o => {
                             o.edit = false
                         });
-                        _this.$options.methods.loadProduct.bind(_this)()
+                        _this.$options.methods.loadData.bind(_this)()
                     }else{
                         _this.$message({
                             message: res.data.msg,
