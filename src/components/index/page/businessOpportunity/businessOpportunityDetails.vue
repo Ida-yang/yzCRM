@@ -64,9 +64,10 @@
                             <p>
                                 <span style="font-size:20px;line-height:50px;font-weight:bold">{{auxList.competitor}}人</span><br>
                                 <span style="font-size:12px;color:#666666;line-height:25px">竞争对手</span><br>
-                                <span style="font-size:14px;color:#333333;line-height:20px">{{auxList.competitorProportion}}%</span>
+                                <!-- <span style="font-size:14px;color:#333333;line-height:20px">{{auxList.competitorProportion}}%</span> -->
+                                <span style="font-size:14px;color:#333333;line-height:20px">&nbsp;</span>
                             </p>
-                            <el-progress type="circle" :percentage="ddd" :width="34" :stroke-width="5" :show-text="false"></el-progress>
+                            <!-- <el-progress type="circle" :percentage="ddd" :width="34" :stroke-width="5" :show-text="false"></el-progress> -->
                         </div>
                     </div>
                     <div class="aux_ul">
@@ -271,6 +272,41 @@
                         </div>
                     </el-tab-pane>
                     <el-tab-pane label="跟进记录" name="third" style="min-height:200px;">
+                        <el-form class="followform" :rules="rules" ref="followform" :model="followform">
+                            <el-form-item prop="followContent">
+                                <el-input type="textarea" placeholder="添加跟进内容" v-model="followform.followContent"></el-input>
+                            </el-form-item>
+                            <el-form-item label="联系方式" style="width:300px;" prop="followType">
+                                <el-select v-model="followform.followType" placeholder="请选择" style="width:200px;">
+                                    <el-option v-for="item in followTypes" :key="item.value" :value="item.label" :label="item.label"></el-option>
+                                </el-select>
+                            </el-form-item>
+                            <el-form-item label="联系人" style="width:290px;" prop="contactsId">
+                                <el-select v-model="followform.contactsId" placeholder="请选择" style="width:200px;">
+                                    <el-option v-for="item in contactData" :key="item.id" :label="item.name" :value="item.id"></el-option>
+                                </el-select>
+                            </el-form-item>
+                            <el-form-item label="下次联系时间" style="width:300px;">
+                                <el-date-picker v-model="followform.contactTime" type="datetime" format="yyyy-MM-dd HH:mm:ss" value-format="yyyy-MM-dd HH:mm:ss" default-time="12:00:00" :picker-options="pickerOptions" placeholder="选择日期时间" style="width:200px;"></el-date-picker>
+                            </el-form-item>
+                            <el-form-item label="快捷沟通" style="width:100%;">
+                                <el-radio v-model="followform.followContent" v-for="item in fastcontactList" :key="item.id" :label="item.content">{{item.typeName}}</el-radio>
+                            </el-form-item>
+                            <el-form-item label="上传图片" style="width:300px;">
+                                <el-upload class="upload-demo" ref="upload" :file-list="imgList" :multiple="true" action="doUpload" :limit="1" :before-upload="beforeUploadimg">
+                                    <el-button slot="trigger" size="mini" class="info-btn">上传图片</el-button>
+                                </el-upload>
+                            </el-form-item>
+                            <el-form-item label="上传附件" style="width:300px;">
+                                <el-upload class="upload-demo" ref="upload" :file-list="fileList" :multiple="true" action="doUpload" :limit="1" :before-upload="beforeUploadfile">
+                                    <el-button slot="trigger" size="mini" class="info-btn">上传附件</el-button>
+                                </el-upload>
+                            </el-form-item>
+                            <el-form-item style="float:right;">
+                                <el-button style="margin-top:6px;" type="primary" size="mini" @click="Submitfollowform">立即提交</el-button>
+                            </el-form-item>
+                        </el-form>
+                        <div style="width:100%;height:10px;"></div>
                         <ul class="followrecord" v-for="item in record" :key="item.followId">
                             <li class="recordicon">
                                 <img :src="item.imgUrl" class="detail_portrait" alt="头像" />
@@ -278,9 +314,14 @@
                             <li class="verticalline"></li>
                             <li class="recordcontent">
                                 <div class="left_more">
-                                    <p>{{item.private_employee}}&nbsp;&nbsp;于{{item.createTime}}&nbsp;&nbsp;通过{{item.followType}}更新了一条记录<span v-if="item.contacts[0]">&nbsp;&nbsp;&nbsp;客户联系人为：&nbsp;{{item.contacts[0].name}}</span>
-                                        <span v-if="item.contactTime">&nbsp;&nbsp;&nbsp;并约定下次联系时间：{{item.contactTime}}</span>
-                                        <span>&nbsp;&nbsp;&nbsp;状态为：{{item.state}} &nbsp;&nbsp;&nbsp;{{item.inputType}}</span>
+                                    <p>
+                                        <span class="de_span_2">{{item.contacts[0].name}}</span>
+                                        <span class="de_span_1">&nbsp;|&nbsp;</span>
+                                        <span class="de_span_1">{{item.createTime}}</span>
+                                        <span v-if="item.contactTime" class="de_span_1">&nbsp;&nbsp;--&nbsp;&nbsp;</span>
+                                        <span class="de_span_1">{{item.contactTime}}</span>
+                                        &nbsp;&nbsp;
+                                        <span class="de_span_3">&nbsp;&nbsp;{{item.followType}}&nbsp;&nbsp;</span>
                                     </p>
                                     <p style="margin-top:15px;margin-bottom:15px;">{{item.followContent}}</p>
                                     <div class="imgbox_two" v-if="item.imgName">
@@ -385,8 +426,8 @@
                         <div class="wo_c" style="min-height:200px;">
                             <ul class="wo_ul_left">
                                 <li class="wo_li_left">
-                                    <span class="bold_span" style="font-size:14px;">失败原因：</span>
-                                    <span style="font-size:14px;" v-for="item in opportunitydetail.reasonsForFailures" :key="item">{{item}}，</span>
+                                    <span style="font-size:14px;">失败原因：</span>
+                                    <el-tag size="small" type="info" v-for="item in opportunitydetail.reasonsForFailures" :key="item" style="margin-right:5px;">{{item}}</el-tag>
                                 </li>
                                 <br>
                                 <li class="wo_li_left">
@@ -563,6 +604,36 @@
                 auxList:{},
                 auxcontent:false,
 
+                
+                rules: {
+                    followContent : [{ required: true, message: '请输入跟进内容', trigger: 'blur' },],
+                    contactsId : [{ required: true, message: '请选择联系人', trigger: 'blur' },],
+                    followType : [{ required: true, message: '请选择联系方式', trigger: 'blur' },],
+                },
+                followform:{
+                    followType:'电话',
+                    contactTime:'',
+                    contactsId:'',
+                    followContent:'',
+                    imgName:null,
+                    enclosureName: null,
+                },
+                followTypes:[
+                    {label:'电话',value:'1'},
+                    {label:'微信',value:'2'},
+                    {label:'QQ',value:'3'},
+                    {label:'邮箱',value:'4'},
+                    {label:'拜访',value:'5'},
+                ],
+                fastcontactList:null,
+
+                files:null,
+                filesName:null,
+                imgfile:null,
+                imgName:null,
+                fileList:[],
+                imgList:[],
+
                 record:[],
                 dialogVisible2:false,
                 dialogImageUrl2:null,
@@ -656,6 +727,8 @@
                 let data2 = {}
                 data2.page = 1
                 data2.limit = 999999999
+                let data3 = {}
+                data3.type = '快捷方式'
 
                 axios({
                     method: 'post',
@@ -692,6 +765,16 @@
                     data: qs.stringify(data2)
                 }).then(function(res){
                     _this.competitorList = res.data.map.success
+                }).catch(function(err){
+                    // console.log(err);
+                });
+                //加载快捷方式
+                axios({
+                    method: 'post',
+                    url: _this.$store.state.defaultHttp+'typeInfo/getTypeInfoGroupByType.do?cId='+_this.$store.state.iscId,
+                    data:qs.stringify(data3)
+                }).then(function(res){
+                    _this.fastcontactList = res.data
                 }).catch(function(err){
                     // console.log(err);
                 });
@@ -818,16 +901,26 @@
                 const _this = this
                 let qs =require('querystring')
                 let pageInfo2 = {}
-                pageInfo2.page = '1'
-                pageInfo2.limit = '100000'
+                pageInfo2.page = 1
+                pageInfo2.limit = 100000
 
                 //加载跟进记录
                 axios({
                     method:'get',
-                    url:_this.$store.state.defaultHttp+'customerpool/getFollowStaffAndpool.do?cId='+_this.$store.state.iscId+'&pId='+_this.$store.state.ispId+'&customerpool_id='+_this.customerId,
+                    url:_this.$store.state.defaultHttp+'getFollowByOpportunityId.do?cId='+_this.$store.state.iscId+'&opportunityId='+_this.idArr.opportunity_id,
                 }).then(function(res){
                     _this.record = res.data.map.success
                     _this.record.forEach(el => {
+                        el.showdelico = false
+                        let startTime = Date.parse(el.createTime); // 开始时间
+                        let endTime = new Date().getTime(); // 结束时间
+                        let usedTime = endTime - startTime; // 相差的毫秒数
+                        if(usedTime < 7200000){
+                            el.showdelico = true
+                        }
+                        if(usedTime > 7200000){
+                            el.showdelico = false
+                        }
                         if(el.userImagName){
                             el.imgUrl = _this.$store.state.systemHttp + '/upload/'+_this.$store.state.iscId+'/'+el.userImagName
                         }
@@ -851,6 +944,7 @@
                     data:qs.stringify(pageInfo2)
                 }).then(function(res){
                     _this.contactData = res.data.map.success
+                    _this.followform.contactsId = res.data.map.success[0].id
                 }).catch(function(err){
                     // console.log(err);
                 });
@@ -1008,6 +1102,117 @@
             retract(){
                 this.thisshow = !this.thisshow
                 this.retracts = !this.retracts
+            },
+
+            beforeUploadimg(val,imgList){
+                this.imgfile = val;
+                const extension = val.name.split('.')[1] === 'jpg'
+                const extension2 = val.name.split('.')[1] === 'png'
+                const extension3 = val.name.split('.')[1] === 'jpeg'
+                const isLt500k = val.size / 1024 / 1024 < 0.5
+                if (!extension && !extension2 && !extension3) {
+                    this.$message.warning('图片只能是 jpg、png、jpeg格式!')
+                    return
+                }
+                if (!isLt500k) {
+                    this.$message.warning('图片大小不能超过 500KB!')
+                    return
+                }
+                this.imgName = val.name
+                this.imgList.push({name:val.name})
+                return false;
+            },
+            beforeUploadfile(file,fileList){
+                this.files = file;
+                const extension = file.name.split('.')[1] === 'xls'
+                const extension2 = file.name.split('.')[1] === 'xlsx'
+                const extension3 = file.name.split('.')[1] === 'doc'
+                const extension4 = file.name.split('.')[1] === 'docx'
+                const isLt5M = file.size / 1024 / 1024 < 5
+                if (!extension && !extension2 && !extension3 && !extension4) {
+                    this.$message.warning('附件只能是 xls、xlsx、doc、docx格式!')
+                    return
+                }
+                if (!isLt5M) {
+                    this.$message.warning('附件大小不能超过 5MB!')
+                    return
+                }
+                this.filesName = file.name
+                this.fileList.push({name:file.name})
+                return false; // 返回false不会自动上传
+            },  
+            // 跟进记录
+            Submitfollowform(){
+                const _this = this
+                let qs = require('querystring')
+                let data = new FormData()
+                data.append("opportunity_id", this.idArr.opportunity_id);
+                data.append("followType", this.followform.followType);
+                data.append("contactTime", this.followform.contactTime);
+                data.append("followContent", this.followform.followContent);
+                data.append("contactsId", this.followform.contactsId);
+                data.append("customerpool_id", this.customerId);
+                data.append("deptid", this.$store.state.insid);
+                data.append("secondid", this.$store.state.deptid);
+                data.append("imgNames", this.imgfile, this.imgName);
+                data.append("enclosureNames", this.files, this.filesName);
+
+                if(!this.followform.followContent){
+                    _this.$message({
+                        message: '跟进内容不能为空',
+                        type: 'error'
+                    });
+                }else if(!this.followform.contactsId){
+                    _this.$message({
+                        message: '联系人不能为空',
+                        type: 'error'
+                    });
+                }else{
+                    axios({
+                        method: 'get',
+                        url: _this.$store.state.defaultHttp+'customerJurisdiction/follow.do',//新增跟进记录
+                    }).then(function(res){
+                        if(res.data.msg && res.data.msg == 'error'){
+                            _this.$message({
+                                message:'对不起，您没有该权限，请联系管理员开通',
+                                type:'error'
+                            })
+                        }else{
+                            axios({
+                                method: 'post',
+                                url:  _this.$store.state.defaultHttp+ 'addFollow.do?cId='+_this.$store.state.iscId+'&pId='+_this.$store.state.ispId,
+                                headers: {
+                                    'Content-Type': 'multipart/form-data'
+                                },
+                                data:data,
+                            }).then(function(res){
+                                if(res.data.msg && res.data.msg == 'success' ) {
+                                    _this.$message({
+                                        message: '提交成功',
+                                        type: 'success'
+                                    });
+                                } else {
+                                    _this.$message({
+                                        message: res.data.msg,
+                                        type: 'error'
+                                    });
+                                }
+                                _this.followform.contactTime = ''
+                                _this.followform.followContent = ''
+                                _this.followform.imgName = ''
+                                _this.followform.enclosureName = ''
+                                _this.fileList = []
+                                _this.imgList = []
+                                _this.$options.methods.loadfollow.bind(_this)(true);
+                            }).catch(function(err){
+                                _this.$message.error("提交失败,请重新提交");
+                            });
+                        }
+                        
+                    }).catch(function(err){
+                        // console.log(err);
+                    });
+                }
             },
 
             // 竞争对手

@@ -61,9 +61,6 @@
                                         <p>2222222</p>
                                         <p>3333333</p>
                                         <p>4444444</p>
-                                        <p>1111111</p>
-                                        <p>2222222</p>
-                                        <p>3333333</p>
                                         <p>4444444</p>
                                     </div>
                                 </div>
@@ -86,6 +83,9 @@
                                         <p>4444444</p>
                                         <p>3333333</p>
                                         <p>4444444</p>
+                                        <p>1111111</p>
+                                        <p>2222222</p>
+                                        <p>3333333</p>
                                     </div>
                                 </div>
                             </div>
@@ -183,13 +183,16 @@
             </div>
         </el-col>
 
-        <el-dialog :title="newform.title" :visible.sync="dialogVisible" :close-on-click-modal="false" width="500px">
+        <el-dialog :title="newform.title" :visible.sync="dialogVisible" :close-on-click-modal="false" width="600px">
             <el-form ref="newform" :model="newform" label-width="110px" :rules="rules" style="padding-right:30px">
                 <el-form-item v-for="item in labelList" :key="item.prop" :prop="item.prop" :label="item.label">
-                    <el-select v-if="item.type == 'select'" v-model="newform[item.prop]" :multiple="item.multiple" :placeholder="item.placeholder" class="mul_select">
+                    <!-- <el-select v-if="item.type == 'select'" v-model="newform[item.prop]" :multiple="item.multiple" :placeholder="item.placeholder" class="mul_select">
                         <el-option v-for="o in item.options" :key="o.id" :label="o.typeName" :value="o.id"></el-option>
-                    </el-select>
-                    <el-radio-group v-if="item.type == 'radio'" v-model="newform[item.prop]">
+                    </el-select> -->
+                    <el-checkbox-group v-if="item.type == 'select'" v-model="newform[item.prop]" class="cul_checkbox">
+                        <el-checkbox v-for="o in item.options" :key="o.id" :label="o.id">{{o.typeName}}</el-checkbox>
+                    </el-checkbox-group>
+                    <el-radio-group v-if="item.type == 'radio'" v-model="newform[item.prop]" class="cul_radio">
                         <el-radio v-for="o in item.options" :key="o.id" :label="o.id">{{o.typeName}}</el-radio>
                     </el-radio-group>
                 </el-form-item>
@@ -318,8 +321,8 @@
                     _this.cusportraitList = res.data
                     _this.personalList.push(datas.name1001,datas.name2001,datas.name3001,datas.name4001,datas.name5001)            //个人
                     _this.familyList.push(datas.name6001,datas.name7001,datas.name8001,datas.name9001,datas.name10001)            //家庭
-                    _this.interestList.push(datas.name11001,datas.name12001,datas.name13001,datas.name14001)            //兴趣
-                    _this.consumptionList.push(datas.name15001,datas.name16001,datas.name17001,datas.name18001,datas.name19001,datas.name20001,datas.name21001,datas.name22001)            //消费
+                    _this.interestList.push(datas.name11001,datas.name12001,datas.name13001,datas.name14001,datas.name19001,datas.name20001,datas.name21001)            //兴趣
+                    _this.consumptionList.push(datas.name15001,datas.name16001,datas.name17001,datas.name18001,datas.name22001)            //消费
                     _this.otherList.push(datas.name31001,datas.name31002,datas.name31003,datas.name31004,datas.name31005,datas.name31006,datas.name31007,datas.name31008,datas.name31009,datas.name31010)            //其他
                 }).catch(function(err){
                     // console.log(err);
@@ -336,9 +339,9 @@
                 if(val == 1){
                     this.labelList = [
                         {"label":"性别","prop":"sex","type":"radio","options":this.cusportraitList.name5001},
-                        {"label":"年龄","prop":"age","type":"select","options":this.cusportraitList.name4001},
-                        {"label":"职业","prop":"zhiye","type":"select","options":this.cusportraitList.name1001,"multiple":true},
-                        {"label":"岗位","prop":"gangwei","type":"select","options":this.cusportraitList.name2001,"multiple":true},
+                        {"label":"年龄","prop":"age","type":"radio","options":this.cusportraitList.name4001},
+                        {"label":"职业","prop":"zhiye","type":"radio","options":this.cusportraitList.name1001,"multiple":true},
+                        {"label":"岗位","prop":"gangwei","type":"radio","options":this.cusportraitList.name2001,"multiple":true},
                         {"label":"学历","prop":"xueli","type":"radio","options":this.cusportraitList.name3001},
                     ]
                     this.newform = {
@@ -353,16 +356,16 @@
                 if(val == 2){
                     this.labelList = [
                         {"label":"婚姻状况","prop":"hunyin","type":"radio","options":this.cusportraitList.name6001},
-                        {"label":"家庭人数","prop":"jiaren","type":"select","options":this.cusportraitList.name7001},
-                        {"label":"子女人数","prop":"zinv","type":"select","options":this.cusportraitList.name8001},
-                        {"label":"父母人数","prop":"fumu","type":"select","options":this.cusportraitList.name9001},
-                        {"label":"年收入","prop":"shouru","type":"select","options":this.cusportraitList.name10001},
+                        {"label":"家庭人数","prop":"jiaren","type":"radio","options":this.cusportraitList.name7001},
+                        {"label":"子女人数","prop":"zinv","type":"radio","options":this.cusportraitList.name8001},
+                        {"label":"父母人数","prop":"fumu","type":"radio","options":this.cusportraitList.name9001},
+                        {"label":"年收入","prop":"shouru","type":"radio","options":this.cusportraitList.name10001},
                     ]
                     this.newform = {
                         "title":'家庭画像',
                         "hunyin":'',
                         "jiaren":'',
-                        "zhiye":'',
+                        "zinv":'',
                         "fumu":'',
                         "shouru":'',
                     }
@@ -373,21 +376,15 @@
                         {"label":"品牌兴趣","prop":"pinpai","type":"select","options":this.cusportraitList.name16001,"multiple":true},
                         {"label":"车辆兴趣","prop":"cheliang","type":"select","options":this.cusportraitList.name17001,"multiple":true},
                         {"label":"品茶兴趣","prop":"pincha","type":"select","options":this.cusportraitList.name18001,"multiple":true},
-                        {"label":"影视兴趣","prop":"yngshi","type":"select","options":this.cusportraitList.name19001,"multiple":true},
-                        {"label":"音乐兴趣","prop":"yinyue","type":"select","options":this.cusportraitList.name20001,"multiple":true},
-                        {"label":"饮食兴趣","prop":"yinshi","type":"select","options":this.cusportraitList.name21001,"multiple":true},
                         {"label":"服饰兴趣","prop":"fushi","type":"select","options":this.cusportraitList.name22001,"multiple":true},
                     ]
                     this.newform = {
                         "title":'消费画像',
-                        "shouji":'',
-                        "pinpai":'',
-                        "cheliang":'',
-                        "pincha":'',
-                        "yngshi":'',
-                        "yinyue":'',
-                        "yinshi":'',
-                        "fushi":'',
+                        "shouji":[],
+                        "pinpai":[],
+                        "cheliang":[],
+                        "pincha":[],
+                        "fushi":[],
                     }
                 }
                 if(val == 5){
@@ -396,42 +393,47 @@
                         {"label":"阅读兴趣","prop":"yuedu","type":"select","options":this.cusportraitList.name12001,"multiple":true},
                         {"label":"社交兴趣","prop":"shejiao","type":"select","options":this.cusportraitList.name13001,"multiple":true},
                         {"label":"运动兴趣","prop":"yundong","type":"select","options":this.cusportraitList.name14001,"multiple":true},
+                        {"label":"影视兴趣","prop":"yingshi","type":"select","options":this.cusportraitList.name19001,"multiple":true},
+                        {"label":"音乐兴趣","prop":"yinyue","type":"select","options":this.cusportraitList.name20001,"multiple":true},
+                        {"label":"饮食兴趣","prop":"yinshi","type":"select","options":this.cusportraitList.name21001,"multiple":true},
                     ]
                     this.newform = {
                         "title":'兴趣画像',
-                        "xingqu":'',
-                        "yuedu":'',
-                        "shejiao":'',
-                        "yundong":'',
+                        "xingqu":[],
+                        "yuedu":[],
+                        "shejiao":[],
+                        "yundong":[],
+                        "yingshi":[],
+                        "yinyue":[],
+                        "yinshi":[],
                     }
                 }
                 if(val == 6){
                     this.labelList = []
                     this.otherLabelList.forEach(el => {
-                        this.labelList.push({"label":el.name,"prop":el.index,"type":"select","options":'',"multiple":true})
+                        this.labelList.push({"label":el.name,"prop":el.index,"type":"select","options":[],"multiple":true})
                     });
                     this.otherList.forEach((a,i) => {
                         this.labelList[i].options = a
                     });
                     this.newform = {
                         "title":'其他画像',
-                        "31001":'',
-                        "31002":'',
-                        "31003":'',
-                        "31004":'',
-                        "31005":'',
-                        "31006":'',
-                        "31007":'',
-                        "31008":'',
-                        "31009":'',
-                        "31010":'',
+                        "31001":[],
+                        "31002":[],
+                        "31003":[],
+                        "31004":[],
+                        "31005":[],
+                        "31006":[],
+                        "31007":[],
+                        "31008":[],
+                        "31009":[],
+                        "31010":[],
                     }
                 }
                 this.dialogVisible = true
             },
             onSubmit(){
                 console.log(this.newform)
-                
             },
 
 
@@ -498,5 +500,16 @@
     }
     .mul_select .el-input__inner{
         height: 30px !important;
+    }
+
+    .label_tag{
+        background-color: #ffffff;
+    }
+    .cul_checkbox .el-checkbox{
+        margin-left: 20px;
+    }
+    .cul_radio .el-radio{
+        margin-left: 20px;
+        line-height: 40px
     }
 </style>

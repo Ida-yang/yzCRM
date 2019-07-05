@@ -24,7 +24,7 @@
             <div class="bottom">
                 <el-tabs v-model="activeName2" type="card">
                     <el-tab-pane label="跟进记录" name="first">
-                        <ul class="followrecord" v-for="item in record" :key="item.followId">
+                        <ul class="followrecord" v-for="item in record" :key="item.followId" style="min-height:200px;">
                             <li class="recordicon">
                                 <img :src="item.imgUrl" class="detail_portrait" :alt="item.private_employee" :title="item.private_employee" />
                             </li>

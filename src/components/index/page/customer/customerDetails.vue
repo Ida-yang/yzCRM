@@ -132,10 +132,6 @@
                             <li class="verticalline"></li>
                             <li class="recordcontent">
                                 <div class="left_more">
-                                    <!-- <p>{{item.private_employee}}&nbsp;于&nbsp;{{item.createTime}}&nbsp;&nbsp;&nbsp;通过&nbsp;{{item.followType}}&nbsp;联系了：&nbsp;{{item.contacts[0].name}}
-                                        <span v-if="item.contactTime">&nbsp;&nbsp;&nbsp;并约定下次联系时间：{{item.contactTime}}</span>
-                                        &nbsp;&nbsp;&nbsp;<span>状态为：{{item.state}} &nbsp;&nbsp;&nbsp;{{item.inputType}}</span> 
-                                    </p> -->
                                     <p>
                                         <span class="de_span_2">{{item.contacts[0].name}}</span>
                                         <span class="de_span_1">&nbsp;|&nbsp;</span>

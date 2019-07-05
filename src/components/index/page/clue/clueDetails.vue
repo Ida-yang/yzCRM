@@ -430,6 +430,7 @@
                 pageInfo.limit = this.limit
                 let data = {}
                 data.type = '快捷方式'
+                
                 //加载快捷方式
                 axios({
                     method: 'post',

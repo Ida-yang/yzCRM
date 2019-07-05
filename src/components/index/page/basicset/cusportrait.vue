@@ -97,15 +97,15 @@
                     {index:'12',name:'阅读兴趣',isActive:false},
                     {index:'13',name:'社交兴趣',isActive:false},
                     {index:'14',name:'运动兴趣',isActive:false},
+                    {index:'19',name:'影视兴趣',isActive:false},
+                    {index:'20',name:'音乐兴趣',isActive:false},
+                    {index:'21',name:'饮食兴趣',isActive:false},
                 ],
                 consumptionList:[
                     {index:'15',name:'手机兴趣',isActive:false},
                     {index:'16',name:'品牌兴趣',isActive:false},
                     {index:'17',name:'车辆兴趣',isActive:false},
                     {index:'18',name:'品茶兴趣',isActive:false},
-                    {index:'19',name:'影视兴趣',isActive:false},
-                    {index:'20',name:'音乐兴趣',isActive:false},
-                    {index:'21',name:'饮食兴趣',isActive:false},
                     {index:'22',name:'服饰兴趣',isActive:false},
                 ],
                 enterpriseList:[
