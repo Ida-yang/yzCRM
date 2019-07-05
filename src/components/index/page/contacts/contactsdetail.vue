@@ -94,20 +94,92 @@
                             <el-table-column label="剩余天数" prop="due_time" min-width="110" />
                         </el-table>
                     </el-tab-pane>
-                    <el-tab-pane label="个人画像" name="fourth">
-                        <span style="text-align:center;">暂无数据</span>
-                    </el-tab-pane>
-                    <el-tab-pane label="家庭画像" name="fifth">
-                        <span style="text-align:center;">暂无数据</span>
-                    </el-tab-pane>
-                    <el-tab-pane label="需求画像" name="sixth">
-                        <span style="text-align:center;">暂无数据</span>
-                    </el-tab-pane>
-                    <el-tab-pane label="营销画像" name="seventh">
-                        <span style="text-align:center;">暂无数据</span>
-                    </el-tab-pane>
-                    <el-tab-pane label="其他画像" name="eighth">
-                        <span style="text-align:center;">暂无数据</span>
+                    <el-tab-pane label="客户画像" name="fourth">
+                        <div class="cus_portrait">
+                            <img class="cusport_img" src="../../../../../static/img/cusPortrait.png" width="250" height="250" />
+                            <div class="cusport_div1">
+                                <span class="cusport_span"><img style="margin-left:11px;" src="../../../../../static/img/marketing.png" width="35" height="35" /><br>营销画像</span>
+                                <img class="cusport_line" src="../../../../../static/img/line1.png" />
+                                <div class="cusport_c">
+                                    <div class="cusport_bg">
+                                        <p>邮件访问次数：</p>
+                                        <p>短信访问次数：</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="cusport_div2">
+                                <span class="cusport_span" @click="openDialog(2)"><img style="margin-left:11px;" src="../../../../../static/img/persona.png" width="35" height="35" /><br>个人画像</span>
+                                <img class="cusport_line" src="../../../../../static/img/line2.png" />
+                                <div class="cusport_c">
+                                    <div class="cusport_bg">
+                                        <p><el-tag size="mini">男</el-tag></p>
+                                        <p><el-tag size="mini">18-24</el-tag></p>
+                                        <p><el-tag size="mini">公务员</el-tag></p>
+                                        <p><el-tag size="mini">财务总监</el-tag></p>
+                                        <p><el-tag size="mini">硕士</el-tag></p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="cusport_div3">
+                                <span class="cusport_span" @click="openDialog(3)"><img style="margin-left:11px;" src="../../../../../static/img/interest.png" width="35" height="35" /><br>兴趣画像</span>
+                                <img class="cusport_line" src="../../../../../static/img/line3.png" />
+                                <div class="cusport_c">
+                                    <div class="cusport_bg">
+                                        <p><el-tag size="mini">唱歌</el-tag><el-tag size="mini">跳舞</el-tag><el-tag size="mini">运动</el-tag></p>
+                                        <p><el-tag size="mini">科幻小说</el-tag></p>
+                                        <p><el-tag size="mini">下棋</el-tag><el-tag size="mini">喝茶</el-tag></p>
+                                        <p><el-tag size="mini">游泳</el-tag><el-tag size="mini">马拉松</el-tag><el-tag size="mini">跳高</el-tag></p>
+                                        <p><el-tag size="mini">悬疑片</el-tag><el-tag size="mini">喜剧</el-tag></p>
+                                        <p><el-tag size="mini">古风</el-tag><el-tag size="mini">轻音乐</el-tag></p>
+                                        <p><el-tag size="mini">清淡</el-tag></p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="cusport_div4">
+                                <span class="cusport_span" @click="openDialog(4)"><img style="margin-left:11px;" src="../../../../../static/img/consumption.png" width="35" height="35" /><br>消费画像</span>
+                                <img class="cusport_line" src="../../../../../static/img/line4.png" />
+                                <div class="cusport_c">
+                                    <div class="cusport_bg">
+                                        <p><el-tag size="mini">关注华为</el-tag><el-tag size="mini">关注苹果</el-tag></p>
+                                        <p><el-tag size="mini">华为</el-tag></p>
+                                        <p><el-tag size="mini">关注越野车</el-tag></p>
+                                        <p><el-tag size="mini">铁观音</el-tag><el-tag size="mini">普洱</el-tag></p>
+                                        <p><el-tag size="mini">日系</el-tag><el-tag size="mini">森女系</el-tag><el-tag size="mini">休闲服</el-tag></p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="cusport_div5">
+                                <span class="cusport_span" @click="openDialog(5)"><img style="margin-left:11px;" src="../../../../../static/img/family.png" width="35" height="35" /><br>家庭画像</span>
+                                <img class="cusport_line" src="../../../../../static/img/line5.png" />
+                                <div class="cusport_c">
+                                    <div class="cusport_bg">
+                                        <p>婚姻：<el-tag size="mini">已婚</el-tag></p>
+                                        <p>家人：<el-tag size="mini">5</el-tag></p>
+                                        <p>子女：<el-tag size="mini">1</el-tag></p>
+                                        <p>父母：<el-tag size="mini">4</el-tag></p>
+                                        <p>年收入：<el-tag size="mini">10-13万</el-tag></p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="cusport_div6">
+                                <span class="cusport_span" @click="openDialog(6)"><img style="margin-left:11px;" src="../../../../../static/img/other.png" width="35" height="35" /><br>其他画像</span>
+                                <img class="cusport_line" src="../../../../../static/img/line6.png" />
+                                <div class="cusport_c">
+                                    <div class="cusport_bg">
+                                        <p><el-tag size="mini">玛莎拉蒂</el-tag></p>
+                                        <p><el-tag size="mini">玛莎拉蒂</el-tag></p>
+                                        <p><el-tag size="mini">玛莎拉蒂</el-tag></p>
+                                        <!-- <p><el-tag size="mini">玛莎拉蒂</el-tag></p>
+                                        <p><el-tag size="mini">玛莎拉蒂</el-tag></p>
+                                        <p><el-tag size="mini">玛莎拉蒂</el-tag></p>
+                                        <p><el-tag size="mini">玛莎拉蒂</el-tag></p>
+                                        <p><el-tag size="mini">玛莎拉蒂</el-tag></p>
+                                        <p><el-tag size="mini">玛莎拉蒂</el-tag></p> -->
+                                        <p><el-tag size="mini">玛莎拉蒂</el-tag></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </el-tab-pane>
                 </el-tabs>
             </div>
@@ -138,6 +210,26 @@
                 </el-pagination>
             </div>
         </el-col>
+
+        <el-dialog :title="newform.title" :visible.sync="dialogVisible" :close-on-click-modal="false" width="600px">
+            <el-form ref="newform" :model="newform" label-width="110px" :rules="rules" style="padding-right:30px">
+                <el-form-item v-for="item in labelList" :key="item.prop" :prop="item.prop" :label="item.label">
+                    <!-- <el-select v-if="item.type == 'select'" v-model="newform[item.prop]" :multiple="item.multiple" :placeholder="item.placeholder" class="mul_select">
+                        <el-option v-for="o in item.options" :key="o.id" :label="o.typeName" :value="o.id"></el-option>
+                    </el-select> -->
+                    <el-checkbox-group v-if="item.type == 'select'" v-model="newform[item.prop]" :max="3" class="cul_checkbox">
+                        <el-checkbox v-for="o in item.options" :key="o.id" :label="o.id">{{o.typeName}}</el-checkbox>
+                    </el-checkbox-group>
+                    <el-radio-group v-if="item.type == 'radio'" v-model="newform[item.prop]" class="cul_radio">
+                        <el-radio v-for="o in item.options" :key="o.id" :label="o.id">{{o.typeName}}</el-radio>
+                    </el-radio-group>
+                </el-form-item>
+            </el-form>
+            <span slot="footer" class="dialog-footer">
+                <el-button @click="dialogVisible = false">取 消</el-button>
+                <el-button type="primary" @click="onSubmit()">确 定</el-button>
+            </span>
+        </el-dialog>
     </el-row>
 </template>
 
@@ -185,6 +277,22 @@
                 oppDetails:[],
                 agreeDetails:[],
 
+                cusportraitList:{},
+                personalList:[], //个人
+                familyList:[], //家庭
+                interestList:[], //兴趣
+                consumptionList:[], //消费
+                otherList:[], //其他
+
+                otherLabelList:[],
+
+                dialogVisible:false,
+                newform:{
+                    title:null,
+                },
+                labelList:[],
+                rules:{},
+
                 page:1,
                 limit:15,
                 searchList:{
@@ -218,6 +326,28 @@
                     _this.$options.methods.loadFollow.bind(_this)()
                 }).catch(function(err){
                     // console.log(err);
+                });
+                
+                axios({
+                    method:'get',
+                    url:_this.$store.state.defaultHttp + 'portraitType/getPortraitTypeByType.do?cId=' + _this.$store.state.iscId
+                }).then(function(res){
+                    let datas = res.data
+                    _this.cusportraitList = res.data
+                    _this.personalList.push(datas.name1001,datas.name2001,datas.name3001,datas.name4001,datas.name5001)            //个人
+                    _this.familyList.push(datas.name6001,datas.name7001,datas.name8001,datas.name9001,datas.name10001)            //家庭
+                    _this.interestList.push(datas.name11001,datas.name12001,datas.name13001,datas.name14001,datas.name19001,datas.name20001,datas.name21001)            //兴趣
+                    _this.consumptionList.push(datas.name15001,datas.name16001,datas.name17001,datas.name18001,datas.name22001)            //消费
+                    _this.otherList.push(datas.name31001,datas.name31002,datas.name31003,datas.name31004,datas.name31005,datas.name31006,datas.name31007,datas.name31008,datas.name31009,datas.name31010)            //其他
+                }).catch(function(err){
+                    // console.log(err);
+                });
+                axios({
+                    method: 'get',
+                    url: _this.$store.state.defaultHttp+'portraitType/getOthersPortraitType.do?cId='+_this.$store.state.iscId
+                }).then(function(res){
+                    _this.otherLabelList = res.data.portraitTypes
+                }).catch(function(err){
                 });
             },
             loadFollow(){
@@ -298,6 +428,110 @@
                     // console.log(err);
                 });
             },
+
+            
+            openDialog(val){
+                if(val == 2){
+                    this.labelList = [
+                        {"label":"性别","prop":"sex","type":"radio","options":this.cusportraitList.name5001},
+                        {"label":"年龄","prop":"age","type":"radio","options":this.cusportraitList.name4001},
+                        {"label":"职业","prop":"zhiye","type":"radio","options":this.cusportraitList.name1001,"multiple":true},
+                        {"label":"岗位","prop":"gangwei","type":"radio","options":this.cusportraitList.name2001,"multiple":true},
+                        {"label":"学历","prop":"xueli","type":"radio","options":this.cusportraitList.name3001},
+                    ]
+                    this.newform = {
+                        "title":'个人画像',
+                        "sex":'',
+                        "age":'',
+                        "zhiye":'',
+                        "gangwei":'',
+                        "xueli":'',
+                    }
+                }
+                if(val == 3){
+                    this.labelList = [
+                        {"label":"行为爱好","prop":"xingqu","type":"select","options":this.cusportraitList.name11001,"multiple":true},
+                        {"label":"阅读兴趣","prop":"yuedu","type":"select","options":this.cusportraitList.name12001,"multiple":true},
+                        {"label":"社交兴趣","prop":"shejiao","type":"select","options":this.cusportraitList.name13001,"multiple":true},
+                        {"label":"运动兴趣","prop":"yundong","type":"select","options":this.cusportraitList.name14001,"multiple":true},
+                        {"label":"影视兴趣","prop":"yingshi","type":"select","options":this.cusportraitList.name19001,"multiple":true},
+                        {"label":"音乐兴趣","prop":"yinyue","type":"select","options":this.cusportraitList.name20001,"multiple":true},
+                        {"label":"饮食兴趣","prop":"yinshi","type":"select","options":this.cusportraitList.name21001,"multiple":true},
+                    ]
+                    this.newform = {
+                        "title":'兴趣画像',
+                        "xingqu":[],
+                        "yuedu":[],
+                        "shejiao":[],
+                        "yundong":[],
+                        "yingshi":[],
+                        "yinyue":[],
+                        "yinshi":[],
+                    }
+                }
+                if(val == 4){
+                    this.labelList = [
+                        {"label":"手机兴趣","prop":"shouji","type":"select","options":this.cusportraitList.name15001,"multiple":true},
+                        {"label":"品牌兴趣","prop":"pinpai","type":"select","options":this.cusportraitList.name16001,"multiple":true},
+                        {"label":"车辆兴趣","prop":"cheliang","type":"select","options":this.cusportraitList.name17001,"multiple":true},
+                        {"label":"品茶兴趣","prop":"pincha","type":"select","options":this.cusportraitList.name18001,"multiple":true},
+                        {"label":"服饰兴趣","prop":"fushi","type":"select","options":this.cusportraitList.name22001,"multiple":true},
+                    ]
+                    this.newform = {
+                        "title":'消费画像',
+                        "shouji":[],
+                        "pinpai":[],
+                        "cheliang":[],
+                        "pincha":[],
+                        "fushi":[],
+                    }
+                }
+                if(val == 5){
+                    this.labelList = [
+                        {"label":"婚姻状况","prop":"hunyin","type":"radio","options":this.cusportraitList.name6001},
+                        {"label":"家庭人数","prop":"jiaren","type":"radio","options":this.cusportraitList.name7001},
+                        {"label":"子女人数","prop":"zinv","type":"radio","options":this.cusportraitList.name8001},
+                        {"label":"父母人数","prop":"fumu","type":"radio","options":this.cusportraitList.name9001},
+                        {"label":"年收入","prop":"shouru","type":"radio","options":this.cusportraitList.name10001},
+                    ]
+                    this.newform = {
+                        "title":'家庭画像',
+                        "hunyin":'',
+                        "jiaren":'',
+                        "zinv":'',
+                        "fumu":'',
+                        "shouru":'',
+                    }
+                }
+                if(val == 6){
+                    this.labelList = []
+                    this.otherLabelList.forEach(el => {
+                        this.labelList.push({"label":el.name,"prop":el.index,"type":"select","options":'',"multiple":true})
+                    });
+                    this.otherList.forEach((a,i) => {
+                        this.labelList[i].options = a
+                    });
+                    this.newform = {
+                        "title":'其他画像',
+                        "31001":[],
+                        "31002":[],
+                        "31003":[],
+                        "31004":[],
+                        "31005":[],
+                        "31006":[],
+                        "31007":[],
+                        "31008":[],
+                        "31009":[],
+                        "31010":[],
+                    }
+                }
+                this.dialogVisible = true
+            },
+            onSubmit(){
+                console.log(this.newform)
+            },
+
+
             getRow(index,row){
                 this.$store.state.contdetailsData = {"id":row.csId}
                 this.customerpoolId = null
@@ -323,5 +557,15 @@
         background-color: #f7f7f7;
         height: auto;
         min-height: 100%;
+    }
+    .label_tag{
+        background-color: #ffffff;
+    }
+    .cul_checkbox .el-checkbox{
+        margin-left: 20px;
+    }
+    .cul_radio .el-radio{
+        margin-left: 20px;
+        line-height: 40px
     }
 </style>

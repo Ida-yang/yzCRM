@@ -59,8 +59,8 @@
                         <el-input v-model="myform.title"></el-input>
                     </el-form-item>
                     <el-form-item prop="describe" label="描述">
-                        <div class="editor-container">
-                            <UE :defaultMsg="defaultMsg" :config="config" ref="ue"></UE>
+                        <div class="editor-container editor_head">
+                            <UE :defaultMsg="myform.describe" :config="config" ref="ue"></UE>
                         </div>
                     </el-form-item>
                 </el-form>
@@ -120,7 +120,7 @@
                     service_type_name:null,
                 },
                 rules:{},
-                defaultMsg:'填写描述前请把这句话删掉',
+                defaultMsg:'',
                 config: {
                     initialFrameWidth: '',
                     initialFrameHeight: 500,
@@ -203,14 +203,24 @@
                 this.$router.push({ path: '/experienceBasedetail' });
             },
             handleAdd(){
-                this.addDialog = true
-                this.myform = {
-                    id:null,
-                    title:null,
-                    describe:null,
-                    service_type_id:this.searchList.type,
-                    service_type_name:this.searchList.typeName,
-                    pId:this.$store.state.ispId
+                if(this.searchList.type){
+                    this.addDialog = true
+                    this.myform = {
+                        id:null,
+                        title:null,
+                        describe:null,
+                        service_type_id:this.searchList.type,
+                        service_type_name:this.searchList.typeName,
+                        pId:this.$store.state.ispId
+                    }
+                    if(this.$refs.ue){
+                        this.$refs.ue.editor.body.textContent = ''
+                    }
+                }else{
+                    this.$message({
+                        message:'请先选择工单分类',
+                        type:'error'
+                    })
                 }
             },
             delOrEdit(e,val){

@@ -21,7 +21,7 @@
             <ul class="note_ul" v-show="noteData.length == 0 && newform.parentid">
                 <li class="note_li" v-for="a in noneData" :key="a.index">
                     <div class="note_set">
-                        <i class="el-icon-plus" @click="noteDialog = true"></i>
+                        <i class="el-icon-plus" @click="addNote"></i>
                         <span></span>
                         <i></i>
                     </div>
@@ -31,7 +31,7 @@
             <ul class="note_ul" v-show="noteData.length !== 0">
                 <li class="note_li" v-for="a in noteData" :key="a.index">
                     <div class="note_set">
-                        <i class="el-icon-plus" @click="noteDialog = true"></i>
+                        <i class="el-icon-plus" @click="addNote"></i>
                         <span>2019-06-28 18:12:26</span>
                         <i class="el-icon-delete" @click="handleDelete(1,a)"></i>
                     </div>
@@ -214,9 +214,12 @@
                 }).catch(function(err){
                 });
             },
-            // addNote(){
-            //     this.noteDialog = true
-            // },
+            addNote(){
+                this.noteDialog = true
+                if(this.$refs.ue){
+                    this.$refs.ue.editor.body.textContent = ''
+                }
+            },
             noteSubmit(){
                 const _this = this
                 let qs = require('querystring')

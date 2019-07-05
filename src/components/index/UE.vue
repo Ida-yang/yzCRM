@@ -37,6 +37,7 @@
       // this.editor.addListener("ready", function () {
       //   _this.editor.setContent(_this.defaultMsg); // 确保UE加载完成后，放入内容。
       // });
+      
       this.$nextTick(function f1() {
         // 保证 this.$el 已经插入文档
         this.$refs.editorID.id = this.id //创建动态id

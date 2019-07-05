@@ -144,7 +144,7 @@
                 dialogVisible:false,
                 dialogImageUrl:'',
 
-                defaultMsg: '填写产品描述前请把这句话删掉',
+                defaultMsg: '',
                 config: {
                     initialFrameWidth: null,
                     initialFrameHeight: 500,

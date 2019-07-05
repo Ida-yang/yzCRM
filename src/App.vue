@@ -1086,7 +1086,7 @@
     /* 客户画像 */
     .cus_portrait{
         width: 100%;
-        height: 560px;
+        height: 570px;
         position: relative;
         font-size: 14px;
         margin-top: 20px;
@@ -1097,24 +1097,39 @@
         z-index: 1;
     }
     .cusport_c{
-        width: 130px;
         box-sizing: border-box;
-        text-align: center;
         color: #606266
     }
     .cusport_bg{
-        width: 120px;
-        min-height: 22px;
-        background-color: #f0f0f0;
-        line-height: 22px;
+        min-height: 26px;
+        line-height: 26px;
+        font-size: 12px;
+    }
+    .cusport_div1 .cusport_c,.cusport_div3 .cusport_c,.cusport_div4 .cusport_c,.cusport_div6 .cusport_c{
+        width: 170px;
+    }
+    .cusport_div2 .cusport_c,.cusport_div5 .cusport_c{
+        width: 140px;
+    }
+    .cusport_div1 .cusport_bg,.cusport_div3 .cusport_bg,.cusport_div4 .cusport_bg,.cusport_div6 .cusport_bg{
+        width: 155px;
+    }
+    .cusport_div2 .cusport_bg,.cusport_div5 .cusport_bg{
+        width: 125px;
+    }
+    .cusport_bg .el-tag{
+        margin-left: 5px;
+        background-color: #ffffff;
+        border-color: #60626643;
+        color: #606266
     }
     .cusport_div1 .cusport_span{
         position: absolute;
         top: 70px;
         right: calc(50% + 50px);
-        cursor: pointer;
     }
     .cusport_div1 .cusport_c{
+        text-align: right;
         position: absolute;
         top: 0;
         right: calc(50% + 160px);
@@ -1134,6 +1149,7 @@
         cursor: pointer;
     }
     .cusport_div2 .cusport_c{
+        text-align: right;
         position: absolute;
         top: 166px;
         right: calc(50% + 240px);
@@ -1153,6 +1169,7 @@
         cursor: pointer;
     }
     .cusport_div3 .cusport_c{
+        text-align: right;
         position: absolute;
         top: 332px;
         right: calc(50% + 160px);
@@ -1169,6 +1186,7 @@
         position: absolute;
         top: 70px;
         left: calc(50% + 50px);
+        cursor: pointer;
     }
     .cusport_div4 .cusport_c{
         position: absolute;
@@ -1219,5 +1237,10 @@
         position: absolute;
         top: 308px;
         left: calc(50% + 74px);
+    }
+
+    
+    .editor_head{
+        line-height: 24px;
     }
 </style>

@@ -204,6 +204,16 @@
                 let qs = require('querystring')
                 let data = {}
                 data.id = row.id
+                
+                let flag = false
+                if(this.cusportraitData.length == 1){
+                    _this.$message({
+                        message:'至少保留一条数据',
+                        type:'error'
+                    })
+                    flag = true
+                }
+                if(flag) return
 
                 _this.$confirm('确认删除 ['+ row.typeName +'] 吗？', '提示', {
                     confirmButtonText: '确定',

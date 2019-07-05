@@ -27,11 +27,11 @@
                         <div class="cus_portrait">
                             <img class="cusport_img" src="../../../../../static/img/cusPortrait.png" width="250" height="250" />
                             <div class="cusport_div1">
-                                <span class="cusport_span" @click="openDialog(1)"><img style="margin-left:11px;" src="../../../../../static/img/persona.png" width="35" height="35" /><br>个人画像</span>
+                                <span class="cusport_span"><img style="margin-left:11px;" src="../../../../../static/img/persona.png" width="35" height="35" /><br>个人画像</span>
                                 <img class="cusport_line" src="../../../../../static/img/line1.png" />
                                 <div class="cusport_c">
                                     <div class="cusport_bg">
-                                        <p>1111111</p>
+                                        <p><el-tag size="mini" style="margin-right:5px;">赛车</el-tag><el-tag size="mini">有用健身</el-tag></p>
                                         <p>2222222</p>
                                         <p>3333333</p>
                                         <p>2222222</p>
@@ -40,7 +40,7 @@
                                 </div>
                             </div>
                             <div class="cusport_div2">
-                                <span class="cusport_span" @click="openDialog(2)"><img style="margin-left:11px;" src="../../../../../static/img/family.png" width="35" height="35" /><br>家庭画像</span>
+                                <span class="cusport_span"><img style="margin-left:11px;" src="../../../../../static/img/family.png" width="35" height="35" /><br>家庭画像</span>
                                 <img class="cusport_line" src="../../../../../static/img/line2.png" />
                                 <div class="cusport_c">
                                     <div class="cusport_bg">
@@ -53,7 +53,7 @@
                                 </div>
                             </div>
                             <div class="cusport_div3">
-                                <span class="cusport_span" @click="openDialog(3)"><img style="margin-left:11px;" src="../../../../../static/img/consumption.png" width="35" height="35" /><br>消费画像</span>
+                                <span class="cusport_span"><img style="margin-left:11px;" src="../../../../../static/img/consumption.png" width="35" height="35" /><br>消费画像</span>
                                 <img class="cusport_line" src="../../../../../static/img/line3.png" />
                                 <div class="cusport_c">
                                     <div class="cusport_bg">
@@ -75,7 +75,7 @@
                                 </div>
                             </div>
                             <div class="cusport_div5">
-                                <span class="cusport_span" @click="openDialog(5)"><img style="margin-left:11px;" src="../../../../../static/img/interest.png" width="35" height="35" /><br>兴趣画像</span>
+                                <span class="cusport_span"><img style="margin-left:11px;" src="../../../../../static/img/interest.png" width="35" height="35" /><br>兴趣画像</span>
                                 <img class="cusport_line" src="../../../../../static/img/line5.png" />
                                 <div class="cusport_c">
                                     <div class="cusport_bg">
@@ -90,7 +90,7 @@
                                 </div>
                             </div>
                             <div class="cusport_div6">
-                                <span class="cusport_span" @click="openDialog(6)"><img style="margin-left:11px;" src="../../../../../static/img/other.png" width="35" height="35" /><br>其他画像</span>
+                                <span class="cusport_span"><img style="margin-left:11px;" src="../../../../../static/img/other.png" width="35" height="35" /><br>其他画像</span>
                                 <img class="cusport_line" src="../../../../../static/img/line6.png" />
                                 <div class="cusport_c">
                                     <div class="cusport_bg">
@@ -108,50 +108,6 @@
                                 </div>
                             </div>
                         </div>
-                    </el-tab-pane>
-                    <el-tab-pane label="个人画像" name="second">
-                        <ul class="cul_checkBox">
-                            <li class="cil_li">
-                                <span class="cul_li_span">性别</span>
-                                <el-radio-group v-model="personForm.sex" class="cul_li_rg">
-                                    <el-radio label="男" value="男"></el-radio>
-                                    <el-radio label="女" value="女"></el-radio>
-                                </el-radio-group>
-                            </li>
-                            <li class="cil_li">
-                                <span class="cul_li_span">年龄</span>
-                                <el-radio-group v-model="personForm.age" class="cul_li_rg">
-                                    <el-radio v-for="item in ageData" :key="item.index" :label="item.name">{{item.name}}</el-radio>
-                                </el-radio-group>
-                                <span></span>
-                            </li>
-                            <li class="cil_li">
-                                <span class="cul_li_span">城市</span>
-                                <el-radio-group v-model="personForm.city" class="cul_li_rg">
-                                    <el-radio v-for="item in cityData" :key="item.index" :label="item.name">{{item.name}}</el-radio>
-                                </el-radio-group>
-                                <span></span>
-                            </li>
-                            <li class="cil_li">
-                                <span class="cul_li_span">职业</span>
-                                <el-radio-group v-model="personForm.occupation" class="cul_li_rg">
-                                    <el-radio v-for="item in occupationData" :key="item.index" :label="item.name">{{item.name}}</el-radio>
-                                </el-radio-group>
-                                <span></span>
-                            </li>
-                        </ul>
-                    </el-tab-pane>
-                    <el-tab-pane label="家庭画像" name="third">
-                        <span style="text-align:center;">暂无数据</span>
-                    </el-tab-pane>
-                    <el-tab-pane label="需求画像" name="fourth">
-                        <span style="text-align:center;">暂无数据</span>
-                    </el-tab-pane>
-                    <el-tab-pane label="营销画像" name="fifth">
-                        <span style="text-align:center;">暂无数据</span>
-                    </el-tab-pane>
-                    <el-tab-pane label="其他画像" name="sixth">
-                        <span style="text-align:center;">暂无数据</span>
                     </el-tab-pane>
                 </el-tabs>
             </div>
@@ -182,26 +138,6 @@
                 </el-pagination>
             </div>
         </el-col>
-
-        <el-dialog :title="newform.title" :visible.sync="dialogVisible" :close-on-click-modal="false" width="600px">
-            <el-form ref="newform" :model="newform" label-width="110px" :rules="rules" style="padding-right:30px">
-                <el-form-item v-for="item in labelList" :key="item.prop" :prop="item.prop" :label="item.label">
-                    <!-- <el-select v-if="item.type == 'select'" v-model="newform[item.prop]" :multiple="item.multiple" :placeholder="item.placeholder" class="mul_select">
-                        <el-option v-for="o in item.options" :key="o.id" :label="o.typeName" :value="o.id"></el-option>
-                    </el-select> -->
-                    <el-checkbox-group v-if="item.type == 'select'" v-model="newform[item.prop]" class="cul_checkbox">
-                        <el-checkbox v-for="o in item.options" :key="o.id" :label="o.id">{{o.typeName}}</el-checkbox>
-                    </el-checkbox-group>
-                    <el-radio-group v-if="item.type == 'radio'" v-model="newform[item.prop]" class="cul_radio">
-                        <el-radio v-for="o in item.options" :key="o.id" :label="o.id">{{o.typeName}}</el-radio>
-                    </el-radio-group>
-                </el-form-item>
-            </el-form>
-            <span slot="footer" class="dialog-footer">
-                <el-button @click="dialogVisible = false">取 消</el-button>
-                <el-button type="primary" @click="onSubmit()">确 定</el-button>
-            </span>
-        </el-dialog>
     </el-row>
 </template>
 
@@ -250,22 +186,6 @@
                     {index:4,name:'佛山'},
                 ],
                 occupationData:[],
-
-                cusportraitList:{},
-                personalList:[], //个人
-                familyList:[], //家庭
-                interestList:[], //兴趣
-                consumptionList:[], //消费
-                otherList:[], //其他
-
-                otherLabelList:[],
-
-                dialogVisible:false,
-                newform:{
-                    title:null,
-                },
-                labelList:[],
-                rules:{},
             }
         },
         activated(){
@@ -297,12 +217,6 @@
                 data.page = this.page
                 data.limit = this.limit
 
-                this.personalList = [], //个人
-                this.familyList = [], //家庭
-                this.interestList = [], //兴趣
-                this.consumptionList = [], //消费
-                this.otherList = [], //其他
-
                 axios({
                     method:'post',
                     url:_this.$store.state.defaultHttp + 'cultivationPool/queryForList.do?cId=' + _this.$store.state.iscId,
@@ -313,127 +227,6 @@
                 }).catch(function(err){
                     // console.log(err);
                 });
-                axios({
-                    method:'get',
-                    url:_this.$store.state.defaultHttp + 'portraitType/getPortraitTypeByType.do?cId=' + _this.$store.state.iscId
-                }).then(function(res){
-                    let datas = res.data
-                    _this.cusportraitList = res.data
-                    _this.personalList.push(datas.name1001,datas.name2001,datas.name3001,datas.name4001,datas.name5001)            //个人
-                    _this.familyList.push(datas.name6001,datas.name7001,datas.name8001,datas.name9001,datas.name10001)            //家庭
-                    _this.interestList.push(datas.name11001,datas.name12001,datas.name13001,datas.name14001,datas.name19001,datas.name20001,datas.name21001)            //兴趣
-                    _this.consumptionList.push(datas.name15001,datas.name16001,datas.name17001,datas.name18001,datas.name22001)            //消费
-                    _this.otherList.push(datas.name31001,datas.name31002,datas.name31003,datas.name31004,datas.name31005,datas.name31006,datas.name31007,datas.name31008,datas.name31009,datas.name31010)            //其他
-                }).catch(function(err){
-                    // console.log(err);
-                });
-                axios({
-                    method: 'get',
-                    url: _this.$store.state.defaultHttp+'portraitType/getOthersPortraitType.do?cId='+_this.$store.state.iscId
-                }).then(function(res){
-                    _this.otherLabelList = res.data.portraitTypes
-                }).catch(function(err){
-                });
-            },
-            openDialog(val){
-                if(val == 1){
-                    this.labelList = [
-                        {"label":"性别","prop":"sex","type":"radio","options":this.cusportraitList.name5001},
-                        {"label":"年龄","prop":"age","type":"radio","options":this.cusportraitList.name4001},
-                        {"label":"职业","prop":"zhiye","type":"radio","options":this.cusportraitList.name1001,"multiple":true},
-                        {"label":"岗位","prop":"gangwei","type":"radio","options":this.cusportraitList.name2001,"multiple":true},
-                        {"label":"学历","prop":"xueli","type":"radio","options":this.cusportraitList.name3001},
-                    ]
-                    this.newform = {
-                        "title":'个人画像',
-                        "sex":'',
-                        "age":'',
-                        "zhiye":'',
-                        "gangwei":'',
-                        "xueli":'',
-                    }
-                }
-                if(val == 2){
-                    this.labelList = [
-                        {"label":"婚姻状况","prop":"hunyin","type":"radio","options":this.cusportraitList.name6001},
-                        {"label":"家庭人数","prop":"jiaren","type":"radio","options":this.cusportraitList.name7001},
-                        {"label":"子女人数","prop":"zinv","type":"radio","options":this.cusportraitList.name8001},
-                        {"label":"父母人数","prop":"fumu","type":"radio","options":this.cusportraitList.name9001},
-                        {"label":"年收入","prop":"shouru","type":"radio","options":this.cusportraitList.name10001},
-                    ]
-                    this.newform = {
-                        "title":'家庭画像',
-                        "hunyin":'',
-                        "jiaren":'',
-                        "zinv":'',
-                        "fumu":'',
-                        "shouru":'',
-                    }
-                }
-                if(val == 3){
-                    this.labelList = [
-                        {"label":"手机兴趣","prop":"shouji","type":"select","options":this.cusportraitList.name15001,"multiple":true},
-                        {"label":"品牌兴趣","prop":"pinpai","type":"select","options":this.cusportraitList.name16001,"multiple":true},
-                        {"label":"车辆兴趣","prop":"cheliang","type":"select","options":this.cusportraitList.name17001,"multiple":true},
-                        {"label":"品茶兴趣","prop":"pincha","type":"select","options":this.cusportraitList.name18001,"multiple":true},
-                        {"label":"服饰兴趣","prop":"fushi","type":"select","options":this.cusportraitList.name22001,"multiple":true},
-                    ]
-                    this.newform = {
-                        "title":'消费画像',
-                        "shouji":[],
-                        "pinpai":[],
-                        "cheliang":[],
-                        "pincha":[],
-                        "fushi":[],
-                    }
-                }
-                if(val == 5){
-                    this.labelList = [
-                        {"label":"行为爱好","prop":"xingqu","type":"select","options":this.cusportraitList.name11001,"multiple":true},
-                        {"label":"阅读兴趣","prop":"yuedu","type":"select","options":this.cusportraitList.name12001,"multiple":true},
-                        {"label":"社交兴趣","prop":"shejiao","type":"select","options":this.cusportraitList.name13001,"multiple":true},
-                        {"label":"运动兴趣","prop":"yundong","type":"select","options":this.cusportraitList.name14001,"multiple":true},
-                        {"label":"影视兴趣","prop":"yingshi","type":"select","options":this.cusportraitList.name19001,"multiple":true},
-                        {"label":"音乐兴趣","prop":"yinyue","type":"select","options":this.cusportraitList.name20001,"multiple":true},
-                        {"label":"饮食兴趣","prop":"yinshi","type":"select","options":this.cusportraitList.name21001,"multiple":true},
-                    ]
-                    this.newform = {
-                        "title":'兴趣画像',
-                        "xingqu":[],
-                        "yuedu":[],
-                        "shejiao":[],
-                        "yundong":[],
-                        "yingshi":[],
-                        "yinyue":[],
-                        "yinshi":[],
-                    }
-                }
-                if(val == 6){
-                    this.labelList = []
-                    this.otherLabelList.forEach(el => {
-                        this.labelList.push({"label":el.name,"prop":el.index,"type":"select","options":[],"multiple":true})
-                    });
-                    this.otherList.forEach((a,i) => {
-                        this.labelList[i].options = a
-                    });
-                    this.newform = {
-                        "title":'其他画像',
-                        "31001":[],
-                        "31002":[],
-                        "31003":[],
-                        "31004":[],
-                        "31005":[],
-                        "31006":[],
-                        "31007":[],
-                        "31008":[],
-                        "31009":[],
-                        "31010":[],
-                    }
-                }
-                this.dialogVisible = true
-            },
-            onSubmit(){
-                console.log(this.newform)
             },
 
 

@@ -304,7 +304,7 @@
                 knowledgeBase:[],
 
                 activeName:'first',
-                defaultMsg: '填写说明前请把这句话删掉',
+                defaultMsg: '',
                 config: {
                     initialFrameWidth: null,
                     initialFrameHeight: 500,

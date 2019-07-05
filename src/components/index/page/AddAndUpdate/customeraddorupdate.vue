@@ -525,8 +525,12 @@
                 }
                 let createForm = _this.cusaddOrUpdateData.createForm;
                 let assistForm = _this.cusaddOrUpdateData.assistForm;
+                let orderForm = _this.cusaddOrUpdateData.orderForm
                 let flag = false;
                 assistForm.forEach(item => {
+                    subData[item.inputModel] = _this.myForm[item.inputModel]
+                });
+                orderForm.forEach(item => {
                     subData[item.inputModel] = _this.myForm[item.inputModel]
                 });
                 createForm.forEach(item => {

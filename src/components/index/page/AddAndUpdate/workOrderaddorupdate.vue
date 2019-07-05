@@ -140,7 +140,7 @@
                 isDisable:false,
 
                 activeName:'first',
-                defaultMsg: '填写说明前请把这句话删掉',
+                defaultMsg: '',
                 config: {
                     initialFrameWidth: 610,
                     initialFrameHeight: 500,
@@ -442,9 +442,6 @@
     } */
     .jobclass_upload .el-upload-list__item{
         width: 60%;
-    }
-    .editor_head{
-        line-height: 24px;
     }
 </style>
 
