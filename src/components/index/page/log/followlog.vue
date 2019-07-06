@@ -80,8 +80,8 @@
                 @size-change="SizeChange"
                 @current-change="CurrentChange"
                 :current-page="page"
-                :page-sizes="[100, 300, 500]"
-                :page-size="100"
+                :page-sizes="[50, 100, 200]"
+                :page-size="50"
                 layout="total, sizes, prev, pager, next, jumper"
                 :total="listNumber">
             </el-pagination>
@@ -115,7 +115,7 @@
                 },
                 nullvalue:null,
                 page:1,
-                limit:20,
+                limit:50,
 
                 pIdData:[
                     {label:0,value:'全部'},

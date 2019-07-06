@@ -12,7 +12,7 @@
                         <ul>
                             <li>公司名称：<span>{{receivdetailData.customerName}}</span></li>
                             <li>日期：<span>{{receivdetailData.createTime}}</span></li>
-                            <li>支付方式：<span>{{receivdetailData.pay_type}}</span></li>
+                            <li>收款方式：<span>{{receivdetailData.pay_type}}</span></li>
                             <li>总金额：<span class="bold_span">{{receivdetailData.totalAmount | commaing}} 元</span></li>
                             <li>已回款金额：<span>{{receivdetailData.amount_of_repayment | commaing}}</span></li>
                             <li>本次回款金额：<span>{{receivdetailData.price | commaing}}</span></li>
@@ -198,6 +198,7 @@
         filters:{
             commaing(value){
                 if(value){
+                    let intPart = Math.trunc(value) //获取整数部分
                     let intPartFormat = intPart.toString().replace(/(\d)(?=(?:\d{3})+$)/g, '$1,') // 将整数部分逢三一断
                     let floatPart = '.00' // 预定义小数部分
                     let valArray = value.toString().split('.')

@@ -1,45 +1,40 @@
 <template>
-    <div class="add_c">
+    <div class="add_c bottom">
         <el-tabs v-model="activeName" type="card">
             <el-tab-pane label="基本资料" name="first" class="first_c">
                 <div class="first_top">
-                    <div class="first_left">
-                        <el-form :inline="true" ref="myform" :model="myform" :rules="rules">
-                            <el-form-item class="first_input" label="产品分类" label-width="90px">
-                                <el-input v-model="myform.category" :disabled="true" class="inputbox"></el-input>
-                            </el-form-item>
-                            <el-form-item prop="goodsName" class="first_input" label="产品名称" label-width="90px">
-                                <el-input v-model="myform.goodsName" class="inputbox"></el-input>
-                            </el-form-item>
-                            <el-form-item class="first_input" label="描述" label-width="90px">
-                                <el-input v-model="myform.describe" class="inputbox"></el-input>
-                            </el-form-item>
-                            <el-form-item prop="unitId" class="first_input" label="单位" label-width="90px">
-                                <el-select v-model="myform.unitId" placeholder="请选择单位" class="inputbox">
-                                    <el-option v-for="item in unitsData" :key="item.id" :label="item.name" :value="item.id"></el-option>
-                                </el-select>
-                            </el-form-item>
-                            <el-form-item class="first_input" label="品牌" label-width="90px">
-                                <el-select v-model="myform.brandId" placeholder="请选择品牌" class="inputbox">
-                                    <el-option v-for="item in brandsData" :key="item.id" :label="item.name" :value="item.id"></el-option>
-                                </el-select>
-                            </el-form-item>
-                            <el-form-item prop="attribute" class="first_input" label="产品属性" label-width="90px">
-                                <el-select v-model="myform.attribute" placeholder="请选择产品属性" class="inputbox">
-                                    <el-option v-for="item in attributeList" :key="item.id" :label="item.name" :value="item.name"></el-option>
-                                </el-select>
-                            </el-form-item>
-                            <el-form-item class="first_input" label="销售价格" label-width="90px">
-                                <el-input v-model="myform.price" class="inputbox"></el-input>
-                            </el-form-item>
-                            <el-form-item class="first_input" label="标准成品价" label-width="90px">
-                                <el-input v-model="myform.costPrice" class="inputbox"></el-input>
-                            </el-form-item>
-                        </el-form>
-                    </div>
-                    <!-- <div class="first_right">
-                        <img src="../../../../../static/img/timg.jpg" width="200" height="200">
-                    </div> -->
+                    <el-form :inline="true" ref="myform" :model="myform" :rules="rules">
+                        <el-form-item class="first_input" label="产品分类" label-width="90px">
+                            <el-input v-model="myform.category" :disabled="true" class="inputbox"></el-input>
+                        </el-form-item>
+                        <el-form-item prop="goodsName" class="first_input" label="产品名称" label-width="90px">
+                            <el-input v-model="myform.goodsName" class="inputbox"></el-input>
+                        </el-form-item>
+                        <el-form-item prop="unitId" class="first_input" label="单位" label-width="90px">
+                            <el-select v-model="myform.unitId" placeholder="请选择单位" class="inputbox">
+                                <el-option v-for="item in unitsData" :key="item.id" :label="item.name" :value="item.id"></el-option>
+                            </el-select>
+                        </el-form-item>
+                        <el-form-item class="first_input" label="品牌" label-width="90px">
+                            <el-select v-model="myform.brandId" placeholder="请选择品牌" class="inputbox">
+                                <el-option v-for="item in brandsData" :key="item.id" :label="item.name" :value="item.id"></el-option>
+                            </el-select>
+                        </el-form-item>
+                        <el-form-item prop="attribute" class="first_input" label="产品属性" label-width="90px">
+                            <el-select v-model="myform.attribute" placeholder="请选择产品属性" class="inputbox">
+                                <el-option v-for="item in attributeList" :key="item.id" :label="item.name" :value="item.name"></el-option>
+                            </el-select>
+                        </el-form-item>
+                        <el-form-item class="first_input" label="销售价格" label-width="90px">
+                            <el-input v-model="myform.price" class="inputbox"></el-input>
+                        </el-form-item>
+                        <el-form-item class="first_input" label="标准成品价" label-width="90px">
+                            <el-input v-model="myform.costPrice" class="inputbox"></el-input>
+                        </el-form-item>
+                        <el-form-item class="first_input" label="描述" label-width="90px">
+                            <el-input type="textarea" rows="1" v-model="myform.describe" class="inputbox"></el-input>
+                        </el-form-item>
+                    </el-form>
                 </div>
                 <div class="first_bottom">
                     <p class="pro_title">产品图片</p>
@@ -190,6 +185,18 @@
                 config: {
                     initialFrameWidth: null,
                     initialFrameHeight: 500,
+                    toolbars:[[
+                        'undo', 'redo', '|',
+                        'bold', 'italic', 'underline', 'fontborder', 'strikethrough', 'superscript', 'subscript', 'pasteplain', '|',
+                        'forecolor', 'backcolor', 'insertorderedlist', 'insertunorderedlist', 'selectall', 'cleardoc', '|',
+                        'rowspacingtop', 'rowspacingbottom', 'lineheight', '|',
+                        'customstyle', 'paragraph', 'fontfamily', 'fontsize', '|',
+                        'justifyleft', 'justifycenter', 'justifyright', 'justifyjustify', '|', 'touppercase', 'tolowercase', '|',
+                        'link', 'unlink', 'anchor', '|', 'imagenone', 'imageleft', 'imageright', 'imagecenter', '|',
+                        'simpleupload', 'insertimage', 'emotion', 'scrawl', 'attachment', 'insertcode', 'pagebreak', 'template', 'background', '|',
+                        'horizontal', 'date', 'time', 'spechars', 'snapscreen', '|',
+                        'inserttable', 'deletetable', 'insertparagraphbeforetable', 'insertrow', 'deleterow', 'insertcol', 'deletecol', 'mergecells', 'mergeright', 'mergedown', 'splittocells', 'splittorows', 'splittocols',
+                    ]],
                     elementPathEnabled:false,
                     wordCount:false,
                 },
@@ -451,6 +458,30 @@
                 this.specHeadData.forEach(item => {
                     data.goodsSpec.push({"sign":item.sign,"spec_name":item.spec_name,"spec_value":item.spec_value,"options":item.options})
                 });
+
+                let flag = false
+                if(!data.goods.attribute){
+                    _this.$message({
+                        message:'产品属性不能为空',
+                        type:'error'
+                    })
+                    flag = true
+                }
+                if(!data.goods.unitId){
+                    _this.$message({
+                        message:'单位不能为空',
+                        type:'error'
+                    })
+                    flag = true
+                }
+                if(!data.goods.goodsName){
+                    _this.$message({
+                        message:'产品名称不能为空',
+                        type:'error'
+                    })
+                    flag = true
+                }
+                if(flag) return
 
                 this.isDisable = true
 

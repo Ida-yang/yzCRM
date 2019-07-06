@@ -754,8 +754,6 @@
                     return false
                 }
                 let fileFormData = new FormData();
-                // fileFormData.append("code", "t_pathology_info_excel");
-                // fileFormData.append("description", "excel上传测试");
                 fileFormData.append("pId", this.$store.state.ispId);
                 fileFormData.append("secondid", this.$store.state.deptid);
                 fileFormData.append("deptid", this.$store.state.insid);

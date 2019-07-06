@@ -333,6 +333,72 @@
                             <el-button type="primary" :disabled="isDisable" @click="onSubmit">立即提交</el-button>
                         </div>
                     </el-tab-pane>
+                    <el-tab-pane label="跟进记录" name="fourth">
+                        <el-form class="followform" :rules="rules" ref="followform" :model="followform">
+                            <el-form-item prop="followContent">
+                                <el-input type="textarea" placeholder="添加跟进内容" v-model="followform.followContent"></el-input>
+                            </el-form-item>
+                            <el-form-item label="联系方式" style="width:300px;" prop="followType">
+                                <el-select v-model="followform.followType" placeholder="请选择" style="width:200px;">
+                                    <el-option v-for="item in followTypes" :key="item.value" :value="item.label" :label="item.label"></el-option>
+                                </el-select>
+                            </el-form-item>
+                            <el-form-item label="联系人" style="width:290px;" prop="contactsId">
+                                <el-select v-model="followform.contactsId" placeholder="请选择" style="width:200px;">
+                                    <el-option v-for="item in contactData" :key="item.id" :label="item.name" :value="item.id"></el-option>
+                                </el-select>
+                            </el-form-item>
+                            <el-form-item label="下次联系时间" style="width:300px;">
+                                <el-date-picker v-model="followform.contactTime" type="datetime" format="yyyy-MM-dd HH:mm:ss" value-format="yyyy-MM-dd HH:mm:ss" default-time="12:00:00" :picker-options="pickerOptions" placeholder="选择日期时间" style="width:200px;"></el-date-picker>
+                            </el-form-item>
+                            <el-form-item label="快捷沟通" style="width:100%;">
+                                <el-radio v-model="followform.followContent" v-for="item in fastcontactList" :key="item.id" :label="item.content">{{item.typeName}}</el-radio>
+                            </el-form-item>
+                            <el-form-item label="上传图片" style="width:300px;">
+                                <el-upload class="upload-demo" ref="upload" :file-list="imgList" action="doUpload" :auto-upload="false" :on-change="beforeUploadimg">
+                                    <el-button slot="trigger" size="mini" class="info-btn">上传图片</el-button>
+                                </el-upload>
+                            </el-form-item>
+                            <el-form-item label="上传附件" style="width:300px;">
+                                <el-upload class="upload-demo" ref="upload" :file-list="filesList" action="doUpload" :auto-upload="false" :on-change="beforeUploadfile">
+                                    <el-button slot="trigger" size="mini" class="info-btn">上传附件</el-button>
+                                </el-upload>
+                            </el-form-item>
+                            <el-form-item style="float:right;">
+                                <el-button style="margin-top:6px;" type="primary" size="mini" @click="Submitfollowform">立即提交</el-button>
+                            </el-form-item>
+                        </el-form>
+                        <div style="width:100%;height:10px;"></div>
+                        <ul class="followrecord" v-for="item in record" :key="item.followId">
+                            <li class="recordicon">
+                                <img :src="item.imgUrl" class="detail_portrait" alt="头像" />
+                            </li>
+                            <li class="verticalline"></li>
+                            <li class="recordcontent">
+                                <div class="left_more">
+                                    <p>
+                                        <span class="de_span_2">{{item.contacts[0].name}}</span>
+                                        <span class="de_span_1">&nbsp;|&nbsp;</span>
+                                        <span class="de_span_1">{{item.createTime}}</span>
+                                        <span v-if="item.contactTime" class="de_span_1">&nbsp;&nbsp;--&nbsp;&nbsp;</span>
+                                        <span class="de_span_1">{{item.contactTime}}</span>
+                                        &nbsp;&nbsp;
+                                        <span class="de_span_3">&nbsp;&nbsp;{{item.followType}}&nbsp;&nbsp;</span>
+                                    </p>
+                                    <p style="margin-top:15px;margin-bottom:15px;">{{item.followContent}}</p>
+                                    <div class="imgbox_two" v-if="item.imgName">
+                                        <img :src="item.picture_detail" alt="图片" width="80" height="80" @click="showImg($event,item)">
+                                    </div>
+                                    <div v-if="item.enclosureName">
+                                        <a :href="item.enclosureUrl" download>{{item.enclosureOldName}}</a>
+                                    </div>
+                                    <el-dialog :visible.sync="dialogVisible2">
+                                        <img width="100%" :src="dialogImageUrl2" alt="">
+                                    </el-dialog>
+                                </div>
+                            </li>
+                        </ul>
+                    </el-tab-pane>
                 </el-tabs>
             </div>
         </el-col>
@@ -395,14 +461,14 @@
                 <el-button type="primary" @click="handleSubmit()">确 定</el-button>
             </span>
         </el-dialog>
-        <el-dialog title="审核意见" :visible.sync="dialogVisible2" :close-on-click-modal="false" width="40%">
+        <el-dialog title="审核意见" :visible.sync="dialogVisibleexa" :close-on-click-modal="false" width="40%">
             <el-form ref="exaform" :model="exaform" :rules="rules">
                 <el-form-item prop="remarks">
                     <el-input v-model="exaform.remarks" type="textarea" rows="5" placeholder="请输入审核意见（必填）"></el-input>
                 </el-form-item>
             </el-form>
             <span slot="footer" class="dialog-footer">
-                <el-button @click="dialogVisible2 = false">取 消</el-button>
+                <el-button @click="dialogVisibleexa = false">取 消</el-button>
                 <el-button type="primary" @click="toexamine()">确 定</el-button>
             </span>
         </el-dialog>
@@ -458,8 +524,8 @@
                 <el-form-item prop="createTime" label="回款时间">
                     <el-date-picker v-model="moneyBack.createTime" type="date" format="yyyy-MM-dd" value-format="yyyy-MM-dd" size="small" style="width:100%;"></el-date-picker>
                 </el-form-item>
-                <el-form-item prop="pay_type_id" label="支付方式">
-                    <el-select v-model="moneyBack.pay_type_id" placeholder="请选择支付方式" style="width:100%;">
+                <el-form-item prop="pay_type_id" label="收款方式">
+                    <el-select v-model="moneyBack.pay_type_id" placeholder="请选择收款方式" style="width:100%;">
                         <el-option v-for="item in payList" :key="item.id" :label="item.typeName" :value="item.id">{{item.typeName}}</el-option>
                     </el-select>
                 </el-form-item>
@@ -506,14 +572,17 @@
         },
         data(){
             return {
+                pickerOptions:{
+                    disabledDate(time) {
+                        return time.getTime() < Date.now() - 8.64e7;
+                    },
+                },
+                
                 detailData:null,
                 searchList:{
                     keyword:null,
                 },
                 agreementdetail:{},
-                record:null,
-                fastcontactList:null,
-                contactList:null,
                 activeName2: 'first',
                 tableDatas: null,
                 tableNumber:null,
@@ -539,7 +608,7 @@
 
                 examineLog:[],
 
-                dialogVisible2:false,
+                dialogVisibleexa:false,
                 exaform:{
                     status:null,
                     remarks:null,
@@ -587,8 +656,11 @@
                     date:[{ required: true, message: '预计回款时间不能为空', trigger: 'blur' }],
                     prices:[{ required: true, message: '回款金额不能为空', trigger: 'blur' }],
                     createTime:[{ required: true, message: '回款时间不能为空', trigger: 'blur' }],
-                    pay_type_id:[{ required: true, message: '支付方式不能为空', trigger: 'blur' }],
+                    pay_type_id:[{ required: true, message: '收款方式不能为空', trigger: 'blur' }],
                     back_plan_id:[{ required: true, message: '回款阶段不能为空', trigger: 'blur' }],
+                    followContent : [{ required: true, message: '请输入跟进内容', trigger: 'blur' },],
+                    contactsId : [{ required: true, message: '请选择联系人', trigger: 'blur' },],
+                    followType : [{ required: true, message: '请选择联系方式', trigger: 'blur' },],
                 },
 
                 auditing: this.$store.state.systemHttp + '/upload/staticImg/inaudit.png',
@@ -625,6 +697,36 @@
                 productData:[],
 
                 isDisable:false,
+                
+
+                followform:{
+                    followType:'电话',
+                    contactTime:'',
+                    contactsId:'',
+                    followContent:'',
+                    imgName:null,
+                    enclosureName: null,
+                },
+                followTypes:[
+                    {label:'电话',value:'1'},
+                    {label:'微信',value:'2'},
+                    {label:'QQ',value:'3'},
+                    {label:'邮箱',value:'4'},
+                    {label:'拜访',value:'5'},
+                ],
+                fastcontactList:null,
+                contactData:[],
+
+                files:null,
+                filesName:null,
+                imgfile:null,
+                imgName:null,
+                filesList:[],
+                imgList:[],
+
+                record:[],
+                dialogVisible2:false,
+                dialogImageUrl2:null,
             }
         },
         activated(){
@@ -641,7 +743,9 @@
                 pageInfo.limit = this.limit
                 pageInfo.searchName = this.searchList.keyword
                 let data = {}
-                data.type = '支付方式'
+                data.type = '收款方式'
+                let data3 = {}
+                data3.type = '快捷方式'
                 //加载详情页右侧表格
                 axios({
                     method:'post',
@@ -653,7 +757,7 @@
                 }).catch(function(err){
                     // console.log(err);
                 });
-                //加载支付方式
+                //加载收款方式
                 axios({
                     method:'post',
                     url:_this.$store.state.defaultHttp+'typeInfo/getTypeInfoGroupByType.do?cId='+_this.$store.state.iscId,
@@ -669,6 +773,16 @@
                     url: _this.$store.state.defaultHttp+'classification/getClassificationNodeTree.do?cId='+_this.$store.state.iscId,
                 }).then(function(res){
                     _this.datalist = res.data.map.success
+                }).catch(function(err){
+                    // console.log(err);
+                });
+                //加载快捷方式
+                axios({
+                    method: 'post',
+                    url: _this.$store.state.defaultHttp+'typeInfo/getTypeInfoGroupByType.do?cId='+_this.$store.state.iscId,
+                    data:qs.stringify(data3)
+                }).then(function(res){
+                    _this.fastcontactList = res.data
                 }).catch(function(err){
                     // console.log(err);
                 });
@@ -784,6 +898,7 @@
                     }).catch(function(err){
                         // console.log(err);
                     });
+                    _this.$options.methods.loadfollow.bind(_this)()
                 }).catch(function(err){
                     // console.log(err);
                 });
@@ -813,6 +928,63 @@
                     // console.log(err);
                 });
                 _this.$options.methods.loadProduct.bind(_this)()
+                
+            },
+            loadfollow(){
+                const _this = this
+                let qs =require('querystring')
+                let pageInfo2 = {}
+                pageInfo2.page = 1
+                pageInfo2.limit = 100000
+
+                //加载跟进记录
+                axios({
+                    method:'get',
+                    url:_this.$store.state.defaultHttp+'getFollowByOpportunityIdOrContractId.do?cId='+_this.$store.state.iscId+'&contract_id='+_this.detailData.id,
+                }).then(function(res){
+                    _this.record = res.data.map.success
+                    _this.record.forEach(el => {
+                        el.showdelico = false
+                        let startTime = Date.parse(el.createTime); // 开始时间
+                        let endTime = new Date().getTime(); // 结束时间
+                        let usedTime = endTime - startTime; // 相差的毫秒数
+                        if(usedTime < 7200000){
+                            el.showdelico = true
+                        }
+                        if(usedTime > 7200000){
+                            el.showdelico = false
+                        }
+                        if(el.userImagName){
+                            el.imgUrl = _this.$store.state.systemHttp + '/upload/'+_this.$store.state.iscId+'/'+el.userImagName
+                        }
+                        if(!el.userImagName || el.userImagName == null){
+                            el.imgUrl = _this.$store.state.systemHttp + '/upload/staticImg/avatar.jpg'
+                        }
+                        if(el.imgName && el.imgName !== null){
+                            el.picture_detail = _this.$store.state.systemHttp + '/upload/'+_this.$store.state.iscId+'/'+el.imgName
+                        }
+                        if(el.enclosureName && el.enclosureName !== null){
+                            el.enclosureUrl = _this.$store.state.systemHttp + '/upload/'+_this.$store.state.iscId+'/'+el.enclosureName
+                        }
+                    });
+                }).catch(function(err){
+                    // console.log(err);
+                });
+                //详情页联系人
+                axios({
+                    method:'post',
+                    url:_this.$store.state.defaultHttp+'customerpool/getPoolContacts.do?cId='+_this.$store.state.iscId+'&customerpool_id='+_this.agreementdetail.customerpool_id,
+                    data:qs.stringify(pageInfo2)
+                }).then(function(res){
+                    _this.contactData = res.data.map.success
+                    _this.followform.contactsId = res.data.map.success[0].id
+                }).catch(function(err){
+                    // console.log(err);
+                });
+            },
+            showImg(e,val){
+                this.dialogImageUrl2 = this.$store.state.systemHttp + '/upload/'+this.$store.state.iscId+'/'+val.imgName
+                this.dialogVisible2 = true
             },
             loadProduct(){
                 const _this = this
@@ -948,7 +1120,7 @@
             },
             showexamine(e){
                 this.exaform.status = e
-                this.dialogVisible2 = true
+                this.dialogVisibleexa = true
             },
             addplan(){
                 let aa = 0
@@ -1151,7 +1323,7 @@
                 }
                 if(!data.pay_type_id){
                     _this.$message({
-                        message: '支付方式不能为空',
+                        message: '收款方式不能为空',
                         type: 'error'
                     });
                     flag = true
@@ -1260,7 +1432,7 @@
                             message:'操作成功',
                             type:'success'
                         })
-                        _this.dialogVisible2 = false
+                        _this.dialogVisibleexa = false
                         _this.exaform.status = null
                         _this.exaform.remarks = null
                         _this.$options.methods.loadIMG.bind(_this)()
@@ -1617,6 +1789,117 @@
                 }).catch(function(err){
                     _this.isDisable = false
                 });
+            },
+
+            beforeUploadimg(val,imgList){
+                this.imgfile = val.raw;
+                const extension = val.name.split('.')[1] === 'jpg'
+                const extension2 = val.name.split('.')[1] === 'png'
+                const extension3 = val.name.split('.')[1] === 'jpeg'
+                const isLt500k = val.size / 1024 / 1024 < 0.5
+                if (!extension && !extension2 && !extension3) {
+                    this.$message.warning('图片只能是 jpg、png、jpeg格式!')
+                    return
+                }
+                if (!isLt500k) {
+                    this.$message.warning('图片大小不能超过 500KB!')
+                    return
+                }
+                this.imgName = val.name
+                this.imgList.push({name:val.name})
+                return false;
+            },
+            beforeUploadfile(file,fileList){
+                this.files = file.raw;
+                const extension = file.name.split('.')[1] === 'xls'
+                const extension2 = file.name.split('.')[1] === 'xlsx'
+                const extension3 = file.name.split('.')[1] === 'doc'
+                const extension4 = file.name.split('.')[1] === 'docx'
+                const isLt5M = file.size / 1024 / 1024 < 5
+                if (!extension && !extension2 && !extension3 && !extension4) {
+                    this.$message.warning('附件只能是 xls、xlsx、doc、docx格式!')
+                    return
+                }
+                if (!isLt5M) {
+                    this.$message.warning('附件大小不能超过 5MB!')
+                    return
+                }
+                this.filesName = file.name
+                this.filesList.push({name:file.name})
+                return false; // 返回false不会自动上传
+            },  
+            // 跟进记录
+            Submitfollowform(){
+                const _this = this
+                let qs = require('querystring')
+                let data = new FormData()
+                data.append("contract_id", this.detailData.id);
+                data.append("followType", this.followform.followType);
+                data.append("contactTime", this.followform.contactTime);
+                data.append("followContent", this.followform.followContent);
+                data.append("contactsId", this.followform.contactsId);
+                data.append("customerpool_id", this.agreementdetail.customerpool_id);
+                data.append("deptid", this.$store.state.insid);
+                data.append("secondid", this.$store.state.deptid);
+                data.append("imgNames", this.imgfile);
+                data.append("enclosureNames", this.files);
+
+                if(!this.followform.followContent){
+                    _this.$message({
+                        message: '跟进内容不能为空',
+                        type: 'error'
+                    });
+                }else if(!this.followform.contactsId){
+                    _this.$message({
+                        message: '联系人不能为空',
+                        type: 'error'
+                    });
+                }else{
+                    axios({
+                        method: 'get',
+                        url: _this.$store.state.defaultHttp+'customerJurisdiction/follow.do',//新增跟进记录
+                    }).then(function(res){
+                        if(res.data.msg && res.data.msg == 'error'){
+                            _this.$message({
+                                message:'对不起，您没有该权限，请联系管理员开通',
+                                type:'error'
+                            })
+                        }else{
+                            axios({
+                                method: 'post',
+                                url:  _this.$store.state.defaultHttp+ 'addFollow.do?cId='+_this.$store.state.iscId+'&pId='+_this.$store.state.ispId,
+                                headers: {
+                                    'Content-Type': 'multipart/form-data'
+                                },
+                                data:data,
+                            }).then(function(res){
+                                if(res.data.msg && res.data.msg == 'success' ) {
+                                    _this.$message({
+                                        message: '提交成功',
+                                        type: 'success'
+                                    });
+                                } else {
+                                    _this.$message({
+                                        message: res.data.msg,
+                                        type: 'error'
+                                    });
+                                }
+                                _this.followform.contactTime = ''
+                                _this.followform.followContent = ''
+                                _this.followform.imgName = ''
+                                _this.followform.enclosureName = ''
+                                _this.filesList = []
+                                _this.imgList = []
+                                _this.$options.methods.loadfollow.bind(_this)(true);
+                            }).catch(function(err){
+                                _this.$message.error("提交失败,请重新提交");
+                            });
+                        }
+                        
+                    }).catch(function(err){
+                        // console.log(err);
+                    });
+                }
             },
 
 

@@ -172,7 +172,7 @@
 
             <el-table :data="payData" border stripe style="width:100%" v-show="showfifteen">
                 <el-table-column header-align="center" align="center" type="index" width="45" />
-                <el-table-column label="支付方式" prop="typeName" min-width="120" sortable />
+                <el-table-column label="收款方式" prop="typeName" min-width="120" sortable />
                 <el-table-column label="备注" prop="notes" min-width="180" sortable />
                 <el-table-column label="操作" width="150" header-align="center" align="center">
                     <template slot-scope="scope">
@@ -686,14 +686,14 @@
                 <el-button type="primary" @click="updateProclass()">确 定</el-button>
             </span>
         </el-dialog>
-        <!-- 新增支付方式 -->
-        <el-dialog title="新增支付方式" :visible.sync="payTypeadd" :close-on-click-modal="false" width="40%">
+        <!-- 新增收款方式 -->
+        <el-dialog title="新增收款方式" :visible.sync="payTypeadd" :close-on-click-modal="false" width="40%">
             <el-form ref="newform" :model="newform" label-width="110px" :rules="rules">
                 <el-form-item prop="type" label="辅助资料类别">
                     <el-input v-model="newform.type" :disabled="true"></el-input>
                 </el-form-item>
-                <el-form-item prop="typeName" label="支付方式">
-                    <el-input v-model="newform.typeName" placeholder="请输入支付方式"></el-input>
+                <el-form-item prop="typeName" label="收款方式">
+                    <el-input v-model="newform.typeName" placeholder="请输入收款方式"></el-input>
                 </el-form-item>
                 <el-form-item prop="notes" label="备注">
                     <el-input v-model="newform.notes" type="textarea" rows="5"></el-input>
@@ -704,14 +704,14 @@
                 <el-button type="primary" @click="addbasicset()">确 定</el-button>
             </span>
         </el-dialog>
-        <!-- 编辑支付方式 -->
-        <el-dialog title="编辑支付方式" :visible.sync="payTypeupdate" :close-on-click-modal="false" width="40%">
+        <!-- 编辑收款方式 -->
+        <el-dialog title="编辑收款方式" :visible.sync="payTypeupdate" :close-on-click-modal="false" width="40%">
             <el-form ref="newform" :model="newform" label-width="110px" :rules="rules">
                 <el-form-item prop="type" label="辅助资料类别">
                     <el-input v-model="newform.type" :disabled="true"></el-input>
                 </el-form-item>
-                <el-form-item prop="typeName" label="支付方式">
-                    <el-input v-model="newform.typeName" placeholder="请输入支付方式"></el-input>
+                <el-form-item prop="typeName" label="收款方式">
+                    <el-input v-model="newform.typeName" placeholder="请输入收款方式"></el-input>
                 </el-form-item>
                 <el-form-item prop="notes" label="备注">
                     <el-input v-model="newform.notes" type="textarea" rows="5"></el-input>
@@ -812,7 +812,7 @@
                     {index:5,slotindex:'5',name:'快捷方式',isActive:false},
                     {index:6,slotindex:'6',name:'商机进度',isActive:false},
                     {index:14,slotindex:'14',name:'工单分类',isActive:false},
-                    {index:15,slotindex:'15',name:'支付方式',isActive:false},
+                    {index:15,slotindex:'15',name:'收款方式',isActive:false},
                     {index:16,slotindex:'16',name:'失败原因',isActive:false},
                 ],
                 orderparam:[
@@ -913,7 +913,7 @@
                 jobclassadd:false,
                 jobclassupdate:false,//工单分类子集
                 payTypeadd:false,
-                payTypeupdate:false,//支付方式
+                payTypeupdate:false,//收款方式
                 failreasonadd:false,
                 failreasonupdate:false,//失败原因
 
@@ -1315,7 +1315,7 @@
                 }else if(i == 15){
                     if(!data.typeName){
                         _this.$message({
-                            message: "支付方式不能为空",
+                            message: "收款方式不能为空",
                             type: 'error'
                         });
                         flag = true;
@@ -1860,7 +1860,7 @@
                 }else if(i == 15){
                     if(!data.typeName){
                         _this.$message({
-                            message: "支付方式不能为空",
+                            message: "收款方式不能为空",
                             type: 'error'
                         });
                         flag = true;

@@ -225,11 +225,10 @@
             },
             openDetails(index,row){
                 const _this = this
-                let productupdateData = {}
-                productupdateData.setForm = {"id": row.id};
-                productupdateData.submitURL = this.$store.state.defaultHttp+ 'goods/update.do?cId='+this.$store.state.iscId+'&pId='+this.$store.state.ispId,
-                this.$store.state.productupdateData = productupdateData
-                _this.$router.push({ path: '/productupdate' })
+                let productdetailsData = {}
+                productdetailsData = {"id": row.id};
+                this.$store.state.productdetailsData = productdetailsData
+                _this.$router.push({ path: '/productdetails' })
             },
             showALL(){
                 this.searchList.classification_id = null

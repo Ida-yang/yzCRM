@@ -79,7 +79,7 @@
 
                 <el-table-column label="描述" prop="tbGoods.describe" width="120" v-if="item.prop == 'describe' && item.state == 1"></el-table-column>
 
-                <el-table-column label="规格属性" prop="goodspec" min-width="100" v-if="item.prop == 'goodspec' && item.state == 1">
+                <el-table-column label="规格属性" prop="goodspec" min-width="100" v-if="item.prop == 'spec' && item.state == 1">
                     <template slot-scope="scope">
                         <span v-for="(item,i) in scope.row.goodspec" :key="i">{{item.value +'/'}}</span>
                     </template>

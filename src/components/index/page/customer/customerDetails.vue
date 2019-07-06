@@ -111,12 +111,12 @@
                                 <el-radio v-model="followform.followContent" v-for="item in fastcontactList" :key="item.id" :label="item.content">{{item.typeName}}</el-radio>
                             </el-form-item>
                             <el-form-item label="上传图片" style="width:300px;">
-                                <el-upload class="upload-demo" ref="upload" :file-list="imgList" :multiple="true" action="doUpload" :limit="1" :before-upload="beforeUploadimg">
+                                <el-upload class="upload-demo" ref="upload" :file-list="imgList" action="doUpload" :auto-upload="false" :before-upload="beforeUploadimg">
                                     <el-button slot="trigger" size="mini" class="info-btn">上传图片</el-button>
                                 </el-upload>
                             </el-form-item>
                             <el-form-item label="上传附件" style="width:300px;">
-                                <el-upload class="upload-demo" ref="upload" :file-list="fileList" :multiple="true" action="doUpload" :limit="1" :before-upload="beforeUploadfile">
+                                <el-upload class="upload-demo" ref="upload" :file-list="fileList" action="doUpload" :auto-upload="false" :before-upload="beforeUploadfile">
                                     <el-button slot="trigger" size="mini" class="info-btn">上传附件</el-button>
                                 </el-upload>
                             </el-form-item>
@@ -1362,7 +1362,7 @@
             
 
             beforeUploadimg(val,imgList){
-                this.imgfile = val;
+                this.imgfile = val.raw;
                 const extension = val.name.split('.')[1] === 'jpg'
                 const extension2 = val.name.split('.')[1] === 'png'
                 const extension3 = val.name.split('.')[1] === 'jpeg'
@@ -1380,7 +1380,7 @@
                 return false;
             },
             beforeUploadfile(file,fileList){
-                this.files = file;
+                this.files = file.raw;
                 const extension = file.name.split('.')[1] === 'xls'
                 const extension2 = file.name.split('.')[1] === 'xlsx'
                 const extension3 = file.name.split('.')[1] === 'doc'
@@ -1412,8 +1412,8 @@
                 data.append("customerpool_id", this.detailData.id);
                 data.append("deptid", this.$store.state.insid);
                 data.append("secondid", this.$store.state.deptid);
-                data.append("imgNames", this.imgfile, this.imgName);
-                data.append("enclosureNames", this.files, this.filesName);
+                data.append("imgNames", this.imgfile);
+                data.append("enclosureNames", this.files);
 
                 if(!this.followform.followContent){
                     _this.$message({

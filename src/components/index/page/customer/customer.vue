@@ -49,7 +49,7 @@
                     <div class="download_down">
                         <el-button class="info-btn" type="mini"><a :href="downloadUrl" download>下载模板</a></el-button>
                     </div>
-                    <el-upload class="upload-demo" ref="upload" :multiple="true" action="doUpload" :limit="1" :before-upload="beforeUpload">
+                    <el-upload class="upload-demo" ref="upload" :multiple="true" action="doUpload" :limit="3" :before-upload="beforeUpload">
                         <el-button slot="trigger" size="mini" class="info-btn">导入excel</el-button>
                     </el-upload>
                 </div>

@@ -56,7 +56,7 @@
                     {{scope.row.totalAmount - scope.row.amount_of_repayment | commaing}}
                 </template>
             </el-table-column>
-            <el-table-column label="支付方式" prop="pay_type" min-width="110" sortable></el-table-column>
+            <el-table-column label="收款方式" prop="pay_type" min-width="110" sortable></el-table-column>
             <el-table-column label="状态" prop="checkStatus" width="90" sortable>
                 <template slot-scope="scope">
                     <el-tag v-if="scope.row.checkStatus == 0" size="small" style="background-color:#ffffff;color:#606266;border-color:#dcdfe6" effect="dark">待审核</el-tag>
@@ -94,6 +94,7 @@
         filters:{
             commaing(value){
                 if(value){
+                    let intPart = Math.trunc(value) //获取整数部分
                     let intPartFormat = intPart.toString().replace(/(\d)(?=(?:\d{3})+$)/g, '$1,') // 将整数部分逢三一断
                     let floatPart = '.00' // 预定义小数部分
                     let valArray = value.toString().split('.')
