@@ -176,9 +176,6 @@
                 dataForm.private_password = _this.reSetForm.newpass;
                 dataForm.private_id = _this.$store.state.ispId;
                 dataForm.cId =  _this.$store.state.iscId;
-                let idArr = {}
-                idArr.privateId = _this.$store.state.ispId
-                idArr.cId = _this.$store.state.iscId
                 
                 _this.$refs[formName].validate((valid) => {
                     if (valid) {
@@ -187,39 +184,28 @@
                             url: _this.$store.state.defaultHttp+"updatePrivatePassword.do",
                             data:qs.stringify(dataForm),
                         }).then(function(res){
-                            if(res.data.code ==200){
-                                axios({
-                                    method: 'post',
-                                    url:  _this.$store.state.defaultHttp+ 'tbPrivateToPublicUser.do',
-                                    data:qs.stringify(idArr),
-                                }).then(function(res){
-                                    if(res.data.code && res.data.code == 200) {
-                                        _this.$message({
-                                            message: '密码修改成功',
-                                            type: 'success'
-                                        });
-                                        _this.$router.push('/login')
-                                    } else {
-                                        _this.$message({
-                                            message: res.data.msg,
-                                            type: 'error'
-                                        });
-                                    }
-                                }).catch(function(err){
-                                    _this.$message.error("密码修改失败，请重新提交");
+                            if(res.data.code && res.data.code == 200) {
+                                _this.$message({
+                                    message: '密码修改成功',
+                                    type: 'success'
                                 });
-                            }else{
+                                _this.$router.push('/login')
+                            }else if(res.data.msg && res.data.msg == 'error'){//修改密码
+                                _this.$message({
+                                    message: '对不起，您没有该权限，请联系管理员开通',
+                                    type: 'error'
+                                })
+                            } else {
                                 _this.$message({
                                     message: res.data.msg,
                                     type: 'error'
-                                })
+                                });
                             }
                         }).catch(function(err){
-                            // console.log(err);
+                            _this.$message.error("密码修改失败，请重新提交");
                         });
                     } else {
-                        _this.$message.error('提交错误，请检查您的网络');
-                        return false;
+                        _this.$message.error('提交错误，请检查您的网络')
                     }
                 })
             },

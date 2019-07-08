@@ -1143,6 +1143,7 @@
         position: absolute;
         top: 70px;
         right: calc(50% + 50px);
+        z-index: 3;
     }
     .cusport_div1 .cusport_c{
         text-align: right;
@@ -1162,7 +1163,7 @@
         position: absolute;
         top: 206px;
         right: calc(50% + 130px);
-        cursor: pointer;
+        z-index: 3;
     }
     .cusport_div2 .cusport_c{
         text-align: right;
@@ -1182,7 +1183,7 @@
         position: absolute;
         top: 352px;
         right: calc(50% + 50px);
-        cursor: pointer;
+        z-index: 3;
     }
     .cusport_div3 .cusport_c{
         text-align: right;
@@ -1202,7 +1203,7 @@
         position: absolute;
         top: 70px;
         left: calc(50% + 50px);
-        cursor: pointer;
+        z-index: 3;
     }
     .cusport_div4 .cusport_c{
         position: absolute;
@@ -1221,7 +1222,7 @@
         position: absolute;
         top: 206px;
         left: calc(50% + 130px);
-        cursor: pointer;
+        z-index: 3;
     }
     .cusport_div5 .cusport_c{
         position: absolute;
@@ -1240,7 +1241,7 @@
         position: absolute;
         top: 352px;
         left: calc(50% + 50px);
-        cursor: pointer;
+        z-index: 3;
     }
     .cusport_div6 .cusport_c{
         position: absolute;

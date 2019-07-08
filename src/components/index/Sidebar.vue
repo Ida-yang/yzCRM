@@ -16,7 +16,7 @@
                 <!-- <span style="font-size:16px">云纵CRM信息平台</span> -->
             </div>
             <span class="title">主要</span>
-            <template v-for="item in itemone">
+            <template v-for="item in crmItemone">
                 <template v-if="item.subs">
                     <el-submenu :index="item.index" :key="item.index" class="sidebar_submenu">
                         <template slot="title">
@@ -36,7 +36,7 @@
                 </template>
             </template>
             <span class="title">应用</span>
-            <template v-for="item in itemtwo">
+            <template v-for="item in crmItemtwo">
                 <template v-if="item.subs">
                     <el-submenu :index="item.index" :key="item.index" class="sidebar_submenu">
                         <template slot="title">
@@ -56,7 +56,7 @@
                 </template>
             </template>
             <span class="title">设置</span>
-            <template v-for="item in itemlast">
+            <template v-for="item in crmItemlast">
                 <template v-if="item.subs">
                     <el-submenu :index="item.index" :key="item.index" class="sidebar_submenu">
                         <template slot="title">
@@ -91,7 +91,7 @@
                 </span>
             </div>
             <span class="title">办公</span>
-            <template v-for="item in itema">
+            <template v-for="item in workItema">
                 <template v-if="item.subs">
                     <el-submenu :index="item.index" :key="item.index" class="sidebar_submenu">
                         <template slot="title">
@@ -124,8 +124,8 @@
                     CRM
                 </span>
             </div>
-            <!-- <span class="title">订货</span> -->
-            <!-- <template v-for="item in itema">
+            <span class="title">订货</span>
+            <template v-for="item in orderItema">
                 <template v-if="item.subs">
                     <el-submenu :index="item.index" :key="item.index" class="sidebar_submenu">
                         <template slot="title">
@@ -143,7 +143,7 @@
                         <span slot="title">{{ item.title }}</span>
                     </el-menu-item>
                 </template>
-            </template> -->
+            </template>
         </el-menu>
         <div :class="collapse?'s_menu':'switch_menu'">
             <span v-show="!collapse && crmMenu !== 1" class="switch_tag" @click="switchMenu(1)">CRM</span>
@@ -170,7 +170,7 @@
                 crmMenu:1,
                 collapse: false,
                 showlogo:true,
-                itemone: [
+                crmItemone: [
                     {
                         icon: 'mdi-airplay',
                         index: 'index',
@@ -192,7 +192,7 @@
                         ]
                     },
                 ],
-                itemtwo: [
+                crmItemtwo: [
                     {
                         icon: 'mdi-cards-outline',
                         index: '3',
@@ -297,7 +297,7 @@
                     },
                 ],
                 
-                itemlast: [
+                crmItemlast: [
                     {
                         icon: 'mdi-settings',
                         index: '8',
@@ -334,7 +334,7 @@
                         ]
                     },
                 ],
-                itema:[
+                workItema:[
                     {
                         icon: 'mdi-account-outline',
                         index: '1',
@@ -351,6 +351,34 @@
                             {
                                 index: 'note',
                                 title: '便签',
+                            },
+                        ]
+                    },
+                ],
+                orderItema:[
+                    {
+                        icon: 'mdi-account-outline',
+                        index: '1',
+                        title: '订单管理',
+                        subs: [
+                            {
+                                index: 'order',
+                                title: '销售订单',
+                            },
+                            {
+                                index: 'product',
+                                title: '产品',
+                            },
+                        ]
+                    },
+                    {
+                        icon: 'mdi-account-outline',
+                        index: '2',
+                        title: '财务管理',
+                        subs: [
+                            {
+                                index: 'receive',
+                                title: '应收回款',
                             },
                         ]
                     },

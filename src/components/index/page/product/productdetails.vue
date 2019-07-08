@@ -113,12 +113,16 @@
                             el.specList = null
                         }
                     });
-                    _this.itemImgList = JSON.parse(res.data.goodsDesc.itemImages)
-                    _this.itemImgList.forEach(a => {
-                        if(a.value){
-                            a.imgfile = _this.$store.state.systemHttp + 'product/' + _this.$store.state.iscId + '/' + a.value
-                        }
-                    });
+                    if(res.data.goodsDesc.itemImages == '[]'){
+                        _this.itemImgList = [{"name":"noProduct.png","value":"noProduct.png","imgfile":"../../../../static/img/noProduct.png"}]
+                    }else{
+                        _this.itemImgList = JSON.parse(res.data.goodsDesc.itemImages)
+                        _this.itemImgList.forEach(a => {
+                            if(a.value){
+                                a.imgfile = _this.$store.state.systemHttp + 'product/' + _this.$store.state.iscId + '/' + a.value
+                            }
+                        });
+                    }
                 }).catch(function(err){
                     // console.log(err);
                 });

@@ -479,8 +479,9 @@
             },
             handleAvatarSuccess(res, file) {
                 this.tableData.forEach(el => {
-                    if(el.index == this.currentrow.index){
+                    if(el.index == this.currentrow.index || el.id == this.currentrow.id){
                         el.imgfile = URL.createObjectURL(file.raw)
+                        el.image = res
                     }
                 });
             },

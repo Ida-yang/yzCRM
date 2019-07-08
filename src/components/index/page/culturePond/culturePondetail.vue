@@ -27,65 +27,66 @@
                         <div class="cus_portrait">
                             <img class="cusport_img" src="../../../../../static/img/cusPortrait.png" width="250" height="250" />
                             <div class="cusport_div1">
-                                <span class="cusport_span"><img style="margin-left:11px;" src="../../../../../static/img/persona.png" width="35" height="35" /><br>个人画像</span>
+                                <span class="cusport_span"><img style="margin-left:11px;" src="../../../../../static/img/marketing.png" width="35" height="35" /><br>营销画像</span>
                                 <img class="cusport_line" src="../../../../../static/img/line1.png" />
                                 <div class="cusport_c">
                                     <div class="cusport_bg">
-                                        <p><el-tag size="mini" style="margin-right:5px;">赛车</el-tag><el-tag size="mini">有用健身</el-tag></p>
-                                        <p>2222222</p>
-                                        <p>3333333</p>
-                                        <p>2222222</p>
-                                        <p>3333333</p>
+                                        <p>邮件访问次数：<el-tag size="mini">{{PortraitData.email_visit_num + ' 次'}}</el-tag></p>
+                                        <p>短信访问次数：<el-tag size="mini">{{PortraitData.message_visit_num + ' 次'}}</el-tag></p>
                                     </div>
                                 </div>
                             </div>
                             <div class="cusport_div2">
-                                <span class="cusport_span"><img style="margin-left:11px;" src="../../../../../static/img/family.png" width="35" height="35" /><br>家庭画像</span>
+                                <span class="cusport_span"><img style="margin-left:11px;" src="../../../../../static/img/persona.png" width="35" height="35" /><br>个人画像</span>
                                 <img class="cusport_line" src="../../../../../static/img/line2.png" />
                                 <div class="cusport_c">
                                     <div class="cusport_bg">
-                                        <p>1111111</p>
-                                        <p>4444444</p>
-                                        <p>1111111</p>
-                                        <p>4444444</p>
-                                        <p>1111111</p>
+                                        <p v-if="PortraitData.sex"><el-tag size="mini">{{PortraitData.sex_name}}</el-tag></p>
+                                        <p v-if="PortraitData.age"><el-tag size="mini">{{PortraitData.age_name}}</el-tag></p>
+                                        <p v-if="PortraitData.occupation"><el-tag size="mini">{{PortraitData.occupation_name}}</el-tag></p>
+                                        <p v-if="PortraitData.post"><el-tag size="mini">{{PortraitData.post_name}}</el-tag></p>
+                                        <p v-if="PortraitData.education"><el-tag size="mini">{{PortraitData.education_name}}</el-tag></p>
                                     </div>
                                 </div>
                             </div>
                             <div class="cusport_div3">
-                                <span class="cusport_span"><img style="margin-left:11px;" src="../../../../../static/img/consumption.png" width="35" height="35" /><br>消费画像</span>
+                                <span class="cusport_span"><img style="margin-left:11px;" src="../../../../../static/img/interest.png" width="35" height="35" /><br>兴趣画像</span>
                                 <img class="cusport_line" src="../../../../../static/img/line3.png" />
                                 <div class="cusport_c">
                                     <div class="cusport_bg">
-                                        <p>1111111</p>
-                                        <p>2222222</p>
-                                        <p>3333333</p>
-                                        <p>4444444</p>
-                                        <p>4444444</p>
+                                        <p v-if="PortraitData.behavioral_hobbies"><el-tag size="mini" v-for="item in PortraitData.behavioral_hobbiess_name" :key="item">{{item}}</el-tag></p>
+                                        <p v-if="PortraitData.interest_in_reading"><el-tag size="mini" v-for="item in PortraitData.interest_in_readings_name" :key="item">{{item}}</el-tag></p>
+                                        <p v-if="PortraitData.social_interest"><el-tag size="mini" v-for="item in PortraitData.social_interests_name" :key="item">{{item}}</el-tag></p>
+                                        <p v-if="PortraitData.sports_interest"><el-tag size="mini" v-for="item in PortraitData.sports_interests_name" :key="item">{{item}}</el-tag></p>
+                                        <p v-if="PortraitData.film_and_tv_interest"><el-tag size="mini" v-for="item in PortraitData.film_and_tv_interests_name" :key="item">{{item}}</el-tag></p>
+                                        <p v-if="PortraitData.interest_in_music"><el-tag size="mini" v-for="item in PortraitData.interest_in_musics_name" :key="item">{{item}}</el-tag></p>
+                                        <p v-if="PortraitData.dietary_interest"><el-tag size="mini" v-for="item in PortraitData.dietary_interests_name" :key="item">{{item}}</el-tag></p>
                                     </div>
                                 </div>
                             </div>
                             <div class="cusport_div4">
-                                <span class="cusport_span"><img style="margin-left:11px;" src="../../../../../static/img/marketing.png" width="35" height="35" /><br>营销画像</span>
+                                <span class="cusport_span"><img style="margin-left:11px;" src="../../../../../static/img/consumption.png" width="35" height="35" /><br>消费画像</span>
                                 <img class="cusport_line" src="../../../../../static/img/line4.png" />
                                 <div class="cusport_c">
                                     <div class="cusport_bg">
-                                        <p></p>
+                                        <p v-if="PortraitData.mobile_interest"><el-tag size="mini" v-for="item in PortraitData.mobile_interests_name" :key="item">{{item}}</el-tag></p>
+                                        <p v-if="PortraitData.brand_interest"><el-tag size="mini" v-for="item in PortraitData.brand_interests_name" :key="item">{{item}}</el-tag></p>
+                                        <p v-if="PortraitData.vehicle_interest"><el-tag size="mini" v-for="item in PortraitData.vehicle_interests_name" :key="item">{{item}}</el-tag></p>
+                                        <p v-if="PortraitData.interest_in_tea_tasting"><el-tag size="mini" v-for="item in PortraitData.interest_in_tea_tastings_name" :key="item">{{item}}</el-tag></p>
+                                        <p v-if="PortraitData.costume_interest"><el-tag size="mini" v-for="item in PortraitData.costume_interests_name" :key="item">{{item}}</el-tag></p>
                                     </div>
                                 </div>
                             </div>
                             <div class="cusport_div5">
-                                <span class="cusport_span"><img style="margin-left:11px;" src="../../../../../static/img/interest.png" width="35" height="35" /><br>兴趣画像</span>
+                                <span class="cusport_span"><img style="margin-left:11px;" src="../../../../../static/img/family.png" width="35" height="35" /><br>家庭画像</span>
                                 <img class="cusport_line" src="../../../../../static/img/line5.png" />
                                 <div class="cusport_c">
                                     <div class="cusport_bg">
-                                        <p>3333333</p>
-                                        <p>4444444</p>
-                                        <p>3333333</p>
-                                        <p>4444444</p>
-                                        <p>1111111</p>
-                                        <p>2222222</p>
-                                        <p>3333333</p>
+                                        <p v-if="PortraitData.marriage_status">婚姻：<el-tag size="mini">{{PortraitData.marriage_status_name}}</el-tag></p>
+                                        <p v-if="PortraitData.number_of_families">家人：<el-tag size="mini">{{PortraitData.number_of_families_name}}</el-tag></p>
+                                        <p v-if="PortraitData.number_of_offspring">子女：<el-tag size="mini">{{PortraitData.number_of_offspring_name}}</el-tag></p>
+                                        <p v-if="PortraitData.number_of_parents">父母：<el-tag size="mini">{{PortraitData.number_of_parents_name}}</el-tag></p>
+                                        <p v-if="PortraitData.annual_income">年收入：<el-tag size="mini">{{PortraitData.annual_income_name}}</el-tag></p>
                                     </div>
                                 </div>
                             </div>
@@ -94,16 +95,16 @@
                                 <img class="cusport_line" src="../../../../../static/img/line6.png" />
                                 <div class="cusport_c">
                                     <div class="cusport_bg">
-                                        <p>1111111</p>
-                                        <p>1111111</p>
-                                        <p>1111111</p>
-                                        <p>1111111</p>
-                                        <p>1111111</p>
-                                        <p>1111111</p>
-                                        <p>1111111</p>
-                                        <p>1111111</p>
-                                        <p>1111111</p>
-                                        <p>1111111</p>
+                                        <p v-if="PortraitData.other_one"><el-tag size="mini" v-for="item in PortraitData.other_ones_name" :key="item">{{item}}</el-tag></p>
+                                        <p v-if="PortraitData.other_two"><el-tag size="mini" v-for="item in PortraitData.other_twos_name" :key="item">{{item}}</el-tag></p>
+                                        <p v-if="PortraitData.other_three"><el-tag size="mini" v-for="item in PortraitData.other_threes_name" :key="item">{{item}}</el-tag></p>
+                                        <p v-if="PortraitData.other_four"><el-tag size="mini" v-for="item in PortraitData.other_fours_name" :key="item">{{item}}</el-tag></p>
+                                        <p v-if="PortraitData.other_five"><el-tag size="mini" v-for="item in PortraitData.other_fives_name" :key="item">{{item}}</el-tag></p>
+                                        <p v-if="PortraitData.other_six"><el-tag size="mini" v-for="item in PortraitData.other_sixs_name" :key="item">{{item}}</el-tag></p>
+                                        <p v-if="PortraitData.other_seven"><el-tag size="mini" v-for="item in PortraitData.other_sevens_name" :key="item">{{item}}</el-tag></p>
+                                        <p v-if="PortraitData.other_eight"><el-tag size="mini" v-for="item in PortraitData.other_eights_name" :key="item">{{item}}</el-tag></p>
+                                        <p v-if="PortraitData.other_nine"><el-tag size="mini" v-for="item in PortraitData.other_nines_name" :key="item">{{item}}</el-tag></p>
+                                        <p v-if="PortraitData.other_ten"><el-tag size="mini" v-for="item in PortraitData.other_tens_name" :key="item">{{item}}</el-tag></p>
                                     </div>
                                 </div>
                             </div>
@@ -165,27 +166,7 @@
 
                 activeName2:'first',
 
-                personForm:{
-                    sex:null,
-                    age:null,
-                    city:null,
-                    occupation:null,
-                },
-
-                ageData:[
-                    {index:1,name:'20-25'},
-                    {index:2,name:'26-30'},
-                    {index:3,name:'30-40'},
-                    {index:4,name:'40-50'},
-                    {index:5,name:'50-60'},
-                ],
-                cityData:[
-                    {index:1,name:'广州'},
-                    {index:2,name:'深圳'},
-                    {index:3,name:'东莞'},
-                    {index:4,name:'佛山'},
-                ],
-                occupationData:[],
+                PortraitData:{},
             }
         },
         activated(){
@@ -209,13 +190,46 @@
                 }).catch(function(err){
                     // console.log(err);
                 });
+                _this.$options.methods.loadPortrait.bind(_this)()
             },
+            loadPortrait(){
+                const _this = this
+                let qs = require('querystring')
+                let data = {}
+                data.cultivationPoolId = this.msg.id
+                
+                //联系人画像
+                axios({
+                    method:'post',
+                    url:_this.$store.state.defaultHttp+'contactsPortrait/selectByCultivationPoolId.do?cId='+_this.$store.state.iscId,
+                    data:qs.stringify(data)
+                }).then(function(res){
+                    // if(res.data.id){
+                        _this.PortraitData = res.data
+                    // }else{
+                    //     _this.PortraitData = {
+                    //         email_visit_num:0,message_visit_num:0,
+                    //         id:null, sex:'', age:'', occupation:'', post:'', education:'', 
+                    //         behavioral_hobbiess:[], interest_in_readings:[], social_interests:[], sports_interests:[], film_and_tv_interests:[], interest_in_musics:[], dietary_interests:[],
+                    //         mobile_interests:[], brand_interests:[], vehicle_interests:[], interest_in_tea_tastings:[], costume_interests:[], 
+                    //         marriage_status:'', number_of_families:'', number_of_offspring:'', number_of_parents:'', annual_income:'', 
+                    //         other_ones:[], other_twos:[], other_threes:[], other_fours:[], other_fives:[], other_sixs:[], other_sevens:[], other_eights:[], other_nines:[], other_tens:[], 
+                    //     }
+                    // }
+                }).catch(function(err){
+                    // console.log(err);
+                });
+            },
+
+
+
             loadTable(){
                 const _this = this
                 let qs = require('querystring')
                 let data = {}
                 data.page = this.page
                 data.limit = this.limit
+                data.searchName = this.searchList.keyword
 
                 axios({
                     method:'post',
@@ -228,9 +242,6 @@
                     // console.log(err);
                 });
             },
-
-
-
             getRow(index,row){
                 this.$store.state.culturePondetailData = {"id":row.id}
                 this.$options.methods.loadData.bind(this)(true);
