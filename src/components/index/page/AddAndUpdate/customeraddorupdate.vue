@@ -467,7 +467,7 @@
                 let qs =require('querystring')
                 let pageInfo = {}
                 pageInfo.page = this.page;
-                pageInfo.limit = this.limit;
+                pageInfo.limit = 99999999;
 
                 axios({
                     method: 'post',

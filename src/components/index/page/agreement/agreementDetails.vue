@@ -58,7 +58,7 @@
                             </div>
                             <span slot="reference" style="font-size:14px;;text-decoration:underline">查看审核历史</span>
                         </el-popover>
-                        <el-button style="float:right;" class="info-btn" size="mini" @click="showexamine(1)" v-show="hasCheck">通过</el-button>
+                        <el-button style="float:right;" class="info-btn" size="mini" @click="showexamine(1)" v-show="hasCheck && agreementdetail.checkStatus !== 2">通过</el-button>
                         <el-button style="float:right;" class="info-btn" size="mini" @click="showexamine(2)" v-show="hasCheck">拒绝</el-button>
                         <el-button style="float:right;" class="info-btn" size="mini" @click="showexamine(4)" v-show="hasCheck">驳回</el-button>
                     </div>
@@ -830,10 +830,16 @@
                     }else{
                         _this.custaxRate = '0'
                     }
+                    let examine = {
+                        checkStatus: res.data.checkStatus,
+                        recordId: res.data.examineRecordId,
+                        pId: _this.$store.state.ispId
+                    }
                     //加载审核流程
                     axios({
-                        method:'get',
-                        url:_this.$store.state.defaultHttp+'examineRecord/queryExamineRecordList.do?cId='+_this.$store.state.iscId+'&pId='+_this.$store.state.ispId + '&recordId='+_this.agreementdetail.examineRecordId,
+                        method:'post',
+                        url:_this.$store.state.defaultHttp+'examineRecord/queryExamineRecordList.do?cId='+_this.$store.state.iscId,
+                        data: qs.stringify(examine)
                     }).then(function(res){
                         _this.examineList = res.data.steps
                         _this.examineList.forEach((el,index) => {
