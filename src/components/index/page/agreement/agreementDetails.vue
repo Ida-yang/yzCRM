@@ -120,7 +120,73 @@
             </div>
             <div class="bottom">
                 <el-tabs v-model="activeName2" type="card">
-                    <el-tab-pane label="合同详情" name="first">
+                    <el-tab-pane label="跟进记录" name="first">
+                        <el-form class="followform" :rules="rules" ref="followform" :model="followform">
+                            <el-form-item prop="followContent">
+                                <el-input type="textarea" placeholder="添加跟进内容" v-model="followform.followContent"></el-input>
+                            </el-form-item>
+                            <el-form-item label="联系方式" style="width:300px;" prop="followType">
+                                <el-select v-model="followform.followType" placeholder="请选择" style="width:200px;">
+                                    <el-option v-for="item in followTypes" :key="item.value" :value="item.label" :label="item.label"></el-option>
+                                </el-select>
+                            </el-form-item>
+                            <el-form-item label="联系人" style="width:290px;" prop="contactsId">
+                                <el-select v-model="followform.contactsId" placeholder="请选择" style="width:200px;">
+                                    <el-option v-for="item in contactData" :key="item.id" :label="item.name" :value="item.id"></el-option>
+                                </el-select>
+                            </el-form-item>
+                            <el-form-item label="下次联系时间" style="width:300px;">
+                                <el-date-picker v-model="followform.contactTime" type="datetime" format="yyyy-MM-dd HH:mm:ss" value-format="yyyy-MM-dd HH:mm:ss" default-time="12:00:00" :picker-options="pickerOptions" placeholder="选择日期时间" style="width:200px;"></el-date-picker>
+                            </el-form-item>
+                            <el-form-item label="快捷沟通" style="width:100%;">
+                                <el-radio v-model="followform.followContent" v-for="item in fastcontactList" :key="item.id" :label="item.content">{{item.typeName}}</el-radio>
+                            </el-form-item>
+                            <el-form-item label="上传图片" style="width:300px;">
+                                <el-upload class="upload-demo" ref="upload" :file-list="imgList" action="doUpload" :auto-upload="false" :on-change="beforeUploadimg">
+                                    <el-button slot="trigger" size="mini" class="info-btn">上传图片</el-button>
+                                </el-upload>
+                            </el-form-item>
+                            <el-form-item label="上传附件" style="width:300px;">
+                                <el-upload class="upload-demo" ref="upload" :file-list="filesList" action="doUpload" :auto-upload="false" :on-change="beforeUploadfile">
+                                    <el-button slot="trigger" size="mini" class="info-btn">上传附件</el-button>
+                                </el-upload>
+                            </el-form-item>
+                            <el-form-item style="float:right;">
+                                <el-button style="margin-top:6px;" type="primary" size="mini" @click="Submitfollowform">立即提交</el-button>
+                            </el-form-item>
+                        </el-form>
+                        <div style="width:100%;height:10px;"></div>
+                        <ul class="followrecord" v-for="item in record" :key="item.followId">
+                            <li class="recordicon">
+                                <img :src="item.imgUrl" class="detail_portrait" alt="头像" />
+                            </li>
+                            <li class="verticalline"></li>
+                            <li class="recordcontent">
+                                <div class="left_more">
+                                    <p>
+                                        <span class="de_span_2">{{item.contacts[0].name}}</span>
+                                        <span class="de_span_1">&nbsp;|&nbsp;</span>
+                                        <span class="de_span_1">{{item.createTime}}</span>
+                                        <span v-if="item.contactTime" class="de_span_1">&nbsp;&nbsp;--&nbsp;&nbsp;</span>
+                                        <span class="de_span_1">{{item.contactTime}}</span>
+                                        &nbsp;&nbsp;
+                                        <span class="de_span_3">&nbsp;&nbsp;{{item.followType}}&nbsp;&nbsp;</span>
+                                    </p>
+                                    <p style="margin-top:15px;margin-bottom:15px;">{{item.followContent}}</p>
+                                    <div class="imgbox_two" v-if="item.imgName">
+                                        <img :src="item.picture_detail" alt="图片" width="80" height="80" @click="showImg($event,item)">
+                                    </div>
+                                    <div v-if="item.enclosureName">
+                                        <a :href="item.enclosureUrl" download>{{item.enclosureOldName}}</a>
+                                    </div>
+                                    <el-dialog :visible.sync="dialogVisible2">
+                                        <img width="100%" :src="dialogImageUrl2" alt="">
+                                    </el-dialog>
+                                </div>
+                            </li>
+                        </ul>
+                    </el-tab-pane>
+                    <el-tab-pane label="合同详情" name="second">
                         <div class="uploadBOX">
                             <div class="imgbox" v-for="item in fileList" :key="item.id" @mouseenter="mouseenterdiv(item)" @mouseleave="mouseleavediv(item)">
                                 <img :src="item.imgURL" alt="图片" @click="showImg($event,item)">
@@ -146,7 +212,7 @@
                             </ul>
                         </div>
                     </el-tab-pane>
-                    <el-tab-pane label="回款计划" name="second">
+                    <el-tab-pane label="回款计划" name="third">
                         <div class="entry">
                             <el-button class="btn info-btn" size="mini" @click="addplan()">新增计划</el-button>
                         </div>
@@ -194,7 +260,7 @@
                             </el-table-column>
                         </el-table>
                     </el-tab-pane>
-                    <el-tab-pane label="产品订单" name="third">
+                    <el-tab-pane label="产品订单" name="fourth">
                         <div class="entry">
                             <el-button class="btn info-btn" size="mini" icon="el-icon-circle-plus-outline" @click="handleAdd"></el-button>
                         </div>
@@ -332,72 +398,6 @@
                         <div class="pro_sub_btn">
                             <el-button type="primary" :disabled="isDisable" @click="onSubmit">立即提交</el-button>
                         </div>
-                    </el-tab-pane>
-                    <el-tab-pane label="跟进记录" name="fourth">
-                        <el-form class="followform" :rules="rules" ref="followform" :model="followform">
-                            <el-form-item prop="followContent">
-                                <el-input type="textarea" placeholder="添加跟进内容" v-model="followform.followContent"></el-input>
-                            </el-form-item>
-                            <el-form-item label="联系方式" style="width:300px;" prop="followType">
-                                <el-select v-model="followform.followType" placeholder="请选择" style="width:200px;">
-                                    <el-option v-for="item in followTypes" :key="item.value" :value="item.label" :label="item.label"></el-option>
-                                </el-select>
-                            </el-form-item>
-                            <el-form-item label="联系人" style="width:290px;" prop="contactsId">
-                                <el-select v-model="followform.contactsId" placeholder="请选择" style="width:200px;">
-                                    <el-option v-for="item in contactData" :key="item.id" :label="item.name" :value="item.id"></el-option>
-                                </el-select>
-                            </el-form-item>
-                            <el-form-item label="下次联系时间" style="width:300px;">
-                                <el-date-picker v-model="followform.contactTime" type="datetime" format="yyyy-MM-dd HH:mm:ss" value-format="yyyy-MM-dd HH:mm:ss" default-time="12:00:00" :picker-options="pickerOptions" placeholder="选择日期时间" style="width:200px;"></el-date-picker>
-                            </el-form-item>
-                            <el-form-item label="快捷沟通" style="width:100%;">
-                                <el-radio v-model="followform.followContent" v-for="item in fastcontactList" :key="item.id" :label="item.content">{{item.typeName}}</el-radio>
-                            </el-form-item>
-                            <el-form-item label="上传图片" style="width:300px;">
-                                <el-upload class="upload-demo" ref="upload" :file-list="imgList" action="doUpload" :auto-upload="false" :on-change="beforeUploadimg">
-                                    <el-button slot="trigger" size="mini" class="info-btn">上传图片</el-button>
-                                </el-upload>
-                            </el-form-item>
-                            <el-form-item label="上传附件" style="width:300px;">
-                                <el-upload class="upload-demo" ref="upload" :file-list="filesList" action="doUpload" :auto-upload="false" :on-change="beforeUploadfile">
-                                    <el-button slot="trigger" size="mini" class="info-btn">上传附件</el-button>
-                                </el-upload>
-                            </el-form-item>
-                            <el-form-item style="float:right;">
-                                <el-button style="margin-top:6px;" type="primary" size="mini" @click="Submitfollowform">立即提交</el-button>
-                            </el-form-item>
-                        </el-form>
-                        <div style="width:100%;height:10px;"></div>
-                        <ul class="followrecord" v-for="item in record" :key="item.followId">
-                            <li class="recordicon">
-                                <img :src="item.imgUrl" class="detail_portrait" alt="头像" />
-                            </li>
-                            <li class="verticalline"></li>
-                            <li class="recordcontent">
-                                <div class="left_more">
-                                    <p>
-                                        <span class="de_span_2">{{item.contacts[0].name}}</span>
-                                        <span class="de_span_1">&nbsp;|&nbsp;</span>
-                                        <span class="de_span_1">{{item.createTime}}</span>
-                                        <span v-if="item.contactTime" class="de_span_1">&nbsp;&nbsp;--&nbsp;&nbsp;</span>
-                                        <span class="de_span_1">{{item.contactTime}}</span>
-                                        &nbsp;&nbsp;
-                                        <span class="de_span_3">&nbsp;&nbsp;{{item.followType}}&nbsp;&nbsp;</span>
-                                    </p>
-                                    <p style="margin-top:15px;margin-bottom:15px;">{{item.followContent}}</p>
-                                    <div class="imgbox_two" v-if="item.imgName">
-                                        <img :src="item.picture_detail" alt="图片" width="80" height="80" @click="showImg($event,item)">
-                                    </div>
-                                    <div v-if="item.enclosureName">
-                                        <a :href="item.enclosureUrl" download>{{item.enclosureOldName}}</a>
-                                    </div>
-                                    <el-dialog :visible.sync="dialogVisible2">
-                                        <img width="100%" :src="dialogImageUrl2" alt="">
-                                    </el-dialog>
-                                </div>
-                            </li>
-                        </ul>
                     </el-tab-pane>
                 </el-tabs>
             </div>

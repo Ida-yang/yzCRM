@@ -340,7 +340,7 @@
                 _this.$confirm('是否确认删除[' + row.name + ']？', '提示', {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',
-                })
+                }).then(({ value }) => {
                     axios({
                         method: 'post',
                         url: _this.$store.state.defaultHttp+'customerpool/delete.do?cId='+_this.$store.state.iscId,
@@ -366,6 +366,12 @@
                     }).catch(function(err){
                         _this.$message.error("删除失败,请重新删除");
                     })
+                }).catch(() => {
+                    this.$message({
+                        type: 'info',
+                        message: '取消删除【' + row.name + '】'
+                    });       
+                });
                 
             },
             handleReceives(){
