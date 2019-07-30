@@ -251,7 +251,6 @@
                 this.areaid = e
             },
             submit(){
-                console.log(this.myForm)
                 const _this = this;
                 let qs =require('querystring')
                 let subData = this.myForm

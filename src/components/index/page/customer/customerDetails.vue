@@ -111,12 +111,12 @@
                                 <el-radio v-model="followform.followContent" v-for="item in fastcontactList" :key="item.id" :label="item.content">{{item.typeName}}</el-radio>
                             </el-form-item>
                             <el-form-item label="上传图片" style="width:300px;">
-                                <el-upload class="upload-demo" ref="upload" :file-list="imgList" action="doUpload" :auto-upload="false" :before-upload="beforeUploadimg">
+                                <el-upload class="upload-demo" ref="upload" :file-list="imgList" action="doUpload" :auto-upload="false" :on-change="beforeUploadimg">
                                     <el-button slot="trigger" size="mini" class="info-btn">上传图片</el-button>
                                 </el-upload>
                             </el-form-item>
                             <el-form-item label="上传附件" style="width:300px;">
-                                <el-upload class="upload-demo" ref="upload" :file-list="fileList" action="doUpload" :auto-upload="false" :before-upload="beforeUploadfile">
+                                <el-upload class="upload-demo" ref="upload" :file-list="fileList" action="doUpload" :auto-upload="false" :on-change="beforeUploadfile">
                                     <el-button slot="trigger" size="mini" class="info-btn">上传附件</el-button>
                                 </el-upload>
                             </el-form-item>
@@ -511,8 +511,6 @@
                     contactsId:'',
                     followContent:'',
                     state:'',
-                    imgName:null,
-                    enclosureName: null,
                 },
                 newform:{},
                 rules: {
@@ -1457,10 +1455,10 @@
                                 }
                                 _this.followform.contactTime = ''
                                 _this.followform.followContent = ''
-                                _this.followform.imgName = ''
-                                _this.followform.enclosureName = ''
                                 _this.fileList = []
                                 _this.imgList = []
+                                _this.imgfile = null
+                                _this.files = null
                                 _this.$store.state.cusdetailsData.submitData = {"id":_this.detailData.id}
                                 _this.$options.methods.loadData.bind(_this)(true);
                             }).catch(function(err){

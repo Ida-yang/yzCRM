@@ -131,7 +131,6 @@
                 const _this = this
                 let qs = require('querystring')
                 let culData = this.$store.state.culPondaddorUpdateData
-                console.log(this.$store.state.culPondaddorUpdateData)
                 if(culData.id){
                     this.myForm = {
                         id:culData.id,

@@ -193,7 +193,6 @@
                             a.imgfile = _this.$store.state.systemHttp + 'product/' + _this.$store.state.iscId + '/' + a.value
                         }
                     });
-                    console.log(_this.fileList)
                     _this.$options.methods.loadHead.bind(_this)()
                 }).catch(function(err){
                     // console.log(err);

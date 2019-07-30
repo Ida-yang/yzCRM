@@ -298,7 +298,6 @@
             handleopp(val,key){
                 this.oppoptions.forEach(el => {
                     if(val == el.opportunity_id){
-                        console.log(el)
                         this.myForm.amount = el.opportunity_achievement
                         this.myForm.orderId = el.orderId
                     }

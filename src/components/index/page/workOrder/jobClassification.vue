@@ -7,7 +7,7 @@
                     <li class="jobclass_li" v-for="a in item" :key="a.id" @click="checkItem($event,a)">
                         <p class="p1">{{a.name}}</p>
                         <p class="p2">{{a.remarks}}</p>
-                        <p class="p3">{{'负责部门：' + a.deptName}}</p>
+                        <!-- <p class="p3">{{'负责部门：' + a.deptName}}</p> -->
                     </li>
                 </ul>
             </el-carousel-item>

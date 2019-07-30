@@ -944,7 +944,6 @@
             },
 
             beforeUploadimg(val,imgList){
-                console.log(val,imgList)
                 this.imgfile = val.raw;
                 const extension = val.name.split('.')[1] === 'jpg'
                 const extension2 = val.name.split('.')[1] === 'png'
@@ -963,7 +962,6 @@
                 return false;
             },
             beforeUploadfile(file,fileList){
-                console.log(file,fileList)
                 this.files = file.raw;
                 const extension = file.name.split('.')[1] === 'xls'
                 const extension2 = file.name.split('.')[1] === 'xlsx'
@@ -1001,8 +999,6 @@
                 data.append("secondid", this.$store.state.deptid);
                 data.append("imgNames", this.imgfile);
                 data.append("enclosureNames", this.files);
-
-                console.log(data)
 
                 if(!this.followform.followContent){
                     _this.$message({
@@ -1050,6 +1046,8 @@
                                 _this.followform.enclosureName = ''
                                 _this.fileList = []
                                 _this.imgList = []
+                                _this.imgfile = null
+                                _this.files = null
                                 _this.$store.state.cluedetailsData.submitData = {"id":_this.detailData.id}
                                 _this.$options.methods.loadData.bind(_this)(true);
                             }).catch(function(err){

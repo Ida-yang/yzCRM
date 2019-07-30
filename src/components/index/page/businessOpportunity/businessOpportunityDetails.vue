@@ -1203,6 +1203,8 @@
                                 _this.followform.enclosureName = ''
                                 _this.filesList = []
                                 _this.imgList = []
+                                _this.imgfile = null
+                                _this.files = null
                                 _this.$options.methods.loadfollow.bind(_this)(true);
                             }).catch(function(err){
                                 _this.$message.error("提交失败,请重新提交");

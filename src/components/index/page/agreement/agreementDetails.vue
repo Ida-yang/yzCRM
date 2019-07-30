@@ -59,7 +59,7 @@
                             <span slot="reference" style="font-size:14px;;text-decoration:underline">查看审核历史</span>
                         </el-popover>
                         <el-button style="float:right;" class="info-btn" size="mini" @click="showexamine(1)" v-show="hasCheck && agreementdetail.checkStatus !== 2">通过</el-button>
-                        <el-button style="float:right;" class="info-btn" size="mini" @click="showexamine(2)" v-show="hasCheck">拒绝</el-button>
+                        <el-button style="float:right;" class="info-btn" size="mini" @click="showexamine(2)" v-show="hasCheck && agreementdetail.checkStatus !== 2">拒绝</el-button>
                         <el-button style="float:right;" class="info-btn" size="mini" @click="showexamine(4)" v-show="hasCheck">驳回</el-button>
                     </div>
                     <div class="text item">
@@ -1486,7 +1486,6 @@
             getItem(){
                 this.itemData = []
                 if(this.updateData.length !== 0){
-                    console.log('12121212')
                     this.updateData.forEach((el,i) => {
                         el.aaa = JSON.parse(el.spec)
                         el.goodspec = []
@@ -1498,7 +1497,6 @@
                         this.itemData.push({ amountOfMoney: el.amountOfMoney, brand: el.brand, discount: el.discount, discountAfter: el.discountAfter, discountAmount: el.discountAmount, goodsId: el.goodsId, tbGoods:{ goodsName:el.goodsName, describe:el.describe, }, id: el.itemId, itemId: el.itemId, num: el.num, price: el.price, taxAfter: el.taxAfter, taxAmount: el.taxAmount, taxRate: el.taxRate, goodspec: el.goodspec, unit: el.unit, edit:false,})
                     });
                 }else if(this.updateData == undefined){
-                    console.log('232323232')
                     _this.itemData = [{id:10,amountOfMoney:null, commitTime:null, brand:null, discount:null, discountAfter:null, discountAmount:null, tbGoods:{ goodsName:'', describe:'', }, num: null, price: null, taxAfter:null, taxAmount:null, taxRate:null, unit:null, edit:false,},]
                 }
             },
@@ -1896,6 +1894,8 @@
                                 _this.followform.enclosureName = ''
                                 _this.filesList = []
                                 _this.imgList = []
+                                _this.imgfile = null
+                                _this.files = null
                                 _this.$options.methods.loadfollow.bind(_this)(true);
                             }).catch(function(err){
                                 _this.$message.error("提交失败,请重新提交");
