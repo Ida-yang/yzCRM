@@ -63,8 +63,14 @@
                         </div>
                     </template>
                 </el-table-column>
-                <el-table-column label="审核人" prop="approver" v-if="item.prop == 'approver' && item.state == 1" min-width="110" sortable />
-                <el-table-column label="审核状态" prop="approverState" v-if="item.prop == 'approverState' && item.state == 1" min-width="110" sortable />
+                <el-table-column label="审核状态" prop="approverState" v-if="item.prop == 'approverState' && item.state == 1" min-width="110" sortable >
+                    <template slot-scope="scope">
+                        <el-tag v-if="scope.row.checkStatus == 0" size="small" style="background-color:#ffffff;color:#606266;border-color:#dcdfe6" effect="dark">待审核</el-tag>
+                        <el-tag v-if="scope.row.checkStatus == 1" size="small" style="background-color:#e6a23c;color:#ffffff;border-color:#e6a23c" effect="dark">审核中</el-tag>
+                        <el-tag v-if="scope.row.checkStatus == 2" size="small" style="background-color:#67c23a;color:#ffffff;border-color:#67c23a" effect="dark">已审核</el-tag>
+                        <el-tag v-if="scope.row.checkStatus == 3" size="small" style="background-color:#f56c6c;color:#ffffff;border-color:#f56c6c" effect="dark">未通过</el-tag>
+                    </template>
+                </el-table-column>
                 <el-table-column label="提醒时间" prop="remindTime" v-if="item.prop == 'remindTime' && item.state == 1" min-width="150" sortable />
                 <el-table-column label="状态" prop="state" v-if="item.prop == 'state' && item.state == 1" min-width="220" sortable>
                     <template slot-scope="scope">
@@ -359,7 +365,6 @@ export default {
                 {"label":"拜访主题","inputModel":"visitTheme"},
                 {"label":"拜访目的","inputModel":"visitObjective","type":"textarea"},
                 {"label":"协助人员","inputModel":"assistantsid","type":"select","multiple":true},
-                {"label":"审核人员","inputModel":"approverid","type":"select"},
                 {"label":"备注","inputModel":"remarks","type":"textarea"}]
             visitaddOrUpdateData.setForm = {
                 "customerName": '',
@@ -370,7 +375,6 @@ export default {
                 "visitTheme": '',
                 "visitObjective":'',
                 "assistantsid":'',
-                "approverid":'',
                 "remarks": ''}
             visitaddOrUpdateData.submitURL = this.$store.state.defaultHttp+ 'visit/insertVisit.do?cId='+this.$store.state.iscId+'&pId='+this.$store.state.ispId
             this.$store.state.visitaddOrUpdateData = visitaddOrUpdateData
@@ -402,7 +406,6 @@ export default {
                 {"label":"拜访主题","inputModel":"visitTheme"},
                 {"label":"拜访目的","inputModel":"visitObjective","type":"textarea"},
                 {"label":"协助人员","inputModel":"assistantsid","type":"select","multiple":true},
-                {"label":"审核人员","inputModel":"approverid","type":"select"},
                 {"label":"备注","inputModel":"remarks","type":"textarea"}]
             visitaddOrUpdateData.setForm = {
                 "customerpoolid": row.customerpoolid,
@@ -416,8 +419,6 @@ export default {
                 "visitObjective":row.visitObjective,
                 "assistantsid":row.assistantsid,
                 "assistants": row.assistants,
-                "approverid":row.approverid,
-                "approver": row.approver,
                 "remarks": row.remarks}
             visitaddOrUpdateData.submitData = {"id": row.id}
             visitaddOrUpdateData.submitURL = this.$store.state.defaultHttp+ 'visit/updateVisit.do?cId='+this.$store.state.iscId+'&pId='+this.$store.state.ispId

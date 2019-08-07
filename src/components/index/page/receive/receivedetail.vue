@@ -20,13 +20,13 @@
                             <li>原单号：<span>{{receivdetailData.contract_number}}</span></li>
                             <li>原单类型：<span>{{receivdetailData.type}}</span></li>
                         </ul>
-                        <div class="audited" v-if="receivdetailData.checkStatus == 1">
+                        <div class="receiveaudited" v-if="receivdetailData.checkStatus == 1">
                             <img class="audited_img" :src="auditing" alt="审核中">
                         </div>
-                        <div class="audited" v-if="receivdetailData.checkStatus == 2">
+                        <div class="receiveaudited" v-if="receivdetailData.checkStatus == 2">
                             <img class="audited_img" :src="audited" alt="已审核">
                         </div>
-                        <div class="audited" v-if="receivdetailData.checkStatus == 3">
+                        <div class="receiveaudited" v-if="receivdetailData.checkStatus == 3">
                             <img class="audited_img" :src="noaudit" alt="未通过">
                         </div>
                     </div>
@@ -275,9 +275,16 @@
                     _this.receivdetailData = res.data
                     _this.receivdetailData.residual_amount = res.data.totalAmount - res.data.amount_of_repayment
                     //加载审核流程
+                    
+                    let examine = {
+                        checkStatus: res.data.checkStatus,
+                        recordId: res.data.examineRecordId,
+                        pId: _this.$store.state.ispId
+                    }
                     axios({
-                        method:'get',
-                        url:_this.$store.state.defaultHttp+'examineRecord/queryExamineRecordList.do?cId='+_this.$store.state.iscId+'&pId='+_this.$store.state.ispId + '&recordId='+_this.receivdetailData.examineRecordId,
+                        method:'post',
+                        url:_this.$store.state.defaultHttp+'examineRecord/queryExamineRecordList.do?cId='+_this.$store.state.iscId,
+                        data:qs.stringify(examine)
                     }).then(function(res){
                         _this.examineList = res.data.steps
                         _this.examineList.forEach((el,index) => {
@@ -461,12 +468,12 @@
         min-height: 100%;
         height: auto;
     }
-    .audited{
+    .receiveaudited{
         position: absolute;
         right: 45%;
         top: 90px;
     }
-    .audited .audited_img{
+    .receiveaudited .audited_img{
         width: 150px;
         height: 75px;
         transform: rotate(-10deg)

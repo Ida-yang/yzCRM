@@ -83,7 +83,8 @@
                     {id:1,name:'合同'},
                     {id:2,name:'订单'},
                     {id:3,name:'回款'},
-                    {id:4,name:'订单'},
+                    {id:4,name:'办公'},
+                    {id:5,name:'外勤'},
                 ],
                 levelList:[
                     {index:1, name:'第 1 级', stepType:2, checkUserId:[], remarks:null, del:false},

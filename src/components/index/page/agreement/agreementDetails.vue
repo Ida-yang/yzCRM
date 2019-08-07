@@ -22,13 +22,13 @@
                             <li>到期时间：<span>{{agreementdetail.end_date}}</span></li>
                             <li>剩余天数：<span>{{agreementdetail.due_time}}</span></li>
                         </ul>
-                        <div class="audited" v-if="agreementdetail.checkStatus == 1">
+                        <div class="agreeaudited" v-if="agreementdetail.checkStatus == 1">
                             <img class="audited_img" :src="auditing" alt="审核中">
                         </div>
-                        <div class="audited" v-if="agreementdetail.checkStatus == 2">
+                        <div class="agreeaudited" v-if="agreementdetail.checkStatus == 2">
                             <img class="audited_img" :src="audited" alt="已审核">
                         </div>
-                        <div class="audited" v-if="agreementdetail.checkStatus == 3">
+                        <div class="agreeaudited" v-if="agreementdetail.checkStatus == 3">
                             <img class="audited_img" :src="noaudit" alt="未通过">
                         </div>
                     </div>
@@ -1451,7 +1451,8 @@
                 }).catch(function(err){
                     _this.$message.error("审核失败，请稍后再试");
                 });
-            },/*  ----产品 ----  */
+            },
+            /*  ----产品 ----  */
             getList() {
                 const _this = this
                 let qs = require('querystring')
@@ -1960,12 +1961,12 @@
         height: 100px !important;
         color: transparent;
     } */
-    .audited{
+    .agreeaudited{
         position: absolute;
         right: 45%;
         top: 90px;
     }
-    .audited .audited_img{
+    .agreeaudited .audited_img{
         width: 150px;
         height: 75px;
         transform: rotate(-10deg)

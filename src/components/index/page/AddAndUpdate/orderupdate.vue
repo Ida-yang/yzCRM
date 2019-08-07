@@ -37,13 +37,13 @@
                         <el-input v-model="myform.remarks" class="inputbox"></el-input>
                     </el-form-item>
                 </el-form>
-                <div class="audit" v-if="myform.checkStatus == 1">
+                <div class="orderaudit" v-if="myform.checkStatus == 1">
                     <img class="audit_img" :src="auditing" alt="审核中">
                 </div>
-                <div class="audit" v-if="myform.checkStatus == 2">
+                <div class="orderaudit" v-if="myform.checkStatus == 2">
                     <img class="audit_img" :src="audited" alt="已审核">
                 </div>
-                <div class="audit" v-if="myform.checkStatus == 3">
+                <div class="orderaudit" v-if="myform.checkStatus == 3">
                     <img class="audit_img" :src="noaudit" alt="未通过">
                 </div>
             </div>
@@ -676,9 +676,16 @@
             loadExamine(){
                 const _this = this
                 
+                
+                let examine = {
+                    checkStatus: this.myform.checkStatus,
+                    recordId: this.myform.examineRecordId,
+                    pId: this.$store.state.ispId
+                }
                 axios({
-                    method: 'get',
-                    url: _this.$store.state.defaultHttp+'examineRecord/queryExamineRecordList.do?cId='+_this.$store.state.iscId+'&pId='+_this.$store.state.ispId+'&recordId='+_this.recordId
+                    method: 'post',
+                    url: _this.$store.state.defaultHttp+'examineRecord/queryExamineRecordList.do?cId='+_this.$store.state.iscId,
+                    data: qs.stringify(examine)
                 }).then(function(res){
                     _this.examineList = res.data.steps
                     _this.examineList.forEach((el,index) => {
@@ -1155,12 +1162,12 @@
         color: #f56c6c;
     }
     
-    .audit{
+    .orderaudit{
         position: absolute;
         right: 30%;
         top: 120px;
     }
-    .audit .audit_img{
+    .orderaudit .audit_img{
         width: 150px;
         height: 75px;
         transform: rotate(-10deg)

@@ -9,8 +9,6 @@
                         <span style="margin-left:50px;">{{visitdetails.contactsName}}</span>
                         <el-button style="float:right;margin-left:10px;" class="info-btn" size="mini" @click="retract()" v-show="retracts">收起</el-button>
                         <el-button style="float:right;margin-left:10px;" class="info-btn" size="mini" @click="retract()" v-show="!retracts">显示</el-button>
-                        <el-button style="float:right;margin-left:10px;" class="info-btn" size="mini" @click="toexamine($event)" v-if="isexa" v-show="examines">审核</el-button>
-                        <el-button style="float:right;margin-left:10px;" class="info-btn" size="mini" @click="toexamine($event)" v-if="isexa" v-show="!examines">反审核</el-button>
                     </div>
                     <div class="text item">
                         <ul>
@@ -20,8 +18,98 @@
                         <div class="item_body">拜访主题：<span>{{visitdetails.visitTheme}}</span></div>
                         <div class="item_body">拜访目的：<span>{{visitdetails.visitObjective}}</span></div>
                         <p>&nbsp;</p>
-                        <div class="verify" v-if="showverify">
-                            <img class="verify_img" :src="auditing" alt="已审核">
+                        
+                        <div class="visitaudited" v-if="visitdetails.checkStatus == 1">
+                            <img class="audited_img" :src="auditing" alt="审核中">
+                        </div>
+                        <div class="visitaudited" v-if="visitdetails.checkStatus == 2">
+                            <img class="audited_img" :src="audited" alt="已审核">
+                        </div>
+                        <div class="visitaudited" v-if="visitdetails.checkStatus == 3">
+                            <img class="audited_img" :src="noaudit" alt="未通过">
+                        </div>
+                    </div>
+                </el-card>
+            </div>
+            <div class="top">
+                <el-card class="box-card" v-model="visitdetails">
+                    <div slot="header" class="clearfix">
+                        <el-popover placement="right-start" width="220" trigger="click">
+                            <div style="max-height:400px;overflow-y:overlay">
+                                <div class="examine_popover" v-for="(b,j) in examineLog" :key="j">
+                                    <span class="examine_ico">
+                                        <i v-if="b.examineStatus == 0" class="el-icon-time" style="font-size:20px"></i>
+                                        <i v-if="b.examineStatus == 1" class="el-icon-circle-check-outline" style="color:#67c23a;font-size:20px"></i>
+                                        <i v-if="b.examineStatus == 2" class="el-icon-circle-close-outline" style="color:#f56c6c;font-size:20px"></i>
+                                        <i v-if="b.examineStatus == 3" class="el-icon-time" style="color:#e6a23c;font-size:20px"></i>
+                                        <i v-if="b.examineStatus == 5" class="el-icon-circle-plus-outline" style="color:#67c23a;font-size:20px"></i>
+                                    </span>
+                                    <div class="examint_msg">
+                                        <p style="font-size:13px;color:#aaaaaa">{{b.examineTime}}</p>
+                                        <p v-if="b.examineStatus == 1">{{b.realname + ' 已审核'}}</p>
+                                        <p v-if="b.examineStatus == 2">{{b.realname + ' 已拒绝'}}</p>
+                                        <div class="examint_remark"><p>{{b.remarks}}</p></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <span slot="reference" style="font-size:14px;;text-decoration:underline">查看审核历史</span>
+                        </el-popover>
+                        <el-button style="float:right;" class="info-btn" size="mini" @click="showexamine(1)" v-show="hasCheck && visitdetails.checkStatus !== 2">通过</el-button>
+                        <el-button style="float:right;" class="info-btn" size="mini" @click="showexamine(2)" v-show="hasCheck && visitdetails.checkStatus !== 2">拒绝</el-button>
+                        <el-button style="float:right;" class="info-btn" size="mini" @click="showexamine(4)" v-show="hasCheck">驳回</el-button>
+                    </div>
+                    <div class="text item">
+                        <div class="examine_c">
+                            <div v-for="(item,index) in examineList" :key="index" class="examine_item">
+                                <el-popover placement="bottom" width="220" trigger="hover" class="examine_cont">
+                                    <div class="examine_popover" v-for="(b,j) in item.userList" :key="j">
+                                        <span class="examine_ico">
+                                            <i v-if="b.examineStatus == 0" class="el-icon-time" style="font-size:20px"></i>
+                                            <i v-if="b.examineStatus == 1" class="el-icon-success" style="color:#67c23a;font-size:18px"></i>
+                                            <i v-if="b.examineStatus == 2" class="el-icon-circle-close" style="color:#f56c6c;font-size:20px"></i>
+                                            <i v-if="b.examineStatus == 3" class="el-icon-time" style="color:#e6a23c;font-size:20px"></i>
+                                            <i v-if="b.examineStatus == 5" class="el-icon-circle-plus" style="color:#67c23a;font-size:20px"></i>
+                                        </span>
+                                        <div class="examint_msg">
+                                            <p style="font-size:13px;color:#aaaaaa">{{b.examineTime}}</p>
+                                            <span>{{b.realname + '(' + b.phone + ')'}}</span>
+                                            <p v-if="b.examineStatus == 0">未审核此申请</p>
+                                            <p v-if="b.examineStatus == 1">通过此申请</p>
+                                            <p v-if="b.examineStatus == 2">拒绝此申请</p>
+                                            <p v-if="b.examineStatus == 5">创建此申请</p>
+                                        </div>
+                                    </div>
+                                    <div slot="reference" style="width:100%;">
+                                        <span class="examine_po" v-if="item.examineStatus == 5 || item.examineStatus == 4">
+                                            <img class="examine_img" :src="item.headPortrait" width="50" height="50" />
+                                        </span>
+                                        <span class="examine_po1" v-if="item.stepType == 2">
+                                            <img class="examine_img" :class="{'mohu':item.examineStatus !== 1}" :src="item.headPortrait" width="50" height="50" />
+                                        </span>
+                                        <div v-if="item.stepType == 3" style="display:inline-block;margin:0 15px;" :style="item.type_style">
+                                            <span class="examine_po2" v-for="(a,i) in item.userList" :key="i">
+                                                <img class="examine_img" :class="{'mohu':a.examineStatus == 0}" :src="a.headPortrait" width="50" height="50" />
+                                            </span>
+                                        </div>
+                                        <br>
+                                        <span v-if="item.examineUserName" class="examine_type">{{item.examineUserName}}</span>
+                                        <span v-if="item.stepType == 2" class="examine_type">{{item.userLength + '人或签'}}</span>
+                                        <span v-if="item.stepType == 3" class="examine_type">{{item.userLength + '人会签'}}</span>
+                                        <br>
+                                        <span v-if="item.examineStatus == 0 && index == 1" class="examine_status">一级审核</span>
+                                        <span v-if="item.examineStatus == 0 && index == 2" class="examine_status">二级审核</span>
+                                        <span v-if="item.examineStatus == 0 && index == 3" class="examine_status">三级审核</span>
+                                        <span v-if="item.examineStatus == 0 && index == 4" class="examine_status">四级审核</span>
+                                        <span v-if="item.examineStatus == 0 && index == 5" class="examine_status">五级审核</span>
+                                        <span v-if="item.examineStatus == 0 && index == 6" class="examine_status">六级审核</span>
+                                        <span v-if="item.examineStatus == 1" class="examine_status"><i class="el-icon-success" style="color:#67c23a;font-size:15px"></i> 已审核</span>
+                                        <span v-if="item.examineStatus == 2" class="examine_status"><i class="el-icon-circle-close" style="color:#f56c6c;font-size:18px"></i> 未通过</span>
+                                        <span v-if="item.examineStatus == 3" class="examine_status"><i class="el-icon-time" style="color:#e6a23c;font-size:18px"></i> 审核中</span>
+                                        <span v-if="item.examineStatus == 5" class="examine_status"><i class="el-icon-circle-plus" style="color:#67c23a;font-size:18px"></i> 发起</span>
+                                    </div>
+                                </el-popover>
+                                <span v-if="index !== examineList.length - 1" class="examine_next"><i class="el-icon-arrow-right"></i></span>
+                            </div>
                         </div>
                     </div>
                 </el-card>
@@ -108,6 +196,19 @@
                 </el-pagination>
             </div>
         </el-col>
+
+        
+        <el-dialog title="审核意见" :visible.sync="dialogVisibleexa" :close-on-click-modal="false" width="40%">
+            <el-form ref="exaform" :model="exaform" :rules="rules">
+                <el-form-item prop="remarks">
+                    <el-input v-model="exaform.remarks" type="textarea" rows="5" placeholder="请输入审核意见（必填）"></el-input>
+                </el-form-item>
+            </el-form>
+            <span slot="footer" class="dialog-footer">
+                <el-button @click="dialogVisibleexa = false">取 消</el-button>
+                <el-button type="primary" @click="toexamine()">确 定</el-button>
+            </span>
+        </el-dialog>
     </el-row>
 </template>
 
@@ -117,215 +218,304 @@
     import bus from '../../bus'
     import qs from 'qs'
 
-export default {
-    name:'visitplandetails',
-    store,
-    data(){
-        return{
-            msg:'拜访计划详情页',
+    export default {
+        name:'visitplandetails',
+        store,
+        data(){
+            return{
+                msg:'拜访计划详情页',
 
-            detailData:null,
-            visitId:null,
+                detailData:null,
+                visitId:null,
 
-            visitdetails:{},
-            isexa:false,
+                visitdetails:{},
 
-            tableData:null,
-            tableNumber:0,
-            searchName:null,
-            page:1,
-            limit:20,
+                tableData:null,
+                tableNumber:0,
+                searchName:null,
+                page:1,
+                limit:20,
 
-            thisshow:true,
-            retracts:true,
-            examines:true,
+                thisshow:true,
+                retracts:true,
 
-            // ratevalue: null,
-            ratetexts: ['2','4','6','8','10'],
+                examineList:[],
+                hasCheck:null,   //是否有审核权
+                hasRecheck:null,   //是否有撤回权
 
-            dialogVisible:false,
+                examineLog:[],
 
-            showverify:false,
+                dialogVisibleexa:false,
+                exaform:{
+                    status:null,
+                    remarks:null,
+                },
+                rules:{
+                    remarks:[{ required: true, message: '审核意见不能为空', trigger: 'blur' }]
+                },
 
-            auditing: this.$store.state.systemHttp + '/upload/staticImg/examine.png'
-        }
-    },
-    activated(){
-        this.loadData()
-        this.loadTable()
-        this.reload()
+                // ratevalue: null,
+                ratetexts: ['2','4','6','8','10'],
 
-    },
-    beforeRouteLeave(to, from , next){
-        bus.$off('id')
-        next()
-    },
-    methods:{
-        reload(){
-            const _this = this
-            bus.$on('id', function (msg) {
-                if(msg){
-                    _this.loadData()
-                    _this.loadTable()
-                }
-            })
-        },
-        loadData(){
-            const _this = this
-            this.detailData = this.$store.state.visitdetailsData
-            this.visitId = this.detailData.submitData.id
+                dialogVisible:false,
 
-            axios({
-                method: 'get',
-                url: _this.$store.state.defaultHttp+'visit/selectVisitById.do?cId='+_this.$store.state.iscId + '&id=' + this.visitId,
-            }).then(function(res){
-                _this.visitdetails = res.data.map.visit
-                _this.visitdetails.assistants = []
-                _this.visitdetails.assistantsid = []
-                if(_this.visitdetails.privateUser !== []){
-                    _this.visitdetails.privateUser.forEach(item => {
-                        _this.visitdetails.assistants.push(item.private_name)
-                        _this.visitdetails.assistantsid.push(item.private_id)
-                    });
-                }
-                if(_this.$store.state.ispId == _this.visitdetails.approverid){
-                    _this.isexa = true
-                }else{
-                    _this.isexa = false
-                }
-                if(_this.visitdetails.approverState == '已审核'){
-                    _this.examines = false
-                    _this.showverify = true
-                }else{
-                    _this.examines = true
-                    _this.showverify = false
-                }
-            }).catch(function(err){
-                // console.log(err);
-            });
-        },
-        loadTable(){
-            const _this = this
-            let qs = require('querystring')
-            let searchList = {}
-            searchList.searchName = this.searchName
-            searchList.page = this.page
-            searchList.limit = this.limit
-
-            axios({
-                method: 'post',
-                url: _this.$store.state.defaultHttp+'visit/selectVisit.do?cId='+_this.$store.state.iscId + '&pId=' + this.$store.state.ispId,
-                data: qs.stringify(searchList),
-            }).then(function(res){
-                let data = res.data.map.success
-                _this.tableData = data
-                _this.tableNumber = res.data.count
-            }).catch(function(err){
-                // console.log(err);
-            });
-        },
-        getTime(){
-            this.$store.commit('getNowTime')
-        },
-        toexamine(e){
-            this.getTime()
-            const _this = this
-            let qs = require('querystring')
-            let val = e.target.innerText
-            let data = {}
-            data.id = this.visitId
-            if(val == '审核'){
-                data.approverState = '已审核'
-            }else{
-                data.approverState = '待审核'
+                auditing: this.$store.state.systemHttp + '/upload/staticImg/inaudit.png',
+                audited: this.$store.state.systemHttp + '/upload/staticImg/examine.png',
+                noaudit: this.$store.state.systemHttp + '/upload/staticImg/refuse.png',
             }
-            data.approverTime = this.$store.state.nowtime
+        },
+        activated(){
+            this.loadData()
+            this.loadTable()
+            this.reload()
 
-            axios({
-                method: 'post',
-                url: _this.$store.state.defaultHttp+'visit/updateVisitState.do?cId='+_this.$store.state.iscId,
-                data: qs.stringify(data),
-            }).then(function(res){
-                if(res.data.code && res.data.code == 200) {
-                    _this.$message({
-                        message: '操作成功',
-                        type: 'success'
-                    });
-                    _this.examines = !_this.examines
-                    _this.showverify = !_this.showverify
-                    _this.$options.methods.loadData.bind(_this)(true)
-                } else {
-                    _this.$message({
-                        message: res.data.msg,
-                        type: 'error'
-                    });
-                }
-            }).catch(function(err){
-                _this.$message.error("操作失败,请重新操作");
-            });
         },
-        getRow(index,row){
-            this.$store.state.visitdetailsData.submitData = {"id":row.id}
-            this.$options.methods.loadData.bind(this)(true)
+        beforeRouteLeave(to, from , next){
+            bus.$off('id')
+            next()
         },
-        retract(){
-            this.retracts = !this.retracts
-            this.thisshow = !this.thisshow
-        },
-        clickRates(val){
-            const _this = this
-            let qs = require('querystring')
-            let data = {}
-            data.id = this.visitId
-            data.customerpoolid = this.visitdetails.customerpoolid
-            data.customerName = this.visitdetails.customerName
-            data.score = val
-            if(this.visitdetails.state !== '已完成'){
-                _this.$message({
-                    message: '该拜访计划非完成状态，暂不可评分',
-                    type: 'error'
+        methods:{
+            reload(){
+                const _this = this
+                bus.$on('id', function (msg) {
+                    if(msg){
+                        _this.loadData()
+                        _this.loadTable()
+                    }
                 })
-            }else{
+            },
+            loadData(){
+                const _this = this
+                this.detailData = this.$store.state.visitdetailsData
+                this.visitId = this.detailData.submitData.id
+
                 axios({
-                    method: 'post',
-                    url: _this.$store.state.defaultHttp+'visit/updateVisit.do?cId='+_this.$store.state.iscId,
-                    data: qs.stringify(data),
+                    method: 'get',
+                    url: _this.$store.state.defaultHttp+'visit/selectVisitById.do?cId='+_this.$store.state.iscId + '&id=' + this.visitId,
                 }).then(function(res){
-                    if(res.data.code && res.data.code == 200) {
-                        _this.$message({
-                            message: '评分成功',
-                            type: 'success'
-                        });
-                        _this.$options.methods.loadData.bind(_this)(true)
-                    } else {
-                        _this.$message({
-                            message: res.data.msg,
-                            type: 'error'
+                    _this.visitdetails = res.data.map.visit
+                    _this.visitdetails.assistants = []
+                    _this.visitdetails.assistantsid = []
+                    if(_this.visitdetails.privateUser !== []){
+                        _this.visitdetails.privateUser.forEach(item => {
+                            _this.visitdetails.assistants.push(item.private_name)
+                            _this.visitdetails.assistantsid.push(item.private_id)
                         });
                     }
+                    
+                    let examine = {
+                        checkStatus: res.data.map.visit.checkStatus,
+                        recordId: res.data.map.visit.examineRecordId,
+                        pId: _this.$store.state.ispId
+                    }
+                    //加载审核流程
+                    axios({
+                        method:'post',
+                        url:_this.$store.state.defaultHttp+'examineRecord/queryExamineRecordList.do?cId='+_this.$store.state.iscId,
+                        data: qs.stringify(examine)
+                    }).then(function(res){
+                        _this.examineList = res.data.steps
+                        _this.examineList.forEach((el,index) => {
+                            el.userLength = el.userList.length
+                            if(el.userLength == 1){
+                                el.type_style = 'width:50px;'
+                            }else if(el.userLength == 2){
+                                el.type_style = 'width:75px;'
+                            }else if(el.userLength == 3){
+                                el.type_style = 'width:100px;'
+                            }else if(el.userLength == 4){
+                                el.type_style = 'width:125px;'
+                            }else if(el.userLength == 5){
+                                el.type_style = 'width:150px;'
+                            }
+                            
+                            if(index == 0){
+                                if(el.userList[0].img){
+                                    el.headPortrait = _this.$store.state.systemHttp + '/upload/'+_this.$store.state.iscId+'/'+el.userList[0].img
+                                }else{
+                                    el.headPortrait = _this.$store.state.systemHttp + '/upload/staticImg/avatar.jpg'
+                                }
+                            }
+                            if(el.stepType ==2){
+                                for(let i = 0; i < el.userList.length; i ++){
+                                    if(el.userList[i].img && el.userList[i].examineStatus !== 0){
+                                        el.headPortrait = _this.$store.state.systemHttp + '/upload/'+_this.$store.state.iscId+'/'+el.userList[i].img
+                                        break
+                                    }else if(!el.userList[i].img && el.userList[i].examineStatus !== 0){
+                                        el.headPortrait = _this.$store.state.systemHttp + '/upload/staticImg/avatar.jpg'
+                                        break
+                                    }else if(el.userList[i].img && el.userList[i].examineStatus == 0){
+                                        el.headPortrait = _this.$store.state.systemHttp + '/upload/'+_this.$store.state.iscId+'/'+el.userList[i].img
+                                        break
+                                    }else if(!el.userList[i].img && el.userList[i].examineStatus == 0){
+                                        el.headPortrait = _this.$store.state.systemHttp + '/upload/staticImg/avatar.jpg'
+                                        break
+                                    }
+                                }
+                            }
+                            if(el.stepType == 3){
+                                el.userList.forEach((a,i) => {
+                                    if(a.img){
+                                        a.headPortrait = _this.$store.state.systemHttp + '/upload/'+_this.$store.state.iscId+'/'+a.img
+                                    }else{
+                                        a.headPortrait = _this.$store.state.systemHttp + '/upload/staticImg/avatar.jpg'
+                                    }
+                                })
+                            }
+                        });
+                        _this.hasCheck = res.data.isCheck  //是否有审核权
+                        _this.hasRecheck = res.data.isRecheck  //是否有撤回权
+                    }).catch(function(err){
+                        // console.log(err);
+                    });
+                    //加载审核历史
+                    axios({
+                        method:'get',
+                        url:_this.$store.state.defaultHttp+'examineLog/queryExamineLogList.do?cId='+_this.$store.state.iscId+'&recordId='+_this.visitdetails.examineRecordId,
+                    }).then(function(res){
+                        _this.examineLog = res.data
+                    }).catch(function(err){
+                        // console.log(err);
+                    });
+
                 }).catch(function(err){
-                    _this.$message.error("评分失败,请重新评分");
+                    // console.log(err);
                 });
-            }
+            },
+            loadTable(){
+                const _this = this
+                let qs = require('querystring')
+                let searchList = {}
+                searchList.searchName = this.searchName
+                searchList.page = this.page
+                searchList.limit = this.limit
+
+                axios({
+                    method: 'post',
+                    url: _this.$store.state.defaultHttp+'visit/selectVisit.do?cId='+_this.$store.state.iscId + '&pId=' + this.$store.state.ispId,
+                    data: qs.stringify(searchList),
+                }).then(function(res){
+                    let data = res.data.map.success
+                    _this.tableData = data
+                    _this.tableNumber = res.data.count
+                }).catch(function(err){
+                    // console.log(err);
+                });
+            },
+            getTime(){
+                this.$store.commit('getNowTime')
+            },
+            getRow(index,row){
+                this.$store.state.visitdetailsData.submitData = {"id":row.id}
+                this.$options.methods.loadData.bind(this)(true)
+            },
+            retract(){
+                this.retracts = !this.retracts
+                this.thisshow = !this.thisshow
+            },
+            showexamine(e){
+                this.exaform.status = e
+                this.dialogVisibleexa = true
+            },
+            toexamine(){
+                const _this = this
+                let qs = require('querystring')
+                let data = {}
+                data.id = this.visitId
+                data.recordId = this.visitdetails.examineRecordId
+                data.pId = this.$store.state.ispId
+                data.status = this.exaform.status
+                data.remarks = this.exaform.remarks
+
+                let flag = false
+                if(!data.remarks){
+                    _this.$message({
+                        message:'审核意见不能为空',
+                        type:'error'
+                    })
+                    flag = true
+                }
+                if(flag) return
+
+                axios({
+                    method:'post',
+                    url:_this.$store.state.defaultHttp+'examineRecord/auditExamine.do?cId='+_this.$store.state.iscId,
+                    data:qs.stringify(data)
+                }).then(function(res){
+                    if(res.data.code && res.data.code == '200'){
+                        _this.$message({
+                            message:'操作成功',
+                            type:'success'
+                        })
+                        _this.dialogVisibleexa = false
+                        _this.exaform.status = null
+                        _this.exaform.remarks = null
+                        _this.$options.methods.loadData.bind(_this)()
+                    }else{
+                        _this.$message({
+                            message:res.data.msg,
+                            type:'error'
+                        })
+                    }
+                }).catch(function(err){
+                    _this.$message.error("审核失败，请稍后再试");
+                });
+            },
+
+            clickRates(val){
+                const _this = this
+                let qs = require('querystring')
+                let data = {}
+                data.id = this.visitId
+                data.customerpoolid = this.visitdetails.customerpoolid
+                data.customerName = this.visitdetails.customerName
+                data.score = val
+                if(this.visitdetails.state !== '已完成'){
+                    _this.$message({
+                        message: '该拜访计划非完成状态，暂不可评分',
+                        type: 'error'
+                    })
+                }else{
+                    axios({
+                        method: 'post',
+                        url: _this.$store.state.defaultHttp+'visit/updateVisit.do?cId='+_this.$store.state.iscId,
+                        data: qs.stringify(data),
+                    }).then(function(res){
+                        if(res.data.code && res.data.code == 200) {
+                            _this.$message({
+                                message: '评分成功',
+                                type: 'success'
+                            });
+                            _this.$options.methods.loadData.bind(_this)(true)
+                        } else {
+                            _this.$message({
+                                message: res.data.msg,
+                                type: 'error'
+                            });
+                        }
+                    }).catch(function(err){
+                        _this.$message.error("评分失败,请重新评分");
+                    });
+                }
+            },
+            showImg(){
+                this.dialogVisible = true
+            },
+            search(){
+                this.$options.methods.loadTable.bind(this)(true);
+            },
+            handleSizeChange(val) {
+                const _this = this;
+                _this.limit = val;
+                _this.$options.methods.loadTable.bind(_this)(false);
+            },
+            handleCurrentChange(val) {
+                const _this = this;
+                _this.page = val;
+                _this.$options.methods.loadTable.bind(_this)(false);
+            },
         },
-        showImg(){
-            this.dialogVisible = true
-        },
-        search(){
-            this.$options.methods.loadTable.bind(this)(true);
-        },
-        handleSizeChange(val) {
-            const _this = this;
-            _this.limit = val;
-            _this.$options.methods.loadTable.bind(_this)(false);
-        },
-        handleCurrentChange(val) {
-            const _this = this;
-            _this.page = val;
-            _this.$options.methods.loadTable.bind(_this)(false);
-        },
-    },
-}
+    }
 </script>
 
 <style>
@@ -360,6 +550,18 @@ export default {
         top: 80px;
     }
     .verify .verify_img{
+        width: 150px;
+        height: 75px;
+        transform: rotate(-10deg)
+    }
+
+    
+    .visitaudited{
+        position: absolute;
+        right: 45%;
+        top: 90px;
+    }
+    .visitaudited .audited_img{
         width: 150px;
         height: 75px;
         transform: rotate(-10deg)

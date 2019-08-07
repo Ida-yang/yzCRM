@@ -71,6 +71,7 @@
                     {index:'2',name:'销售订单流程设置',isActive:false},
                     {index:'3',name:'回款流程设置',isActive:false},
                     {index:'4',name:'办公流程设置',isActive:false},
+                    {index:'5',name:'外勤流程设置',isActive:false},
                 ],
             }
         },
