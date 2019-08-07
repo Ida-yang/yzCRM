@@ -1286,7 +1286,7 @@
                         aa += el.price
                     }
                 });
-                let cc = bb - aa
+                let cc = bb - aa + row.price
                 this.dialogVisible4 = true
                 this.moneyBack = { 
                     id:row.id, backNo:row.backNo, price:row.price, back_plan_id:row.back_plan_id, remarks:row.remarks, pay_type_id:row.pay_type_id, amount:bb, restamount:cc, 

@@ -38,22 +38,22 @@
             <el-table-column label="原单类型" prop="type" min-width="110" sortable></el-table-column>
             <el-table-column label="总金额" prop="totalAmount" min-width="140" sortable>
                 <template slot-scope="scope">
-                    {{scope.row.totalAmount | commaing}}
+                    {{scope.row.totalAmount}}
                 </template>
             </el-table-column>
             <el-table-column label="已回款金额" prop="amount_of_repayment" min-width="130" sortable>
                 <template slot-scope="scope">
-                    {{scope.row.amount_of_repayment | commaing}}
+                    {{scope.row.amount_of_repayment}}
                 </template>
             </el-table-column>
             <el-table-column label="本次回款金额" prop="price" min-width="130" sortable>
                 <template slot-scope="scope">
-                    {{scope.row.price | commaing}}
+                    {{scope.row.price}}
                 </template>
             </el-table-column>
             <el-table-column label="剩余金额" prop="amount_of_repayment" min-width="130" sortable>
                 <template slot-scope="scope">
-                    {{scope.row.totalAmount - scope.row.amount_of_repayment | commaing}}
+                    {{scope.row.surplusNum | commaing}}
                 </template>
             </el-table-column>
             <el-table-column label="收款方式" prop="pay_type" min-width="110" sortable></el-table-column>
@@ -93,7 +93,7 @@
         store,
         filters:{
             commaing(value){
-                if(value){
+                if(value !== 0){
                     let intPart = Math.trunc(value) //获取整数部分
                     let intPartFormat = intPart.toString().replace(/(\d)(?=(?:\d{3})+$)/g, '$1,') // 将整数部分逢三一断
                     let floatPart = '.00' // 预定义小数部分
@@ -108,6 +108,9 @@
                     } else {
                         return intPartFormat + floatPart
                     }
+                }else{
+                    let num = 0.00
+                    return num
                 }
             },
         },
@@ -185,7 +188,13 @@
                     url:_this.$store.state.defaultHttp + 'back/queryForList.do?cId=' + _this.$store.state.iscId,
                     data: qs.stringify(data)
                 }).then(function(res){
-                    _this.$store.state.receiveList = res.data.map.success
+                    let info = res.data.map.success
+
+                    info.forEach(el => {
+                        let num = el.totalAmount - el.amount_of_repayment
+                        el.surplusNum = num.toFixed(2)
+                    });
+                    _this.$store.state.receiveList = info
                     _this.$store.state.receiveListnumber = res.data.count
                 }).catch(function(err){
                     // console.log(err);

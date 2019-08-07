@@ -72,8 +72,8 @@
                         </div>
                         <span slot="reference" style="font-size:14px;text-decoration:underline">查看审核历史</span>
                     </el-popover>
-                    <el-button style="float:right;" class="info-btn" size="mini" @click="showexamine(1)" v-show="hasCheck && myform.checkStatus == 2">通过</el-button>
-                    <el-button style="float:right;" class="info-btn" size="mini" @click="showexamine(2)" v-show="hasCheck && myform.checkStatus == 2">拒绝</el-button>
+                    <el-button style="float:right;" class="info-btn" size="mini" @click="showexamine(1)" v-show="hasCheck && myform.checkStatus !== 2">通过</el-button>
+                    <el-button style="float:right;" class="info-btn" size="mini" @click="showexamine(2)" v-show="hasCheck && myform.checkStatus !== 2">拒绝</el-button>
                     <el-button style="float:right;" class="info-btn" size="mini" @click="showexamine(4)" v-show="hasCheck">驳回</el-button>
                 </div>
                 <div class="text item">
