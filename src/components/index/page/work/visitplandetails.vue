@@ -142,17 +142,15 @@
                     <div class="text item">
                         <ul>
                             <li>执行状况：<span>{{visitdetails.state}}</span></li>
-                            <li>完成时间：<span>{{visitdetails.endTime}}</span></li>
-                            <li></li>
-                            <li>签到时间：<span>{{visitdetails.visitTime}}</span></li>
-                            <li>签到地址：<span>{{visitdetails.customerName}}</span></li>
-                            <li></li>
+                            <li style="flex:0 0 66%">完成时间：<span>{{visitdetails.endTime}}</span></li>
+                            <li>签到时间：<span>{{visitdetails.timeCheck}}</span></li>
+                            <li style="flex:0 0 66%">签到地址：<span>{{visitdetails.addressCheck}}</span></li>
                             <li>图片：
-                                <div class="imgbox">
-                                    <img src="/upload/staticImg/test.png" @click="showImg">
+                                <div class="imgbox" v-if="visitdetails.photoCheck">
+                                    <img :src="visitdetails.photoName" @click="showImg">
                                 </div>
                                 <el-dialog :visible.sync="dialogVisible">
-                                    <img width="100%" src="/upload/staticImg/test.png" alt="">
+                                    <img width="100%" :src="visitdetails.photoName" alt="">
                                 </el-dialog>
                             </li>
                         </ul>
@@ -162,7 +160,7 @@
             </div>
             <div class="top">
                 <el-card class="box-card">
-                    <div class="block">
+                    <div class="rate_box">
                         <span class="rate_text">打分</span>
                         <el-rate class="rate_star" show-text :texts="ratetexts" v-model="visitdetails.score" @change="clickRates"></el-rate>
                     </div>
@@ -255,7 +253,7 @@
                 },
 
                 // ratevalue: null,
-                ratetexts: ['2','4','6','8','10'],
+                ratetexts: [ 2 , 4 , 6 , 8 , 10 ],
 
                 dialogVisible:false,
 
@@ -302,7 +300,9 @@
                             _this.visitdetails.assistantsid.push(item.private_id)
                         });
                     }
-                    
+                    if(_this.visitdetails.photoCheck){
+                        _this.visitdetails.photoName = _this.$store.state.systemHttp + '/upload/' + _this.$store.state.iscId + '/' + _this.visitdetails.photoCheck
+                    }
                     let examine = {
                         checkStatus: res.data.map.visit.checkStatus,
                         recordId: res.data.map.visit.examineRecordId,
@@ -475,10 +475,11 @@
                         message: '该拜访计划非完成状态，暂不可评分',
                         type: 'error'
                     })
+                    _this.visitdetails.score = 0
                 }else{
                     axios({
                         method: 'post',
-                        url: _this.$store.state.defaultHttp+'visit/updateVisit.do?cId='+_this.$store.state.iscId,
+                        url: _this.$store.state.defaultHttp+'visit/updateVisitState.do?cId='+_this.$store.state.iscId,
                         data: qs.stringify(data),
                     }).then(function(res){
                         if(res.data.code && res.data.code == 200) {
@@ -565,6 +566,13 @@
         width: 150px;
         height: 75px;
         transform: rotate(-10deg)
+    }
+
+    .rate_box{
+        /* line-height: 37px */
+        height: 58px;
+        padding: 18px;
+        box-sizing: border-box
     }
 
 </style>

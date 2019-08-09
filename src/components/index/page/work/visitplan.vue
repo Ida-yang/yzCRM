@@ -241,6 +241,7 @@ export default {
                             el.nullifyBtn = true
                             el.editBtn = true
                             el.deleteBtn = true
+                            el.completedBtn = true
                         }
                     }else{
                         el.progress = ''
@@ -249,9 +250,16 @@ export default {
                         el.completedBtn = true
                         el.editBtn = true
                     }
-                    if(el.approverState == '已审核'){
+                    if(el.checkStatus !== 5){
+                        el.editBtn = true
+                    }else if(el.checkStatus == 2){
                         el.editBtn = true
                         el.deleteBtn = true
+                        el.nullifyBtn = true
+                        el.progressBtn = true
+                    }
+                    if(!el.timeCheck){
+                        el.completedBtn = true
                     }
                     el.assistants = []
                     el.assistantsid = []
@@ -516,12 +524,6 @@ export default {
                 i = 0
             }else if(this.searchList.label == 3){
                 authorityInterface = 'visitJurisdiction/dept.do'//本机构外勤
-                i = 0
-            }else if(this.searchList.label == 10){
-                authorityInterface = 'visitJurisdiction/assistants.do'//我协助外勤
-                i = 0
-            }else if(this.searchList.label == 11){
-                authorityInterface = 'visitJurisdiction/approver.do'//我审核外勤
                 i = 0
             }
 
