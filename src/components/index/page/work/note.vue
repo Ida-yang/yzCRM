@@ -32,7 +32,7 @@
                 <li class="note_li" v-for="a in noteData" :key="a.index">
                     <div class="note_set">
                         <i class="el-icon-plus" @click="addNote"></i>
-                        <span>2019-06-28 18:12:26</span>
+                        <span>{{a.createTime}}</span>
                         <i class="el-icon-delete" @click="handleDelete(1,a)"></i>
                     </div>
                     <div class="note_c" v-html="a.name"></div>
@@ -56,12 +56,7 @@
                 <el-form-item label="便签类别">
                     <el-input v-model="newform.parentname" :disabled="true" style="width:90%;"></el-input>
                 </el-form-item>
-                <!-- <el-form-item prop="name" label="便签信息"> -->
-                    <!-- <el-input v-model="newform.name" style="width:90%;"></el-input> -->
-                    <div class="editor-container">
-                        <UE :defaultMsg="defaultMsg" :config="config" ref="ue"></UE>
-                    </div>
-                <!-- </el-form-item> -->
+                <el-input v-model="newform.name" type="textarea" rows="12" class="note_input"></el-input>
             </el-form>
             <span slot="footer" class="dialog-footer">
                 <el-button @click="noteDialog = false">取 消</el-button>
@@ -75,12 +70,10 @@
     import store from '../../../../store/store'
     import axios from 'axios'
     import qs from 'qs'
-    import UE from '../../ue.vue'
 
     export default {
         name:'note',
         store,
-        components:{UE},
         data(){
             return{
                 msg:'note.vue',
@@ -106,11 +99,7 @@
                 config: {
                     initialFrameWidth: '',
                     initialFrameHeight: 300,
-                    toolbars:[[
-                        'bold', 'italic', 'underline', 'forecolor', '|', 
-                        'insertorderedlist', 'insertunorderedlist', '|',
-                        'justifyleft', 'justifycenter', 'justifyright', 'justifyjustify', '|',
-                    ]],
+                    toolbars:[[]],
                     elementPathEnabled:false,
                     wordCount:false,
                 },
@@ -216,17 +205,30 @@
             },
             addNote(){
                 this.noteDialog = true
-                if(this.$refs.ue){
-                    this.$refs.ue.editor.body.textContent = ''
-                }
             },
             noteSubmit(){
                 const _this = this
                 let qs = require('querystring')
-                let content = this.$refs.ue.getUEContent()
+                let content = '<p>' + this.newform.name + '</p>'
+                content = content.replace(/\n/g,'</p><p>')
+
+                if(!this.newform.name){
+                    content = ''
+                }
+
                 let data = {}
                 data.name = content
                 data.parentid = this.newform.parentid
+                
+                let flag = false
+                if(!data.name){
+                    $message({
+                        message:'便签内容不能为空',
+                        type:'error'
+                    })
+                    flag = true
+                }
+                if(flag) return
 
                 axios({
                     method: 'post',
@@ -345,5 +347,10 @@
         padding: 5px 15px;
         box-sizing: border-box;
         font-size: 14px;
+    }
+
+    .note_input{
+        width: 90%;
+        margin-left: 5%
     }
 </style>

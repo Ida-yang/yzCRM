@@ -143,7 +143,7 @@
                                         &nbsp;&nbsp;
                                         <span class="de_span_3">&nbsp;&nbsp;{{item.followType}}&nbsp;&nbsp;</span>
                                     </p>
-                                    <p style="margin-top:15px;margin-bottom:15px;">{{item.followContent}}</p>
+                                    <div style="margin-top:15px;margin-bottom:15px;" v-html="item.followContent"></div>
                                     <div class="imgbox_two" v-if="item.imgName">
                                         <img :src="item.picture_detail" alt="图片" width="80" height="80" @click="showImg($event,item)">
                                     </div>
@@ -692,6 +692,8 @@
                         if(el.enclosureName && el.enclosureName !== null){
                             el.enclosureUrl = _this.$store.state.systemHttp + '/upload/'+_this.$store.state.iscId+'/'+el.enclosureName
                         }
+
+                        el.followContent = el.followContent.replace(/\n/g,'<br/>')
                     });
                 }).catch(function(err){
                     // console.log(err);
