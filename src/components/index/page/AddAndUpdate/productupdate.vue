@@ -25,7 +25,7 @@
                                     <el-option v-for="item in attributeList" :key="item.id" :label="item.name" :value="item.name"></el-option>
                                 </el-select>
                             </el-form-item>
-                            <el-form-item class="first_input" label="销售价格" label-width="90px">
+                            <el-form-item prop="price" class="first_input" label="销售价格" label-width="90px">
                                 <el-input v-model="myform.price" class="inputbox"></el-input>
                             </el-form-item>
                             <el-form-item class="first_input" label="标准成品价" label-width="90px">
@@ -99,6 +99,11 @@
                         <el-table-column v-for="(item,i) in formThead" :key="i" :label="item.label" min-width="100">
                             <template slot-scope="scope">{{ scope.row[item.value] }}</template>
                         </el-table-column>
+                        <el-table-column prop="price" label="价格" min-width="130">
+                            <template slot-scope="scope">
+                                <el-input v-model="scope.row.price" class="inputbox"></el-input>
+                            </template>
+                        </el-table-column>
                         <el-table-column prop="barcode" label="条形码" min-width="130">
                             <template slot-scope="scope">
                                 <el-input v-model="scope.row.barcode" class="inputbox"></el-input>
@@ -160,6 +165,7 @@
                     goodsName : [{ required: true, message: '产品名称不能为空', trigger: 'blur' },],
                     unitId : [{ required: true, message: '单位不能为空', trigger: 'blur' },],
                     attribute : [{ required: true, message: '产品属性不能为空', trigger: 'blur' },],
+                    price: [{ required: true, message: '销售价格不能为空', trigger: 'blur' },],
                 },
                 isDisable:false,
 
@@ -379,7 +385,7 @@
                 if(arr.length == 1){
                     let a = arr[0]
                     for(let i = 0;i < a.spec_value.length; i ++){
-                        this.tableData.push({imgfile:'',spec1:a.spec_value[i],spec2:null,spec3:null,sname1:a.spec_name,sname2:null,sname3:null,barcode: '',erpDocking: '',})
+                        this.tableData.push({imgfile:'', spec1:a.spec_value[i], spec2:null, spec3:null, sname1:a.spec_name, sname2:null, sname3:null, price:this.myform.price, barcode: '', erpDocking: '',})
                     }
                 }
                 if(arr.length == 2){
@@ -387,7 +393,7 @@
                     let b = arr[1]
                     for(let i = 0; i < a.spec_value.length; i ++){
                         for(let j = 0; j < b.spec_value.length; j ++){
-                            this.tableData.push({imgfile:'',spec1:a.spec_value[i], spec2:b.spec_value[j], spec3:null, sname1:a.spec_name, sname2:b.spec_name, sname3:null, barcode: '',erpDocking: '',})
+                            this.tableData.push({imgfile:'', spec1:a.spec_value[i], spec2:b.spec_value[j], spec3:null, sname1:a.spec_name, sname2:b.spec_name, sname3:null, price:this.myform.price, barcode: '', erpDocking: '',})
                         }
                     }
                 }
@@ -398,7 +404,7 @@
                     for(let i = 0; i < a.spec_value.length; i ++){
                         for(let j = 0; j < b.spec_value.length; j ++){
                             for(let k = 0; k < c.spec_value.length; k ++){
-                            this.tableData.push({imgfile:'',spec1:a.spec_value[i], spec2:b.spec_value[j], spec3:c.spec_value[k], sname1:a.spec_name, sname2:b.spec_name, sname3:c.spec_name, barcode: '', erpDocking: '',})
+                            this.tableData.push({imgfile:'', spec1:a.spec_value[i], spec2:b.spec_value[j], spec3:c.spec_value[k], sname1:a.spec_name, sname2:b.spec_name, sname3:c.spec_name, price:this.myform.price, barcode: '', erpDocking: '',})
                             }
                         }
                     }
@@ -535,7 +541,7 @@
                     delete obj['key2']
                     delete obj['key3']
                     delete obj['null']
-                    data.itemList.push({"id":el.id,"goodsId":this.myform.id,"image":el.image, "erpDocking":el.erpDocking, "barcode":el.barcode, "spec1":el.spec1, "spec2":el.spec2, "spec3":el.spec3, "sname1":el.sname1, "sname2":el.sname2, "sname3":el.sname3, "spec":JSON.stringify(obj)})
+                    data.itemList.push({"id":el.id, "goodsId":this.myform.id, "price":el.price, "image":el.image, "erpDocking":el.erpDocking, "barcode":el.barcode, "spec1":el.spec1, "spec2":el.spec2, "spec3":el.spec3, "sname1":el.sname1, "sname2":el.sname2, "sname3":el.sname3, "spec":JSON.stringify(obj)})
                 });
 
                 this.specHeadData.forEach(item => {
@@ -543,6 +549,13 @@
                 });
 
                 let flag = false
+                if(!data.goods.price){
+                    _this.$message({
+                        message:'销售价格不能为空',
+                        type:'error'
+                    })
+                    flag = true
+                }
                 if(!data.goods.goodsName){
                     _this.$message({
                         message:'产品名称不能为空',

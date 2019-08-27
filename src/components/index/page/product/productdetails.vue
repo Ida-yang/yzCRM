@@ -4,7 +4,7 @@
             <div class="pro_detail">
                 <el-carousel class="first_left" indicator-position="outside">
                     <el-carousel-item v-for="(item,index) in itemImgList" :key="index">
-                        <img :src="item.imgfile" alt="图片" @click="showImg($event,item)" width="350" height="300">
+                        <img :src="item.imgfile" alt="图片" @click="showImg($event,item)" width="300" height="240">
                     </el-carousel-item>
                 </el-carousel>
                 <ul class="first_right">
@@ -39,6 +39,7 @@
                                     {{scope.row.specList}}
                                 </template>
                             </el-table-column>
+                            <el-table-column label="价格(元)" prop="price" min-width="130"></el-table-column>
                             <el-table-column label="条形码" prop="barcode" min-width="130"></el-table-column>
                             <el-table-column label="ERP对接码" prop="erpDocking" min-width="130"></el-table-column>
                         </el-table>

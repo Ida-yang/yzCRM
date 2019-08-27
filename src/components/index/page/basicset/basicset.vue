@@ -105,7 +105,7 @@
                 <span class="custom-tree-node" slot-scope="{ node, data }">
                     <span><i class="el-icon-info">&nbsp;&nbsp;</i>{{ node.label }}</span>
                     <span class="operation_proclass">
-                        <el-button type="text" size="mini" style="font-size:12px;" @click="proAdd(data)">添加/
+                        <el-button v-show="!data.setBtn" type="text" size="mini" style="font-size:12px;" @click="proAdd(data)">添加/
                         </el-button>
                         <el-button type="text" size="mini" style="font-size:12px;" @click="proEdit(data)">修改/
                         </el-button>
@@ -991,7 +991,24 @@
                     method: 'get',
                     url: _this.$store.state.defaultHttp+'classification/getClassificationNodeTree.do?cId='+_this.$store.state.iscId,
                 }).then(function(res){
-                    _this.proClassData = res.data.map.success
+                    let info = res.data.map.success
+
+                    info.forEach(el => {
+                        if(el.next.length){
+                            el.next.forEach(a => {
+                                if(a.next.length){
+                                    a.next.forEach(b => {
+                                        b.setBtn = true
+                                        console.log(b)
+                                    });
+                                }
+                            });
+                        }
+                    });
+
+                    console.log(info)
+
+                    _this.proClassData = info
                 }).catch(function(err){
                     // console.log(err);
                 });

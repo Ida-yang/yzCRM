@@ -854,17 +854,20 @@
     }
     .pro_detail{
         width: 100%;
-        height: 350px;
+        height: 300px;
         position: relative;
     }
     .first_left {
-        width: 350px;
+        width: 300px;
         padding-top: 20px;
         box-sizing: border-box;
         float: left;
     }
+    .first_left .el-carousel__container{
+        height: 260px
+    }
     .first_right {
-        width: calc(100% - 450px);
+        width: calc(100% - 400px);
         height: 240px;
         /* margin-top: 55px; */
         padding: 20px;
@@ -1259,5 +1262,9 @@
     
     .editor_head{
         line-height: 24px;
+    }
+
+    .operation_proclass{
+        margin-right: 20px
     }
 </style>
