@@ -485,7 +485,7 @@
             },
             handleAvatarSuccess(res, file) {
                 this.tableData.forEach(el => {
-                    if(el.index == this.currentrow.index || el.id == this.currentrow.id){
+                    if(el.id == this.currentrow.id && el.goodsCode == this.currentrow.goodsCode){
                         el.imgfile = URL.createObjectURL(file.raw)
                         el.image = res
                     }

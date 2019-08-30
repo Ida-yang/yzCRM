@@ -5,7 +5,7 @@
             <div class="top">
                 <el-card class="box-card">
                     <div slot="header" class="clearfix">
-                        <span class="bold_span">{{customerdetail.pName}}</span>
+                        <!-- <span class="bold_span">{{customerdetail.pName}}</span> -->
                         <el-button style="float:right;" class="info-btn" size="mini" @click="retract()" v-show="!retracts">收起</el-button>
                         <el-button style="float:right;" class="info-btn" size="mini" @click="retract()" v-show="retracts">显示</el-button>
                         <el-popover placement="bottom" width="100" trigger="click">
@@ -544,7 +544,9 @@
                 searchList:{
                     keyword:null,
                 },
-                customerdetail:{},
+                customerdetail:{
+                    pName: ''
+                },
                 contacts:{},
                 record:[],
                 fastcontactList:null,
@@ -651,8 +653,8 @@
                     method:'get',
                     url:_this.$store.state.defaultHttp+'customerpool/getPoolById.do?cId='+_this.$store.state.iscId+'&id='+this.detailData.id,
                 }).then(function(res){
-                    _this.customerdetail = res.data.map.success[0]
-                    _this.contacts = res.data.map.success[0].contacts[0]
+                    _this.customerdetail = res.data.map.success
+                    _this.contacts = res.data.map.success.contacts[0]
                     _this.showbusiness = false
                 }).catch(function(err){
                     // console.log(err);

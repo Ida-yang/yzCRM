@@ -207,18 +207,13 @@
                     data: qs.stringify(searchList),
                 }).then(function(res){
                     let array = res.data.map.orders
-                    // array.forEach(el => {
-                    //     if(el.checkStatus == 0){
-                    //         el.approvalStatus = '待审核'
-                    //     }else if(el.checkStatus == 1){
-                    //         el.approvalStatus = '审核中'
-                    //     }else if(el.checkStatus == 2){
-                    //         el.approvalStatus = '已审核'
-                    //         el.disabledBtn = true
-                    //     }else if(el.checkStatus == 3){
-                    //         el.approvalStatus = '未通过'
-                    //     }
-                    // });
+                    array.forEach(el => {
+                        if(el.checkStatus == 2){
+                            el.disabledBtn = true
+                        }else{
+                            el.disabledBtn = false
+                        }
+                    });
                     _this.$store.state.orderList = array
                     _this.$store.state.orderListnumber = res.data.count
                 }).catch(function(err){

@@ -22,10 +22,7 @@
         </div>
         <div class="bottom">
             <el-tabs v-model="activeName" type="card">
-                <el-tab-pane label="产品详情描述" name="first" class="first_c">
-                    <div class="components-container" v-html="introduction"></div>
-                </el-tab-pane>
-                <el-tab-pane label="基本资料" name="second">
+                <el-tab-pane label="基本资料" name="first">
                     <div class="first_bottom">
                         <el-table :data="proItemData" border stripe style="width: 100%">
                             <el-table-column header-align="center" align="center" type="index" min-width="45"></el-table-column>
@@ -44,6 +41,9 @@
                             <el-table-column label="ERP对接码" prop="erpDocking" min-width="130"></el-table-column>
                         </el-table>
                     </div>
+                </el-tab-pane>
+                <el-tab-pane label="产品详情描述" name="second" class="first_c">
+                    <div class="components-container" v-html="introduction"></div>
                 </el-tab-pane>
             </el-tabs>
         </div>
@@ -100,6 +100,8 @@
                     _this.proItemData.forEach(el => {
                         if(el.image){
                             el.imgfile = _this.$store.state.systemHttp + 'product/' + _this.$store.state.iscId + '/' + el.image
+                        }else{
+                            el.imgfile = '../../../../static/img/noProduct.png'
                         }
                         if(el.spec1 && !el.spec2 && !el.spec3){
                             el.specList = el.spec1

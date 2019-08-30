@@ -5,7 +5,7 @@
             <div class="top">
                 <el-card class="box-card">
                     <div slot="header" class="clearfix">
-                        <span class="bold_span">{{customerpool.name}}</span>
+                        <span class="bold_span">{{customerpool.name}}</span><span style="margin-left:50px;">预计成交金额：{{opportunitydetail.opportunity_achievement | commaing}} 元</span>
                         <el-button style="float:right;margin-left:10px;" class="info-btn" size="mini" @click="retract()" v-show="retracts">收起</el-button>
                         <el-button style="float:right;margin-left:10px;" class="info-btn" size="mini" @click="retract()" v-show="!retracts">显示</el-button>
                     </div>
