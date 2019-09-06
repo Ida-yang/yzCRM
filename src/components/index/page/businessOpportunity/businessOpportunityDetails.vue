@@ -257,6 +257,15 @@
                                 </template>
                             </el-table-column>
 
+                            <el-table-column label="主图" prop="productImg" width="80">
+                                <template slot-scope="scope">
+                                    <el-popover placement="right" width="200" trigger="hover">
+                                        <img :src="scope.row.productImg" alt="" width="200" height="200">
+                                        <img slot="reference" :src="scope.row.productImg" alt="" width="60" height="60">
+                                    </el-popover>
+                                </template>
+                            </el-table-column>
+
                             <el-table-column label="描述" prop="tbGoods.describe" min-width="120" />
                             
                             <el-table-column label="规格属性" prop="goodspec" min-width="100">
@@ -353,6 +362,23 @@
                             </el-table-column>
 
                             <el-table-column prop="brand" min-width="80" label="产品品牌"></el-table-column>
+
+                            <el-table-column label="备注1" prop="remarks1" min-width="180">
+                                <template slot-scope="scope">
+                                    <template v-if="scope.row.edit">
+                                        <el-input v-model="scope.row.remarks1" class="edit-input" size="small"/>
+                                    </template>
+                                    <span v-else>{{ scope.row.remarks1 }}</span>
+                                </template>
+                            </el-table-column>
+                            <el-table-column label="备注2" prop="remarks2" min-width="180">
+                                <template slot-scope="scope">
+                                    <template v-if="scope.row.edit">
+                                        <el-input v-model="scope.row.remarks2" class="edit-input" size="small"/>
+                                    </template>
+                                    <span v-else>{{ scope.row.remarks2 }}</span>
+                                </template>
+                            </el-table-column>
 
                             <el-table-column align="center" fixed="right" label="操作" min-width="90">
                                 <template slot-scope="scope">
@@ -672,7 +698,7 @@
                 failReasonData:[],
 
                 itemData:[
-                    {id:10,amountOfMoney:null, commitTime:null, brand:null, discount:null, discountAfter:null, discountAmount:null, tbGoods:{ goodsName:'', describe:'', }, num: null, price: null, taxAfter:null, taxAmount:null, taxRate:null, unit:null, edit:false,},
+                    {id:10, productImg:null, amountOfMoney:null, commitTime:null, brand:null, discount:null, discountAfter:null, discountAmount:null, tbGoods:{ goodsName:'', describe:'', }, num: null, price: null, taxAfter:null, taxAmount:null, taxRate:null, unit:null, edit:false, remarks1:null, remarks2:null},
                 ],
                 list:null,
                 selectData:[],
@@ -888,10 +914,17 @@
                 }).then(function(res){
                     _this.productData = res.data
                     _this.updateData = res.data.orderDetails
+                    _this.updateData.forEach(el => {
+                        if(el.image){
+                            el.productImg = _this.$store.state.systemHttp + 'product/'+_this.$store.state.iscId+'/'+el.image
+                        }else{
+                            el.productImg = '../../../../static/img/noProduct.png'
+                        }
+                    });
                     if(_this.updateData.length){
                         _this.$options.methods.getItem.bind(_this)()
                     }else{
-                        _this.itemData = [{id:10,amountOfMoney:null, commitTime:null, brand:null, discount:null, discountAfter:null, discountAmount:null, tbGoods:{ goodsName:'', describe:'', }, num: null, price: null, taxAfter:null, taxAmount:null, taxRate:null, unit:null, edit:false,},]
+                        _this.itemData = [{id:10, productImg:null, amountOfMoney:null, commitTime:null, brand:null, discount:null, discountAfter:null, discountAmount:null, tbGoods:{ goodsName:'', describe:'', }, num: null, price: null, taxAfter:null, taxAmount:null, taxRate:null, unit:null, edit:false, remarks1:null, remarks2:null}]
                     }
                 }).catch(function(err){
                     // console.log(err);
@@ -1349,10 +1382,6 @@
                     data:qs.stringify(data)
                 }).then(function(res){
                     let items = res.data.map.goods
-                    _this.list = items.map(v => {
-                        _this.$set(v, 'edit', false)
-                        return v
-                    })
                     items.forEach(element => {
                         element.aaa = JSON.parse(element.spec)
                         element.goodspec = []
@@ -1361,7 +1390,16 @@
                                 element.goodspec.push({label:key,value:element.aaa[key]})
                             }
                         }
+                        if(element.image){
+                            element.productImg = _this.$store.state.systemHttp + 'product/'+_this.$store.state.iscId+'/'+element.image
+                        }else{
+                            element.productImg = '../../../../static/img/noProduct.png'
+                        }
                     });
+                    _this.list = items.map(v => {
+                        _this.$set(v, 'edit', false)
+                        return v
+                    })
                     _this.$options.methods.getSelect.bind(_this)()
                 }).catch(function(err){
                     // console.log(err);
@@ -1378,7 +1416,7 @@
                                 el.goodspec.push({label:key,value:el.aaa[key]})
                             }
                         }
-                        this.itemData.push({ amountOfMoney: el.amountOfMoney, brand: el.brand, discount: el.discount, discountAfter: el.discountAfter, discountAmount: el.discountAmount, goodsId: el.goodsId, tbGoods:{ goodsName:el.goodsName, describe:el.describe, }, id: el.itemId, itemId: el.itemId, num: el.num, price: el.price, taxAfter: el.taxAfter, taxAmount: el.taxAmount, taxRate: el.taxRate, goodspec: el.goodspec, unit: el.unit, edit:false,})
+                        this.itemData.push({ productImg:el.productImg, amountOfMoney: el.amountOfMoney, brand: el.brand, discount: el.discount, discountAfter: el.discountAfter, discountAmount: el.discountAmount, goodsId: el.goodsId, tbGoods:{ goodsName:el.goodsName, describe:el.describe, }, id: el.itemId, itemId: el.itemId, num: el.num, price: el.price, taxAfter: el.taxAfter, taxAmount: el.taxAmount, taxRate: el.taxRate, goodspec: el.goodspec, unit: el.unit, edit:false, remarks1:el.remarks1, remarks2:el.remarks2})
                     });
                 // }else{
                 //     console.log('232323232')
@@ -1412,6 +1450,12 @@
                                 element.goodspec.push({label:key,value:element.aaa[key]})
                             }
                         }
+                        
+                        if(element.image){
+                            element.productImg = _this.$store.state.systemHttp + 'product/'+_this.$store.state.iscId+'/'+element.image
+                        }else{
+                            element.productImg = '../../../../static/img/noProduct.png'
+                        }
                     });
                     _this.tableData = items
                 }).catch(function(err){
@@ -1429,7 +1473,7 @@
                 this.selectData = this.list
             },
             handleAdd(){
-                this.itemData.push({amountOfMoney:null, commitTime:null, brand:null, discount:null, discountAfter:null, discountAmount:null, tbGoods:{ goodsName:'', describe:'', }, num: null, price: null, taxAfter:null, taxAmount:null, taxRate:null, unit:null, edit:false})
+                this.itemData.push({ productImg:null, amountOfMoney:null, commitTime:null, brand:null, discount:null, discountAfter:null, discountAmount:null, tbGoods:{ goodsName:'', describe:'', }, num: null, price: null, taxAfter:null, taxAmount:null, taxRate:null, unit:null, edit:false, remarks1:null, remarks2:null})
             },
             getSummary(param){
                 const { columns, data } = param;
@@ -1637,6 +1681,8 @@
                             "taxRate":el.taxRate,
                             "taxAmount":el.taxAmount,
                             "taxAfter":el.taxAfter,
+                            "remarks1":el.remarks1,
+                            "remarks2":el.remarks2,
                         })
                     }
                 });

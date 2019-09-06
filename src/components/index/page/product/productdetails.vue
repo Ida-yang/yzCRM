@@ -8,15 +8,14 @@
                     </el-carousel-item>
                 </el-carousel>
                 <ul class="first_right">
-                    <li>产品编码：{{probasicData.aaaaaa}}</li>
-                    <li>产品名称：{{probasicData.goodsName}}</li>
+                    <li style="flex:0 0 100%;">产品名称：{{probasicData.goodsName}}</li>
                     <li>产品分类：{{probasicData.category}}</li>
                     <li>单位：{{probasicData.unit}}</li>
                     <li>产品品牌：{{probasicData.brand}}</li>
                     <li>产品属性：{{probasicData.attribute}}</li>
                     <li>销售价格：{{probasicData.price}}</li>
                     <li>标准成本价：{{probasicData.costPrice}}</li>
-                    <li style="flex:0 0 100%;">产品描述：{{probasicData.describe}}</li>
+                    <li style="flex:0 0 100%;">规格描述：{{probasicData.describe}}</li>
                 </ul>
             </div>
         </div>
@@ -28,9 +27,10 @@
                             <el-table-column header-align="center" align="center" type="index" min-width="45"></el-table-column>
                             <el-table-column label="主图" prop="imgfile" width="120">
                                 <template slot-scope="scope">
-                                    <img :src="scope.row.imgfile" :alt="scope.row.imgfile" @click="showImg($event,scope.row)" width="50" height="50">
+                                    <img :src="scope.row.imgfile" :alt="probasicData.goodsName" @click="showImg($event,scope.row)" width="100" height="100">
                                 </template>
                             </el-table-column>
+                            <el-table-column label="产品编码" prop="goodsCode" min-width="150"></el-table-column>
                             <el-table-column label="规格" prop="specList" min-width="130">
                                 <template slot-scope="scope">
                                     {{scope.row.specList}}

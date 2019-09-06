@@ -31,7 +31,7 @@
                         <el-form-item class="first_input" label="标准成品价" label-width="90px">
                             <el-input v-model="myform.costPrice" class="inputbox"></el-input>
                         </el-form-item>
-                        <el-form-item class="first_input" label="描述" label-width="90px">
+                        <el-form-item class="first_input" label="规格描述" label-width="90px">
                             <el-input type="textarea" rows="1" v-model="myform.describe" class="inputbox"></el-input>
                         </el-form-item>
                     </el-form>
@@ -55,7 +55,7 @@
                     </div>
                 </div>
                 <div class="first_bottom">
-                    <p class="pro_title">产品规格</p><br>
+                    <p class="pro_title">多规格属性</p><br>
                     <div class="filter-container">
                         <el-table :data="specHeadData" border stripe style="width: 100%">
                             <el-table-column type="selection" prop="" width="45">

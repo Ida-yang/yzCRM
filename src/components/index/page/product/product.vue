@@ -36,19 +36,31 @@
             </div>
             <el-table :data="tableData" ref="multipleTable" border stripe style="width:100%" @selection-change="selectInfo">
                 <el-table-column fixed header-align="center" align="center" type="selection" width="45" prop="id" @selection-change="selectInfo" sortable />
+                
+                <el-table-column label="主图" fixed prop="productImg" width="80">
+                    <template slot-scope="scope">
+                        <el-popover placement="right" width="200" trigger="hover">
+                            <img :src="scope.row.productImg" alt="" width="200" height="200">
+                            <img slot="reference" :src="scope.row.productImg" alt="" width="60" height="60">
+                        </el-popover>
+                    </template>
+                </el-table-column>
+                <el-table-column label="产品编码" fixed prop="itemList[0].goodsCode" min-width="150" sortable />
                 <div v-for="(item,index) in filterList" :key="index">
-                    <el-table-column label="产品名称" prop="goodsName" fixed v-if="item.prop == 'goodsName' && item.state == 1" min-width="130" sortable>
+                    <el-table-column label="产品名称" fixed prop="goodsName" v-if="item.prop == 'goodsName' && item.state == 1" min-width="130" sortable>
                         <template slot-scope="scope">
                             <div @click="openDetails(scope.$index, scope.row)" class="hoverline">
                                 {{scope.row.goodsName}}
                             </div>
                         </template>
                     </el-table-column>
+                    <el-table-column label="规格描述" prop="describe" v-if="item.prop == 'describe' && item.state == 1" show-overflow-tooltip min-width="180" sortable />
+                    <el-table-column label="单位" prop="unit" v-if="item.prop == 'unit' && item.state == 1" min-width="90" sortable />
                     <el-table-column label="价格" prop="price" v-if="item.prop == 'price' && item.state == 1" min-width="90" sortable />
                     <el-table-column label="成本价" prop="costPrice" v-if="item.prop == 'costPrice' && item.state == 1" min-width="100" sortable />
-                    <el-table-column label="单位" prop="unit" v-if="item.prop == 'unit' && item.state == 1" min-width="90" sortable />
                     <el-table-column label="品牌" prop="brand" v-if="item.prop == 'brand' && item.state == 1" min-width="90" sortable />
-                    <el-table-column label="状态" prop="status" v-if="item.prop == 'status' && item.state == 1" min-width="90" sortable />
+                    <el-table-column label="产品属性" prop="attribute" v-if="item.prop == 'attribute' && item.state == 1" min-width="120" sortable />
+                    <!-- <el-table-column label="状态" prop="status" v-if="item.prop == 'status' && item.state == 1" min-width="90" sortable /> -->
                     <el-table-column label="创建时间" prop="createTime" v-if="item.prop == 'createTime' && item.state == 1" min-width="150" sortable />
                 </div>
                 <el-table-column label="操作" fixed="right" width="150" header-align="center" align="center">
@@ -70,6 +82,10 @@
                 </el-pagination>
             </div>
         </div>
+
+        <el-dialog :visible.sync="dialogVisible">
+            <img width="100%" :src="dialogImageUrl" alt="">
+        </el-dialog>
     </div>
 </template>
 <script>
@@ -134,7 +150,8 @@
                 page:1,
                 limit:20,
 
-                aaaa:[],
+                dialogImageUrl:'',
+                dialogVisible:false
             }
         },
         beforeCreate(){
@@ -170,9 +187,16 @@
                     url: _this.$store.state.defaultHttp+'goods/searchGoods.do?cId='+_this.$store.state.iscId,
                     data:qs.stringify(pageInfo)
                 }).then(function(res){
-                    _this.$store.state.productList = res.data.map.goods
+                    let info = res.data.map.goods
+                    info.forEach(el => {
+                        if(el.itemList[0].image){
+                            el.productImg = _this.$store.state.systemHttp + 'product/' + _this.$store.state.iscId + '/' + el.itemList[0].image
+                        }else{
+                            el.productImg = '../../../../static/img/noProduct.png'
+                        }
+                    });
+                    _this.$store.state.productList = info
                     _this.$store.state.productListnumber = res.data.count
-                    _this.aaaa = res.data.map.goods
                 }).catch(function(err){
                     // console.log(err);
                 });

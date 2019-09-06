@@ -119,7 +119,6 @@
         },
         data(){
             return {
-                
                 nameList:[
                     {index:1,name:'操作日志',isActive:true},
                     {index:2,name:'短信日志',isActive:false},

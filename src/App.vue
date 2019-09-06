@@ -50,6 +50,23 @@
         text-decoration: none;
     }
 
+    /* 滚动条样式 */
+    /* 滚动条整体样式  高宽分别对应横竖滚动条的尺寸*/
+    ::-webkit-scrollbar {
+        width: 8px;     
+        height: 8px;
+    }
+    /* 滚动条里面小方块 */
+    ::-webkit-scrollbar-thumb {
+        border-radius: 6px;
+        background: rgba(0,0,0,0.2);
+    }
+    /* 滚动条里面轨道 */
+    ::-webkit-scrollbar-track {
+        border-radius: 0;
+        background: rgba(0,0,0,0.1);
+    }
+
     .el-form-item {
         margin-bottom: 12px;
     }
@@ -560,7 +577,7 @@
     .el-select .el-input__inner {
         cursor: pointer;
         padding-right: 35px;
-        height: 30px;
+        height: 30px !important;
     }
     .el-input__inner {
         height: 30px;

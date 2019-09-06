@@ -312,6 +312,10 @@
                                 title: '用户管理',
                             },
                             {
+                                index: 'customFields',
+                                title: '自定义字段'
+                            },
+                            {
                                 index: 'basicset',
                                 title: '辅助资料'
                             },

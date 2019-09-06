@@ -234,6 +234,9 @@ const state = {
   //竞争对手列表总数
   competitorListnumber:0,
 
+  //自定义字段模块
+  customFieldData:{},
+
   //当前时间
   nowtime:null,
 }

@@ -447,10 +447,6 @@
                     data:qs.stringify(data)
                 }).then(function(res){
                     let items = res.data.map.goods
-                    _this.list = items.map(v => {
-                        _this.$set(v, 'edit', false)
-                        return v
-                    })
                     items.forEach(element => {
                         element.aaa = JSON.parse(element.spec)
                         element.goodspec = []
@@ -459,7 +455,16 @@
                                 element.goodspec.push({label:key,value:element.aaa[key]})
                             }
                         }
+                        if(element.image){
+                            element.productImg = _this.$store.state.systemHttp + 'product/'+_this.$store.state.iscId+'/'+element.image
+                        }else{
+                            element.productImg = '../../../../static/img/noProduct.png'
+                        }
                     });
+                    _this.list = items.map(v => {
+                        _this.$set(v, 'edit', false)
+                        return v
+                    })
                     _this.$options.methods.getSelect.bind(_this)()
                 }).catch(function(err){
                     // console.log(err);
@@ -508,6 +513,11 @@
                             if(key !== "null" && key !== "undefined"){
                                 element.goodspec.push({label:key,value:element.aaa[key]})
                             }
+                        }
+                        if(element.image){
+                            element.productImg = _this.$store.state.systemHttp + 'product/'+_this.$store.state.iscId+'/'+element.image
+                        }else{
+                            element.productImg = '../../../../static/img/noProduct.png'
                         }
                     });
                     _this.tableData = items

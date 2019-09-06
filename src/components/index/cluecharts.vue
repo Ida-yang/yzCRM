@@ -305,7 +305,7 @@
         left: 165px;
         top: 216px;
         width: calc(100% - 177px);
-        height: calc(100% - 260px);
+        height: calc(100% - 216px);
         margin-right: 80px;
         background-color: #fdfeff;
         z-index: 999;

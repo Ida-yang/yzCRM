@@ -341,6 +341,16 @@ const router =new Router({
           component: resolve => require(['../components/index/page/AddAndUpdate/competitoraddorupdate.vue'], resolve),
           meta: { title: '编辑竞争对手', requireAuth:true}
         },
+        {
+          path: '/customFields',
+          component: resolve => require(['../components/index/page/customFields/customFields.vue'], resolve),
+          meta: { title: '自定义字段', requireAuth:true}
+        },
+        {
+          path: '/customFieldsUpdate',
+          component: resolve => require(['../components/index/page/customFields/customFieldsUpdate.vue'], resolve),
+          meta: { title: '修改自定义字段', requireAuth:true}
+        },
       ]
     },
         

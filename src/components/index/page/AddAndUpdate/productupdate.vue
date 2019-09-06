@@ -31,7 +31,7 @@
                             <el-form-item class="first_input" label="标准成品价" label-width="90px">
                                 <el-input v-model="myform.costPrice" class="inputbox"></el-input>
                             </el-form-item>
-                            <el-form-item class="first_input" label="描述" label-width="90px">
+                            <el-form-item class="first_input" label="规格描述" label-width="90px">
                                 <el-input type="textarea" rows="1" v-model="myform.describe" class="inputbox"></el-input>
                             </el-form-item>
                         </el-form>
@@ -55,7 +55,7 @@
                     </div>
                 </div>
                 <div class="first_bottom">
-                    <p class="pro_title">产品规格</p><br>
+                    <p class="pro_title">多规格属性</p><br>
                     <div class="filter-container">
                         <el-table :data="specHeadData" border stripe style="width: 100%">
                             <el-table-column type="selection" prop="">
@@ -79,7 +79,7 @@
                         </el-table>
                     </div>
                     <el-button size="mini" @click="AddId" v-show="addHeadbtn" style="margin-left:20px">添加</el-button>
-                    <el-button size="mini" @click="batchGeneration" style="margin-left:20px">批量生成</el-button>
+                    <el-button size="mini" @click="batchGeneration" :disabled="generationBtn" style="margin-left:20px">批量生成</el-button>
                     <br><br>
                     <el-table :data="tableData" border stripe style="width: 100%" @current-change="handleCurrentChange">
                         <el-table-column type="selection" prop="" width="45">
@@ -217,6 +217,8 @@
 
                 currentrow:null,
                 doUpload:this.$store.state.defaultHttp + 'goods/masterGraph.do?cId=' + this.$store.state.iscId,
+
+                generationBtn:true,
             }
         },
         mounted(){
@@ -243,12 +245,15 @@
                     _this.imageList = JSON.parse(res.data.goodsDesc.itemImages)
                     _this.tableData = res.data.itemList
                     _this.despecData = res.data.itemList
-                    if(_this.tableData.length){
-                        _this.tableData.forEach(el => {
-                            if(el.image){
-                                el.imgfile = _this.$store.state.systemHttp + 'product/'+_this.$store.state.iscId+'/'+el.image
-                            }
-                        });
+                    _this.tableData.forEach(el => {
+                        if(el.image){
+                            el.imgfile = _this.$store.state.systemHttp + 'product/'+_this.$store.state.iscId+'/'+el.image
+                        }
+                    });
+                    if(_this.specHeadData.length == 1 || !_this.specHeadData.length){
+                        _this.generationBtn = true
+                    }else{
+                        _this.generationBtn = false
                     }
                     _this.fileList = []
                     if(_this.imageList.length){
@@ -349,6 +354,8 @@
                 });
                 if(this.specHeadData.length == 3){
                     this.addHeadbtn = false
+                }else if(!this.specHeadData.length){
+                    this.specHeadData = [{sign:'spec1', spec_name:'', spec_value:[], options:[]}]
                 }
             },
             changeLabel(e){
@@ -364,6 +371,8 @@
                         });
                     }
                 });
+
+                this.generationBtn = false
                 this.$options.methods.loadHead.bind(this)()
                 this.$options.methods.disabledSome.bind(this)()
             },

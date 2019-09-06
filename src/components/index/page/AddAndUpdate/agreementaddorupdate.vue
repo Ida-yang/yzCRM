@@ -53,7 +53,7 @@
                     @change="handleopp($event, item.inputModel)"
                     :placeholder="item.placeholder"
                     style="width:90%;">
-                    <el-option v-for="item in oppoptions" :key="item.opportunity_id" :label="item.opportunity_name" :value="item.opportunity_id"></el-option>
+                    <el-option v-for="o in oppoptions" :key="o.opportunity_id" :label="o.opportunity_name" :value="o.opportunity_id"></el-option>
                 </el-select>
                 <el-select 
                     v-else-if="item.inputModel == 'signatories'"
@@ -64,7 +64,7 @@
                     @change="handleInput($event, item.inputModel)"
                     :placeholder="item.placeholder"
                     style="width:90%;">
-                    <el-option v-for="item in contactslist" :key="item.id" :label="item.name" :value="item.id"></el-option>
+                    <el-option v-for="p in contactslist" :key="p.id" :label="p.name" :value="p.id"></el-option>
                 </el-select>
                 <el-select 
                     v-else-if="item.type && item.type == 'select'"
