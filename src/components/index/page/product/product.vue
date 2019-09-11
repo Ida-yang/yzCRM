@@ -56,11 +56,11 @@
                     </el-table-column>
                     <el-table-column label="规格描述" prop="describe" v-if="item.prop == 'describe' && item.state == 1" show-overflow-tooltip min-width="180" sortable />
                     <el-table-column label="单位" prop="unit" v-if="item.prop == 'unit' && item.state == 1" min-width="90" sortable />
-                    <el-table-column label="价格" prop="price" v-if="item.prop == 'price' && item.state == 1" min-width="90" sortable />
+                    <el-table-column label="价格" prop="itemList[0].price" v-if="item.prop == 'price' && item.state == 1" min-width="90" sortable />
                     <el-table-column label="成本价" prop="costPrice" v-if="item.prop == 'costPrice' && item.state == 1" min-width="100" sortable />
                     <el-table-column label="品牌" prop="brand" v-if="item.prop == 'brand' && item.state == 1" min-width="90" sortable />
                     <el-table-column label="产品属性" prop="attribute" v-if="item.prop == 'attribute' && item.state == 1" min-width="120" sortable />
-                    <!-- <el-table-column label="状态" prop="status" v-if="item.prop == 'status' && item.state == 1" min-width="90" sortable /> -->
+                    <el-table-column label="状态" prop="status" v-if="item.prop == 'status' && item.state == 1" min-width="90" sortable />
                     <el-table-column label="创建时间" prop="createTime" v-if="item.prop == 'createTime' && item.state == 1" min-width="150" sortable />
                 </div>
                 <el-table-column label="操作" fixed="right" width="150" header-align="center" align="center">

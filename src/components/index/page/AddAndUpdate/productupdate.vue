@@ -84,7 +84,7 @@
                     <el-table :data="tableData" border stripe style="width: 100%" @current-change="handleCurrentChange">
                         <el-table-column type="selection" prop="" width="45">
                             <template slot-scope="scope">
-                                <i class="el-icon-delete" @click="Delrow(scope.row)"></i>
+                                <i class="el-icon-delete" @click="Delrow(scope.row,scope.$index)"></i>
                             </template>
                         </el-table-column>
                         <el-table-column header-align="center" align="center" type="index" min-width="45"></el-table-column>
@@ -331,12 +331,12 @@
                 this.$options.methods.loadHead.bind(this)()
                 this.$options.methods.disabledSome.bind(this)()
             },
-            Delrow(e){
+            Delrow(e,index){
                 if(this.tableData.length == 1){
                     this.$message('该行不可删除')
                 }else{
                     this.tableData.forEach((el,i) => {
-                        if(el.index == e.index){
+                        if(i == index){
                             this.tableData.splice(i,1)
                         }
                     });
@@ -419,7 +419,7 @@
                     }
                 }
 
-                this.$options.methods.pushIndex.bind(this)()
+                // this.$options.methods.pushIndex.bind(this)()
                 this.$options.methods.pushValue.bind(this)()
             },
             pushIndex(){
@@ -539,6 +539,7 @@
                 data.goodsDesc = {"introduction" : content,"goodsId":this.myform.id,"itemImages":JSON.stringify(this.imageList)}
                 
                 this.tableData.forEach(el => {
+                    console.log(el)
                     let key1 = el.sname1
                     let key2 = el.sname2
                     let key3 = el.sname3
@@ -550,12 +551,14 @@
                     delete obj['key2']
                     delete obj['key3']
                     delete obj['null']
-                    data.itemList.push({"id":el.id, "goodsId":this.myform.id, "price":el.price, "image":el.image, "erpDocking":el.erpDocking, "barcode":el.barcode, "spec1":el.spec1, "spec2":el.spec2, "spec3":el.spec3, "sname1":el.sname1, "sname2":el.sname2, "sname3":el.sname3, "spec":JSON.stringify(obj)})
+                    data.itemList.push({"id":el.id, "goodsCode":el.goodsCode, "goodsId":this.myform.id, "price":el.price, "image":el.image, "erpDocking":el.erpDocking, "barcode":el.barcode, "spec1":el.spec1, "spec2":el.spec2, "spec3":el.spec3, "sname1":el.sname1, "sname2":el.sname2, "sname3":el.sname3, "spec":JSON.stringify(obj)})
                 });
 
                 this.specHeadData.forEach(item => {
                     data.goodsSpec.push({"goodsId":this.myform.id,"sign":item.sign,"spec_name":item.spec_name,"spec_value":item.spec_value,"options":item.options})
                 });
+
+                // console.log(data)
 
                 let flag = false
                 if(!data.goods.price){
