@@ -20,6 +20,48 @@
                 </div>
             </div>
         </el-card>
+
+        <el-dialog title="自定义字段" :visible.sync="dialogVisible" width="50%" class="preview_dialog">
+            <div class="preview_dialog_body">
+                <el-form ref="attributeform" :model="fieldsform" label-width="80px" :rules="rules">
+                    <el-form-item v-for="(item,index) in previewData" :key="index" :label="item.name" :prop="item.field_name">
+                        <el-input v-if="item.formType == 'text' || item.formType == 'email'" disabled v-model="item.default_value" :placeholder="item.input_tips" style="width:240px"></el-input>
+
+                        <el-input v-else-if="item.formType == 'textarea'" disabled type="textarea" :maxlength="item.max_length" v-model="item.default_value" :placeholder="item.input_tips" style="width:240px"></el-input>
+
+                        <el-input v-else-if="item.formType == 'number'" disabled onkeyup= "value=value.replace(/[^\d]/g,'')" v-model="item.default_value" :placeholder="item.input_tips" style="width:240px"></el-input>
+
+                        <el-input v-else-if="item.formType == 'floatnumber'" disabled onkeyup= "value=value.replace(/^\D*(\d*(?:\.\d{0,2})?).*$/g, '$1')" v-model="item.default_value" :placeholder="item.input_tips" style="width:240px"></el-input>
+
+                        <el-input v-else-if="item.formType == 'mobile'" disabled onkeyup= "value=value.replace(/[^\d]/g,'')" :maxlength="11" v-model="item.default_value" :placeholder="item.input_tips" style="width:240px"></el-input>
+
+                        <el-select v-else-if="item.formType == 'select'" disabled v-model="item.default_value" :placeholder="item.input_tips" style="width:240px">
+                        </el-select>
+
+                        <el-select v-else-if="item.formType == 'checkbox'" multiple disabled v-model="item.default_value" :placeholder="item.input_tips" style="width:240px">
+                        </el-select>
+
+                        <el-select v-else-if="item.formType == 'user' || item.formType == 'structure'" disabled multiple v-model="item.default_value" :placeholder="item.input_tips" style="width:240px">
+                        </el-select>
+
+                        <el-date-picker v-else-if="item.formType == 'date'" disabled v-model="item.default_value" type="date" :placeholder="item.input_tips" 
+                            format="yyyy-MM-dd" value-format="yyyy-MM-dd" style="width:240px">
+                        </el-date-picker>
+
+                        <el-date-picker v-else-if="item.formType == 'datetime'" disabled v-model="item.default_value" type="datetime" :placeholder="item.input_tips" 
+                            format="yyyy-MM-dd HH:mm:ss" value-format="yyyy-MM-dd HH:mm:ss" style="width:240px">
+                        </el-date-picker>
+
+                        <el-button v-else-if="item.formType == 'file'" disabled size="mini" class="info-btn">上传</el-button>
+                        <div v-if="item.formType == 'file'" class="el-upload__tip" style="line-height:16px">{{item.input_tips}}</div>
+                    </el-form-item>
+                </el-form>
+            </div>
+            <span slot="footer" class="dialog-footer">
+                <el-button size="medium" @click="dialogVisible = false">取 消</el-button>
+                <el-button type="primary" size="medium" @click="dialogVisible = false">确 定</el-button>
+            </span>
+        </el-dialog>
     </div>
 </template>
 
@@ -35,7 +77,14 @@
             return{
                 msg:'自定义字段',
 
-                cardList:[]
+                cardList:[],
+
+                previewData:[],
+
+                fieldsform:{},
+                rules:{},
+
+                dialogVisible:false
             }
         },
 
@@ -92,6 +141,14 @@
                             el.module_name = '订单管理',
                             el.field_img = '../../../../../static/img/field_img/order.png'
                             el.bgcolor = 'background-color: rgb(114, 207, 141);'
+                        }else if(el.label == 10){
+                            el.module_name = '办公管理',
+                            el.field_img = '../../../../../static/img/field_img/order.png'
+                            el.bgcolor = 'background-color: rgb(114, 207, 141);'
+                        }else if(el.label == 11){
+                            el.module_name = '工单管理',
+                            el.field_img = '../../../../../static/img/field_img/order.png'
+                            el.bgcolor = 'background-color: rgb(114, 207, 141);'
                         }
                     });
                     _this.cardList = info
@@ -105,6 +162,32 @@
             },
             topreview(e,item){
                 const _this = this
+                let qs = require('querystring')
+                let data = {
+                    label: item.label
+                }
+
+                axios({
+                    method: 'post',
+                    url: _this.$store.state.defaultHttp+'field/list.do?cId='+_this.$store.state.iscId,
+                    data: qs.stringify(data)
+                }).then(function(res){
+                    let info = res.data
+                    let newarr = new Array()
+                    info.forEach((el) => {
+                        if(el.is_null == 1){
+                            _this.rules[el.field_name] = [{required: true , message: ' '}]
+                        }
+                        if(el.is_sys == 0){
+                            newarr.push(el)
+                        }
+                    });
+                    
+                    _this.previewData = newarr
+                    _this.dialogVisible = true
+                }).catch(function(err){
+                    // console.log(err);
+                });
             }
         }
     }

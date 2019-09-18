@@ -190,6 +190,41 @@
                     </el-form-item>
                 </el-form>
             </el-tab-pane>
+            <el-tab-pane label="自定义字段" name="third">
+                 <el-form ref="attributeform" :model="fieldsform" :rules="rules">
+                    <el-form-item v-for="(item,index) in previewData" :key="index" :label="item.name" :prop="item.field_name" label-width="130px">
+                        <el-input v-if="item.formType == 'text' || item.formType == 'email'" v-model="item.default_value" :placeholder="item.input_tips" style="width:240px"></el-input>
+
+                        <el-input v-else-if="item.formType == 'textarea'" type="textarea" :maxlength="item.max_length" v-model="item.default_value" :placeholder="item.input_tips" style="width:240px"></el-input>
+
+                        <el-input v-else-if="item.formType == 'number'" onkeyup= "value=value.replace(/[^\d]/g,'')" v-model="item.default_value" :placeholder="item.input_tips" style="width:240px"></el-input>
+
+                        <el-input v-else-if="item.formType == 'floatnumber'" onkeyup= "value=value.replace(/^\D*(\d*(?:\.\d{0,2})?).*$/g, '$1')" v-model="item.default_value" :placeholder="item.input_tips" style="width:240px"></el-input>
+
+                        <el-input v-else-if="item.formType == 'mobile'" onkeyup= "value=value.replace(/[^\d]/g,'')" :maxlength="11" v-model="item.default_value" :placeholder="item.input_tips" style="width:240px"></el-input>
+
+                        <el-select v-else-if="item.formType == 'select'" v-model="item.default_value" :placeholder="item.input_tips" style="width:240px">
+                        </el-select>
+
+                        <el-select v-else-if="item.formType == 'checkbox'" multiple v-model="item.default_value" :placeholder="item.input_tips" style="width:240px">
+                        </el-select>
+
+                        <el-select v-else-if="item.formType == 'user' || item.formType == 'structure'" multiple v-model="item.default_value" :placeholder="item.input_tips" style="width:240px">
+                        </el-select>
+
+                        <el-date-picker v-else-if="item.formType == 'date'" v-model="item.default_value" type="date" :placeholder="item.input_tips" 
+                            format="yyyy-MM-dd" value-format="yyyy-MM-dd" style="width:240px">
+                        </el-date-picker>
+
+                        <el-date-picker v-else-if="item.formType == 'datetime'" v-model="item.default_value" type="datetime" :placeholder="item.input_tips" 
+                            format="yyyy-MM-dd HH:mm:ss" value-format="yyyy-MM-dd HH:mm:ss" style="width:240px">
+                        </el-date-picker>
+
+                        <el-button v-else-if="item.formType == 'file'" size="mini" class="info-btn">上传</el-button>
+                        <div v-if="item.formType == 'file'" class="el-upload__tip" style="line-height:16px">{{item.input_tips}}</div>
+                    </el-form-item>
+                </el-form>
+            </el-tab-pane>
         </el-tabs>
         
         <div class="line" style="height:690px;"></div>
@@ -268,7 +303,10 @@
                     cuesid : [{ required: true, message: '线索来源不能为空', trigger: 'blur' },],
                 },
 
-                isDisable:false
+                isDisable:false,
+
+                fieldsform:{},
+                previewData:[]
             }
         },
         mounted() {
@@ -277,6 +315,7 @@
             this.loadCountry()
             this.loadinfo()
             this.loadTable2()
+            this.loadfield()
         },
         methods:{
             loadCountry(){
@@ -393,6 +432,45 @@
                     this.myForm.financingStateId = setForm.financingState
                     this.$emit('input', this.myForm);
                 }
+            },
+            loadfield(){
+                const _this = this
+                let qs =require('querystring')
+                let aval = null
+                let bval = null
+                if(this.clueaddOrUpdateData.submitData) {
+                    aval = this.clueaddOrUpdateData.submitData.id;
+                    bval = this.clueaddOrUpdateData.submitData.batch_id;
+                }
+                let data = {
+                    label: 1,
+                    id: aval,
+                    batch_id: bval,
+                }
+
+                axios({
+                    method: 'post',
+                    url: _this.$store.state.defaultHttp+'field/queryField.do?cId='+_this.$store.state.iscId,
+                    data: qs.stringify(data),
+                }).then(function(res){
+                    let info = rea.data
+                    let newarr = new Array()
+
+                    info.forEach((el) => {
+                        if(el.is_null == 1){
+                            _this.rules[el.field_name] = [{required: true , message: el.name + '不能为空', trigger:'blur'}]
+                        }
+                        if(el.is_sys == 0){
+                            newarr.push(el)
+                        }
+                    });
+                    
+                    _this.previewData = newarr
+
+                    console.log(_this.previewData)
+                }).catch(function(err){
+                    // console.log(err);
+                });
             },
             loadTable2(){
                 const _this = this

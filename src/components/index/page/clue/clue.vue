@@ -550,7 +550,7 @@
                     "companyId": row.companyId,
                     "operatingState": row.operatingState,
                     "operatingStateId": row.operatingStateId};
-                clueaddOrUpdateData.submitData = {"id": row.id,'csId':row.contacts[0].csId};
+                clueaddOrUpdateData.submitData = {"id": row.id,'csId':row.contacts[0].csId, "batch_id": row.batch_id};
                 clueaddOrUpdateData.submitURL = this.$store.state.defaultHttp+ 'customerTwo/updateClue.do?cId='+this.$store.state.iscId+'&pId='+this.$store.state.ispId,
                 this.$store.state.clueaddOrUpdateData = clueaddOrUpdateData;
                 axios({

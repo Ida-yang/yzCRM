@@ -1284,4 +1284,16 @@
     .operation_proclass{
         margin-right: 20px
     }
+
+    .preview_dialog{
+        overflow: hidden
+    }
+    .preview_dialog .el-dialog{
+        margin-top: 5vh !important
+    }
+    .preview_dialog_body{
+        width: 100%;
+        height: calc(90vh - 180px);
+        overflow: overlay
+    }
 </style>
