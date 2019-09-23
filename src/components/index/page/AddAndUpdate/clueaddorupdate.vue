@@ -192,36 +192,54 @@
             </el-tab-pane>
             <el-tab-pane label="自定义字段" name="third">
                  <el-form ref="attributeform" :model="fieldsform" :rules="rules">
-                    <el-form-item v-for="(item,index) in previewData" :key="index" :label="item.name" :prop="item.field_name" label-width="130px">
-                        <el-input v-if="item.formType == 'text' || item.formType == 'email'" v-model="item.default_value" :placeholder="item.input_tips" style="width:240px"></el-input>
+                    <el-form-item v-for="item in previewData" :key="item.id" :label="item.name" :prop="item.field_name" label-width="130px">
+                        <el-input v-if="item.formType == 'text' || item.formType == 'email'" v-model="item.default_value" :placeholder="item.input_tips" style="width:90%"></el-input>
 
-                        <el-input v-else-if="item.formType == 'textarea'" type="textarea" :maxlength="item.max_length" v-model="item.default_value" :placeholder="item.input_tips" style="width:240px"></el-input>
+                        <el-input v-else-if="item.formType == 'textarea'" type="textarea" :maxlength="item.max_length" v-model="item.default_value" :placeholder="item.input_tips" style="width:90%"></el-input>
 
-                        <el-input v-else-if="item.formType == 'number'" onkeyup= "value=value.replace(/[^\d]/g,'')" v-model="item.default_value" :placeholder="item.input_tips" style="width:240px"></el-input>
+                        <el-input v-else-if="item.formType == 'number'" onkeyup= "value=value.replace(/[^\d]/g,'')" v-model="item.default_value" :placeholder="item.input_tips" style="width:90%"></el-input>
 
-                        <el-input v-else-if="item.formType == 'floatnumber'" onkeyup= "value=value.replace(/^\D*(\d*(?:\.\d{0,2})?).*$/g, '$1')" v-model="item.default_value" :placeholder="item.input_tips" style="width:240px"></el-input>
+                        <el-input v-else-if="item.formType == 'floatnumber'" onkeyup= "value=value.replace(/^\D*(\d*(?:\.\d{0,2})?).*$/g, '$1')" v-model="item.default_value" :placeholder="item.input_tips" style="width:90%"></el-input>
 
-                        <el-input v-else-if="item.formType == 'mobile'" onkeyup= "value=value.replace(/[^\d]/g,'')" :maxlength="11" v-model="item.default_value" :placeholder="item.input_tips" style="width:240px"></el-input>
+                        <el-input v-else-if="item.formType == 'mobile'" onkeyup= "value=value.replace(/[^\d]/g,'')" :maxlength="11" v-model="item.default_value" :placeholder="item.input_tips" style="width:90%"></el-input>
 
-                        <el-select v-else-if="item.formType == 'select'" v-model="item.default_value" :placeholder="item.input_tips" style="width:240px">
+                        <el-select v-else-if="item.formType == 'select'" v-model="item.default_value" :placeholder="item.input_tips" style="width:90%">
+                            <el-option v-for="o in item.setting" :key="o" :label="o" :value="o"></el-option>
                         </el-select>
 
-                        <el-select v-else-if="item.formType == 'checkbox'" multiple v-model="item.default_value" :placeholder="item.input_tips" style="width:240px">
+                        <el-select v-else-if="item.formType == 'checkbox'" multiple v-model="item.default_value" :placeholder="item.input_tips" style="width:90%">
+                            <el-option v-for="o in item.setting" :key="o" :label="o" :value="o"></el-option>
                         </el-select>
 
-                        <el-select v-else-if="item.formType == 'user' || item.formType == 'structure'" multiple v-model="item.default_value" :placeholder="item.input_tips" style="width:240px">
+                        <el-select v-else-if="item.formType == 'user'" v-model="item.default_value" :placeholder="item.input_tips" style="width:90%">
+                            <el-option v-for="o in userData" :key="o.private_id" :label="o.private_employee" :value="o.private_id"></el-option>
+                        </el-select>
+
+                        <el-select v-else-if="item.formType == 'structure'" v-model="item.displayVal" :placeholder="item.input_tips" style="width:90%" class="noPadding_select">
+                            <el-option class="droplist nopadding_option" :value="item.displayVal">
+                                <el-tree 
+                                    node-key="deptid" 
+                                    highlight-current default-expand-all
+                                    ref="tree"
+                                    :expand-on-click-node="false"
+                                    :data="deptData"
+                                    :props="defaultProps"
+                                    @node-click="handlecheck($event,item)">
+                                </el-tree>
+                            </el-option>
                         </el-select>
 
                         <el-date-picker v-else-if="item.formType == 'date'" v-model="item.default_value" type="date" :placeholder="item.input_tips" 
-                            format="yyyy-MM-dd" value-format="yyyy-MM-dd" style="width:240px">
+                            format="yyyy-MM-dd" value-format="yyyy-MM-dd" style="width:90%">
                         </el-date-picker>
 
                         <el-date-picker v-else-if="item.formType == 'datetime'" v-model="item.default_value" type="datetime" :placeholder="item.input_tips" 
-                            format="yyyy-MM-dd HH:mm:ss" value-format="yyyy-MM-dd HH:mm:ss" style="width:240px">
+                            format="yyyy-MM-dd HH:mm:ss" value-format="yyyy-MM-dd HH:mm:ss" style="width:90%">
                         </el-date-picker>
-
-                        <el-button v-else-if="item.formType == 'file'" size="mini" class="info-btn">上传</el-button>
-                        <div v-if="item.formType == 'file'" class="el-upload__tip" style="line-height:16px">{{item.input_tips}}</div>
+                        <el-upload v-else-if="item.formType == 'file'" class="upload-demo" :action="doUpload" :multiple="false" :limit="1" :on-success="uploadSuccess" :before-upload="beforeUpload">
+                            <el-button size="small" type="primary">上传</el-button>
+                            <div slot="tip" class="el-upload__tip" style="margin-top: -20px">{{item.input_tips}}</div>
+                        </el-upload>
                     </el-form-item>
                 </el-form>
             </el-tab-pane>
@@ -299,14 +317,24 @@
                     poolName : [{ required: true, message: '公司名称不能为空', trigger: 'blur' },],
                     contactsName : [{ required: true, message: '联系人名称不能为空', trigger: 'blur' },],
                     phone : [{ required: true, message: '手机不能为空', trigger: 'blur' },],
-                    // telphone:[{ validator:/[\d-]{1,10}/, trigger:'input'},],
                     cuesid : [{ required: true, message: '线索来源不能为空', trigger: 'blur' },],
                 },
 
                 isDisable:false,
 
                 fieldsform:{},
-                previewData:[]
+                previewData:[],
+
+                deptData: [],
+                
+                defaultProps:{
+                    label:'deptname',
+                    children:'next',
+                },
+
+                userData: [],
+
+                doUpload:this.$store.state.defaultHttp + 'workOrder/upload.do?cId=' + this.$store.state.iscId,
             }
         },
         mounted() {
@@ -316,6 +344,7 @@
             this.loadinfo()
             this.loadTable2()
             this.loadfield()
+            this.loadUserandDept()
         },
         methods:{
             loadCountry(){
@@ -453,21 +482,54 @@
                     url: _this.$store.state.defaultHttp+'field/queryField.do?cId='+_this.$store.state.iscId,
                     data: qs.stringify(data),
                 }).then(function(res){
-                    let info = rea.data
-                    let newarr = new Array()
+                    let info = res.data
 
-                    info.forEach((el) => {
+                    info.forEach((el,i) => {
+                        el.displayVal = ''
+                        if(_this.clueaddOrUpdateData.submitData){
+                            el.default_value = el.value
+                            if(el.formType == 'user' || el.formType == 'structure'){
+                                el.displayVal = el.deptOrUserName
+                                el.default_value = parseInt(el.value)
+                            }
+                        }else{
+                            if(el.formType !== 'checkbox'){
+                                if(el.value !== null){
+                                    el.default_value = el.value
+                                }
+                            }
+                        }
                         if(el.is_null == 1){
-                            _this.rules[el.field_name] = [{required: true , message: el.name + '不能为空', trigger:'blur'}]
+                            _this.rules[el.field_name] = [{required: true , message: ' ', trigger:'blur'}]
                         }
-                        if(el.is_sys == 0){
-                            newarr.push(el)
-                        }
-                    });
+                    })
                     
-                    _this.previewData = newarr
+                    _this.previewData = info
+                }).catch(function(err){
+                    // console.log(err);
+                });
+            },
+            loadUserandDept(){
+                const _this = this
+                let qs = require('querystring')
+                let pageInfo = {}
+                pageInfo.page = 1
+                pageInfo.limit = '9999'
 
-                    console.log(_this.previewData)
+                axios({
+                    method: 'post',
+                    url: _this.$store.state.defaultHttp+'getPrivateUserAll.do?cId='+_this.$store.state.iscId,
+                    data:qs.stringify(pageInfo)
+                }).then(function(res){
+                    _this.userData = res.data.map.success
+                }).catch(function(err){
+                    // console.log(err);
+                });
+                axios({
+                    method: 'get',
+                    url: _this.$store.state.defaultHttp+'dept/getDeptNodeTree.do?cId='+_this.$store.state.iscId,
+                }).then(function(res){
+                    _this.deptData = res.data.map.success
                 }).catch(function(err){
                     // console.log(err);
                 });
@@ -522,8 +584,135 @@
                     }
                 });
             },
+            beforeUpload(file){
+                const isLt5M = file.size / 1024 / 1024 < 5
+                if (!isLt5M) {
+                    this.$message.warning('文件大小不能超过 5MB!')
+                    return
+                }
+            },
+            uploadSuccess(res,file,fileList){
+                this.previewData.forEach(el => {
+                    if(el.formType == 'file'){
+                        el.default_value = res
+                    }
+                });
+
+            },
             //提交或修改
             submit() {
+                const _this = this;
+                let qs =require('querystring')
+                let entity = {};
+                if(_this.clueaddOrUpdateData.submitData) {
+                    entity.id = _this.clueaddOrUpdateData.submitData.id;
+                    entity.csId = _this.clueaddOrUpdateData.submitData.csId;
+                    entity.batch_id = _this.clueaddOrUpdateData.submitData.batch_id;
+                }
+                let createForm = _this.clueaddOrUpdateData.createForm;
+                let assistForm = _this.clueaddOrUpdateData.assistForm;
+                let fieldData = _this.previewData
+                let fieldArr = new Array()
+
+                let flag = false;
+                createForm.forEach(item => {
+                    let reg = /^([a-zA-Z]|[0-9])(\w|\-)+@[a-zA-Z0-9]+\.([a-zA-Z]{2,4})$/
+                    // var reg=/^([hH][tT]{2}[pP]:\/\/|[hH][tT]{2}[pP][sS]:\/\/)(([A-Za-z0-9-~]+)\.)+([A-Za-z0-9-~\/])+$/
+                    entity[item.inputModel] = _this.myForm[item.inputModel];
+                    if(item.inputModel == "email" && !reg.test(entity.email)) {
+                        _this.$message({
+                            message: "邮箱格式不正确",
+                            type: 'error'
+                        });
+                        flag = true;
+                    }
+                    if(item.inputModel == "contactsName" && !entity[item.inputModel]) {
+                        _this.$message({
+                            message: "联系人名称不能为空",
+                            type: 'error'
+                        });
+                        flag = true;
+                    }
+                    if(item.inputModel == "poolName" && !entity[item.inputModel]) {
+                        _this.$message({
+                            message: "公司名称不能为空",
+                            type: 'error'
+                        });
+                        flag = true;
+                    }
+                    if(item.inputModel == "phone" && !entity[item.inputModel]) {
+                        _this.$message({
+                            message: "手机号码不能为空",
+                            type: 'error'
+                        });
+                        flag = true;
+                    }
+                    if(item.inputModel == "cuesid" && !entity[item.inputModel]) {
+                        _this.$message({
+                            message: "请选择线索来源",
+                            type: 'error'
+                        });
+                        flag = true;
+                    }
+                });
+                assistForm.forEach(item => {
+                    entity[item.inputModel] = _this.myForm[item.inputModel];
+                });
+                fieldData.forEach(item => {
+                    if(item.formType == 'checkbox'){
+                        item.value = item.default_value.join(',')
+                    }else if(item.formType == 'user' || item.formType == 'structure'){
+                        if(item.default_value){
+                            item.value = item.default_value.toString()
+                        }
+                    }else{
+                        item.value = item.default_value
+                    }
+
+                    if(item.is_null == 1 && !item.value){
+                        _this.$message({
+                            message: item.name + '不能为空',
+                            type: 'error'
+                        });
+                        flag = true;
+                    }
+                });
+                if(flag) return;
+                entity.pId = this.$store.state.ispId
+                entity.secondid = this.$store.state.deptid
+                entity.deptid = this.$store.state.insid
+
+                let subData = {
+                    entity: entity,
+                    field: fieldData
+                }
+
+                this.isDisable = true
+
+                axios({
+                    method: 'post',
+                    url: _this.$store.state.defaultHttp+'customerTwo/saveOrUpdate.do?cId='+_this.$store.state.iscId,
+                    data: subData
+                }).then(function(res){
+                    if(res.data.code && res.data.code == "200") {
+                        _this.$message({
+                            message: '成功',
+                            type: 'success'
+                        });
+                        _this.closeTag();
+                    } else {
+                        _this.$message({
+                            message: res.data.msg,
+                            type: 'error'
+                        });
+                    }
+                    _this.isDisable = false
+                }).catch(function(err){
+                    _this.$message.error("提交失败，请重新提交");
+                    
+                }); 
+            },
+            handleSubmit() {
                 const _this = this;
                 let qs =require('querystring')
                 let subData = {};
@@ -533,7 +722,8 @@
                 }
                 let createForm = _this.clueaddOrUpdateData.createForm;
                 let assistForm = _this.clueaddOrUpdateData.assistForm;
-                let flag = false;
+
+                let flag = true;
                 createForm.forEach(item => {
                     let reg = /^([a-zA-Z]|[0-9])(\w|\-)+@[a-zA-Z0-9]+\.([a-zA-Z]{2,4})$/
                     // var reg=/^([hH][tT]{2}[pP]:\/\/|[hH][tT]{2}[pP][sS]:\/\/)(([A-Za-z0-9-~]+)\.)+([A-Za-z0-9-~\/])+$/
@@ -667,6 +857,17 @@
                 this.E=e;
                 this.areaid = e
             },
+            handlecheck(data,val){
+                console.log(data,val)
+
+                this.previewData.forEach(b => {
+                    if(b.id == val.id){
+                        b.displayVal = data.deptname
+                        b.default_value = data.deptid
+                    }
+                })
+            },
+
             loadinfo(){
                 const _this = this
                 let qs = require('querystring')

@@ -109,9 +109,7 @@
                 <el-table-column label="注册号" prop="registrationNumber" v-if="item.prop == 'registrationNumber' && item.state == 1" min-width="140" sortable />
                 <el-table-column label="组织机构代码" prop="organizationCode" v-if="item.prop == 'organizationCode' && item.state == 1" min-width="140" sortable />
                 <el-table-column label="注册资金" prop="capital" v-if="item.prop == 'capital' && item.state == 1" min-width="110" sortable>
-                    <template slot-scope="scope">
-                        {{scope.row.capital + '万元'}}
-                        </template>
+                    <template slot-scope="scope">{{scope.row.capital}} <span v-show="scope.row.capital">万元</span></template>
                 </el-table-column>
                 <el-table-column label="成立时间" prop="date" v-if="item.prop == 'date' && item.state == 1" min-width="110" sortable />
                 <el-table-column label="企业规模" prop="enterpriseScale" v-if="item.prop == 'enterpriseScale' && item.state == 1" min-width="110" sortable />
@@ -119,6 +117,7 @@
                 <el-table-column label="行业" prop="industryType" show-overflow-tooltip v-if="item.prop == 'industryType' && item.state == 1" min-width="110" sortable />
                 <el-table-column label="公司类型" prop="companyType" v-if="item.prop == 'companyType' && item.state == 1" min-width="110" sortable />
                 <el-table-column label="营业状态" prop="operatingState" v-if="item.prop == 'operatingState' && item.state == 1" min-width="110" sortable />
+                <el-table-column v-for="a in fieldHeadData" :label="a.name" :key="a.field_name" :prop="a.field_name" v-if="item.prop == a.field_name && item.state == 1" min-width="130" sortable />
             </div>
             <el-table-column label="操作" fixed="right" width="90" header-align="center" align="center">
                 <template slot-scope="scope">
@@ -185,6 +184,7 @@
         },
         data(){
             return {
+                fieldHeadData:[],
                 searchList:{
                     searchName:null,
                     label:'1',
@@ -272,9 +272,11 @@
             });
         },
         activated(){
+            this.loadFieldHead()
             this.reloadTable()
         },
         mounted(){
+            this.loadFieldHead()
             this.reloadTable()
             this.reloadData()
         },
@@ -300,14 +302,33 @@
                 searchList.customerStateid = this.searchList.keyWord //客户来源
                 searchList.page = this.page;
                 searchList.limit = this.limit;
+                searchList.label = 2
 
                 axios({
                     method: 'post',
-                    url: _this.$store.state.defaultHttp+'customerpool/query.do?cId='+_this.$store.state.iscId,
+                    url: _this.$store.state.defaultHttp+'pageInfo/queryPageList.do?cId='+_this.$store.state.iscId,
                     data: qs.stringify(searchList),
                 }).then(function(res){
                     _this.$store.state.customerList = res.data.map.success
                     _this.$store.state.customerListnumber = res.data.count;
+                }).catch(function(err){
+                    // console.log(err);
+                });
+            },
+            loadFieldHead(){
+                const _this = this
+                let qs =require('querystring')
+                let data = {
+                    label: 1,
+                    pId: this.$store.state.ispId
+                }
+
+                axios({
+                    method: 'post',
+                    url: _this.$store.state.defaultHttp+'field/queryListHead.do?cId='+_this.$store.state.iscId,
+                    data: qs.stringify(data),
+                }).then(function(res){
+                    _this.fieldHeadData = res.data
                 }).catch(function(err){
                     // console.log(err);
                 });
@@ -545,7 +566,7 @@
                     "companyId": row.companyId,
                     "operatingState": row.operatingState,
                     "operatingStateId": row.operatingStateId};
-                cusaddOrUpdateData.submitData = {"id": row.id,'csId':row.contacts[0].csId};
+                cusaddOrUpdateData.submitData = {"id": row.id,'csId':row.contacts[0].csId, 'batch_id': row.batch_id};
                 cusaddOrUpdateData.submitURL = this.$store.state.defaultHttp+ 'customerpool/updatepool.do?cId='+this.$store.state.iscId+'&pId='+this.$store.state.ispId,
                 this.$store.state.cusaddOrUpdateData = cusaddOrUpdateData
 

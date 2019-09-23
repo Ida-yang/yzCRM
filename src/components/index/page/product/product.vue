@@ -62,6 +62,7 @@
                     <el-table-column label="产品属性" prop="attribute" v-if="item.prop == 'attribute' && item.state == 1" min-width="120" sortable />
                     <el-table-column label="状态" prop="status" v-if="item.prop == 'status' && item.state == 1" min-width="90" sortable />
                     <el-table-column label="创建时间" prop="createTime" v-if="item.prop == 'createTime' && item.state == 1" min-width="150" sortable />
+                    <el-table-column label="产品备注" prop="remark" v-if="item.prop == 'remark' && item.state == 1" min-width="150" sortable />
                 </div>
                 <el-table-column label="操作" fixed="right" width="150" header-align="center" align="center">
                     <template slot-scope="scope">

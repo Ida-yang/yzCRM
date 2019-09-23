@@ -34,6 +34,9 @@
                         <el-form-item class="first_input" label="规格描述" label-width="90px">
                             <el-input type="textarea" rows="1" v-model="myform.describe" class="inputbox"></el-input>
                         </el-form-item>
+                        <el-form-item class="first_input" label="备注" label-width="90px">
+                            <el-input type="textarea" rows="1" v-model="myform.remark" class="inputbox"></el-input>
+                        </el-form-item>
                     </el-form>
                 </div>
                 <div class="first_bottom">
@@ -159,6 +162,7 @@
                     chanpinbiaoqian:null,
                     spec:[],
                     isEnableSpec:'0',
+                    remark:null,
                 },
                 rules:{
                     goodsName : [{ required: true, message: '产品名称不能为空', trigger: 'blur' },],
@@ -219,8 +223,6 @@
 
                 currentrow:null,
                 doUpload:this.$store.state.defaultHttp + 'goods/masterGraph.do?cId=' + this.$store.state.iscId,
-
-
             }
         },
         mounted(){
@@ -442,6 +444,7 @@
                     "isEnableSpec" : this.myform.isEnableSpec,
                     "describe" : this.myform.describe,
                     "label" : this.myform.label,
+                    "remark" : this.myform.remark
                 }
 
                 data.goodsDesc = {"introduction": content,"itemImages":JSON.stringify(this.imageList)}

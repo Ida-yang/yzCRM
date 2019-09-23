@@ -86,7 +86,7 @@
                     </template>
                 </el-table-column>
 
-                <el-table-column label="描述" prop="tbGoods.describe" width="120" v-if="item.prop == 'describe' && item.state == 1"></el-table-column>
+                <el-table-column label="规格描述" prop="tbGoods.describe" width="120" v-if="item.prop == 'describe' && item.state == 1"></el-table-column>
 
                 <el-table-column label="规格属性" prop="goodspec" min-width="100" v-if="item.prop == 'spec' && item.state == 1">
                     <template slot-scope="scope">
@@ -192,6 +192,8 @@
 
                 <el-table-column label="产品品牌" prop="brand" width="80" v-if="item.prop == 'brand' && item.state == 1"></el-table-column>
 
+                <el-table-column label="产品备注" prop="tbGoods.remark" width="120" v-if="item.prop == 'remark' && item.state == 1"></el-table-column>
+
                 <el-table-column label="备注1" prop="remarks1" min-width="120" v-if="item.prop == 'remarks1' && item.state == 1">
                     <template slot-scope="scope">
                         <template v-if="scope.row.edit">
@@ -257,7 +259,7 @@
                 <el-table :data="tableData" border fit @selection-change="selectInfo" style="width: 100%">
                     <el-table-column header-align="center" align="center" type="selection" min-width="45" @selection-change="selectInfo"></el-table-column>
                     <el-table-column prop="tbGoods.goodsName" label="产品名称" width="130"></el-table-column>
-                    <el-table-column prop="tbGoods.describe" show-overflow-tooltip label="描述" width="150"></el-table-column>
+                    <el-table-column prop="tbGoods.describe" show-overflow-tooltip label="规格描述" width="150"></el-table-column>
                     <el-table-column prop="goodspec" label="规格属性" min-width="150">
                         <template slot-scope="scope">
                             <span v-for="(item,i) in scope.row.goodspec" :key="i">{{item.label + '：' + item.value}}</span>
@@ -298,11 +300,11 @@
                 selectData:[],
                 options:[],
                 itemData:[
-                    {id:10, productImg:null, amountOfMoney:null, commitTime:null, brand:null, discount:null, discountAfter:null, discountAmount:null, tbGoods:{ goodsName:'', describe:'', }, num: null, price: null, taxAfter:null, taxAmount:null, taxRate:null, unit:null, edit:false, remarks1:null, remarks2:null},
-                    {id:11, productImg:null, amountOfMoney:null, commitTime:null, brand:null, discount:null, discountAfter:null, discountAmount:null, tbGoods:{ goodsName:'', describe:'', }, num: null, price: null, taxAfter:null, taxAmount:null, taxRate:null, unit:null, edit:false, remarks1:null, remarks2:null},
-                    {id:12, productImg:null, amountOfMoney:null, commitTime:null, brand:null, discount:null, discountAfter:null, discountAmount:null, tbGoods:{ goodsName:'', describe:'', }, num: null, price: null, taxAfter:null, taxAmount:null, taxRate:null, unit:null, edit:false, remarks1:null, remarks2:null},
-                    {id:13, productImg:null, amountOfMoney:null, commitTime:null, brand:null, discount:null, discountAfter:null, discountAmount:null, tbGoods:{ goodsName:'', describe:'', }, num: null, price: null, taxAfter:null, taxAmount:null, taxRate:null, unit:null, edit:false, remarks1:null, remarks2:null},
-                    {id:14, productImg:null, amountOfMoney:null, commitTime:null, brand:null, discount:null, discountAfter:null, discountAmount:null, tbGoods:{ goodsName:'', describe:'', }, num: null, price: null, taxAfter:null, taxAmount:null, taxRate:null, unit:null, edit:false, remarks1:null, remarks2:null},
+                    {id:10, productImg:null, amountOfMoney:null, commitTime:null, brand:null, discount:null, discountAfter:null, discountAmount:null, tbGoods:{ goodsName:'', describe:'', }, num: null, price: null, taxAfter:null, taxAmount:null, taxRate:null, unit:null, edit:false, remark:null, remarks1:null, remarks2:null},
+                    {id:11, productImg:null, amountOfMoney:null, commitTime:null, brand:null, discount:null, discountAfter:null, discountAmount:null, tbGoods:{ goodsName:'', describe:'', }, num: null, price: null, taxAfter:null, taxAmount:null, taxRate:null, unit:null, edit:false, remark:null, remarks1:null, remarks2:null},
+                    {id:12, productImg:null, amountOfMoney:null, commitTime:null, brand:null, discount:null, discountAfter:null, discountAmount:null, tbGoods:{ goodsName:'', describe:'', }, num: null, price: null, taxAfter:null, taxAmount:null, taxRate:null, unit:null, edit:false, remark:null, remarks1:null, remarks2:null},
+                    {id:13, productImg:null, amountOfMoney:null, commitTime:null, brand:null, discount:null, discountAfter:null, discountAmount:null, tbGoods:{ goodsName:'', describe:'', }, num: null, price: null, taxAfter:null, taxAmount:null, taxRate:null, unit:null, edit:false, remark:null, remarks1:null, remarks2:null},
+                    {id:14, productImg:null, amountOfMoney:null, commitTime:null, brand:null, discount:null, discountAfter:null, discountAmount:null, tbGoods:{ goodsName:'', describe:'', }, num: null, price: null, taxAfter:null, taxAmount:null, taxRate:null, unit:null, edit:false, remark:null, remarks1:null, remarks2:null},
                 ],
                 selectList:[],
                 itemList:[],
@@ -559,22 +561,22 @@
                         this.myform.ascription = el.privateUser[0].private_employee
                         this.myform.department = el.deptname
                         this.myform.mechanism = el.parentname
-                    }
-                    if(el.discount){
-                        this.cusdiscount = el.discount
-                    }else{
-                        this.cusdiscount = '100'
-                    }
-                    if(el.taxRate){
-                        this.custaxRate = el.taxRate
-                    }else{
-                        this.custaxRate = '0'
+                        if(el.discount){
+                            this.cusdiscount = el.discount
+                        }else{
+                            this.cusdiscount = '100'
+                        }
+                        if(el.taxRate){
+                            this.custaxRate = el.taxRate
+                        }else{
+                            this.custaxRate = '0'
+                        }
                     }
                 });
                 this.$options.methods.loadContact.bind(this)()
             },
             handleAdd(){
-                this.itemData.push({ productImg:null, amountOfMoney:null, commitTime:null, brand:null, discount:null, discountAfter:null, discountAmount:null, tbGoods:{ goodsName:'', describe:'', }, num: null, price: null, taxAfter:null, taxAmount:null, taxRate:null, unit:null, edit:false, remarks1:null, remarks2:null})
+                this.itemData.push({ productImg:null, amountOfMoney:null, commitTime:null, brand:null, discount:null, discountAfter:null, discountAmount:null, tbGoods:{ goodsName:'', describe:'', }, num: null, price: null, taxAfter:null, taxAmount:null, taxRate:null, unit:null, edit:false, remark:null, remarks1:null, remarks2:null})
             },
             cellClick(row, column, cell, event){
                 row.edit = false

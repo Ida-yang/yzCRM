@@ -34,6 +34,9 @@
                             <li>网址：<span>{{cluedetail.url}}</span></li>
                             <li>地址：<span>{{cluedetail.address}}</span></li>
                             <li>备注：<span>{{cluedetail.remark}}</span></li>
+                            <li v-for="(item,index) in fieldData" :key="index">
+                                {{item.name}}：<span>{{item.value}}</span>
+                            </li>
                         </ul>
                     </div>
                 </el-card>
@@ -354,6 +357,7 @@
                 cluedetail:{
                     // name:'',
                 },
+                fieldData:[],
                 contacts:{},
                 record:null,
                 fastcontactList:null,
@@ -430,6 +434,10 @@
                 pageInfo.limit = this.limit
                 let data = {}
                 data.type = '快捷方式'
+                let info = {
+                    label: 1,
+                    id: this.detailData.id
+                }
                 
                 //加载快捷方式
                 axios({
@@ -501,6 +509,16 @@
                     _this.cluedetail = res.data
                     _this.contacts = res.data.contacts[0]
                     _this.showbusiness = false
+                }).catch(function(err){
+                    // console.log(err);
+                });
+                //加载线索自定义字段详情
+                axios({
+                    method:'post',
+                    url:_this.$store.state.defaultHttp+'field/information.do?cId='+_this.$store.state.iscId,
+                    data:qs.stringify(info)
+                }).then(function(res){
+                    _this.fieldData = res.data
                 }).catch(function(err){
                     // console.log(err);
                 });

@@ -577,7 +577,8 @@
     .el-select .el-input__inner {
         cursor: pointer;
         padding-right: 35px;
-        height: 30px !important;
+        /* height: 30px !important; */
+        height: 30px;
     }
     .el-input__inner {
         height: 30px;
@@ -1295,5 +1296,17 @@
         width: 100%;
         height: calc(90vh - 180px);
         overflow: overlay
+    }
+
+    
+    .drop_tree{
+        margin: 0
+    }
+    .nopadding_option .el-tree{
+        margin: 0
+    }
+    .nopadding_option.el-select-dropdown__item{
+        padding: 0;
+        font-weight: normal
     }
 </style>

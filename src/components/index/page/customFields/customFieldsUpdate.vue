@@ -16,8 +16,8 @@
                     <el-button type="primary" size="medium" :disabled="isDisable" @click="submit" style="margin-right:10px !important;">提交</el-button>
                     <el-button class="info-btn" size="medium" @click="closeTag" style="margin-right:10px !important;">返回</el-button>
                 </div>
-                <el-form ref="attributeform" :model="fieldsform" label-width="80px" :rules="rules" class="field_form">
-                    <el-form-item v-for="(item,index) in updateForm" :key="index" :label="item.name" :prop="item.field_name" class="field_form_item" :class="click_item_index == index ? 'bg_field' : ''" @click.native="clickFormItem($event,item,index)">
+                <el-form ref="attributeform" :model="fieldsform" :rules="rules" class="field_form">
+                    <el-form-item v-for="(item,index) in updateForm" :key="index" :label="item.name" label-width="130px" :prop="item.field_name" class="field_form_item" :class="click_item_index == index ? 'bg_field' : ''" @click.native="clickFormItem($event,item,index)">
                         <el-input v-if="item.formType == 'text' || item.formType == 'email'" disabled v-model="item.default_value" :placeholder="item.input_tips" style="width:240px"></el-input>
 
                         <el-input v-else-if="item.formType == 'textarea'" disabled type="textarea" :maxlength="item.max_length" v-model="item.default_value" :placeholder="item.input_tips" style="width:240px"></el-input>
@@ -87,7 +87,7 @@
                         <el-checkbox-group v-model="attributeform.check_value" @change="handleChange($event,3)">
                             <div v-for="(el,i) in attributeform.check_setting" :key="i" class="check_div">
                                 <el-checkbox :label="el.value" class="field_check">
-                                    <el-input v-model="el.value" ></el-input>
+                                    <el-input v-model="el.value" @blur="inputBlur(el,i)"></el-input>
                                 </el-checkbox>
                                 <span class="plus_remove_icon">
                                     <i class="el-icon-circle-plus" @click="plusCheck(el,i)"></i>
@@ -100,7 +100,7 @@
                         <el-radio-group v-model="attributeform.radio_value" @change="handleChange($event,4)">
                             <div v-for="(el,i) in attributeform.check_setting" :key="i" class="check_div">
                                 <el-radio :label="el.value" class="field_check">
-                                    <el-input v-model="el.value" ></el-input>
+                                    <el-input v-model="el.value" @blur="inputBlur(el,i)"></el-input>
                                 </el-radio>
                                 <span class="plus_remove_icon">
                                     <i class="el-icon-circle-plus" @click="plusCheck(el,i)"></i>
@@ -113,7 +113,7 @@
                     <el-form-item>
                         <el-checkbox v-model="attributeform.is_null" label="设为必填" @change="handleChange($event,5)"></el-checkbox>
                         <br />
-                        <el-checkbox v-model="attributeform.is_unique" label="设为唯一" @change="handleChange($event,6)"></el-checkbox>
+                        <el-checkbox v-model="attributeform.is_unique" v-if="attributeField.is_unique" label="设为唯一" @change="handleChange($event,6)"></el-checkbox>
                     </el-form-item>
                 </el-form>
             </el-col>
@@ -300,12 +300,12 @@
                 if(firstItem.formType == 'text' || firstItem.formType == 'email' || firstItem.formType == 'number' || firstItem.formType == 'floatnumber' || firstItem.formType == 'mobile'){
                     this.attributeField = {
                         default_value: true, default_date: false, default_datetime: false, max_length: false,
-                        check_setting: false, check_value: false, radio_value: false,
+                        check_setting: false, check_value: false, radio_value: false, is_unique: true
                     }
                 }else if(firstItem.formType == 'textarea'){
                     this.attributeField = {
                         default_value: true, default_date: false, default_datetime: false, max_length: true,
-                        check_setting: false, check_value: false, radio_value: false,
+                        check_setting: false, check_value: false, radio_value: false, is_unique: true
                     }
                 }else if(firstItem.formType == 'select'){
                     this.attributeField = {
@@ -413,7 +413,7 @@
                 }else if(item.label == 11){
                     this.updateForm.push({
                         id: null, parent_id: null, label: null, sorting: null, operating: null, examine_category_id: null,
-                        default_value: '', field_name: '', formType: "file", input_tips: '只能上传jpg/png文件，且不超过500kb', is_null: 0,
+                        default_value: '', field_name: '', formType: "file", input_tips: '文件不超过5Mb', is_null: 0,
                         is_sys: 0, is_unique: 0, max_length: null, name: "附件", setting: [], type: item.label,
                     })
                 }
@@ -432,13 +432,36 @@
                 this.loadfield(item)
             },
             delFieldItem(e,item,index){
+                const _this = this
+                let qs = require('querystring')
+                let data = {
+                    id: item.id
+                }
+
                 if(item.is_sys == 1){
                     this.$message({
                         message: '该字段不可删除'
                     })
-                }else{
+                }else if(item.is_sys == 0 && !item.id){
                     this.updateForm.splice(index,1)
-                } 
+                }else{
+                    axios({
+                        method:'post',
+                        url:_this.$store.state.defaultHttp+'field/delCheck.do?cId='+_this.$store.state.iscId,
+                        data:qs.stringify(data)
+                    }).then(function(res){
+                        if(res.data.code == '200'){
+                            _this.updateForm.splice(index,1)
+                        }else if(res.data.code == '20001'){
+                            _this.$message({
+                                message: '该字段已有关联数据，不可删除',
+                                type: 'error'
+                            })
+                        }
+                    }).catch(function(err){
+                        // console.log(err);
+                    });
+                }
             },
 
 
@@ -495,6 +518,16 @@
             },
             removeCheck(el,i){
                 this.attributeform.check_setting.splice(i,1)
+            },
+            inputBlur(val,index){
+                let info = this.attributeform.check_setting
+                let settingArr = new Array()
+
+                info.forEach((el,i) => {
+                    settingArr.push(el.value)
+                });
+                
+                this.updateData.setting = settingArr
             },
             loadselectItem(n,v){
                 let _this = this
@@ -583,6 +616,7 @@
                             // console.log(err);
                         });
                     }else {
+                        _this.isDisable = false
                         _this.$message({
                             message: res.data.msg,
                             type: 'error'
@@ -590,6 +624,7 @@
                     }
                 }).catch(function(err){
                     // console.log(err);
+                    _this.isDisable = false
                 });
             },
 

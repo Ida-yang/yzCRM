@@ -16,6 +16,7 @@
                     <li>销售价格：{{probasicData.price}}</li>
                     <li>标准成本价：{{probasicData.costPrice}}</li>
                     <li style="flex:0 0 100%;">规格描述：{{probasicData.describe}}</li>
+                    <li style="flex:0 0 100%;">产品备注：{{probasicData.remark}}</li>
                 </ul>
             </div>
         </div>

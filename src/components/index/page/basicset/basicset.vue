@@ -2614,9 +2614,6 @@
         padding: 0;
         height: auto
     }
-    .drop_tree{
-        margin: 0
-    }
     .dept_selec{
         width: 100%;
     }
