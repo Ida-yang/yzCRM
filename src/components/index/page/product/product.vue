@@ -63,6 +63,7 @@
                     <el-table-column label="状态" prop="status" v-if="item.prop == 'status' && item.state == 1" min-width="90" sortable />
                     <el-table-column label="创建时间" prop="createTime" v-if="item.prop == 'createTime' && item.state == 1" min-width="150" sortable />
                     <el-table-column label="产品备注" prop="remark" v-if="item.prop == 'remark' && item.state == 1" min-width="150" sortable />
+                    <el-table-column v-for="a in fieldHeadData" :label="a.name" :key="a.field_name" :prop="a.field_name" v-if="item.prop == a.field_name && item.state == 1" min-width="130" sortable />
                 </div>
                 <el-table-column label="操作" fixed="right" width="150" header-align="center" align="center">
                     <template slot-scope="scope">
@@ -110,6 +111,7 @@
         },
         data(){
             return {
+                fieldHeadData:[],
                 datalist:[],
                 defaultProps:{
                     label:'name',
@@ -167,9 +169,11 @@
             });
         },
         activated(){
+            this.loadFieldHead()
             this.reloadTable()
         },
         mounted(){
+            this.loadFieldHead()
             this.reloadTable()
             this.reloadData()
         },
@@ -182,10 +186,12 @@
                 pageInfo.limit = this.limit
                 pageInfo.searchName = this.searchList.searchName
                 pageInfo.classification_id = this.searchList.classification_id
+                pageInfo.label = 4
 
                 axios({
                     method: 'post',
-                    url: _this.$store.state.defaultHttp+'goods/searchGoods.do?cId='+_this.$store.state.iscId,
+                    url: _this.$store.state.defaultHttp+'pageInfo/queryPageList.do?cId='+_this.$store.state.iscId,
+                    // url: _this.$store.state.defaultHttp+'goods/searchGoods.do?cId='+_this.$store.state.iscId,
                     data:qs.stringify(pageInfo)
                 }).then(function(res){
                     let info = res.data.map.goods
@@ -198,6 +204,24 @@
                     });
                     _this.$store.state.productList = info
                     _this.$store.state.productListnumber = res.data.count
+                }).catch(function(err){
+                    // console.log(err);
+                });
+            },
+            loadFieldHead(){
+                const _this = this
+                let qs =require('querystring')
+                let data = {
+                    label: 4,
+                    pId: this.$store.state.ispId
+                }
+
+                axios({
+                    method: 'post',
+                    url: _this.$store.state.defaultHttp+'field/queryListHead.do?cId='+_this.$store.state.iscId,
+                    data: qs.stringify(data),
+                }).then(function(res){
+                    _this.fieldHeadData = res.data
                 }).catch(function(err){
                     // console.log(err);
                 });
@@ -295,7 +319,7 @@
             handleEdit(index,row){
                 const _this = this
                 let productupdateData = {}
-                productupdateData.setForm = {"id": row.id};
+                productupdateData.setForm = {"id": row.id, 'batch_id': row.batch_id};
                 productupdateData.submitURL = this.$store.state.defaultHttp+ 'goods/update.do?cId='+this.$store.state.iscId+'&pId='+this.$store.state.ispId,
                 this.$store.state.productupdateData = productupdateData
                 _this.$router.push({ path: '/productupdate' })

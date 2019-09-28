@@ -33,6 +33,9 @@
                             <li>网址：<span>{{customerdetail.url}}</span></li>
                             <li>地址：<span>{{customerdetail.address}}</span></li>
                             <li>备注：<span>{{customerdetail.remark}}</span></li>
+                            <li v-for="(item,index) in fieldData" :key="index">
+                                {{item.name}}：<span>{{item.value}}</span>
+                            </li>
                         </ul>
                     </div>
                 </el-card>
@@ -547,6 +550,7 @@
                 customerdetail:{
                     pName: ''
                 },
+                fieldData:[],
                 contacts:{},
                 record:[],
                 fastcontactList:null,
@@ -625,6 +629,10 @@
                 pageInfo2.limit = 100000
                 let data = {}
                 data.type = '快捷方式'
+                let info = {
+                    label: 2,
+                    id: this.detailData.id
+                }
 
                 
                 //加载快捷方式
@@ -716,6 +724,16 @@
                     url:_this.$store.state.defaultHttp+'customerpool/selectWorkPlanAndVisit.do?cId='+_this.$store.state.iscId+'&customerpool_id='+this.detailData.id
                 }).then(function(res){
                     _this.$store.state.FielDutyDetailsList = res.data.map.workPlanAndVisit
+                }).catch(function(err){
+                    // console.log(err);
+                });
+                //加载客户自定义字段详情
+                axios({
+                    method:'post',
+                    url:_this.$store.state.defaultHttp+'field/information.do?cId='+_this.$store.state.iscId,
+                    data:qs.stringify(info)
+                }).then(function(res){
+                    _this.fieldData = res.data
                 }).catch(function(err){
                     // console.log(err);
                 });

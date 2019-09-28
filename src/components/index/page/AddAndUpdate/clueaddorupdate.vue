@@ -584,6 +584,14 @@
                     }
                 });
             },
+            handlecheck(data,val){
+                this.previewData.forEach(b => {
+                    if(b.id == val.id){
+                        b.displayVal = data.deptname
+                        b.default_value = data.deptid
+                    }
+                })
+            },
             beforeUpload(file){
                 const isLt5M = file.size / 1024 / 1024 < 5
                 if (!isLt5M) {
@@ -856,16 +864,6 @@
             choseBlock(e) {
                 this.E=e;
                 this.areaid = e
-            },
-            handlecheck(data,val){
-                console.log(data,val)
-
-                this.previewData.forEach(b => {
-                    if(b.id == val.id){
-                        b.displayVal = data.deptname
-                        b.default_value = data.deptid
-                    }
-                })
             },
 
             loadinfo(){

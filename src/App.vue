@@ -886,8 +886,6 @@
     }
     .first_right {
         width: calc(100% - 400px);
-        height: 240px;
-        /* margin-top: 55px; */
         padding: 20px;
         box-sizing: border-box;
         list-style: none;
@@ -898,6 +896,7 @@
     }
     .first_right li {
         flex: 0 0 50%;
+        line-height: 32px
     }
     .first_bottom {
         width: 100%;
@@ -955,9 +954,12 @@
     .droplist {
         height: auto;
     }
+    .orderDialog{
+        overflow: hidden
+    }
     .orderDialog .el-dialog {
-        min-height: 750px;
-        margin-top: 10vh;
+        height: 90vh;
+        margin-top: 5vh !important;
     }
     .table_date.el-date-editor.el-input {
         width: 150px;
@@ -1308,5 +1310,14 @@
     .nopadding_option.el-select-dropdown__item{
         padding: 0;
         font-weight: normal
+    }
+
+    
+    .formtabs{
+        width: 41%;
+        float: left;
+    }
+    .cusForm {
+        width: 100%;
     }
 </style>

@@ -319,7 +319,7 @@
                 const _this = this
                 let qs =require('querystring')
                 let data = {
-                    label: 1,
+                    label: 2,
                     pId: this.$store.state.ispId
                 }
 

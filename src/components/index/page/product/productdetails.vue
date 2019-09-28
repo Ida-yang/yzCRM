@@ -17,6 +17,9 @@
                     <li>标准成本价：{{probasicData.costPrice}}</li>
                     <li style="flex:0 0 100%;">规格描述：{{probasicData.describe}}</li>
                     <li style="flex:0 0 100%;">产品备注：{{probasicData.remark}}</li>
+                    <li v-for="(item,index) in fieldData" :key="index">
+                        {{item.name}}：<span>{{item.value}}</span>
+                    </li>
                 </ul>
             </div>
         </div>
@@ -71,6 +74,7 @@
                 activeName:'first',
 
                 probasicData:{},
+                fieldData:[],
                 introduction:'',
                 itemImgList:[],
                 proItemData: [{index:0,imgfile:'',spec1:'',barcode: '',erpDocking: ''}],
@@ -89,6 +93,10 @@
                 this.detailData = this.$store.state.productdetailsData
                 let data = {}
                 data.goodsId = this.detailData.id
+                let info = {
+                    label: 4,
+                    id: this.detailData.id
+                }
 
                 axios({
                     method: 'post',
@@ -127,6 +135,16 @@
                             }
                         });
                     }
+                }).catch(function(err){
+                    // console.log(err);
+                });
+                //加载自定义字段详情
+                axios({
+                    method:'post',
+                    url:_this.$store.state.defaultHttp+'field/information.do?cId='+_this.$store.state.iscId,
+                    data:qs.stringify(info)
+                }).then(function(res){
+                    _this.fieldData = res.data
                 }).catch(function(err){
                     // console.log(err);
                 });

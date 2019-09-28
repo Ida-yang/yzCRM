@@ -21,6 +21,9 @@
                             <li>职务：<span>{{contacts.identity}}</span></li>
                             <li>备注：<span>{{customerpool.remark}}</span></li>
                             <li>地址：<span>{{customerpool.address}}</span></li>
+                            <li v-for="(item,index) in fieldData" :key="index">
+                                {{item.name}}：<span>{{item.value}}</span>
+                            </li>
                         </ul>
                     </div>
                     <div v-show="!thisshow"></div>
@@ -595,6 +598,7 @@
                     keyword:null,
                 },
                 opportunitydetail:{},
+                fieldData:[],
                 contacts:{},
                 customerpool:{},
                 customerId:null,
@@ -807,6 +811,12 @@
             },
             loadData() {
                 const _this = this
+                let qs =require('querystring')
+                
+                let info = {
+                    label: 5,
+                    id: this.idArr.opportunity_id
+                }
                 //详情页
                 axios({
                     method:'get',
@@ -882,6 +892,16 @@
                     _this.$options.methods.loadfollow.bind(_this)()
                 }).catch(function(err){
                     _this.$message.error("商机详情加载失败,请重新进入页面");
+                });
+                //加载自定义字段详情
+                axios({
+                    method:'post',
+                    url:_this.$store.state.defaultHttp+'field/information.do?cId='+_this.$store.state.iscId,
+                    data:qs.stringify(info)
+                }).then(function(res){
+                    _this.fieldData = res.data
+                }).catch(function(err){
+                    // console.log(err);
                 });
                 //商机辅助分析
                 axios({

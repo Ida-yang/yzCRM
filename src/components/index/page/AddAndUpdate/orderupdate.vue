@@ -36,6 +36,57 @@
                     <el-form-item class="first_input" label="备注" label-width="90px">
                         <el-input v-model="myform.remarks" class="inputbox"></el-input>
                     </el-form-item>
+                    
+                    <el-form-item v-for="item in previewData" :key="item.id" :label="item.name" :prop="item.field_name" label-width="90px" class="first_input" style="margin-right:15px">
+                        <el-input v-if="item.formType == 'text' || item.formType == 'email'" v-model="item.default_value" :placeholder="item.input_tips" class="inputbox">></el-input>
+
+                        <el-input v-else-if="item.formType == 'textarea'" type="textarea" :maxlength="item.max_length" v-model="item.default_value" :placeholder="item.input_tips" class="inputbox">></el-input>
+
+                        <el-input v-else-if="item.formType == 'number'" onkeyup= "value=value.replace(/[^\d]/g,'')" v-model="item.default_value" :placeholder="item.input_tips" class="inputbox">></el-input>
+
+                        <el-input v-else-if="item.formType == 'floatnumber'" onkeyup= "value=value.replace(/^\D*(\d*(?:\.\d{0,2})?).*$/g, '$1')" v-model="item.default_value" :placeholder="item.input_tips" class="inputbox">></el-input>
+
+                        <el-input v-else-if="item.formType == 'mobile'" onkeyup= "value=value.replace(/[^\d]/g,'')" :maxlength="11" v-model="item.default_value" :placeholder="item.input_tips" class="inputbox">></el-input>
+
+                        <el-select v-else-if="item.formType == 'select'" v-model="item.default_value" :placeholder="item.input_tips" class="inputbox">>
+                            <el-option v-for="o in item.setting" :key="o" :label="o" :value="o"></el-option>
+                        </el-select>
+
+                        <el-select v-else-if="item.formType == 'checkbox'" multiple v-model="item.default_value" :placeholder="item.input_tips" class="inputbox">>
+                            <el-option v-for="o in item.setting" :key="o" :label="o" :value="o"></el-option>
+                        </el-select>
+
+                        <el-select v-else-if="item.formType == 'user'" v-model="item.default_value" :placeholder="item.input_tips" class="inputbox">>
+                            <el-option v-for="o in userData" :key="o.private_id" :label="o.private_employee" :value="o.private_id"></el-option>
+                        </el-select>
+
+                        <el-select v-else-if="item.formType == 'structure'" v-model="item.displayVal" :placeholder="item.input_tips" class="noPadding_select inputbox">
+                            <el-option class="droplist nopadding_option" :value="item.displayVal">
+                                <el-tree 
+                                    node-key="deptid" 
+                                    highlight-current default-expand-all
+                                    ref="tree"
+                                    :expand-on-click-node="false"
+                                    :data="deptData"
+                                    :props="defaultProps"
+                                    @node-click="handlecheck($event,item)">
+                                </el-tree>
+                            </el-option>
+                        </el-select>
+
+                        <el-date-picker v-else-if="item.formType == 'date'" v-model="item.default_value" type="date" :placeholder="item.input_tips" class="inputbox"
+                            format="yyyy-MM-dd" value-format="yyyy-MM-dd">
+                        </el-date-picker>
+
+                        <el-date-picker v-else-if="item.formType == 'datetime'" v-model="item.default_value" type="datetime" :placeholder="item.input_tips" class="inputbox"
+                            format="yyyy-MM-dd HH:mm:ss" value-format="yyyy-MM-dd HH:mm:ss">
+                        </el-date-picker>
+                        
+                        <el-upload v-else-if="item.formType == 'file'" class="upload-demo" :action="doUpload" :multiple="false" :limit="1" :on-success="uploadSuccess" :before-upload="beforeUpload">
+                            <el-button size="small" type="primary">上传</el-button>
+                            <div slot="tip" class="el-upload__tip" style="margin-top: -20px">{{item.input_tips}}</div>
+                        </el-upload>
+                    </el-form-item>
                 </el-form>
                 <div class="orderaudit" v-if="myform.checkStatus == 1">
                     <img class="audit_img" :src="auditing" alt="审核中">
@@ -164,6 +215,7 @@
                                         </el-table-column>
                                         <el-table-column prop="unit" label="单位" width="90">
                                         </el-table-column>
+                                        <el-table-column prop="tbGoods.remark" label="产品备注" width="130"></el-table-column>
                                     </el-table>
                                 </el-option>
                             </el-select>
@@ -336,7 +388,7 @@
             <el-button @click="closeTag">取消</el-button>
         </div>
         
-        <el-dialog title="选择产品" :visible.sync="dialogVisible" :close-on-click-modal="false" width="80%" class="orderDialog">
+        <el-dialog title="选择产品" :visible.sync="dialogVisible" :close-on-click-modal="false" width="90%" class="orderDialog" center>
             <div class="otherleftcontent">
                 <el-tree
                     node-key="id" highlight-current accordion expand-on-click-node
@@ -346,9 +398,8 @@
                     @node-click="handleNodeClick">
                 </el-tree>
             </div>
-            <div class="otherightcontent">
-                <span>产品名称：</span><el-input v-model="goodsName" style="width:200px;" @input="addInput"></el-input>
-                <br><br>
+            <div class="otherightcontent" style="height:calc(90vh - 150px);margin-bottom:10px">
+                <div style="margin: 0 0 10px 10px"><span>产品名称：</span><el-input v-model="goodsName" style="width:200px;" @input="addInput"></el-input></div>
                 <el-table :data="tableData" border fit @selection-change="selectInfo" style="width: 100%">
                     <el-table-column header-align="center" align="center" type="selection" min-width="45" @selection-change="selectInfo"></el-table-column>
                     <el-table-column prop="tbGoods.goodsName" label="产品名称" width="130"></el-table-column>
@@ -392,6 +443,8 @@
         name: 'name',
         data() {
             return {
+                orderupdateData:{},
+
                 datalist:[],
                 defaultProps:{
                     label:'name',
@@ -479,7 +532,23 @@
                 noaudit: this.$store.state.systemHttp + '/upload/staticImg/refuse.png',
 
                 filterList:null,
-                checklist:null
+                checklist:null,
+
+                isDisable:false,
+
+                fieldsform:{},
+                previewData:[],
+
+                deptData: [],
+                
+                defaultProps:{
+                    label:'deptname',
+                    children:'next',
+                },
+
+                userData: [],
+
+                doUpload:this.$store.state.defaultHttp + 'workOrder/upload.do?cId=' + this.$store.state.iscId,
             }
         },
         mounted() {
@@ -487,14 +556,17 @@
             this.getList()
             this.loadOther()
             this.reloadData()
+            this.loadfield()
+            this.loadUserandDept()
         },
         methods: {
             loadData(){
                 const _this = this
                 let orderupdateData = this.$store.state.orderupdateData
+                this.orderupdateData = orderupdateData
                 let qs = require('querystring')
                 let data = {}
-                data.id = orderupdateData.setForm.id
+                data.id = orderupdateData.id
                 
                 axios({
                     method: 'post',
@@ -623,6 +695,72 @@
                         }
                     });
                     _this.tableData = items
+                }).catch(function(err){
+                    // console.log(err);
+                });
+            },
+            loadfield(){
+                const _this = this
+                let qs =require('querystring')
+                let orderupdateData = this.$store.state.orderupdateData
+                this.orderupdateData = orderupdateData
+                let aval = null
+                let bval = null
+                if(this.orderupdateData.id) {
+                    aval = this.orderupdateData.id;
+                    bval = this.orderupdateData.batch_id;
+                }
+                let data = {
+                    label: 9,
+                    id: aval,
+                    batch_id: bval,
+                }
+
+                axios({
+                    method: 'post',
+                    url: _this.$store.state.defaultHttp+'field/queryField.do?cId='+_this.$store.state.iscId,
+                    data: qs.stringify(data),
+                }).then(function(res){
+                    let info = res.data
+
+                    info.forEach((el,i) => {
+                        el.displayVal = ''
+                        el.default_value = el.value
+                        if(el.formType == 'user' || el.formType == 'structure'){
+                            el.displayVal = el.deptOrUserName
+                            el.default_value = parseInt(el.value)
+                        }
+                        if(el.is_null == 1){
+                            _this.rules[el.field_name] = [{required: true , message: ' ', trigger:'blur'}]
+                        }
+                    })
+                    
+                    _this.previewData = info
+                }).catch(function(err){
+                    // console.log(err);
+                });
+            },
+            loadUserandDept(){
+                const _this = this
+                let qs = require('querystring')
+                let pageInfo = {}
+                pageInfo.page = 1
+                pageInfo.limit = '9999'
+
+                axios({
+                    method: 'post',
+                    url: _this.$store.state.defaultHttp+'getPrivateUserAll.do?cId='+_this.$store.state.iscId,
+                    data:qs.stringify(pageInfo)
+                }).then(function(res){
+                    _this.userData = res.data.map.success
+                }).catch(function(err){
+                    // console.log(err);
+                });
+                axios({
+                    method: 'get',
+                    url: _this.$store.state.defaultHttp+'dept/getDeptNodeTree.do?cId='+_this.$store.state.iscId,
+                }).then(function(res){
+                    _this.deptData = res.data.map.success
                 }).catch(function(err){
                     // console.log(err);
                 });
@@ -917,9 +1055,9 @@
             },
             handleNodeClick(data){
                 this.classification_id = data.id
-                if(data.next.length == 0){
+                // if(data.next.length == 0){
                     this.$options.methods.getData.bind(this)()
-                }
+                // }
             },
             addInput(val){
                 this.goodsName = val
@@ -1062,9 +1200,31 @@
                 });
             },
             
+            handlecheck(data,val){
+                this.previewData.forEach(b => {
+                    if(b.id == val.id){
+                        b.displayVal = data.deptname
+                        b.default_value = data.deptid
+                    }
+                })
+            },
+            beforeUpload(file){
+                const isLt5M = file.size / 1024 / 1024 < 5
+                if (!isLt5M) {
+                    this.$message.warning('文件大小不能超过 5MB!')
+                    return
+                }
+            },
+            uploadSuccess(res,file,fileList){
+                this.previewData.forEach(el => {
+                    if(el.formType == 'file'){
+                        el.default_value = res
+                    }
+                });
+            },
             onSubmit(){
                 const _this = this
-                let qs = require('querystring')
+                let fieldData = _this.previewData
                 let totalSum = 0
                 let orderDetails = new Array()
                 this.itemData.forEach((el,i) => {
@@ -1075,6 +1235,7 @@
                 });
                 let data = {
                     "id":this.myform.id,
+                    "batch_id":this.orderupdateData.batch_id,
                     "customerpoolId":this.myform.customerpoolId,
                     "contactId":this.myform.contactId,
                     "orderTime":this.myform.orderTime,
@@ -1084,46 +1245,51 @@
                     "pId": parseInt(this.$store.state.ispId),
                     "ascriptionId":this.myform.ascriptionId,
                     "remarks":this.myform.remarks,
-                    "totalSum":totalSum,
-                    "orderDetails":orderDetails
+                    "totalSum":totalSum
                 }                
 
                 let flag = false
-                if(!data.orderDetails.length) {
+                if(!orderDetails.length) {
                     _this.$message({
                         message: "产品不能为空",
                         type: 'error'
                     });
                     flag = true;
                 }
-                if(!data.settlement) {
-                    _this.$message({
-                        message: "结算方式不能为空",
-                        type: 'error'
-                    });
-                    flag = true;
-                }
-                if(!data.orderTime) {
-                    _this.$message({
-                        message: "订单时间不能为空",
-                        type: 'error'
-                    });
-                    flag = true;
-                }
-                if(!data.customerpoolId) {
-                    _this.$message({
-                        message: "客户名称不能为空",
-                        type: 'error'
-                    });
-                    flag = true;
-                }
+                fieldData.forEach(item => {
+                    if(item.formType == 'checkbox'){
+                        item.value = item.default_value.join(',')
+                    }else if(item.formType == 'user' || item.formType == 'structure'){
+                        if(item.default_value){
+                            item.value = item.default_value.toString()
+                        }
+                    }else{
+                        item.value = item.default_value
+                    }
+
+                    if(item.is_null == 1 && !item.value){
+                        _this.$message({
+                            message: item.name + '不能为空',
+                            type: 'error'
+                        });
+                        flag = true;
+                    }
+                });
                 if(flag) return
+
+                let subData = {
+                    order: data,
+                    orderDetails: orderDetails,
+                    field: fieldData
+                }
+
                 this.isDisable = true
 
                 axios({
                     method: 'post',
-                    url: _this.$store.state.defaultHttp+'order/update.do?cId='+_this.$store.state.iscId,
-                    data: data,
+                    url: _this.$store.state.defaultHttp+'order/saveOrUpdate.do?cId='+_this.$store.state.iscId,
+                    // url: _this.$store.state.defaultHttp+'order/update.do?cId='+_this.$store.state.iscId,
+                    data: subData,
                 }).then(function(res){
                     if(res.data.code && res.data.code == '200'){
                         _this.$message({
@@ -1194,21 +1360,6 @@
         position: absolute;
         right: 15px;
         top: 10px;
-    }
-    .droplist{
-        height: auto
-    }
-    .orderDialog .el-dialog{
-        min-height: 750px;
-        margin-top:10vh;
-    }
-    .table_date.el-date-editor.el-input{
-        width: 150px;
-    }
-    th.table_required .cell::before{
-        content: '*';
-        margin-right: 4px;
-        color: #f56c6c;
     }
     
     .orderaudit{

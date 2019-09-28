@@ -3,47 +3,98 @@
         <el-tabs v-model="activeName" type="card">
             <el-tab-pane label="基本资料" name="first" class="first_c">
                 <div class="first_top">
-                        <el-form :inline="true" ref="myform" :model="myform" :rules="rules">
-                            <el-form-item class="first_input" label="产品分类" label-width="90px">
-                                <el-input v-model="myform.category" :disabled="true" class="inputbox"></el-input>
-                            </el-form-item>
-                            <el-form-item class="first_input" prop="goodsName" label="产品名称" label-width="90px">
-                                <el-input v-model="myform.goodsName" class="inputbox"></el-input>
-                            </el-form-item>
-                            <el-form-item class="first_input" prop="unitId" label="单位" label-width="90px">
-                                <el-select v-model="myform.unitId" placeholder="请选择单位" class="inputbox">
-                                    <el-option v-for="item in unitsData" :key="item.id" :label="item.name" :value="item.id"></el-option>
-                                </el-select>
-                            </el-form-item>
-                            <el-form-item class="first_input" label="品牌" label-width="90px">
-                                <el-select v-model="myform.brandId" placeholder="请选择品牌" class="inputbox">
-                                    <el-option v-for="item in brandsData" :key="item.id" :label="item.name" :value="item.id"></el-option>
-                                </el-select>
-                            </el-form-item>
-                            <el-form-item class="first_input" prop="attribute" label="产品属性" label-width="90px">
-                                <el-select v-model="myform.attribute" placeholder="请选择产品属性" class="inputbox">
-                                    <el-option v-for="item in attributeList" :key="item.id" :label="item.name" :value="item.name"></el-option>
-                                </el-select>
-                            </el-form-item>
-                            <el-form-item prop="price" class="first_input" label="销售价格" label-width="90px">
-                                <el-input v-model="myform.price" class="inputbox"></el-input>
-                            </el-form-item>
-                            <el-form-item class="first_input" label="标准成品价" label-width="90px">
-                                <el-input v-model="myform.costPrice" class="inputbox"></el-input>
-                            </el-form-item>
-                            <el-form-item class="first_input" label="规格描述" label-width="90px">
-                                <el-input type="textarea" rows="1" v-model="myform.describe" class="inputbox"></el-input>
-                            </el-form-item>
-                            <el-form-item class="first_input" label="备注" label-width="90px">
-                                <el-input type="textarea" rows="1" v-model="myform.remark" class="inputbox"></el-input>
-                            </el-form-item>
-                        </el-form>
+                    <el-form :inline="true" ref="myform" :model="myform" :rules="rules">
+                        <el-form-item class="first_input" label="产品分类" label-width="90px">
+                            <el-input v-model="myform.category" :disabled="true" class="inputbox"></el-input>
+                        </el-form-item>
+                        <el-form-item class="first_input" prop="goodsName" label="产品名称" label-width="90px">
+                            <el-input v-model="myform.goodsName" class="inputbox"></el-input>
+                        </el-form-item>
+                        <el-form-item class="first_input" prop="unitId" label="单位" label-width="90px">
+                            <el-select v-model="myform.unitId" placeholder="请选择单位" class="inputbox">
+                                <el-option v-for="item in unitsData" :key="item.id" :label="item.name" :value="item.id"></el-option>
+                            </el-select>
+                        </el-form-item>
+                        <el-form-item class="first_input" label="品牌" label-width="90px">
+                            <el-select v-model="myform.brandId" placeholder="请选择品牌" class="inputbox">
+                                <el-option v-for="item in brandsData" :key="item.id" :label="item.name" :value="item.id"></el-option>
+                            </el-select>
+                        </el-form-item>
+                        <el-form-item class="first_input" prop="attribute" label="产品属性" label-width="90px">
+                            <el-select v-model="myform.attribute" placeholder="请选择产品属性" class="inputbox">
+                                <el-option v-for="item in attributeList" :key="item.id" :label="item.name" :value="item.name"></el-option>
+                            </el-select>
+                        </el-form-item>
+                        <el-form-item prop="price" class="first_input" label="销售价格" label-width="90px">
+                            <el-input v-model="myform.price" class="inputbox"></el-input>
+                        </el-form-item>
+                        <el-form-item class="first_input" label="标准成品价" label-width="90px">
+                            <el-input v-model="myform.costPrice" class="inputbox"></el-input>
+                        </el-form-item>
+                        <el-form-item class="first_input" label="规格描述" label-width="90px">
+                            <el-input type="textarea" rows="1" v-model="myform.describe" class="inputbox"></el-input>
+                        </el-form-item>
+                        <el-form-item class="first_input" label="产品备注" label-width="90px">
+                            <el-input type="textarea" rows="1" v-model="myform.remark" class="inputbox"></el-input>
+                        </el-form-item>
+
+                        <el-form-item v-for="item in previewData" :key="item.id" :label="item.name" :prop="item.field_name" label-width="90px" class="first_input" style="margin-right:15px">
+                            <el-input v-if="item.formType == 'text' || item.formType == 'email'" v-model="item.default_value" :placeholder="item.input_tips" class="inputbox">></el-input>
+
+                            <el-input v-else-if="item.formType == 'textarea'" type="textarea" :maxlength="item.max_length" v-model="item.default_value" :placeholder="item.input_tips" class="inputbox">></el-input>
+
+                            <el-input v-else-if="item.formType == 'number'" onkeyup= "value=value.replace(/[^\d]/g,'')" v-model="item.default_value" :placeholder="item.input_tips" class="inputbox">></el-input>
+
+                            <el-input v-else-if="item.formType == 'floatnumber'" onkeyup= "value=value.replace(/^\D*(\d*(?:\.\d{0,2})?).*$/g, '$1')" v-model="item.default_value" :placeholder="item.input_tips" class="inputbox">></el-input>
+
+                            <el-input v-else-if="item.formType == 'mobile'" onkeyup= "value=value.replace(/[^\d]/g,'')" :maxlength="11" v-model="item.default_value" :placeholder="item.input_tips" class="inputbox">></el-input>
+
+                            <el-select v-else-if="item.formType == 'select'" v-model="item.default_value" :placeholder="item.input_tips" class="inputbox">>
+                                <el-option v-for="o in item.setting" :key="o" :label="o" :value="o"></el-option>
+                            </el-select>
+
+                            <el-select v-else-if="item.formType == 'checkbox'" multiple v-model="item.default_value" :placeholder="item.input_tips" class="inputbox">>
+                                <el-option v-for="o in item.setting" :key="o" :label="o" :value="o"></el-option>
+                            </el-select>
+
+                            <el-select v-else-if="item.formType == 'user'" v-model="item.default_value" :placeholder="item.input_tips" class="inputbox">>
+                                <el-option v-for="o in userData" :key="o.private_id" :label="o.private_employee" :value="o.private_id"></el-option>
+                            </el-select>
+
+                            <el-select v-else-if="item.formType == 'structure'" v-model="item.displayVal" :placeholder="item.input_tips" class="noPadding_select inputbox">
+                                <el-option class="droplist nopadding_option" :value="item.displayVal">
+                                    <el-tree 
+                                        node-key="deptid" 
+                                        highlight-current default-expand-all
+                                        ref="tree"
+                                        :expand-on-click-node="false"
+                                        :data="deptData"
+                                        :props="defaultProps"
+                                        @node-click="handlecheck($event,item)">
+                                    </el-tree>
+                                </el-option>
+                            </el-select>
+
+                            <el-date-picker v-else-if="item.formType == 'date'" v-model="item.default_value" type="date" :placeholder="item.input_tips" class="inputbox"
+                                format="yyyy-MM-dd" value-format="yyyy-MM-dd">
+                            </el-date-picker>
+
+                            <el-date-picker v-else-if="item.formType == 'datetime'" v-model="item.default_value" type="datetime" :placeholder="item.input_tips" class="inputbox"
+                                format="yyyy-MM-dd HH:mm:ss" value-format="yyyy-MM-dd HH:mm:ss">
+                            </el-date-picker>
+                            
+                            <el-upload v-else-if="item.formType == 'file'" class="upload-demo" :action="doUpload" :multiple="false" :limit="1" :on-success="uploadSuccess" :before-upload="beforeUpload">
+                                <el-button size="small" type="primary">上传</el-button>
+                                <div slot="tip" class="el-upload__tip" style="margin-top: -20px">{{item.input_tips}}</div>
+                            </el-upload>
+                        </el-form-item>
+                    </el-form>
                 </div>
                 <div class="first_bottom">
                     <p class="pro_title">产品图片</p>
                     <div class="uploadproImg">
                         <el-upload
-                            :action="doUpload" multiple
+                            :action="uploadPro" multiple
                             :file-list="fileList"
                             list-type="picture-card"
                             :on-preview="handlePictureCardPreview"
@@ -93,7 +144,7 @@
                         <el-table-column header-align="center" align="center" type="index" min-width="45"></el-table-column>
                         <el-table-column prop="imgfile" label="主图" width="120">
                             <template slot-scope="scope">
-                                <el-upload class="avatar-uploader portrait" :action="doUpload" :show-file-list="false" :on-success="handleAvatarSuccess" :before-upload="beforeUploadimg">
+                                <el-upload class="avatar-uploader portrait" :action="uploadPro" :show-file-list="false" :on-success="handleAvatarSuccess" :before-upload="beforeUploadimg">
                                     <img v-if="scope.row.image !== null" :src="scope.row.imgfile" class="avatar" width="100" height="100">
                                     <i v-else class="el-icon-plus avatar-uploader-icon portrait_add"></i>
                                 </el-upload>
@@ -220,14 +271,30 @@
                 addHeadbtn:true,
 
                 currentrow:null,
-                doUpload:this.$store.state.defaultHttp + 'goods/masterGraph.do?cId=' + this.$store.state.iscId,
+                uploadPro:this.$store.state.defaultHttp + 'goods/masterGraph.do?cId=' + this.$store.state.iscId,
 
                 generationBtn:true,
+
+                fieldsform:{},
+                previewData:[],
+
+                deptData: [],
+                
+                defaultProps:{
+                    label:'deptname',
+                    children:'next',
+                },
+
+                userData: [],
+
+                doUpload:this.$store.state.defaultHttp + 'workOrder/upload.do?cId=' + this.$store.state.iscId,
             }
         },
         mounted(){
             this.loadData()
             this.loadother()
+            this.loadfield()
+            this.loadUserandDept()
         },
         methods:{
             loadData(){
@@ -306,6 +373,64 @@
                 setTimeout(() => {
                     this.$options.methods.disabledSome.bind(this)()
                 }, 1000);
+            },
+            loadfield(){
+                const _this = this
+                let qs =require('querystring')
+                let data = {
+                    label: 4,
+                    id: this.$store.state.productupdateData.setForm.id,
+                    batch_id: this.$store.state.productupdateData.setForm.batch_id,
+                }
+
+                axios({
+                    method: 'post',
+                    url: _this.$store.state.defaultHttp+'field/queryField.do?cId='+_this.$store.state.iscId,
+                    data: qs.stringify(data),
+                }).then(function(res){
+                    let info = res.data
+
+                    info.forEach((el,i) => {
+                        el.displayVal = ''
+                        el.default_value = el.value
+                        if(el.formType == 'user' || el.formType == 'structure'){
+                            el.displayVal = el.deptOrUserName
+                            el.default_value = parseInt(el.value)
+                        }
+                        if(el.is_null == 1){
+                            _this.rules[el.field_name] = [{required: true , message: ' ', trigger:'blur'}]
+                        }
+                    })
+                    
+                    _this.previewData = info
+                }).catch(function(err){
+                    // console.log(err);
+                });
+            },
+            loadUserandDept(){
+                const _this = this
+                let qs = require('querystring')
+                let pageInfo = {}
+                pageInfo.page = 1
+                pageInfo.limit = '9999'
+
+                axios({
+                    method: 'post',
+                    url: _this.$store.state.defaultHttp+'getPrivateUserAll.do?cId='+_this.$store.state.iscId,
+                    data:qs.stringify(pageInfo)
+                }).then(function(res){
+                    _this.userData = res.data.map.success
+                }).catch(function(err){
+                    // console.log(err);
+                });
+                axios({
+                    method: 'get',
+                    url: _this.$store.state.defaultHttp+'dept/getDeptNodeTree.do?cId='+_this.$store.state.iscId,
+                }).then(function(res){
+                    _this.deptData = res.data.map.success
+                }).catch(function(err){
+                    // console.log(err);
+                });
             },
 
             loadHead(){
@@ -518,9 +643,32 @@
                     return
                 }
             },
+            handlecheck(data,val){
+                this.previewData.forEach(b => {
+                    if(b.id == val.id){
+                        b.displayVal = data.deptname
+                        b.default_value = data.deptid
+                    }
+                })
+            },
+            beforeUpload(file){
+                const isLt5M = file.size / 1024 / 1024 < 5
+                if (!isLt5M) {
+                    this.$message.warning('文件大小不能超过 5MB!')
+                    return
+                }
+            },
+            uploadSuccess(res,file,fileList){
+                this.previewData.forEach(el => {
+                    if(el.formType == 'file'){
+                        el.default_value = res
+                    }
+                });
+            },
             onSubmit(){
                 const _this = this
                 let content = this.$refs.ue.getUEContent();
+                let fieldData = _this.previewData
                 let data = {}
                 data.goods = new Object()
                 data.goodsDesc = new Object()
@@ -528,6 +676,7 @@
                 data.goodsSpec = new Array()
                 data.goods = {
                     "id": this.myform.id,
+                    "batch_id": this.myform.batch_id,
                     "goodsName": this.myform.goodsName,
                     "brandId" : this.myform.brandId,
                     "classification_id" : this.myform.classification_id,
@@ -563,8 +712,6 @@
                     data.goodsSpec.push({"goodsId":this.myform.id,"sign":item.sign,"spec_name":item.spec_name,"spec_value":item.spec_value,"options":item.options})
                 });
 
-                // console.log(data)
-
                 let flag = false
                 if(!data.goods.price){
                     _this.$message({
@@ -580,13 +727,35 @@
                     })
                     flag = true
                 }
+                fieldData.forEach(item => {
+                    if(item.formType == 'checkbox'){
+                        item.value = item.default_value.join(',')
+                    }else if(item.formType == 'user' || item.formType == 'structure'){
+                        if(item.default_value){
+                            item.value = item.default_value.toString()
+                        }
+                    }else{
+                        item.value = item.default_value
+                    }
+
+                    if(item.is_null == 1 && !item.value){
+                        _this.$message({
+                            message: item.name + '不能为空',
+                            type: 'error'
+                        });
+                        flag = true;
+                    }
+                });
                 if(flag) return
+                
+                data.field = fieldData
                 
                 this.isDisable = true
 
                 axios({
                     method: 'post',
-                    url: _this.$store.state.defaultHttp+'goods/update.do?cId='+_this.$store.state.iscId+'&pId='+_this.$store.state.ispId,
+                    url: _this.$store.state.defaultHttp+'goods/saveOrUpdate.do?cId='+_this.$store.state.iscId+'&pId='+_this.$store.state.ispId,
+                    // url: _this.$store.state.defaultHttp+'goods/update.do?cId='+_this.$store.state.iscId+'&pId='+_this.$store.state.ispId,
                     data:data
                 }).then(function(res){
                     if(res.data.code && res.data.code == '200'){

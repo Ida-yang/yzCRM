@@ -81,6 +81,7 @@
                 <el-table-column label="机构" prop="parentname" v-if="item.prop == 'parentname' && item.state == 1" min-width="100" show-overflow-tooltip sortable />
                 <el-table-column label="创建时间" prop="create_time" v-if="item.prop == 'createTime' && item.state == 1" min-width="150" sortable />
                 <el-table-column label="备注" prop="remarks" v-if="item.prop == 'remarks' && item.state == 1" sortable min-width="180" />
+                <el-table-column v-for="a in fieldHeadData" :label="a.name" :key="a.field_name" :prop="a.field_name" v-if="item.prop == a.field_name && item.state == 1" min-width="130" sortable />
             </div>
             <el-table-column label="操作" fixed="right" width="150" header-align="center" align="center">
                 <template slot-scope="scope">
@@ -144,6 +145,7 @@
         },
         data(){
             return {
+                fieldHeadData:[],
                 searchList:{
                     searchName:null,
                     type:null,
@@ -193,10 +195,12 @@
             }
         },
         mounted(){
+            this.loadFieldHead()
             this.reloadTable()
             this.reloadData()
         },
         activated(){
+            this.loadFieldHead()
             this.reloadTable()
         },
 
@@ -222,10 +226,12 @@
                 searchList.type = this.searchList.type
                 searchList.page = this.page
                 searchList.limit = this.limit
+                searchList.label = 6
                 
                 axios({
                     method: 'post',
-                    url: _this.$store.state.defaultHttp+'getContractAll.do?cId='+_this.$store.state.iscId,
+                    url: _this.$store.state.defaultHttp+'pageInfo/queryPageList.do?cId='+_this.$store.state.iscId,
+                    // url: _this.$store.state.defaultHttp+'getContractAll.do?cId='+_this.$store.state.iscId,
                     data: qs.stringify(searchList),
                 }).then(function(res){
                     let array = res.data.map.success
@@ -245,6 +251,24 @@
                     _this.$store.state.agreementListnumber = res.data.count;
                 }).catch(function(err){
                     // console.log(err)
+                });
+            },
+            loadFieldHead(){
+                const _this = this
+                let qs =require('querystring')
+                let data = {
+                    label: 6,
+                    pId: this.$store.state.ispId
+                }
+
+                axios({
+                    method: 'post',
+                    url: _this.$store.state.defaultHttp+'field/queryListHead.do?cId='+_this.$store.state.iscId,
+                    data: qs.stringify(data),
+                }).then(function(res){
+                    _this.fieldHeadData = res.data
+                }).catch(function(err){
+                    // console.log(err);
                 });
             },
             reloadData() {
@@ -372,7 +396,7 @@
                     "signatories": '',
                     "our_signatories": this.$store.state.user,
                     "remarks": ''};
-                agreeaddOrUpdateData.submitURL = this.$store.state.defaultHttp+ 'insertContract.do?cId='+this.$store.state.iscId+'&pId='+this.$store.state.ispId,
+                agreeaddOrUpdateData.submitURL = this.$store.state.defaultHttp+ 'insertContract.do?cId='+this.$store.state.iscId,
                 this.$store.state.agreeaddOrUpdateData = agreeaddOrUpdateData;
                 // this.$router.push({ path: '/agreementaddorupdate' });
                 axios({
@@ -424,7 +448,7 @@
                     "our_signatories": row.our_signatories,
                     "our_signatoriesId": row.pId,
                     "remarks": row.remarks};
-                agreeaddOrUpdateData.submitData = {"id": row.contract_id};
+                agreeaddOrUpdateData.submitData = {"id": row.contract_id, 'batch_id': row.batch_id};
                 agreeaddOrUpdateData.submitURL = this.$store.state.defaultHttp+ 'updateContract.do?cId='+this.$store.state.iscId,
                 this.$store.state.agreeaddOrUpdateData = agreeaddOrUpdateData;
                 

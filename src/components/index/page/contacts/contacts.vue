@@ -65,6 +65,7 @@
                     </template>
                 </el-table-column>
                 <el-table-column label="创建时间" prop="createTime" v-if="item.prop == 'createTime' && item.state == 1" min-width="150" sortable />
+                <el-table-column v-for="a in fieldHeadData" :label="a.name" :key="a.field_name" :prop="a.field_name" v-if="item.prop == a.field_name && item.state == 1" min-width="130" sortable />
             </div>
             <el-table-column label="操作" fixed="right" width="150" header-align="center" align="center">
                 <template slot-scope="scope">
@@ -108,6 +109,7 @@
         },
         data(){
             return {
+                fieldHeadData:[],
                 searchList:{
                     keyType:'1',
                     searchName:null,
@@ -150,9 +152,11 @@
             }
         },
         activated(){
+            this.loadFieldHead()
             this.reloadTable()
         },
         mounted(){
+            this.loadFieldHead()
             this.reloadTable()
             this.reloadData()
         },
@@ -176,14 +180,34 @@
                 searchList.keyType = this.searchList.keyType
                 searchList.page = this.page;
                 searchList.limit = this.limit;
+                searchList.label = 3
                 
                 axios({
                     method: 'post',
-                    url: _this.$store.state.defaultHttp+'getContactsAll.do?cId='+_this.$store.state.iscId,
+                    url: _this.$store.state.defaultHttp+'pageInfo/queryPageList.do?cId='+_this.$store.state.iscId,
+                    // url: _this.$store.state.defaultHttp+'getContactsAll.do?cId='+_this.$store.state.iscId,
                     data: qs.stringify(searchList),
                 }).then(function(res){
                     _this.$store.state.contactsList = res.data.map.success
                     _this.$store.state.contactsListnumber = res.data.count;
+                }).catch(function(err){
+                    // console.log(err);
+                });
+            },
+            loadFieldHead(){
+                const _this = this
+                let qs =require('querystring')
+                let data = {
+                    label: 3,
+                    pId: this.$store.state.ispId
+                }
+
+                axios({
+                    method: 'post',
+                    url: _this.$store.state.defaultHttp+'field/queryListHead.do?cId='+_this.$store.state.iscId,
+                    data: qs.stringify(data),
+                }).then(function(res){
+                    _this.fieldHeadData = res.data
                 }).catch(function(err){
                     // console.log(err);
                 });
@@ -324,7 +348,7 @@
                     "identity": row.identity,
                     "address": row.address,
                     "remark": row.remark};
-                contaddOrUpdateData.submitData = {"id": row.csId};
+                contaddOrUpdateData.submitData = {"id": row.csId, 'batch_id': row.batch_id};
                 contaddOrUpdateData.submitURL = this.$store.state.defaultHttp+ 'updateContacts.do?cId='+this.$store.state.iscId,
                 this.$store.state.contaddOrUpdateData = contaddOrUpdateData;
 

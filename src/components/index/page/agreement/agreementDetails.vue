@@ -21,6 +21,9 @@
                             <li>签约时间：<span>{{agreementdetail.start_date}}</span></li>
                             <li>到期时间：<span>{{agreementdetail.end_date}}</span></li>
                             <li>剩余天数：<span>{{agreementdetail.due_time}}</span></li>
+                            <li v-for="(item,index) in fieldData" :key="index">
+                                {{item.name}}：<span>{{item.value}}</span>
+                            </li>
                         </ul>
                         <div class="agreeaudited" v-if="agreementdetail.checkStatus == 1">
                             <img class="audited_img" :src="auditing" alt="审核中">
@@ -229,6 +232,7 @@
                             <el-table-column label="预计日期" prop="date" min-width="110" />
                             <el-table-column label="提醒时间" prop="remind_date" min-width="150" />
                             <el-table-column label="备注" prop="remarks" min-width="180" />
+                            <el-table-column v-for="a in backFieldData" :label="a.name" :key="a.field_name" :prop="a.field_name" min-width="130" sortable />
                             <el-table-column label="操作" fixed="right" width="150" header-align="center" align="center" v-if="!moneyBackList.length">
                                 <template slot-scope="scope">
                                     <el-button size="mini" @click="editplan(scope.$index, scope.row)">编辑</el-button>
@@ -252,6 +256,7 @@
                             </el-table-column>
                             <el-table-column label="回款日期" prop="createTime" min-width="110" />
                             <el-table-column label="备注" prop="remarks" min-width="180" />
+                            <el-table-column v-for="a in planFieldData" :label="a.name" :key="a.field_name" :prop="a.field_name" min-width="130" sortable />
                             <el-table-column label="操作" fixed="right" width="150" header-align="center" align="center">
                                 <template slot-scope="scope">
                                     <el-button size="mini" :disabled="scope.row.disabledBtn" @click="editback(scope.$index, scope.row)">编辑</el-button>
@@ -525,6 +530,57 @@
                 <el-form-item label="备注">
                     <el-input v-model="moneyPlan.remarks" type="textarea" rows="5"></el-input>
                 </el-form-item>
+                
+                <el-form-item v-for="item in previewData" :key="item.id" :label="item.name" :prop="item.field_name" label-width="130px">
+                    <el-input v-if="item.formType == 'text' || item.formType == 'email'" v-model="item.default_value" :placeholder="item.input_tips" style="width:100%"></el-input>
+
+                    <el-input v-else-if="item.formType == 'textarea'" type="textarea" :maxlength="item.max_length" v-model="item.default_value" :placeholder="item.input_tips" style="width:100%"></el-input>
+
+                    <el-input v-else-if="item.formType == 'number'" onkeyup= "value=value.replace(/[^\d]/g,'')" v-model="item.default_value" :placeholder="item.input_tips" style="width:100%"></el-input>
+
+                    <el-input v-else-if="item.formType == 'floatnumber'" onkeyup= "value=value.replace(/^\D*(\d*(?:\.\d{0,2})?).*$/g, '$1')" v-model="item.default_value" :placeholder="item.input_tips" style="width:100%"></el-input>
+
+                    <el-input v-else-if="item.formType == 'mobile'" onkeyup= "value=value.replace(/[^\d]/g,'')" :maxlength="11" v-model="item.default_value" :placeholder="item.input_tips" style="width:100%"></el-input>
+
+                    <el-select v-else-if="item.formType == 'select'" v-model="item.default_value" :placeholder="item.input_tips" style="width:100%">
+                        <el-option v-for="o in item.setting" :key="o" :label="o" :value="o"></el-option>
+                    </el-select>
+
+                    <el-select v-else-if="item.formType == 'checkbox'" multiple v-model="item.default_value" :placeholder="item.input_tips" style="width:100%">
+                        <el-option v-for="o in item.setting" :key="o" :label="o" :value="o"></el-option>
+                    </el-select>
+
+                    <el-select v-else-if="item.formType == 'user'" v-model="item.default_value" :placeholder="item.input_tips" style="width:100%">
+                        <el-option v-for="o in userData" :key="o.private_id" :label="o.private_employee" :value="o.private_id"></el-option>
+                    </el-select>
+
+                    <el-select v-else-if="item.formType == 'structure'" v-model="item.displayVal" :placeholder="item.input_tips" style="width:100%" class="noPadding_select">
+                        <el-option class="droplist nopadding_option" :value="item.displayVal">
+                            <el-tree 
+                                node-key="deptid" 
+                                highlight-current default-expand-all
+                                ref="tree"
+                                :expand-on-click-node="false"
+                                :data="deptData"
+                                :props="defaultProps"
+                                @node-click="handlecheck($event,item)">
+                            </el-tree>
+                        </el-option>
+                    </el-select>
+
+                    <el-date-picker v-else-if="item.formType == 'date'" v-model="item.default_value" type="date" :placeholder="item.input_tips" 
+                        format="yyyy-MM-dd" value-format="yyyy-MM-dd" style="width:100%">
+                    </el-date-picker>
+
+                    <el-date-picker v-else-if="item.formType == 'datetime'" v-model="item.default_value" type="datetime" :placeholder="item.input_tips" 
+                        format="yyyy-MM-dd HH:mm:ss" value-format="yyyy-MM-dd HH:mm:ss" style="width:100%">
+                    </el-date-picker>
+                    
+                    <el-upload v-else-if="item.formType == 'file'" class="upload-demo" :action="doUpload" :multiple="false" :limit="1" :on-success="uploadSuccess" :before-upload="beforeUpload">
+                        <el-button size="small" type="primary">上传</el-button>
+                        <div slot="tip" class="el-upload__tip" style="margin-top: -20px">{{item.input_tips}}</div>
+                    </el-upload>
+                </el-form-item>
             </el-form>
             <span slot="footer" class="dialog-footer">
                 <el-button @click="dialogVisible3 = false">取 消</el-button>
@@ -557,6 +613,57 @@
                 </el-form-item>
                 <el-form-item label="备注">
                     <el-input v-model="moneyBack.remarks" type="textarea" rows="5"></el-input>
+                </el-form-item>
+
+                <el-form-item v-for="item in previewData" :key="item.id" :label="item.name" :prop="item.field_name" label-width="130px">
+                    <el-input v-if="item.formType == 'text' || item.formType == 'email'" v-model="item.default_value" :placeholder="item.input_tips" style="width:100%"></el-input>
+
+                    <el-input v-else-if="item.formType == 'textarea'" type="textarea" :maxlength="item.max_length" v-model="item.default_value" :placeholder="item.input_tips" style="width:100%"></el-input>
+
+                    <el-input v-else-if="item.formType == 'number'" onkeyup= "value=value.replace(/[^\d]/g,'')" v-model="item.default_value" :placeholder="item.input_tips" style="width:100%"></el-input>
+
+                    <el-input v-else-if="item.formType == 'floatnumber'" onkeyup= "value=value.replace(/^\D*(\d*(?:\.\d{0,2})?).*$/g, '$1')" v-model="item.default_value" :placeholder="item.input_tips" style="width:100%"></el-input>
+
+                    <el-input v-else-if="item.formType == 'mobile'" onkeyup= "value=value.replace(/[^\d]/g,'')" :maxlength="11" v-model="item.default_value" :placeholder="item.input_tips" style="width:100%"></el-input>
+
+                    <el-select v-else-if="item.formType == 'select'" v-model="item.default_value" :placeholder="item.input_tips" style="width:100%">
+                        <el-option v-for="o in item.setting" :key="o" :label="o" :value="o"></el-option>
+                    </el-select>
+
+                    <el-select v-else-if="item.formType == 'checkbox'" multiple v-model="item.default_value" :placeholder="item.input_tips" style="width:100%">
+                        <el-option v-for="o in item.setting" :key="o" :label="o" :value="o"></el-option>
+                    </el-select>
+
+                    <el-select v-else-if="item.formType == 'user'" v-model="item.default_value" :placeholder="item.input_tips" style="width:100%">
+                        <el-option v-for="o in userData" :key="o.private_id" :label="o.private_employee" :value="o.private_id"></el-option>
+                    </el-select>
+
+                    <el-select v-else-if="item.formType == 'structure'" v-model="item.displayVal" :placeholder="item.input_tips" style="width:100%" class="noPadding_select">
+                        <el-option class="droplist nopadding_option" :value="item.displayVal">
+                            <el-tree 
+                                node-key="deptid" 
+                                highlight-current default-expand-all
+                                ref="tree"
+                                :expand-on-click-node="false"
+                                :data="deptData"
+                                :props="defaultProps"
+                                @node-click="handlecheck($event,item)">
+                            </el-tree>
+                        </el-option>
+                    </el-select>
+
+                    <el-date-picker v-else-if="item.formType == 'date'" v-model="item.default_value" type="date" :placeholder="item.input_tips" 
+                        format="yyyy-MM-dd" value-format="yyyy-MM-dd" style="width:100%">
+                    </el-date-picker>
+
+                    <el-date-picker v-else-if="item.formType == 'datetime'" v-model="item.default_value" type="datetime" :placeholder="item.input_tips" 
+                        format="yyyy-MM-dd HH:mm:ss" value-format="yyyy-MM-dd HH:mm:ss" style="width:100%">
+                    </el-date-picker>
+                    
+                    <el-upload v-else-if="item.formType == 'file'" class="upload-demo" :action="doUpload" :multiple="false" :limit="1" :on-success="uploadSuccess" :before-upload="beforeUpload">
+                        <el-button size="small" type="primary">上传</el-button>
+                        <div slot="tip" class="el-upload__tip" style="margin-top: -20px">{{item.input_tips}}</div>
+                    </el-upload>
                 </el-form-item>
             </el-form>
             <span slot="footer" class="dialog-footer">
@@ -603,12 +710,15 @@
                         return time.getTime() < Date.now() - 8.64e7;
                     },
                 },
+                planFieldData:[],
+                backFieldData:[],
                 
                 detailData:null,
                 searchList:{
                     keyword:null,
                 },
                 agreementdetail:{},
+                fieldData:[],
                 activeName2: 'first',
                 tableDatas: null,
                 tableNumber:null,
@@ -753,12 +863,29 @@
                 record:[],
                 dialogVisible2:false,
                 dialogImageUrl2:null,
+
+                backMoneyData:{},
+                
+                previewData:[],
+
+                deptData: [],
+                
+                defaultProps:{
+                    label:'deptname',
+                    children:'next',
+                },
+
+                userData: [],
+
+                doUpload:this.$store.state.defaultHttp + 'workOrder/upload.do?cId=' + this.$store.state.iscId,
             }
         },
         activated(){
             this.loadData();
             this.loadIMG()
             this.getList()
+            this.loadFieldHead()
+            this.loadUserandDept()
         },
         methods: {
             loadData() {
@@ -819,11 +946,17 @@
                 this.idArr.id = this.$store.state.agreedetailsData.submitData.id
                 _this.fileList = []
                 let qs = require('querystring')
-                let data = {}
-                data.typetid = this.detailData.id
-                data.type = '合同'
-                data.pId = this.$store.state.ispId
-                data.cId = this.$store.state.iscId
+                let data = {
+                    typetid: this.detailData.id,
+                    type: '合同',
+                    pId: this.$store.state.ispId,
+                    cId: this.$store.state.iscId,
+                }
+                
+                let info = {
+                    label: 6,
+                    id: this.detailData.id
+                }
 
                 axios({
                     method:'post',
@@ -934,6 +1067,16 @@
                 }).catch(function(err){
                     // console.log(err);
                 });
+                //加载自定义字段详情
+                axios({
+                    method:'post',
+                    url:_this.$store.state.defaultHttp+'field/information.do?cId='+_this.$store.state.iscId,
+                    data:qs.stringify(info)
+                }).then(function(res){
+                    _this.fieldData = res.data
+                }).catch(function(err){
+                    // console.log(err);
+                });
 
                 //加载回款计划
                 axios({
@@ -1012,6 +1155,109 @@
                 }).then(function(res){
                     _this.contactData = res.data.map.success
                     _this.followform.contactsId = res.data.map.success[0].id
+                }).catch(function(err){
+                    // console.log(err);
+                });
+            },
+            loadFieldHead(){
+                const _this = this
+                let qs =require('querystring')
+                let data = {
+                    label: 7,
+                    pId: this.$store.state.ispId
+                }
+                let data2 = {
+                    label: 8,
+                    pId: this.$store.state.ispId
+                }
+
+                axios({
+                    method: 'post',
+                    url: _this.$store.state.defaultHttp+'field/queryListHead.do?cId='+_this.$store.state.iscId,
+                    data: qs.stringify(data),
+                }).then(function(res){
+                    _this.planFieldData = res.data
+                }).catch(function(err){
+                    // console.log(err);
+                });
+                axios({
+                    method: 'post',
+                    url: _this.$store.state.defaultHttp+'field/queryListHead.do?cId='+_this.$store.state.iscId,
+                    data: qs.stringify(data2),
+                }).then(function(res){
+                    _this.backFieldData = res.data
+                }).catch(function(err){
+                    // console.log(err);
+                });
+            },
+            loadfield(val){
+                const _this = this
+                let qs =require('querystring')
+                let aval = null
+                let bval = null
+                if(this.backMoneyData.id) {
+                    aval = this.backMoneyData.id;
+                    bval = this.backMoneyData.batch_id;
+                }
+                let data = {
+                    label: val,
+                    id: aval,
+                    batch_id: bval,
+                }
+
+                axios({
+                    method: 'post',
+                    url: _this.$store.state.defaultHttp+'field/queryField.do?cId='+_this.$store.state.iscId,
+                    data: qs.stringify(data),
+                }).then(function(res){
+                    let info = res.data
+
+                    info.forEach((el,i) => {
+                        el.displayVal = ''
+                        if(_this.backMoneyData.id){
+                            el.default_value = el.value
+                            if(el.formType == 'user' || el.formType == 'structure'){
+                                el.displayVal = el.deptOrUserName
+                                el.default_value = parseInt(el.value)
+                            }
+                        }else{
+                            if(el.formType !== 'checkbox'){
+                                if(el.value !== null){
+                                    el.default_value = el.value
+                                }
+                            }
+                        }
+                        if(el.is_null == 1){
+                            _this.rules[el.field_name] = [{required: true , message: ' ', trigger:'blur'}]
+                        }
+                    })
+                    
+                    _this.previewData = info
+                }).catch(function(err){
+                    // console.log(err);
+                });
+            },
+            loadUserandDept(){
+                const _this = this
+                let qs = require('querystring')
+                let pageInfo = {}
+                pageInfo.page = 1
+                pageInfo.limit = '9999'
+
+                axios({
+                    method: 'post',
+                    url: _this.$store.state.defaultHttp+'getPrivateUserAll.do?cId='+_this.$store.state.iscId,
+                    data:qs.stringify(pageInfo)
+                }).then(function(res){
+                    _this.userData = res.data.map.success
+                }).catch(function(err){
+                    // console.log(err);
+                });
+                axios({
+                    method: 'get',
+                    url: _this.$store.state.defaultHttp+'dept/getDeptNodeTree.do?cId='+_this.$store.state.iscId,
+                }).then(function(res){
+                    _this.deptData = res.data.map.success
                 }).catch(function(err){
                     // console.log(err);
                 });
@@ -1163,6 +1409,29 @@
                 this.exaform.status = e
                 this.dialogVisibleexa = true
             },
+            
+            handlecheck(data,val){
+                this.previewData.forEach(b => {
+                    if(b.id == val.id){
+                        b.displayVal = data.deptname
+                        b.default_value = data.deptid
+                    }
+                })
+            },
+            beforeUpload(file){
+                const isLt5M = file.size / 1024 / 1024 < 5
+                if (!isLt5M) {
+                    this.$message.warning('文件大小不能超过 5MB!')
+                    return
+                }
+            },
+            uploadSuccess(res,file,fileList){
+                this.previewData.forEach(el => {
+                    if(el.formType == 'file'){
+                        el.default_value = res
+                    }
+                });
+            },
             addplan(){
                 let aa = 0
                 let bb = this.agreementdetail.amount
@@ -1174,9 +1443,11 @@
                 let cc = bb - aa
                 this.dialogVisible3 = true
                 this.moneyPlan = { 
-                    id:null, amount:bb, restamount:cc, date:null, price:null, stage:null, remarks:null, remind_date:null,
+                    id:null, batch_id:null, amount:bb, restamount:cc, date:null, price:null, stage:null, remarks:null, remind_date:null,
                     contract_id:this.agreementdetail.contract_id, customerpool_id:this.agreementdetail.customerpool_id,
                 }
+                this.backMoneyData = {}
+                this.loadfield(8)
             },
             editplan(index,row){
                 let aa = 0
@@ -1186,18 +1457,24 @@
                         aa += el.price
                     }
                 });
-                let cc = bb - aa
+                let cc = bb - aa + row.price
                 this.dialogVisible3 = true
                 this.moneyPlan = { 
-                    id:row.id, amount:bb, restamount:cc, date:row.date, price:row.price, stage:row.stage, remarks:row.remarks, remind_date:row.remind_date,
+                    id:row.id, batch_id: row.batch_id, amount:bb, restamount:cc, date:row.date, price:row.price, stage:row.stage, remarks:row.remarks, remind_date:row.remind_date,
                     contract_id:this.agreementdetail.contract_id, customerpool_id:this.agreementdetail.customerpool_id,
                 }
+                this.backMoneyData = {
+                    id:row.id,
+                    batch_id: row.batch_id
+                }
+                this.loadfield(7)
             },
             planSubmit(){
                 const _this = this
-                let qs = require('querystring')
+                let fieldData = _this.previewData
                 let data = {
                     id:this.moneyPlan.id,
+                    batch_id:this.moneyPlan.batch_id,
                     date:this.moneyPlan.date,
                     price:this.moneyPlan.price,
                     stage:this.moneyPlan.stage,
@@ -1237,12 +1514,37 @@
                     });
                     flag = true
                 }
+                fieldData.forEach(item => {
+                    if(item.formType == 'checkbox'){
+                        item.value = item.default_value.join(',')
+                    }else if(item.formType == 'user' || item.formType == 'structure'){
+                        if(item.default_value){
+                            item.value = item.default_value.toString()
+                        }
+                    }else{
+                        item.value = item.default_value
+                    }
+
+                    if(item.is_null == 1 && !item.value){
+                        _this.$message({
+                            message: item.name + '不能为空',
+                            type: 'error'
+                        });
+                        flag = true;
+                    }
+                });
                 if(flag) return
+                
+                let subData = {
+                    entity: data,
+                    field: fieldData
+                }
 
                 axios({
                     method: 'post',
-                    url: _this.$store.state.defaultHttp+'backPlan/saveOrUpdate.do?cId='+_this.$store.state.iscId,
-                    data:qs.stringify(data),
+                    url: _this.$store.state.defaultHttp+'backPlan/saveOrUpdateBackPlan.do?cId='+_this.$store.state.iscId,
+                    // url: _this.$store.state.defaultHttp+'backPlan/saveOrUpdate.do?cId='+_this.$store.state.iscId,
+                    data: subData,
                 }).then(function(res){
                     if(res.data.code && res.data.code == '200') {
                         _this.$message({
@@ -1309,9 +1611,11 @@
                 this.dialogVisible4 = true
                 this.$store.commit('getNowDate')
                 this.moneyBack = { 
-                    id:null, price:null, back_plan_id:null, remarks:null, pay_type_id:null, amount:bb, restamount:cc, backNo:null,
+                    id:null, batch_id:null, price:null, back_plan_id:null, remarks:null, pay_type_id:null, amount:bb, restamount:cc, backNo:null,
                     createTime:this.$store.state.nowdate, contract_id:this.agreementdetail.contract_id, customerpool_id:this.agreementdetail.customerpool_id,
                 }
+                this.backMoneyData = {}
+                this.loadfield(7)
             },
             editback(index,row){
                 let aa = 0
@@ -1324,15 +1628,21 @@
                 let cc = bb - aa + row.price
                 this.dialogVisible4 = true
                 this.moneyBack = { 
-                    id:row.id, backNo:row.backNo, price:row.price, back_plan_id:row.back_plan_id, remarks:row.remarks, pay_type_id:row.pay_type_id, amount:bb, restamount:cc, 
+                    id:row.id, batch_id: row.batch_id, backNo:row.backNo, price:row.price, back_plan_id:row.back_plan_id, remarks:row.remarks, pay_type_id:row.pay_type_id, amount:bb, restamount:cc, 
                     createTime:row.createTime, contract_id:this.agreementdetail.contract_id, customerpool_id:this.agreementdetail.customerpool_id,
                 }
+                this.backMoneyData = {
+                    id:row.id,
+                    batch_id: row.batch_id
+                }
+                this.loadfield(7)
             },
             backSubmit(){
                 const _this = this
-                let qs = require('querystring')
+                let fieldData = _this.previewData
                 let data = {
                     id:this.moneyBack.id,
+                    batch_id:this.moneyBack.batch_id,
                     createTime:this.moneyBack.createTime,
                     price:this.moneyBack.price,
                     backNo:this.moneyBack.backNo,
@@ -1383,12 +1693,39 @@
                     });
                     flag = true
                 }
+                fieldData.forEach(item => {
+                    if(item.formType == 'checkbox'){
+                        item.value = item.default_value.join(',')
+                    }else if(item.formType == 'user' || item.formType == 'structure'){
+                        if(item.default_value){
+                            item.value = item.default_value.toString()
+                        }
+                    }else{
+                        item.value = item.default_value
+                    }
+
+                    if(item.is_null == 1 && !item.value){
+                        _this.$message({
+                            message: item.name + '不能为空',
+                            type: 'error'
+                        });
+                        flag = true;
+                    }
+                });
                 if(flag) return
+                
+                let subData = {
+                    entity: data,
+                    field: fieldData
+                }
+
+                console.log(subData)
 
                 axios({
                     method: 'post',
-                    url: _this.$store.state.defaultHttp+'back/saveOrUpdate.do?cId='+_this.$store.state.iscId,
-                    data:qs.stringify(data),
+                    url: _this.$store.state.defaultHttp+'back/saveOrUpdateBack.do?cId='+_this.$store.state.iscId,
+                    // url: _this.$store.state.defaultHttp+'back/saveOrUpdate.do?cId='+_this.$store.state.iscId,
+                    data: subData,
                 }).then(function(res){
                     if(res.data.code && res.data.code == '200') {
                         _this.$message({

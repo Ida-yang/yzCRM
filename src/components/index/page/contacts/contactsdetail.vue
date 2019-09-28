@@ -17,6 +17,9 @@
                             <li>职务：<span>{{contactdetailsData.identity}}</span></li>
                             <li>性别：<span>{{contactdetailsData.sex}}</span></li>
                             <li>地址：<span>{{contactdetailsData.address}}</span></li>
+                            <li v-for="(item,index) in fieldData" :key="index">
+                                {{item.name}}：<span>{{item.value}}</span>
+                            </li>
                         </ul>
                     </div>
                 </el-card>
@@ -266,6 +269,7 @@
                 msg:'contactsdetail.vue',
 
                 contactdetailsData:{},
+                fieldData:[],
 
                 activeName2:'first',
                 customerpoolId:null,
@@ -305,8 +309,13 @@
                 const _this = this
                 this.msg = this.$store.state.contdetailsData
                 let qs = require('querystring')
-                let data = {}
-                data.id = this.msg.id
+                let data = {
+                    id: this.msg.id
+                }
+                let info = {
+                    label: 3,
+                    id: this.msg.id
+                }
                 
                 axios({
                     method: 'post',
@@ -319,6 +328,16 @@
                     }
                     _this.$options.methods.loadFollow.bind(_this)()
                     _this.$options.methods.loadPortrait.bind(_this)()
+                }).catch(function(err){
+                    // console.log(err);
+                });
+                //加载自定义字段详情
+                axios({
+                    method:'post',
+                    url:_this.$store.state.defaultHttp+'field/information.do?cId='+_this.$store.state.iscId,
+                    data:qs.stringify(info)
+                }).then(function(res){
+                    _this.fieldData = res.data
                 }).catch(function(err){
                     // console.log(err);
                 });

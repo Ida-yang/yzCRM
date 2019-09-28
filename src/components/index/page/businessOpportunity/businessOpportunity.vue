@@ -57,8 +57,8 @@
                     </template>
                 </el-table-column>
                 <el-table-column label="创建时间" prop="opportunity_time" v-if="item.prop == 'opportunity_time' && item.state == 1" min-width="150" sortable />
-                <el-table-column label="公司名称" prop="customerpool[0].name" v-if="item.prop == 'customerpool[0].name' && item.state == 1" min-width="200" sortable />
-                <el-table-column label="客户决策人" prop="contacts[0].coName" v-if="item.prop == 'contacts[0].coName' && item.state == 1" min-width="120" sortable />
+                <el-table-column label="公司名称" prop="name" v-if="item.prop == 'customerpool[0].name' && item.state == 1" min-width="200" sortable />
+                <el-table-column label="客户决策人" prop="coName" v-if="item.prop == 'contacts[0].coName' && item.state == 1" min-width="120" sortable />
                 <el-table-column label="商机进度" prop="opportunityProgress[0].progress_name" v-if="item.prop == 'opportunityProgress[0].progress_name' && item.state == 1" min-width="110" sortable />
                 <el-table-column label="成功几率" prop="opportunityProgress[0].progress_probability" show-overflow-tooltip v-if="item.prop == 'opportunityProgress[0].progress_probability' && item.state == 1" min-width="130" sortable>
                     <template slot-scope="scope">
@@ -85,6 +85,7 @@
                 <el-table-column label="部门" prop="deptname" v-if="item.prop == 'deptname' && item.state == 1" min-width="90" sortable />
                 <el-table-column label="机构" prop="parentname" v-if="item.prop == 'parentname' && item.state == 1" min-width="110" show-overflow-tooltip sortable />
                 <el-table-column label="备注" prop="opportunity_remarks" v-if="item.prop == 'opportunity_remarks' && item.state == 1" min-width="180" sortable />
+                <el-table-column v-for="a in fieldHeadData" :label="a.name" :key="a.field_name" :prop="a.field_name" v-if="item.prop == a.field_name && item.state == 1" min-width="130" sortable />
             </div>
             <el-table-column label="操作" fixed="right" width="150" header-align="center" align="center">
                 <template slot-scope="scope">
@@ -149,6 +150,7 @@
         },
         data(){
             return {
+                fieldHeadData:[],
                 searchList:{
                     searchName:null,
                     time:null,
@@ -244,9 +246,11 @@
             next()
         },
         activated(){
+            this.loadFieldHead()
             this.reloadTable()
         },
         mounted(){
+            this.loadFieldHead()
             this.reloadTable()
             this.reloadData()
             this.loadStep()
@@ -272,10 +276,12 @@
                 searchList.keyWord = this.searchList.keyWord
                 searchList.page = this.page;
                 searchList.limit = this.limit;
+                searchList.label = 5
                 
                 axios({
                     method: 'post',
-                    url: _this.$store.state.defaultHttp+'opportunity/query.do?cId='+_this.$store.state.iscId,
+                    url: _this.$store.state.defaultHttp+'pageInfo/queryPageList.do?cId='+_this.$store.state.iscId,
+                    // url: _this.$store.state.defaultHttp+'opportunity/query.do?cId='+_this.$store.state.iscId,
                     data: qs.stringify(searchList),
                 }).then(function(res){
                     let data = res.data.map.success
@@ -306,6 +312,24 @@
                     });
                     _this.$store.state.businessOpportunityList = data
                     _this.$store.state.businessOpportunityListnumber = res.data.count
+                }).catch(function(err){
+                    // console.log(err);
+                });
+            },
+            loadFieldHead(){
+                const _this = this
+                let qs =require('querystring')
+                let data = {
+                    label: 5,
+                    pId: this.$store.state.ispId
+                }
+
+                axios({
+                    method: 'post',
+                    url: _this.$store.state.defaultHttp+'field/queryListHead.do?cId='+_this.$store.state.iscId,
+                    data: qs.stringify(data),
+                }).then(function(res){
+                    _this.fieldHeadData = res.data
                 }).catch(function(err){
                     // console.log(err);
                 });
@@ -429,15 +453,15 @@
                     {"label":"备注","inputModel":"opportunity_remarks","type":'textarea'}];
                 oppaddOrUpdateData.setForm = {
                     "opportunity_name": row.opportunity_name,
-                    "customerpool_id": row.customerpool[0].id,
-                    "customerpool_name": row.customerpool[0].name,
-                    "contacts_id": row.contacts[0].coName,
-                    "contacts_name": row.contacts[0].csId,
+                    "customerpool_id": row.customerpool_id,
+                    "customerpool_name": row.name,
+                    "contacts_id": row.coName,
+                    "contacts_name": row.csId,
                     "opportunity_achievement":row.opportunity_achievement,
                     "opportunity_deal":row.opportunity_deal,
                     "user_id":row.private_employee,
                     "opportunity_remarks": row.opportunity_remarks};
-                oppaddOrUpdateData.submitData = {"id":row.opportunity_id};
+                oppaddOrUpdateData.submitData = {"id":row.opportunity_id, 'batch_id': row.batch_id};
                 oppaddOrUpdateData.submitURL = this.$store.state.defaultHttp+ 'opportunity/saveOrUpdate.do?cId='+this.$store.state.iscId,
                 this.$store.state.oppaddOrUpdateData = oppaddOrUpdateData;
 

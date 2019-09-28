@@ -61,6 +61,7 @@
                 <el-table-column label="业务员" prop="ascription" v-if="item.prop == 'ascription' && item.state == 1" min-width="110" sortable />
                 <el-table-column label="部门" prop="deptname" v-if="item.prop == 'deptname' && item.state == 1" min-width="100" sortable />
                 <el-table-column label="机构" prop="parentname" show-overflow-tooltip v-if="item.prop == 'parentname' && item.state == 1" min-width="100" sortable />
+                <el-table-column v-for="a in fieldHeadData" :label="a.name" :key="a.field_name" :prop="a.field_name" v-if="item.prop == a.field_name && item.state == 1" min-width="130" sortable />
             </div>
             <el-table-column label="操作" fixed="right" width="150" header-align="center" align="center">
                 <template slot-scope="scope">
@@ -125,6 +126,7 @@
         },
         data(){
             return {
+                fieldHeadData:[],
                 searchList:{
                     searchName:null,
                     label:'1',
@@ -172,9 +174,11 @@
             }
         },
         activated(){
+            this.loadFieldHead()
             this.loadTable()
         },
         mounted(){
+            this.loadFieldHead()
             this.loadTable()
             this.reloadData()
         },
@@ -200,10 +204,12 @@
                 searchList.example = this.searchList.example
                 searchList.page = this.page;
                 searchList.limit = this.limit;
+                searchList.label = 9
                 
                 axios({
                     method: 'post',
-                    url: _this.$store.state.defaultHttp+'order/selectOrderList.do?cId='+_this.$store.state.iscId,
+                    url: _this.$store.state.defaultHttp+'pageInfo/queryPageList.do?cId='+_this.$store.state.iscId,
+                    // url: _this.$store.state.defaultHttp+'order/selectOrderList.do?cId='+_this.$store.state.iscId,
                     data: qs.stringify(searchList),
                 }).then(function(res){
                     let array = res.data.map.orders
@@ -216,6 +222,24 @@
                     });
                     _this.$store.state.orderList = array
                     _this.$store.state.orderListnumber = res.data.count
+                }).catch(function(err){
+                    // console.log(err);
+                });
+            },
+            loadFieldHead(){
+                const _this = this
+                let qs =require('querystring')
+                let data = {
+                    label: 9,
+                    pId: this.$store.state.ispId
+                }
+
+                axios({
+                    method: 'post',
+                    url: _this.$store.state.defaultHttp+'field/queryListHead.do?cId='+_this.$store.state.iscId,
+                    data: qs.stringify(data),
+                }).then(function(res){
+                    _this.fieldHeadData = res.data
                 }).catch(function(err){
                     // console.log(err);
                 });
@@ -277,6 +301,7 @@
                 //             type:'error'
                 //         })
                 //     }else{
+                        this.$store.state.orderupdateData = {}
                         _this.$router.push({ path: '/orderadd' });
                 //     }
                 // }).catch(function(err){
@@ -285,9 +310,7 @@
             },
             handleEdit(index,row){
                 const _this = this
-                let orderupdateData = {}
-                orderupdateData.setForm = {id:row.id}
-                this.$store.state.orderupdateData = orderupdateData;
+                this.$store.state.orderupdateData = {id:row.id, 'batch_id': row.batch_id};
                 // axios({
                 //     method: 'get',
                 //     url: _this.$store.state.defaultHttp+'clueJurisdiction/update.do',//修改线索

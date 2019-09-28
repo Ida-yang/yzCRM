@@ -130,7 +130,7 @@
                             el.field_img = '../../../../../static/img/field_img/agreement.png'
                             el.bgcolor = 'background-color: rgb(114, 221, 207);'
                         }else if(el.label == 7){
-                            el.module_name = '回款管理',
+                            el.module_name = '合同回款管理',
                             el.field_img = '../../../../../static/img/field_img/backMoney.png'
                             el.bgcolor = 'background-color: rgb(106, 201, 215);'
                         }else if(el.label == 8){
@@ -147,6 +147,10 @@
                             el.bgcolor = 'background-color: rgb(114, 207, 141);'
                         }else if(el.label == 11){
                             el.module_name = '工单管理',
+                            el.field_img = '../../../../../static/img/field_img/order.png'
+                            el.bgcolor = 'background-color: rgb(114, 207, 141);'
+                        }else if(el.label == 12){
+                            el.module_name = '订单收款管理',
                             el.field_img = '../../../../../static/img/field_img/order.png'
                             el.bgcolor = 'background-color: rgb(114, 207, 141);'
                         }
