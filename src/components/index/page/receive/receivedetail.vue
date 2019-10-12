@@ -19,6 +19,9 @@
                             <li>剩余金额：<span>{{receivdetailData.residual_amount | commaing}}</span></li>
                             <li>原单号：<span>{{receivdetailData.contract_number}}</span></li>
                             <li>原单类型：<span>{{receivdetailData.type}}</span></li>
+                            <li v-for="(item,index) in fieldData" :key="index">
+                                {{item.name}}：<span>{{item.value}}</span>
+                            </li>
                         </ul>
                         <div class="receiveaudited" v-if="receivdetailData.checkStatus == 1">
                             <img class="audited_img" :src="auditing" alt="审核中">
@@ -222,6 +225,7 @@
                 receivdetailData:[],
                 examineList:[],
                 examineLog:[],
+                fieldData:[],
 
                 hasCheck:null,//是否有审批权
                 hasRecheck:null,//是否有撤回权
@@ -265,6 +269,10 @@
                 let qs = require('querystring')
                 let data = {}
                 data.id = detailData.id
+                let info = {
+                    label: 7,
+                    id: detailData.id
+                }
 
                 //加载回款详情
                 axios({
@@ -365,6 +373,16 @@
                     }).catch(function(err){
                         // console.log(err);
                     });
+                }).catch(function(err){
+                    // console.log(err);
+                });
+                //加载自定义字段详情
+                axios({
+                    method:'post',
+                    url:_this.$store.state.defaultHttp+'field/information.do?cId='+_this.$store.state.iscId,
+                    data:qs.stringify(info)
+                }).then(function(res){
+                    _this.fieldData = res.data
                 }).catch(function(err){
                     // console.log(err);
                 });

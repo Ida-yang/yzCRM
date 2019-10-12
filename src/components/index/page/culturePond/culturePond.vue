@@ -320,8 +320,8 @@
                 this.$router.push({path:'/culPondaddorUpdate'})
             },
             handleDelete(index,row){
-                const _this = this;
-                let qs =require('querystring')
+                const _this = this
+                let qs = require('querystring')
                 let idArr = []
                 idArr.ids = row.id
 

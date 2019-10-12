@@ -3,7 +3,7 @@
         <el-card class="box-card">
             <div slot="header" class="clearfix">
                 <span class="bold_span">销售订单<span class="bold_span">：{{myform.orderNo}}</span></span>
-                        <el-button style="float:right;margin-left:10px;" class="info-btn" size="mini" @click="retract()">审核</el-button>
+                <el-button style="float:right;margin-left:10px;" class="info-btn" size="mini" @click="retract()">审核</el-button>
             </div>
             <div class="orderHead">
                 <el-form :inline="true" ref="myform" :model="myform" :rules="rules">
@@ -225,11 +225,11 @@
                     </template>
                 </el-table-column>
 
-                <el-table-column label="主图" prop="productImg" width="80" v-if="item.prop == 'image' && item.state == 1">
+                <el-table-column label="主图" prop="productImg" width="100" v-if="item.prop == 'image' && item.state == 1">
                     <template slot-scope="scope">
                         <el-popover placement="right" width="200" trigger="hover">
                             <img :src="scope.row.productImg" alt="" width="200" height="200">
-                            <img slot="reference" :src="scope.row.productImg" alt="" width="60" height="60">
+                            <img slot="reference" :src="scope.row.productImg" alt="" width="80" height="80">
                         </el-popover>
                     </template>
                 </el-table-column>
@@ -263,18 +263,18 @@
                 </el-table-column>
 
                 <el-table-column label="金额" prop="amountOfMoney" min-width="120" v-if="item.prop == 'amountOfMoney' && item.state == 1">
-                    <template slot-scope="scope">
+                    <!-- <template slot-scope="scope">
                         <template v-if="scope.row.edit">
                             <el-input v-model="scope.row.amountOfMoney" class="edit-input" size="small" @input="handleinput($event,scope.$index,scope.row)"/>
                         </template>
                         <span v-else>{{ scope.row.amountOfMoney }}</span>
-                    </template>
+                    </template> -->
                 </el-table-column>
 
                 <el-table-column label="折扣" prop="discount" width="90" v-if="item.prop == 'discount' && item.state == 1">
                     <template slot-scope="scope">
                         <template v-if="scope.row.edit">
-                            <el-input v-model="scope.row.discount" class="edit-input" size="small" @input="handleinput($event,scope.$index,scope.row)">
+                            <el-input v-model="scope.row.discount" class="edit-input" size="small" @input="handleinput($event,scope.$index,scope.row,'discount')">
                                 <span slot="suffix" style="margin-right:5px;line-height:34px;">%</span>
                             </el-input>
                         </template>
@@ -285,19 +285,19 @@
                 <el-table-column label="折扣额" prop="discountAmount" min-width="120" v-if="item.prop == 'discountAmount' && item.state == 1">
                     <template slot-scope="scope">
                         <template v-if="scope.row.edit">
-                            <el-input v-model="scope.row.discountAmount" class="edit-input" size="small"/>
+                            <el-input v-model="scope.row.discountAmount" class="edit-input" size="small" @input="handleinput($event,scope.$index,scope.row,'discountAmount')"/>
                         </template>
                         <span v-else>{{ scope.row.discountAmount }}</span>
                     </template>
                 </el-table-column>
 
                 <el-table-column label="折后金额" prop="discountAfter" min-width="120" v-if="item.prop == 'discountAfter' && item.state == 1">
-                    <template slot-scope="scope">
+                    <!-- <template slot-scope="scope">
                         <template v-if="scope.row.edit">
                             <el-input v-model="scope.row.discountAfter" class="edit-input" size="small"/>
                         </template>
                         <span v-else>{{ scope.row.discountAfter }}</span>
-                    </template>
+                    </template> -->
                 </el-table-column>
 
                 <el-table-column label="税率" prop="taxRate" width="90" v-if="item.prop == 'taxRate' && item.state == 1">
@@ -312,21 +312,21 @@
                 </el-table-column>
 
                 <el-table-column label="税额" prop="taxAmount" min-width="120" v-if="item.prop == 'taxAmount' && item.state == 1">
-                    <template slot-scope="scope">
+                    <!-- <template slot-scope="scope">
                         <template v-if="scope.row.edit">
                             <el-input v-model="scope.row.taxAmount" class="edit-input" size="small"/>
                         </template>
                         <span v-else>{{ scope.row.taxAmount }}</span>
-                    </template>
+                    </template> -->
                 </el-table-column>
 
                 <el-table-column label="税后金额" prop="taxAfter" min-width="120" v-if="item.prop == 'taxAfter' && item.state == 1">
-                    <template slot-scope="scope">
+                    <!-- <template slot-scope="scope">
                         <template v-if="scope.row.edit">
                             <el-input v-model="scope.row.taxAfter" class="edit-input" size="small"/>
                         </template>
                         <span v-else>{{ scope.row.taxAfter }}</span>
-                    </template>
+                    </template> -->
                 </el-table-column>
 
                 <el-table-column label="交货日期" prop="commitTime" width="170" v-if="item.prop == 'commitTime' && item.state == 1">
@@ -393,8 +393,8 @@
                 <el-tree
                     node-key="id" highlight-current accordion expand-on-click-node
                     :data="datalist"
-                    :props="defaultProps"
-                    :default-expanded-keys="defaultkeys"
+                    :props="default_props"
+                    :default-expanded-keys="default_keys"
                     @node-click="handleNodeClick">
                 </el-tree>
             </div>
@@ -446,11 +446,11 @@
                 orderupdateData:{},
 
                 datalist:[],
-                defaultProps:{
+                default_props:{
                     label:'name',
                     children:'next',
                 },
-                defaultkeys:[1],
+                default_keys:[1],
 
                 updateData:null,
                 list: null,
@@ -1018,20 +1018,34 @@
                 });
                 this.selectData = this.list
             },
-            handleinput(e,index,row){
+            handleinput(e,index,row,val){
                 if(row.num && row.price){
                     let z = parseInt(row.num) * parseFloat(row.price)
                     row.amountOfMoney = z.toFixed(2)
                 }
-                if(row.amountOfMoney && row.discount){
+
+                if(row.amountOfMoney && row.discount && val == 'discount'){
                     let a = parseFloat(row.amountOfMoney) * parseFloat(row.discount) / 100
                     let b = parseFloat(row.amountOfMoney) - a
                     row.discountAmount = b.toFixed(2)
                     row.discountAfter = a.toFixed(2)
+                }else if(row.amountOfMoney && row.discountAmount && val == 'discountAmount'){
+                    let n = parseFloat(row.amountOfMoney) - parseFloat(row.discountAmount)
+                    let m = n / parseFloat(row.amountOfMoney) * 100
+                    row.discount = m.toFixed(2)
+                    row.discountAfter = n.toFixed(2)
                 }else{
-                    row.discountAmount = 0
-                    row.discountAfter = 0
+                    if(row.amountOfMoney && row.discount){
+                        let f = parseFloat(row.amountOfMoney) * parseFloat(row.discount) / 100
+                        let g = parseFloat(row.amountOfMoney) - f
+                        row.discountAmount = g.toFixed(2)
+                        row.discountAfter = f.toFixed(2)
+                    }else{
+                        row.discountAmount = 0
+                        row.discountAfter = row.amountOfMoney
+                    }
                 }
+                
                 if(row.amountOfMoney && row.taxRate){
                     if(row.discountAfter){
                         let x = parseFloat(row.discountAfter) * parseFloat(row.taxRate) / 100
@@ -1046,7 +1060,7 @@
                     }
                 }else{
                     row.taxAmount = 0
-                    row.taxAfter = 0
+                    row.taxAfter = row.discountAfter
                 }
             },
             showDialog(){

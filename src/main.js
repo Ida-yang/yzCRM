@@ -139,12 +139,12 @@ router.beforeEach((to, from, next) => {
           method: 'get',
           url: store.state.defaultHttp+'typeInfoJurisdiction/typeInfoMenu.do',
         }).then(function(res){
-          if(res.data.msg && res.data.msg == 'error'){
-            Vue.prototype.$message.error('对不起，您没有该权限，请联系管理员开通')
-            next({path:'/index'})
-          }else{
+          // if(res.data.msg && res.data.msg == 'error'){
+          //   Vue.prototype.$message.error('对不起，您没有该权限，请联系管理员开通')
+          //   next({path:'/index'})
+          // }else{
             next()
-          }
+          // }
         })
       }else if(to.path === '/programme'){
         axios({

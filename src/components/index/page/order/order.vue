@@ -7,7 +7,7 @@
                 <el-radio v-for="item in pIdData" :key="item.label" :label="item.label" @change="search()">{{item.value}}</el-radio>
             </el-radio-group>
             <el-radio-group v-model="searchList.example">
-                <span class="nameList">计划时间：</span>
+                <span class="nameList">订单日期：</span>
                 <el-radio :label="nullvalue" @change="search()">全部</el-radio>
                 <el-radio v-for="item in timeData" :key="item.id" :label="item.id" @change="search()">{{item.name}}</el-radio>
             </el-radio-group>

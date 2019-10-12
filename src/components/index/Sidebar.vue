@@ -232,8 +232,12 @@
                             },
                             {
                                 index: 'receive',
-                                title: '应收回款',
+                                title: '合同回款',
                             },
+                            // {
+                            //     index: 'orderReceive',
+                            //     title: '订单收款',
+                            // },
                             {
                                 index: 'followlog',
                                 title: '跟进记录',
@@ -382,7 +386,7 @@
                         subs: [
                             {
                                 index: 'receive',
-                                title: '应收回款',
+                                title: '合同回款',
                             },
                         ]
                     },

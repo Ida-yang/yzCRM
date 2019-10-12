@@ -5,11 +5,11 @@ Vue.use(Vuex)
 /*配置全局数据*/
 const state = {
   //配置访问地址
-  // defaultHttp: 'https://crm.yunzoe.com/yzcrm/', //线上服务器
-  // systemHttp: 'https://crm.yunzoe.com/', //线上服务器
+  defaultHttp: 'https://crm.yunzoe.com/yzcrm/', //线上服务器
+  systemHttp: 'https://crm.yunzoe.com/', //线上服务器
   // defaultHttp:'http://192.168.1.105:8080/', //测试服务器
-  defaultHttp:'http://crm2019.yunzoe.com/yzcrm/', //测试服务器
-  systemHttp:'http://crm2019.yunzoe.com/', //测试服务器
+  // defaultHttp:'http://crm2019.yunzoe.com/yzcrm/', //测试服务器
+  // systemHttp:'http://crm2019.yunzoe.com/', //测试服务器
 
   //作者
   author:'Ida',
@@ -52,6 +52,7 @@ const state = {
   workOrderaddorUpdateData:null, // 工单
   culPondaddorUpdateData:null, // 培育池
   competitorAddOrUpdateData:null, // 竞争对手
+  orderReceiveAddOrUpdateData:null, // 竞争对手
   
   //跳转详情页列表
   cluedetailsData:null, // 线索
@@ -68,6 +69,7 @@ const state = {
   receivdetailData:null, // 回款
   culturePondetailData:null, // 培育池
   competitordetailData:null, // 竞争对手
+  orderReceiveDetailData:null, // 订单收款
 
 
   //线索挖掘列表
@@ -219,10 +221,14 @@ const state = {
   //客户跟进记录ID
   customfollowId:null,
 
-  //应收回款列表
+  //合同回款列表
   receiveList:[],
-  //应收惠匡列表总数
+  //合同回款列表总数
   receiveListnumber:0,
+  //订单收款列表
+  orderReceiveList:[],
+  //订单收款列表总数
+  orderReceiveListnumber:0,
 
   //培育池列表
   culturePondList:[],

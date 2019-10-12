@@ -22,6 +22,12 @@
         </div>
         <div class="entry">
             <div class="totalnum_head">共 <span class="bold_span">{{tableNumber}}</span> 条</div>
+            <el-popover placement="bottom" width="100" trigger="click">
+                <el-checkbox-group class="checklist" v-model="checklist" style="max-height:600px;overflow-y:overlay;overflow-x:hidden">
+                    <el-checkbox class="checkone" v-for="item in filterList" :key="item.id" :label="item.name" :value="item.state" @change="hangleChange($event,item)"></el-checkbox>
+                </el-checkbox-group>
+                <el-button slot="reference" icon="el-icon-more" class="info-btn screen" type="mini"></el-button>
+            </el-popover>
         </div>
         <el-table :data="tableData" border stripe style="width:100%" :summary-method="getSummaries" show-summary>
             <el-table-column header-align="center" fixed align="center" type="index" width="45"></el-table-column>
@@ -68,6 +74,7 @@
             <el-table-column label="制单人" prop="private_employee" min-width="100" sortable></el-table-column>
             <el-table-column label="部门" prop="deptname" min-width="110" sortable></el-table-column>
             <el-table-column label="机构" prop="parentname" min-width="130" show-overflow-tooltip sortable></el-table-column>
+            <el-table-column v-for="a in fieldHeadData" :label="a.name" :key="a.field_name" :prop="a.field_name" min-width="130" sortable />
         </el-table>
         <div class="block numberPage">
             <el-pagination
@@ -125,6 +132,7 @@
         data(){
             return{
                 msg:'receive.vue',
+                fieldHeadData:[],
 
                 page:1,
                 limit:20,
@@ -150,13 +158,19 @@
                     {index:4,name:'待我审核'},
                 ],
                 nullvalue:null,
+
+                filterList:null,
+                checklist:null,
             }
         },
         activated(){
+            this.loadFieldHead()
             this.loadTable()
         },
         mounted(){
+            this.loadFieldHead()
             this.loadTable()
+            this.reloadData()
         },
         methods:{
             loadTable(){
@@ -182,10 +196,12 @@
                 data.stateid = this.searchList.stateid
                 data.page = this.page
                 data.limit = this.limit
+                data.label = 7
 
                 axios({
                     method:'post',
-                    url:_this.$store.state.defaultHttp + 'back/queryForList.do?cId=' + _this.$store.state.iscId,
+                    url:_this.$store.state.defaultHttp + 'pageInfo/queryPageList.do?cId=' + _this.$store.state.iscId,
+                    // url:_this.$store.state.defaultHttp + 'back/queryForList.do?cId=' + _this.$store.state.iscId,
                     data: qs.stringify(data)
                 }).then(function(res){
                     let info = res.data.map.success
@@ -200,6 +216,54 @@
                     // console.log(err);
                 });
             },
+            loadFieldHead(){
+                const _this = this
+                let qs =require('querystring')
+                let data = {
+                    label: 7,
+                    pId: this.$store.state.ispId
+                }
+
+                axios({
+                    method: 'post',
+                    url: _this.$store.state.defaultHttp+'field/queryListHead.do?cId='+_this.$store.state.iscId,
+                    data: qs.stringify(data),
+                }).then(function(res){
+                    _this.fieldHeadData = res.data
+                }).catch(function(err){
+                    // console.log(err);
+                });
+            },
+            //获取筛选列表
+            reloadData() {
+                const _this = this;
+                let qs =require('querystring')
+                let filterList = {}
+                filterList.type = '应收回款'
+                let data = {}
+                data.type = '应收回款'
+                data.state = 1
+                
+                axios({
+                    method: 'post',
+                    url: _this.$store.state.defaultHttp+'userPageInfo/getAllUserPage.do?cId='+_this.$store.state.iscId+'&pId='+_this.$store.state.ispId,
+                    data: qs.stringify(filterList)
+                }).then(function(res){
+                    _this.filterList = res.data
+                }).catch(function(err){
+                    // console.log(err);
+                });
+                axios({
+                    method: 'post',
+                    url: _this.$store.state.defaultHttp+'userPageInfo/getUserPage.do?cId='+_this.$store.state.iscId+'&pId='+_this.$store.state.ispId,
+                    data: qs.stringify(data)
+                }).then(function(res){
+                    _this.checklist = res.data
+                }).catch(function(err){
+                    // console.log(err);
+                });
+            },
+
             openDetails(index,row){
                 this.$store.state.receivdetailData = {id:row.id}
                 this.$router.push({ path: '/receivedetail' });
@@ -248,6 +312,30 @@
             handleCurrentChange(val){
                 this.page = val
                 this.$options.methods.loadTable.bind(this)()
+            },
+
+            hangleChange(e,val){
+                const _this = this
+                let qs = require('querystring')
+                let data = {}
+                data.pageInfoId = val.pageInfoId
+                if(e == true){
+                    data.state = 1
+                }else{
+                    data.state = 0
+                }
+
+                axios({
+                    method: 'post',
+                    url:  _this.$store.state.defaultHttp+ 'userPageInfo/updateUserPageByid.do?cId='+_this.$store.state.iscId+'&pId='+_this.$store.state.ispId,
+                    data:qs.stringify(data),
+                }).then(function(res){
+                    if(res.data && res.data =="success"){
+                        _this.$options.methods.reloadData.bind(_this)(true);
+                    }
+                }).catch(function(err){
+                    // console.log(err);
+                });
             },
         },
     }

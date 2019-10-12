@@ -294,12 +294,27 @@ const router =new Router({
         {
           path: '/receive',
           component: resolve => require(['../components/index/page/receive/receive.vue'], resolve),
-          meta: { title: '应收回款',name:'receive',requireAuth:true}
+          meta: { title: '合同回款',name:'receive',requireAuth:true}
         },
         {
           path: '/receivedetail',
           component: resolve => require(['../components/index/page/receive/receivedetail.vue'], resolve),
           meta: { title: '回款详情页',requireAuth:true}
+        },
+        {
+          path: '/orderReceive',
+          component: resolve => require(['../components/index/page/receive/orderReceive.vue'], resolve),
+          meta: { title: '订单收款',name:'orderReceive',requireAuth:true}
+        },
+        {
+          path: '/orderReceiveaddOrUpdate',
+          component: resolve => require(['../components/index/page/AddAndUpdate/orderReceiveaddOrUpdate.vue'], resolve),
+          meta: { title: '编辑订单收款', requireAuth:true}
+        },
+        {
+          path: '/orderReceiveDetail',
+          component: resolve => require(['../components/index/page/receive/orderReceiveDetail.vue'], resolve),
+          meta: { title: '收款详情页',requireAuth:true}
         },
         {
           path: '/culturePond',

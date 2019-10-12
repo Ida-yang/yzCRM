@@ -119,7 +119,7 @@
                 <el-table-column label="规格名称" prop="specName" min-width="120" sortable />
                 <el-table-column label="规格值" prop="specValue" min-width="200" sortable>
                     <template slot-scope="scope">
-                        <span v-for="(a,i) in scope.row.specValue" :key="i">{{a}} , </span>
+                        <span v-for="(a,i) in scope.row.specValue" :key="i"><span v-if="i !== 0"> , </span>{{a}}</span>
                     </template>
                 </el-table-column>
                 <el-table-column prop="createTime" label="创建时间" min-width="150" sortable />

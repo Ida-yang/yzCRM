@@ -199,6 +199,8 @@
         components: {UE},
         data(){
             return{
+                specList:[],
+
                 updataData:null,
                 despecData:[],
                 activeName:'first',
@@ -290,6 +292,17 @@
                 doUpload:this.$store.state.defaultHttp + 'workOrder/upload.do?cId=' + this.$store.state.iscId,
             }
         },
+        beforeCreate(){
+            const _this = this
+            axios({
+                method: 'get',
+                url: _this.$store.state.defaultHttp+'specification/selectList.do?cId='+_this.$store.state.iscId,
+            }).then(function(res){
+                _this.specList = res.data
+            }).catch(function(err){
+            });
+            
+        },
         mounted(){
             this.loadData()
             this.loadother()
@@ -326,6 +339,13 @@
                     }else{
                         _this.generationBtn = false
                     }
+                    _this.specHeadData.forEach(a => {
+                        _this.specList.forEach(b => {
+                            if(a.spec_id == b.id){
+                                a.options = b.specValue
+                            }
+                        });
+                    });
                     _this.fileList = []
                     if(_this.imageList.length){
                         _this.imageList.forEach(item => {
