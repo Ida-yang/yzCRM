@@ -234,15 +234,15 @@
                                 index: 'receive',
                                 title: '合同回款',
                             },
-                            // {
-                            //     index: 'orderReceive',
-                            //     title: '订单收款',
-                            // },
+                            {
+                                index: 'orderReceive',
+                                title: '订单收款',
+                            },
                             {
                                 index: 'followlog',
                                 title: '跟进记录',
                             },
-                            {
+                            { 
                                 index: 'product',
                                 title: '产品',
                             },

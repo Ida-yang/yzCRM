@@ -8,7 +8,7 @@
             </el-radio-group>
             <el-radio-group v-model="searchList.example">
                 <span class="nameList">订单日期：</span>
-                <el-radio :label="nullvalue" @change="search()">全部</el-radio>
+                <!-- <el-radio :label="nullvalue" @change="search()">全部</el-radio> -->
                 <el-radio v-for="item in timeData" :key="item.id" :label="item.id" @change="search()">{{item.name}}</el-radio>
             </el-radio-group>
         </div>
@@ -129,19 +129,19 @@
                 fieldHeadData:[],
                 searchList:{
                     searchName:null,
-                    label:'1',
+                    label:1,
                     state:null,
                     type:null,
                     time:null,
-                    example:null,
+                    example:0,
                 },
                 searchListNew:{
                     searchName:null,
-                    label:'1',
+                    label:0,
                     state:null,
                     type:null,
                     time:null,
-                    example:null,
+                    example:0,
                 },
                 page:1,//默认第一页
                 limit:20,//默认20条
@@ -153,18 +153,19 @@
                 SMSphones:[],
                 SMScontacts:[],
                 pIdData:[
-                    {label:'0',value:'全部'},
-                    {label:'1',value:'我的'},
-                    {label:'2',value:'本组'},
-                    {label:'3',value:'本机构'},
-                    {label:'4',value:'待我审核'}
+                    {label:0,value:'全部'},
+                    {label:1,value:'我的'},
+                    {label:2,value:'本组'},
+                    {label:3,value:'本机构'},
+                    {label:4,value:'待我审核'}
                 ],
                 timeData:[
-                    {id:'1',name:'今天'},
-                    {id:'2',name:'昨天'},
-                    {id:'3',name:'本周'},
-                    {id:'4',name:'本月'},
-                    {id:'5',name:'上月'},
+                    {id:null,name:'全部'},
+                    {id:1,name:'今天'},
+                    {id:2,name:'昨天'},
+                    {id:3,name:'本周'},
+                    {id:4,name:'本月'},
+                    {id:5,name:'上月'},
                 ],
 
                 nullvalue:null,

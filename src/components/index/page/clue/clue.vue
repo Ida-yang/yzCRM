@@ -45,7 +45,7 @@
                     <div class="download_down">
                         <el-button class="info-btn" type="mini"><a :href="downloadUrl" download>下载模板</a></el-button>
                     </div>
-                    <el-upload class="upload-demo" ref="upload" :multiple="true" action="doUpload" :limit="1" :before-upload="beforeUpload">
+                    <el-upload class="upload-demo" ref="upload" action="" :before-upload="beforeUpload" :on-exceed="uploadExceed">
                         <el-button slot="trigger" size="mini" class="info-btn">导入excel</el-button>
                     </el-upload>
                 </div>
@@ -789,17 +789,24 @@
                 const isLt5M = file.size / 1024 / 1024 < 5
                 if (!extension && !extension2) {
                     this.$message.warning('上传模板只能是 xls、xlsx格式!')
-                    return
+                    return false
                 }
                 if (!isLt5M) {
                     this.$message.warning('上传模板大小不能超过 5MB!')
-                    return
+                    return false
                 }
                 this.fileName = file.name;
                 setTimeout(() => {
                     this.submitUpload();
                 },500);
-                return false; // 返回false不会自动上传
+                 // 返回false不会自动上传
+            },
+            
+            uploadExceed(files,fileList){
+                if(files.length > 1){
+                    this.$message.warning('只能导入一份文件!')
+                    return false
+                }
             },
          
             // 上传excel

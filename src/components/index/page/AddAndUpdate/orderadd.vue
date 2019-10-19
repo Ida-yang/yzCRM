@@ -81,8 +81,8 @@
                             format="yyyy-MM-dd HH:mm:ss" value-format="yyyy-MM-dd HH:mm:ss">
                         </el-date-picker>
                         
-                        <el-upload v-else-if="item.formType == 'file'" class="upload-demo" :action="doUpload" :multiple="false" :limit="1" :on-success="uploadSuccess" :before-upload="beforeUpload">
-                            <el-button size="small" type="primary">上传</el-button>
+                        <el-upload v-else-if="item.formType == 'file'" class="upload-demo" :action="doUpload" :on-success="uploadSuccess" :before-upload="beforeUpload">
+                            <el-button size="mini" type="info-btn">上传</el-button>
                             <div slot="tip" class="el-upload__tip" style="margin-top: -20px">{{item.input_tips}}</div>
                         </el-upload>
                     </el-form-item>
@@ -804,7 +804,6 @@
                 }else if(row.amountOfMoney && row.discountAmount && val == 'discountAmount'){
                     let n = parseFloat(row.amountOfMoney) - parseFloat(row.discountAmount)
                     let m = n / parseFloat(row.amountOfMoney) * 100
-                    console.log(n,m)
                     row.discount = m.toFixed(2)
                     row.discountAfter = n.toFixed(2)
                 }else{
@@ -958,7 +957,7 @@
                 const isLt5M = file.size / 1024 / 1024 < 5
                 if (!isLt5M) {
                     this.$message.warning('文件大小不能超过 5MB!')
-                    return
+                    return false
                 }
             },
             uploadSuccess(res,file,fileList){

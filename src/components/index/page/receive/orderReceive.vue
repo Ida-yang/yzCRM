@@ -5,19 +5,19 @@
                 <span class="nameList">数据授权：</span>
                 <el-radio v-for="item in pIdData" :key="item.index" :label="item.index" @change="search()">{{item.name}}</el-radio>
             </el-radio-group>
-            <el-radio-group v-model="searchList.stateid">
-                <span class="nameList">工单状态：</span>
-                <el-radio v-for="item in stateData" :key="item.index" :label="item.index" @change="search()">{{item.name}}</el-radio>
+            <el-radio-group v-model="searchList.example">
+                <span class="nameList">收款日期：</span>
+                <el-radio v-for="item in timeData" :key="item.id" :label="item.id" @change="search()">{{item.name}}</el-radio>
             </el-radio-group>
+            <!-- <el-radio-group v-model="searchList.stateid">
+                <span class="nameList">收款单状态：</span>
+                <el-radio v-for="item in stateData" :key="item.index" :label="item.index" @change="search()">{{item.name}}</el-radio>
+            </el-radio-group> -->
         </div>
 
         <div class="searchList" style="width:100%;">
-            <el-input placeholder="请输入公司名称或单号" v-model="searchList.searchName" style="margin-left:20px;width:400px;" @input="search">
-                <el-select v-model="searchList.searchOption" slot="prepend" placeholder="请选择" style="width:110px"> 
-                    <el-option label="公司名称" value="1"></el-option>
-                    <el-option label="原单号" value="2"></el-option>
-                </el-select>
-            </el-input>
+            <span class="nameList">公司名称：</span>
+            <el-input v-model="searchList.searchName" placeholder="请输入公司名称" style="width:300px;" @keyup.enter.native="search"></el-input>
             &nbsp;&nbsp;
             <el-button icon="el-icon-search" type="primary" size="mini" @click="search()">查询</el-button>
         </div>
@@ -43,26 +43,14 @@
                 </template>
             </el-table-column>
             <el-table-column label="公司名称" prop="customerName" min-width="200" sortable></el-table-column>
-            <el-table-column label="原单号" prop="contract_number" min-width="150" sortable></el-table-column>
-            <el-table-column label="原单类型" prop="type" min-width="110" sortable></el-table-column>
-            <el-table-column label="总金额" prop="totalAmount" min-width="140" sortable>
+            <el-table-column label="本次收款金额" prop="money" min-width="130" sortable>
                 <template slot-scope="scope">
-                    {{scope.row.totalAmount}}
+                    {{scope.row.money | commaing}}
                 </template>
             </el-table-column>
-            <el-table-column label="已收款金额" prop="amount_of_repayment" min-width="130" sortable>
+            <el-table-column label="折后金额" prop="discountAfter" min-width="130" sortable>
                 <template slot-scope="scope">
-                    {{scope.row.amount_of_repayment}}
-                </template>
-            </el-table-column>
-            <el-table-column label="本次收款金额" prop="price" min-width="130" sortable>
-                <template slot-scope="scope">
-                    {{scope.row.price}}
-                </template>
-            </el-table-column>
-            <el-table-column label="剩余金额" prop="amount_of_repayment" min-width="130" sortable>
-                <template slot-scope="scope">
-                    {{scope.row.surplusNum | commaing}}
+                    {{scope.row.discountAfter | commaing}}
                 </template>
             </el-table-column>
             <el-table-column label="收款方式" prop="pay_type" min-width="110" sortable></el-table-column>
@@ -147,8 +135,8 @@
                 page:1,
                 limit:20,
                 searchList:{
+                    example:0,
                     searchName:null,
-                    searchOption:'1',
                     stateid:null,
                     label:1,
                 },
@@ -161,11 +149,19 @@
                     {index:3,name:'未通过'},
                 ],
                 pIdData:[
-                    {index:0,name:'全部'},
+                    {index:null,name:'全部'},
                     {index:1,name:'我的'},
                     {index:2,name:'本组'},
                     {index:3,name:'本机构'},
                     {index:4,name:'待我审核'},
+                ],
+                timeData:[
+                    {id:0,name:'全部'},
+                    {id:1,name:'今天'},
+                    {id:2,name:'昨天'},
+                    {id:3,name:'本周'},
+                    {id:4,name:'本月'},
+                    {id:5,name:'上月'},
                 ],
                 nullvalue:null,
 
@@ -188,7 +184,7 @@
                 let qs = require('querystring')
                 let data = {}
                 if(this.searchList.label == 0 ){
-                    data.pId = _this.nullvalue
+                    data.pId = null
                 }else if(this.searchList.label == 1){
                     data.pId = _this.$store.state.ispId
                 }else if(this.searchList.label == 2){
@@ -198,28 +194,19 @@
                 }else if(this.searchList.label == 4){
                     data.examine = _this.$store.state.ispId
                 }
-                if(this.searchList.searchOption == '1'){
-                    data.searchName = this.searchList.searchName
-                }else if(this.searchList.searchOption == '2'){
-                    data.keyWord = this.searchList.searchName
-                }
-                data.stateid = this.searchList.stateid
-                data.page = this.page
-                data.limit = this.limit
+                data.searchName = this.searchList.searchName
+                data.example = this.searchList.example
+                data.page = this.page;
+                data.limit = this.limit;
                 data.label = 12
 
                 axios({
                     method:'post',
                     url:_this.$store.state.defaultHttp + 'pageInfo/queryPageList.do?cId=' + _this.$store.state.iscId,
-                    // url:_this.$store.state.defaultHttp + 'back/queryForList.do?cId=' + _this.$store.state.iscId,
                     data: qs.stringify(data)
                 }).then(function(res){
                     let info = res.data.map.success
-
-                    // info.forEach(el => {
-                    //     let num = el.totalAmount - el.amount_of_repayment
-                    //     el.surplusNum = num.toFixed(2)
-                    // });
+                    
                     _this.$store.state.orderReceiveList = info
                     _this.$store.state.orderReceiveListnumber = res.data.count
                 }).catch(function(err){
@@ -275,8 +262,8 @@
             },
 
             openDetails(index,row){
-                this.$store.state.receivdetailData = {id:row.id}
-                this.$router.push({ path: '/receivedetail' });
+                this.$store.state.orderReceiveDetailData = {id:row.id, 'batch_id': row.batch_id};
+                this.$router.push({ path: '/orderReceiveDetail' });
             },
             getSummaries(param){
                 const { columns, data } = param;
@@ -287,7 +274,7 @@
                         return;
                     }
                     const values = data.map(item => Number(item[column.property]));
-                    if(column.property == 'price'){
+                    if(column.property == 'money' || column.property == 'discountAfter'){
                         sums[index] = values.reduce((acc, cur) => (cur + acc), 0)
                         sums[index] = sums[index].toFixed(2)
                         let intPart = Math.trunc(sums[index])
@@ -325,7 +312,7 @@
                 //             type:'error'
                 //         })
                 //     }else{
-                        this.$store.state.orderReceiveAddOrUpdateData = {}
+                        this.$store.state.orderReceiveAddOrUpdateData = null
                         _this.$router.push({ path: '/orderReceiveaddOrUpdate' });
                 //     }
                 // }).catch(function(err){

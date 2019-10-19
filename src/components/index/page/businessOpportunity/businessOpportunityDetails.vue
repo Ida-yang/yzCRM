@@ -141,13 +141,13 @@
                                 <el-radio v-model="followform.followContent" v-for="item in fastcontactList" :key="item.id" :label="item.content">{{item.typeName}}</el-radio>
                             </el-form-item>
                             <el-form-item label="上传图片" style="width:300px;">
-                                <el-upload class="upload-demo" ref="upload" :file-list="imgList" action="doUpload" :auto-upload="false" :on-change="beforeUploadimg">
-                                    <el-button slot="trigger" size="mini" class="info-btn">上传图片</el-button>
+                                <el-upload class="upload-demo" ref="upload" :file-list="imgList" action="" :auto-upload="false" :on-change="beforeUploadimg">
+                                    <el-button size="mini" class="info-btn">上传图片</el-button>
                                 </el-upload>
                             </el-form-item>
                             <el-form-item label="上传附件" style="width:300px;">
-                                <el-upload class="upload-demo" ref="upload" :file-list="filesList" action="doUpload" :auto-upload="false" :on-change="beforeUploadfile">
-                                    <el-button slot="trigger" size="mini" class="info-btn">上传附件</el-button>
+                                <el-upload class="upload-demo" ref="upload" :file-list="filesList" action="" :auto-upload="false" :on-change="beforeUploadfile">
+                                    <el-button size="mini" class="info-btn">上传附件</el-button>
                                 </el-upload>
                             </el-form-item>
                             <el-form-item style="float:right;">
@@ -1237,15 +1237,14 @@
                 const isLt500k = val.size / 1024 / 1024 < 0.5
                 if (!extension && !extension2 && !extension3) {
                     this.$message.warning('图片只能是 jpg、png、jpeg格式!')
-                    return
+                    return false
                 }
                 if (!isLt500k) {
                     this.$message.warning('图片大小不能超过 500KB!')
-                    return
+                    return false
                 }
                 this.imgName = val.name
                 this.imgList.push({name:val.name})
-                return false;
             },
             beforeUploadfile(file,fileList){
                 this.files = file.raw;
@@ -1256,15 +1255,14 @@
                 const isLt5M = file.size / 1024 / 1024 < 5
                 if (!extension && !extension2 && !extension3 && !extension4) {
                     this.$message.warning('附件只能是 xls、xlsx、doc、docx格式!')
-                    return
+                    return false
                 }
                 if (!isLt5M) {
                     this.$message.warning('附件大小不能超过 5MB!')
-                    return
+                    return false
                 }
                 this.filesName = file.name
                 this.filesList.push({name:file.name})
-                return false; // 返回false不会自动上传
             },  
             // 跟进记录
             Submitfollowform(){

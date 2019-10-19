@@ -1003,6 +1003,17 @@
     .disabledForm .el-form-item .el-form-item__content {
         width: calc(100% - 90px);
     }
+    .uploadForm{
+        width: 100%;
+        display: flex;
+        flex-wrap: wrap;
+    }
+    .uploadForm .el-form-item {
+        flex: 0 0 calc(50% - 15px);
+    }
+    .uploadForm .el-form-item .el-form-item__content {
+        width: calc(100% - 90px);
+    }
     .ap_top {
         padding: 20px 0 0 20px;
         box-sizing: border-box;

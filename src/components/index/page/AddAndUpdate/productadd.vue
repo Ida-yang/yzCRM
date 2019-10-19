@@ -85,8 +85,8 @@
                                 format="yyyy-MM-dd HH:mm:ss" value-format="yyyy-MM-dd HH:mm:ss">
                             </el-date-picker>
                             
-                            <el-upload v-else-if="item.formType == 'file'" class="upload-demo" :action="doUpload" :multiple="false" :limit="1" :on-success="uploadSuccess" :before-upload="beforeUpload">
-                                <el-button size="small" type="primary">上传</el-button>
+                            <el-upload v-else-if="item.formType == 'file'" class="upload-demo" :action="doUpload" :on-success="uploadSuccess" :before-upload="beforeUpload">
+                                <el-button size="mini" type="info-btn">上传</el-button>
                                 <div slot="tip" class="el-upload__tip" style="margin-top: -20px">{{item.input_tips}}</div>
                             </el-upload>
                         </el-form-item>
@@ -545,11 +545,11 @@
                 const isLt500k = file.size / 1024 / 1024 < 0.5
                 if (!extension && !extension2 && !extension3) {
                     this.$message.warning('图片只能是 jpg、png、jpeg格式!')
-                    return
+                    return false
                 }
                 if (!isLt500k) {
                     this.$message.warning('图片大小不能超过 500KB!')
-                    return
+                    return false
                 }
             },
             handlecheck(data,val){
@@ -564,7 +564,7 @@
                 const isLt5M = file.size / 1024 / 1024 < 5
                 if (!isLt5M) {
                     this.$message.warning('文件大小不能超过 5MB!')
-                    return
+                    return false
                 }
             },
             uploadSuccess(res,file,fileList){

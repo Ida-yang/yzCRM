@@ -376,14 +376,13 @@
                 const isLt500k = file.size / 1024 / 1024 < 0.5
                 if (!extension && !extension2 && !extension3) {
                     this.$message.warning('头像只能是 jpg、png、jpeg格式!')
-                    return
+                    return false
                 }
                 if (!isLt500k) {
                     this.$message.warning('头像大小不能超过 500KB!')
-                    return
+                    return false
                 }
                 this.imgName = file.name
-                // return false;
             },
             //用户添加
             handleAdd(){

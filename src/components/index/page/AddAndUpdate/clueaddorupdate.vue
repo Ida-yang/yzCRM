@@ -236,8 +236,8 @@
                         <el-date-picker v-else-if="item.formType == 'datetime'" v-model="item.default_value" type="datetime" :placeholder="item.input_tips" 
                             format="yyyy-MM-dd HH:mm:ss" value-format="yyyy-MM-dd HH:mm:ss" style="width:90%">
                         </el-date-picker>
-                        <el-upload v-else-if="item.formType == 'file'" class="upload-demo" :action="doUpload" :multiple="false" :limit="1" :on-success="uploadSuccess" :before-upload="beforeUpload">
-                            <el-button size="small" type="primary">上传</el-button>
+                        <el-upload v-else-if="item.formType == 'file'" class="upload-demo" :action="doUpload" :on-success="uploadSuccess" :before-upload="beforeUpload">
+                            <el-button size="mini" type="info-btn">上传</el-button>
                             <div slot="tip" class="el-upload__tip" style="margin-top: -20px">{{item.input_tips}}</div>
                         </el-upload>
                     </el-form-item>
@@ -596,7 +596,7 @@
                 const isLt5M = file.size / 1024 / 1024 < 5
                 if (!isLt5M) {
                     this.$message.warning('文件大小不能超过 5MB!')
-                    return
+                    return false
                 }
             },
             uploadSuccess(res,file,fileList){
