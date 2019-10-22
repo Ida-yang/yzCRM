@@ -369,6 +369,22 @@
         font-size: 14px;
         line-height: 30px;
     }
+    
+    .four_flex_ul {
+        width: 100%;
+        display: flex;
+        display: -webkit-flex; /* Safari */
+        flex-wrap: wrap;
+        align-content: flex-start;
+        box-sizing: border-box;
+        list-style: none;
+    }
+    .four_flex_ul li {
+        flex: 0 0 25%;
+        font-size: 14px;
+        line-height: 30px;
+        color: #606266
+    }
 
     .move-enter-active,
     .move-leave-active {

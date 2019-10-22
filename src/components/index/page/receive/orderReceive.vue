@@ -69,7 +69,7 @@
             
             <el-table-column label="操作" fixed="right" width="90" header-align="center" align="center">
                 <template slot-scope="scope">
-                    <el-button size="mini" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
+                    <el-button size="mini" :disabled="scope.row.unUpdate" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
                     <!-- <el-button size="mini" type="danger" @click="handledetele(scope.$index, scope.row)">删除</el-button> -->
                 </template>
             </el-table-column>
@@ -206,6 +206,14 @@
                     data: qs.stringify(data)
                 }).then(function(res){
                     let info = res.data.map.success
+
+                    info.forEach(el => {
+                        if(el.checkStatus !== 0){
+                            el.unUpdate = true
+                        }else{
+                            el.unUpdate = false
+                        }
+                    });
                     
                     _this.$store.state.orderReceiveList = info
                     _this.$store.state.orderReceiveListnumber = res.data.count

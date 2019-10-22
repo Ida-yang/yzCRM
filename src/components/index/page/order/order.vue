@@ -34,7 +34,7 @@
                 <el-table-column label="日期" prop="orderTime" fixed v-if="item.prop == 'createTime' && item.state == 1" min-width="110" sortable />
                 <el-table-column label="订单编号" prop="orderNo" fixed v-if="item.prop == 'orderNo' && item.state == 1" min-width="150" sortable>
                     <template slot-scope="scope">
-                        <div @click="handleEdit(scope.$index, scope.row)" class="hoverline">
+                        <div @click="openDetails(scope.$index, scope.row)" class="hoverline">
                             {{scope.row.orderNo}}
                         </div>
                     </template>
@@ -133,7 +133,7 @@
                     state:null,
                     type:null,
                     time:null,
-                    example:0,
+                    example:null,
                 },
                 searchListNew:{
                     searchName:null,
@@ -141,7 +141,7 @@
                     state:null,
                     type:null,
                     time:null,
-                    example:0,
+                    example:null,
                 },
                 page:1,//默认第一页
                 limit:20,//默认20条
@@ -192,7 +192,7 @@
                 let searchList = {}
                 searchList.searchName = this.searchList.searchName;
                 if(this.searchList.label == 0 ){
-                    // searchList.pId = _this.nullvalue
+                    searchList.pId = _this.nullvalue
                 }else if(this.searchList.label == 1){
                     searchList.pId = _this.$store.state.ispId
                 }else if(this.searchList.label == 2){
@@ -215,7 +215,7 @@
                 }).then(function(res){
                     let array = res.data.map.orders
                     array.forEach(el => {
-                        if(el.checkStatus == 2){
+                        if(el.checkStatus !== 0){
                             el.disabledBtn = true
                         }else{
                             el.disabledBtn = false
@@ -287,8 +287,8 @@
                 this.idArr.id = newArr;
             },
             openDetails(index,row){
-                this.$store.state.cluedetailsData = {submitData:{"id": row.id}};
-                this.$router.push({ path: '/clueDetails' });
+                this.$store.state.orderdetailsData = {id:row.id, 'batch_id': row.batch_id};
+                this.$router.push({ path: '/orderDetail' });
             },
             handleAdd(){
                 const _this = this

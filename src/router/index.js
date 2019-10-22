@@ -63,7 +63,7 @@ const router =new Router({
         },
         {
           path: '/clueaddorupdate',
-          component: resolve => require(['../components/index/page/AddAndUpdate/clueaddorupdate.vue'], resolve),
+          component: resolve => require(['../components/index/page/clue/clueaddorupdate.vue'], resolve),
           meta: { title: '编辑线索' ,requireAuth:true}
         },
         {
@@ -83,7 +83,7 @@ const router =new Router({
         },
         {
           path: '/customeraddorupdate',
-          component: resolve => require(['../components/index/page/AddAndUpdate/customeraddorupdate.vue'], resolve),
+          component: resolve => require(['../components/index/page/customer/customeraddorupdate.vue'], resolve),
           meta: { title: '编辑客户' ,requireAuth:true}
         },
         {
@@ -103,7 +103,7 @@ const router =new Router({
         },
         {
           path: '/contactsaddorupdate',
-          component: resolve => require(['../components/index/page/AddAndUpdate/contactsaddorupdate.vue'], resolve),
+          component: resolve => require(['../components/index/page/contacts/contactsaddorupdate.vue'], resolve),
           meta: { title: '编辑联系人', requireAuth:true}
         },
         {
@@ -118,7 +118,7 @@ const router =new Router({
         },
         {
           path: '/agreementaddorupdate',
-          component: resolve => require(['../components/index/page/AddAndUpdate/agreementaddorupdate.vue'], resolve),
+          component: resolve => require(['../components/index/page/agreement/agreementaddorupdate.vue'], resolve),
           meta: { title: '编辑合同' ,requireAuth:true}
         },
         {
@@ -133,7 +133,7 @@ const router =new Router({
         },
         {
           path: '/Opportunityaddorupdate',
-          component: resolve => require(['../components/index/page/AddAndUpdate/Opportunityaddorupdate.vue'], resolve),
+          component: resolve => require(['../components/index/page/businessOpportunity/Opportunityaddorupdate.vue'], resolve),
           meta: { title: '编辑商机' ,requireAuth:true}
         },
         {
@@ -178,7 +178,7 @@ const router =new Router({
         },
         {
           path: '/visitplanaddorupdate',
-          component: resolve => require(['../components/index/page/AddAndUpdate/visitplanaddorupdate.vue'], resolve),
+          component: resolve => require(['../components/index/page/work/visitplanaddorupdate.vue'], resolve),
           meta: { title: '编辑外勤' ,requireAuth:true}
         },
         {
@@ -188,7 +188,7 @@ const router =new Router({
         },
         {
           path: '/missionplanaddorupdate',
-          component: resolve => require(['../components/index/page/AddAndUpdate/missionplanaddorupdate.vue'], resolve),
+          component: resolve => require(['../components/index/page/work/missionplanaddorupdate.vue'], resolve),
           meta: { title: '编辑任务' ,requireAuth:true}
         },
         {
@@ -223,12 +223,12 @@ const router =new Router({
         },
         {
           path: '/productadd',
-          component: resolve => require(['../components/index/page/AddAndUpdate/productadd.vue'], resolve),
+          component: resolve => require(['../components/index/page/product/productadd.vue'], resolve),
           meta: { title: '编辑产品',requireAuth:true}
         },
         {
           path: '/productupdate',
-          component: resolve => require(['../components/index/page/AddAndUpdate/productupdate.vue'], resolve),
+          component: resolve => require(['../components/index/page/product/productupdate.vue'], resolve),
           meta: { title: '编辑产品',requireAuth:true}
         },
         {
@@ -238,13 +238,18 @@ const router =new Router({
         },
         {
           path: '/orderadd',
-          component: resolve => require(['../components/index/page/AddAndUpdate/orderadd.vue'], resolve),
+          component: resolve => require(['../components/index/page/order/orderadd.vue'], resolve),
           meta: { title: '新增订单',requireAuth:true}
         },
         {
           path: '/orderupdate',
-          component: resolve => require(['../components/index/page/AddAndUpdate/orderupdate.vue'], resolve),
+          component: resolve => require(['../components/index/page/order/orderupdate.vue'], resolve),
           meta: { title: '编辑订单',requireAuth:true}
+        },
+        {
+          path: '/orderDetail',
+          component: resolve => require(['../components/index/page/order/orderDetail.vue'], resolve),
+          meta: { title: '订单详情页',requireAuth:true}
         },
         {
           path: '/approvalProcess',
@@ -253,7 +258,7 @@ const router =new Router({
         },
         {
           path: '/approvalProcessaddorupdate',
-          component: resolve => require(['../components/index/page/AddAndUpdate/approvalProcessaddorupdate.vue'], resolve),
+          component: resolve => require(['../components/index/page/approvalProcess/approvalProcessaddorupdate.vue'], resolve),
           meta: { title: '编辑审核流程',requireAuth:true}
         },
         {
@@ -273,7 +278,7 @@ const router =new Router({
         },
         {
           path: '/workOrderaddorupdate',
-          component: resolve => require(['../components/index/page/AddAndUpdate/workOrderaddorupdate.vue'], resolve),
+          component: resolve => require(['../components/index/page/workOrder/workOrderaddorupdate.vue'], resolve),
           meta: { title: '编辑工单',requireAuth:true}
         },
         {
@@ -308,7 +313,7 @@ const router =new Router({
         },
         {
           path: '/orderReceiveaddOrUpdate',
-          component: resolve => require(['../components/index/page/AddAndUpdate/orderReceiveaddOrUpdate.vue'], resolve),
+          component: resolve => require(['../components/index/page/receive/orderReceiveaddOrUpdate.vue'], resolve),
           meta: { title: '编辑订单收款', requireAuth:true}
         },
         {
@@ -328,7 +333,7 @@ const router =new Router({
         },
         {
           path: '/culPondaddorUpdate',
-          component: resolve => require(['../components/index/page/AddAndUpdate/culPondaddorUpdate.vue'], resolve),
+          component: resolve => require(['../components/index/page/culturePond/culPondaddorUpdate.vue'], resolve),
           meta: { title: '编辑培育池', requireAuth:true}
         },
         {
@@ -353,7 +358,7 @@ const router =new Router({
         },
         {
           path: '/competitoraddorupdate',
-          component: resolve => require(['../components/index/page/AddAndUpdate/competitoraddorupdate.vue'], resolve),
+          component: resolve => require(['../components/index/page/culturePond/competitoraddorupdate.vue'], resolve),
           meta: { title: '编辑竞争对手', requireAuth:true}
         },
         {

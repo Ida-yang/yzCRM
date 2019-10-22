@@ -476,6 +476,7 @@
                 let idArr = [];
                 idArr.ids = this.idArr.id
                 idArr.pId = this.userData.pId
+                idArr.distribution_pid = this.userData.pId
                 idArr.secondid = ''
                 idArr.deptid = ''
 

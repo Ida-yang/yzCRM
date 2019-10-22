@@ -4,14 +4,14 @@
             <div class="top">
                 <el-card class="box-card" v-model="receivdetailData">
                     <div slot="header" class="clearfix">
-                        <span class="bold_span">回款单：{{receivdetailData.backNo}}</span>
+                        <span class="bold_span">合同回款单：{{receivdetailData.backNo}}</span>
                         <el-button style="float:right;margin-left:10px;" class="info-btn" size="mini" @click="retract()" v-show="retracts">收起</el-button>
                         <el-button style="float:right;margin-left:10px;" class="info-btn" size="mini" @click="retract()" v-show="!retracts">显示</el-button>
                     </div>
                     <div class="text item" v-show="thisshow">
                         <ul>
                             <li>公司名称：<span>{{receivdetailData.customerName}}</span></li>
-                            <li>日期：<span>{{receivdetailData.createTime}}</span></li>
+                            <li>回款日期：<span>{{receivdetailData.createTime}}</span></li>
                             <li>收款方式：<span>{{receivdetailData.pay_type}}</span></li>
                             <li>总金额：<span class="bold_span">{{receivdetailData.totalAmount | commaing}} 元</span></li>
                             <li>已回款金额：<span>{{receivdetailData.amount_of_repayment | commaing}}</span></li>

@@ -164,7 +164,7 @@
             <el-form-item label="图片" label-width="90px">
                 <ul class="fileUl">
                     <li v-for="(item,index) in imagesData" :key="index">
-                        <a download :href="item.url">{{index + 1}}. {{item.name}}</a>
+                        <a download :href="item.url" target="_blank">{{index + 1}}. {{item.name}}</a>
                     </li>
                 </ul>
             </el-form-item>
@@ -306,8 +306,6 @@
                         this.imagesData.push({name:b.name,url:this.$store.state.systemHttp + 'upload/'+ this.$store.state.iscId + '/' + b.response})
                     });
                 }
-
-                console.log(this.filesData,this.imagesData)
             },
             
             //加载审核详情和审核历史

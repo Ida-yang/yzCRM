@@ -32,7 +32,7 @@
         <el-table :data="tableData" border stripe style="width:100%" :summary-method="getSummaries" show-summary>
             <el-table-column header-align="center" fixed align="center" type="index" width="45"></el-table-column>
             <el-table-column label="日期" prop="createTime" fixed min-width="110" sortable></el-table-column>
-            <el-table-column label="回款编号" prop="backNo" fixed min-width="150" show-overflow-tooltip sortable>
+            <el-table-column label="回款单号" prop="backNo" fixed min-width="150" show-overflow-tooltip sortable>
                 <template slot-scope="scope">
                     <div @click="openDetails(scope.$index, scope.row)" class="hoverline">
                         {{scope.row.backNo}}

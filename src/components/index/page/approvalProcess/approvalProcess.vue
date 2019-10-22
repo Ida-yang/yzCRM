@@ -1,4 +1,5 @@
 <template>
+    <!-- 审核流程 -->
     <div class="contentall">
         <div class="setleftcontent">
             <ul class="namecontent">
@@ -69,9 +70,10 @@
                 searchList:[
                     {index:'1',name:'合同流程设置',isActive:true},
                     {index:'2',name:'销售订单流程设置',isActive:false},
-                    {index:'3',name:'回款流程设置',isActive:false},
+                    {index:'3',name:'合同回款流程设置',isActive:false},
                     {index:'4',name:'办公流程设置',isActive:false},
                     {index:'5',name:'外勤流程设置',isActive:false},
+                    {index:'6',name:'订单收款流程设置',isActive:false},
                 ],
             }
         },

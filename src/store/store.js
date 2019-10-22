@@ -69,6 +69,7 @@ const state = {
   receivdetailData:null, // 回款
   culturePondetailData:null, // 培育池
   competitordetailData:null, // 竞争对手
+  orderdetailsData:null, //订单
   orderReceiveDetailData:null, // 订单收款
 
 
