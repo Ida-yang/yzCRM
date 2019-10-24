@@ -800,7 +800,7 @@
             },
             showImg(e,val){
                 // console.log(val)
-                this.dialogImageUrl2 = _this.$store.state.systemHttp + '/upload/'+this.$store.state.iscId+'/'+val.imgName
+                this.dialogImageUrl2 = this.$store.state.systemHttp + '/upload/'+this.$store.state.iscId+'/'+val.imgName
                 this.dialogVisible2 = true
             },
             changeState(row){

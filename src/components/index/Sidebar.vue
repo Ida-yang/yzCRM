@@ -246,6 +246,10 @@
                                 index: 'product',
                                 title: '产品',
                             },
+                            { 
+                                index: 'namesss',
+                                title: '名字',
+                            },
                         ]
                     },
                     {
@@ -367,7 +371,7 @@
                     {
                         icon: 'mdi-account-outline',
                         index: '1',
-                        title: '订单管理',
+                        title: '销售管理',
                         subs: [
                             {
                                 index: 'order',
@@ -387,6 +391,10 @@
                             {
                                 index: 'receive',
                                 title: '合同回款',
+                            },
+                            {
+                                index: 'orderReceive',
+                                title: '订单收款',
                             },
                         ]
                     },

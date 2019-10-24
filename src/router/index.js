@@ -312,8 +312,13 @@ const router =new Router({
           meta: { title: '订单收款',name:'orderReceive',requireAuth:true}
         },
         {
-          path: '/orderReceiveaddOrUpdate',
-          component: resolve => require(['../components/index/page/receive/orderReceiveaddOrUpdate.vue'], resolve),
+          path: '/orderReceiveadd',
+          component: resolve => require(['../components/index/page/receive/orderReceiveadd.vue'], resolve),
+          meta: { title: '新增订单收款', requireAuth:true}
+        },
+        {
+          path: '/orderReceiveupdate',
+          component: resolve => require(['../components/index/page/receive/orderReceiveupdate.vue'], resolve),
           meta: { title: '编辑订单收款', requireAuth:true}
         },
         {
@@ -370,6 +375,11 @@ const router =new Router({
           path: '/customFieldsUpdate',
           component: resolve => require(['../components/index/page/customFields/customFieldsUpdate.vue'], resolve),
           meta: { title: '修改自定义字段', requireAuth:true}
+        },
+        {
+          path: '/namesss',
+          component: resolve => require(['../components/index/page/name.vue'], resolve),
+          meta: { title: '名字', requireAuth:true}
         },
       ]
     },

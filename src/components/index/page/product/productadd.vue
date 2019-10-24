@@ -41,25 +41,25 @@
                     
                     <el-form ref="attributeform" :model="fieldsform" :rules="rules"> -->
                         <el-form-item v-for="item in previewData" :key="item.id" :label="item.name" :prop="item.field_name" label-width="90px" class="first_input" style="margin-right:15px">
-                            <el-input v-if="item.formType == 'text' || item.formType == 'email'" v-model="item.default_value" :placeholder="item.input_tips" class="inputbox">></el-input>
+                            <el-input v-if="item.formType == 'text' || item.formType == 'email'" v-model="item.default_value" :placeholder="item.input_tips" class="inputbox"></el-input>
 
-                            <el-input v-else-if="item.formType == 'textarea'" type="textarea" :maxlength="item.max_length" v-model="item.default_value" :placeholder="item.input_tips" class="inputbox">></el-input>
+                            <el-input v-else-if="item.formType == 'textarea'" type="textarea" :maxlength="item.max_length" v-model="item.default_value" :placeholder="item.input_tips" class="inputbox"></el-input>
 
-                            <el-input v-else-if="item.formType == 'number'" onkeyup= "value=value.replace(/[^\d]/g,'')" v-model="item.default_value" :placeholder="item.input_tips" class="inputbox">></el-input>
+                            <el-input v-else-if="item.formType == 'number'" onkeyup= "value=value.replace(/[^\d]/g,'')" v-model="item.default_value" :placeholder="item.input_tips" class="inputbox"></el-input>
 
-                            <el-input v-else-if="item.formType == 'floatnumber'" onkeyup= "value=value.replace(/^\D*(\d*(?:\.\d{0,2})?).*$/g, '$1')" v-model="item.default_value" :placeholder="item.input_tips" class="inputbox">></el-input>
+                            <el-input v-else-if="item.formType == 'floatnumber'" onkeyup= "value=value.replace(/^\D*(\d*(?:\.\d{0,2})?).*$/g, '$1')" v-model="item.default_value" :placeholder="item.input_tips" class="inputbox"></el-input>
 
-                            <el-input v-else-if="item.formType == 'mobile'" onkeyup= "value=value.replace(/[^\d]/g,'')" :maxlength="11" v-model="item.default_value" :placeholder="item.input_tips" class="inputbox">></el-input>
+                            <el-input v-else-if="item.formType == 'mobile'" onkeyup= "value=value.replace(/[^\d]/g,'')" :maxlength="11" v-model="item.default_value" :placeholder="item.input_tips" class="inputbox"></el-input>
 
-                            <el-select v-else-if="item.formType == 'select'" v-model="item.default_value" :placeholder="item.input_tips" class="inputbox">>
+                            <el-select v-else-if="item.formType == 'select'" v-model="item.default_value" :placeholder="item.input_tips" class="inputbox">
                                 <el-option v-for="o in item.setting" :key="o" :label="o" :value="o"></el-option>
                             </el-select>
 
-                            <el-select v-else-if="item.formType == 'checkbox'" multiple v-model="item.default_value" :placeholder="item.input_tips" class="inputbox">>
+                            <el-select v-else-if="item.formType == 'checkbox'" multiple v-model="item.default_value" :placeholder="item.input_tips" class="inputbox">
                                 <el-option v-for="o in item.setting" :key="o" :label="o" :value="o"></el-option>
                             </el-select>
 
-                            <el-select v-else-if="item.formType == 'user'" v-model="item.default_value" :placeholder="item.input_tips" class="inputbox">>
+                            <el-select v-else-if="item.formType == 'user'" v-model="item.default_value" :placeholder="item.input_tips" class="inputbox">
                                 <el-option v-for="o in userData" :key="o.private_id" :label="o.private_employee" :value="o.private_id"></el-option>
                             </el-select>
 

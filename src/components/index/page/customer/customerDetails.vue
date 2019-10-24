@@ -677,34 +677,44 @@
                     if(!_this.record[0]){
                         _this.$options.methods.loadState.bind(_this)()
                     }else{
-                        _this.followform.state = _this.record[0].state
+                        // _this.followform.state = _this.record[0].state
                         _this.$options.methods.loadState.bind(_this)()
-                    }
-                    _this.record.forEach(el => {
-                        let startTime = Date.parse(el.createTime); // 开始时间
-                        let endTime = new Date().getTime(); // 结束时间
-                        let usedTime = endTime - startTime; // 相差的毫秒数
-                        if(usedTime < 7200000){
-                            el.showdelico = true
-                        }
-                        if(usedTime > 7200000){
-                            el.showdelico = false
-                        }
-                        if(el.userImagName){
-                            el.imgUrl = _this.$store.state.systemHttp + '/upload/'+_this.$store.state.iscId+'/'+el.userImagName
-                        }
-                        if(!el.userImagName || el.userImagName == null){
-                            el.imgUrl = _this.$store.state.systemHttp + '/upload/staticImg/avatar.jpg'
-                        }
-                        if(el.imgName && el.imgName !== null){
-                            el.picture_detail = _this.$store.state.systemHttp + '/upload/'+_this.$store.state.iscId+'/'+el.imgName
-                        }
-                        if(el.enclosureName && el.enclosureName !== null){
-                            el.enclosureUrl = _this.$store.state.systemHttp + '/upload/'+_this.$store.state.iscId+'/'+el.enclosureName
-                        }
 
-                        el.followContent = el.followContent.replace(/\n/g,'<br/>')
-                    });
+                        let newarr = new Array()
+
+                        _this.record.forEach(el => {
+                            let startTime = Date.parse(el.createTime); // 开始时间
+                            let endTime = new Date().getTime(); // 结束时间
+                            let usedTime = endTime - startTime; // 相差的毫秒数
+                            if(usedTime < 7200000){
+                                el.showdelico = true
+                            }
+                            if(usedTime > 7200000){
+                                el.showdelico = false
+                            }
+                            if(el.userImagName){
+                                el.imgUrl = _this.$store.state.systemHttp + '/upload/'+_this.$store.state.iscId+'/'+el.userImagName
+                            }
+                            if(!el.userImagName || el.userImagName == null){
+                                el.imgUrl = _this.$store.state.systemHttp + '/upload/staticImg/avatar.jpg'
+                            }
+                            if(el.imgName && el.imgName !== null){
+                                el.picture_detail = _this.$store.state.systemHttp + '/upload/'+_this.$store.state.iscId+'/'+el.imgName
+                            }
+                            if(el.enclosureName && el.enclosureName !== null){
+                                el.enclosureUrl = _this.$store.state.systemHttp + '/upload/'+_this.$store.state.iscId+'/'+el.enclosureName
+                            }
+
+                            el.followContent = el.followContent.replace(/\n/g,'<br/>')
+
+                            if(el.inputType == '客户状态下更新'){
+                                newarr.push(el)
+                            }
+                        });
+
+                        _this.followform.state = newarr[0].state
+                    }
+                    
                 }).catch(function(err){
                     // console.log(err);
                 });
@@ -807,11 +817,16 @@
                     data:qs.stringify(data)
                 }).then(function(res){
                     _this.stateList = res.data
-                    _this.stateList.forEach(el => {
-                        if(_this.followform.state && _this.followform.state == el.typeName){
-                            _this.followform.state = el.id
-                        }
-                    });
+                    if(_this.record.length > 0){
+                        _this.stateList.forEach(el => {
+                            if(_this.followform.state && _this.followform.state == el.typeName){
+                                _this.followform.state = el.id
+                            }
+                        });
+                    }else if(_this.record.length == 0){
+                        _this.followform.state = _this.stateList[0].id
+                    }
+                    
                 }).catch(function(err){
                     // console.log(err);
                 });
@@ -876,7 +891,7 @@
                 });
             },
             showImg(e,val){
-                this.dialogImageUrl2 = _this.$store.state.systemHttp + '/upload/'+this.$store.state.iscId+'/'+val.imgName
+                this.dialogImageUrl2 = this.$store.state.systemHttp + '/upload/'+this.$store.state.iscId+'/'+val.imgName
                 this.dialogVisible2 = true
             },
             retract(){

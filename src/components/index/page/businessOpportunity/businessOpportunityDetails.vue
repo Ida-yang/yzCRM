@@ -268,12 +268,13 @@
                                     </template>
                                 </el-table-column>
 
-                                <el-table-column label="主图" prop="productImg" width="100" v-if="item.prop == 'image' && item.state == 1">
+                                <el-table-column label="主图" prop="productImg" width="92" v-if="item.prop == 'image' && item.state == 1">
                                     <template slot-scope="scope">
-                                        <el-popover placement="right" width="200" trigger="hover">
+                                        <el-popover placement="right" width="200" trigger="hover" v-if="scope.row.productImg">
                                             <img :src="scope.row.productImg" alt="" width="200" height="200">
-                                            <img slot="reference" :src="scope.row.productImg" alt="" width="80" height="80">
+                                            <img slot="reference" :src="scope.row.productImg" alt="" width="70" height="70">
                                         </el-popover>
+                                        <span v-else></span>
                                     </template>
                                 </el-table-column>
 
@@ -660,6 +661,7 @@
                     followContent:'',
                     imgName:null,
                     enclosureName: null,
+                    state:null,
                 },
                 followTypes:[
                     {label:'电话',value:'1'},
@@ -839,13 +841,14 @@
                     method:'get',
                     url:_this.$store.state.defaultHttp+'opportunity/getopportunityById.do?cId='+_this.$store.state.iscId+'&opportunity_id='+_this.idArr.opportunity_id,
                 }).then(function(res){
-                    _this.opportunitydetail = res.data.map.success[0]
-                    if(_this.opportunitydetail.discount){
+                    let info = res.data.map.success[0]
+                    // _this.opportunitydetail = res.data.map.success[0]
+                    if(info.discount){
                         _this.cusdiscount = res.data.map.success[0].discount
                     }else{
                         _this.cusdiscount = '100'
                     }
-                    if(_this.opportunitydetail.taxRate){
+                    if(info.taxRate){
                         _this.custaxRate = res.data.map.success[0].taxRate
                     }else{
                         _this.custaxRate = '0'
@@ -855,9 +858,12 @@
                     _this.customerpool = res.data.map.success[0].customerpool[0]
                     _this.opportunityDeal = res.data.map.success[0].opportunity_deal
                     _this.customerId = _this.customerpool.id
-                    _this.stepList = _this.opportunitydetail.addstep
-                    _this.stepList.length = _this.opportunitydetail.addstep.length - 1
-                    _this.addstep = _this.opportunitydetail.opportunityProgress
+                    // _this.followform.state = info.follow_state
+                    _this.stepList = info.addstep
+                    _this.stepList.length = info.addstep.length - 1
+                    _this.addstep = info.opportunityProgress
+                    _this.opportunitydetail = info
+
                     let addStep = _this.addstep
                     if(addStep){
                         for(var i = 0,length = addStep.length;i < length;i++){
@@ -1273,6 +1279,7 @@
                 data.append("followType", this.followform.followType);
                 data.append("contactTime", this.followform.contactTime);
                 data.append("followContent", this.followform.followContent);
+                // data.append("follow_state", this.followform.state);
                 data.append("contactsId", this.followform.contactsId);
                 data.append("customerpool_id", this.customerId);
                 data.append("deptid", this.$store.state.insid);

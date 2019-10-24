@@ -38,25 +38,25 @@
                     </el-form-item>
                     
                     <el-form-item v-for="item in previewData" :key="item.id" :label="item.name" :prop="item.field_name" label-width="90px" class="first_input" style="margin-right:15px">
-                        <el-input v-if="item.formType == 'text' || item.formType == 'email'" v-model="item.default_value" :placeholder="item.input_tips" class="inputbox">></el-input>
+                        <el-input v-if="item.formType == 'text' || item.formType == 'email'" v-model="item.default_value" :placeholder="item.input_tips" class="inputbox"></el-input>
 
-                        <el-input v-else-if="item.formType == 'textarea'" type="textarea" :maxlength="item.max_length" v-model="item.default_value" :placeholder="item.input_tips" class="inputbox">></el-input>
+                        <el-input v-else-if="item.formType == 'textarea'" type="textarea" :maxlength="item.max_length" v-model="item.default_value" :placeholder="item.input_tips" class="inputbox"></el-input>
 
-                        <el-input v-else-if="item.formType == 'number'" onkeyup= "value=value.replace(/[^\d]/g,'')" v-model="item.default_value" :placeholder="item.input_tips" class="inputbox">></el-input>
+                        <el-input v-else-if="item.formType == 'number'" onkeyup= "value=value.replace(/[^\d]/g,'')" v-model="item.default_value" :placeholder="item.input_tips" class="inputbox"></el-input>
 
-                        <el-input v-else-if="item.formType == 'floatnumber'" onkeyup= "value=value.replace(/^\D*(\d*(?:\.\d{0,2})?).*$/g, '$1')" v-model="item.default_value" :placeholder="item.input_tips" class="inputbox">></el-input>
+                        <el-input v-else-if="item.formType == 'floatnumber'" onkeyup= "value=value.replace(/^\D*(\d*(?:\.\d{0,2})?).*$/g, '$1')" v-model="item.default_value" :placeholder="item.input_tips" class="inputbox"></el-input>
 
-                        <el-input v-else-if="item.formType == 'mobile'" onkeyup= "value=value.replace(/[^\d]/g,'')" :maxlength="11" v-model="item.default_value" :placeholder="item.input_tips" class="inputbox">></el-input>
+                        <el-input v-else-if="item.formType == 'mobile'" onkeyup= "value=value.replace(/[^\d]/g,'')" :maxlength="11" v-model="item.default_value" :placeholder="item.input_tips" class="inputbox"></el-input>
 
-                        <el-select v-else-if="item.formType == 'select'" v-model="item.default_value" :placeholder="item.input_tips" class="inputbox">>
+                        <el-select v-else-if="item.formType == 'select'" v-model="item.default_value" :placeholder="item.input_tips" class="inputbox">
                             <el-option v-for="o in item.setting" :key="o" :label="o" :value="o"></el-option>
                         </el-select>
 
-                        <el-select v-else-if="item.formType == 'checkbox'" multiple v-model="item.default_value" :placeholder="item.input_tips" class="inputbox">>
+                        <el-select v-else-if="item.formType == 'checkbox'" multiple v-model="item.default_value" :placeholder="item.input_tips" class="inputbox">
                             <el-option v-for="o in item.setting" :key="o" :label="o" :value="o"></el-option>
                         </el-select>
 
-                        <el-select v-else-if="item.formType == 'user'" v-model="item.default_value" :placeholder="item.input_tips" class="inputbox">>
+                        <el-select v-else-if="item.formType == 'user'" v-model="item.default_value" :placeholder="item.input_tips" class="inputbox">
                             <el-option v-for="o in userData" :key="o.private_id" :label="o.private_employee" :value="o.private_id"></el-option>
                         </el-select>
 
@@ -131,12 +131,13 @@
                     </template>
                 </el-table-column>
 
-                <el-table-column label="主图" prop="productImg" width="100" v-if="item.prop == 'image' && item.state == 1">
+                <el-table-column label="主图" prop="productImg" width="92" v-if="item.prop == 'image' && item.state == 1">
                     <template slot-scope="scope">
-                        <el-popover placement="right" width="200" trigger="hover">
+                        <el-popover placement="right" width="200" trigger="hover" v-if="scope.row.productImg">
                             <img :src="scope.row.productImg" alt="" width="200" height="200">
-                            <img slot="reference" :src="scope.row.productImg" alt="" width="80" height="80">
+                            <img slot="reference" :src="scope.row.productImg" alt="" width="70" height="70">
                         </el-popover>
+                        <span v-else></span>
                     </template>
                 </el-table-column>
 
@@ -247,16 +248,16 @@
         </el-table>
 
         <el-form :inline="true" ref="myform" :model="myform" class="disabledForm">
-            <el-form-item label="制单人" label-width="90px">
+            <el-form-item label="制单人" label-width="110px">
                 <el-input v-model="myform.private_employee" :disabled="true"></el-input>
             </el-form-item>
-            <el-form-item label="负责人" label-width="90px">
+            <el-form-item label="负责人" label-width="110px">
                 <el-input v-model="myform.ascription" :disabled="true"></el-input>
             </el-form-item>
-            <el-form-item label="部门" label-width="90px">
+            <el-form-item label="部门" label-width="110px">
                 <el-input v-model="myform.deptname" :disabled="true"></el-input>
             </el-form-item>
-            <el-form-item label="机构" label-width="90px">
+            <el-form-item label="机构" label-width="110px">
                 <el-input v-model="myform.parentname" :disabled="true"></el-input>
             </el-form-item>
         </el-form>

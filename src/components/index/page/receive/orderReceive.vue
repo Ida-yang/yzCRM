@@ -67,10 +67,10 @@
             <el-table-column label="机构" prop="parentname" min-width="130" show-overflow-tooltip sortable></el-table-column>
             <el-table-column v-for="a in fieldHeadData" :label="a.name" :key="a.field_name" :prop="a.field_name" min-width="130" sortable />
             
-            <el-table-column label="操作" fixed="right" width="90" header-align="center" align="center">
+            <el-table-column label="操作" fixed="right" width="150" header-align="center" align="center">
                 <template slot-scope="scope">
                     <el-button size="mini" :disabled="scope.row.unUpdate" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
-                    <!-- <el-button size="mini" type="danger" @click="handledetele(scope.$index, scope.row)">删除</el-button> -->
+                    <el-button size="mini" type="danger" @click="handledetele(scope.$index, scope.row)">删除</el-button>
                 </template>
             </el-table-column>
         </el-table>
@@ -321,7 +321,7 @@
                 //         })
                 //     }else{
                         this.$store.state.orderReceiveAddOrUpdateData = null
-                        _this.$router.push({ path: '/orderReceiveaddOrUpdate' });
+                        _this.$router.push({ path: '/orderReceiveadd' });
                 //     }
                 // }).catch(function(err){
                 //     // console.log(err);
@@ -340,12 +340,56 @@
                 //             type:'error'
                 //         })
                 //     }else{
-                        _this.$router.push({ path: '/orderReceiveaddOrUpdate' });
+                        _this.$router.push({ path: '/orderReceiveupdate' });
                 //     }
                 // }).catch(function(err){
                 //     // console.log(err);
                 // });
             },
+            handledetele(index,row){
+                const _this = this
+                let qs = require('querystring')
+                let data = {}
+                data.id = row.id
+                data.batch_id = row.batch_id
+
+                _this.$confirm('是否确认删除[' + row.customerName + ']的收款单？', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                }).then(({ value }) => {
+                    axios({
+                        method: 'post',
+                        url:  _this.$store.state.defaultHttp+ 'orderBack/delete.do?cId='+_this.$store.state.iscId,
+                        data:qs.stringify(data),
+                    }).then(function(res){
+                        if(res.data.code && res.data.code =="200"){
+                            _this.$message({
+                                message:'删除成功',
+                                type:'success'
+                            })
+                            _this.$options.methods.loadTable.bind(_this)(true);
+                        }else if(res.data.msg && res.data.msg == 'error'){//删除合同
+                            _this.$message({
+                                message: '对不起，您没有该权限，请联系管理员开通',
+                                type: 'error'
+                            })
+                        }else{
+                            _this.$message({
+                                message:res.data.msg,
+                                type:'error'
+                            })
+                        }
+                    }).catch(function(err){
+                        _this.$message.error("删除失败，请重新操作");
+                    })
+                }).catch(() => {
+                    this.$message({
+                        type: 'info',
+                        message: '取消删除[' + row.customerName + ']的收款单'
+                    });       
+                });
+            },
+
             search(){
                 this.$options.methods.loadTable.bind(this)()
             },

@@ -81,6 +81,12 @@
                     </template>
                 </el-table-column>
                 <el-table-column label="预计成交时间" prop="opportunity_deal" v-if="item.prop == 'opportunity_deal' && item.state == 1" min-width="150" sortable />
+                <el-table-column label="合同编号" prop="contractNumber" v-if="item.prop == 'contractNumber' && item.state == 1" min-width="150" sortable />
+                <el-table-column label="合同金额" prop="amount" v-if="item.prop == 'amount' && item.state == 1" min-width="150" sortable>
+                    <template slot-scope="scope">
+                        {{scope.row.amount | rounding}}
+                    </template>
+                </el-table-column>
                 <el-table-column label="负责人" prop="private_employee" v-if="item.prop == 'private_employee' && item.state == 1" min-width="90" sortable />
                 <el-table-column label="部门" prop="deptname" v-if="item.prop == 'deptname' && item.state == 1" min-width="90" sortable />
                 <el-table-column label="机构" prop="parentname" v-if="item.prop == 'parentname' && item.state == 1" min-width="110" show-overflow-tooltip sortable />
@@ -89,8 +95,8 @@
             </div>
             <el-table-column label="操作" fixed="right" width="150" header-align="center" align="center">
                 <template slot-scope="scope">
-                    <el-button size="mini" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
-                    <el-button size="mini" type="danger" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+                    <el-button size="mini" :disabled="scope.row.contractNumber !== null" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
+                    <el-button size="mini" :disabled="scope.row.contractNumber !== null" type="danger" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
                 </template>
             </el-table-column>
         </el-table>
@@ -606,7 +612,7 @@
                         return;
                     }
                     const values = data.map(item => Number(item[column.property]));
-                    if(column.property == 'estimatedAmount' || column.property == 'successAmount' || column.property == 'failAmount' || column.property == 'opportunity_achievement'){
+                    if(column.property == 'estimatedAmount' || column.property == 'successAmount' || column.property == 'failAmount' || column.property == 'opportunity_achievement' || column.property == 'amount'){
                         sums[index] = values.reduce((acc, cur) => (cur + acc), 0)
                         sums[index] = sums[index].toFixed(2)
                         let intPart = Math.trunc(sums[index])

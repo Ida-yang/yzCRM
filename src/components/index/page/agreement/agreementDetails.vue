@@ -304,12 +304,13 @@
                                     </template>
                                 </el-table-column>
 
-                                <el-table-column label="主图" prop="productImg" width="100" v-if="item.prop == 'image' && item.state == 1">
+                                <el-table-column label="主图" prop="productImg" width="92" v-if="item.prop == 'image' && item.state == 1">
                                     <template slot-scope="scope">
-                                        <el-popover placement="right" width="200" trigger="hover">
+                                        <el-popover placement="right" width="200" trigger="hover" v-if="scope.row.productImg">
                                             <img :src="scope.row.productImg" alt="" width="200" height="200">
-                                            <img slot="reference" :src="scope.row.productImg" alt="" width="80" height="80">
+                                            <img slot="reference" :src="scope.row.productImg" alt="" width="70" height="70">
                                         </el-popover>
+                                        <span v-else></span>
                                     </template>
                                 </el-table-column>
 
@@ -2251,7 +2252,7 @@
                         _this.itemData.forEach(o => {
                             o.edit = false
                         });
-                        _this.$options.methods.loadProduct.bind(_this)()
+                        _this.$options.methods.loadIMG.bind(_this)()
                     }else{
                         _this.$message({
                             message: res.data.msg,

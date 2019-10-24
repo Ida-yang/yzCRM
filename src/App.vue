@@ -67,6 +67,12 @@
         background: rgba(0,0,0,0.1);
     }
 
+    /* disable样式 */
+    .el-input.is-disabled .el-input__inner{
+        /* background-color: #fff; */
+        color: #606266
+    }
+
     .el-form-item {
         margin-bottom: 12px;
     }
@@ -1017,7 +1023,7 @@
         flex: 0 0 calc(25% - 15px);
     }
     .disabledForm .el-form-item .el-form-item__content {
-        width: calc(100% - 90px);
+        width: calc(100% - 110px);
     }
     .uploadForm{
         width: 100%;

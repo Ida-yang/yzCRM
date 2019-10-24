@@ -37,6 +37,59 @@
                             <el-option v-for="item in orderList" :key="item.id" :label="item.orderNo" :value="item.id"></el-option>
                         </el-select>
                     </el-form-item>
+
+                    <el-form-item v-for="item in previewData" :key="item.id" :label="item.name" :prop="item.field_name" label-width="90px" class="first_input" style="margin-right:15px">
+                        <el-input v-if="item.formType == 'text' || item.formType == 'email'" v-model="item.default_value" :placeholder="item.input_tips" class="inputbox"></el-input>
+
+                        <el-input v-else-if="item.formType == 'textarea'" type="textarea" :maxlength="item.max_length" v-model="item.default_value" :placeholder="item.input_tips" class="inputbox"></el-input>
+
+                        <el-input v-else-if="item.formType == 'number'" onkeyup= "value=value.replace(/[^\d]/g,'')" v-model="item.default_value" :placeholder="item.input_tips" class="inputbox"></el-input>
+
+                        <el-input v-else-if="item.formType == 'floatnumber'" onkeyup= "value=value.replace(/^\D*(\d*(?:\.\d{0,2})?).*$/g, '$1')" v-model="item.default_value" :placeholder="item.input_tips" class="inputbox"></el-input>
+
+                        <el-input v-else-if="item.formType == 'mobile'" onkeyup= "value=value.replace(/[^\d]/g,'')" :maxlength="11" v-model="item.default_value" :placeholder="item.input_tips" class="inputbox"></el-input>
+
+                        <el-select v-else-if="item.formType == 'select'" v-model="item.default_value" :placeholder="item.input_tips" class="inputbox">
+                            <el-option v-for="o in item.setting" :key="o" :label="o" :value="o"></el-option>
+                        </el-select>
+
+                        <el-select v-else-if="item.formType == 'checkbox'" multiple v-model="item.default_value" :placeholder="item.input_tips" class="inputbox">
+                            <el-option v-for="o in item.setting" :key="o" :label="o" :value="o"></el-option>
+                        </el-select>
+
+                        <el-select v-else-if="item.formType == 'user'" v-model="item.default_value" :placeholder="item.input_tips" class="inputbox">
+                            <el-option v-for="o in userData" :key="o.private_id" :label="o.private_employee" :value="o.private_id"></el-option>
+                        </el-select>
+
+                        <el-select v-else-if="item.formType == 'structure'" v-model="item.displayVal" :placeholder="item.input_tips" class="noPadding_select inputbox">
+                            <el-option class="droplist nopadding_option" :value="item.displayVal">
+                                <el-tree 
+                                    node-key="deptid" 
+                                    highlight-current default-expand-all
+                                    ref="tree"
+                                    :expand-on-click-node="false"
+                                    :data="deptData"
+                                    :props="defaultProps"
+                                    @node-click="handlecheck($event,item)">
+                                </el-tree>
+                            </el-option>
+                        </el-select>
+
+                        <el-date-picker v-else-if="item.formType == 'date'" v-model="item.default_value" type="date" :placeholder="item.input_tips" class="inputbox"
+                            format="yyyy-MM-dd" value-format="yyyy-MM-dd">
+                        </el-date-picker>
+
+                        <el-date-picker v-else-if="item.formType == 'datetime'" v-model="item.default_value" type="datetime" :placeholder="item.input_tips" class="inputbox"
+                            format="yyyy-MM-dd HH:mm:ss" value-format="yyyy-MM-dd HH:mm:ss">
+                        </el-date-picker>
+                        
+                        <el-upload v-else-if="item.formType == 'file'" class="upload-demo" :action="doUpload" :on-success="uploadSuccess" :before-upload="beforeUpload">
+                            <el-button size="mini" type="info-btn">上传</el-button>
+                            <div slot="tip" class="el-upload__tip" style="margin-top: -20px">{{item.input_tips}}</div>
+                        </el-upload>
+                    </el-form-item>
+
+
                     <br>
                     <el-form-item prop="problem" class="first_input" label="问题名称" label-width="90px">
                         <el-input v-model="myform.problem" style="width:610px;"></el-input>
@@ -50,16 +103,16 @@
                 </el-form>
             </div>
             <el-form :inline="true" class="disabledForm">
-                <el-form-item label="制单人" label-width="90px">
+                <el-form-item label="制单人" label-width="110px">
                     <el-input v-model="myform.user" :disabled="true"></el-input>
                 </el-form-item>
-                <el-form-item label="负责人" label-width="90px">
+                <el-form-item label="负责人" label-width="110px">
                     <el-input v-model="myform.ascription" :disabled="true"></el-input>
                 </el-form-item>
-                <el-form-item label="部门" label-width="90px">
+                <el-form-item label="部门" label-width="110px">
                     <el-input v-model="myform.department" :disabled="true"></el-input>
                 </el-form-item>
-                <el-form-item label="机构" label-width="90px">
+                <el-form-item label="机构" label-width="110px">
                     <el-input v-model="myform.mechanism" :disabled="true"></el-input>
                 </el-form-item>
             </el-form>
@@ -90,6 +143,7 @@
 
                 myform:{
                     id:null,
+                    batch_id:null,
                     customerpoolId:null,
                     contactId:null,
                     phone:null,
@@ -182,10 +236,12 @@
                 let info = this.$store.state.workOrderaddorUpdateData
                 this.workOrderaddorUpdateData = info
                 console.log(info)
+                
                 if(info.customerpoolId){
                     this.customerId = info.customerpoolId
                     this.customerName = info.customerpool
                     this.myform.id = info.id
+                    this.myform.batch_id = info.batch_id
                     this.myform.customerpoolId = info.customerpoolId
                     this.myform.contactId = info.contactsId
                     this.myform.phone = info.phone
@@ -209,6 +265,7 @@
                     // this.$options.methods.loadList.bind(this)()
                 }else{
                     this.myform.serviceTypeName = this.$store.state.workOrderaddorUpdateData.name
+                    this.myform.serviceType = this.$store.state.workOrderaddorUpdateData.id
                 }
                 
                 let data = {}
@@ -272,9 +329,9 @@
                 let qs =require('querystring')
                 let aval = null
                 let bval = null
-                if(this.workOrderaddorUpdateData.setform.id) {
-                    aval = this.workOrderaddorUpdateData.setform.id;
-                    bval = this.workOrderaddorUpdateData.setform.batch_id;
+                if(this.workOrderaddorUpdateData.customerpoolId) {
+                    aval = this.workOrderaddorUpdateData.id;
+                    bval = this.workOrderaddorUpdateData.batch_id;
                 }
                 let data = {
                     label: 11,
@@ -291,7 +348,7 @@
 
                     info.forEach((el,i) => {
                         el.displayVal = ''
-                        if(_this.workOrderaddorUpdateData.setform.id){
+                        if(_this.workOrderaddorUpdateData.customerpoolId){
                             el.default_value = el.value
                             if(el.formType == 'user' || el.formType == 'structure'){
                                 el.displayVal = el.deptOrUserName
@@ -430,12 +487,13 @@
                 let fieldData = _this.previewData
                 let data = {
                     "id":this.myform.id,
+                    "batch_id":this.myform.batch_id,
                     "customerpoolId" : this.customerId,
                     "contactsId" : this.myform.contactId,
                     "phone" : this.myform.phone,
                     "feedbackType" : this.myform.feedbackType,
                     "acceptance" : this.myform.acceptance,
-                    "serviceType" : this.workOrderaddorUpdateData.id,
+                    "serviceType" : this.myform.serviceType,
                     "orderId" : this.myform.orderId,
                     "problem" : this.myform.problem,
                     "describe" : content,
@@ -511,13 +569,18 @@
                     }
                 });
                 if(flag) return
+
+                let subData = {
+                    entity: data,
+                    field: fieldData
+                }
                 
                 this.isDisable = true
 
                 axios({
                     method: 'post',
                     url: this.$store.state.defaultHttp + 'workOrder/saveOrUpdate.do?cId='+_this.$store.state.iscId,
-                    data: data
+                    data: subData
                 }).then(function(res){
                     if(res.data.code && res.data.code == '200'){
                         _this.$message({

@@ -176,10 +176,11 @@
                 data.example = this.searchList.time
                 data.searchName = this.searchList.searchName
                 data.type = this.searchList.woClass
+                data.label = 11
 
                 axios({
                     method: 'post',
-                    url: _this.$store.state.defaultHttp+'workOrder/queryForList.do?cId='+_this.$store.state.iscId,
+                    url: _this.$store.state.defaultHttp+'pageInfo/queryPageList.do?cId='+_this.$store.state.iscId,
                     data: qs.stringify(data)
                 }).then(function(res){
                     let data = res.data.map.success
@@ -257,10 +258,10 @@
             },
             handleEdit(index,row){
                 const _this = this
-                let datas = {}
-                datas.setform = row
-                datas.submitUrl = this.$store.state.defaultHttp + 'workOrder/update.do?cId='+_this.$store.state.iscId,
-                this.$store.state.workOrderaddorUpdateData = datas
+                // let datas = {}
+                // datas = row
+                // datas.submitUrl = this.$store.state.defaultHttp + 'workOrder/update.do?cId='+_this.$store.state.iscId,
+                this.$store.state.workOrderaddorUpdateData = row
                 _this.$router.push({ path: '/workOrderaddorupdate' });
             },
             handleDelete(index,row){

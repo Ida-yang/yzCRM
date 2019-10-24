@@ -251,6 +251,9 @@
                         <li><span>负责人：</span>{{workorderDetails.ascription}}</li>
                         <li><span>部门：</span>{{workorderDetails.deptname}}</li>
                         <li><span>机构：</span>{{workorderDetails.parentname}}</li>
+                        <li v-for="(item,index) in fieldData" :key="index">
+                            <span>{{item.name}}：</span>{{item.value}}
+                        </li>
                     </ul>
                     <ul class="wo_ul_right" v-if="workorderDetails.solution">
                         <li><span>解决人：</span>{{myform.solutionMan}}</li>
@@ -284,6 +287,7 @@
                 msg:'工单详情页',
                 detailData:null,
                 workorderDetails:{},
+                fieldData:[],
 
                 myform:{
                     id:null,
@@ -391,6 +395,7 @@
                             _this.showevaluate = true
                         }
                     }
+                    _this.$options.methods.loadFieldValue.bind(_this)()
                 }).catch(function(err){
                 });
 
@@ -418,6 +423,26 @@
                     });
                 }
             },
+
+            loadFieldValue(){
+                const _this = this
+                let qs = require('querystring')
+                let info = {}
+                info.id = this.detailData.id
+                info.label = 11
+
+                //加载自定义字段详情
+                axios({
+                    method:'post',
+                    url:_this.$store.state.defaultHttp+'field/information.do?cId='+_this.$store.state.iscId,
+                    data:qs.stringify(info)
+                }).then(function(res){
+                    _this.fieldData = res.data
+                }).catch(function(err){
+                    // console.log(err);
+                });
+            },
+
             doShowUE(){
                 this.showsolution = true
             },
