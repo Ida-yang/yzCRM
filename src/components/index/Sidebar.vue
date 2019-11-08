@@ -246,10 +246,6 @@
                                 index: 'product',
                                 title: '产品',
                             },
-                            { 
-                                index: 'namesss',
-                                title: '名字',
-                            },
                         ]
                     },
                     {
@@ -322,6 +318,10 @@
                             {
                                 index: 'customFields',
                                 title: '自定义字段'
+                            },
+                            {
+                                index: 'associatedForms',
+                                title: '办公审核'
                             },
                             {
                                 index: 'basicset',

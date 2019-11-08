@@ -62,7 +62,7 @@
                     {{scope.row.surplusNum | commaing}}
                 </template>
             </el-table-column>
-            <el-table-column label="收款方式" prop="pay_type" min-width="110" sortable></el-table-column>
+            <el-table-column label="结算账户" prop="pay_type" min-width="110" sortable></el-table-column>
             <el-table-column label="状态" prop="checkStatus" width="90" sortable>
                 <template slot-scope="scope">
                     <el-tag v-if="scope.row.checkStatus == 0" size="small" style="background-color:#ffffff;color:#606266;border-color:#dcdfe6" effect="dark">待审核</el-tag>

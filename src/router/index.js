@@ -262,6 +262,21 @@ const router =new Router({
           meta: { title: '编辑审核流程',requireAuth:true}
         },
         {
+          path: '/associatedForms',
+          component: resolve => require(['../components/index/page/workApproval/associatedForms.vue'], resolve),
+          meta: { title: '办公审核', name:'associatedForms', requireAuth:true}
+        },
+        {
+          path: '/workApprovaladdOrUpdate',
+          component: resolve => require(['../components/index/page/workApproval/workApprovaladdOrUpdate.vue'], resolve),
+          meta: { title: '编辑办公审核', requireAuth:true}
+        },
+        {
+          path: '/associatedFormsaddOrUpdate',
+          component: resolve => require(['../components/index/page/workApproval/associatedFormsaddOrUpdate.vue'], resolve),
+          meta: { title: '编辑关联表单', requireAuth:true}
+        },
+        {
           path: '/workOrder',
           component: resolve => require(['../components/index/page/workOrder/workOrder.vue'], resolve),
           meta: { title: '工单',name:'workOrder',requireAuth:true}

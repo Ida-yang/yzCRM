@@ -176,19 +176,19 @@
                 updateLabel: {},
 
                 fieldList:[
-                    {label:1, name:'单行文本', icon:'el-icon-date'},
-                    {label:2, name:'多行文本', icon:'el-icon-date'},
-                    {label:3, name:'单选', icon:'el-icon-date'},
-                    {label:9, name:'多选', icon:'el-icon-date'},
-                    {label:5, name:'数字', icon:'el-icon-date'},
-                    {label:6, name:'货币', icon:'el-icon-date'},
-                    {label:4, name:'日期', icon:'el-icon-date'},
-                    {label:13, name:'日期时间', icon:'el-icon-date'},
-                    {label:7, name:'手机', icon:'el-icon-date'},
-                    {label:14, name:'邮箱', icon:'el-icon-date'},
-                    {label:10, name:'人员', icon:'el-icon-date'},
-                    {label:12, name:'部门', icon:'el-icon-date'},
-                    {label:11, name:'附件', icon:'el-icon-date'},
+                    {label:1, name:'单行文本', icon:'el-icon-plus'},
+                    {label:2, name:'多行文本', icon:'el-icon-plus'},
+                    {label:3, name:'单选', icon:'el-icon-plus'},
+                    {label:9, name:'多选', icon:'el-icon-plus'},
+                    {label:5, name:'数字', icon:'el-icon-plus'},
+                    {label:6, name:'小数', icon:'el-icon-plus'},
+                    {label:4, name:'日期', icon:'el-icon-plus'},
+                    {label:13, name:'日期时间', icon:'el-icon-plus'},
+                    {label:7, name:'手机', icon:'el-icon-plus'},
+                    {label:14, name:'邮箱', icon:'el-icon-plus'},
+                    {label:10, name:'人员', icon:'el-icon-plus'},
+                    {label:12, name:'部门', icon:'el-icon-plus'},
+                    {label:11, name:'附件', icon:'el-icon-plus'},
                 ],
 
                 updateForm:[],
@@ -372,7 +372,7 @@
                     this.updateForm.push({
                         id: null, parent_id: null, label: null, sorting: null, operating: null, examine_category_id: null,
                         default_value: null, field_name: '', formType: "floatnumber", input_tips: '', is_null: 0,
-                        is_sys: 0, is_unique: 0, max_length: null, name: "货币", setting: [], type: item.label,
+                        is_sys: 0, is_unique: 0, max_length: null, name: "小数", setting: [], type: item.label,
                     })
                 }else if(item.label == 4){
                     this.updateForm.push({

@@ -15,8 +15,8 @@
                     <el-form-item prop="createTime" class="first_input" label="收款日期" label-width="90px">
                         <el-date-picker v-model="myform.createTime" :disabled="myform.checkStatus !== 0" type="date" placeholder="选择收款日期" format="yyyy-MM-dd" value-format="yyyy-MM-dd" class="inputbox"></el-date-picker>
                     </el-form-item>
-                    <el-form-item prop="pay_type_id" class="first_input" label="收款方式" label-width="90px">
-                        <el-select v-model="myform.pay_type_id" :disabled="myform.checkStatus !== 0" placeholder="请选择收款方式" class="inputbox">
+                    <el-form-item prop="pay_type_id" class="first_input" label="结算账户" label-width="90px">
+                        <el-select v-model="myform.pay_type_id" :disabled="myform.checkStatus !== 0" placeholder="请选择结算账户" class="inputbox">
                             <el-option v-for="item in payTypeMethod" :key="item.id" :label="item.typeName" :value="item.id"></el-option>
                         </el-select>
                     </el-form-item>
@@ -229,7 +229,7 @@
             </el-table-column>
         </el-table>
 
-        <el-form :inline="true" ref="myform" :model="myform" class="uploadForm">
+        <!-- <el-form :inline="true" ref="myform" :model="myform" class="uploadForm">
             <el-form-item label="上传附件" label-width="90px">
                 <el-upload class="upload-demo" :disabled="myform.checkStatus !== 0" :file-list="filesData" :action="doUpload" :multiple="true" :limit="3" :on-success="fileUploadSuccess" :before-upload="beforeUpload" :on-exceed="uploadExceed">
                     <el-button size="mini" type="info-btn">上传</el-button>
@@ -242,7 +242,7 @@
                     <div slot="tip" class="el-upload__tip" style="margin-top: -20px">图片大小不能超过5M，最多可上传3个</div>
                 </el-upload>
             </el-form-item>
-        </el-form>
+        </el-form> -->
                 
         <div class="submit_btn" v-if="myform.checkStatus == 0">
             <el-button type="primary" :disabled="isDisable" @click="onSubmit" style="margin-right:100px;">立即提交</el-button>
@@ -331,7 +331,7 @@
                 rules:{
                     customerpool_id : [{ required: true, message: '公司名称不能为空', trigger: 'blur' },],
                     createTime : [{ required: true, message: '日期不能为空', trigger: 'blur' },],
-                    pay_type_id : [{ required: true, message: '收款方式不能为空', trigger: 'blur' },],
+                    pay_type_id : [{ required: true, message: '结算账户不能为空', trigger: 'blur' },],
                     discountAfter : [{ required: true, message: '折后金额不能为空', trigger: 'blur' },],
                     remarks:[{ required: true, message: '审核意见不能为空', trigger: 'blur' }]
                 },
@@ -399,7 +399,7 @@
                 searchList.limit = 10000000
 
                 let typeData = {
-                    type:'收款方式'
+                    type:'结算账户'
                 }
 
                 
@@ -894,7 +894,7 @@
                 }
                 if(!data.pay_type_id) {
                     _this.$message({
-                        message: "收款方式不能为空",
+                        message: "结算账户不能为空",
                         type: 'error'
                     });
                     flag = true;

@@ -2,9 +2,17 @@
     <!-- 审核流程 -->
     <div class="contentall">
         <div class="setleftcontent">
-            <ul class="namecontent">
-                <li v-for="item in searchList" :key="item.index" :value="item.name" :class="{actived:item.isActive}" @click="showTableval(item)">{{item.name}}</li>
-            </ul>
+            <el-menu default-active="1" class="el-menu-vertical-demo base_menu">
+                <el-menu-item index="1" @click="showTableval('1')">合同流程设置</el-menu-item>
+                <el-menu-item index="2" @click="showTableval('2')">销售订单流程设置</el-menu-item>
+                <el-menu-item index="3" @click="showTableval('3')">合同回款流程设置</el-menu-item>
+                <el-submenu index="4">
+                    <span slot="title">办公流程设置</span>
+                    <el-menu-item v-for="item in workList" :key="item.id" :index="item.index" @click="showWorkleval(item)">{{item.title}}</el-menu-item>
+                </el-submenu>
+                <el-menu-item index="5" @click="showTableval('5')">外勤流程设置</el-menu-item>
+                <el-menu-item index="6" @click="showTableval('6')">订单收款流程设置</el-menu-item>
+            </el-menu>
         </div>
         <div class="centercontent"></div>
         <div class="setrightcontent">
@@ -17,7 +25,7 @@
                 <el-table-column label="关联对象" prop="categoryTypeName" min-width="110" sortable></el-table-column>
                 <el-table-column label="应用部门" prop="deptIdLs" min-width="150" sortable>
                     <template slot-scope="scope">
-                        <span v-for="item in scope.row.deptIdLs" :key="item.id">{{item.name}},</span>
+                        <span v-for="(item,i) in scope.row.deptIdLs" :key="item.id"><span v-if="i !== 0">，</span>{{item.name}}</span>
                     </template>
                 </el-table-column>
                 <el-table-column label="最后修改人" prop="updateUserName" min-width="120" sortable></el-table-column>
@@ -32,13 +40,13 @@
             </el-table>
             <div class="block numberPage">
                 <el-pagination
-                @size-change="handleSizeChange"
-                @current-change="handleCurrentChange"
-                :current-page="page"
-                :page-sizes="[20, 50, 100, 500]"
-                :page-size="20"
-                layout="total, sizes, prev, pager, next, jumper"
-                :total="tableNumber">
+                    @size-change="handleSizeChange"
+                    @current-change="handleCurrentChange"
+                    :current-page="page"
+                    :page-sizes="[20, 50, 100, 500]"
+                    :page-size="20"
+                    layout="total, sizes, prev, pager, next, jumper"
+                    :total="tableNumber">
                 </el-pagination>
             </div>
         </div>
@@ -66,31 +74,33 @@
                 page:1, //默认第1页
                 limit:20, //默认20行
                 keyType:'1',
+                workApprovalId:null,
+                
+                workList:[],
 
-                searchList:[
-                    {index:'1',name:'合同流程设置',isActive:true},
-                    {index:'2',name:'销售订单流程设置',isActive:false},
-                    {index:'3',name:'合同回款流程设置',isActive:false},
-                    {index:'4',name:'办公流程设置',isActive:false},
-                    {index:'5',name:'外勤流程设置',isActive:false},
-                    {index:'6',name:'订单收款流程设置',isActive:false},
-                ],
+                // workApproval:false
             }
         },
         activated(){
             this.loadTable()
+            // this.loadworkApproval()
         },
         mounted(){
             this.loadTable()
+            this.loadWorkLavel()
         },
         methods:{
             loadTable(){
                 const _this = this
                 let qs = require('querystring')
-                let data = {}
-                data.page = this.page
-                data.limit = this.limit
-                data.keyType = this.keyType
+                let data = {
+                    page: this.page,
+                    limit: this.limit,
+                    keyType: this.keyType,
+                }
+                if(data.keyType == '4'){
+                    data.type = this.workApprovalId
+                }
 
                 axios({
                     method: 'post',
@@ -107,24 +117,77 @@
                     });
                     _this.$store.state.approvalProcessList = data
                     _this.$store.state.approvalProcessListnumber = res.data.count
+
+                    // _this.workApproval = false
                 }).catch(function(err){
                 });
+            },
+            loadWorkLavel(){
+                const _this = this
+                let qs = require('querystring')
+                let data = {
+                    limit: 99999999,
+                    page: 1,
+                    secondid: this.$store.state.deptid
+                }
 
+                axios({
+                    method: 'post',
+                    url: _this.$store.state.defaultHttp+'oaExamineCategory/selectList.do?cId='+_this.$store.state.iscId,
+                    data: qs.stringify(data)
+                }).then(function(res){
+                    let info = res.data.map.success
+                    info.forEach((el,i) => {
+                        let a = i + 100
+                        el.index = a.toString()
+                    });
+                    _this.workList = info
+                }).catch(function(err){
+                    // console.log(err);
+                });
+            },
+            loadworkApproval(){
+                const _this = this
+                let qs = require('querystring')
+                let data = {}
+                data.page = this.page
+                data.limit = this.limit
+                data.type = this.workApprovalId
+                data.secondid = this.$store.state.deptid
+
+                axios({
+                    method: 'post',
+                    url: _this.$store.state.defaultHttp+'oaExamineCategory/selectList.do?cId='+_this.$store.state.iscId,
+                    data: qs.stringify(data)
+                }).then(function(res){
+                    let info = res.data.map.success
+                    _this.$store.state.approvalProcessList = info
+                    _this.$store.state.approvalProcessListnumber = res.data.count
+
+                    // _this.workApproval = true
+                }).catch(function(err){
+                });
             },
             showTableval(val){
-                this.keyType = val.index
-                this.searchList.forEach(function(obj){
-                    obj.isActive = false;
-                });
-                val.isActive = !val.isActive;
+                this.keyType = val
                 this.$options.methods.loadTable.bind(this)()
             },
+            showWorkleval(val){
+                this.keyType = '4'
+                this.workApprovalId = val.id
+                this.$options.methods.loadTable.bind(this)()
+                // this.$options.methods.loadworkApproval.bind(this)()
+            },
             handleAdd(){
-                this.$store.state.approvalupdateData = null
-                this.$router.push({ path: '/approvalProcessaddorupdate' })
+                if(this.keyType !== '4'){
+                    this.$store.state.approvaladdOrUpdateData = {categoryType:parseInt(this.keyType)}
+                    this.$router.push({ path: '/approvalProcessaddorupdate' })
+                }else{
+                    this.$store.state.approvaladdOrUpdateData = {categoryType:parseInt(this.keyType),category_id:this.workApprovalId}
+                    this.$router.push({ path: '/approvalProcessaddorupdate' })
+                }
             },
             handleEdit(index,row){
-                // console.log(row)
                 row.levelList = []
                 row.stepList.forEach(el => {
                     el.checkUserId = []
@@ -133,7 +196,7 @@
                     });
                     row.levelList.push({index:el.stepNum,stepType:el.stepType,name:'第 ' + el.stepNum + ' 级',checkUserId:el.checkUserId, remarks:el.remarks, del:false})
                 });
-                this.$store.state.approvalupdateData = row
+                this.$store.state.approvaladdOrUpdateData = row
                 this.$router.push({ path: '/approvalProcessaddorupdate' })
             },
             handleDelete(index,row){

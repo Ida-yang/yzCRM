@@ -47,12 +47,11 @@ const state = {
   productupdateData:null, // 产品编辑
   orderaddData:null, // 订单新增
   orderupdateData:null, // 订单编辑
-  approvaladdData:null, // 审批流程新增
-  approvalupdateData:null, // 审批流程编辑
+  approvaladdOrUpdateData:null, // 审批流程
   workOrderaddorUpdateData:null, // 工单
   culPondaddorUpdateData:null, // 培育池
   competitorAddOrUpdateData:null, // 竞争对手
-  orderReceiveAddOrUpdateData:null, // 竞争对手
+  orderReceiveAddOrUpdateData:null, // 订单收款
   
   //跳转详情页列表
   cluedetailsData:null, // 线索
@@ -71,8 +70,15 @@ const state = {
   competitordetailData:null, // 竞争对手
   orderdetailsData:null, //订单
   orderReceiveDetailData:null, // 订单收款
+  workapprovalData:null,  // 办公审批流程
 
+  //自定义字段模块
+  customFieldData:{},
 
+  //办公审批自定义字段模块
+  workApprovalData:{},
+  associatedFormsData:{},
+  
   //线索挖掘列表
   customerList:[],
   //线索挖掘列表总数
@@ -241,8 +247,10 @@ const state = {
   //竞争对手列表总数
   competitorListnumber:0,
 
-  //自定义字段模块
-  customFieldData:{},
+  //办公审核列表
+  associatedFormsList:[],
+  //办公审核列表总数
+  associatedFormsListnumber:0,
 
   //当前时间
   nowtime:null,

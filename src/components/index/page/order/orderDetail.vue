@@ -133,7 +133,7 @@
                     </el-popover>
                     <el-button style="float:right;" class="info-btn" size="mini" @click="showexamine(1)" v-show="hasCheck && myform.checkStatus !== 2">通过</el-button>
                     <el-button style="float:right;" class="info-btn" size="mini" @click="showexamine(2)" v-show="hasCheck && myform.checkStatus !== 2">拒绝</el-button>
-                    <el-button style="float:right;" class="info-btn" size="mini" @click="showexamine(4)" v-show="hasCheck">驳回</el-button>
+                    <el-button style="float:right;" class="info-btn" size="mini" @click="showexamine(4)" v-show="hasCheck && !myform.accepted_money">驳回</el-button>
                 </div>
                 <div class="text item">
                     <div class="examine_c">
@@ -505,7 +505,6 @@
                 thisshow:false,
                 retracts:false,
                 hasCheck:null,
-                recordId:null,
                 examineLog:[],
                 examineList:[],
 
@@ -564,6 +563,8 @@
                     url: _this.$store.state.defaultHttp+'order/selectById.do?cId='+_this.$store.state.iscId,
                     data:qs.stringify(data)
                 }).then(function(res){
+                    _this.myform = res.data
+
                     _this.updateData = res.data.orderDetails
                     _this.updateData.forEach(el => {
                         if(el.image){
@@ -585,9 +586,6 @@
                     let c = parseInt(a % 24)
                     // console.log(b,c)
                     res.data.takeupTime = b + '天' + c + '小时'
-
-                    
-                    _this.myform = res.data
                     
 
                     if(res.data.checkStatus == 0){
@@ -953,7 +951,7 @@
                 //加载审核历史
                 axios({
                     method:'get',
-                    url:_this.$store.state.defaultHttp+'examineLog/queryExamineLogList.do?cId='+_this.$store.state.iscId+'&recordId='+_this.recordId,
+                    url:_this.$store.state.defaultHttp+'examineLog/queryExamineLogList.do?cId='+_this.$store.state.iscId+'&recordId='+_this.myform.examineRecordId,
                 }).then(function(res){
                     _this.examineLog = res.data
                 }).catch(function(err){
@@ -1200,7 +1198,7 @@
                 let qs = require('querystring')
                 let data = {}
                 data.id = this.myform.id
-                data.recordId = this.recordId
+                data.recordId = this.myform.examineRecordId
                 data.pId = this.$store.state.ispId
                 data.status = this.exaform.status
                 data.remarks = this.exaform.remarks

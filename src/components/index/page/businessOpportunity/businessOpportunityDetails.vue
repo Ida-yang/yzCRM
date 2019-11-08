@@ -931,13 +931,14 @@
                     method: 'get',
                     url: _this.$store.state.defaultHttp+'opportunity/opportunityAnalysis.do?cId='+_this.$store.state.iscId+'&opportunity_id='+_this.idArr.opportunity_id,
                 }).then(function(res){
-                    _this.auxList = res.data.map.opportunity
-                    _this.aaa = parseFloat(_this.auxList.trackProportion)
-                    _this.bbb = parseFloat(_this.auxList.surplusProportion)
-                    _this.ccc = parseFloat(_this.auxList.step_probability)
-                    _this.ddd = parseFloat(_this.auxList.competitorProportion)
-                    _this.fff = parseFloat(_this.auxList.numProportion)
-                    _this.ggg = parseFloat(_this.auxList.contactsProportion)
+                    let info = res.data.map.opportunity
+                    _this.aaa = parseFloat(info.trackProportion)
+                    _this.bbb = parseFloat(info.surplusProportion)
+                    _this.ccc = parseFloat(info.step_probability)
+                    _this.ddd = parseFloat(info.competitorProportion)
+                    _this.fff = parseFloat(info.numProportion)
+                    _this.ggg = parseFloat(info.contactsProportion)
+                    _this.auxList = info
                 }).catch(function(err){
                     // console.log(err);
                 });

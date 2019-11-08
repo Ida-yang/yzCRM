@@ -620,8 +620,8 @@
                 <el-form-item prop="createTime" label="回款时间">
                     <el-date-picker v-model="moneyBack.createTime" type="date" format="yyyy-MM-dd" value-format="yyyy-MM-dd" size="small" style="width:100%;"></el-date-picker>
                 </el-form-item>
-                <el-form-item prop="pay_type_id" label="收款方式">
-                    <el-select v-model="moneyBack.pay_type_id" placeholder="请选择收款方式" style="width:100%;">
+                <el-form-item prop="pay_type_id" label="结算账户">
+                    <el-select v-model="moneyBack.pay_type_id" placeholder="请选择结算账户" style="width:100%;">
                         <el-option v-for="item in payList" :key="item.id" :label="item.typeName" :value="item.id">{{item.typeName}}</el-option>
                     </el-select>
                 </el-form-item>
@@ -806,7 +806,7 @@
                     date:[{ required: true, message: '预计回款时间不能为空', trigger: 'blur' }],
                     prices:[{ required: true, message: '回款金额不能为空', trigger: 'blur' }],
                     createTime:[{ required: true, message: '回款时间不能为空', trigger: 'blur' }],
-                    pay_type_id:[{ required: true, message: '收款方式不能为空', trigger: 'blur' }],
+                    pay_type_id:[{ required: true, message: '结算账户不能为空', trigger: 'blur' }],
                     back_plan_id:[{ required: true, message: '回款阶段不能为空', trigger: 'blur' }],
                     followContent : [{ required: true, message: '请输入跟进内容', trigger: 'blur' },],
                     contactsId : [{ required: true, message: '请选择联系人', trigger: 'blur' },],
@@ -914,7 +914,7 @@
                 pageInfo.limit = this.limit
                 pageInfo.searchName = this.searchList.keyword
                 let data = {}
-                data.type = '收款方式'
+                data.type = '结算账户'
                 let data3 = {}
                 data3.type = '快捷方式'
                 //加载详情页右侧表格
@@ -928,7 +928,7 @@
                 }).catch(function(err){
                     // console.log(err);
                 });
-                //加载收款方式
+                //加载结算账户
                 axios({
                     method:'post',
                     url:_this.$store.state.defaultHttp+'typeInfo/getTypeInfoGroupByType.do?cId='+_this.$store.state.iscId,
@@ -1745,7 +1745,7 @@
                 }
                 if(!data.pay_type_id){
                     _this.$message({
-                        message: '收款方式不能为空',
+                        message: '结算账户不能为空',
                         type: 'error'
                     });
                     flag = true

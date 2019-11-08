@@ -15,7 +15,7 @@
                 </el-form-item>
                 <el-form-item label="应用部门" prop="deptNames">
                     <el-select v-model="myform.deptNames" multiple placeholder="请选择应用部门" size="mini" class="dept_select">
-                        <el-option class="droplist" :value="myform.deptNames">
+                        <el-option class="droplist" :value="myform.deptNames">  
                             <el-tree 
                                 node-key="deptid" 
                                 highlight-current default-expand-all show-checkbox
@@ -78,6 +78,7 @@
                     deptIds:[],
                     remarks:null,
                     id:null,
+                    category_id:null,
                 },
                 AssociatedList:[
                     {id:1,name:'合同'},
@@ -129,14 +130,14 @@
             },
             setMyForm(){
                 const _this = this
-                let objs = _this.$store.state.approvalupdateData
+                let objs = _this.$store.state.approvaladdOrUpdateData
 
                 _this.myform.deptIds = []
                 _this.myform.deptNames = []
-                if(objs){
+                _this.myform.categoryType = objs.categoryType
+                if(objs.id){
                     _this.myform.id = objs.id
                     _this.myform.name = objs.name
-                    _this.myform.categoryType = objs.categoryType
                     _this.myform.remarks = objs.remarks
                     _this.levelList = objs.levelList
                     objs.deptIdLs.forEach(el => {
@@ -144,6 +145,11 @@
                         _this.myform.deptNames.push(el.name)
                     });
                     _this.$refs.tree.setCheckedKeys(_this.myform.deptIds)
+                }
+                if(objs.category_id){
+                    _this.myform.category_id = objs.category_id
+                }else{
+                    _this.myform.category_id = null
                 }
             },
             handlecheck(data,val){
@@ -162,6 +168,9 @@
                     datas.secondid = this.myform.deptIds
                 }else{
                     datas.secondid = null
+                }
+                if(this.myform.category_id){
+                    datas.category_id = this.myform.category_id
                 }
 
                 axios({
@@ -243,8 +252,11 @@
                     "deptIds":this.myform.deptIds,
                     "name":this.myform.name,
                     "remarks":this.myform.remarks,
+                    "category_id":this.myform.category_id,
                     "step":arr,
                 }
+
+                console.log(data)
                 this.isDisable = true
                 
                 axios({

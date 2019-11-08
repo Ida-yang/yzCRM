@@ -172,12 +172,12 @@
 
             <el-table :data="payData" border stripe style="width:100%" v-show="showfifteen">
                 <el-table-column header-align="center" align="center" type="index" width="45" />
-                <el-table-column label="收款方式" prop="typeName" min-width="120" sortable />
+                <el-table-column label="结算账户" prop="typeName" min-width="120" sortable />
                 <el-table-column label="备注" prop="notes" min-width="180" sortable />
                 <el-table-column label="操作" width="150" header-align="center" align="center">
                     <template slot-scope="scope">
                         <el-button size="mini" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
-                        <el-button size="mini" type="danger" @click="handledelete(scope.$index, scope.row)">编辑</el-button>
+                        <el-button size="mini" type="danger" @click="handledelete(scope.$index, scope.row)">删除</el-button>
                     </template>
                 </el-table-column>
             </el-table>
@@ -189,7 +189,19 @@
                 <el-table-column label="操作" width="150" header-align="center" align="center">
                     <template slot-scope="scope">
                         <el-button size="mini" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
-                        <el-button size="mini" type="danger" @click="handledelete(scope.$index, scope.row)">编辑</el-button>
+                        <el-button size="mini" type="danger" @click="handledelete(scope.$index, scope.row)">删除</el-button>
+                    </template>
+                </el-table-column>
+            </el-table>
+
+            <el-table :data="approvalData" border stripe style="width:100%" v-show="showtwenty">
+                <el-table-column header-align="center" align="center" type="index" width="45" />
+                <el-table-column label="分类名称" prop="name" min-width="120" sortable />
+                <el-table-column label="备注" prop="remarks" min-width="180" sortable />
+                <el-table-column label="操作" width="150" header-align="center" align="center">
+                    <template slot-scope="scope">
+                        <el-button size="mini" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
+                        <el-button size="mini" type="danger" @click="handledelete(scope.$index, scope.row)">删除</el-button>
                     </template>
                 </el-table-column>
             </el-table>
@@ -686,14 +698,14 @@
                 <el-button type="primary" @click="updateProclass()">确 定</el-button>
             </span>
         </el-dialog>
-        <!-- 新增收款方式 -->
-        <el-dialog title="新增收款方式" :visible.sync="payTypeadd" :close-on-click-modal="false" width="40%">
+        <!-- 新增结算账户 -->
+        <el-dialog title="新增结算账户" :visible.sync="payTypeadd" :close-on-click-modal="false" width="40%">
             <el-form ref="newform" :model="newform" label-width="110px" :rules="rules">
                 <el-form-item prop="type" label="辅助资料类别">
                     <el-input v-model="newform.type" :disabled="true"></el-input>
                 </el-form-item>
-                <el-form-item prop="typeName" label="收款方式">
-                    <el-input v-model="newform.typeName" placeholder="请输入收款方式"></el-input>
+                <el-form-item prop="typeName" label="结算账户">
+                    <el-input v-model="newform.typeName" placeholder="请输入结算账户"></el-input>
                 </el-form-item>
                 <el-form-item prop="notes" label="备注">
                     <el-input v-model="newform.notes" type="textarea" rows="5"></el-input>
@@ -704,14 +716,14 @@
                 <el-button type="primary" @click="addbasicset()">确 定</el-button>
             </span>
         </el-dialog>
-        <!-- 编辑收款方式 -->
-        <el-dialog title="编辑收款方式" :visible.sync="payTypeupdate" :close-on-click-modal="false" width="40%">
+        <!-- 编辑结算账户 -->
+        <el-dialog title="编辑结算账户" :visible.sync="payTypeupdate" :close-on-click-modal="false" width="40%">
             <el-form ref="newform" :model="newform" label-width="110px" :rules="rules">
                 <el-form-item prop="type" label="辅助资料类别">
                     <el-input v-model="newform.type" :disabled="true"></el-input>
                 </el-form-item>
-                <el-form-item prop="typeName" label="收款方式">
-                    <el-input v-model="newform.typeName" placeholder="请输入收款方式"></el-input>
+                <el-form-item prop="typeName" label="结算账户">
+                    <el-input v-model="newform.typeName" placeholder="请输入结算账户"></el-input>
                 </el-form-item>
                 <el-form-item prop="notes" label="备注">
                     <el-input v-model="newform.notes" type="textarea" rows="5"></el-input>
@@ -758,6 +770,42 @@
                 <el-button type="primary" @click="updatebasicset()">确 定</el-button>
             </span>
         </el-dialog>
+        <!-- 新增审批分类 -->
+        <el-dialog title="新增审批分类" :visible.sync="approvaladd" :close-on-click-modal="false" width="40%">
+            <el-form ref="newform" :model="newform" label-width="110px" :rules="rules">
+                <el-form-item prop="type" label="辅助资料类别">
+                    <el-input v-model="newform.type" :disabled="true"></el-input>
+                </el-form-item>
+                <el-form-item prop="typeName" label="审批分类">
+                    <el-input v-model="newform.typeName" placeholder="请输入审批分类"></el-input>
+                </el-form-item>
+                <el-form-item prop="notes" label="备注">
+                    <el-input v-model="newform.notes" type="textarea" rows="5"></el-input>
+                </el-form-item>
+            </el-form>
+            <span slot="footer" class="dialog-footer">
+                <el-button @click="approvaladd = false">取 消</el-button>
+                <el-button type="primary" @click="addorupdateApproval()">确 定</el-button>
+            </span>
+        </el-dialog>
+        <!-- 编辑审批分类 -->
+        <el-dialog title="编辑审批分类" :visible.sync="approvalupdate" :close-on-click-modal="false" width="40%">
+            <el-form ref="newform" :model="newform" label-width="110px" :rules="rules">
+                <el-form-item prop="type" label="辅助资料类别">
+                    <el-input v-model="newform.type" :disabled="true"></el-input>
+                </el-form-item>
+                <el-form-item prop="typeName" label="审批分类">
+                    <el-input v-model="newform.typeName" placeholder="请输入审批分类"></el-input>
+                </el-form-item>
+                <el-form-item prop="notes" label="备注">
+                    <el-input v-model="newform.notes" type="textarea" rows="5"></el-input>
+                </el-form-item>
+            </el-form>
+            <span slot="footer" class="dialog-footer">
+                <el-button @click="approvalupdate = false">取 消</el-button> 
+                <el-button type="primary" @click="addorupdateApproval ()">确 定</el-button>
+            </span>
+        </el-dialog>
     </div>
 </template>
 <script>
@@ -784,6 +832,7 @@
                 classData:[],
                 payData:[],
                 failData:[],
+                approvalData:[],
 
                 treedatalist:[],
 
@@ -812,7 +861,7 @@
                     {index:5,slotindex:'5',name:'快捷方式',isActive:false},
                     {index:6,slotindex:'6',name:'商机进度',isActive:false},
                     {index:14,slotindex:'14',name:'工单分类',isActive:false},
-                    {index:15,slotindex:'15',name:'收款方式',isActive:false},
+                    {index:15,slotindex:'15',name:'结算账户',isActive:false},
                     {index:16,slotindex:'16',name:'失败原因',isActive:false},
                 ],
                 orderparam:[
@@ -823,7 +872,9 @@
                     {index:11,slotindex:'11',name:'交货方式',isActive:false},
                     {index:12,slotindex:'12',name:'经销商级别',isActive:false},
                 ],
-                workparam:[],
+                workparam:[
+                    {index:20,slotindex:'20',name:'审批分类',isActive:false},
+                ],
                 baseparam:[
                     {index:13,slotindex:'13',name:'编号规则',isActive:false},
                 ],
@@ -888,6 +939,7 @@
                 showfourteen:false,
                 showfifteen:false,
                 showsixteen:false,
+                showtwenty:false,
 
                 dialogVisible:false,//线索状态、客户状态、客户来源、客户分类
                 dialogVisible2:false,
@@ -913,9 +965,11 @@
                 jobclassadd:false,
                 jobclassupdate:false,//工单分类子集
                 payTypeadd:false,
-                payTypeupdate:false,//收款方式
+                payTypeupdate:false,//结算账户
                 failreasonadd:false,
                 failreasonupdate:false,//失败原因
+                approvaladd:false,
+                approvalupdate:false,//审批分类
 
                 rules: {
                     typeName : [{ required: true, message: '名称不能为空', trigger: 'blur' },],
@@ -1110,6 +1164,24 @@
                 }).catch(function(err){
                 });
             },
+            //加载审批分类
+            loadApproval(){
+                const _this = this
+
+                axios({
+                    method: 'get',
+                    url: _this.$store.state.defaultHttp+'oaExamineCategoryType/selectList.do?cId='+_this.$store.state.iscId,
+                }).then(function(res){
+                    let info = res.data
+                    info.forEach(el => {
+                        el.notes = el.remarks
+                        el.typeName = el.name
+                    });
+                    _this.approvalData = info
+                }).catch(function(err){
+                    // console.log(err);
+                });
+            },
             //显示左边对应表格和数据
             showTableval(val){
                 const _this = this
@@ -1131,6 +1203,7 @@
                 _this.showfourteen = false
                 _this.showfifteen = false
                 _this.showsixteen = false
+                _this.showtwenty = false
                 if(i == 1 || i == 2 || i == 3 || i == 4){
                     _this.showtopfour = true
                     _this.$options.methods.reloadTable.bind(_this)(true)
@@ -1170,6 +1243,9 @@
                 }else if(i == 16){
                     _this.showsixteen = true
                     _this.$options.methods.reloadTable.bind(_this)(true)
+                }else if(i == 20){
+                    _this.showtwenty = true
+                    _this.$options.methods.loadApproval.bind(_this)(true)
                 }
             },
             //添加基础资料弹框
@@ -1181,12 +1257,13 @@
                     method: 'get',
                     url: _this.$store.state.defaultHttp+'typeInfoJurisdiction/insert.do',//新增
                 }).then(function(res){
-                    if(res.data.msg && res.data.msg == 'error'){
-                        _this.$message({
-                            message:'对不起，您没有该权限，请联系管理员开通',
-                            type:'error'
-                        })
-                    }else{
+                    // if(res.data.msg && res.data.msg == 'error'){
+                    //     _this.$message({
+                    //         message:'对不起，您没有该权限，请联系管理员开通',
+                    //         type:'error'
+                    //     })
+                    // }else{
+                        _this.newform.id = null
                         _this.newform.sort = null
                         _this.newform.notes = null
                         if(i == 1 || i == 2 || i == 3 || i == 4){
@@ -1239,8 +1316,11 @@
                         }else if(i == 16){
                             _this.newform.typeName = null
                             _this.failreasonadd = true
+                        }else if(i == 20){
+                            _this.newform.typeName = null
+                            _this.approvaladd = true
                         }
-                    }
+                    // }
                 }).catch(function(err){
                     // console.log(err);
                 });
@@ -1332,7 +1412,7 @@
                 }else if(i == 15){
                     if(!data.typeName){
                         _this.$message({
-                            message: "收款方式不能为空",
+                            message: "结算账户不能为空",
                             type: 'error'
                         });
                         flag = true;
@@ -1710,6 +1790,57 @@
                     _this.$message.error("添加失败,请重新添加");
                 });
             },
+            addorupdateApproval(){
+                const _this = this
+                let qs = require('querystring')
+                let data = {}
+                data.name = this.newform.typeName
+                data.remarks = this.newform.notes
+                if(this.newform.id){
+                    data.id = this.newform.id
+                }
+                
+                let flag = false;
+                if(!data.name){
+                    _this.$message({
+                        message: "审批分类不能为空",
+                        type: 'error'
+                    });
+                    flag = true;
+                }
+                if(flag) return
+
+                axios({
+                    method: 'post',
+                    url: _this.$store.state.defaultHttp+'oaExamineCategoryType/saveOrUpdate.do?cId='+_this.$store.state.iscId,
+                    data:qs.stringify(data)
+                }).then(function(res){
+                    if(res.data.code && res.data.code == 200){
+                        if(_this.newform.id){
+                            _this.$message({
+                                message:'修改成功',
+                                type:'success'
+                            })
+                        }else{
+                            _this.$message({
+                                message:'添加成功',
+                                type:'success'
+                            })
+                        }
+                        _this.approvaladd = false
+                        _this.approvalupdate = false
+                        _this.$options.methods.loadApproval.bind(_this)(true);
+                    }else{
+                        _this.$message({
+                            message:res.data.msg,
+                            type:'error'
+                        })
+                    }
+                }).catch(function(err){
+                    _this.$message.error("添加失败,请重新添加");
+                });
+            },
+
             //修改填写弹出框内容
             handleEdit(index,row){
                 const _this = this
@@ -1719,12 +1850,12 @@
                     method: 'get',
                     url: _this.$store.state.defaultHttp+'typeInfoJurisdiction/update.do',//编辑
                 }).then(function(res){
-                    if(res.data.msg && res.data.msg == 'error'){
-                        _this.$message({
-                            message:'对不起，您没有该权限，请联系管理员开通',
-                            type:'error'
-                        })
-                    }else{
+                    // if(res.data.msg && res.data.msg == 'error'){
+                    //     _this.$message({
+                    //         message:'对不起，您没有该权限，请联系管理员开通',
+                    //         type:'error'
+                    //     })
+                    // }else{
                         _this.newform.sort = row.sort
                         _this.newform.notes = row.notes
                         if(i == 1 || i == 2 || i == 3 || i == 4){
@@ -1782,8 +1913,13 @@
                             _this.newform.typeName = row.typeName
                             _this.newform.notes = row.notes
                             _this.failreasonupdate = true
+                        }else if(i == 20){
+                            _this.newform.id = row.id
+                            _this.newform.typeName = row.typeName
+                            _this.newform.notes = row.notes
+                            _this.approvalupdate = true
                         }
-                    }
+                    // }
                 }).catch(function(err){
                 });
             },
@@ -1877,7 +2013,7 @@
                 }else if(i == 15){
                     if(!data.typeName){
                         _this.$message({
-                            message: "收款方式不能为空",
+                            message: "结算账户不能为空",
                             type: 'error'
                         });
                         flag = true;
@@ -2312,6 +2448,10 @@
                     idArr.id = row.id
                     urls = _this.$store.state.defaultHttp+ 'distributor/deleteDistributor.do?cId='+_this.$store.state.iscId  // 删除商机进度
                     val = row.name
+                }else if(i == 20){
+                    idArr.id = row.id
+                    urls = _this.$store.state.defaultHttp+ 'oaExamineCategoryType/delete.do?cId='+_this.$store.state.iscId  // 删除商机进度
+                    val = row.name
                 }
                 
 
@@ -2335,6 +2475,8 @@
                                 _this.$options.methods.loadOppStep.bind(_this)(true);
                             }else if(i == 12){
                                 _this.$options.methods.loadistri.bind(_this)(true);
+                            }else if(i == 20){
+                                _this.$options.methods.loadApproval.bind(_this)(true);
                             }
                         } else if(res.data.msg && res.data.msg == 'error'){//删除
                             _this.$message({
