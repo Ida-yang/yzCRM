@@ -227,7 +227,7 @@
                 examineLog:[],
                 fieldData:[],
 
-                hasCheck:null,//是否有审批权
+                hasCheck:null,//是否有审核权
                 hasRecheck:null,//是否有撤回权
 
                 retracts:true,

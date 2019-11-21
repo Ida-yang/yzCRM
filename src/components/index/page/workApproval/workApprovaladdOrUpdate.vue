@@ -20,8 +20,8 @@
                     </el-option>
                 </el-select>
             </el-form-item>
-            <el-form-item label="审批分类">
-                <el-select v-model="myform.examineTypeId" placeholder="请选择审批分类" size="mini">
+            <el-form-item label="审核分类">
+                <el-select v-model="myform.examineTypeId" placeholder="请选择审核分类" size="mini">
                     <el-option v-for="item in labelList" :key="item.id" :label="item.name" :value="item.id"></el-option>
                 </el-select>
             </el-form-item>
@@ -63,7 +63,7 @@
                 
                 rules:{
                     deptNames: [{ required: true, message: '可见部门不能为空', trigger: 'blur' },],
-                    title: [{ required: true, message: '审批类型不能为空', trigger: 'blur' },],
+                    title: [{ required: true, message: '审核类型不能为空', trigger: 'blur' },],
                 },
 
                 isDisable:false,

@@ -31,6 +31,18 @@
                         <el-form-item class="first_input" label="标准成品价" label-width="90px">
                             <el-input v-model="myform.costPrice" class="inputbox"></el-input>
                         </el-form-item>
+                        <el-form-item class="first_input" label="是否可见" label-width="90px">
+                            <el-radio-group v-model="myform.see">
+                                <el-radio :label="1">可见</el-radio>
+                                <el-radio :label="0">不可见</el-radio>
+                            </el-radio-group>
+                        </el-form-item>
+                        <el-form-item class="first_input" label="起订量" label-width="90px">
+                            <el-input v-model="myform.startQuantity" class="inputbox"></el-input>
+                        </el-form-item>
+                        <el-form-item class="first_input" label="交货天数" label-width="90px">
+                            <el-input v-model="myform.deliveryDays" class="inputbox"></el-input>
+                        </el-form-item>
                         <el-form-item class="first_input" label="规格描述" label-width="90px">
                             <el-input type="textarea" rows="1" v-model="myform.describe" class="inputbox"></el-input>
                         </el-form-item>
@@ -208,11 +220,14 @@
                     goodsName:null,
                     unitId:null,
                     brandId:null,
+                    see:1,
                     chanpinfenleiID:null,
                     classification_id:null,
                     attribute:null,
                     price:null,
                     costPrice:null,
+                    startQuantity:null,
+                    deliveryDays:null,
                     describe:null,
                     label:null,
                     isEnableSpec:'0',
@@ -701,10 +716,13 @@
                     "brandId" : this.myform.brandId,
                     "classification_id" : this.myform.classification_id,
                     "unitId" : this.myform.unitId,
+                    "see" : this.myform.see,
                     "attribute" : this.myform.attribute,
                     "price" : this.myform.price,
                     "costPrice" : this.myform.costPrice,
                     "isEnableSpec" : this.myform.isEnableSpec,
+                    "startQuantity" : this.myform.startQuantity,
+                    "deliveryDays" : this.myform.deliveryDays,
                     "describe" : this.myform.describe,
                     "label" : this.myform.label,
                     "remark" : this.myform.remark

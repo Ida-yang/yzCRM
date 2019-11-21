@@ -264,12 +264,12 @@ const router =new Router({
         {
           path: '/associatedForms',
           component: resolve => require(['../components/index/page/workApproval/associatedForms.vue'], resolve),
-          meta: { title: '办公审核', name:'associatedForms', requireAuth:true}
+          meta: { title: 'OA表单', name:'associatedForms', requireAuth:true}
         },
         {
           path: '/workApprovaladdOrUpdate',
           component: resolve => require(['../components/index/page/workApproval/workApprovaladdOrUpdate.vue'], resolve),
-          meta: { title: '编辑办公审核', requireAuth:true}
+          meta: { title: '编辑OA表单', requireAuth:true}
         },
         {
           path: '/associatedFormsaddOrUpdate',
@@ -384,12 +384,32 @@ const router =new Router({
         {
           path: '/customFields',
           component: resolve => require(['../components/index/page/customFields/customFields.vue'], resolve),
-          meta: { title: '自定义字段', requireAuth:true}
+          meta: { title: '自定义字段', name:'customFields', requireAuth:true}
         },
         {
           path: '/customFieldsUpdate',
           component: resolve => require(['../components/index/page/customFields/customFieldsUpdate.vue'], resolve),
           meta: { title: '修改自定义字段', requireAuth:true}
+        },
+        {
+          path: '/examine',
+          component: resolve => require(['../components/index/page/examine/examine.vue'], resolve),
+          meta: { title: '审核单', name:'examine', requireAuth:true}
+        },
+        {
+          path: '/addexamine',
+          component: resolve => require(['../components/index/page/examine/addexamine.vue'], resolve),
+          meta: { title: '发起审批', name:'addexamine', requireAuth:true}
+        },
+        {
+          path: '/examinedetail',
+          component: resolve => require(['../components/index/page/examine/examinedetail.vue'], resolve),
+          meta: { title: '发起审批', requireAuth:true}
+        },
+        {
+          path: '/examineaddOrUpdate',
+          component: resolve => require(['../components/index/page/examine/examineaddOrUpdate.vue'], resolve),
+          meta: { title: '编辑审核单', requireAuth:true}
         },
         {
           path: '/namesss',

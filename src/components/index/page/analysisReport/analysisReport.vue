@@ -57,6 +57,7 @@
     let echarts = require('echarts/lib/echarts')
     require('echarts/lib/chart/bar')
     require('echarts/lib/chart/funnel')
+    require('echarts/lib/chart/line')
     require('echarts/lib/component/tooltip')
     require('echarts/lib/component/title')
 
@@ -68,10 +69,19 @@
                 showTitle:true,
 
                 nameList:[
-                    {index:1,name:'合同报表',id:'chart401',isActive:false},
-                    {index:2,name:'商机报表',id:'chart402',isActive:false},
-                    {index:3,name:'部门业绩排行榜',id:'chart403',isActive:false},
-                    {index:4,name:'个人业绩排行榜',id:'chart404',isActive:false},
+                    {index:1,name:'客户统计分析',id:'chart401',isActive:false},
+                    {index:2,name:'商机预测分析',id:'chart402',isActive:false},
+                    {index:3,name:'商机阶段分析',id:'chart403',isActive:false},
+                    {index:4,name:'商机丢单分析',id:'chart404',isActive:false},
+                    {index:5,name:'商机数量分析',id:'chart405',isActive:false},
+                    {index:6,name:'合同报表',id:'chart406',isActive:false},
+                    {index:7,name:'合同回款预测分析',id:'chart407',isActive:false},
+                    {index:8,name:'合同周期对比',id:'chart408',isActive:false},
+                    {index:9,name:'业务增长分析',id:'chart409',isActive:false},
+                    {index:10,name:'目标完成度分析',id:'chart410',isActive:false},
+                    {index:11,name:'业务员统计分析',id:'chart411',isActive:false},
+                    {index:12,name:'部门业绩排行榜',id:'chart412',isActive:false},
+                    {index:13,name:'个人业绩排行榜',id:'chart413',isActive:false},
                 ],
                 index:'',
 
@@ -173,24 +183,269 @@
                     // console.log(err);
                 });
             },
-            loadagreeReport(){
+            //显示对应状态数表格数据
+            showTableval(val){
                 const _this = this
-                let qs = require('querystring')
-                let data = {}
-                data.year = this.searchList.year
-                if(this.searchList.year && this.searchList.yearMonth){
-                    data.yearMonth = this.searchList.year + this.searchList.yearMonth
+                let i = val.index
+                this.index = val.index
+                this.searchList = {mechanism:null,department:null,year:null,yearMonth:null,startTime:null,endTime:null,yearrange:''}
+                this.yeardisabled = false
+                this.rangedisabled = false
+                this.monthList = []
+                this.deptnameData = []
+                this.nameList.forEach(function(obj){
+                    obj.isActive = false;
+                });
+                // val.isActive = !val.isActive;
+                if(i == 1){
+                    // axios({
+                    //     method: 'get',
+                    //     url: _this.$store.state.defaultHttp+'reportFormJurisdiction/opportunity.do',//商机报表
+                    // }).then(function(res){
+                        // if(res.data.msg && res.data.msg == 'error'){
+                        //     _this.$message({
+                        //         message:'对不起，您没有该权限，请联系管理员开通',
+                        //         type:'error'
+                        //     })
+                        // }else{
+                            _this.showTitle = false
+                            val.isActive = !val.isActive
+                            _this.$options.methods.loadcusStatistics.bind(_this)();
+                        // }
+                    // }).catch(function(err){
+                    //     // console.log(err);
+                    // });
+                }else if(i == 2){
+                    // axios({
+                    //     method: 'get',
+                    //     url: _this.$store.state.defaultHttp+'reportFormJurisdiction/opportunity.do',//商机报表
+                    // }).then(function(res){
+                        // if(res.data.msg && res.data.msg == 'error'){
+                        //     _this.$message({
+                        //         message:'对不起，您没有该权限，请联系管理员开通',
+                        //         type:'error'
+                        //     })
+                        // }else{
+                            _this.showTitle = false
+                            val.isActive = !val.isActive
+                            _this.$options.methods.loadoppForecast.bind(_this)();
+                        // }
+                    // }).catch(function(err){
+                    //     // console.log(err);
+                    // });
+                }else if(i == 3){
+                    // axios({
+                    //     method: 'get',
+                    //     url: _this.$store.state.defaultHttp+'reportFormJurisdiction/opportunity.do',//商机报表
+                    // }).then(function(res){
+                        // if(res.data.msg && res.data.msg == 'error'){
+                        //     _this.$message({
+                        //         message:'对不起，您没有该权限，请联系管理员开通',
+                        //         type:'error'
+                        //     })
+                        // }else{
+                            _this.showTitle = false
+                            val.isActive = !val.isActive
+                            _this.$options.methods.loadoppStage.bind(_this)();
+                        // }
+                    // }).catch(function(err){
+                    //     // console.log(err);
+                    // });
+                }else if(i == 4){
+                    // axios({
+                    //     method: 'get',
+                    //     url: _this.$store.state.defaultHttp+'reportFormJurisdiction/opportunity.do',//商机报表
+                    // }).then(function(res){
+                        // if(res.data.msg && res.data.msg == 'error'){
+                        //     _this.$message({
+                        //         message:'对不起，您没有该权限，请联系管理员开通',
+                        //         type:'error'
+                        //     })
+                        // }else{
+                            _this.showTitle = false
+                            val.isActive = !val.isActive
+                            _this.$options.methods.loadoppLose.bind(_this)();
+                        // }
+                    // }).catch(function(err){
+                    //     // console.log(err);
+                    // });
+                }else if(i == 5){
+                    axios({
+                        method: 'get',
+                        url: _this.$store.state.defaultHttp+'reportFormJurisdiction/opportunity.do',//商机报表
+                    }).then(function(res){
+                        // if(res.data.msg && res.data.msg == 'error'){
+                        //     _this.$message({
+                        //         message:'对不起，您没有该权限，请联系管理员开通',
+                        //         type:'error'
+                        //     })
+                        // }else{
+                            _this.showTitle = false
+                            val.isActive = !val.isActive
+                            _this.$options.methods.loadoppNumber.bind(_this)();
+                        // }
+                    }).catch(function(err){
+                        // console.log(err);
+                    });
+                }else if(i == 6){
+                    axios({
+                        method: 'get',
+                        url: _this.$store.state.defaultHttp+'reportFormJurisdiction/contract.do',//合同报表
+                    }).then(function(res){
+                        // if(res.data.msg && res.data.msg == 'error'){
+                        //     _this.$message({
+                        //         message:'对不起，您没有该权限，请联系管理员开通',
+                        //         type:'error'
+                        //     })
+                        // }else{
+                            _this.showTitle = false
+                            val.isActive = !val.isActive
+                            _this.$options.methods.loadagreeReport.bind(_this)();
+                        // }
+                    }).catch(function(err){
+                        // console.log(err);
+                    });
+                }else if(i == 7){
+                    // axios({
+                    //     method: 'get',
+                    //     url: _this.$store.state.defaultHttp+'reportFormJurisdiction/opportunity.do',//商机报表
+                    // }).then(function(res){
+                        // if(res.data.msg && res.data.msg == 'error'){
+                        //     _this.$message({
+                        //         message:'对不起，您没有该权限，请联系管理员开通',
+                        //         type:'error'
+                        //     })
+                        // }else{
+                            _this.showTitle = false
+                            val.isActive = !val.isActive
+                            _this.$options.methods.loadagreePayment.bind(_this)();
+                        // }
+                    // }).catch(function(err){
+                    //     // console.log(err);
+                    // });
+                }else if(i == 8){
+                    // axios({
+                    //     method: 'get',
+                    //     url: _this.$store.state.defaultHttp+'reportFormJurisdiction/opportunity.do',//商机报表
+                    // }).then(function(res){
+                        // if(res.data.msg && res.data.msg == 'error'){
+                        //     _this.$message({
+                        //         message:'对不起，您没有该权限，请联系管理员开通',
+                        //         type:'error'
+                        //     })
+                        // }else{
+                            _this.showTitle = false
+                            val.isActive = !val.isActive
+                            _this.$options.methods.loadagreeCycler.bind(_this)();
+                        // }
+                    // }).catch(function(err){
+                    //     // console.log(err);
+                    // });
+                }else if(i == 9){
+                    // axios({
+                    //     method: 'get',
+                    //     url: _this.$store.state.defaultHttp+'reportFormJurisdiction/opportunity.do',//商机报表
+                    // }).then(function(res){
+                        // if(res.data.msg && res.data.msg == 'error'){
+                        //     _this.$message({
+                        //         message:'对不起，您没有该权限，请联系管理员开通',
+                        //         type:'error'
+                        //     })
+                        // }else{
+                            _this.showTitle = false
+                            val.isActive = !val.isActive
+                            _this.$options.methods.loadworkIncrease.bind(_this)();
+                        // }
+                    // }).catch(function(err){
+                    //     // console.log(err);
+                    // });
+                }else if(i == 10){
+                    // axios({
+                    //     method: 'get',
+                    //     url: _this.$store.state.defaultHttp+'reportFormJurisdiction/opportunity.do',//商机报表
+                    // }).then(function(res){
+                        // if(res.data.msg && res.data.msg == 'error'){
+                        //     _this.$message({
+                        //         message:'对不起，您没有该权限，请联系管理员开通',
+                        //         type:'error'
+                        //     })
+                        // }else{
+                            _this.showTitle = false
+                            val.isActive = !val.isActive
+                            _this.$options.methods.loadtargetCompletion.bind(_this)();
+                        // }
+                    // }).catch(function(err){
+                    //     // console.log(err);
+                    // });
+                }else if(i == 11){
+                    // axios({
+                    //     method: 'get',
+                    //     url: _this.$store.state.defaultHttp+'reportFormJurisdiction/opportunity.do',//商机报表
+                    // }).then(function(res){
+                        // if(res.data.msg && res.data.msg == 'error'){
+                        //     _this.$message({
+                        //         message:'对不起，您没有该权限，请联系管理员开通',
+                        //         type:'error'
+                        //     })
+                        // }else{
+                            _this.showTitle = false
+                            val.isActive = !val.isActive
+                            _this.$options.methods.loadsalesman.bind(_this)();
+                        // }
+                    // }).catch(function(err){
+                    //     // console.log(err);
+                    // });
+                }else if(i == 12){
+                    axios({
+                        method: 'get',
+                        url: _this.$store.state.defaultHttp+'reportFormJurisdiction/dept.do',//部门报表
+                    }).then(function(res){
+                        // if(res.data.msg && res.data.msg == 'error'){
+                        //     _this.$message({
+                        //         message:'对不起，您没有该权限，请联系管理员开通',
+                        //         type:'error'
+                        //     })
+                        // }else{
+                            _this.showTitle = false
+                            val.isActive = !val.isActive
+                            _this.$options.methods.loaddeptrank.bind(_this)();
+                        // }
+                    }).catch(function(err){
+                        // console.log(err);
+                    });
+                }else if(i == 13){
+                    axios({
+                        method: 'get',
+                        url: _this.$store.state.defaultHttp+'reportFormJurisdiction/user.do',//个人报表
+                    }).then(function(res){
+                        // if(res.data.msg && res.data.msg == 'error'){
+                        //     _this.$message({
+                        //         message:'对不起，您没有该权限，请联系管理员开通',
+                        //         type:'error'
+                        //     })
+                        // }else{
+                            _this.showTitle = false
+                            val.isActive = !val.isActive
+                            _this.$options.methods.loadpersonrank.bind(_this)();
+                        // }
+                    }).catch(function(err){
+                        // console.log(err);
+                    });
                 }
-                data.startTime = this.searchList.startTime
-                data.endTime = this.searchList.endTime
-                data.deptid = this.searchList.mechanism
-                data.secondid = this.searchList.department
-
-                _this.tableData = _this.agreeReportList
-                _this.colList = _this.agreecolList
-                _this.drawLine1()
             },
-            loadoppReport(){
+            loadcusStatistics(){
+                this.drawLine1()
+            },
+            loadoppForecast(){
+                this.drawLine2()
+            },
+            loadoppStage(){
+                this.drawLine3()
+            },
+            loadoppLose(){
+                this.drawLine4()
+            },
+            loadoppNumber(){
                 const _this = this
                 let qs = require('querystring')
                 let data = {}
@@ -216,11 +471,12 @@
                         {index:-2,name:'客户数量',col:'customerNum'},
                     ]
                     _this.oppData = []
-                    data.forEach(el => {
+                    let info = data.reverse()
+                    info.forEach((el,i) => {
                         _this.oppcolList.push({index:el.sort,name:el.step_name,col:el.col},)
-                        _this.oppData.push({name:el.step_name,value:el.count})
+                        _this.oppData.push({value:i,name:el.step_name + '（' + el.count + '）',label:el.count})
                     });
-                    _this.drawLine2()
+                    _this.drawLine5()
                 }).catch(function(err){
                     // console.log(err);
                 });
@@ -236,6 +492,38 @@
                 }).catch(function(err){
                     // console.log(err);
                 });
+            },
+            loadagreeReport(){
+                const _this = this
+                let qs = require('querystring')
+                let data = {}
+                data.year = this.searchList.year
+                if(this.searchList.year && this.searchList.yearMonth){
+                    data.yearMonth = this.searchList.year + this.searchList.yearMonth
+                }
+                data.startTime = this.searchList.startTime
+                data.endTime = this.searchList.endTime
+                data.deptid = this.searchList.mechanism
+                data.secondid = this.searchList.department
+
+                _this.tableData = _this.agreeReportList
+                _this.colList = _this.agreecolList
+                _this.drawLine6()
+            },
+            loadagreePayment(){
+                this.drawLine7()
+            },
+            loadagreeCycler(){
+                this.drawLine8()
+            },
+            loadworkIncrease(){
+                this.drawLine9()
+            },
+            loadtargetCompletion(){
+                this.drawLine10()
+            },
+            loadsalesman(){
+                this.drawLine11()
             },
             loaddeptrank(){
                 const _this = this
@@ -264,7 +552,7 @@
                         _this.deptData.push(el.amount)
                         _this.deptList.push(el.deptname)
                     });
-                    _this.drawLine3()
+                    _this.drawLine12()
                 }).catch(function(err){
                     // console.log(err);
                 });
@@ -296,104 +584,198 @@
                         _this.personData.push(el.amount)
                         _this.personList.push(el.private_employee)
                     });
-                    _this.drawLine4()
+                    _this.drawLine13()
                 }).catch(function(err){
                     // console.log(err);
                 });
-            },
-            //显示对应状态数表格数据
-            showTableval(val){
-                const _this = this
-                let i = val.index
-                this.index = val.index
-                this.searchList = {mechanism:null,department:null,year:null,yearMonth:null,startTime:null,endTime:null,yearrange:''}
-                this.yeardisabled = false
-                this.rangedisabled = false
-                this.monthList = []
-                this.deptnameData = []
-                this.nameList.forEach(function(obj){
-                    obj.isActive = false;
-                });
-                // val.isActive = !val.isActive;
-                if(i == 1){
-                    axios({
-                        method: 'get',
-                        url: _this.$store.state.defaultHttp+'reportFormJurisdiction/contract.do',//合同报表
-                    }).then(function(res){
-                        if(res.data.msg && res.data.msg == 'error'){
-                            _this.$message({
-                                message:'对不起，您没有该权限，请联系管理员开通',
-                                type:'error'
-                            })
-                        }else{
-                            _this.showTitle = false
-                            val.isActive = !val.isActive
-                            _this.$options.methods.loadagreeReport.bind(_this)();
-                        }
-                    }).catch(function(err){
-                        // console.log(err);
-                    });
-                }else if(i == 2){
-                    axios({
-                        method: 'get',
-                        url: _this.$store.state.defaultHttp+'reportFormJurisdiction/opportunity.do',//商机报表
-                    }).then(function(res){
-                        if(res.data.msg && res.data.msg == 'error'){
-                            _this.$message({
-                                message:'对不起，您没有该权限，请联系管理员开通',
-                                type:'error'
-                            })
-                        }else{
-                            _this.showTitle = false
-                            val.isActive = !val.isActive
-                            _this.$options.methods.loadoppReport.bind(_this)();
-                        }
-                    }).catch(function(err){
-                        // console.log(err);
-                    });
-                }else if(i == 3){
-                    axios({
-                        method: 'get',
-                        url: _this.$store.state.defaultHttp+'reportFormJurisdiction/dept.do',//部门报表
-                    }).then(function(res){
-                        if(res.data.msg && res.data.msg == 'error'){
-                            _this.$message({
-                                message:'对不起，您没有该权限，请联系管理员开通',
-                                type:'error'
-                            })
-                        }else{
-                            _this.showTitle = false
-                            val.isActive = !val.isActive
-                            _this.$options.methods.loaddeptrank.bind(_this)();
-                        }
-                    }).catch(function(err){
-                        // console.log(err);
-                    });
-                }else if(i == 4){
-                    axios({
-                        method: 'get',
-                        url: _this.$store.state.defaultHttp+'reportFormJurisdiction/user.do',//个人报表
-                    }).then(function(res){
-                        if(res.data.msg && res.data.msg == 'error'){
-                            _this.$message({
-                                message:'对不起，您没有该权限，请联系管理员开通',
-                                type:'error'
-                            })
-                        }else{
-                            _this.showTitle = false
-                            val.isActive = !val.isActive
-                            _this.$options.methods.loadpersonrank.bind(_this)();
-                        }
-                    }).catch(function(err){
-                        // console.log(err);
-                    });
-                }
             },
             drawLine1(){
                 // 基于准备好的dom，初始化echarts实例
                 let chart401 = echarts.init(document.getElementById('chart401'))
                 // 绘制图表
                 chart401.setOption({
+                });
+            },
+            drawLine2(){
+                // 基于准备好的dom，初始化echarts实例
+                let chart402 = echarts.init(document.getElementById('chart402'))
+                // 绘制图表
+                chart402.setOption({
+                    
+                });
+            },
+            drawLine3(){
+                // 基于准备好的dom，初始化echarts实例
+                let chart403 = echarts.init(document.getElementById('chart403'))
+                // 绘制图表
+                chart403.setOption({
+                    tooltip: {
+                        trigger: 'axis',
+                        axisPointer: {
+                            type: 'cross',
+                            crossStyle: {
+                                color: '#999'
+                            }
+                        }
+                    },
+                    toolbox: {
+                        feature: {
+                            dataView: {show: true, readOnly: false},
+                            magicType: {show: true, type: ['line', 'bar']},
+                            restore: {show: true},
+                            saveAsImage: {show: true}
+                        }
+                    },
+                    legend: {
+                        data:['蒸发量','降水量','平均温度']
+                    },
+                    xAxis: [
+                        {
+                            type: 'category',
+                            data: ['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月'],
+                            axisPointer: {
+                                type: 'shadow'
+                            }
+                        }
+                    ],
+                    yAxis: [
+                        {
+                            type: 'value',
+                            name: '水量',
+                            min: 0,
+                            max: 250,
+                            interval: 50,
+                            axisLabel: {
+                                formatter: '{value} ml'
+                            }
+                        },
+                        {
+                            type: 'value',
+                            name: '温度',
+                            min: 0,
+                            max: 25,
+                            interval: 5,
+                            axisLabel: {
+                                formatter: '{value} °C'
+                            }
+                        }
+                    ],
+                    series: [
+                        {
+                            name:'蒸发量',
+                            type:'bar',
+                            data:[2.0, 4.9, 7.0, 23.2, 25.6, 76.7, 135.6, 162.2, 32.6, 20.0, 6.4, 3.3]
+                        },
+                        {
+                            name:'降水量',
+                            type:'bar',
+                            data:[2.6, 5.9, 9.0, 26.4, 28.7, 70.7, 175.6, 182.2, 48.7, 18.8, 6.0, 2.3]
+                        },
+                        {
+                            name:'平均温度',
+                            type:'line',
+                            yAxisIndex: 1,
+                            data:[2.0, 2.2, 3.3, 4.5, 6.3, 10.2, 20.3, 23.4, 23.0, 16.5, 12.0, 6.2]
+                        }
+                    ]
+                });
+            },
+            drawLine4(){
+                // 基于准备好的dom，初始化echarts实例
+                let chart404 = echarts.init(document.getElementById('chart404'))
+                // 绘制图表
+                chart404.setOption({
+                    tooltip: {
+                        trigger: 'item',
+                        formatter: "{b}: {c} ({d}%)"
+                    },
+                    // legend: {
+                    //     orient: 'vertical',
+                    //     x: 'left',
+                    //     data:['直达','营销广告','搜索引擎','邮件营销','联盟广告','视频广告','百度','谷歌','必应','其他']
+                    // },
+                    series: [
+                        {
+                            name:'',
+                            type:'pie',
+                            // selectedMode: 'single',
+                            radius: [0, '30%'],
+                            color:['#ffffff'],
+
+                            label: {
+                                normal: {
+                                    position: 'inner',
+                                    textStyle: {
+                                        color: '#000'  // 改变标示文字的颜色
+                                    }
+                                }
+
+                            },
+                            labelLine: {
+                                normal: {
+                                    show: false
+                                }
+                            },
+                            data:[
+                                {value:679, name:'营销广告'}
+                            ]
+                        },
+                        {
+                            name:'访问来源',
+                            type:'pie',
+                            radius: ['30%', '55%'],
+                            data:[
+                                {value:335, name:'直达'},
+                                {value:310, name:'邮件营销'},
+                                {value:234, name:'联盟广告'},
+                                {value:135, name:'视频广告'},
+                                {value:1048, name:'百度'},
+                                {value:251, name:'谷歌'},
+                                {value:147, name:'必应'},
+                                {value:102, name:'其他'}
+                            ]
+                        }
+                    ]
+                });
+            },
+            drawLine5(){
+                // 基于准备好的dom，初始化echarts实例
+                let chart405 = echarts.init(document.getElementById('chart405'))
+                // 绘制图表
+                chart405.setOption({
+                    title : { text: '商机漏斗', left: 'center' },
+                    tooltip : {
+                        trigger: 'item',
+                        formatter: "{b}"
+                    },
+                    calculable : true,
+                    emphasis: {
+                        label: {
+                            fontSize: 20
+                        }
+                    },
+                    series : [
+                        {
+                            name:'金额',
+                            type:'funnel',
+                            left: '10%',
+                            width: '80%',
+                            minSize: '30%',
+                            sort: 'descending',
+                            label: {
+                                show: true,
+                                position: 'inside'
+                            },
+                            data:this.oppData
+                        }
+                    ]
+                });
+            },
+            drawLine6(){
+                // 基于准备好的dom，初始化echarts实例
+                let chart406 = echarts.init(document.getElementById('chart406'))
+                // 绘制图表
+                chart406.setOption({
                     title: { text: '合同报表',left: 'center' },
                     tooltip: {
                         trigger: 'axis',
@@ -424,39 +806,238 @@
                     }]
                 });
             },
-            drawLine2(){
+            drawLine7(){},
+            drawLine8(){},
+            drawLine9(){
                 // 基于准备好的dom，初始化echarts实例
-                let chart402 = echarts.init(document.getElementById('chart402'))
+                let chart409 = echarts.init(document.getElementById('chart409'))
                 // 绘制图表
-                chart402.setOption({
-                    title : { text: '商机漏斗', left: 'center' },
-                    tooltip : {
-                        trigger: 'item',
-                        formatter: "{b}<br>{a}：{c}"
-                    },
-                    calculable : true,
-                    emphasis: {
-                        label: {
-                            fontSize: 20
+                var colors = ['#5793f3', '#d14a61', '#675bba', '#53ac14'];
+                chart409.setOption({
+                    tooltip: {
+                        trigger: 'none',
+                        axisPointer: {
+                            type: 'cross',
+                            label: {
+                                formatter: function (params) {
+                                    if(params.seriesData.length){
+                                        console.log(params)
+                                    }
+                                    // return '降水量  ' + params.value + (params.seriesData.length ? '：' + params.seriesData[0].data : '');
+                                }
+                            }
                         }
                     },
-                    series : [
+                    legend: {
+                        data:['2015 降水量', '2016 降水量', '2017 降水量', '2018 降水量']
+                    },
+                    grid: {
+                        top: 70,
+                        bottom: 50
+                    },
+                    xAxis: {
+                        type: 'category',
+                        data: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                    },
+                    yAxis: [
                         {
-                            name:'金额',
-                            type:'funnel',
-                            // width: '40%',
-                            minSize: '10%',
-                            sort: 'none',
-                            data:this.oppData
+                            type: 'value'
+                        }
+                    ],
+                    series: [
+                        {
+                            name:'2015 降水量',
+                            type:'line',
+                            smooth: true,
+                            data: [2.6, 5.9, 9.0, 26.4, 28.7, 70.7, 175.6, 182.2, 48.7, 18.8, 6.0, 2.3]
+                        },
+                        {
+                            name:'2016 降水量',
+                            type:'line',
+                            smooth: true,
+                            data: [3.9, 5.9, 11.1, 18.7, 48.3, 69.2, 231.6, 46.6, 55.4, 18.4, 10.3, 0.7]
+                        },
+                        {
+                            name:'2017 降水量',
+                            type:'line',
+                            smooth: true,
+                            data: [4.3, 4.9, 18.1, 23.7, 38.3, 54.2, 191.8, 42.6, 39.4, 18.4, 8.3, 1.6]
+                        },
+                        {
+                            name:'2018 降水量',
+                            type:'line',
+                            smooth: true,
+                            data: [3.3, 5.1, 12.5, 21.1, 41.9, 63.8, 261.3, 89.6, 38.9, 25.6, 12.4, 0.9]
                         }
                     ]
-                });
+                })
             },
-            drawLine3(){
+            drawLine10(){
                 // 基于准备好的dom，初始化echarts实例
-                let chart403 = echarts.init(document.getElementById('chart403'))
+                let chart410 = echarts.init(document.getElementById('chart410'))
                 // 绘制图表
-                chart403.setOption({
+                var colors = ['#5793f3', '#d14a61', '#675bba', '#53ac14'];
+                chart410.setOption({
+                    tooltip: {
+                        trigger: 'none',
+                        axisPointer: {
+                            type: 'cross'
+                        }
+                    },
+                    legend: {
+                        data:['2015 降水量', '2016 降水量', '2017 降水量']
+                    },
+                    grid: {
+                        top: 70,
+                        bottom: 50
+                    },
+                    xAxis: [
+                        {
+                            type: 'category',
+                            axisTick: {
+                                alignWithLabel: true
+                            },
+                            axisLine: {
+                                onZero: false,
+                                lineStyle: {
+                                    color: colors[1]
+                                }
+                            },
+                            axisPointer: {
+                                label: {
+                                    formatter: function (params) {
+                                        return '降水量  ' + params.value
+                                            + (params.seriesData.length ? '：' + params.seriesData[0].data : '');
+                                    }
+                                }
+                            },
+                            data: ["2016-1", "2016-2", "2016-3", "2016-4", "2016-5", "2016-6", "2016-7", "2016-8", "2016-9", "2016-10", "2016-11", "2016-12"]
+                        },
+                        {
+                            type: 'category',
+                            axisTick: {
+                                alignWithLabel: true
+                            },
+                            axisLine: {
+                                onZero: false,
+                                lineStyle: {
+                                    color: colors[0]
+                                }
+                            },
+                            axisPointer: {
+                                label: {
+                                    formatter: function (params) {
+                                        return '降水量  ' + params.value
+                                            + (params.seriesData.length ? '：' + params.seriesData[0].data : '');
+                                    }
+                                }
+                            },
+                            data: ["2015-1", "2015-2", "2015-3", "2015-4", "2015-5", "2015-6", "2015-7", "2015-8", "2015-9", "2015-10", "2015-11", "2015-12"]
+                        }
+                    ],
+                    yAxis: [
+                        {
+                            type: 'value'
+                        }
+                    ],
+                    series: [
+                        {
+                            name:'2015 降水量',
+                            type:'line',
+                            xAxisIndex: 1,
+                            smooth: true,
+                            data: [2.6, 5.9, 9.0, 26.4, 28.7, 70.7, 175.6, 182.2, 48.7, 18.8, 6.0, 2.3]
+                        },
+                        {
+                            name:'2016 降水量',
+                            type:'line',
+                            smooth: true,
+                            data: [3.9, 5.9, 11.1, 18.7, 48.3, 69.2, 231.6, 46.6, 55.4, 18.4, 10.3, 0.7]
+                        },
+                        {
+                            name:'2017 降水量',
+                            type:'line',
+                            smooth: true,
+                            data: [4.3, 4.9, 18.1, 23.7, 38.3, 54.2, 191.8, 42.6, 39.4, 18.4, 8.3, 1.6]
+                        },
+                    ]
+                })
+            },
+            drawLine11(){
+                // 基于准备好的dom，初始化echarts实例
+                let chart411 = echarts.init(document.getElementById('chart411'))
+                // 绘制图表
+                chart411.setOption({
+                    tooltip : {
+                        trigger: 'axis',
+                        axisPointer : {            // 坐标轴指示器，坐标轴触发有效
+                            type : 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+                        }
+                    },
+                    legend: {
+                        data:['利润', '支出', '收入']
+                    },
+                    grid: {
+                        left: '3%',
+                        right: '4%',
+                        bottom: '3%',
+                        containLabel: true
+                    },
+                    xAxis : [
+                        {
+                            type : 'value'
+                        }
+                    ],
+                    yAxis : [
+                        {
+                            type : 'category',
+                            axisTick : {show: false},
+                            data : ['周一','周二','周三','周四','周五','周六','周日']
+                        }
+                    ],
+                    series : [
+                        {
+                            name:'利润',
+                            type:'bar',
+                            label: {
+                                normal: {
+                                    show: true,
+                                    position: 'inside'
+                                }
+                            },
+                            data:[200, 170, 240, 244, 200, 220, 210]
+                        },
+                        {
+                            name:'收入',
+                            type:'bar',
+                            stack: '总量',
+                            label: {
+                                normal: {
+                                    show: true
+                                }
+                            },
+                            data:[320, 302, 341, 374, 390, 450, 420]
+                        },
+                        {
+                            name:'支出',
+                            type:'bar',
+                            stack: '总量',
+                            label: {
+                                normal: {
+                                    show: true,
+                                    position: 'left'
+                                }
+                            },
+                            data:[-120, -132, -101, -134, -190, -230, -210]
+                        }
+                    ]
+                })
+            },
+            drawLine12(){
+                // 基于准备好的dom，初始化echarts实例
+                let chart412 = echarts.init(document.getElementById('chart412'))
+                // 绘制图表
+                chart412.setOption({
                     title: { text: '部门业绩排行榜',left: 'center' },
                     tooltip: {
                         trigger: 'item',
@@ -481,11 +1062,11 @@
                     }]
                 });
             },
-            drawLine4(){
+            drawLine13(){
                 // 基于准备好的dom，初始化echarts实例
-                let chart404 = echarts.init(document.getElementById('chart404'))
+                let chart413 = echarts.init(document.getElementById('chart413'))
                 // 绘制图表
-                chart404.setOption({
+                chart413.setOption({
                     title: { text: '个人业绩排行榜',left: 'center' },
                     tooltip: {
                         trigger: 'item',
@@ -550,12 +1131,30 @@
                 const _this = this
 
                 if(_this.index == 1){
-                    _this.$options.methods.loadagreeReport.bind(_this)()
+                    _this.$options.methods.loadcusStatistics.bind(_this)()
                 }else if(_this.index == 2){
-                    _this.$options.methods.loadoppReport.bind(_this)()
+                    _this.$options.methods.loadoppForecast.bind(_this)()
                 }else if(_this.index == 3){
-                    _this.$options.methods.loaddeptrank.bind(_this)()
+                    _this.$options.methods.loadoppStage.bind(_this)()
                 }else if(_this.index == 4){
+                    _this.$options.methods.loadoppLose.bind(_this)()
+                }else if(_this.index == 5){
+                    _this.$options.methods.loadoppNumber.bind(_this)()
+                }else if(_this.index == 6){
+                    _this.$options.methods.loadagreeReport.bind(_this)()
+                }else if(_this.index == 7){
+                    _this.$options.methods.loadagreePayment.bind(_this)()
+                }else if(_this.index == 8){
+                    _this.$options.methods.loadagreeCycler.bind(_this)()
+                }else if(_this.index == 9){
+                    _this.$options.methods.loadworkIncrease.bind(_this)()
+                }else if(_this.index == 10){
+                    _this.$options.methods.loadtargetCompletion.bind(_this)()
+                }else if(_this.index == 11){
+                    _this.$options.methods.loadsalesman.bind(_this)()
+                }else if(_this.index == 12){
+                    _this.$options.methods.loaddeptrank.bind(_this)()
+                }else if(_this.index == 13){
                     _this.$options.methods.loadpersonrank.bind(_this)()
                 }
             },

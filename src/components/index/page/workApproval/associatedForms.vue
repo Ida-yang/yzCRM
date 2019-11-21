@@ -21,10 +21,11 @@
                 </el-table-column>
                 <el-table-column label="创建时间" prop="createTime" min-width="150" sortable></el-table-column>
                 <el-table-column label="备注" prop="remarks" min-width="180" sortable></el-table-column>
-                <el-table-column label="操作" fixed="right" width="230" header-align="center" align="center">
+                <el-table-column label="操作" fixed="right" width="330" header-align="center" align="center">
                     <template slot-scope="scope">
+                        <el-button size="mini" @click="toApproval(scope.$index, scope.row)">流程设置</el-button>
                         <el-button size="mini" @click="editForm(scope.$index, scope.row)">编辑表单</el-button>
-                        <el-button size="mini" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
+                        <el-button size="mini" @click="handleEdit(scope.$index, scope.row)">名称编辑</el-button>
                         <el-button type="danger" size="mini" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
                     </template>
                 </el-table-column>
@@ -134,6 +135,10 @@
             editForm(index,row){
                 this.$store.state.associatedFormsData = row
                 this.$router.push({ path: '/associatedFormsaddOrUpdate' })
+            },
+            toApproval(index,row){
+                this.$store.state.jumpvalData = row
+                this.$router.push({ path: '/approvalProcess' })
             },
             handleDelete(index,row){
                 const _this = this

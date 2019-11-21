@@ -77,27 +77,35 @@ new Vue({
     if(localStorage.getItem('ispId')===null){
       localStorage.setItem('ispId','')
     }
-    if(localStorage.getItem('user')===null){
-      localStorage.setItem('user','')
-    }
     if(localStorage.getItem('deptid')===null){
       localStorage.setItem('deptid','')
+    }
+    if(localStorage.getItem('insid')===null){
+      localStorage.setItem('insid','')
     }
     if(localStorage.getItem('roleid')===null){
       localStorage.setItem('roleid','')
     }
-    if(localStorage.getItem('insid')===null){
-      localStorage.setItem('insid','')
+    if(localStorage.getItem('user')===null){
+      localStorage.setItem('user','')
+    }
+    if(localStorage.getItem('deptname')===null){
+      localStorage.setItem('deptname','')
+    }
+    if(localStorage.getItem('parentname')===null){
+      localStorage.setItem('parentname','')
     }
     if(localStorage.getItem('portrait')===null){
       localStorage.setItem('portrait','')
     }
     this.$store.state.iscId = localStorage.getItem('iscId');//存放cId
     this.$store.state.ispId = localStorage.getItem('ispId');//存放pId
-    this.$store.state.user = localStorage.getItem('user');//存放用户名
     this.$store.state.deptid = localStorage.getItem('deptid');//存放部门编号
-    this.$store.state.roleid = localStorage.getItem('roleid');//存放角色编号
     this.$store.state.insid = localStorage.getItem('insid');//存放机构编号
+    this.$store.state.roleid = localStorage.getItem('roleid');//存放角色编号
+    this.$store.state.user = localStorage.getItem('user');//存放用户名
+    this.$store.state.deptname = localStorage.getItem('deptname');//存放用户头像名称
+    this.$store.state.parentname = localStorage.getItem('parentname');//存放用户头像名称
     this.$store.state.portrait = localStorage.getItem('portrait');//存放用户头像名称
     // if(this.$store.state.userData == null){
     //   this.$store.state.userData = JSON.parse(localStorage.getItem('userData'))
@@ -139,12 +147,12 @@ router.beforeEach((to, from, next) => {
           method: 'get',
           url: store.state.defaultHttp+'typeInfoJurisdiction/typeInfoMenu.do',
         }).then(function(res){
-          // if(res.data.msg && res.data.msg == 'error'){
-          //   Vue.prototype.$message.error('对不起，您没有该权限，请联系管理员开通')
-          //   next({path:'/index'})
-          // }else{
+          if(res.data.msg && res.data.msg == 'error'){
+            Vue.prototype.$message.error('对不起，您没有该权限，请联系管理员开通')
+            next({path:'/index'})
+          }else{
             next()
-          // }
+          }
         })
       }else if(to.path === '/programme'){
         axios({

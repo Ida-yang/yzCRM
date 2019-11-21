@@ -181,7 +181,7 @@
                                 </el-select>
                             </div>
                         </div>
-                        <el-table :data="cusConsDetails" border stripe style="width: 100%">
+                        <el-table :data="cusCons_details" border stripe style="width: 100%">
                             <el-table-column header-align="center" fixed align="center" type="index" width="45" />
                             <el-table-column label="联系人名称" prop="name" min-width="120" />
                             <el-table-column label="手机" prop="phone" min-width="110" />
@@ -213,7 +213,7 @@
                         <div class="entry">
                             <el-button class="btn info-btn" size="mini" @click="addopp()">新增商机</el-button>
                         </div>
-                        <el-table :data="opportunityDetails" border stripe style="width: 100%">
+                        <el-table :data="opportunity_details" border stripe style="width: 100%">
                             <el-table-column header-align="center" fixed align="center" type="index" width="45" />
                             <el-table-column label="商机名称" prop="opportunity_name" min-width="150" />
                             <el-table-column label="商机金额" prop="opportunity_achievement" min-width="110">
@@ -231,7 +231,7 @@
                         <div class="entry">
                             <el-button class="btn info-btn" size="mini" @click="addagree()">新增合同</el-button>
                         </div>
-                        <el-table :data="agreementDetails" border stripe style="width: 100%">
+                        <el-table :data="agreement_details" border stripe style="width: 100%">
                             <el-table-column header-align="center" fixed align="center" type="index" width="45" />
                             <el-table-column label="合同编号" prop="contract_number" min-width="150" />
                             <el-table-column label="合同名称" prop="contract_name" min-width="150" />
@@ -247,15 +247,112 @@
                             <el-table-column label="剩余天数" prop="due_time" min-width="110" />
                         </el-table>
                     </el-tab-pane>
-                    <el-tab-pane label="开票资料" name="fifth">
-                        <el-table :data="InvoiceDetails" border stripe style="width: 100%">
+                    <el-tab-pane label="销售订单" name="fifth">
+                        <el-table :data="order_details" border stripe style="width: 100%">
+                            <el-table-column header-align="center" fixed align="center" type="index" width="45" />
+                            <el-table-column label="订单日期" prop="orderTime" min-width="150" />
+                            <el-table-column label="订单编号" prop="orderNo" min-width="150" />
+                            <el-table-column label="订单金额" prop="totalSum" min-width="110">
+                                <template slot-scope="scope">
+                                    {{scope.row.totalSum | rounding}}
+                                </template>
+                            </el-table-column>
+                            <el-table-column label="收款金额" prop="accepted_money" min-width="110">
+                                <template slot-scope="scope">
+                                    {{scope.row.accepted_money | rounding}}
+                                </template>
+                            </el-table-column>
+                            <el-table-column label="未收款金额" prop="uncollected_money" min-width="110">
+                                <template slot-scope="scope">
+                                    {{scope.row.uncollected_money | rounding}}
+                                </template>
+                            </el-table-column>
+                            <el-table-column label="联系人" prop="contactsName" min-width="130" />
+                            <el-table-column label="状态" prop="checkStatus" min-width="130">
+                                <template slot-scope="scope">
+                                    <el-tag v-if="scope.row.checkStatus == 0" size="small" style="background-color:#ffffff;color:#606266;border-color:#dcdfe6" effect="dark">待审核</el-tag>
+                                    <el-tag v-if="scope.row.checkStatus == 1" size="small" style="background-color:#e6a23c;color:#ffffff;border-color:#e6a23c" effect="dark">审核中</el-tag>
+                                    <el-tag v-if="scope.row.checkStatus == 2" size="small" style="background-color:#67c23a;color:#ffffff;border-color:#67c23a" effect="dark">已审核</el-tag>
+                                    <el-tag v-if="scope.row.checkStatus == 3" size="small" style="background-color:#f56c6c;color:#ffffff;border-color:#f56c6c" effect="dark">未通过</el-tag>
+                                </template>
+                            </el-table-column>
+                            <el-table-column label="业务员" prop="ascription" min-width="110" />
+                        </el-table>
+                    </el-tab-pane>
+                    <el-tab-pane label="已购产品" name="sixth">
+                        <el-table :data="product_details" border stripe style="width: 100%">
+                            <el-table-column header-align="center" fixed align="center" type="index" width="45" />
+                            <el-table-column label="订单日期" prop="orderTime" min-width="150" />
+                            <el-table-column label="产品名称" prop="goodsName" min-width="150" />
+                            <el-table-column label="规格描述" prop="describe" min-width="110" />
+                            <el-table-column label="规格编码" prop="goodsCode" min-width="150" />
+                            <el-table-column label="规格属性" prop="spec" min-width="110">
+                                <template slot-scope="scope">
+                                <span v-for="(item,i) in scope.row.goodspec" :key="i"><span v-if="i !== 0">/</span>{{item.value}}</span>
+                            </template>
+                            </el-table-column>
+                            <el-table-column label="数量" prop="num" min-width="130" />
+                            <el-table-column label="单价" prop="price" min-width="130">
+                                <template slot-scope="scope">
+                                    {{scope.row.price | rounding}}
+                                </template>
+                            </el-table-column>
+                            <el-table-column label="金额" prop="amountOfMoney" min-width="110">
+                                <template slot-scope="scope">
+                                    {{scope.row.amountOfMoney | rounding}}
+                                </template>
+                            </el-table-column>
+                            <el-table-column label="折扣" prop="discount" min-width="110">
+                                <template slot-scope="scope">
+                                    {{scope.row.discount}} %
+                                </template>
+                            </el-table-column>
+                            <el-table-column label="折扣额" prop="discountAmount" min-width="110">
+                                <template slot-scope="scope">
+                                    {{scope.row.discountAmount | rounding}}
+                                </template>
+                            </el-table-column>
+                            <el-table-column label="税率" prop="taxRate" min-width="110">
+                                <template slot-scope="scope">
+                                    {{scope.row.taxRate}} %
+                                </template>
+                            </el-table-column>
+                            <el-table-column label="税额" prop="taxAmount" min-width="110">
+                                <template slot-scope="scope">
+                                    {{scope.row.taxAmount | rounding}}
+                                </template>
+                            </el-table-column>
+                            <el-table-column label="税后金额" prop="taxAfter" min-width="110">
+                                <template slot-scope="scope">
+                                    {{scope.row.taxAfter | rounding}}
+                                </template>
+                            </el-table-column>
+                        </el-table>
+                    </el-tab-pane>
+                    <el-tab-pane label="服务工单" name="seventh">
+                        <el-table :data="workOrder_details" border stripe style="width: 100%">
+                            <el-table-column header-align="center" fixed align="center" type="index" width="45" />
+                            <el-table-column label="服务日期" prop="serviceTime" min-width="150" />
+                            <el-table-column label="问题" prop="problem" min-width="150" />
+                            <el-table-column label="单据编号" prop="workOrderNo" min-width="150" />
+                            <el-table-column label="联系人" prop="contactsName" min-width="110" />
+                            <el-table-column label="电话" prop="phone" min-width="110" />
+                            <el-table-column label="状态" prop="status" min-width="130" />
+                            <el-table-column label="评价" prop="evaluate" min-width="150" />
+                            <el-table-column label="受理人" prop="acceptance" min-width="110" />
+                            <el-table-column label="完成时间" prop="time" min-width="150" />
+                            <el-table-column label="耗时" prop="timeConsuming" min-width="130" />
+                        </el-table>
+                    </el-tab-pane>
+                    <el-tab-pane label="开票资料" name="eighth">
+                        <el-table :data="invoice_details" border stripe style="width: 100%">
                             <el-table-column label="公司名称" prop="name" min-width="200" />
                             <el-table-column label="税务登记号" prop="creditCode" min-width="150" />
                             <el-table-column label="税务地址" prop="address" min-width="200" show-overflow-tooltip />
                         </el-table>
                     </el-tab-pane>
-                    <el-tab-pane label="外勤任务" name="sixth">
-                        <el-table :data="FielDutyDetails" border stripe style="width: 100%">
+                    <el-tab-pane label="外勤任务" name="ninth">
+                        <el-table :data="fielDuty_details" border stripe style="width: 100%">
                             <el-table-column header-align="center" fixed align="center" type="index" width="45" />
                             <el-table-column label="类型" prop="type" min-width="90" />
                             <el-table-column label="主题" prop="theme" min-width="150" />
@@ -276,11 +373,11 @@
                             </el-table-column>
                         </el-table>
                     </el-tab-pane>
-                    <el-tab-pane label="官网" name="seventh">
+                    <el-tab-pane label="官网" name="tenth">
                         <iframe class="tab_iframe" :src="website"/>
                     </el-tab-pane>
-                    <el-tab-pane label="附件" name="eighth">
-                        <el-table :data="EnclosureDetails" border stripe style="width: 100%">
+                    <el-tab-pane label="附件" name="eleventh">
+                        <el-table :data="enclosure_details" border stripe style="width: 100%">
                             <el-table-column header-align="center" fixed align="center" type="index" width="45" />
                             <el-table-column label="附件名称" prop="name" min-width="150">
                                 <template slot-scope="scope">
@@ -376,7 +473,7 @@
                 </el-form-item>
                 <el-form-item prop="contacts_id" label="客户决策人">
                     <el-select v-model="newform.contacts_id" placeholder="请选择客户决策人" style="width:100%">
-                        <el-option v-for="item in cusConsDetails" :key="item.id" :label="item.name" :value="item.id"></el-option>
+                        <el-option v-for="item in cusCons_details" :key="item.id" :label="item.name" :value="item.id"></el-option>
                     </el-select>
                 </el-form-item>
                 <el-form-item prop="opportunity_achievement" label="预计成交金额">
@@ -415,7 +512,7 @@
                 </el-form-item>
                 <el-form-item prop="opportunity_id" label="对应商机">
                     <el-select v-model="newform.opportunity_id" placeholder="请选择" style="width:100%" @change="handleopp">
-                        <el-option v-for="item in opportunityDetails" :key="item.opportunity_id" :label="item.opportunity_name" :value="item.opportunity_id"></el-option>
+                        <el-option v-for="item in opportunity_details" :key="item.opportunity_id" :label="item.opportunity_name" :value="item.opportunity_id"></el-option>
                     </el-select>
                 </el-form-item>
                 <el-form-item prop="amount" label="合同金额">
@@ -429,7 +526,7 @@
                 </el-form-item>
                 <el-form-item prop="signatories" label="客户签约人">
                     <el-select v-model="newform.signatories" placeholder="请选择" style="width:100%">
-                        <el-option v-for="item in cusConsDetails" :key="item.id" :label="item.name" :value="item.id"></el-option>
+                        <el-option v-for="item in cusCons_details" :key="item.id" :label="item.name" :value="item.id"></el-option>
                     </el-select>
                 </el-form-item>
                 <el-form-item label="我方签约人">
@@ -457,19 +554,28 @@
         name:'customerDetails',
         store,
         computed: {
-            cusConsDetails(){
+            cusCons_details(){
                 return store.state.cusConsDetailsList;
             },
-            opportunityDetails(){
+            opportunity_details(){
                 return store.state.opportunityDetailsList;
             },
-            agreementDetails(){
+            agreement_details(){
                 return store.state.agreementDetailsList;
             },
-            InvoiceDetails(){
+            order_details(){
+                return store.state.orderDetailsList;
+            },
+            product_details(){
+                return store.state.productDetailsList;
+            },
+            workOrder_details(){
+                return store.state.workOrderDetailsList;
+            },
+            invoice_details(){
                 return store.state.InvoiceDetailsList;
             },
-            FielDutyDetails(){
+            fielDuty_details(){
                 return store.state.FielDutyDetailsList
             },
         },
@@ -588,7 +694,7 @@
 
                 website:'',
 
-                EnclosureDetails:[],
+                enclosure_details:[],
 
                 contactdialog:false,
                 oppdialog:false,
@@ -750,6 +856,9 @@
                 _this.$options.methods.loadContact.bind(_this)()
                 _this.$options.methods.loadAgree.bind(_this)()
                 _this.$options.methods.loadOpp.bind(_this)()
+                _this.$options.methods.loadOrder.bind(_this)()
+                _this.$options.methods.loadProduct.bind(_this)()
+                _this.$options.methods.loadWorkOrder.bind(_this)()
             },
             loadContact(){
                 const _this = this
@@ -784,6 +893,77 @@
                     data:qs.stringify(pageInfo2)
                 }).then(function(res){
                     _this.$store.state.agreementDetailsList = res.data.map.success
+                }).catch(function(err){
+                    // console.log(err);
+                });
+            },
+            loadOrder(){
+                const _this = this
+                let qs = require('querystring')
+                let pageInfo2 = {
+                    page: 1,
+                    limit: 99999999,
+                    label: 9,
+                    customerpool_id: this.detailData.id
+                }
+                
+                //详情页订单
+                axios({
+                    method:'post',
+                    url:_this.$store.state.defaultHttp+'pageInfo/queryPageList.do?cId='+_this.$store.state.iscId,
+                    data:qs.stringify(pageInfo2)
+                }).then(function(res){
+                    _this.$store.state.orderDetailsList = res.data.map.orders
+                }).catch(function(err){
+                    // console.log(err);
+                });
+            },
+            loadProduct(){
+                const _this = this
+                let qs = require('querystring')
+                let pageInfo2 = {
+                    page: 1,
+                    limit: 99999999,
+                    customerpool_id: this.detailData.id
+                }
+
+                //详情页产品
+                axios({
+                    method:'post',
+                    url:_this.$store.state.defaultHttp+'customerpool/selectBuyGoodsByCustomerpoolId.do?cId='+_this.$store.state.iscId,
+                    data:qs.stringify(pageInfo2)
+                }).then(function(res){
+                    let info = res.data.map.success
+                    info.forEach(el => {
+                        el.aaa = JSON.parse(el.spec)
+                        el.goodspec = []
+                        for(var key in el.aaa){
+                            if(key !== "null" && key !== "undefined"){
+                                el.goodspec.push({label:key,value:el.aaa[key]})
+                            }
+                        }
+                    });
+                    _this.$store.state.productDetailsList = info
+                }).catch(function(err){
+                    // console.log(err);
+                });
+            },
+            loadWorkOrder(){
+                const _this = this
+                let qs = require('querystring')
+                let pageInfo2 = {
+                    page: 1,
+                    limit: 99999999,
+                    customerpool_id: this.detailData.id
+                }
+
+                //详情页工单
+                axios({
+                    method:'post',
+                    url:_this.$store.state.defaultHttp+'workOrder/selectWorkOrderByCustomerpoolId.do?cId='+_this.$store.state.iscId,
+                    data:qs.stringify(pageInfo2)
+                }).then(function(res){
+                    _this.$store.state.workOrderDetailsList = res.data.map.success
                 }).catch(function(err){
                     // console.log(err);
                 });
@@ -1369,7 +1549,7 @@
                 this.newform.end_date = year + '-' + month + '-' + day
             },
             handleopp(val){
-                this.opportunityDetails.forEach(el => {
+                this.opportunity_details.forEach(el => {
                     if(val == el.opportunity_id){
                         this.newform.amount = el.opportunity_achievement
                     }
@@ -1381,10 +1561,10 @@
                     this.website = 'http://' + this.customerdetail.url
                 }
                 if(val.index == 7){
-                    this.EnclosureDetails = []
+                    this.enclosure_details = []
                     this.record.forEach(el => {
                         if(el.enclosureName){
-                            this.EnclosureDetails.push({
+                            this.enclosure_details.push({
                                 name:el.enclosureOldName,
                                 src:this.$store.state.systemHttp+'upload/'+this.$store.state.iscId+'/'+el.enclosureName,
                                 uploads:el.private_employee,

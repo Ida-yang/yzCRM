@@ -61,6 +61,8 @@
                     <el-table-column label="品牌" prop="brand" v-if="item.prop == 'brand' && item.state == 1" min-width="90" sortable />
                     <el-table-column label="产品属性" prop="attribute" v-if="item.prop == 'attribute' && item.state == 1" min-width="120" sortable />
                     <el-table-column label="状态" prop="status" v-if="item.prop == 'status' && item.state == 1" min-width="90" sortable />
+                    <el-table-column label="起订量" prop="startQuantity" v-if="item.prop == 'createTime' && item.state == 1" min-width="90" sortable />
+                    <el-table-column label="交货天数" prop="deliveryDays" v-if="item.prop == 'createTime' && item.state == 1" min-width="110" sortable />
                     <el-table-column label="创建时间" prop="createTime" v-if="item.prop == 'createTime' && item.state == 1" min-width="150" sortable />
                     <el-table-column label="产品备注" prop="remark" v-if="item.prop == 'remark' && item.state == 1" min-width="150" sortable />
                     <el-table-column v-for="a in fieldHeadData" :label="a.name" :key="a.field_name" :prop="a.field_name" v-if="item.prop == a.field_name && item.state == 1" min-width="130" sortable />
@@ -302,6 +304,7 @@
                     productaddData.setForm = {
                         "goodsName": '',
                         "unitId": '',
+                        "see": 1,
                         "brandId": '',
                         "classification_id": this.clickdata.id,
                         "category": this.clickdata.name,
@@ -309,7 +312,10 @@
                         "price": '',
                         "costPrice": '',
                         "isEnableSpec": '',
-                        "describe": '',};
+                        "describe": '',
+                        "startQuantity":'',
+                        "deliveryDays":'',
+                    };
                     productaddData.submitURL = this.$store.state.defaultHttp+ 'customerTwo/saveClue.do?cId='+this.$store.state.iscId+'&pId='+this.$store.state.ispId,
                     this.$store.state.productaddData = productaddData;
                     _this.$router.push({ path: '/productadd' });

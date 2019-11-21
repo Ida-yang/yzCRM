@@ -894,7 +894,7 @@
     }
     .pro_detail{
         width: 100%;
-        height: 300px;
+        height: 350px;
         position: relative;
     }
     .first_left {

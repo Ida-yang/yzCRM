@@ -14,12 +14,14 @@ const state = {
   //作者
   author:'Ida',
   //登录
-  iscId:'', //cId
-  ispId:'', //pId
+  iscId:null, //cId
+  ispId:null, //pId
+  deptid:null, //部门ID
+  insid:null, //机构ID
+  roleid:null, //角色ID
   user:'', //用户名
-  deptid:'', //部门ID
-  roleid:'', //角色ID
-  insid:'', //机构ID
+  deptname:'',
+  parentname:'',
   portrait:'',//用户头像名称
 
   //标签页
@@ -47,11 +49,12 @@ const state = {
   productupdateData:null, // 产品编辑
   orderaddData:null, // 订单新增
   orderupdateData:null, // 订单编辑
-  approvaladdOrUpdateData:null, // 审批流程
+  approvaladdOrUpdateData:null, // 审核流程
   workOrderaddorUpdateData:null, // 工单
   culPondaddorUpdateData:null, // 培育池
   competitorAddOrUpdateData:null, // 竞争对手
   orderReceiveAddOrUpdateData:null, // 订单收款
+  examineaddOrUpdateData:null, // 审核单
   
   //跳转详情页列表
   cluedetailsData:null, // 线索
@@ -70,12 +73,13 @@ const state = {
   competitordetailData:null, // 竞争对手
   orderdetailsData:null, //订单
   orderReceiveDetailData:null, // 订单收款
-  workapprovalData:null,  // 办公审批流程
+  workapprovalData:null,  // OA表单流程
+  examinedetailData:null, // 审核单
 
   //自定义字段模块
   customFieldData:{},
 
-  //办公审批自定义字段模块
+  //OA表单自定义字段模块
   workApprovalData:{},
   associatedFormsData:{},
   
@@ -111,6 +115,12 @@ const state = {
   opportunityDetailsList:null,
   //客户详情页合同列表
   agreementDetailsList:null,
+  //客户详情页销售订单列表
+  orderDetailsList:null,
+  //客户详情页产品列表
+  productDetailsList:null,
+  //客户详情页服务工单列表
+  workOrderDetailsList:null,
   //客户详情页开票列表
   InvoiceDetailsList:null,
   //客户详情页外勤任务列表
@@ -210,9 +220,9 @@ const state = {
   //订单列表总数
   orderListnumber:0,
 
-  //审批流程列表
+  //审核流程列表
   approvalProcessList:[],
-  //审批流程列表总数
+  //审核流程列表总数
   approvalProcessListnumber:0,
 
   //工单列表
@@ -247,10 +257,19 @@ const state = {
   //竞争对手列表总数
   competitorListnumber:0,
 
-  //办公审核列表
+  //OA表单列表
   associatedFormsList:[],
-  //办公审核列表总数
+  //OA表单列表总数
   associatedFormsListnumber:0,
+
+  //审核单列表
+  examineList:[],
+  //审核单列表总数
+  examineListnumber:0,
+
+  
+  //跳转流程设置页面数据
+  jumpvalData:null,
 
   //当前时间
   nowtime:null,
@@ -268,21 +287,29 @@ const mutations = {
     state.ispId = msg;
     localStorage.setItem('ispId',msg);
   },
-  user(state,msg){
-    state.user = msg;
-    localStorage.setItem('user',msg);
-  },
   deptid(state,msg){
     state.deptid = msg;
     localStorage.setItem('deptid',msg);
+  },
+  insid(state,msg){
+    state.insid = msg;
+    localStorage.setItem('insid',msg);
   },
   roleid(state,msg){
     state.roleid = msg;
     localStorage.setItem('roleid',msg);
   },
-  insid(state,msg){
-    state.insid = msg;
-    localStorage.setItem('insid',msg);
+  user(state,msg){
+    state.user = msg;
+    localStorage.setItem('user',msg);
+  },
+  deptname(state,msg){
+    state.deptname = msg;
+    localStorage.setItem('deptname',msg)
+  },
+  parentname(state,msg){
+    state.parentname = msg;
+    localStorage.setItem('parentname',msg)
   },
   portrait(state,msg){
     state.portrait = msg;

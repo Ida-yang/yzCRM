@@ -15,6 +15,9 @@
                     <li>产品属性：{{probasicData.attribute}}</li>
                     <li>销售价格：{{probasicData.price}}</li>
                     <li>标准成本价：{{probasicData.costPrice}}</li>
+                    <li>是否可见：<span v-if="probasicData.see == 1">可见</span><span v-if="probasicData.see == 0">不可见</span></li>
+                    <li>起订量：{{probasicData.startQuantity}}</li>
+                    <li>交货天数：{{probasicData.deliveryDays}}</li>
                     <li style="flex:0 0 100%;">规格描述：{{probasicData.describe}}</li>
                     <li style="flex:0 0 100%;">产品备注：{{probasicData.remark}}</li>
                     <li v-for="(item,index) in fieldData" :key="index">
@@ -49,6 +52,56 @@
                 <el-tab-pane label="产品详情描述" name="second" class="first_c">
                     <div class="components-container" v-html="introduction"></div>
                 </el-tab-pane>
+                <el-tab-pane label="历史销售价格" name="third">
+                    <el-table :data="historyData" border stripe style="width: 100%">
+                        <el-table-column header-align="center" fixed align="center" type="index" width="45" />
+                        <el-table-column label="订单日期" prop="orderTime" min-width="150" />
+                        <el-table-column label="产品名称" prop="goodsName" min-width="150" />
+                        <el-table-column label="规格描述" prop="describe" min-width="110" />
+                        <el-table-column label="规格编码" prop="goodsCode" min-width="150" />
+                        <el-table-column label="规格属性" prop="spec" min-width="110">
+                            <template slot-scope="scope">
+                            <span v-for="(item,i) in scope.row.goodspec" :key="i"><span v-if="i !== 0">/</span>{{item.value}}</span>
+                        </template>
+                        </el-table-column>
+                        <el-table-column label="数量" prop="num" min-width="130" />
+                        <el-table-column label="单价" prop="price" min-width="130">
+                            <template slot-scope="scope">
+                                {{scope.row.price | rounding}}
+                            </template>
+                        </el-table-column>
+                        <el-table-column label="金额" prop="amountOfMoney" min-width="110">
+                            <template slot-scope="scope">
+                                {{scope.row.amountOfMoney | rounding}}
+                            </template>
+                        </el-table-column>
+                        <el-table-column label="折扣" prop="discount" min-width="110">
+                            <template slot-scope="scope">
+                                {{scope.row.discount}} %
+                            </template>
+                        </el-table-column>
+                        <el-table-column label="折扣额" prop="discountAmount" min-width="110">
+                            <template slot-scope="scope">
+                                {{scope.row.discountAmount | rounding}}
+                            </template>
+                        </el-table-column>
+                        <el-table-column label="税率" prop="taxRate" min-width="110">
+                            <template slot-scope="scope">
+                                {{scope.row.taxRate}} %
+                            </template>
+                        </el-table-column>
+                        <el-table-column label="税额" prop="taxAmount" min-width="110">
+                            <template slot-scope="scope">
+                                {{scope.row.taxAmount | rounding}}
+                            </template>
+                        </el-table-column>
+                        <el-table-column label="税后金额" prop="taxAfter" min-width="110">
+                            <template slot-scope="scope">
+                                {{scope.row.taxAfter | rounding}}
+                            </template>
+                        </el-table-column>
+                    </el-table>
+                </el-tab-pane>
             </el-tabs>
         </div>
 
@@ -68,6 +121,27 @@
         name:'productdetails',
         store,
         components: {UE},
+        
+        filters: {
+            rounding (value) {
+                if(value){
+                    let intPart = Math.trunc(value) //获取整数部分
+                    let intPartFormat = intPart.toString().replace(/(\d)(?=(?:\d{3})+$)/g, '$1,') // 将整数部分逢三一断
+                    let floatPart = '.00' // 预定义小数部分
+                    let valArray = value.toString().split('.')
+                    if(valArray.length === 2) {
+                        floatPart = valArray[1].toString() // 拿到小数部分
+                        if(floatPart.length === 1) { // 补0,实际上用不着
+                            return intPartFormat + '.' + floatPart + '0'
+                        }else{
+                            return intPartFormat + '.' + floatPart
+                        }
+                    } else {
+                        return intPartFormat + floatPart
+                    }
+                }
+            }
+        },
         data(){
             return{
                 detailData:null,
@@ -78,6 +152,8 @@
                 introduction:'',
                 itemImgList:[],
                 proItemData: [{index:0,imgfile:'',spec1:'',barcode: '',erpDocking: ''}],
+
+                historyData:[],
 
                 dialogVisible:false,
                 dialogImageUrl:'',
@@ -91,10 +167,16 @@
                 const _this = this
                 let qs = require('querystring')
                 this.detailData = this.$store.state.productdetailsData
-                let data = {}
-                data.goodsId = this.detailData.id
-                let info = {
+                let data = {
+                    goodsId: this.detailData.id
+                }
+                let data1 = {
                     label: 4,
+                    id: this.detailData.id
+                }
+                let data2 = {
+                    page: 1,
+                    limit: 99999999,
                     id: this.detailData.id
                 }
 
@@ -142,9 +224,29 @@
                 axios({
                     method:'post',
                     url:_this.$store.state.defaultHttp+'field/information.do?cId='+_this.$store.state.iscId,
-                    data:qs.stringify(info)
+                    data:qs.stringify(data1)
                 }).then(function(res){
                     _this.fieldData = res.data
+                }).catch(function(err){
+                    // console.log(err);
+                });
+
+                axios({
+                    method:'post',
+                    url:_this.$store.state.defaultHttp+'customerpool/selectBuyGoodsByCustomerpoolId.do?cId='+_this.$store.state.iscId,
+                    data:qs.stringify(data2)
+                }).then(function(res){
+                    let info = res.data.map.success
+                    info.forEach(el => {
+                        el.aaa = JSON.parse(el.spec)
+                        el.goodspec = []
+                        for(var key in el.aaa){
+                            if(key !== "null" && key !== "undefined"){
+                                el.goodspec.push({label:key,value:el.aaa[key]})
+                            }
+                        }
+                    });
+                    _this.historyData = info
                 }).catch(function(err){
                     // console.log(err);
                 });

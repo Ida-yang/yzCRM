@@ -166,7 +166,13 @@
                     url: _this.$store.state.defaultHttp+'getMonthCountByExample.do?cId=' + _this.$store.state.iscId,
                     data:qs.stringify(oppData),
                 }).then(function(res){
-                    _this.funnelList = res.data
+                    // console.log(res.data)
+                    _this.funnelList = []
+                    let info = res.data.reverse()
+                    info.forEach((el,i) => {
+                        // _this.oppcolList.push({index:el.sort,name:el.step_name,col:el.col},)
+                        _this.funnelList.push({value:i,name:el.name + '（' + el.value + '）',label:el.value})
+                    });
                     _this.$options.methods.drawfunnel.bind(_this)(true);
                 }).catch(function(err){
                     // console.log(err)
@@ -221,10 +227,10 @@
                 let chart101 = echarts.init(document.getElementById('chart101'))
                 // 绘制图表
                 chart101.setOption({
-                    title : { text: '商机漏斗' },
+                    title : { text: '商机漏斗',left: 'center' },
                     tooltip : {
                         trigger: 'item',
-                        formatter: "{b}<br>{a}：{c}"
+                        formatter: "{b}"
                     },
                     calculable : true,
                     emphasis: {
@@ -236,10 +242,14 @@
                         {
                             name:'数量',
                             type:'funnel',
+                            left: '5%',
+                            width: '90%',
+                            minSize: '35%',
                             sort: 'descending',
-                            // width: '40%',
-                            minSize: '10%',
-                            // sort: 'none',
+                            label: {
+                                show: true,
+                                position: 'inside'
+                            },
                             data:this.funnelList
                         }
                     ]

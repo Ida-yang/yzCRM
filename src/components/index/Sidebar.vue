@@ -90,8 +90,28 @@
                     CRM
                 </span>
             </div>
-            <span class="title">办公</span>
+            <span class="title">主要</span>
             <template v-for="item in workItema">
+                <template v-if="item.subs">
+                    <el-submenu :index="item.index" :key="item.index" class="sidebar_submenu">
+                        <template slot="title">
+                            <i :class="item.icon" style="color:#fff"> </i>&nbsp;
+                            <span slot="title">{{ item.title }}</span>
+                        </template>
+                        <el-menu-item v-for="(subItem,i) in item.subs" :key="i" :index="subItem.index" class="sidebar_menu_item">
+                            {{ subItem.title }}
+                        </el-menu-item>
+                    </el-submenu>
+                </template>
+                <template v-else>
+                    <el-menu-item :index="item.index" :key="item.index" class="sidebar_menu_item">
+                        <i :class="item.icon" style="color:#fff" ></i>&nbsp;
+                        <span slot="title">{{ item.title }}</span>
+                    </el-menu-item>
+                </template>
+            </template>
+            <span class="title">办公</span>
+            <template v-for="item in workItemb">
                 <template v-if="item.subs">
                     <el-submenu :index="item.index" :key="item.index" class="sidebar_submenu">
                         <template slot="title">
@@ -321,7 +341,7 @@
                             },
                             {
                                 index: 'associatedForms',
-                                title: '办公审核'
+                                title: 'OA表单'
                             },
                             {
                                 index: 'basicset',
@@ -333,7 +353,7 @@
                             },
                             {
                                 index: 'approvalProcess',
-                                title: '审批流程'
+                                title: '审核流程'
                             },
                             {
                                 index: 'programme',
@@ -350,6 +370,23 @@
                     {
                         icon: 'mdi-account-outline',
                         index: '1',
+                        title: '办公审核',
+                        subs: [
+                            {
+                                index: 'examine',
+                                title: '审核单',
+                            },
+                            {
+                                index: 'addexamine',
+                                title: '发起审批',
+                            },
+                        ]
+                    },
+                ],
+                workItemb:[
+                    {
+                        icon: 'mdi-account-outline',
+                        index: '2',
                         title: '办公',
                         subs: [
                             {
@@ -363,7 +400,7 @@
                             {
                                 index: 'note',
                                 title: '便签',
-                            },
+                            }
                         ]
                     },
                 ],

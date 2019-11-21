@@ -2,7 +2,7 @@
     <!-- 审核流程 -->
     <div class="contentall">
         <div class="setleftcontent">
-            <el-menu default-active="1" class="el-menu-vertical-demo base_menu">
+            <el-menu :default-active="defaultKey" class="el-menu-vertical-demo base_menu" :default-openeds="defauleOpen">
                 <el-menu-item index="1" @click="showTableval('1')">合同流程设置</el-menu-item>
                 <el-menu-item index="2" @click="showTableval('2')">销售订单流程设置</el-menu-item>
                 <el-menu-item index="3" @click="showTableval('3')">合同回款流程设置</el-menu-item>
@@ -75,21 +75,69 @@
                 limit:20, //默认20行
                 keyType:'1',
                 workApprovalId:null,
+
+                defaultKey:'1',
+                defauleOpen:[],
                 
                 workList:[],
-
-                // workApproval:false
             }
         },
         activated(){
-            this.loadTable()
-            // this.loadworkApproval()
-        },
-        mounted(){
-            this.loadTable()
             this.loadWorkLavel()
         },
+        mounted(){
+            this.loadWorkLavel()
+        },
+        beforeRouteLeave(to, from , next){
+            this.$store.state.jumpvalData = null
+            this.defaultKey = '1'
+            this.defauleOpen = []
+            this.workApprovalId = null
+            this.keyType = '1'
+            console.log('gdfgdfgdf',this.$store.state.jumpvalData)
+            next()
+        },
         methods:{
+            loadWorkLavel(){
+                const _this = this
+                let qs = require('querystring')
+                let data = {
+                    limit: 99999999,
+                    page: 1,
+                    secondid: this.$store.state.deptid
+                }
+
+                axios({
+                    method: 'post',
+                    url: _this.$store.state.defaultHttp+'oaExamineCategory/selectList.do?cId='+_this.$store.state.iscId,
+                    data: qs.stringify(data)
+                }).then(function(res){
+                    let info = res.data.map.success
+                    info.forEach((el,i) => {
+                        let a = i + 100
+                        el.index = a.toString()
+                    });
+                    _this.workList = info
+
+                    _this.$options.methods.loadIndex.bind(_this)()
+                }).catch(function(err){
+                    // console.log(err);
+                });
+            },
+            loadIndex(){
+                let jumpval = this.$store.state.jumpvalData
+                if(jumpval){
+                    this.defauleOpen = ['4']
+                    this.workList.forEach(el => {
+                        if(el.id == jumpval.id){
+                            this.defaultKey = el.index
+                        }
+                    });
+                    this.showWorkleval(jumpval)
+                }else{
+                    this.$options.methods.loadTable.bind(this)()
+                }
+            },
             loadTable(){
                 const _this = this
                 let qs = require('querystring')
@@ -117,54 +165,6 @@
                     });
                     _this.$store.state.approvalProcessList = data
                     _this.$store.state.approvalProcessListnumber = res.data.count
-
-                    // _this.workApproval = false
-                }).catch(function(err){
-                });
-            },
-            loadWorkLavel(){
-                const _this = this
-                let qs = require('querystring')
-                let data = {
-                    limit: 99999999,
-                    page: 1,
-                    secondid: this.$store.state.deptid
-                }
-
-                axios({
-                    method: 'post',
-                    url: _this.$store.state.defaultHttp+'oaExamineCategory/selectList.do?cId='+_this.$store.state.iscId,
-                    data: qs.stringify(data)
-                }).then(function(res){
-                    let info = res.data.map.success
-                    info.forEach((el,i) => {
-                        let a = i + 100
-                        el.index = a.toString()
-                    });
-                    _this.workList = info
-                }).catch(function(err){
-                    // console.log(err);
-                });
-            },
-            loadworkApproval(){
-                const _this = this
-                let qs = require('querystring')
-                let data = {}
-                data.page = this.page
-                data.limit = this.limit
-                data.type = this.workApprovalId
-                data.secondid = this.$store.state.deptid
-
-                axios({
-                    method: 'post',
-                    url: _this.$store.state.defaultHttp+'oaExamineCategory/selectList.do?cId='+_this.$store.state.iscId,
-                    data: qs.stringify(data)
-                }).then(function(res){
-                    let info = res.data.map.success
-                    _this.$store.state.approvalProcessList = info
-                    _this.$store.state.approvalProcessListnumber = res.data.count
-
-                    // _this.workApproval = true
                 }).catch(function(err){
                 });
             },
@@ -173,10 +173,10 @@
                 this.$options.methods.loadTable.bind(this)()
             },
             showWorkleval(val){
+                console.log(val)
                 this.keyType = '4'
                 this.workApprovalId = val.id
                 this.$options.methods.loadTable.bind(this)()
-                // this.$options.methods.loadworkApproval.bind(this)()
             },
             handleAdd(){
                 if(this.keyType !== '4'){

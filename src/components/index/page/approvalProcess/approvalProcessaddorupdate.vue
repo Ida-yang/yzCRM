@@ -98,7 +98,7 @@
                 userList:[],
                 rules:{
                     deptNames: [{ required: true, message: '应用部门不能为空', trigger: 'blur' },],
-                    name: [{ required: true, message: '审批流名称不能为空', trigger: 'blur' },],
+                    name: [{ required: true, message: '审核流名称不能为空', trigger: 'blur' },],
                 },
 
                 isDisable:false,

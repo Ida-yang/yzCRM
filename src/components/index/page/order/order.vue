@@ -45,6 +45,16 @@
                         {{scope.row.totalSum | rounding}}
                     </template>
                 </el-table-column>
+                <el-table-column label="应收金额" prop="accepted_money" v-if="item.prop == 'totalSum' && item.state == 1" min-width="110" sortable>
+                    <template slot-scope="scope">
+                        {{scope.row.accepted_money | rounding}}
+                    </template>
+                </el-table-column>
+                <el-table-column label="未收金额" prop="uncollected_money" v-if="item.prop == 'totalSum' && item.state == 1" min-width="110" sortable>
+                    <template slot-scope="scope">
+                        {{scope.row.uncollected_money | rounding}}
+                    </template>
+                </el-table-column>
                 <el-table-column label="状态" prop="checkStatus" v-if="item.prop == 'checkStatus' && item.state == 1" width="90" sortable>
                     <template slot-scope="scope">
                         <el-tag v-if="scope.row.checkStatus == 0" size="small" style="background-color:#ffffff;color:#606266;border-color:#dcdfe6" effect="dark">待审核</el-tag>
@@ -426,7 +436,7 @@
                         return;
                     }
                     const values = data.map(item => Number(item[column.property]));
-                    if(column.property == 'totalSum'){
+                    if(column.property == 'totalSum' || column.property == 'accepted_money' || column.property == 'uncollected_money'){
                         sums[index] = values.reduce((acc, cur) => (cur + acc), 0)
                         sums[index] = sums[index].toFixed(2)
                         let intPart = Math.trunc(sums[index])

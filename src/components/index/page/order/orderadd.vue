@@ -144,7 +144,7 @@
 
                 <el-table-column label="规格属性" prop="goodspec" min-width="100" v-if="item.prop == 'spec' && item.state == 1">
                     <template slot-scope="scope">
-                        <span v-for="(item,i) in scope.row.goodspec" :key="i">{{item.value +'/'}}</span>
+                        <span v-for="(item,i) in scope.row.goodspec" :key="i"><span v-if="i !== 0">/</span>{{item.value}}</span>
                     </template>
                 </el-table-column>
 
@@ -771,6 +771,7 @@
                 });
             },
             currentChange(e){
+                        // console.log(e)
                 this.itemData.forEach((el,i) => {
                     if(i == this.scopeIndex){
                         if(e){
@@ -779,6 +780,20 @@
                             e.discount = this.cusdiscount
                             e.taxRate = this.custaxRate
                             e.num = 1
+                            // if(e.tbGoods.startQuantity){
+                            //     e.num = e.tbGoods.startQuantity
+                            // }else{
+                            //     e.num = 1
+                            // }
+                            // if(e.tbGoods.deliveryDays){
+                            //     let date1 = new Date();
+                            //     let date2 = new Date(date1);
+                            //     date2.setDate(date1.getDate() + e.tbGoods.deliveryDays);
+                            //     let time = date2.getFullYear() + "-" + (date2.getMonth() + 1) + "-" + date2.getDate()
+                            //     e.commitTime = time
+                            // }else{
+                            //     e.commitTime = null
+                            // }
                             this.itemData.splice(i,1,e)
                             this.OKdisabled = false
                             this.$options.methods.handleinput(1,i,e)
@@ -793,6 +808,19 @@
                 this.selectData = this.list
             },
             handleinput(e,index,row,val){
+                // let flag = false
+                // if(row.tbGoods.startQuantity){
+                //     if(parseInt(row.num) < row.tbGoods.startQuantity){
+                //         this.$message({
+                //             message: '该产品起订量为' + row.tbGoods.startQuantity,
+                //             type: 'error'
+                //         })
+                //         flag = true
+                //     }
+                // }
+                // if(flag) return
+
+
                 if(row.num && row.price){
                     let z = parseInt(row.num) * parseFloat(row.price)
                     row.amountOfMoney = z.toFixed(2)
@@ -901,6 +929,20 @@
                             param.discount = this.cusdiscount
                             param.taxRate = this.custaxRate
                             param.num = 1
+                            // if(item.tbGoods.startQuantity){
+                            //     param.num = item.tbGoods.startQuantity
+                            // }else{
+                            //     param.num = 1
+                            // }
+                            // if(item.tbGoods.deliveryDays){
+                            //     let date1 = new Date();
+                            //     let date2 = new Date(date1);
+                            //     date2.setDate(date1.getDate() + item.tbGoods.deliveryDays);
+                            //     let time = date2.getFullYear() + "-" + (date2.getMonth() + 1) + "-" + date2.getDate()
+                            //     param.commitTime = time
+                            // }else{
+                            //     param.commitTime = null
+                            // }
                             this.list.splice(x,1)
                             this.$options.methods.handleinput(1,y,param)
                         }

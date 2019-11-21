@@ -174,7 +174,7 @@
                 
         <div class="submit_btn">
             <el-button type="primary" :disabled="isDisable" @click="onSubmit" style="margin-right:100px;">保存并审核</el-button>
-            <el-button type="primary" :disabled="isDisable" @click="submitandclose" style="margin-right:100px;">保存并关闭</el-button>
+            <el-button type="primary" :disabled="isDisable" @click="submitandclose" style="margin-right:100px !important;">保存并关闭</el-button>
             <el-button @click="closeTag">取消</el-button>
         </div>
         
@@ -734,8 +734,6 @@
                     "images": this.myform.images,
                     "files": this.myform.files,
                     "pId": parseInt(this.$store.state.ispId),
-                    "secondid": parseInt(this.$store.state.deptid),
-                    "deptid": parseInt(this.$store.state.insid),
                 }
 
                 let flag = false

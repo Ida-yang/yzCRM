@@ -770,14 +770,14 @@
                 <el-button type="primary" @click="updatebasicset()">确 定</el-button>
             </span>
         </el-dialog>
-        <!-- 新增审批分类 -->
-        <el-dialog title="新增审批分类" :visible.sync="approvaladd" :close-on-click-modal="false" width="40%">
+        <!-- 新增审核分类 -->
+        <el-dialog title="新增审核分类" :visible.sync="approvaladd" :close-on-click-modal="false" width="40%">
             <el-form ref="newform" :model="newform" label-width="110px" :rules="rules">
                 <el-form-item prop="type" label="辅助资料类别">
                     <el-input v-model="newform.type" :disabled="true"></el-input>
                 </el-form-item>
-                <el-form-item prop="typeName" label="审批分类">
-                    <el-input v-model="newform.typeName" placeholder="请输入审批分类"></el-input>
+                <el-form-item prop="typeName" label="审核分类">
+                    <el-input v-model="newform.typeName" placeholder="请输入审核分类"></el-input>
                 </el-form-item>
                 <el-form-item prop="notes" label="备注">
                     <el-input v-model="newform.notes" type="textarea" rows="5"></el-input>
@@ -788,14 +788,14 @@
                 <el-button type="primary" @click="addorupdateApproval()">确 定</el-button>
             </span>
         </el-dialog>
-        <!-- 编辑审批分类 -->
-        <el-dialog title="编辑审批分类" :visible.sync="approvalupdate" :close-on-click-modal="false" width="40%">
+        <!-- 编辑审核分类 -->
+        <el-dialog title="编辑审核分类" :visible.sync="approvalupdate" :close-on-click-modal="false" width="40%">
             <el-form ref="newform" :model="newform" label-width="110px" :rules="rules">
                 <el-form-item prop="type" label="辅助资料类别">
                     <el-input v-model="newform.type" :disabled="true"></el-input>
                 </el-form-item>
-                <el-form-item prop="typeName" label="审批分类">
-                    <el-input v-model="newform.typeName" placeholder="请输入审批分类"></el-input>
+                <el-form-item prop="typeName" label="审核分类">
+                    <el-input v-model="newform.typeName" placeholder="请输入审核分类"></el-input>
                 </el-form-item>
                 <el-form-item prop="notes" label="备注">
                     <el-input v-model="newform.notes" type="textarea" rows="5"></el-input>
@@ -873,7 +873,7 @@
                     {index:12,slotindex:'12',name:'经销商级别',isActive:false},
                 ],
                 workparam:[
-                    {index:20,slotindex:'20',name:'审批分类',isActive:false},
+                    {index:20,slotindex:'20',name:'审核分类',isActive:false},
                 ],
                 baseparam:[
                     {index:13,slotindex:'13',name:'编号规则',isActive:false},
@@ -969,7 +969,7 @@
                 failreasonadd:false,
                 failreasonupdate:false,//失败原因
                 approvaladd:false,
-                approvalupdate:false,//审批分类
+                approvalupdate:false,//审核分类
 
                 rules: {
                     typeName : [{ required: true, message: '名称不能为空', trigger: 'blur' },],
@@ -1164,7 +1164,7 @@
                 }).catch(function(err){
                 });
             },
-            //加载审批分类
+            //加载审核分类
             loadApproval(){
                 const _this = this
 
@@ -1803,7 +1803,7 @@
                 let flag = false;
                 if(!data.name){
                     _this.$message({
-                        message: "审批分类不能为空",
+                        message: "审核分类不能为空",
                         type: 'error'
                     });
                     flag = true;
