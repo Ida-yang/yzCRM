@@ -1,6 +1,6 @@
 <template>
     <div>
-        <p class="aaaa">发起审批</p>
+        <p class="aaaa">发起审核</p>
         <el-carousel :autoplay="false" indicator-position="outside">
             <el-carousel-item v-for="(item,index) in classList" :key="index">
                 <ul class="jobclass_ul">

@@ -143,7 +143,7 @@
                         <div style="width:100%;height:20px;"></div>
                     </div>
                 </el-tab-pane>
-                <el-tab-pane label="商业智能" name="ninth">
+                <el-tab-pane label="报表与分析" name="ninth">
                     <el-checkbox :indeterminate="somereport" v-model="allreport" @change="CheckAllreports">全选</el-checkbox>
                     <div v-for="(item,index) in reportsData" :key="index">
                         <el-checkbox v-model="a.checked" class="checkboxclass" v-for="a in item.type1" :key="a.id" :label="a.id" @change="changevalue($event,a)">{{a.resourcename}}</el-checkbox>
@@ -244,7 +244,7 @@
                         <div style="width:100%;height:20px;"></div>
                     </div>
                 </el-tab-pane>
-                <el-tab-pane label="商业智能" name="ninth">
+                <el-tab-pane label="报表与分析" name="ninth">
                     <el-checkbox :indeterminate="somereport" v-model="allreport" @change="CheckAllreports">全选</el-checkbox>
                     <div v-for="(item,index) in reportsData" :key="index">
                         <el-checkbox v-model="a.checked" class="checkboxclass" v-for="a in item.type1" :key="a.id" :label="a.id" @change="changevalue($event,a)">{{a.resourcename}}</el-checkbox>
@@ -716,7 +716,7 @@
                                     });
                                 }
                             });
-                            _this.reportsData.forEach(i => {//商业智能
+                            _this.reportsData.forEach(i => {//报表与分析
                                 if(i.type1){
                                     i.type1.forEach(a => {
                                         a.checked = false
@@ -939,7 +939,7 @@
                                     });
                                 }
                             });
-                            _this.reportsData.forEach(i => {//商业智能
+                            _this.reportsData.forEach(i => {//报表与分析
                                 if(i.type1){
                                     i.type1.forEach(a => {
                                         if(el.id == a.id){
@@ -1395,7 +1395,7 @@
                 });
                 this.$options.methods.norepeat.bind(this)()
             },
-            // 选中全部商业智能权限
+            // 选中全部报表与分析权限
             CheckAllreports(val) {
                 let data = this.reportsData
                 let arr = this.checkedList
@@ -1555,7 +1555,7 @@
                         this.allwork = false
                     }
                 }
-                if(i == 8){//商业智能
+                if(i == 8){//报表与分析
                     if(e == true){
                         this.rolereports.push(val.id)
                     }else if(e == false){

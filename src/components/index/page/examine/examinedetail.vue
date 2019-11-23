@@ -8,22 +8,36 @@
                         <span class="bold_span">{{examineDetail.category + '审核-' + examineDetail.private_employee + '-' + examineDetail.cTime}}</span>
                         <el-button style="float:right;margin-left:10px;" class="info-btn" size="mini" v-if="!showLaunch && isSelf" @click="clickLaunch">发起</el-button>
                     </div>
-                    <div class="text item">
-                        <ul>
-                            <li>制单人：<span>{{examineDetail.private_employee}}</span></li>
-                            <li>部门：<span>{{examineDetail.deptname}}</span></li>
-                            <li>机构：<span>{{examineDetail.parentname}}</span></li>
-                            <li>创建时间：<span>{{examineDetail.createTime}}</span></li>
-                            <li v-for="(item,index) in fieldData" :key="index">
-                                {{item.name}}：<span>{{item.value}}</span>
+                    <div class="table_div">
+                        <ul class="flex_50_ul">
+                            <li :style="{flex:item.type == 2?'0 0 100%':''}" v-for="(item,index) in fieldData" :key="index">
+                                <span class="block_bg_span" :style="{'line-height':item.type == 2?'90px':'',width:item.type == 2?'20%':''}">{{item.name}}</span>
+                                <span class="block_span" :style="{width:item.type == 2?'70%':''}">{{item.value}}</span>
                             </li>
-                        </ul>
-                        <br>
-                        <ul>
-                            <li>图片：<img :src="examineDetail.imageUrl" alt="" width="100" height="100" style="vertical-align:top;" @click="showImg" /></li>
-                        </ul>
-                        <ul>
-                            <li>附件：<a :href="examineDetail.fileUrl" dowmload>{{examineDetail.file_name}}</a></li>
+                            <li>
+                                <span class="block_bg_span">制单人</span>
+                                <span class="block_span">{{examineDetail.private_employee}}</span>
+                            </li>
+                            <li>
+                                <span class="block_bg_span">部门</span>
+                                <span class="block_span">{{examineDetail.deptname}}</span>
+                            </li>
+                            <li>
+                                <span class="block_bg_span">机构</span>
+                                <span class="block_span">{{examineDetail.parentname}}</span>
+                            </li>
+                            <li>
+                                <span class="block_bg_span">创建时间</span>
+                                <span class="block_span">{{examineDetail.createTime}}</span>
+                            </li>
+                            <li style="flex:0 0 100%">
+                                <span class="block_bg_span" style="line-height: 100px;width:20%">图片</span>
+                                <span><img :src="examineDetail.imageUrl" alt="" width="100" height="100" style="vertical-align:top;" @click="showImg" /></span>
+                            </li>
+                            <li style="flex:0 0 100%">
+                                <span class="block_bg_span" style="line-height: 100px;width:20%">附件</span>
+                                <span class="block_span"><a :href="examineDetail.fileUrl" dowmload>{{examineDetail.file_name}}</a></span>
+                            </li>
                         </ul>
                         <div class="agreeaudited" v-if="examineDetail.checkStatus == 1">
                             <img class="audited_img" :src="auditing" alt="审核中">

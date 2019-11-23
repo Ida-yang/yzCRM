@@ -204,7 +204,7 @@ const router =new Router({
         {
           path: '/analysisReport',
           component: resolve => require(['../components/index/page/analysisReport/analysisReport.vue'], resolve),
-          meta: { title: '商业智能',name:'analysisReport' ,requireAuth:true}
+          meta: { title: '报表与分析',name:'analysisReport' ,requireAuth:true}
         },
         {
           path: '/logs',
@@ -399,12 +399,12 @@ const router =new Router({
         {
           path: '/addexamine',
           component: resolve => require(['../components/index/page/examine/addexamine.vue'], resolve),
-          meta: { title: '发起审批', name:'addexamine', requireAuth:true}
+          meta: { title: '发起审核', name:'addexamine', requireAuth:true}
         },
         {
           path: '/examinedetail',
           component: resolve => require(['../components/index/page/examine/examinedetail.vue'], resolve),
-          meta: { title: '发起审批', requireAuth:true}
+          meta: { title: '审核单详情', requireAuth:true}
         },
         {
           path: '/examineaddOrUpdate',

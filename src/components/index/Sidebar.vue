@@ -317,7 +317,7 @@
                     {
                         icon: 'mdi-puzzle',
                         index: 'analysisReport',
-                        title: '商业智能',
+                        title: '报表与分析',
                     },
                 ],
                 
@@ -378,7 +378,7 @@
                             },
                             {
                                 index: 'addexamine',
-                                title: '发起审批',
+                                title: '发起审核',
                             },
                         ]
                     },
