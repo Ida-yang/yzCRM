@@ -20,7 +20,7 @@
     "jquery": "^3.4.1",
     "js-base64": "^2.5.1",
     "mavon-editor": "^2.5.4",
-    "npm": "^6.8.0",
+    "npm": "^6.13.4",
     "vue": "^2.5.16",
     "vue-cropperjs": "^2.2.0",
     "vue-quill-editor": "3.0.6",
